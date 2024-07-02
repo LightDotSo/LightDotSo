@@ -56,3 +56,11 @@ lazy_static! {
         "https://api.pimlico.io/v2".to_string()
     };
 }
+
+// The particle network paymaster base url
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref PARTICLE_NETWORK_PAYMASTER_BASE_URL: String = {
+        "https://paymaster.particle.network".to_string()
+    };
+}

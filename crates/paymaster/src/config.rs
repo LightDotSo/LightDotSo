@@ -28,6 +28,12 @@ pub struct PaymasterArgs {
     /// The pilmico API key
     #[clap(long, env = "PIMLICO_API_KEY")]
     pub pimlico_api_key: String,
+    /// The particle network project id
+    #[clap(long, env = "PARTICLE_NETWORK_PROJECT_ID")]
+    pub particle_network_project_id: String,
+    /// The particle network paymaster project key
+    #[clap(long, env = "PARTICLE_NETWORK_PROJECT_KEY")]
+    pub particle_network_paymaster_project_key: String,
 }
 
 impl PaymasterArgs {

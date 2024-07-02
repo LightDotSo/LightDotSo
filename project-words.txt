@@ -1584,6 +1584,7 @@ utila
 utoipa
 utxo
 Utxo
+Uuid
 UUPS
 uvicorn
 Uwzh
