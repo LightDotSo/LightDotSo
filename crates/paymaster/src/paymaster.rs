@@ -56,6 +56,35 @@ pub async fn fetch_user_operation_sponsorship(
     entry_point: Address,
     chain_id: u64,
 ) -> Result<GasAndPaymasterAndData> {
+    // Get the environment variable, `PARTICLE_NETWORK_PROJECT_ID`.
+    let particle_network_project_id = std::env::var("PARTICLE_NETWORK_PROJECT_ID")
+        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
+    let particle_network_paymaster_project_key = std::env::var("PARTICLE_NETWORK_PROJECT_KEY")
+        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_KEY not set"))?;
+
+    // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
+    if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
+        let sponsorship = get_user_operation_sponsorship(
+            format!(
+                "{}?chainId={}&projectUuid={}&projectKey=${}",
+                *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
+                chain_id,
+                particle_network_project_id,
+                particle_network_paymaster_project_key
+            ),
+            entry_point,
+            &user_operation,
+            None,
+        )
+        .await
+        .map_err(JsonRpcError::from);
+
+        // If the sponsorship is successful, return the result.
+        if let Ok(sponsorship_data) = sponsorship {
+            return Ok(sponsorship_data.result);
+        }
+    }
+
     // Get the environment variable, `PIMLICO_API_KEY`.
     let pimlico_api_key =
         std::env::var("PIMLICO_API_KEY").map_err(|_| eyre::eyre!("PIMLICO_API_KEY not set"))?;
@@ -85,35 +114,6 @@ pub async fn fetch_user_operation_sponsorship(
             if let Ok(sponsorship_data) = sponsorship {
                 return Ok(sponsorship_data.result);
             }
-        }
-    }
-
-    // Get the environment variable, `PARTICLE_NETWORK_PROJECT_ID`.
-    let particle_network_project_id = std::env::var("PARTICLE_NETWORK_PROJECT_ID")
-        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
-    let particle_network_paymaster_project_key = std::env::var("PARTICLE_NETWORK_PROJECT_KEY")
-        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_KEY not set"))?;
-
-    // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
-    if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
-        let sponsorship = get_user_operation_sponsorship(
-            format!(
-                "{}?chainId={}&projectUuid={}&projectKey=${}",
-                *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
-                chain_id,
-                particle_network_project_id,
-                particle_network_paymaster_project_key
-            ),
-            entry_point,
-            &user_operation,
-            None,
-        )
-        .await
-        .map_err(JsonRpcError::from);
-
-        // If the sponsorship is successful, return the result.
-        if let Ok(sponsorship_data) = sponsorship {
-            return Ok(sponsorship_data.result);
         }
     }
 
