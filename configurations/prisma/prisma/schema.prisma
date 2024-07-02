@@ -1565,7 +1565,7 @@ model PaymasterOperation {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([validAfter, paymasterId])
+  @@unique([validUntil, validAfter, paymasterId])
   // Relations
   @@index([paymasterId])
   @@index([sender])

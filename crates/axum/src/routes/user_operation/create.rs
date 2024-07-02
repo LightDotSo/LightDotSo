@@ -351,7 +351,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
     if user_operation.paymaster_and_data.len() > 2 {
         let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
-        let (decded_paymaster_address, _, valid_after, _msg) =
+        let (decded_paymaster_address, valid_until, valid_after, _msg) =
             decode_paymaster_and_data(paymaster_data)?;
 
         let paymaster = state
@@ -378,7 +378,12 @@ pub(crate) async fn v1_user_operation_create_handler(
         let paymaster_operation = state
             .client
             .paymaster_operation()
-            .find_unique(paymaster_operation::valid_after_paymaster_id(
+            .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
                 DateTime::<Utc>::from_utc(
                     NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
                     Utc,
@@ -753,7 +758,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
         if user_operation.paymaster_and_data.len() > 2 {
             let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
-            let (decded_paymaster_address, _, valid_after, _msg) =
+            let (decded_paymaster_address, valid_until, valid_after, _msg) =
                 decode_paymaster_and_data(paymaster_data)?;
 
             let paymaster = state
@@ -784,7 +789,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             let paymaster_operation = state
                 .client
                 .paymaster_operation()
-                .find_unique(paymaster_operation::valid_after_paymaster_id(
+                .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
                     DateTime::<Utc>::from_utc(
                         NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
                         Utc,
