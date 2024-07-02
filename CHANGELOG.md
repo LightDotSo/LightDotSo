@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.2.4](https://github.com/LightDotSo/LightDotSo/compare/v0.2.3...v0.2.4) (2024-07-02)
+
+
+### Features
+
+* ini address comp ([#1973](https://github.com/LightDotSo/LightDotSo/issues/1973)) ([bc5fc9e](https://github.com/LightDotSo/LightDotSo/commit/bc5fc9e49e9fe543bd21987bbb5d42c5256a3813))
+* ini address types ([#1970](https://github.com/LightDotSo/LightDotSo/issues/1970)) ([6829ec0](https://github.com/LightDotSo/LightDotSo/commit/6829ec0e80c1ddb3034619cc87de7099f6ccb4b9))
+* ini badge cart ([#2004](https://github.com/LightDotSo/LightDotSo/issues/2004)) ([0ed6621](https://github.com/LightDotSo/LightDotSo/commit/0ed6621fe6014dfd7eb57f4c96b9c78b9905faef))
+* ini chain modal ([#2008](https://github.com/LightDotSo/LightDotSo/issues/2008)) ([ecdb2ce](https://github.com/LightDotSo/LightDotSo/commit/ecdb2ce51f2463dfe648460a821a1d2b76cd80bc))
+* ini changelog keystatic ([#1985](https://github.com/LightDotSo/LightDotSo/issues/1985)) ([d928b7d](https://github.com/LightDotSo/LightDotSo/commit/d928b7d1787ea6e2da97ec7adabc5778e37667b2))
+* ini cspell ([#2024](https://github.com/LightDotSo/LightDotSo/issues/2024)) ([40b459c](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d))
+* ini home ([#1987](https://github.com/LightDotSo/LightDotSo/issues/1987)) ([d71662a](https://github.com/LightDotSo/LightDotSo/commit/d71662aab537df50ed28b34f4c6220293052c73a))
+* ini lifi router ([#2000](https://github.com/LightDotSo/LightDotSo/issues/2000)) ([e41f54d](https://github.com/LightDotSo/LightDotSo/commit/e41f54d418f714f644a7d1eac7a29df2b3f20755))
+* ini modal uop ([#1975](https://github.com/LightDotSo/LightDotSo/issues/1975)) ([dd1e0d9](https://github.com/LightDotSo/LightDotSo/commit/dd1e0d916415f079a62ea73c3294ea8e82a53905))
+* ini object shorthand error ([#1968](https://github.com/LightDotSo/LightDotSo/issues/1968)) ([580bbbb](https://github.com/LightDotSo/LightDotSo/commit/580bbbb25b0cbdeb5b55a0ada8423bafdfbbf8c4))
+* ini pm sponsorship ([#2025](https://github.com/LightDotSo/LightDotSo/issues/2025)) ([5b6f803](https://github.com/LightDotSo/LightDotSo/commit/5b6f8033e585129f1d509dc85f1e95516153cc77))
+* ini proposals ([#1981](https://github.com/LightDotSo/LightDotSo/issues/1981)) ([e429f86](https://github.com/LightDotSo/LightDotSo/commit/e429f86c0f385a0e7395598cc81fd84e15917ccb))
+* ini router ([#1998](https://github.com/LightDotSo/LightDotSo/issues/1998)) ([ce1a493](https://github.com/LightDotSo/LightDotSo/commit/ce1a493a6027949f829d4db6f42786b3d273ce6c))
+* ini sticky tab ([#1974](https://github.com/LightDotSo/LightDotSo/issues/1974)) ([9ec1eec](https://github.com/LightDotSo/LightDotSo/commit/9ec1eecbcfc08657fd9046364ece111e0a0a4cb1))
+* ini swap ([#2021](https://github.com/LightDotSo/LightDotSo/issues/2021)) ([9d5bfbf](https://github.com/LightDotSo/LightDotSo/commit/9d5bfbf6da6439f272c8ca5a284127f43634224f))
+* ini swap tab ([#2019](https://github.com/LightDotSo/LightDotSo/issues/2019)) ([cdfbe75](https://github.com/LightDotSo/LightDotSo/commit/cdfbe7596aa113c62a82af14c6d4dde54f06a389))
+* ini tabs query support ([#1979](https://github.com/LightDotSo/LightDotSo/issues/1979)) ([3cd5b93](https://github.com/LightDotSo/LightDotSo/commit/3cd5b93e4355b8408e1a18ef9840a663f49cd63b))
+* ini thx socket ([#2002](https://github.com/LightDotSo/LightDotSo/issues/2002)) ([a1669c1](https://github.com/LightDotSo/LightDotSo/commit/a1669c19fd08090a0105aff3d2edb891f0fc75d7))
+* ini update unique paymaster op constraint ([#2027](https://github.com/LightDotSo/LightDotSo/issues/2027)) ([b194208](https://github.com/LightDotSo/LightDotSo/commit/b194208c896523ed7271f91c7f5ff885c24a517d))
+* ini upgradeable contracts ([#1980](https://github.com/LightDotSo/LightDotSo/issues/1980)) ([0935b49](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869))
+
+
+### Bug Fixes
+
+* auth redirect ([#2003](https://github.com/LightDotSo/LightDotSo/issues/2003)) ([96249db](https://github.com/LightDotSo/LightDotSo/commit/96249dbb676a168c754801e22890241cf5ee1baf))
+* config global ([#2005](https://github.com/LightDotSo/LightDotSo/issues/2005)) ([2cc456c](https://github.com/LightDotSo/LightDotSo/commit/2cc456c1a05467eb4dae6ae21d2a6a32b56bc4dc))
+* const chains ([#1966](https://github.com/LightDotSo/LightDotSo/issues/1966)) ([70b538f](https://github.com/LightDotSo/LightDotSo/commit/70b538fa919e48ba068d24801520d7290c033d61))
+* covalent send ([#2011](https://github.com/LightDotSo/LightDotSo/issues/2011)) ([1437fda](https://github.com/LightDotSo/LightDotSo/commit/1437fdaea82e569e1d855a0147f5f6dbf830852d))
+* create log ([#1976](https://github.com/LightDotSo/LightDotSo/issues/1976)) ([0cd42a9](https://github.com/LightDotSo/LightDotSo/commit/0cd42a90f1d91a721e0f4919ee025a2bba4279be))
+* demo dialog ([#2022](https://github.com/LightDotSo/LightDotSo/issues/2022)) ([0e918d3](https://github.com/LightDotSo/LightDotSo/commit/0e918d359185c9a616c61b51801bb5ba4760964b))
+* macos latest ([#2028](https://github.com/LightDotSo/LightDotSo/issues/2028)) ([1ca33a3](https://github.com/LightDotSo/LightDotSo/commit/1ca33a3fb56a561b3586a3075ab74746f3c3e3cc))
+* modal interception swiper ([#1971](https://github.com/LightDotSo/LightDotSo/issues/1971)) ([db146ef](https://github.com/LightDotSo/LightDotSo/commit/db146efbd074a478c63a01704b42447b7ccad0c4))
+* playwright ([#1969](https://github.com/LightDotSo/LightDotSo/issues/1969)) ([d40e1b2](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c))
+* pm bounde ([#2026](https://github.com/LightDotSo/LightDotSo/issues/2026)) ([ed7b500](https://github.com/LightDotSo/LightDotSo/commit/ed7b500c58c782380516ca5e0eab1f8fb9fe6967))
+* socket balance query ([#2009](https://github.com/LightDotSo/LightDotSo/issues/2009)) ([d7d53f6](https://github.com/LightDotSo/LightDotSo/commit/d7d53f65c3c7264a3d9bbc6b35b32a7f87e58163))
+* sou ([#2001](https://github.com/LightDotSo/LightDotSo/issues/2001)) ([5bc1a77](https://github.com/LightDotSo/LightDotSo/commit/5bc1a7729929ac3a6575b0a80bf5523c2090b124))
+* toggle banner tab ([#1964](https://github.com/LightDotSo/LightDotSo/issues/1964)) ([fe9a535](https://github.com/LightDotSo/LightDotSo/commit/fe9a535ac36f33db45ca19f9cde9fd063587ce22))
+* token modal ([#2013](https://github.com/LightDotSo/LightDotSo/issues/2013)) ([f5203dc](https://github.com/LightDotSo/LightDotSo/commit/f5203dccea723ce82f71aaf3965d1ac8bbe62265))
+* uop progress ([#1992](https://github.com/LightDotSo/LightDotSo/issues/1992)) ([d5f0416](https://github.com/LightDotSo/LightDotSo/commit/d5f0416cd7e38c0eaeb6ac8ac9cd4b315e5cd3f8))
+
 ## [0.2.3](https://github.com/LightDotSo/LightDotSo/compare/v0.2.2...v0.2.3) (2024-06-18)
 
 
