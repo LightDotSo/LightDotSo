@@ -10,7 +10,7 @@
     }
   ],
   "useGitignore": true,
-  "ignorePaths": ["node_modules"],
+  "ignorePaths": ["node_modules", "pnpm-lock.yaml"],
   "enableFiletypes": ["mdx"],
   "enabled": true,
   "words": []
