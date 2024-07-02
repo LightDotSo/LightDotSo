@@ -15,7 +15,6 @@
 #![allow(clippy::expect_used)]
 #![allow(clippy::unwrap_used)]
 
-use axum::{body::Body, http::Response as HttpResponse};
 use ethers::types::{Address, Bytes};
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
@@ -31,49 +30,53 @@ use lightdotso_db::{
     },
 };
 use lightdotso_gas::types::GasEstimation;
-use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
     handle_response,
     types::{Request, Response},
 };
 use lightdotso_prisma::paymaster_operation;
-use lightdotso_rpc::get_client_result;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::{json, Value};
-use std::collections::HashMap;
+
+use crate::constants::{PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES};
 
 /// The paymaster api implementation.
 pub(crate) struct PaymasterApi {}
 
-/// The rpc handler for the RPC server
-pub async fn try_rpc_with_url(
-    rpc_urls: &HashMap<u64, String>,
-    api_key: Option<String>,
-    chain_id: &u64,
-    client: &HyperClient,
-    body: Body,
-) -> Option<HttpResponse<Body>> {
-    if let Some(rpc_url) = rpc_urls.get(chain_id) {
-        let full_url = match api_key {
-            // Format the url with the api_key if it exists
-            Some(key) => format!("{}{}", rpc_url, key),
-            // If the api_key does not exist return the url as is
-            None => rpc_url.to_string(),
-        };
+// Retryable sponsorship fetch function.
+pub async fn fetch_user_operation_sponsorship(
+    user_operation: UserOperationConstruct,
+    entry_point: Address,
+    chain_id: u64,
+) -> Result<GasAndPaymasterAndData> {
+    // Get the environment variable, `PIMLICO_API_KEY`.
+    let pimlico_api_key =
+        std::env::var("PIMLICO_API_KEY").map_err(|_| eyre::eyre!("PIMLICO_API_KEY not set"))?;
 
-        // Get the result from the client
-        let result = get_client_result(full_url, client.clone(), body).await;
-        if let Some(mut resp) = result {
-            // Add the current rpc url to the response
-            resp.headers_mut().insert("X-RPC-URL", rpc_url.parse().unwrap());
+    // For each paymaster policy, attempt to fetch the user operation sponsorship.
+    for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
+        info!("pimlico policy: {:?}", policy);
 
-            return Some(resp);
+        let sponsorship = get_user_operation_sponsorship(
+            format!("{}/{}/rpc?apiKey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
+            entry_point,
+            &user_operation,
+            json!({
+                "sponsorshipPolicy": policy
+            }),
+        )
+        .await
+        .map_err(JsonRpcError::from);
+
+        // If the sponsorship is successful, return the result.
+        if let Ok(sponsorship_data) = sponsorship {
+            return Ok(sponsorship_data.result);
         }
     }
 
-    // Return None if the rpc url is not found
-    None
+    // If the sponsorship is not successful, return error.
+    Err(eyre::eyre!("Failed to fetch user operation sponsorship"))
 }
 
 impl PaymasterApi {
@@ -101,16 +104,9 @@ impl PaymasterApi {
         info!("construct: {:?}", construct);
 
         // Get the paymaster operation sponsor.
-        let uop_sponsorship = get_user_operation_sponsorship(
-            chain_id,
-            entry_point,
-            &construct,
-            json!({
-                "sponsorshipPolicy": "paymaster"
-            }),
-        )
-        .await
-        .map_err(JsonRpcError::from)?;
+        let uop_sponsorship = fetch_user_operation_sponsorship(construct, entry_point, chain_id)
+            .await
+            .map_err(JsonRpcError::from)?;
 
         // // Finally, create the paymaster operation.
         // let op = db_create_paymaster_operation(
@@ -129,7 +125,7 @@ impl PaymasterApi {
         //     .await
         //     .map_err(JsonRpcError::from)?;
 
-        Ok(uop_sponsorship.result)
+        Ok(uop_sponsorship)
     }
 }
 
@@ -287,7 +283,7 @@ pub async fn estimate_user_operation_gas(
 }
 
 pub async fn get_user_operation_sponsorship(
-    chain_id: u64,
+    rpc_url: String,
     entry_point: Address,
     user_operation_construct: &UserOperationConstruct,
     sponsorship_policy: Value,
@@ -317,11 +313,7 @@ pub async fn get_user_operation_sponsorship(
     };
 
     let client = reqwest::Client::new();
-    let response = client
-        .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
-        .json(&req_body)
-        .send()
-        .await?;
+    let response = client.post(rpc_url).json(&req_body).send().await?;
 
     // Handle the response for the JSON-RPC API.
     handle_response(response).await

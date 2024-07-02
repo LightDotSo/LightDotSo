@@ -348,30 +348,30 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "https://api.pimlico.io/v1/ethereum/rpc".to_string());
-        m.insert(10, "https://api.pimlico.io/v1/optimism/rpc".to_string());
-        m.insert(56, "https://api.pimlico.io/v1/binance/rpc".to_string());
-        m.insert(100, "https://api.pimlico.io/v1/gnosis/rpc".to_string());
-        m.insert(122, "https://api.pimlico.io/v1/fuse/rpc".to_string());
-        m.insert(137, "https://api.pimlico.io/v1/polygon/rpc".to_string());
-        m.insert(8453, "https://api.pimlico.io/v1/base/rpc".to_string());
-        m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
-        m.insert(42220, "https://api.pimlico.io/v1/celo/rpc".to_string());
-        m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
-        m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
-        m.insert(534352, "https://api.pimlico.io/v1/scroll/rpc".to_string());
-        m.insert(7777777, "https://api.pimlico.io/v1/zora/rpc".to_string());
+        m.insert(1, "https://api.pimlico.io/v2/ethereum/rpc".to_string());
+        m.insert(10, "https://api.pimlico.io/v2/optimism/rpc".to_string());
+        m.insert(56, "https://api.pimlico.io/v2/binance/rpc".to_string());
+        m.insert(100, "https://api.pimlico.io/v2/gnosis/rpc".to_string());
+        m.insert(122, "https://api.pimlico.io/v2/fuse/rpc".to_string());
+        m.insert(137, "https://api.pimlico.io/v2/polygon/rpc".to_string());
+        m.insert(8453, "https://api.pimlico.io/v2/base/rpc".to_string());
+        m.insert(42161, "https://api.pimlico.io/v2/arbitrum/rpc".to_string());
+        m.insert(42220, "https://api.pimlico.io/v2/celo/rpc".to_string());
+        m.insert(43114, "https://api.pimlico.io/v2/avalanche/rpc".to_string());
+        m.insert(59144, "https://api.pimlico.io/v2/linea/rpc".to_string());
+        m.insert(534352, "https://api.pimlico.io/v2/scroll/rpc".to_string());
+        m.insert(7777777, "https://api.pimlico.io/v2/zora/rpc".to_string());
 
         // Testnet
-        m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
-        m.insert(44787, "https://api.pimlico.io/v1/celo-alfajores-testnet/rpc".to_string());
-        m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
-        m.insert(84532, "https://api.pimlico.io/v1/base-sepolia/rpc".to_string());
-        m.insert(421614, "https://api.pimlico.io/v1/arbitrum-sepolia/rpc".to_string());
-        m.insert(534351, "https://api.pimlico.io/v1/scroll-sepolia-testnet/rpc".to_string());
-        m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
-        // m.insert(11155420, "https://api.pimlico.io/v1/optimism-sepolia/rpc".to_string());
-        m.insert(999999999, "https://api.pimlico.io/v1/zora-sepolia/rpc".to_string());
+        m.insert(10200, "https://api.pimlico.io/v2/chiado-testnet/rpc".to_string());
+        m.insert(44787, "https://api.pimlico.io/v2/celo-alfajores-testnet/rpc".to_string());
+        m.insert(80001, "https://api.pimlico.io/v2/mumbai/rpc".to_string());
+        m.insert(84532, "https://api.pimlico.io/v2/base-sepolia/rpc".to_string());
+        m.insert(421614, "https://api.pimlico.io/v2/arbitrum-sepolia/rpc".to_string());
+        m.insert(534351, "https://api.pimlico.io/v2/scroll-sepolia-testnet/rpc".to_string());
+        m.insert(11155111, "https://api.pimlico.io/v2/sepolia/rpc".to_string());
+        m.insert(11155420, "https://api.pimlico.io/v2/optimism-sepolia/rpc".to_string());
+        m.insert(999999999, "https://api.pimlico.io/v2/zora-sepolia/rpc".to_string());
 
         m
     };
