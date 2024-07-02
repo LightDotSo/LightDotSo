@@ -136,7 +136,8 @@ pub async fn write_paymaster_operation_to_db(
     let paymaster_contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
 
     // Call the paymaster contract to get the nonce.
-    let paymaster_nonce = paymaster_contract.sender_nonce(user_operation.sender).await?;
+    let paymaster_nonce =
+        paymaster_contract.sender_nonce(user_operation.sender).await.unwrap_or(0.into());
 
     // Finally, create the paymaster operation.
     let op = db_create_paymaster_operation(
