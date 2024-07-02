@@ -36,7 +36,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-09-15T22:55:12.743Z",
+    "modified": "2024-07-01T22:42:37.744Z",
     "headers": [
       {
         "name": "accept",
@@ -47,7 +47,6 @@
         "value": "application/json"
       }
     ],
-    "params": [],
     "body": {
       "type": "json",
       "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_supportedEntryPoints\"\n}\n",

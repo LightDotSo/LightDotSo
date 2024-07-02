@@ -30,6 +30,7 @@ lazy_static! {
         m.insert(137, "Polygon Mainnet");
         m.insert(250, "Fantom Mainnet");
         m.insert(1101, "Polygon zkEVM Mainnet");
+        m.insert(1329, "Sei Mainnet");
         m.insert(8453, "Base Mainnet");
         m.insert(34443, "Mode Mainnet");
         m.insert(42161, "Arbitrum One Mainnet");
@@ -54,6 +55,7 @@ lazy_static! {
         m.insert(80002, "Polygon Amoy Testnet");
         m.insert(84532, "Base Sepolia Testnet");
         m.insert(421614, "Arbitrum Sepolia Testnet");
+        m.insert(713715, "Sei Devnet");
         m.insert(11155111, "Sepolia Testnet");
         m.insert(11155420, "Optimism Sepolia Testnet");
         m.insert(168587773, "Blast Sepolia Testnet");

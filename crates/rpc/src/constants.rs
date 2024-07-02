@@ -135,17 +135,19 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "https://ethereum.publicnode.com".to_string());
-        m.insert(10, "https://optimism.publicnode.com".to_string());
-        m.insert(56, "https://bsc.publicnode.com".to_string());
-        m.insert(100, "https://gnosis.publicnode.com".to_string());
-        m.insert(137, "https://polygon-bor.publicnode.com".to_string());
-        m.insert(8453, "https://base.publicnode.com".to_string());
-        m.insert(42161, "https://arbitrum-one.publicnode.com".to_string());
-        m.insert(43114, "https://avalanche-c-chain.publicnode.com".to_string());
+        m.insert(1, "https://ethereum-rpc.publicnode.com".to_string());
+        m.insert(10, "https://optimism-rpc.publicnode.com".to_string());
+        m.insert(56, "https://bsc-rpc.publicnode.com".to_string());
+        m.insert(100, "https://gnosis-rpc.publicnode.com".to_string());
+        m.insert(137, "https://polygon-bor-rpc.publicnode.com".to_string());
+        m.insert(1329, "https://sei-rpc.publicnode.com".to_string());
+        m.insert(8453, "https://base-rpc.publicnode.com".to_string());
+        m.insert(42161, "https://arbitrum-one-rpc.publicnode.com".to_string());
+        m.insert(43114, "https://avalanche-c-chain-rpc.publicnode.com".to_string());
 
         // Testnet
         m.insert(80001, "https://polygon-mumbai-bor.publicnode.com".to_string());
+        m.insert(80002, "https://polygon-amoy-bor-rpc.publicnode.com".to_string());
         m.insert(84532, "https://base-sepolia.publicnode.com".to_string());
         m.insert(421614, "https://arbitrum-sepolia.publicnode.com".to_string());
         m.insert(11155111, "https://ethereum-sepolia.publicnode.com".to_string());
@@ -224,35 +226,39 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "https://ethereum.rpc.thirdweb.com".to_string());
-        m.insert(10, "https://optimism.rpc.thirdweb.com".to_string());
-        m.insert(56, "https://binance.rpc.thirdweb.com".to_string());
-        m.insert(100, "https://gnosis.rpc.thirdweb.com".to_string());
-        m.insert(137, "https://polygon.rpc.thirdweb.com".to_string());
-        m.insert(169, "https://manta-pacific.rpc.thirdweb.com".to_string());
-        m.insert(250, "https://fantom.rpc.thirdweb.com".to_string());
-        m.insert(592, "https://astar.rpc.thirdweb.com".to_string());
-        m.insert(1101, "https://polygon-zkevm.rpc.thirdweb.com".to_string());
-        m.insert(1116, "https://core-blockchain.rpc.thirdweb.com".to_string());
-        m.insert(5000, "https://mantle.rpc.thirdweb.com".to_string());
-        m.insert(8453, "https://base.rpc.thirdweb.com".to_string());
-        m.insert(9980, "https://combo.rpc.thirdweb.com".to_string());
-        m.insert(42161, "https://arbitrum.rpc.thirdweb.com".to_string());
-        m.insert(42170, "https://arbitrum-nova.rpc.thirdweb.com".to_string());
-        m.insert(42220, "https://celo.rpc.thirdweb.com".to_string());
-        m.insert(43114, "https://avalanche.rpc.thirdweb.com".to_string());
-        m.insert(534352, "https://scroll.rpc.thirdweb.com".to_string());
-        m.insert(1666600000, "https://harmony-shard-0.rpc.thirdweb.com".to_string());
+        m.insert(1, "https://1.rpc.thirdweb.com".to_string());
+        m.insert(10, "https://10.rpc.thirdweb.com".to_string());
+        m.insert(56, "https://56.rpc.thirdweb.com".to_string());
+        m.insert(100, "https://100.rpc.thirdweb.com".to_string());
+        m.insert(122, "https://122.rpc.thirdweb.com".to_string());
+        m.insert(137, "https://137.rpc.thirdweb.com".to_string());
+        m.insert(169, "https://169.rpc.thirdweb.com".to_string());
+        m.insert(250, "https://250.rpc.thirdweb.com".to_string());
+        m.insert(592, "https://592.rpc.thirdweb.com".to_string());
+        m.insert(1101, "https://1101.rpc.thirdweb.com".to_string());
+        m.insert(1329, "https://1329.rpc.thirdweb.com".to_string());
+        m.insert(5000, "https://5000.rpc.thirdweb.com".to_string());
+        m.insert(8453, "https://8453.rpc.thirdweb.com".to_string());
+        m.insert(9980, "https://9980.rpc.thirdweb.com".to_string());
+        m.insert(42161, "https://42161.rpc.thirdweb.com".to_string());
+        m.insert(42170, "https://42170.rpc.thirdweb.com".to_string());
+        m.insert(42220, "https://42220.rpc.thirdweb.com".to_string());
+        m.insert(43114, "https://43114.rpc.thirdweb.com".to_string());
+        m.insert(534352, "https://534352.rpc.thirdweb.com".to_string());
+        m.insert(7777777, "https://7777777.rpc.thirdweb.com".to_string());
+        m.insert(1666600000, "https://1666600000.rpc.thirdweb.com".to_string());
 
         // Testnet
-        m.insert(80001, "https://mumbai.rpc.thirdweb.com".to_string());
-        m.insert(84532, "https://base-sepolia-testnet.rpc.thirdweb.com".to_string());
-        m.insert(421614, "https://arbitrum-sepolia.rpc.thirdweb.com".to_string());
-        m.insert(534351, "https://scroll-sepolia-testnet.rpc.thirdweb.com".to_string());
-        m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
-        m.insert(11155420, "https://op-sepolia-testnet.rpc.thirdweb.com".to_string());
-        m.insert(168587773, "https://blast-sepolia-testnet.rpc.thirdweb.com".to_string());
-        m.insert(999999999, "https://zora-sepolia-testnet.rpc.thirdweb.com".to_string());
+        m.insert(80001, "https://80001.rpc.thirdweb.com".to_string());
+        m.insert(80002, "https://80002.rpc.thirdweb.com".to_string());
+        m.insert(84532, "https://84532.rpc.thirdweb.com".to_string());
+        m.insert(421614, "https://421614.rpc.thirdweb.com".to_string());
+        m.insert(534351, "https://534351.rpc.thirdweb.com".to_string());
+        m.insert(713715, "https://713715.rpc.thirdweb.com".to_string());
+        m.insert(11155111, "https://11155111.rpc.thirdweb.com".to_string());
+        m.insert(11155420, "https://11155420.rpc.thirdweb.com".to_string());
+        m.insert(168587773, "https://168587773.rpc.thirdweb.com".to_string());
+        m.insert(999999999, "https://999999999.rpc.thirdweb.com".to_string());
 
         m
     };
@@ -414,19 +420,28 @@ lazy_static! {
         m.insert(10, "https://bundler.particle.network?chainId=10".to_string());
         m.insert(56, "https://bundler.particle.network?chainId=56".to_string());
         m.insert(100, "https://bundler.particle.network?chainId=100".to_string());
+        m.insert(122, "https://bundler.particle.network?chainId=122".to_string());
         m.insert(137, "https://bundler.particle.network?chainId=137".to_string());
-        m.insert(169, "https://bundler.particle.network?chainId=169".to_string());
+        m.insert(250, "https://bundler.particle.network?chainId=250".to_string());
+        m.insert(1101, "https://bundler.particle.network?chainId=1101".to_string());
+        m.insert(1329, "https://bundler.particle.network?chainId=1329".to_string());
         m.insert(8453, "https://bundler.particle.network?chainId=8453".to_string());
+        m.insert(34443, "https://bundler.particle.network?chainId=34443".to_string());
         m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
+        m.insert(42170, "https://bundler.particle.network?chainId=42170".to_string());
+        // m.insert(42220, "https://bundler.particle.network?chainId=42220".to_string());
         m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
         m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
+        m.insert(81457, "https://bundler.particle.network?chainId=81457".to_string());
         m.insert(534352, "https://bundler.particle.network?chainId=534352".to_string());
+        // m.insert(7777777, "https://bundler.particle.network?chainId=7777777".to_string());
 
         // Testnet
-        m.insert(59140, "https://bundler.particle.network?chainId=59140".to_string());
-        m.insert(80001, "https://bundler.particle.network?chainId=80001".to_string());
+        m.insert(59141, "https://bundler.particle.network?chainId=59141".to_string());
+        m.insert(80002, "https://bundler.particle.network?chainId=80002".to_string());
         m.insert(84532, "https://bundler.particle.network?chainId=84532".to_string());
-        m.insert(534351, "https://bundler.particle.network?chainId=534351".to_string());
+        m.insert(421614, "https://bundler.particle.network?chainId=421614".to_string());
+        m.insert(713715, "https://bundler.particle.network?chainId=713715".to_string());
         m.insert(11155111, "https://bundler.particle.network?chainId=11155111".to_string());
         m.insert(11155420, "https://bundler.particle.network?chainId=11155420".to_string());
         m.insert(168587773, "https://bundler.particle.network?chainId=168587773".to_string());
@@ -451,6 +466,7 @@ lazy_static! {
         m.insert(42161, "https://rpc.silius.xyz/api/v1/chain/arbitrum-mainnet".to_string());
         m.insert(43114, "https://rpc.silius.xyz/api/v1/chain/avalanche-mainnet".to_string());
         m.insert(59144, "https://rpc.silius.xyz/api/v1/chain/linea-mainnet".to_string());
+        m.insert(81457, "https://rpc.silius.xyz/api/v1/chain/blast-mainnet".to_string());
 
         // Testnet
         m.insert(97, "https://rpc.silius.xyz/api/v1/chain/bsc-testnet".to_string());
