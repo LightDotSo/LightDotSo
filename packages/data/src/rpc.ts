@@ -26,8 +26,5 @@ export type PaymasterAndData = {
   callGasLimit: string;
   verificationGasLimit: string;
   preVerificationGas: string;
-  maxFeePerGas: string;
-  maxPriorityFeePerGas: string;
   paymasterAndData: string;
-  paymasterNonce: string;
 };

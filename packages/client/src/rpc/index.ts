@@ -172,13 +172,10 @@ export const estimateUserOperationGas = async (
 // -----------------------------------------------------------------------------
 
 const PaymasterGasAndPaymasterAndDataResponse = z.object({
-  paymasterNonce: HexStringSchema,
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
-  maxFeePerGas: HexStringSchema,
-  maxPriorityFeePerGas: HexStringSchema,
 });
 
 const PaymasterGasAndPaymasterAndDataRequest = z.array(
