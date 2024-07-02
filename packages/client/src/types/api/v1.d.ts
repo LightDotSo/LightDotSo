@@ -3,5600 +3,7909 @@
  * Do not make direct changes to the file.
  */
 
-
-/** OneOf type helpers */
-export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-export type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
-
 export interface paths {
-  "/activity/get": {
-    /**
-     * Get a activity
-     * @description Get a activity
-     */
-    get: operations["v1_activity_get_handler"];
-  };
-  "/activity/list": {
-    /**
-     * Returns a list of activities
-     * @description Returns a list of activities
-     */
-    get: operations["v1_activity_list_handler"];
-  };
-  "/activity/list/count": {
-    /**
-     * Returns a count of list of activities
-     * @description Returns a count of list of activities
-     */
-    get: operations["v1_activity_list_count_handler"];
-  };
-  "/asset_change/get": {
-    /**
-     * Get a asset
-     * @description Get a asset
-     */
-    get: operations["v1_asset_change_get_handler"];
-  };
-  "/asset_change/list": {
-    /**
-     * Returns a list of assets
-     * @description Returns a list of assets
-     */
-    get: operations["v1_asset_change_list_handler"];
-  };
-  "/auth/logout": {
-    /**
-     * Logout a session
-     * @description Logout a session
-     */
-    post: operations["v1_auth_logout_handler"];
-  };
-  "/auth/nonce": {
-    /**
-     * Get a auth nonce
-     * @description Get a auth nonce
-     */
-    get: operations["v1_auth_nonce_handler"];
-  };
-  "/auth/session": {
-    /**
-     * Get a session
-     * @description Get a session
-     */
-    get: operations["v1_auth_session_handler"];
-  };
-  "/auth/verify": {
-    /**
-     * Verify a auth
-     * @description Verify a auth
-     */
-    post: operations["v1_auth_verify_handler"];
-  };
-  "/billing/get": {
-    /**
-     * Get a billing
-     * @description Get a billing
-     */
-    get: operations["v1_billing_get_handler"];
-  };
-  "/billing/list": {
-    /**
-     * Returns a list of billings
-     * @description Returns a list of billings
-     */
-    get: operations["v1_billing_list_handler"];
-  };
-  "/billing/update": {
-    /**
-     * Update a billing
-     * @description Update a billing
-     */
-    put: operations["v1_billing_update_handler"];
-  };
-  "/billing_operation/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_billing_operation_get_handler"];
-  };
-  "/billing_operation/list": {
-    /**
-     * Returns a list of billing operations
-     * @description Returns a list of billing operations
-     */
-    get: operations["v1_billing_operation_list_handler"];
-  };
-  "/billing_operation/list/count": {
-    /**
-     * Returns a count of list of billing operations
-     * @description Returns a count of list of billing operations
-     */
-    get: operations["v1_billing_operation_list_count_handler"];
-  };
-  "/chain/create": {
-    /**
-     * Create a chain
-     * @description Create a chain
-     */
-    post: operations["v1_chain_create_handler"];
-  };
-  "/chain/get": {
-    /**
-     * Get a protocol group
-     * @description Get a protocol group
-     */
-    get: operations["v1_chain_get_handler"];
-  };
-  "/chain/list": {
-    /**
-     * Returns a list of protocol groups
-     * @description Returns a list of protocol groups
-     */
-    get: operations["v1_chain_list_handler"];
-  };
-  "/chain/update": {
-    /**
-     * Update a chain
-     * @description Update a chain
-     */
-    put: operations["v1_chain_update_handler"];
-  };
-  "/check": {
-    /**
-     * Check if the server is running
-     * @description Check if the server is running
-     */
-    get: operations["handler"];
-  };
-  "/configuration/get": {
-    /**
-     * Get a configuration
-     * @description Get a configuration
-     */
-    get: operations["v1_configuration_get_handler"];
-  };
-  "/configuration/list": {
-    /**
-     * Returns a list of configurations
-     * @description Returns a list of configurations
-     */
-    get: operations["v1_configuration_list_handler"];
-  };
-  "/configuration_operation/create": {
-    /**
-     * Create a configuration signature
-     * @description Create a configuration signature
-     */
-    post: operations["v1_configuration_operation_create_handler"];
-  };
-  "/configuration_operation/get": {
-    /**
-     * Get a configuration_operation
-     * @description Get a configuration_operation
-     */
-    get: operations["v1_configuration_operation_get_handler"];
-  };
-  "/configuration_operation/list": {
-    /**
-     * Returns a list of interpretation actions
-     * @description Returns a list of interpretation actions
-     */
-    get: operations["v1_configuration_operation_list_handler"];
-  };
-  "/configuration_operation/list/count": {
-    /**
-     * Returns a count of list of interpretation actions
-     * @description Returns a count of list of interpretation actions
-     */
-    get: operations["v1_configuration_operation_list_count_handler"];
-  };
-  "/configuration_operation/update": {
-    /**
-     * Create a configuration signature
-     * @description Create a configuration signature
-     */
-    put: operations["v1_configuration_operation_update_handler"];
-  };
-  "/configuration_operation_owner/get": {
-    /**
-     * Get a owner
-     * @description Get a owner
-     */
-    get: operations["v1_configuration_operation_owner_get_handler"];
-  };
-  "/configuration_operation_owner/list": {
-    /**
-     * Returns a list of owners
-     * @description Returns a list of owners
-     */
-    get: operations["v1_configuration_operation_owner_list_handler"];
-  };
-  "/configuration_operation_signature/create": {
-    /**
-     * Create a configuration signature
-     * @description Create a configuration signature
-     */
-    post: operations["v1_configuration_operation_signature_create_handler"];
-  };
-  "/configuration_operation_signature/get": {
-    /**
-     * Get a signature
-     * @description Get a signature
-     */
-    get: operations["v1_configuration_operation_signature_get_handler"];
-  };
-  "/configuration_operation_signature/list": {
-    /**
-     * Returns a list of signatures
-     * @description Returns a list of signatures
-     */
-    get: operations["v1_configuration_operation_signature_list_handler"];
-  };
-  "/feedback/create": {
-    /**
-     * Create a feedback
-     * @description Create a feedback
-     */
-    post: operations["v1_feedback_create_handler"];
-  };
-  "/health": {
-    /**
-     * Check the health of the server
-     * @description Check the health of the server
-     */
-    get: operations["handler"];
-  };
-  "/interpretation/get": {
-    /**
-     * Get a interpretation
-     * @description Get a interpretation
-     */
-    get: operations["v1_interpretation_get_handler"];
-  };
-  "/interpretation/list": {
-    /**
-     * Returns a list of interpretations
-     * @description Returns a list of interpretations
-     */
-    get: operations["v1_interpretation_list_handler"];
-  };
-  "/interpretation_action/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_interpretation_action_get_handler"];
-  };
-  "/interpretation_action/list": {
-    /**
-     * Returns a list of interpretation actions
-     * @description Returns a list of interpretation actions
-     */
-    get: operations["v1_interpretation_action_list_handler"];
-  };
-  "/interpretation_action/list/count": {
-    /**
-     * Returns a count of list of interpretation actions
-     * @description Returns a count of list of interpretation actions
-     */
-    get: operations["v1_interpretation_action_list_count_handler"];
-  };
-  "/invite_code/create": {
-    /**
-     * Create an invite code
-     * @description Create an invite code
-     */
-    post: operations["v1_invite_code_create_handler"];
-  };
-  "/invite_code/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_invite_code_get_handler"];
-  };
-  "/invite_code/list": {
-    /**
-     * Returns a list of invite codes
-     * @description Returns a list of invite codes
-     */
-    get: operations["v1_invite_code_list_handler"];
-  };
-  "/invite_code/list/count": {
-    /**
-     * Returns a count of list of invite codes
-     * @description Returns a count of list of invite codes
-     */
-    get: operations["v1_invite_code_list_count_handler"];
-  };
-  "/notification/get": {
-    /**
-     * Get a notification
-     * @description Get a notification
-     */
-    get: operations["v1_notification_get_handler"];
-  };
-  "/notification/list": {
-    /**
-     * Returns a list of notifications
-     * @description Returns a list of notifications
-     */
-    get: operations["v1_notification_list_handler"];
-  };
-  "/notification/list/count": {
-    /**
-     * Returns a count of list of notifications
-     * @description Returns a count of list of notifications
-     */
-    get: operations["v1_notification_list_count_handler"];
-  };
-  "/notification/read": {
-    /**
-     * Read a list of notifications
-     * @description Read a list of notifications
-     */
-    post: operations["v1_notification_read_handler"];
-  };
-  "/notification_settings/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_notification_settings_get_handler"];
-  };
-  "/notification_settings/list": {
-    /**
-     * Returns a list of notification settingss
-     * @description Returns a list of notification settingss
-     */
-    get: operations["v1_notification_settings_list_handler"];
-  };
-  "/notification_settings/list/count": {
-    /**
-     * Returns a count of list of notification settingss
-     * @description Returns a count of list of notification settingss
-     */
-    get: operations["v1_notification_settings_list_count_handler"];
-  };
-  "/owner/get": {
-    /**
-     * Get a owner
-     * @description Get a owner
-     */
-    get: operations["v1_owner_get_handler"];
-  };
-  "/owner/list": {
-    /**
-     * Returns a list of owners
-     * @description Returns a list of owners
-     */
-    get: operations["v1_owner_list_handler"];
-  };
-  "/paymaster/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_paymaster_get_handler"];
-  };
-  "/paymaster/list": {
-    /**
-     * Returns a list of paymasters
-     * @description Returns a list of paymasters
-     */
-    get: operations["v1_paymaster_list_handler"];
-  };
-  "/paymaster_operation/get": {
-    /**
-     * Get a paymaster
-     * @description Get a paymaster
-     */
-    get: operations["v1_paymaster_operation_get_handler"];
-  };
-  "/paymaster_operation/list": {
-    /**
-     * Returns a list of paymasters
-     * @description Returns a list of paymasters
-     */
-    get: operations["v1_paymaster_operation_list_handler"];
-  };
-  "/portfolio/get": {
-    /**
-     * Get a portfolio
-     * @description Get a portfolio
-     */
-    get: operations["v1_portfolio_get_handler"];
-  };
-  "/protocol/get": {
-    /**
-     * Get a protocol
-     * @description Get a protocol
-     */
-    get: operations["v1_protocol_get_handler"];
-  };
-  "/protocol/group/create": {
-    /**
-     * Create a protocol group
-     * @description Create a protocol group
-     */
-    post: operations["v1_protocol_group_create_handler"];
-  };
-  "/protocol/group/get": {
-    /**
-     * Get a protocol group
-     * @description Get a protocol group
-     */
-    get: operations["v1_protocol_group_get_handler"];
-  };
-  "/protocol/group/list": {
-    /**
-     * Returns a list of protocol groups
-     * @description Returns a list of protocol groups
-     */
-    get: operations["v1_protocol_group_list_handler"];
-  };
-  "/protocol/list": {
-    /**
-     * Returns a list of protocols
-     * @description Returns a list of protocols
-     */
-    get: operations["v1_protocol_list_handler"];
-  };
-  "/queue/interpretation": {
-    /**
-     * Queue interpretation handler
-     * @description Queue interpretation handler
-     */
-    post: operations["v1_queue_interpretation_handler"];
-  };
-  "/queue/portfolio": {
-    /**
-     * Queue portfolio handler
-     * @description Queue portfolio handler
-     */
-    post: operations["v1_queue_portfolio_handler"];
-  };
-  "/queue/token": {
-    /**
-     * Queue token handler
-     * @description Queue token handler
-     */
-    post: operations["v1_queue_token_handler"];
-  };
-  "/queue/transaction": {
-    /**
-     * Queue transaction handler
-     * @description Queue transaction handler
-     */
-    post: operations["v1_queue_transaction_handler"];
-  };
-  "/queue/user_operation": {
-    /**
-     * Queue user operation handler
-     * @description Queue user operation handler
-     */
-    post: operations["v1_queue_user_operation_handler"];
-  };
-  "/signature/create": {
-    /**
-     * Create a signature
-     * @description Create a signature
-     */
-    post: operations["v1_signature_create_handler"];
-  };
-  "/signature/get": {
-    /**
-     * Get a signature
-     * @description Get a signature
-     */
-    get: operations["v1_signature_get_handler"];
-  };
-  "/signature/list": {
-    /**
-     * Returns a list of signatures
-     * @description Returns a list of signatures
-     */
-    get: operations["v1_signature_list_handler"];
-  };
-  "/simulation/create": {
-    /**
-     * Create a simulation
-     * @description Create a simulation
-     */
-    post: operations["v1_simulation_create_handler"];
-  };
-  "/simulation/get": {
-    /**
-     * Get a simulation
-     * @description Get a simulation
-     */
-    get: operations["v1_simulation_get_handler"];
-  };
-  "/simulation/list": {
-    /**
-     * Returns a list of simulations
-     * @description Returns a list of simulations
-     */
-    get: operations["v1_simulation_list_handler"];
-  };
-  "/simulation/list/count": {
-    /**
-     * Returns a count of list of simulations
-     * @description Returns a count of list of simulations
-     */
-    get: operations["v1_simulation_list_count_handler"];
-  };
-  "/support_request/create": {
-    /**
-     * Create a support_request
-     * @description Create a support_request
-     */
-    post: operations["v1_support_request_create_handler"];
-  };
-  "/token/get": {
-    /**
-     * Get a token
-     * @description Get a token
-     */
-    get: operations["v1_token_get_handler"];
-  };
-  "/token/group/create": {
-    /**
-     * Create a token group
-     * @description Create a token group
-     */
-    post: operations["v1_token_group_create_handler"];
-  };
-  "/token/group/get": {
-    /**
-     * Get a token group
-     * @description Get a token group
-     */
-    get: operations["v1_token_group_get_handler"];
-  };
-  "/token/group/list": {
-    /**
-     * Returns a list of token groups
-     * @description Returns a list of token groups
-     */
-    get: operations["v1_token_group_list_handler"];
-  };
-  "/token/list": {
-    /**
-     * Returns a list of tokens
-     * @description Returns a list of tokens
-     */
-    get: operations["v1_token_list_handler"];
-  };
-  "/token/list/count": {
-    /**
-     * Returns a count of list of tokens
-     * @description Returns a count of list of tokens
-     */
-    get: operations["v1_token_list_count_handler"];
-  };
-  "/token/update": {
-    /**
-     * Update a token
-     * @description Update a token
-     */
-    put: operations["v1_token_update_handler"];
-  };
-  "/token_price/get": {
-    /**
-     * Get a token_price
-     * @description Get a token_price
-     */
-    get: operations["v1_token_price_get_handler"];
-  };
-  "/transaction/get": {
-    /**
-     * Get a transaction
-     * @description Get a transaction
-     */
-    get: operations["v1_transaction_get_handler"];
-  };
-  "/transaction/list": {
-    /**
-     * Returns a list of transactions
-     * @description Returns a list of transactions
-     */
-    get: operations["v1_transaction_list_handler"];
-  };
-  "/transaction/list/count": {
-    /**
-     * Returns a count of list of transactions
-     * @description Returns a count of list of transactions
-     */
-    get: operations["v1_transaction_list_count_handler"];
-  };
-  "/user/get": {
-    /**
-     * Get a user
-     * @description Get a user
-     */
-    get: operations["v1_user_get_handler"];
-  };
-  "/user/notification/settings/get": {
-    /**
-     * Get a user settings
-     * @description Get a user settings
-     */
-    get: operations["v1_user_notification_settings_get_handler"];
-  };
-  "/user/notification/settings/update": {
-    /**
-     * Update the user notification settings
-     * @description Update the user notification settings
-     */
-    put: operations["v1_user_notification_settings_update_handler"];
-  };
-  "/user/settings/get": {
-    /**
-     * Get a user settings
-     * @description Get a user settings
-     */
-    get: operations["v1_user_settings_get_handler"];
-  };
-  "/user/settings/update": {
-    /**
-     * Update the user settings
-     * @description Update the user settings
-     */
-    put: operations["v1_user_settings_update_handler"];
-  };
-  "/user_operation/create": {
-    /**
-     * Create a user operation
-     * @description Create a user operation
-     */
-    post: operations["v1_user_operation_create_handler"];
-  };
-  "/user_operation/create/batch": {
-    /**
-     * Create a user operation
-     * @description Create a user operation
-     */
-    post: operations["v1_user_operation_create_batch_handler"];
-  };
-  "/user_operation/get": {
-    /**
-     * Get a user operation
-     * @description Get a user operation
-     */
-    get: operations["v1_user_operation_get_handler"];
-  };
-  "/user_operation/list": {
-    /**
-     * Returns a list of user operations
-     * @description Returns a list of user operations
-     */
-    get: operations["v1_user_operation_list_handler"];
-  };
-  "/user_operation/list/count": {
-    /**
-     * Returns a count of user operations
-     * @description Returns a count of user operations
-     */
-    get: operations["v1_user_operation_list_count_handler"];
-  };
-  "/user_operation/nonce": {
-    /**
-     * Get a user operation nonce
-     * @description Get a user operation nonce
-     */
-    get: operations["v1_user_operation_nonce_handler"];
-  };
-  "/user_operation/signature": {
-    /**
-     * Check a user operation for its validity and return the computed signature if valid
-     * @description Check a user operation for its validity and return the computed signature if valid
-     */
-    get: operations["v1_user_operation_signature_handler"];
-  };
-  "/user_operation/update": {
-    /**
-     * Get a user operation
-     * @description Get a user operation
-     */
-    put: operations["v1_user_operation_update_handler"];
-  };
-  "/user_operation_merkle/create": {
-    /**
-     * Create a user operation merkle
-     * @description Create a user operation merkle
-     */
-    post: operations["v1_user_operation_merkle_create_handler"];
-  };
-  "/user_operation_merkle/get": {
-    /**
-     * Get a protocol group
-     * @description Get a protocol group
-     */
-    get: operations["v1_user_operation_merkle_get_handler"];
-  };
-  "/user_operation_merkle/list": {
-    /**
-     * Returns a list of protocol groups
-     * @description Returns a list of protocol groups
-     */
-    get: operations["v1_user_operation_merkle_list_handler"];
-  };
-  "/user_operation_merkle_proof/get": {
-    /**
-     * Get a user operation merkle proof
-     * @description Get a user operation merkle proof
-     */
-    get: operations["v1_user_operation_merkle_proof_get_handler"];
-  };
-  "/user_operation_merkle_proof/list": {
-    /**
-     * Returns a list of user operation merkle proofs
-     * @description Returns a list of user operation merkle proofs
-     */
-    get: operations["v1_user_operation_merkle_proof_list_handler"];
-  };
-  "/wallet/billing/get": {
-    /**
-     * Get a wallet billing
-     * @description Get a wallet billing
-     */
-    get: operations["v1_wallet_billing_get_handler"];
-  };
-  "/wallet/billing/update": {
-    /**
-     * Update the wallet billing
-     * @description Update the wallet billing
-     */
-    put: operations["v1_wallet_billing_update_handler"];
-  };
-  "/wallet/create": {
-    /**
-     * Create a wallet
-     * @description Create a wallet
-     */
-    post: operations["v1_wallet_create_handler"];
-  };
-  "/wallet/features/get": {
-    /**
-     * Get a wallet features
-     * @description Get a wallet features
-     */
-    get: operations["v1_wallet_features_get_handler"];
-  };
-  "/wallet/features/update": {
-    /**
-     * Update the wallet features
-     * @description Update the wallet features
-     */
-    put: operations["v1_wallet_features_update_handler"];
-  };
-  "/wallet/get": {
-    /**
-     * Get a wallet
-     * @description Get a wallet
-     */
-    get: operations["v1_wallet_get_handler"];
-  };
-  "/wallet/list": {
-    /**
-     * Returns a list of wallets
-     * @description Returns a list of wallets
-     */
-    get: operations["v1_wallet_list_handler"];
-  };
-  "/wallet/list/count": {
-    /**
-     * Returns a count of list of wallets
-     * @description Returns a count of list of wallets
-     */
-    get: operations["v1_wallet_list_count_handler"];
-  };
-  "/wallet/notification/settings/get": {
-    /**
-     * Get a wallet notification settings
-     * @description Get a wallet notification settings
-     */
-    get: operations["v1_wallet_notification_settings_get_handler"];
-  };
-  "/wallet/notification/settings/update": {
-    /**
-     * Update the wallet notification settings
-     * @description Update the wallet notification settings
-     */
-    put: operations["v1_wallet_notification_settings_update_handler"];
-  };
-  "/wallet/settings/get": {
-    /**
-     * Get a wallet settings
-     * @description Get a wallet settings
-     */
-    get: operations["v1_wallet_settings_get_handler"];
-  };
-  "/wallet/settings/update": {
-    /**
-     * Update the wallet settings
-     * @description Update the wallet settings
-     */
-    put: operations["v1_wallet_settings_update_handler"];
-  };
-  "/wallet/update": {
-    /**
-     * Update a wallet
-     * @description Update a wallet
-     */
-    put: operations["v1_wallet_update_handler"];
-  };
+    "/activity/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a activity
+         * @description Get a activity
+         */
+        get: operations["v1_activity_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/activity/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of activities
+         * @description Returns a list of activities
+         */
+        get: operations["v1_activity_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/activity/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of activities
+         * @description Returns a count of list of activities
+         */
+        get: operations["v1_activity_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/asset_change/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a asset
+         * @description Get a asset
+         */
+        get: operations["v1_asset_change_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/asset_change/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of assets
+         * @description Returns a list of assets
+         */
+        get: operations["v1_asset_change_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Logout a session
+         * @description Logout a session
+         */
+        post: operations["v1_auth_logout_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/nonce": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a auth nonce
+         * @description Get a auth nonce
+         */
+        get: operations["v1_auth_nonce_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a session
+         * @description Get a session
+         */
+        get: operations["v1_auth_session_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify a auth
+         * @description Verify a auth
+         */
+        post: operations["v1_auth_verify_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a billing
+         * @description Get a billing
+         */
+        get: operations["v1_billing_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of billings
+         * @description Returns a list of billings
+         */
+        get: operations["v1_billing_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a billing
+         * @description Update a billing
+         */
+        put: operations["v1_billing_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing_operation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_billing_operation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing_operation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of billing operations
+         * @description Returns a list of billing operations
+         */
+        get: operations["v1_billing_operation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing_operation/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of billing operations
+         * @description Returns a count of list of billing operations
+         */
+        get: operations["v1_billing_operation_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/chain/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a chain
+         * @description Create a chain
+         */
+        post: operations["v1_chain_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/chain/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a protocol group
+         * @description Get a protocol group
+         */
+        get: operations["v1_chain_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/chain/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of protocol groups
+         * @description Returns a list of protocol groups
+         */
+        get: operations["v1_chain_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/chain/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a chain
+         * @description Update a chain
+         */
+        put: operations["v1_chain_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check if the server is running
+         * @description Check if the server is running
+         */
+        get: operations["handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a configuration
+         * @description Get a configuration
+         */
+        get: operations["v1_configuration_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of configurations
+         * @description Returns a list of configurations
+         */
+        get: operations["v1_configuration_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a configuration signature
+         * @description Create a configuration signature
+         */
+        post: operations["v1_configuration_operation_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a configuration_operation
+         * @description Get a configuration_operation
+         */
+        get: operations["v1_configuration_operation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of interpretation actions
+         * @description Returns a list of interpretation actions
+         */
+        get: operations["v1_configuration_operation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of interpretation actions
+         * @description Returns a count of list of interpretation actions
+         */
+        get: operations["v1_configuration_operation_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Create a configuration signature
+         * @description Create a configuration signature
+         */
+        put: operations["v1_configuration_operation_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation_owner/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a owner
+         * @description Get a owner
+         */
+        get: operations["v1_configuration_operation_owner_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation_owner/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of owners
+         * @description Returns a list of owners
+         */
+        get: operations["v1_configuration_operation_owner_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation_signature/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a configuration signature
+         * @description Create a configuration signature
+         */
+        post: operations["v1_configuration_operation_signature_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation_signature/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a signature
+         * @description Get a signature
+         */
+        get: operations["v1_configuration_operation_signature_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuration_operation_signature/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of signatures
+         * @description Returns a list of signatures
+         */
+        get: operations["v1_configuration_operation_signature_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/feedback/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a feedback
+         * @description Create a feedback
+         */
+        post: operations["v1_feedback_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check the health of the server
+         * @description Check the health of the server
+         */
+        get: operations["handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/interpretation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a interpretation
+         * @description Get a interpretation
+         */
+        get: operations["v1_interpretation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/interpretation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of interpretations
+         * @description Returns a list of interpretations
+         */
+        get: operations["v1_interpretation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/interpretation_action/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_interpretation_action_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/interpretation_action/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of interpretation actions
+         * @description Returns a list of interpretation actions
+         */
+        get: operations["v1_interpretation_action_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/interpretation_action/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of interpretation actions
+         * @description Returns a count of list of interpretation actions
+         */
+        get: operations["v1_interpretation_action_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/invite_code/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an invite code
+         * @description Create an invite code
+         */
+        post: operations["v1_invite_code_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/invite_code/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_invite_code_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/invite_code/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of invite codes
+         * @description Returns a list of invite codes
+         */
+        get: operations["v1_invite_code_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/invite_code/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of invite codes
+         * @description Returns a count of list of invite codes
+         */
+        get: operations["v1_invite_code_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a notification
+         * @description Get a notification
+         */
+        get: operations["v1_notification_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of notifications
+         * @description Returns a list of notifications
+         */
+        get: operations["v1_notification_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of notifications
+         * @description Returns a count of list of notifications
+         */
+        get: operations["v1_notification_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read a list of notifications
+         * @description Read a list of notifications
+         */
+        post: operations["v1_notification_read_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification_settings/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_notification_settings_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification_settings/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of notification settingss
+         * @description Returns a list of notification settingss
+         */
+        get: operations["v1_notification_settings_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification_settings/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of notification settingss
+         * @description Returns a count of list of notification settingss
+         */
+        get: operations["v1_notification_settings_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/owner/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a owner
+         * @description Get a owner
+         */
+        get: operations["v1_owner_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/owner/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of owners
+         * @description Returns a list of owners
+         */
+        get: operations["v1_owner_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/paymaster/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_paymaster_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/paymaster/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of paymasters
+         * @description Returns a list of paymasters
+         */
+        get: operations["v1_paymaster_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/paymaster_operation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a paymaster
+         * @description Get a paymaster
+         */
+        get: operations["v1_paymaster_operation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/paymaster_operation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of paymasters
+         * @description Returns a list of paymasters
+         */
+        get: operations["v1_paymaster_operation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/portfolio/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a portfolio
+         * @description Get a portfolio
+         */
+        get: operations["v1_portfolio_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/protocol/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a protocol
+         * @description Get a protocol
+         */
+        get: operations["v1_protocol_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/protocol/group/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a protocol group
+         * @description Create a protocol group
+         */
+        post: operations["v1_protocol_group_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/protocol/group/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a protocol group
+         * @description Get a protocol group
+         */
+        get: operations["v1_protocol_group_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/protocol/group/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of protocol groups
+         * @description Returns a list of protocol groups
+         */
+        get: operations["v1_protocol_group_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/protocol/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of protocols
+         * @description Returns a list of protocols
+         */
+        get: operations["v1_protocol_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/interpretation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue interpretation handler
+         * @description Queue interpretation handler
+         */
+        post: operations["v1_queue_interpretation_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/portfolio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue portfolio handler
+         * @description Queue portfolio handler
+         */
+        post: operations["v1_queue_portfolio_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue token handler
+         * @description Queue token handler
+         */
+        post: operations["v1_queue_token_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/transaction": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue transaction handler
+         * @description Queue transaction handler
+         */
+        post: operations["v1_queue_transaction_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/user_operation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue user operation handler
+         * @description Queue user operation handler
+         */
+        post: operations["v1_queue_user_operation_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signature/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a signature
+         * @description Create a signature
+         */
+        post: operations["v1_signature_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signature/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a signature
+         * @description Get a signature
+         */
+        get: operations["v1_signature_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signature/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of signatures
+         * @description Returns a list of signatures
+         */
+        get: operations["v1_signature_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/simulation/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a simulation
+         * @description Create a simulation
+         */
+        post: operations["v1_simulation_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/simulation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a simulation
+         * @description Get a simulation
+         */
+        get: operations["v1_simulation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/simulation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of simulations
+         * @description Returns a list of simulations
+         */
+        get: operations["v1_simulation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/simulation/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of simulations
+         * @description Returns a count of list of simulations
+         */
+        get: operations["v1_simulation_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/support_request/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a support_request
+         * @description Create a support_request
+         */
+        post: operations["v1_support_request_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a token
+         * @description Get a token
+         */
+        get: operations["v1_token_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/group/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a token group
+         * @description Create a token group
+         */
+        post: operations["v1_token_group_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/group/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a token group
+         * @description Get a token group
+         */
+        get: operations["v1_token_group_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/group/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of token groups
+         * @description Returns a list of token groups
+         */
+        get: operations["v1_token_group_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of tokens
+         * @description Returns a list of tokens
+         */
+        get: operations["v1_token_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of tokens
+         * @description Returns a count of list of tokens
+         */
+        get: operations["v1_token_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a token
+         * @description Update a token
+         */
+        put: operations["v1_token_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/token_price/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a token_price
+         * @description Get a token_price
+         */
+        get: operations["v1_token_price_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/transaction/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a transaction
+         * @description Get a transaction
+         */
+        get: operations["v1_transaction_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/transaction/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of transactions
+         * @description Returns a list of transactions
+         */
+        get: operations["v1_transaction_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/transaction/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of transactions
+         * @description Returns a count of list of transactions
+         */
+        get: operations["v1_transaction_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user
+         * @description Get a user
+         */
+        get: operations["v1_user_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/notification/settings/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user settings
+         * @description Get a user settings
+         */
+        get: operations["v1_user_notification_settings_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/notification/settings/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the user notification settings
+         * @description Update the user notification settings
+         */
+        put: operations["v1_user_notification_settings_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/settings/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user settings
+         * @description Get a user settings
+         */
+        get: operations["v1_user_settings_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/settings/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the user settings
+         * @description Update the user settings
+         */
+        put: operations["v1_user_settings_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a user operation
+         * @description Create a user operation
+         */
+        post: operations["v1_user_operation_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/create/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a user operation
+         * @description Create a user operation
+         */
+        post: operations["v1_user_operation_create_batch_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user operation
+         * @description Get a user operation
+         */
+        get: operations["v1_user_operation_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of user operations
+         * @description Returns a list of user operations
+         */
+        get: operations["v1_user_operation_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of user operations
+         * @description Returns a count of user operations
+         */
+        get: operations["v1_user_operation_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/nonce": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user operation nonce
+         * @description Get a user operation nonce
+         */
+        get: operations["v1_user_operation_nonce_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/signature": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check a user operation for its validity and return the computed signature if valid
+         * @description Check a user operation for its validity and return the computed signature if valid
+         */
+        get: operations["v1_user_operation_signature_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Get a user operation
+         * @description Get a user operation
+         */
+        put: operations["v1_user_operation_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation_merkle/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a user operation merkle
+         * @description Create a user operation merkle
+         */
+        post: operations["v1_user_operation_merkle_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation_merkle/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a protocol group
+         * @description Get a protocol group
+         */
+        get: operations["v1_user_operation_merkle_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation_merkle/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of protocol groups
+         * @description Returns a list of protocol groups
+         */
+        get: operations["v1_user_operation_merkle_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation_merkle_proof/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user operation merkle proof
+         * @description Get a user operation merkle proof
+         */
+        get: operations["v1_user_operation_merkle_proof_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user_operation_merkle_proof/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of user operation merkle proofs
+         * @description Returns a list of user operation merkle proofs
+         */
+        get: operations["v1_user_operation_merkle_proof_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/billing/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a wallet billing
+         * @description Get a wallet billing
+         */
+        get: operations["v1_wallet_billing_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/billing/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the wallet billing
+         * @description Update the wallet billing
+         */
+        put: operations["v1_wallet_billing_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a wallet
+         * @description Create a wallet
+         */
+        post: operations["v1_wallet_create_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/features/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a wallet features
+         * @description Get a wallet features
+         */
+        get: operations["v1_wallet_features_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/features/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the wallet features
+         * @description Update the wallet features
+         */
+        put: operations["v1_wallet_features_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a wallet
+         * @description Get a wallet
+         */
+        get: operations["v1_wallet_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a list of wallets
+         * @description Returns a list of wallets
+         */
+        get: operations["v1_wallet_list_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/list/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Returns a count of list of wallets
+         * @description Returns a count of list of wallets
+         */
+        get: operations["v1_wallet_list_count_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/notification/settings/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a wallet notification settings
+         * @description Get a wallet notification settings
+         */
+        get: operations["v1_wallet_notification_settings_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/notification/settings/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the wallet notification settings
+         * @description Update the wallet notification settings
+         */
+        put: operations["v1_wallet_notification_settings_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/settings/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a wallet settings
+         * @description Get a wallet settings
+         */
+        get: operations["v1_wallet_settings_get_handler"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/settings/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update the wallet settings
+         * @description Update the wallet settings
+         */
+        put: operations["v1_wallet_settings_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wallet/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a wallet
+         * @description Update a wallet
+         */
+        put: operations["v1_wallet_update_handler"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    /** @description Activity root type. */
-    Activity: {
-      /** @description The wallet address of the activity. */
-      address?: string | null;
-      /** @description The entity id of the activity. */
-      entity: string;
-      /** @description The id of the activity. */
-      id: string;
-      /** @description The log message of the activity. */
-      log: unknown;
-      /** @description The operation type of the activity. */
-      operation: string;
-      /** @description The timestamp of the activity. */
-      timestamp: string;
-      user?: components["schemas"]["User"] | null;
-    };
-    /** @description Activity errors */
-    ActivityError: OneOf<[{
-      /** @description Activity query error. */
-      BadRequest: string;
-    }, {
-      /** @description Activity not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of user operations. */
-    ActivityListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of user operations..
-       */
-      count: number;
-    };
-    /** @description AssetChange root type. */
-    AssetChange: {
-      action?: components["schemas"]["InterpretationAction"] | null;
-      /** @description The address of the asset change. */
-      address: string;
-      /**
-       * Format: int64
-       * @description The after amount of the asset change.
-       */
-      after_amount?: number | null;
-      /**
-       * Format: int64
-       * @description The amount of the asset change.
-       */
-      amount: number;
-      /**
-       * Format: int64
-       * @description The before amount of the asset change.
-       */
-      before_amount?: number | null;
-      /** @description The id of the asset change. */
-      id: string;
-      token?: components["schemas"]["Token"] | null;
-    };
-    /** @description AssetChange errors */
-    AssetChangeError: OneOf<[{
-      /** @description AssetChange query error. */
-      BadRequest: string;
-    }, {
-      /** @description AssetChange not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Auth operation errors */
-    AuthError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description Auth not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Internal error. */
-      InternalError: string;
-    }, {
-      /** @description Unauthorized error. */
-      Unauthorized: string;
-    }]>;
-    /** @description Auth nonce. */
-    AuthNonce: {
-      nonce: string;
-    };
-    /** @description The session. */
-    AuthSession: {
-      /** @description The session expiration. */
-      expiration: string;
-      /** @description The session id. */
-      id: string;
-      /** @description The authenticated status. */
-      is_authenticated: boolean;
-    };
-    /** @description Auth success response. */
-    AuthSuccess: {
-      /** @description User logged out successfully. */
-      Logout: string;
-    };
-    AuthVerifyCreateRequestParams: {
-      message: string;
-      signature: string;
-    };
-    /** @description Billing root type. */
-    Billing: {
-      /**
-       * Format: double
-       * @description The balance USD of the billing.
-       */
-      balance_usd: number;
-      /** @description The id of the billing. */
-      id: string;
-      /** @description The billing status of the billing. */
-      status: string;
-    };
-    /** @description Billing operation errors */
-    BillingError: OneOf<[{
-      /** @description Billing query error. */
-      BadRequest: string;
-    }, {
-      /** @description Billing not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Billing unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description BillingOperation root type. */
-    BillingOperation: {
-      /** @description The id of the billing operation. */
-      id: string;
-      /** @description The status of the billing operation. */
-      status: string;
-    };
-    /** @description BillingOperation errors */
-    BillingOperationError: OneOf<[{
-      /** @description BillingOperation query error. */
-      BadRequest: string;
-    }, {
-      /** @description BillingOperation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of billing operations. */
-    BillingOperationListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of billing operations.
-       */
-      count: number;
-    };
-    /** @enum {string} */
-    BillingQueryStatus: "sponsored" | "user";
-    BillingUpdateRequestParams: {
-      /**
-       * Format: double
-       * @description The balance USD of the wallet.
-       */
-      balance_usd?: number | null;
-      /** @default USER */
-      status?: components["schemas"]["BillingQueryStatus"] | null;
-    };
-    /** @description Chain root type. */
-    Chain: {
-      /**
-       * Format: int64
-       * @description The id of the protocol group.
-       */
-      id: number;
-    };
-    /** @description Chain errors */
-    ChainError: OneOf<[{
-      /** @description Chain query error. */
-      BadRequest: string;
-    }, {
-      /** @description Chain not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Chain unauthorized. */
-      Unauthorized: string;
-    }]>;
-    ChainUpdateRequestParams: {
-      /**
-       * @description The name of the chain.
-       * @default Chain
-       * @example My Chain
-       */
-      name?: string | null;
-    };
-    /** @description Configuration root type. */
-    Configuration: {
-      /** @description The address of the configuration. */
-      address: string;
-      /**
-       * Format: int64
-       * @description The checkpoint of the configuration.
-       */
-      checkpoint: number;
-      /** @description The id of the configuration. */
-      id: string;
-      /** @description The image hash of the configuration. */
-      image_hash: string;
-      /** @description The owners of the configuration. */
-      owners: components["schemas"]["ConfigurationOperationOwner"][];
-      /**
-       * Format: int64
-       * @description The threshold of the configuration.
-       */
-      threshold: number;
-    };
-    /** @description Configuration errors */
-    ConfigurationError: OneOf<[{
-      /** @description Configuration query error. */
-      BadRequest: string;
-    }, {
-      /** @description Configuration not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description ConfigurationOperation root type. */
-    ConfigurationOperation: {
-      /**
-       * Format: int64
-       * @description The checkpoint of the configuration operation.
-       */
-      checkpoint: number;
-      /** @description The id of the configuration operation. */
-      id: string;
-      /** @description The image hash of the configuration operation. */
-      image_hash: string;
-      /** @description The status of the configuration operation. */
-      status: string;
-      /**
-       * Format: int64
-       * @description The threshold of the configuration operation.
-       */
-      threshold: number;
-    };
-    /**
-     * @description Wallet owner.
-     * @example {
-     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-     *   "weight": 1
-     * }
-     */
-    ConfigurationOperationCreateOwnerParams: {
-      /** @description The address of the owner. */
-      address: string;
-      /**
-       * Format: int32
-       * @description The weight of the owner.
-       */
-      weight: number;
-    };
-    /** @description Signature operation post request params */
-    ConfigurationOperationCreateRequestParams: {
-      /**
-       * @description The array of owners of the wallet.
-       * @example [
-       *   {
-       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-       *     "weight": 1
-       *   }
-       * ]
-       */
-      owners: components["schemas"]["ConfigurationOperationCreateOwnerParams"][];
-      signature: components["schemas"]["ConfigurationOperationSignatureCreateParams"];
-      /**
-       * Format: int32
-       * @description The threshold of the wallet.
-       * @default 1
-       * @example 3
-       */
-      threshold: number;
-    };
-    /** @description ConfigurationOperation errors */
-    ConfigurationOperationError: OneOf<[{
-      /** @description ConfigurationOperation query error. */
-      BadRequest: string;
-    }, {
-      /** @description ConfigurationOperation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of interpretation actions. */
-    ConfigurationOperationListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of interpretation actions.
-       */
-      count: number;
-    };
-    /** @description Owner root type. */
-    ConfigurationOperationOwner: {
-      /** @description The address of the owner. */
-      address: string;
-      /** @description The id of the owner. */
-      id: string;
-      /**
-       * Format: int64
-       * @description The weight of the owner.
-       */
-      weight: number;
-    };
-    /** @description Configuration owner operation errors */
-    ConfigurationOperationOwnerError: OneOf<[{
-      /** @description Owner query error. */
-      BadRequest: string;
-    }, {
-      /** @description Owner not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Signature root type. */
-    ConfigurationOperationSignature: {
-      /** @description The created time of the signature. */
-      created_at: string;
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-    };
-    /** @description Signature operation */
-    ConfigurationOperationSignatureCreateParams: {
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-    };
-    /** @description Signature operation post request params */
-    ConfigurationOperationSignatureCreateRequestParams: {
-      signature: components["schemas"]["ConfigurationOperationSignatureSignatureCreateParams"];
-    };
-    /** @description ConfigurationOperationSignature operation errors */
-    ConfigurationOperationSignatureError: OneOf<[{
-      /** @description ConfigurationOperationSignature query error. */
-      BadRequest: string;
-    }, {
-      /** @description ConfigurationOperationSignature not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Signature operation */
-    ConfigurationOperationSignatureSignatureCreateParams: {
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-    };
-    /** @description Feedback root type. */
-    Feedback: {
-      /** @description The emoji of the feedback. */
-      emoji: string;
-      /** @description The text of the feedback. */
-      text: string;
-    };
-    FeedbackCreateRequestParams: {
-      feedback: components["schemas"]["Feedback"];
-    };
-    /** @description Feedback error */
-    FeedbackError: OneOf<[{
-      /** @description Feedback bad request error. */
-      BadRequest: string;
-    }, {
-      /** @description Feedback not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Interpretation root type. */
-    Interpretation: {
-      /** @description The array of actions of the interpretation. */
-      actions: components["schemas"]["InterpretationAction"][];
-      /** @description The array of asset changes of the interpretation. */
-      asset_changes: components["schemas"]["AssetChange"][];
-      /** @description The id of the interpretation to read for. */
-      id: string;
-    };
-    /** @description InterpretationAction root type. */
-    InterpretationAction: {
-      /** @description The action of the interpretation action. */
-      action: string;
-      /** @description The status of the interpretation action. */
-      address: string;
-      /** @description The id of the interpretation action. */
-      id: string;
-    };
-    /** @description InterpretationAction errors */
-    InterpretationActionError: OneOf<[{
-      /** @description InterpretationAction query error. */
-      BadRequest: string;
-    }, {
-      /** @description InterpretationAction not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of interpretation actions. */
-    InterpretationActionListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of interpretation actions.
-       */
-      count: number;
-    };
-    /** @description Interpretation operation errors */
-    InterpretationError: OneOf<[{
-      /** @description Interpretation query error. */
-      BadRequest: string;
-    }, {
-      /** @description Interpretation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description InviteCode root type. */
-    InviteCode: {
-      /** @description The code of the invite code. */
-      code: string;
-      /** @description The id of the invite code. */
-      id: string;
-      /** @description The status of the invite code. */
-      status: string;
-    };
-    /** @description InviteCode errors */
-    InviteCodeError: OneOf<[{
-      /** @description InviteCode query error. */
-      BadRequest: string;
-    }, {
-      /** @description InviteCode not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Not Authorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description Count of list of user operations. */
-    InviteCodeListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of user operations..
-       */
-      count: number;
-    };
-    /** @description Notification root type. */
-    Notification: {
-      activity?: components["schemas"]["Activity"] | null;
-      /** @description The id of the notification to read for. */
-      id: string;
-    };
-    /** @description Notification operation errors */
-    NotificationError: OneOf<[{
-      /** @description Notification query error. */
-      BadRequest: string;
-    }, {
-      /** @description Notification not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of user operations. */
-    NotificationListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of user operations..
-       */
-      count: number;
-    };
-    /** @description Item to request. */
-    NotificationReadParams: {
-      /** @description The id of the notification to read for. */
-      id: string;
-    };
-    NotificationReadRequestParams: {
-      /** @description The array of the notifications to query. */
-      notifications: components["schemas"]["NotificationReadParams"][];
-    };
-    /** @description NotificationSettings root type. */
-    NotificationSettings: {
-      /** @description The id of the notification settings. */
-      id: string;
-      /** @description The flag that indicates if the notification settings is enabled. */
-      is_enabled: boolean;
-      /** @description The key of the notification settings. */
-      key: string;
-    };
-    /** @description NotificationSettings errors */
-    NotificationSettingsError: OneOf<[{
-      /** @description NotificationSettings query error. */
-      BadRequest: string;
-    }, {
-      /** @description NotificationSettings not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of notification settingss. */
-    NotificationSettingsListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of notification settingss.
-       */
-      count: number;
-    };
-    /** @description WalletNotificationSettingsUpdate root type. */
-    NotificationSettingsUpdate: {
-      /** @description The key of the notification settings. */
-      key: string;
-      /** @description The boolean value of the notification settings. */
-      value: boolean;
-    };
-    /** @description Owner root type. */
-    Owner: {
-      /** @description The address of the owner. */
-      address: string;
-      /** @description The id of the owner. */
-      id: string;
-      /**
-       * Format: int64
-       * @description The weight of the owner.
-       */
-      weight: number;
-    };
-    /** @description Owner operation errors */
-    OwnerError: OneOf<[{
-      /** @description Owner query error. */
-      BadRequest: string;
-    }, {
-      /** @description Owner not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Paymaster root type. */
-    Paymaster: {
-      /** @description The address of the paymaster. */
-      address: string;
-    };
-    /** @description Paymaster operation errors */
-    PaymasterError: OneOf<[{
-      /** @description Paymaster query error. */
-      BadRequest: string;
-    }, {
-      /** @description Paymaster not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description PaymasterOperation root type. */
-    PaymasterOperation: {
-      billing_operation?: components["schemas"]["BillingOperation"] | null;
-      /** @description The id of the paymaster operation. */
-      id: string;
-    };
-    /** @description PaymasterOperation errors */
-    PaymasterOperationError: OneOf<[{
-      /** @description PaymasterOperation query error. */
-      BadRequest: string;
-    }, {
-      /** @description PaymasterOperation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Portfolio root type. */
-    Portfolio: {
-      /**
-       * Format: double
-       * @description The balance of the portfolio.
-       */
-      balance: number;
-      /**
-       * Format: double
-       * @description The change of the balance in the last 24 hours.
-       */
-      balance_change_24h: number;
-      /**
-       * Format: double
-       * @description The percentage change of the balance in the last 24 hours.
-       */
-      balance_change_24h_percentage: number;
-      /** @description The historical balances of the portfolio. */
-      balances: components["schemas"]["PortfolioBalanceDate"][];
-    };
-    /** @description Portfolio to do. */
-    PortfolioBalanceDate: {
-      /**
-       * Format: double
-       * @description The balance of the portfolio.
-       */
-      balance: number;
-      /** @description The date of the balance. */
-      date: string;
-    };
-    /** @description Portfolio operation errors */
-    PortfolioError: OneOf<[{
-      /** @description Portfolio query error. */
-      BadRequest: string;
-    }, {
-      /** @description Portfolio already exists conflict. */
-      Conflict: string;
-    }]>;
-    /** @description Protocol root type. */
-    Protocol: {
-      /** @description The address of the protocol. */
-      address: string;
-    };
-    /** @description Protocol errors */
-    ProtocolError: OneOf<[{
-      /** @description Protocol query error. */
-      BadRequest: string;
-    }, {
-      /** @description Protocol not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description ProtocolGroup root type. */
-    ProtocolGroup: {
-      /** @description The id of the protocol group. */
-      id: string;
-    };
-    /** @description ProtocolGroup errors */
-    ProtocolGroupError: OneOf<[{
-      /** @description ProtocolGroup query error. */
-      BadRequest: string;
-    }, {
-      /** @description ProtocolGroup not found by id. */
-      NotFound: string;
-    }, {
-      /** @description ProtocolGroup unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description Queue operation errors */
-    QueueError: OneOf<[{
-      /** @description Queue query error. */
-      BadRequest: string;
-    }, {
-      /** @description Queue not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Queue rate limit exceeded. */
-      RateLimitExceeded: string;
-    }, {
-      /** @description Provider error. */
-      ProviderError: string;
-    }]>;
-    /** @description Queue success response. */
-    QueueSuccess: {
-      /** @description User operation queued successfully. */
-      Queued: string;
-    };
-    /** @description Signature root type. */
-    Signature: {
-      /** @description The created time of the signature. */
-      created_at: string;
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-      /**
-       * Format: int32
-       * @description The type of the signature.
-       */
-      signature_type: number;
-    };
-    /** @description Signature operation */
-    SignatureCreateParams: {
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-      /**
-       * Format: int32
-       * @description The type of the signature.
-       */
-      signature_type: number;
-    };
-    /** @description Signature operation post request params */
-    SignatureCreateRequestParams: {
-      signature: components["schemas"]["SignatureCreateParams"];
-    };
-    /** @description Signature operation errors */
-    SignatureError: OneOf<[{
-      /** @description Signature query error. */
-      BadRequest: string;
-    }, {
-      /** @description Signature not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Simulation root type. */
-    Simulation: {
-      /**
-       * Format: int32
-       * @description The block number of the simulation.
-       */
-      block_number: number;
-      /**
-       * Format: int64
-       * @description The amount of gas used in the simulation.
-       */
-      gas_used: number;
-      /** @description The id of the simulation to read for. */
-      id: string;
-      interpretation?: components["schemas"]["Interpretation"] | null;
-      /** @description The state of the simulation. */
-      status: string;
-      /** @description Flag of whether the simulation is successful. */
-      success: boolean;
-    };
-    SimulationCreateRequestParams: {
-      /** @description The call data of the simulation to update for. */
-      call_data: string;
-      /**
-       * Format: int64
-       * @description The chain id of the simulation to update for.
-       */
-      chain_id: number;
-      /** @description The init code of the simulation to update for. */
-      init_code: string;
-      /**
-       * Format: int64
-       * @description The nonce of the simulation to update for.
-       */
-      nonce: number;
-      /** @description The from address of the simulation to update for. */
-      sender: string;
-    };
-    /** @description Simulation operation errors */
-    SimulationError: OneOf<[{
-      /** @description Simulation query error. */
-      BadRequest: string;
-    }, {
-      /** @description Simulation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of simulations. */
-    SimulationListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of simulations..
-       */
-      count: number;
-    };
-    /** @description Support Request root type. */
-    SupportRequest: {
-      /** @description The area of the support_request. */
-      area: string;
-      /** @description The description of the support_request. */
-      description: string;
-      /**
-       * Format: int32
-       * @description The severity of the support_request.
-       */
-      severity: number;
-      /** @description The title of the support_request. */
-      title: string;
-    };
-    SupportRequestCreateRequestParams: {
-      support_request: components["schemas"]["SupportRequest"];
-    };
-    /** @description Support_request operation errors */
-    SupportRequestError: OneOf<[{
-      /** @description Support_request query error. */
-      BadRequest: string;
-    }, {
-      /** @description Support_request not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Token root type. */
-    Token: {
-      /** @description The address of the token. */
-      address: string;
-      /**
-       * Format: int64
-       * @description The amount of the token.
-       */
-      amount: number;
-      /**
-       * Format: double
-       * @description The balance of the token in USD.
-       */
-      balance_usd: number;
-      /**
-       * Format: int64
-       * @description The chain id of the token.
-       */
-      chain_id: number;
-      /**
-       * Format: int32
-       * @description The decimals of the token.
-       */
-      decimals: number;
-      group?: components["schemas"]["TokenGroup"] | null;
-      /** @description The id of the token. */
-      id: string;
-      /** @description The name of the token. */
-      name?: string | null;
-      /** @description The symbol of the token. */
-      symbol: string;
-      /** @description The type of the token. */
-      token_type?: string | null;
-    };
-    /** @description Token error. */
-    TokenError: OneOf<[{
-      /** @description Token query error. */
-      BadRequest: string;
-    }, {
-      /** @description Token not found by id. */
-      NotFound: string;
-    }, {
-      /** @description Unauthorized token access. */
-      Unauthorized: string;
-    }]>;
-    /** @description TokenGroup root type. */
-    TokenGroup: {
-      /** @description The id of the token group. */
-      id: string;
-    };
-    /** @description TokenGroup errors */
-    TokenGroupError: OneOf<[{
-      /** @description TokenGroup query error. */
-      BadRequest: string;
-    }, {
-      /** @description TokenGroup not found by id. */
-      NotFound: string;
-    }, {
-      /** @description TokenGroup unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description Count of list of tokens. */
-    TokenListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of tokens.
-       */
-      count: number;
-    };
-    /** @description TokenPrice root type. */
-    TokenPrice: {
-      /**
-       * Format: double
-       * @description The price of the token price.
-       */
-      price: number;
-      /**
-       * Format: double
-       * @description The change of the token price in the last 24 hours.
-       */
-      price_change_24h: number;
-      /**
-       * Format: double
-       * @description The percentage change of the token price in the last 24 hours.
-       */
-      price_change_24h_percentage: number;
-      /** @description The historical prices of the token price. */
-      prices: components["schemas"]["TokenPriceDate"][];
-    };
-    TokenPriceDate: {
-      /** @description The date of the token price. */
-      date: string;
-      /**
-       * Format: double
-       * @description The price of the token price.
-       */
-      price: number;
-    };
-    /** @description TokenPrice error. */
-    TokenPriceError: OneOf<[{
-      /** @description TokenPrice query error. */
-      BadRequest: string;
-    }, {
-      /** @description TokenPrice not found by id. */
-      NotFound: string;
-    }]>;
-    TokenUpdateRequestParams: {
-      /**
-       * @description The name of the token.
-       * @default My Token
-       * @example My Token
-       */
-      name?: string | null;
-      /**
-       * @description The symbol of the token.
-       * @default MT
-       * @example MT
-       */
-      symbol?: string | null;
-    };
-    /** @description Transaction root type. */
-    Transaction: {
-      /**
-       * Format: int64
-       * @description The chain id of the transaction.
-       */
-      chain_id: number;
-      /** @description The hash of the transaction. */
-      hash: string;
-      interpretation?: components["schemas"]["Interpretation"] | null;
-      /** @description The timestamp of the transaction. */
-      timestamp: string;
-    };
-    /** @description Transaction operation errors */
-    TransactionError: OneOf<[{
-      /** @description Transaction query error. */
-      BadRequest: string;
-    }, {
-      /** @description Transaction not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of user operations. */
-    TransactionListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of user operations..
-       */
-      count: number;
-    };
-    /** @description User root type. */
-    User: {
-      /** @description The wallet address of the user. */
-      address: string;
-      /** @description The id of the user. */
-      id: string;
-    };
-    /** @description User operation errors */
-    UserError: OneOf<[{
-      /** @description User query error. */
-      BadRequest: string;
-    }, {
-      /** @description User not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description UserNotificationSettings root type. */
-    UserNotificationSettings: {
-      /** @description The id of the user settings. */
-      id: string;
-      /** @description The notification settings of user notification settings. */
-      settings: components["schemas"]["NotificationSettings"][];
-    };
-    /** @description UserNotificationSettings operation errors */
-    UserNotificationSettingsError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description UserNotificationSettings not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Optional UserNotificationSettings root type. */
-    UserNotificationSettingsOptional: {
-      /** @description The update query of user notification settings of whether the testnet is enabled. */
-      settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
-    };
-    UserNotificationSettingsUpdateRequestParams: {
-      user_notification_settings: components["schemas"]["UserNotificationSettingsOptional"];
-    };
-    /** @description User operation root type. */
-    UserOperation: {
-      /** @description The call data of the user operation. */
-      call_data: string;
-      /**
-       * Format: int64
-       * @description The call gas of the user operation.
-       */
-      call_gas_limit: number;
-      /**
-       * Format: int64
-       * @description The chain id of the user operation.
-       */
-      chain_id: number;
-      /** @description The timestamp of the user operation. */
-      created_at: string;
-      /** @description The hash of the user operation. */
-      hash: string;
-      /** @description The init code of the user operation. */
-      init_code: string;
-      interpretation?: components["schemas"]["Interpretation"] | null;
-      /**
-       * Format: int64
-       * @description The maximum fee per gas of the user operation.
-       */
-      max_fee_per_gas: number;
-      /**
-       * Format: int64
-       * @description The maximum priority fee per gas of the user operation.
-       */
-      max_priority_fee_per_gas: number;
-      /**
-       * Format: int64
-       * @description The nonce of the user operation.
-       */
-      nonce: number;
-      paymaster?: components["schemas"]["Paymaster"] | null;
-      /** @description The paymaster and data of the user operation. */
-      paymaster_and_data: string;
-      paymaster_operation?: components["schemas"]["PaymasterOperation"] | null;
-      /**
-       * Format: int64
-       * @description The pre verification gas of the user operation.
-       */
-      pre_verification_gas: number;
-      /** @description The sender of the user operation. */
-      sender: string;
-      /** @description The signatures of the user operation. */
-      signatures: components["schemas"]["Signature"][];
-      /** @description The status of the user operation. */
-      status: string;
-      transaction?: components["schemas"]["Transaction"] | null;
-      /** @description The timestamp updated of the user operation. */
-      updated_at: string;
-      /**
-       * Format: int64
-       * @description The verification gas of the user operation.
-       */
-      verification_gas_limit: number;
-    };
-    UserOperationCreateBatchRequestParams: {
-      merkle_root: string;
-      signature: components["schemas"]["SignatureCreateParams"];
-      user_operations: components["schemas"]["UserOperationCreateParams"][];
-    };
-    /** @description Item to create. */
-    UserOperationCreateParams: {
-      call_data: string;
-      /** Format: int64 */
-      call_gas_limit: number;
-      /** Format: int64 */
-      chain_id: number;
-      hash: string;
-      init_code: string;
-      /** Format: int64 */
-      max_fee_per_gas: number;
-      /** Format: int64 */
-      max_priority_fee_per_gas: number;
-      /** Format: int64 */
-      nonce: number;
-      paymaster_and_data: string;
-      /** Format: int64 */
-      pre_verification_gas: number;
-      sender: string;
-      /** Format: int64 */
-      verification_gas_limit: number;
-    };
-    UserOperationCreateRequestParams: {
-      signature: components["schemas"]["SignatureCreateParams"];
-      user_operation: components["schemas"]["UserOperationCreateParams"];
-    };
-    /** @description User operation operation errors */
-    UserOperationError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description User operation not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Count of list of user operations. */
-    UserOperationListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of user operations..
-       */
-      count: number;
-    };
-    /** @description UserOperationMerkle root type. */
-    UserOperationMerkle: {
-      /** @description The root of the merkle tree. */
-      root: string;
-    };
-    /** @description UserOperationMerkle errors */
-    UserOperationMerkleError: OneOf<[{
-      /** @description UserOperationMerkle query error. */
-      BadRequest: string;
-    }, {
-      /** @description UserOperationMerkle not found by id. */
-      NotFound: string;
-    }, {
-      /** @description UserOperationMerkle unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description UserOperationMerkleProof root type. */
-    UserOperationMerkleProof: {
-      /** @description The id of the user operation merkle proof. */
-      id: string;
-    };
-    /** @description UserOperationMerkleProof errors */
-    UserOperationMerkleProofError: OneOf<[{
-      /** @description UserOperationMerkleProof query error. */
-      BadRequest: string;
-    }, {
-      /** @description UserOperationMerkleProof not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Nonce */
-    UserOperationNonce: {
-      /**
-       * Format: int64
-       * @description The hash of the transaction.
-       */
-      nonce: number;
-    };
-    /** @description User operation operation errors */
-    UserOperationSuccess: {
-      /** @description User operation updated successfully. */
-      Updated: string;
-    };
-    /** @description UserSettings root type. */
-    UserSettings: {
-      /** @description The id of the user settings. */
-      id: string;
-    };
-    /** @description UserSettings operation errors */
-    UserSettingsError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description UserSettings not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Optional UserSettings root type. */
-    UserSettingsOptional: {
-      /** @description The update query of user_settings of whether the testnet is enabled. */
-      is_enabled_testnet?: boolean | null;
-    };
-    UserSettingsUpdateRequestParams: {
-      user_settings: components["schemas"]["UserSettingsOptional"];
-    };
-    /** @description Wallet root type. */
-    Wallet: {
-      /** @description The address of the wallet. */
-      address: string;
-      /** @description The address of the factory. */
-      factory_address: string;
-      /** @description The name of the wallet. */
-      name: string;
-      /** @description The salt of the wallet. */
-      salt: string;
-    };
-    /** @description WalletBilling root type. */
-    WalletBilling: {
-      billing?: components["schemas"]["Billing"] | null;
-      /** @description The wallet billing of the balance in USD. */
-      id: string;
-    };
-    /** @description WalletBilling operation errors */
-    WalletBillingError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description WalletBilling not found by id. */
-      NotFound: string;
-    }, {
-      /** @description WalletBilling unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description Optional WalletBilling root type. */
-    WalletBillingOptional: {
-      /** @description The update query of wallet_billing of whether the testnet is enabled. */
-      id: string;
-    };
-    WalletBillingUpdateRequestParams: {
-      wallet_billing: components["schemas"]["WalletBillingOptional"];
-    };
-    /**
-     * @description Wallet owner.
-     * @example {
-     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-     *   "weight": 1
-     * }
-     */
-    WalletCreateOwnerParams: {
-      /** @description The address of the owner. */
-      address: string;
-      /**
-       * Format: int32
-       * @description The weight of the owner.
-       */
-      weight: number;
-    };
-    WalletCreateRequestParams: {
-      /**
-       * @description The invite code of the wallet.
-       * @example BFD-23S
-       */
-      invite_code?: string | null;
-      /**
-       * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
-       */
-      name: string;
-      /**
-       * @description The array of owners of the wallet.
-       * @example [
-       *   {
-       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-       *     "weight": 1
-       *   }
-       * ]
-       */
-      owners: components["schemas"]["WalletCreateOwnerParams"][];
-      /**
-       * @description The salt is used to calculate the new wallet address.
-       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
-       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
-       */
-      salt: string;
-      /**
-       * Format: int32
-       * @description The threshold of the wallet.
-       * @default 1
-       * @example 3
-       */
-      threshold: number;
-    };
-    /** @description Wallet operation errors */
-    WalletError: OneOf<[{
-      /** @description Wallet query error. */
-      BadRequest: string;
-    }, {
-      /** @description Wallet already exists conflict. */
-      Conflict: string;
-    }, {
-      /** @description Wallet not found by id. */
-      NotFound: string;
-    }, {
-      /**
-       * @description Wallet configuration is invalid.
-       * The threshold is greater than the number of owners.
-       * The threshold is 0.
-       */
-      InvalidConfiguration: string;
-    }]>;
-    /** @description WalletFeatures root type. */
-    WalletFeatures: {
-      /** @description The wallet_features of whether the testnet is enabled. */
-      is_enabled_ai: boolean;
-    };
-    /** @description WalletFeatures operation errors */
-    WalletFeaturesError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description WalletFeatures not found by id. */
-      NotFound: string;
-    }, {
-      /** @description WalletFeatures unauthorized. */
-      Unauthorized: string;
-    }]>;
-    /** @description Optional WalletFeatures root type. */
-    WalletFeaturesOptional: {
-      /** @description The update query of wallet_features of whether the testnet is enabled. */
-      is_enabled_ai?: boolean | null;
-    };
-    WalletFeaturesUpdateRequestParams: {
-      wallet_features: components["schemas"]["WalletFeaturesOptional"];
-    };
-    /** @description Count of list of wallets. */
-    WalletListCount: {
-      /**
-       * Format: int64
-       * @description The count of the list of wallets.
-       */
-      count: number;
-    };
-    /** @description WalletNotificationSettings root type. */
-    WalletNotificationSettings: {
-      /** @description The id of wallet notification settings. */
-      id: string;
-      /** @description The notification settings of wallet notification settings. */
-      settings: components["schemas"]["NotificationSettings"][];
-    };
-    /** @description WalletNotificationSettings operation errors */
-    WalletNotificationSettingsError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description WalletNotificationSettings not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Optional WalletNotificationSettings root type. */
-    WalletNotificationSettingsOptional: {
-      /** @description The update query of wallet notification settings of whether the testnet is enabled. */
-      settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
-    };
-    WalletNotificationSettingsUpdateRequestParams: {
-      wallet_notification_settings: components["schemas"]["WalletNotificationSettingsOptional"];
-    };
-    /** @description WalletSettings root type. */
-    WalletSettings: {
-      /** @description The wallet_settings of whether the developer mode is enabled. */
-      is_enabled_dev: boolean;
-      /** @description The wallet_settings of whether the testnet is enabled. */
-      is_enabled_testnet: boolean;
-    };
-    /** @description WalletSettings operation errors */
-    WalletSettingsError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description WalletSettings not found by id. */
-      NotFound: string;
-    }]>;
-    /** @description Optional WalletSettings root type. */
-    WalletSettingsOptional: {
-      /** @description The update query of wallet_settings of whether the developer mode is enabled. */
-      is_enabled_dev?: boolean | null;
-      /** @description The update query of wallet_settings of whether the testnet is enabled. */
-      is_enabled_testnet?: boolean | null;
-    };
-    WalletSettingsUpdateRequestParams: {
-      wallet_settings: components["schemas"]["WalletSettingsOptional"];
-    };
-    WalletUpdateRequestParams: {
-      /**
-       * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
-       */
-      name?: string | null;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    schemas: {
+        /** @description Activity root type. */
+        Activity: {
+            /** @description The wallet address of the activity. */
+            address?: string | null;
+            /** @description The entity id of the activity. */
+            entity: string;
+            /** @description The id of the activity. */
+            id: string;
+            /** @description The log message of the activity. */
+            log: unknown;
+            /** @description The operation type of the activity. */
+            operation: string;
+            /** @description The timestamp of the activity. */
+            timestamp: string;
+            user?: components["schemas"]["User"] | null;
+        };
+        /** @description Activity errors */
+        ActivityError: {
+            /** @description Activity query error. */
+            BadRequest: string;
+        } | {
+            /** @description Activity not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of user operations. */
+        ActivityListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of user operations..
+             */
+            count: number;
+        };
+        /** @description AssetChange root type. */
+        AssetChange: {
+            action?: components["schemas"]["InterpretationAction"] | null;
+            /** @description The address of the asset change. */
+            address: string;
+            /**
+             * Format: int64
+             * @description The after amount of the asset change.
+             */
+            after_amount?: number | null;
+            /**
+             * Format: int64
+             * @description The amount of the asset change.
+             */
+            amount: number;
+            /**
+             * Format: int64
+             * @description The before amount of the asset change.
+             */
+            before_amount?: number | null;
+            /** @description The id of the asset change. */
+            id: string;
+            token?: components["schemas"]["Token"] | null;
+        };
+        /** @description AssetChange errors */
+        AssetChangeError: {
+            /** @description AssetChange query error. */
+            BadRequest: string;
+        } | {
+            /** @description AssetChange not found by id. */
+            NotFound: string;
+        };
+        /** @description Auth operation errors */
+        AuthError: {
+            BadRequest: string;
+        } | {
+            /** @description Auth not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Internal error. */
+            InternalError: string;
+        } | {
+            /** @description Unauthorized error. */
+            Unauthorized: string;
+        };
+        /** @description Auth nonce. */
+        AuthNonce: {
+            nonce: string;
+        };
+        /** @description The session. */
+        AuthSession: {
+            /** @description The session expiration. */
+            expiration: string;
+            /** @description The session id. */
+            id: string;
+            /** @description The authenticated status. */
+            is_authenticated: boolean;
+        };
+        /** @description Auth success response. */
+        AuthSuccess: {
+            /** @description User logged out successfully. */
+            Logout: string;
+        };
+        AuthVerifyCreateRequestParams: {
+            message: string;
+            signature: string;
+        };
+        /** @description Billing root type. */
+        Billing: {
+            /**
+             * Format: double
+             * @description The balance USD of the billing.
+             */
+            balance_usd: number;
+            /** @description The id of the billing. */
+            id: string;
+            /** @description The billing status of the billing. */
+            status: string;
+        };
+        /** @description Billing operation errors */
+        BillingError: {
+            /** @description Billing query error. */
+            BadRequest: string;
+        } | {
+            /** @description Billing not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Billing unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description BillingOperation root type. */
+        BillingOperation: {
+            /** @description The id of the billing operation. */
+            id: string;
+            /** @description The status of the billing operation. */
+            status: string;
+        };
+        /** @description BillingOperation errors */
+        BillingOperationError: {
+            /** @description BillingOperation query error. */
+            BadRequest: string;
+        } | {
+            /** @description BillingOperation not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of billing operations. */
+        BillingOperationListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of billing operations.
+             */
+            count: number;
+        };
+        /** @enum {string} */
+        BillingQueryStatus: "sponsored" | "user";
+        BillingUpdateRequestParams: {
+            /**
+             * Format: double
+             * @description The balance USD of the wallet.
+             */
+            balance_usd?: number | null;
+            /** @default USER */
+            status: components["schemas"]["BillingQueryStatus"];
+        };
+        /** @description Chain root type. */
+        Chain: {
+            /**
+             * Format: int64
+             * @description The id of the protocol group.
+             */
+            id: number;
+        };
+        /** @description Chain errors */
+        ChainError: {
+            /** @description Chain query error. */
+            BadRequest: string;
+        } | {
+            /** @description Chain not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Chain unauthorized. */
+            Unauthorized: string;
+        };
+        ChainUpdateRequestParams: {
+            /**
+             * @description The name of the chain.
+             * @default Chain
+             * @example My Chain
+             */
+            name: string;
+        };
+        /** @description Configuration root type. */
+        Configuration: {
+            /** @description The address of the configuration. */
+            address: string;
+            /**
+             * Format: int64
+             * @description The checkpoint of the configuration.
+             */
+            checkpoint: number;
+            /** @description The id of the configuration. */
+            id: string;
+            /** @description The image hash of the configuration. */
+            image_hash: string;
+            /** @description The owners of the configuration. */
+            owners: components["schemas"]["ConfigurationOperationOwner"][];
+            /**
+             * Format: int64
+             * @description The threshold of the configuration.
+             */
+            threshold: number;
+        };
+        /** @description Configuration errors */
+        ConfigurationError: {
+            /** @description Configuration query error. */
+            BadRequest: string;
+        } | {
+            /** @description Configuration not found by id. */
+            NotFound: string;
+        };
+        /** @description ConfigurationOperation root type. */
+        ConfigurationOperation: {
+            /**
+             * Format: int64
+             * @description The checkpoint of the configuration operation.
+             */
+            checkpoint: number;
+            /** @description The id of the configuration operation. */
+            id: string;
+            /** @description The image hash of the configuration operation. */
+            image_hash: string;
+            /** @description The status of the configuration operation. */
+            status: string;
+            /**
+             * Format: int64
+             * @description The threshold of the configuration operation.
+             */
+            threshold: number;
+        };
+        /**
+         * @description Wallet owner.
+         * @example {
+         *       "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+         *       "weight": 1
+         *     }
+         */
+        ConfigurationOperationCreateOwnerParams: {
+            /** @description The address of the owner. */
+            address: string;
+            /**
+             * Format: int32
+             * @description The weight of the owner.
+             */
+            weight: number;
+        };
+        /** @description Signature operation post request params */
+        ConfigurationOperationCreateRequestParams: {
+            /**
+             * @description The array of owners of the wallet.
+             * @example [
+             *       {
+             *         "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+             *         "weight": 1
+             *       }
+             *     ]
+             */
+            owners: components["schemas"]["ConfigurationOperationCreateOwnerParams"][];
+            signature: components["schemas"]["ConfigurationOperationSignatureCreateParams"];
+            /**
+             * Format: int32
+             * @description The threshold of the wallet.
+             * @default 1
+             * @example 3
+             */
+            threshold: number;
+        };
+        /** @description ConfigurationOperation errors */
+        ConfigurationOperationError: {
+            /** @description ConfigurationOperation query error. */
+            BadRequest: string;
+        } | {
+            /** @description ConfigurationOperation not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of interpretation actions. */
+        ConfigurationOperationListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of interpretation actions.
+             */
+            count: number;
+        };
+        /** @description Owner root type. */
+        ConfigurationOperationOwner: {
+            /** @description The address of the owner. */
+            address: string;
+            /** @description The id of the owner. */
+            id: string;
+            /**
+             * Format: int64
+             * @description The weight of the owner.
+             */
+            weight: number;
+        };
+        /** @description Configuration owner operation errors */
+        ConfigurationOperationOwnerError: {
+            /** @description Owner query error. */
+            BadRequest: string;
+        } | {
+            /** @description Owner not found by id. */
+            NotFound: string;
+        };
+        /** @description Signature root type. */
+        ConfigurationOperationSignature: {
+            /** @description The created time of the signature. */
+            created_at: string;
+            /** @description The id of the owner of the signature. */
+            owner_id: string;
+            /** @description The signature of the user operation in hex. */
+            signature: string;
+        };
+        /** @description Signature operation */
+        ConfigurationOperationSignatureCreateParams: {
+            /** @description The id of the owner of the signature. */
+            owner_id: string;
+            /** @description The signature of the user operation in hex. */
+            signature: string;
+        };
+        /** @description Signature operation post request params */
+        ConfigurationOperationSignatureCreateRequestParams: {
+            signature: components["schemas"]["ConfigurationOperationSignatureSignatureCreateParams"];
+        };
+        /** @description ConfigurationOperationSignature operation errors */
+        ConfigurationOperationSignatureError: {
+            /** @description ConfigurationOperationSignature query error. */
+            BadRequest: string;
+        } | {
+            /** @description ConfigurationOperationSignature not found by id. */
+            NotFound: string;
+        };
+        /** @description Signature operation */
+        ConfigurationOperationSignatureSignatureCreateParams: {
+            /** @description The id of the owner of the signature. */
+            owner_id: string;
+            /** @description The signature of the user operation in hex. */
+            signature: string;
+        };
+        /** @description Feedback root type. */
+        Feedback: {
+            /** @description The emoji of the feedback. */
+            emoji: string;
+            /** @description The text of the feedback. */
+            text: string;
+        };
+        FeedbackCreateRequestParams: {
+            feedback: components["schemas"]["Feedback"];
+        };
+        /** @description Feedback error */
+        FeedbackError: {
+            /** @description Feedback bad request error. */
+            BadRequest: string;
+        } | {
+            /** @description Feedback not found by id. */
+            NotFound: string;
+        };
+        /** @description Interpretation root type. */
+        Interpretation: {
+            /** @description The array of actions of the interpretation. */
+            actions: components["schemas"]["InterpretationAction"][];
+            /** @description The array of asset changes of the interpretation. */
+            asset_changes: components["schemas"]["AssetChange"][];
+            /** @description The id of the interpretation to read for. */
+            id: string;
+        };
+        /** @description InterpretationAction root type. */
+        InterpretationAction: {
+            /** @description The action of the interpretation action. */
+            action: string;
+            /** @description The status of the interpretation action. */
+            address: string;
+            /** @description The id of the interpretation action. */
+            id: string;
+        };
+        /** @description InterpretationAction errors */
+        InterpretationActionError: {
+            /** @description InterpretationAction query error. */
+            BadRequest: string;
+        } | {
+            /** @description InterpretationAction not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of interpretation actions. */
+        InterpretationActionListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of interpretation actions.
+             */
+            count: number;
+        };
+        /** @description Interpretation operation errors */
+        InterpretationError: {
+            /** @description Interpretation query error. */
+            BadRequest: string;
+        } | {
+            /** @description Interpretation not found by id. */
+            NotFound: string;
+        };
+        /** @description InviteCode root type. */
+        InviteCode: {
+            /** @description The code of the invite code. */
+            code: string;
+            /** @description The id of the invite code. */
+            id: string;
+            /** @description The status of the invite code. */
+            status: string;
+        };
+        /** @description InviteCode errors */
+        InviteCodeError: {
+            /** @description InviteCode query error. */
+            BadRequest: string;
+        } | {
+            /** @description InviteCode not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Not Authorized. */
+            Unauthorized: string;
+        };
+        /** @description Count of list of user operations. */
+        InviteCodeListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of user operations..
+             */
+            count: number;
+        };
+        /** @description Notification root type. */
+        Notification: {
+            activity?: components["schemas"]["Activity"] | null;
+            /** @description The id of the notification to read for. */
+            id: string;
+        };
+        /** @description Notification operation errors */
+        NotificationError: {
+            /** @description Notification query error. */
+            BadRequest: string;
+        } | {
+            /** @description Notification not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of user operations. */
+        NotificationListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of user operations..
+             */
+            count: number;
+        };
+        /** @description Item to request. */
+        NotificationReadParams: {
+            /** @description The id of the notification to read for. */
+            id: string;
+        };
+        NotificationReadRequestParams: {
+            /** @description The array of the notifications to query. */
+            notifications: components["schemas"]["NotificationReadParams"][];
+        };
+        /** @description NotificationSettings root type. */
+        NotificationSettings: {
+            /** @description The id of the notification settings. */
+            id: string;
+            /** @description The flag that indicates if the notification settings is enabled. */
+            is_enabled: boolean;
+            /** @description The key of the notification settings. */
+            key: string;
+        };
+        /** @description NotificationSettings errors */
+        NotificationSettingsError: {
+            /** @description NotificationSettings query error. */
+            BadRequest: string;
+        } | {
+            /** @description NotificationSettings not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of notification settingss. */
+        NotificationSettingsListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of notification settingss.
+             */
+            count: number;
+        };
+        /** @description WalletNotificationSettingsUpdate root type. */
+        NotificationSettingsUpdate: {
+            /** @description The key of the notification settings. */
+            key: string;
+            /** @description The boolean value of the notification settings. */
+            value: boolean;
+        };
+        /** @description Owner root type. */
+        Owner: {
+            /** @description The address of the owner. */
+            address: string;
+            /** @description The id of the owner. */
+            id: string;
+            /**
+             * Format: int64
+             * @description The weight of the owner.
+             */
+            weight: number;
+        };
+        /** @description Owner operation errors */
+        OwnerError: {
+            /** @description Owner query error. */
+            BadRequest: string;
+        } | {
+            /** @description Owner not found by id. */
+            NotFound: string;
+        };
+        /** @description Paymaster root type. */
+        Paymaster: {
+            /** @description The address of the paymaster. */
+            address: string;
+        };
+        /** @description Paymaster operation errors */
+        PaymasterError: {
+            /** @description Paymaster query error. */
+            BadRequest: string;
+        } | {
+            /** @description Paymaster not found by id. */
+            NotFound: string;
+        };
+        /** @description PaymasterOperation root type. */
+        PaymasterOperation: {
+            billing_operation?: components["schemas"]["BillingOperation"] | null;
+            /** @description The id of the paymaster operation. */
+            id: string;
+        };
+        /** @description PaymasterOperation errors */
+        PaymasterOperationError: {
+            /** @description PaymasterOperation query error. */
+            BadRequest: string;
+        } | {
+            /** @description PaymasterOperation not found by id. */
+            NotFound: string;
+        };
+        /** @description Portfolio root type. */
+        Portfolio: {
+            /**
+             * Format: double
+             * @description The balance of the portfolio.
+             */
+            balance: number;
+            /**
+             * Format: double
+             * @description The change of the balance in the last 24 hours.
+             */
+            balance_change_24h: number;
+            /**
+             * Format: double
+             * @description The percentage change of the balance in the last 24 hours.
+             */
+            balance_change_24h_percentage: number;
+            /** @description The historical balances of the portfolio. */
+            balances: components["schemas"]["PortfolioBalanceDate"][];
+        };
+        /** @description Portfolio to do. */
+        PortfolioBalanceDate: {
+            /**
+             * Format: double
+             * @description The balance of the portfolio.
+             */
+            balance: number;
+            /** @description The date of the balance. */
+            date: string;
+        };
+        /** @description Portfolio operation errors */
+        PortfolioError: {
+            /** @description Portfolio query error. */
+            BadRequest: string;
+        } | {
+            /** @description Portfolio already exists conflict. */
+            Conflict: string;
+        };
+        /** @description Protocol root type. */
+        Protocol: {
+            /** @description The address of the protocol. */
+            address: string;
+        };
+        /** @description Protocol errors */
+        ProtocolError: {
+            /** @description Protocol query error. */
+            BadRequest: string;
+        } | {
+            /** @description Protocol not found by id. */
+            NotFound: string;
+        };
+        /** @description ProtocolGroup root type. */
+        ProtocolGroup: {
+            /** @description The id of the protocol group. */
+            id: string;
+        };
+        /** @description ProtocolGroup errors */
+        ProtocolGroupError: {
+            /** @description ProtocolGroup query error. */
+            BadRequest: string;
+        } | {
+            /** @description ProtocolGroup not found by id. */
+            NotFound: string;
+        } | {
+            /** @description ProtocolGroup unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description Queue operation errors */
+        QueueError: {
+            /** @description Queue query error. */
+            BadRequest: string;
+        } | {
+            /** @description Queue not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Queue rate limit exceeded. */
+            RateLimitExceeded: string;
+        } | {
+            /** @description Provider error. */
+            ProviderError: string;
+        };
+        /** @description Queue success response. */
+        QueueSuccess: {
+            /** @description User operation queued successfully. */
+            Queued: string;
+        };
+        /** @description Signature root type. */
+        Signature: {
+            /** @description The created time of the signature. */
+            created_at: string;
+            /** @description The id of the owner of the signature. */
+            owner_id: string;
+            /** @description The signature of the user operation in hex. */
+            signature: string;
+            /**
+             * Format: int32
+             * @description The type of the signature.
+             */
+            signature_type: number;
+        };
+        /** @description Signature operation */
+        SignatureCreateParams: {
+            /** @description The id of the owner of the signature. */
+            owner_id: string;
+            /** @description The signature of the user operation in hex. */
+            signature: string;
+            /**
+             * Format: int32
+             * @description The type of the signature.
+             */
+            signature_type: number;
+        };
+        /** @description Signature operation post request params */
+        SignatureCreateRequestParams: {
+            signature: components["schemas"]["SignatureCreateParams"];
+        };
+        /** @description Signature operation errors */
+        SignatureError: {
+            /** @description Signature query error. */
+            BadRequest: string;
+        } | {
+            /** @description Signature not found by id. */
+            NotFound: string;
+        };
+        /** @description Simulation root type. */
+        Simulation: {
+            /**
+             * Format: int32
+             * @description The block number of the simulation.
+             */
+            block_number: number;
+            /**
+             * Format: int64
+             * @description The amount of gas used in the simulation.
+             */
+            gas_used: number;
+            /** @description The id of the simulation to read for. */
+            id: string;
+            interpretation?: components["schemas"]["Interpretation"] | null;
+            /** @description The state of the simulation. */
+            status: string;
+            /** @description Flag of whether the simulation is successful. */
+            success: boolean;
+        };
+        SimulationCreateRequestParams: {
+            /** @description The call data of the simulation to update for. */
+            call_data: string;
+            /**
+             * Format: int64
+             * @description The chain id of the simulation to update for.
+             */
+            chain_id: number;
+            /** @description The init code of the simulation to update for. */
+            init_code: string;
+            /**
+             * Format: int64
+             * @description The nonce of the simulation to update for.
+             */
+            nonce: number;
+            /** @description The from address of the simulation to update for. */
+            sender: string;
+        };
+        /** @description Simulation operation errors */
+        SimulationError: {
+            /** @description Simulation query error. */
+            BadRequest: string;
+        } | {
+            /** @description Simulation not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of simulations. */
+        SimulationListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of simulations..
+             */
+            count: number;
+        };
+        /** @description Support Request root type. */
+        SupportRequest: {
+            /** @description The area of the support_request. */
+            area: string;
+            /** @description The description of the support_request. */
+            description: string;
+            /**
+             * Format: int32
+             * @description The severity of the support_request.
+             */
+            severity: number;
+            /** @description The title of the support_request. */
+            title: string;
+        };
+        SupportRequestCreateRequestParams: {
+            support_request: components["schemas"]["SupportRequest"];
+        };
+        /** @description Support_request operation errors */
+        SupportRequestError: {
+            /** @description Support_request query error. */
+            BadRequest: string;
+        } | {
+            /** @description Support_request not found by id. */
+            NotFound: string;
+        };
+        /** @description Token root type. */
+        Token: {
+            /** @description The address of the token. */
+            address: string;
+            /**
+             * Format: int64
+             * @description The amount of the token.
+             */
+            amount: number;
+            /**
+             * Format: double
+             * @description The balance of the token in USD.
+             */
+            balance_usd: number;
+            /**
+             * Format: int64
+             * @description The chain id of the token.
+             */
+            chain_id: number;
+            /**
+             * Format: int32
+             * @description The decimals of the token.
+             */
+            decimals: number;
+            group?: components["schemas"]["TokenGroup"] | null;
+            /** @description The id of the token. */
+            id: string;
+            /** @description The name of the token. */
+            name?: string | null;
+            /** @description The symbol of the token. */
+            symbol: string;
+            /** @description The type of the token. */
+            token_type?: string | null;
+        };
+        /** @description Token error. */
+        TokenError: {
+            /** @description Token query error. */
+            BadRequest: string;
+        } | {
+            /** @description Token not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Unauthorized token access. */
+            Unauthorized: string;
+        };
+        /** @description TokenGroup root type. */
+        TokenGroup: {
+            /** @description The id of the token group. */
+            id: string;
+        };
+        /** @description TokenGroup errors */
+        TokenGroupError: {
+            /** @description TokenGroup query error. */
+            BadRequest: string;
+        } | {
+            /** @description TokenGroup not found by id. */
+            NotFound: string;
+        } | {
+            /** @description TokenGroup unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description Count of list of tokens. */
+        TokenListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of tokens.
+             */
+            count: number;
+        };
+        /** @description TokenPrice root type. */
+        TokenPrice: {
+            /**
+             * Format: double
+             * @description The price of the token price.
+             */
+            price: number;
+            /**
+             * Format: double
+             * @description The change of the token price in the last 24 hours.
+             */
+            price_change_24h: number;
+            /**
+             * Format: double
+             * @description The percentage change of the token price in the last 24 hours.
+             */
+            price_change_24h_percentage: number;
+            /** @description The historical prices of the token price. */
+            prices: components["schemas"]["TokenPriceDate"][];
+        };
+        TokenPriceDate: {
+            /** @description The date of the token price. */
+            date: string;
+            /**
+             * Format: double
+             * @description The price of the token price.
+             */
+            price: number;
+        };
+        /** @description TokenPrice error. */
+        TokenPriceError: {
+            /** @description TokenPrice query error. */
+            BadRequest: string;
+        } | {
+            /** @description TokenPrice not found by id. */
+            NotFound: string;
+        };
+        TokenUpdateRequestParams: {
+            /**
+             * Format: int32
+             * @description The decimals of the token.
+             * @default 18
+             * @example 18
+             */
+            decimals: number;
+            /**
+             * @description The name of the token.
+             * @default My Token
+             * @example My Token
+             */
+            name: string;
+            /**
+             * @description The symbol of the token.
+             * @default MT
+             * @example MT
+             */
+            symbol: string;
+        };
+        /** @description Transaction root type. */
+        Transaction: {
+            /**
+             * Format: int64
+             * @description The chain id of the transaction.
+             */
+            chain_id: number;
+            /** @description The hash of the transaction. */
+            hash: string;
+            interpretation?: components["schemas"]["Interpretation"] | null;
+            /** @description The timestamp of the transaction. */
+            timestamp: string;
+        };
+        /** @description Transaction operation errors */
+        TransactionError: {
+            /** @description Transaction query error. */
+            BadRequest: string;
+        } | {
+            /** @description Transaction not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of user operations. */
+        TransactionListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of user operations..
+             */
+            count: number;
+        };
+        /** @description User root type. */
+        User: {
+            /** @description The wallet address of the user. */
+            address: string;
+            /** @description The id of the user. */
+            id: string;
+        };
+        /** @description User operation errors */
+        UserError: {
+            /** @description User query error. */
+            BadRequest: string;
+        } | {
+            /** @description User not found by id. */
+            NotFound: string;
+        };
+        /** @description UserNotificationSettings root type. */
+        UserNotificationSettings: {
+            /** @description The id of the user settings. */
+            id: string;
+            /** @description The notification settings of user notification settings. */
+            settings: components["schemas"]["NotificationSettings"][];
+        };
+        /** @description UserNotificationSettings operation errors */
+        UserNotificationSettingsError: {
+            BadRequest: string;
+        } | {
+            /** @description UserNotificationSettings not found by id. */
+            NotFound: string;
+        };
+        /** @description Optional UserNotificationSettings root type. */
+        UserNotificationSettingsOptional: {
+            /** @description The update query of user notification settings of whether the testnet is enabled. */
+            settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
+        };
+        UserNotificationSettingsUpdateRequestParams: {
+            user_notification_settings: components["schemas"]["UserNotificationSettingsOptional"];
+        };
+        /** @description User operation root type. */
+        UserOperation: {
+            /** @description The call data of the user operation. */
+            call_data: string;
+            /**
+             * Format: int64
+             * @description The call gas of the user operation.
+             */
+            call_gas_limit: number;
+            /**
+             * Format: int64
+             * @description The chain id of the user operation.
+             */
+            chain_id: number;
+            /** @description The timestamp of the user operation. */
+            created_at: string;
+            /** @description The hash of the user operation. */
+            hash: string;
+            /** @description The init code of the user operation. */
+            init_code: string;
+            interpretation?: components["schemas"]["Interpretation"] | null;
+            /**
+             * Format: int64
+             * @description The maximum fee per gas of the user operation.
+             */
+            max_fee_per_gas: number;
+            /**
+             * Format: int64
+             * @description The maximum priority fee per gas of the user operation.
+             */
+            max_priority_fee_per_gas: number;
+            /**
+             * Format: int64
+             * @description The nonce of the user operation.
+             */
+            nonce: number;
+            paymaster?: components["schemas"]["Paymaster"] | null;
+            /** @description The paymaster and data of the user operation. */
+            paymaster_and_data: string;
+            paymaster_operation?: components["schemas"]["PaymasterOperation"] | null;
+            /**
+             * Format: int64
+             * @description The pre verification gas of the user operation.
+             */
+            pre_verification_gas: number;
+            /** @description The sender of the user operation. */
+            sender: string;
+            /** @description The signatures of the user operation. */
+            signatures: components["schemas"]["Signature"][];
+            /** @description The status of the user operation. */
+            status: string;
+            transaction?: components["schemas"]["Transaction"] | null;
+            /** @description The timestamp updated of the user operation. */
+            updated_at: string;
+            /**
+             * Format: int64
+             * @description The verification gas of the user operation.
+             */
+            verification_gas_limit: number;
+        };
+        UserOperationCreateBatchRequestParams: {
+            merkle_root: string;
+            signature: components["schemas"]["SignatureCreateParams"];
+            user_operations: components["schemas"]["UserOperationCreateParams"][];
+        };
+        /** @description Item to create. */
+        UserOperationCreateParams: {
+            call_data: string;
+            /** Format: int64 */
+            call_gas_limit: number;
+            /** Format: int64 */
+            chain_id: number;
+            hash: string;
+            init_code: string;
+            /** Format: int64 */
+            max_fee_per_gas: number;
+            /** Format: int64 */
+            max_priority_fee_per_gas: number;
+            /** Format: int64 */
+            nonce: number;
+            paymaster_and_data: string;
+            /** Format: int64 */
+            pre_verification_gas: number;
+            sender: string;
+            /** Format: int64 */
+            verification_gas_limit: number;
+        };
+        UserOperationCreateRequestParams: {
+            signature: components["schemas"]["SignatureCreateParams"];
+            user_operation: components["schemas"]["UserOperationCreateParams"];
+        };
+        /** @description User operation operation errors */
+        UserOperationError: {
+            BadRequest: string;
+        } | {
+            /** @description User operation not found by id. */
+            NotFound: string;
+        };
+        /** @description Count of list of user operations. */
+        UserOperationListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of user operations..
+             */
+            count: number;
+        };
+        /** @description UserOperationMerkle root type. */
+        UserOperationMerkle: {
+            /** @description The proofs of the merkle tree. */
+            proofs: components["schemas"]["UserOperationMerkleProof"][];
+            /** @description The root of the merkle tree. */
+            root: string;
+        };
+        /** @description UserOperationMerkle errors */
+        UserOperationMerkleError: {
+            /** @description UserOperationMerkle query error. */
+            BadRequest: string;
+        } | {
+            /** @description UserOperationMerkle not found by id. */
+            NotFound: string;
+        } | {
+            /** @description UserOperationMerkle unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description UserOperationMerkleProof root type. */
+        UserOperationMerkleProof: {
+            /** @description The id of the user operation merkle proof. */
+            id: string;
+        };
+        /** @description UserOperationMerkleProof errors */
+        UserOperationMerkleProofError: {
+            /** @description UserOperationMerkleProof query error. */
+            BadRequest: string;
+        } | {
+            /** @description UserOperationMerkleProof not found by id. */
+            NotFound: string;
+        };
+        /** @description Nonce */
+        UserOperationNonce: {
+            /**
+             * Format: int64
+             * @description The hash of the transaction.
+             */
+            nonce: number;
+        };
+        /** @description User operation operation errors */
+        UserOperationSuccess: {
+            /** @description User operation updated successfully. */
+            Updated: string;
+        };
+        /** @description UserSettings root type. */
+        UserSettings: {
+            /** @description The id of the user settings. */
+            id: string;
+        };
+        /** @description UserSettings operation errors */
+        UserSettingsError: {
+            BadRequest: string;
+        } | {
+            /** @description UserSettings not found by id. */
+            NotFound: string;
+        };
+        /** @description Optional UserSettings root type. */
+        UserSettingsOptional: {
+            /** @description The update query of user_settings of whether the testnet is enabled. */
+            is_enabled_testnet?: boolean | null;
+        };
+        UserSettingsUpdateRequestParams: {
+            user_settings: components["schemas"]["UserSettingsOptional"];
+        };
+        /** @description Wallet root type. */
+        Wallet: {
+            /** @description The address of the wallet. */
+            address: string;
+            /** @description The address of the factory. */
+            factory_address: string;
+            /** @description The name of the wallet. */
+            name: string;
+            /** @description The salt of the wallet. */
+            salt: string;
+        };
+        /** @description WalletBilling root type. */
+        WalletBilling: {
+            billing?: components["schemas"]["Billing"] | null;
+            /** @description The wallet billing of the balance in USD. */
+            id: string;
+        };
+        /** @description WalletBilling operation errors */
+        WalletBillingError: {
+            BadRequest: string;
+        } | {
+            /** @description WalletBilling not found by id. */
+            NotFound: string;
+        } | {
+            /** @description WalletBilling unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description Optional WalletBilling root type. */
+        WalletBillingOptional: {
+            /** @description The update query of wallet_billing of whether the testnet is enabled. */
+            id: string;
+        };
+        WalletBillingUpdateRequestParams: {
+            wallet_billing: components["schemas"]["WalletBillingOptional"];
+        };
+        /**
+         * @description Wallet owner.
+         * @example {
+         *       "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+         *       "weight": 1
+         *     }
+         */
+        WalletCreateOwnerParams: {
+            /** @description The address of the owner. */
+            address: string;
+            /**
+             * Format: int32
+             * @description The weight of the owner.
+             */
+            weight: number;
+        };
+        WalletCreateRequestParams: {
+            /**
+             * @description The invite code of the wallet.
+             * @example BFD-23S
+             */
+            invite_code?: string | null;
+            /**
+             * @description The name of the wallet.
+             * @default My Wallet
+             * @example My Wallet
+             */
+            name: string;
+            /**
+             * @description The array of owners of the wallet.
+             * @example [
+             *       {
+             *         "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+             *         "weight": 1
+             *       }
+             *     ]
+             */
+            owners: components["schemas"]["WalletCreateOwnerParams"][];
+            /**
+             * @description The salt is used to calculate the new wallet address.
+             * @default 0x0000000000000000000000000000000000000000000000000000000000000001
+             * @example 0x0000000000000000000000000000000000000000000000000000000000000006
+             */
+            salt: string;
+            /**
+             * Format: int32
+             * @description The threshold of the wallet.
+             * @default 1
+             * @example 3
+             */
+            threshold: number;
+        };
+        /** @description Wallet operation errors */
+        WalletError: {
+            /** @description Wallet query error. */
+            BadRequest: string;
+        } | {
+            /** @description Wallet already exists conflict. */
+            Conflict: string;
+        } | {
+            /** @description Wallet not found by id. */
+            NotFound: string;
+        } | {
+            /** @description Wallet configuration is invalid.
+             *     The threshold is greater than the number of owners.
+             *     The threshold is 0. */
+            InvalidConfiguration: string;
+        };
+        /** @description WalletFeatures root type. */
+        WalletFeatures: {
+            /** @description The wallet_features of whether the testnet is enabled. */
+            is_enabled_ai: boolean;
+        };
+        /** @description WalletFeatures operation errors */
+        WalletFeaturesError: {
+            BadRequest: string;
+        } | {
+            /** @description WalletFeatures not found by id. */
+            NotFound: string;
+        } | {
+            /** @description WalletFeatures unauthorized. */
+            Unauthorized: string;
+        };
+        /** @description Optional WalletFeatures root type. */
+        WalletFeaturesOptional: {
+            /** @description The update query of wallet_features of whether the testnet is enabled. */
+            is_enabled_ai?: boolean | null;
+        };
+        WalletFeaturesUpdateRequestParams: {
+            wallet_features: components["schemas"]["WalletFeaturesOptional"];
+        };
+        /** @description Count of list of wallets. */
+        WalletListCount: {
+            /**
+             * Format: int64
+             * @description The count of the list of wallets.
+             */
+            count: number;
+        };
+        /** @description WalletNotificationSettings root type. */
+        WalletNotificationSettings: {
+            /** @description The id of wallet notification settings. */
+            id: string;
+            /** @description The notification settings of wallet notification settings. */
+            settings: components["schemas"]["NotificationSettings"][];
+        };
+        /** @description WalletNotificationSettings operation errors */
+        WalletNotificationSettingsError: {
+            BadRequest: string;
+        } | {
+            /** @description WalletNotificationSettings not found by id. */
+            NotFound: string;
+        };
+        /** @description Optional WalletNotificationSettings root type. */
+        WalletNotificationSettingsOptional: {
+            /** @description The update query of wallet notification settings of whether the testnet is enabled. */
+            settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
+        };
+        WalletNotificationSettingsUpdateRequestParams: {
+            wallet_notification_settings: components["schemas"]["WalletNotificationSettingsOptional"];
+        };
+        /** @description WalletSettings root type. */
+        WalletSettings: {
+            /** @description The wallet_settings of whether the developer mode is enabled. */
+            is_enabled_dev: boolean;
+            /** @description The wallet_settings of whether the testnet is enabled. */
+            is_enabled_testnet: boolean;
+        };
+        /** @description WalletSettings operation errors */
+        WalletSettingsError: {
+            BadRequest: string;
+        } | {
+            /** @description WalletSettings not found by id. */
+            NotFound: string;
+        };
+        /** @description Optional WalletSettings root type. */
+        WalletSettingsOptional: {
+            /** @description The update query of wallet_settings of whether the developer mode is enabled. */
+            is_enabled_dev?: boolean | null;
+            /** @description The update query of wallet_settings of whether the testnet is enabled. */
+            is_enabled_testnet?: boolean | null;
+        };
+        WalletSettingsUpdateRequestParams: {
+            wallet_settings: components["schemas"]["WalletSettingsOptional"];
+        };
+        WalletUpdateRequestParams: {
+            /**
+             * @description The name of the wallet.
+             * @default My Wallet
+             * @example My Wallet
+             */
+            name: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-
-  /**
-   * Get a activity
-   * @description Get a activity
-   */
-  v1_activity_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the activity. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Activity returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Activity"];
-        };
-      };
-      /** @description Activity not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ActivityError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of activities
-   * @description Returns a list of activities
-   */
-  v1_activity_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first activity to return. */
-        offset?: number | null;
-        /** @description The maximum number of activities to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description Flag to query for only user initiated activities. */
-        is_user_related?: boolean | null;
-        /** @description The wallet address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Activities returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Activity"][];
-        };
-      };
-      /** @description Activity bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ActivityError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of activities
-   * @description Returns a count of list of activities
-   */
-  v1_activity_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first activity to return. */
-        offset?: number | null;
-        /** @description The maximum number of activities to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description Flag to query for only user initiated activities. */
-        is_user_related?: boolean | null;
-        /** @description The wallet address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Activities returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ActivityListCount"];
-        };
-      };
-      /** @description Activity bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ActivityError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a asset
-   * @description Get a asset
-   */
-  v1_asset_change_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Asset Change returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AssetChange"];
-        };
-      };
-      /** @description Asset Change not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["AssetChangeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of assets
-   * @description Returns a list of assets
-   */
-  v1_asset_change_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first asset change to return. */
-        offset?: number | null;
-        /** @description The maximum number of asset changes to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Asset Changes returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AssetChange"][];
-        };
-      };
-      /** @description Asset Change bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["AssetChangeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Logout a session
-   * @description Logout a session
-   */
-  v1_auth_logout_handler: {
-    responses: {
-      /** @description Auth logout returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AuthSuccess"];
-        };
-      };
-      /** @description Auth logout not succeeded */
-      404: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a auth nonce
-   * @description Get a auth nonce
-   */
-  v1_auth_nonce_handler: {
-    responses: {
-      /** @description Auth nonce returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AuthNonce"];
-        };
-      };
-      /** @description Auth nonce not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a session
-   * @description Get a session
-   */
-  v1_auth_session_handler: {
-    responses: {
-      /** @description Auth session returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AuthSession"];
-        };
-      };
-      /** @description Auth session not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-    };
-  };
-  /**
-   * Verify a auth
-   * @description Verify a auth
-   */
-  v1_auth_verify_handler: {
-    parameters: {
-      query: {
-        user_address: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AuthVerifyCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Auth verified successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AuthNonce"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-      /** @description Auth already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-      /** @description Auth internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["AuthError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a billing
-   * @description Get a billing
-   */
-  v1_billing_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Billing returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Billing"];
-        };
-      };
-      /** @description Billing not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["BillingError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of billings
-   * @description Returns a list of billings
-   */
-  v1_billing_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first billing to return. */
-        offset?: number | null;
-        /** @description The maximum number of billings to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Billings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Billing"][];
-        };
-      };
-      /** @description Billing bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["BillingError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a billing
-   * @description Update a billing
-   */
-  v1_billing_update_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the billing id to post for. */
-        billing_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["BillingUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Billing updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Billing"];
-        };
-      };
-      /** @description Billing internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["BillingError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_billing_operation_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the billing operation. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Billing operation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BillingOperation"];
-        };
-      };
-      /** @description Billing operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["BillingOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of billing operations
-   * @description Returns a list of billing operations
-   */
-  v1_billing_operation_list_handler: {
-    parameters: {
-      query: {
-        /** @description The offset of the first billing operation to return. */
-        offset?: number | null;
-        /** @description The maximum number of billing operations to return. */
-        limit?: number | null;
-        /** @description The status to filter by. */
-        status?: string | null;
-        /** @description The id to filter by. */
-        id?: string | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description The wallet address to filter by. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Billing operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BillingOperation"][];
-        };
-      };
-      /** @description Billing operation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["BillingOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of billing operations
-   * @description Returns a count of list of billing operations
-   */
-  v1_billing_operation_list_count_handler: {
-    parameters: {
-      query: {
-        /** @description The offset of the first billing operation to return. */
-        offset?: number | null;
-        /** @description The maximum number of billing operations to return. */
-        limit?: number | null;
-        /** @description The status to filter by. */
-        status?: string | null;
-        /** @description The id to filter by. */
-        id?: string | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description The wallet address to filter by. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Billing operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BillingOperationListCount"];
-        };
-      };
-      /** @description BillingOperation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["BillingOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a chain
-   * @description Create a chain
-   */
-  v1_chain_create_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the chain id to create for. */
-        id: number;
-        /** @description The name of the chain. */
-        name: string;
-        /** @description A boolean value to indicate if the chain is testnet. */
-        is_testnet: boolean;
-      };
-    };
-    responses: {
-      /** @description Chain created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Chain"];
-        };
-      };
-      /** @description Chain internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ChainError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a protocol group
-   * @description Get a protocol group
-   */
-  v1_chain_get_handler: {
-    parameters: {
-      query: {
-        /** @description The chain id to query for. */
-        id: number;
-      };
-    };
-    responses: {
-      /** @description Protocola group returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Chain"];
-        };
-      };
-      /** @description Protocola group not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ChainError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of protocol groups
-   * @description Returns a list of protocol groups
-   */
-  v1_chain_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first protocol group to return. */
-        offset?: number | null;
-        /** @description The maximum number of protocol groups to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Protocol groups returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Chain"][];
-        };
-      };
-      /** @description Protocol group bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ChainError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a chain
-   * @description Update a chain
-   */
-  v1_chain_update_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the chain id to updatefor. */
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ChainUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Chain updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Chain"];
-        };
-      };
-      /** @description Chain internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ChainError"];
-        };
-      };
-    };
-  };
-  /**
-   * Check the health of the server
-   * @description Check the health of the server
-   */
-  handler: {
-    responses: {
-      /** @description Health returned successfully */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Get a configuration
-   * @description Get a configuration
-   */
-  v1_configuration_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the configuration to query. */
-        address: string;
-        /** @description The optional image_hash to filter by. */
-        image_hash?: string | null;
-        /** @description The optional checkpoint to filter by. */
-        checkpoint?: number | null;
-      };
-    };
-    responses: {
-      /** @description Configuration returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Configuration"];
-        };
-      };
-      /** @description Configuration not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of configurations
-   * @description Returns a list of configurations
-   */
-  v1_configuration_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first configuration to return. */
-        offset?: number | null;
-        /** @description The maximum number of configurations to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Configurations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Configuration"][];
-        };
-      };
-      /** @description Configurations bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a configuration signature
-   * @description Create a configuration signature
-   */
-  v1_configuration_operation_create_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description Whether to simulate the configuration operation. */
-        simulate?: boolean | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ConfigurationOperationCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Signature created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperation"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-      /** @description Signature already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-      /** @description Signature internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a configuration_operation
-   * @description Get a configuration_operation
-   */
-  v1_configuration_operation_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Configuration operation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperation"];
-        };
-      };
-      /** @description Configuration operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of interpretation actions
-   * @description Returns a list of interpretation actions
-   */
-  v1_configuration_operation_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first interpretation action to return. */
-        offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
-        limit?: number | null;
-        /** @description The status to filter by. */
-        status?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Configuration Operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperation"][];
-        };
-      };
-      /** @description Configuration Operation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of interpretation actions
-   * @description Returns a count of list of interpretation actions
-   */
-  v1_configuration_operation_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first interpretation action to return. */
-        offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
-        limit?: number | null;
-        /** @description The status to filter by. */
-        status?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Configuration Operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationListCount"];
-        };
-      };
-      /** @description Configuration Operations bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a configuration signature
-   * @description Create a configuration signature
-   */
-  v1_configuration_operation_update_handler: {
-    parameters: {
-      query: {
-        /** @description The operation of the configuration. */
-        configuration_operation_id: string;
-      };
-    };
-    responses: {
-      /** @description Configuration operation updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperation"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-      /** @description Configuration operation internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a owner
-   * @description Get a owner
-   */
-  v1_configuration_operation_owner_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description ConfigurationOperationOwner returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationOwner"];
-        };
-      };
-      /** @description ConfigurationOperationOwner not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of owners
-   * @description Returns a list of owners
-   */
-  v1_configuration_operation_owner_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first owner to return. */
-        offset?: number | null;
-        /** @description The maximum number of owners to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Configuration Operation Owners returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationOwner"][];
-        };
-      };
-      /** @description Configuration Operation Owners bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a configuration signature
-   * @description Create a configuration signature
-   */
-  v1_configuration_operation_signature_create_handler: {
-    parameters: {
-      query: {
-        /** @description The operation of the configuration. */
-        configuration_operation_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ConfigurationOperationSignatureCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Signature created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Signature"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-      /** @description Signature already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-      /** @description Signature internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a signature
-   * @description Get a signature
-   */
-  v1_configuration_operation_signature_get_handler: {
-    parameters: {
-      query: {
-        /** @description The configuration operation id of the signature. */
-        configuration_operation_id: string;
-        /** @description The configuration owner of the signature. */
-        owner_id: string;
-      };
-    };
-    responses: {
-      /** @description Configuration Operation Signature returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationSignature"];
-        };
-      };
-      /** @description Configuration Operation Signature not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of signatures
-   * @description Returns a list of signatures
-   */
-  v1_configuration_operation_signature_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first signature to return. */
-        offset?: number | null;
-        /** @description The maximum number of signatures to return. */
-        limit?: number | null;
-        /** @description The configuration operation id to filter by. */
-        configuration_operation_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Configuration Signatures returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationSignature"][];
-        };
-      };
-      /** @description Configuration Signature bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a feedback
-   * @description Create a feedback
-   */
-  v1_feedback_create_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FeedbackCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Feedback created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Feedback"];
-        };
-      };
-      /** @description Feedback internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["FeedbackError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a interpretation
-   * @description Get a interpretation
-   */
-  v1_interpretation_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the interpretation to get. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Interpretation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Interpretation"];
-        };
-      };
-      /** @description Interpretation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["InterpretationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of interpretations
-   * @description Returns a list of interpretations
-   */
-  v1_interpretation_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first interpretation to return. */
-        offset?: number | null;
-        /** @description The maximum number of interpretations to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Interpretations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Interpretation"][];
-        };
-      };
-      /** @description Interpretations bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InterpretationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_interpretation_action_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the interpretation action. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Interpretation action returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InterpretationAction"];
-        };
-      };
-      /** @description Interpretation action not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["InterpretationActionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of interpretation actions
-   * @description Returns a list of interpretation actions
-   */
-  v1_interpretation_action_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first interpretation action to return. */
-        offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
-        limit?: number | null;
-        /** @description The action to filter by. */
-        action?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Interpretation Actions returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InterpretationAction"][];
-        };
-      };
-      /** @description Interpretation Action bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InterpretationActionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of interpretation actions
-   * @description Returns a count of list of interpretation actions
-   */
-  v1_interpretation_action_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first interpretation action to return. */
-        offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
-        limit?: number | null;
-        /** @description The action to filter by. */
-        action?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Interpretation actions returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InterpretationActionListCount"];
-        };
-      };
-      /** @description InterpretationAction bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InterpretationActionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create an invite code
-   * @description Create an invite code
-   */
-  v1_invite_code_create_handler: {
-    responses: {
-      /** @description Invite code created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteCode"];
-        };
-      };
-      /** @description Invite code internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InviteCodeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_invite_code_get_handler: {
-    parameters: {
-      query: {
-        /** @description The code of the invite code. */
-        code: string;
-      };
-    };
-    responses: {
-      /** @description Invite code returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteCode"];
-        };
-      };
-      /** @description Invite code not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["InviteCodeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of invite codes
-   * @description Returns a list of invite codes
-   */
-  v1_invite_code_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first invite code to return. */
-        offset?: number | null;
-        /** @description The maximum number of invite codes to return. */
-        limit?: number | null;
-        /** @description The id of the user to return invite codes for. */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Invite Codes returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteCode"][];
-        };
-      };
-      /** @description InviteCode bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InviteCodeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of invite codes
-   * @description Returns a count of list of invite codes
-   */
-  v1_invite_code_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first invite code to return. */
-        offset?: number | null;
-        /** @description The maximum number of invite codes to return. */
-        limit?: number | null;
-        /** @description The id of the user to return invite codes for. */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Invite Codes returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteCodeListCount"];
-        };
-      };
-      /** @description InviteCode bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InviteCodeError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a notification
-   * @description Get a notification
-   */
-  v1_notification_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the notification to get. */
-        notification_id: string;
-      };
-    };
-    responses: {
-      /** @description Notification returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Notification"];
-        };
-      };
-      /** @description Notification not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["NotificationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of notifications
-   * @description Returns a list of notifications
-   */
-  v1_notification_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first notification to return. */
-        offset?: number | null;
-        /** @description The maximum number of notifications to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Notifications returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Notification"][];
-        };
-      };
-      /** @description Notification bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["NotificationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of notifications
-   * @description Returns a count of list of notifications
-   */
-  v1_notification_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first notification to return. */
-        offset?: number | null;
-        /** @description The maximum number of notifications to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-        /** @description The address to filter by. */
-        address?: string | null;
-      };
-    };
-    responses: {
-      /** @description Notifications returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationListCount"];
-        };
-      };
-      /** @description Notification bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["NotificationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Read a list of notifications
-   * @description Read a list of notifications
-   */
-  v1_notification_read_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NotificationReadRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Notification created successfully */
-      200: {
-        content: {
-          "text/plain": number;
-        };
-      };
-      /** @description Notification internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["NotificationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_notification_settings_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the notification settings. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Notification settings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettings"];
-        };
-      };
-      /** @description Notification settings not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of notification settingss
-   * @description Returns a list of notification settingss
-   */
-  v1_notification_settings_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first notification settings to return. */
-        offset?: number | null;
-        /** @description The maximum number of notification settingss to return. */
-        limit?: number | null;
-        /** @description The flag to filter by enabled or disabled. */
-        is_enabled?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description Notification settingss returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettings"][];
-        };
-      };
-      /** @description Notification settings bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of notification settingss
-   * @description Returns a count of list of notification settingss
-   */
-  v1_notification_settings_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first notification settings to return. */
-        offset?: number | null;
-        /** @description The maximum number of notification settingss to return. */
-        limit?: number | null;
-        /** @description The flag to filter by enabled or disabled. */
-        is_enabled?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description Notification settingss returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettingsListCount"];
-        };
-      };
-      /** @description NotificationSettings bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["NotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a owner
-   * @description Get a owner
-   */
-  v1_owner_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Owner returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Owner"];
-        };
-      };
-      /** @description Owner not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["OwnerError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of owners
-   * @description Returns a list of owners
-   */
-  v1_owner_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first owner to return. */
-        offset?: number | null;
-        /** @description The maximum number of owners to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Owners returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Owner"][];
-        };
-      };
-      /** @description Owner bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["OwnerError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_paymaster_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Paymaster returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Paymaster"];
-        };
-      };
-      /** @description Paymaster not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["PaymasterError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of paymasters
-   * @description Returns a list of paymasters
-   */
-  v1_paymaster_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first paymaster to return. */
-        offset?: number | null;
-        /** @description The maximum number of paymasters to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Paymasters returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Paymaster"][];
-        };
-      };
-      /** @description Paymaster bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["PaymasterError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a paymaster
-   * @description Get a paymaster
-   */
-  v1_paymaster_operation_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the paymaster. */
-        address: string;
-        /** @description The chain id of the paymaster. */
-        chain_id: number;
-        /** @description The timestamp of the paymaster. */
-        valid_after: number;
-      };
-    };
-    responses: {
-      /** @description Paymaster Operation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PaymasterOperation"];
-        };
-      };
-      /** @description Paymaster Operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["PaymasterOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of paymasters
-   * @description Returns a list of paymasters
-   */
-  v1_paymaster_operation_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first paymaster operation to return. */
-        offset?: number | null;
-        /** @description The maximum number of paymaster operations to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Paymaster Operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PaymasterOperation"][];
-        };
-      };
-      /** @description Paymaster Operation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["PaymasterOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a portfolio
-   * @description Get a portfolio
-   */
-  v1_portfolio_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the portfolio. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Portfolio returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Portfolio"];
-        };
-      };
-      /** @description Portfolio not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["PortfolioError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a protocol
-   * @description Get a protocol
-   */
-  v1_protocol_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Protocol returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Protocol"];
-        };
-      };
-      /** @description Protocol not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ProtocolError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a protocol group
-   * @description Create a protocol group
-   */
-  v1_protocol_group_create_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the protocol id to post for. */
-        protocol_id: string;
-        /** @description The optional id of the protocol group. */
-        group_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Protocol group created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroup"];
-        };
-      };
-      /** @description Protocol group internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a protocol group
-   * @description Get a protocol group
-   */
-  v1_protocol_group_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Protocola group returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroup"];
-        };
-      };
-      /** @description Protocola group not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of protocol groups
-   * @description Returns a list of protocol groups
-   */
-  v1_protocol_group_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first protocol group to return. */
-        offset?: number | null;
-        /** @description The maximum number of protocol groups to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Protocol groups returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroup"][];
-        };
-      };
-      /** @description Protocol group bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ProtocolGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of protocols
-   * @description Returns a list of protocols
-   */
-  v1_protocol_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first protocol to return. */
-        offset?: number | null;
-        /** @description The maximum number of protocols to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Protocols returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Protocol"][];
-        };
-      };
-      /** @description Protocol bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ProtocolError"];
-        };
-      };
-    };
-  };
-  /**
-   * Queue interpretation handler
-   * @description Queue interpretation handler
-   */
-  v1_queue_interpretation_handler: {
-    parameters: {
-      query?: {
-        /** @description The optional transaction hash to queue. */
-        transaction_hash?: string | null;
-        /** @description The optional user operation hash to queue. */
-        user_operation_hash?: string | null;
-      };
-    };
-    responses: {
-      /** @description Queue created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["QueueSuccess"];
-        };
-      };
-      /** @description Queue internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["QueueError"];
-        };
-      };
-    };
-  };
-  /**
-   * Queue portfolio handler
-   * @description Queue portfolio handler
-   */
-  v1_queue_portfolio_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the target queue. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Queue created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["QueueSuccess"];
-        };
-      };
-      /** @description Queue internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["QueueError"];
-        };
-      };
-    };
-  };
-  /**
-   * Queue token handler
-   * @description Queue token handler
-   */
-  v1_queue_token_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the target queue. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Queue created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["QueueSuccess"];
-        };
-      };
-      /** @description Queue internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["QueueError"];
-        };
-      };
-    };
-  };
-  /**
-   * Queue transaction handler
-   * @description Queue transaction handler
-   */
-  v1_queue_transaction_handler: {
-    parameters: {
-      query: {
-        /** @description The transaction hash of the target queue. */
-        hash: string;
-        /** @description The chain id of the target queue. */
-        chain_id: number;
-      };
-    };
-    responses: {
-      /** @description Queue created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["QueueSuccess"];
-        };
-      };
-      /** @description Queue internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["QueueError"];
-        };
-      };
-    };
-  };
-  /**
-   * Queue user operation handler
-   * @description Queue user operation handler
-   */
-  v1_queue_user_operation_handler: {
-    parameters: {
-      query: {
-        /** @description The user operation hash of the target queue. */
-        hash: string;
-      };
-    };
-    responses: {
-      /** @description Queue created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["QueueSuccess"];
-        };
-      };
-      /** @description Queue internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["QueueError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a signature
-   * @description Create a signature
-   */
-  v1_signature_create_handler: {
-    parameters: {
-      query: {
-        /** @description The hash of the user operation. */
-        user_operation_hash: string;
-        /** @description The procedure to create(default: OnChain) */
-        procedure?: ("Offchain" | "Onchain" | "Erc1271") | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SignatureCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Signature created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Signature"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-      /** @description Signature already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-      /** @description Signature internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a signature
-   * @description Get a signature
-   */
-  v1_signature_get_handler: {
-    parameters: {
-      query: {
-        /** @description The owner of the signature. */
-        owner_id: string;
-        /** @description The hash of the user operation. */
-        user_operation_hash: string;
-      };
-    };
-    responses: {
-      /** @description Signature returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Signature"];
-        };
-      };
-      /** @description Signature not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of signatures
-   * @description Returns a list of signatures
-   */
-  v1_signature_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first signature to return. */
-        offset?: number | null;
-        /** @description The maximum number of signatures to return. */
-        limit?: number | null;
-        /** @description The user operation hash to filter by. */
-        user_operation_hash?: string | null;
-      };
-    };
-    responses: {
-      /** @description Signatures returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Signature"][];
-        };
-      };
-      /** @description Signature bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SignatureError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a simulation
-   * @description Create a simulation
-   */
-  v1_simulation_create_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SimulationCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Simulation created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Simulation"];
-        };
-      };
-      /** @description Simulation internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SimulationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a simulation
-   * @description Get a simulation
-   */
-  v1_simulation_get_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the simulation to get. */
-        simulation_id: string;
-      };
-    };
-    responses: {
-      /** @description Simulation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Simulation"];
-        };
-      };
-      /** @description Simulation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["SimulationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of simulations
-   * @description Returns a list of simulations
-   */
-  v1_simulation_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first simulation to return. */
-        offset?: number | null;
-        /** @description The maximum number of simulations to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Simulations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Simulation"][];
-        };
-      };
-      /** @description Simulation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SimulationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of simulations
-   * @description Returns a count of list of simulations
-   */
-  v1_simulation_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first simulation to return. */
-        offset?: number | null;
-        /** @description The maximum number of simulations to return. */
-        limit?: number | null;
-        /** @description The user id to filter by. */
-        id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Simulations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SimulationListCount"];
-        };
-      };
-      /** @description Simulation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SimulationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a support_request
-   * @description Create a support_request
-   */
-  v1_support_request_create_handler: {
-    parameters: {
-      query: {
-        /** @description The wallet address of the user operation. */
-        wallet_address: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SupportRequestCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description SupportRequest created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SupportRequest"];
-        };
-      };
-      /** @description SupportRequest internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SupportRequestError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a token
-   * @description Get a token
-   */
-  v1_token_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the token. */
-        address: string;
-        /** @description The chain id of the token. */
-        chain_id: number;
-      };
-    };
-    responses: {
-      /** @description Token returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Token"];
-        };
-      };
-      /** @description Token not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["TokenError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a token group
-   * @description Create a token group
-   */
-  v1_token_group_create_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the token id to post for. */
-        token_id: string;
-        /** @description The optional id of the token group. */
-        group_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Token group created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenGroup"];
-        };
-      };
-      /** @description Token group internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TokenGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a token group
-   * @description Get a token group
-   */
-  v1_token_group_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Tokena group returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenGroup"];
-        };
-      };
-      /** @description Tokena group not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["TokenGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of token groups
-   * @description Returns a list of token groups
-   */
-  v1_token_group_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first token group to return. */
-        offset?: number | null;
-        /** @description The maximum number of token groups to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Token groups returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenGroup"][];
-        };
-      };
-      /** @description Token group bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TokenGroupError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of tokens
-   * @description Returns a list of tokens
-   */
-  v1_token_list_handler: {
-    parameters: {
-      query: {
-        /** @description The offset of the first token to return. */
-        offset?: number | null;
-        /** @description The maximum number of tokens to return. */
-        limit?: number | null;
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description The flag to indicate if the token is a spam. */
-        is_spam?: boolean | null;
-        /** @description The flag to indicate if the token is a testnet token. */
-        is_testnet?: boolean | null;
-        /** @description The flag to group the tokens by the token group. */
-        group?: boolean | null;
-        /** @description The optional chain ids of the tokens to query for. */
-        chain_ids?: string | null;
-      };
-    };
-    responses: {
-      /** @description Tokens returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Token"][];
-        };
-      };
-      /** @description Token bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TokenError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of tokens
-   * @description Returns a count of list of tokens
-   */
-  v1_token_list_count_handler: {
-    parameters: {
-      query: {
-        /** @description The offset of the first token to return. */
-        offset?: number | null;
-        /** @description The maximum number of tokens to return. */
-        limit?: number | null;
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description The flag to indicate if the token is a spam. */
-        is_spam?: boolean | null;
-        /** @description The flag to indicate if the token is a testnet token. */
-        is_testnet?: boolean | null;
-        /** @description The flag to group the tokens by the token group. */
-        group?: boolean | null;
-        /** @description The optional chain ids of the tokens to query for. */
-        chain_ids?: string | null;
-      };
-    };
-    responses: {
-      /** @description Tokens returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenListCount"];
-        };
-      };
-      /** @description Token bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TokenError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a token
-   * @description Update a token
-   */
-  v1_token_update_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the token id to post for. */
-        token_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Token updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Token"];
-        };
-      };
-      /** @description Token internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TokenError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a token_price
-   * @description Get a token_price
-   */
-  v1_token_price_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the token_price. */
-        address: string;
-        /** @description The chain id of the token_price. */
-        chain_id: number;
-      };
-    };
-    responses: {
-      /** @description Token returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenPrice"];
-        };
-      };
-      /** @description Token not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["TokenError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a transaction
-   * @description Get a transaction
-   */
-  v1_transaction_get_handler: {
-    parameters: {
-      query: {
-        /** @description The transaction hash. */
-        transaction_hash: string;
-      };
-    };
-    responses: {
-      /** @description Transaction returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Transaction"];
-        };
-      };
-      /** @description Transaction not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["TransactionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of transactions
-   * @description Returns a list of transactions
-   */
-  v1_transaction_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first transaction to return. */
-        offset?: number | null;
-        /** @description The maximum number of transactions to return. */
-        limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
-        /** @description The flag to indicate if the transaction is a testnet transaction. */
-        is_testnet?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description Transactions returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Transaction"][];
-        };
-      };
-      /** @description Transaction bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TransactionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of transactions
-   * @description Returns a count of list of transactions
-   */
-  v1_transaction_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first transaction to return. */
-        offset?: number | null;
-        /** @description The maximum number of transactions to return. */
-        limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
-        /** @description The flag to indicate if the transaction is a testnet transaction. */
-        is_testnet?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description Transactions returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TransactionListCount"];
-        };
-      };
-      /** @description Transaction bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["TransactionError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user
-   * @description Get a user
-   */
-  v1_user_get_handler: {
-    parameters: {
-      query?: {
-        /** @description The address of the user. */
-        address?: string | null;
-        /** @description The user id. */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description User returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["User"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user settings
-   * @description Get a user settings
-   */
-  v1_user_notification_settings_get_handler: {
-    parameters: {
-      query?: {
-        /** @description The user id to filter by. (for admin purposes only) */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description User Settings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettings"];
-        };
-      };
-      /** @description User Settings not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the user notification settings
-   * @description Update the user notification settings
-   */
-  v1_user_notification_settings_update_handler: {
-    parameters: {
-      query?: {
-        /** @description The user id to filter by. (for admin purposes only) */
-        user_id?: string | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserNotificationSettingsUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description User Settings updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettings"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettingsError"];
-        };
-      };
-      /** @description User Settings already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettingsError"];
-        };
-      };
-      /** @description User Settings internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserNotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user settings
-   * @description Get a user settings
-   */
-  v1_user_settings_get_handler: {
-    parameters: {
-      query?: {
-        /** @description The user id to filter by. (for admin purposes only) */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description User Settings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserSettings"];
-        };
-      };
-      /** @description User Settings not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the user settings
-   * @description Update the user settings
-   */
-  v1_user_settings_update_handler: {
-    parameters: {
-      query?: {
-        /** @description The user id to filter by. (for admin purposes only) */
-        user_id?: string | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserSettingsUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description User Settings updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserSettings"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["UserSettingsError"];
-        };
-      };
-      /** @description User Settings already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["UserSettingsError"];
-        };
-      };
-      /** @description User Settings internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a user operation
-   * @description Create a user operation
-   */
-  v1_user_operation_create_handler: {
-    parameters: {
-      query: {
-        chain_id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserOperationCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description User Operation created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperation"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-      /** @description User Operation already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-      /** @description User Operation internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a user operation
-   * @description Create a user operation
-   */
-  v1_user_operation_create_batch_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserOperationCreateBatchRequestParams"];
-      };
-    };
-    responses: {
-      /** @description User Operation created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperation"][];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-      /** @description User Operation already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-      /** @description User Operation internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user operation
-   * @description Get a user operation
-   */
-  v1_user_operation_get_handler: {
-    parameters: {
-      query: {
-        /** @description The user operation hash to get. */
-        user_operation_hash: string;
-      };
-    };
-    responses: {
-      /** @description User Operation returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperation"];
-        };
-      };
-      /** @description User Operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of user operations
-   * @description Returns a list of user operations
-   */
-  v1_user_operation_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first user operation to return. */
-        offset?: number | null;
-        /** @description The maximum number of user operations to return. */
-        limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
-        /** @description The chain id to filter by. */
-        chain_id?: number | null;
-        /** @description The status to filter by. */
-        status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
-        /**
-         * @description The direction to order by.
-         * Default is `asc`.
-         */
-        order?: ("asc" | "desc") | null;
-        /** @description The flag to indicate if the operation is a testnet user operation. */
-        is_testnet?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description User Operations returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperation"][];
-        };
-      };
-      /** @description User Operation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of user operations
-   * @description Returns a count of user operations
-   */
-  v1_user_operation_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first user operation to return. */
-        offset?: number | null;
-        /** @description The maximum number of user operations to return. */
-        limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
-        /** @description The chain id to filter by. */
-        chain_id?: number | null;
-        /** @description The status to filter by. */
-        status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
-        /**
-         * @description The direction to order by.
-         * Default is `asc`.
-         */
-        order?: ("asc" | "desc") | null;
-        /** @description The flag to indicate if the operation is a testnet user operation. */
-        is_testnet?: boolean | null;
-      };
-    };
-    responses: {
-      /** @description User Operation count returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationListCount"];
-        };
-      };
-      /** @description User Operation count bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user operation nonce
-   * @description Get a user operation nonce
-   */
-  v1_user_operation_nonce_handler: {
-    parameters: {
-      query: {
-        /** @description The chain id to get the user operation nonce for. */
-        chain_id: number;
-        /** @description The sender address to filter by. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description User Operation nonce returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationNonce"];
-        };
-      };
-      /** @description User Operation nonce not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Check a user operation for its validity and return the computed signature if valid
-   * @description Check a user operation for its validity and return the computed signature if valid
-   */
-  v1_user_operation_signature_handler: {
-    parameters: {
-      query: {
-        /** @description The user operation hash to get. */
-        user_operation_hash: string;
-        /** @description The type of signature to get for. */
-        signature_type?: number | null;
-        /** @description The optional configuration id that is on the current wallet. */
-        configuration_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description User Operation signature returned successfully */
-      200: {
-        content: {
-          "text/plain": string;
-        };
-      };
-      /** @description User Operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user operation
-   * @description Get a user operation
-   */
-  v1_user_operation_update_handler: {
-    parameters: {
-      query: {
-        /** @description The sender address to filter by. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description User Operation updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationSuccess"];
-        };
-      };
-      /** @description User Operation not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a user operation merkle
-   * @description Create a user operation merkle
-   */
-  v1_user_operation_merkle_create_handler: {
-    parameters: {
-      query: {
-        /** @description The root of the merkle root to post for. */
-        user_operation_merkle_root: string;
-      };
-    };
-    responses: {
-      /** @description User operation merkle created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkle"];
-        };
-      };
-      /** @description User operation merkle internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a protocol group
-   * @description Get a protocol group
-   */
-  v1_user_operation_merkle_get_handler: {
-    parameters: {
-      query: {
-        root: string;
-      };
-    };
-    responses: {
-      /** @description Protocola group returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkle"];
-        };
-      };
-      /** @description Protocola group not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of protocol groups
-   * @description Returns a list of protocol groups
-   */
-  v1_user_operation_merkle_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first protocol group to return. */
-        offset?: number | null;
-        /** @description The maximum number of protocol groups to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description Protocol groups returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkle"][];
-        };
-      };
-      /** @description Protocol group bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a user operation merkle proof
-   * @description Get a user operation merkle proof
-   */
-  v1_user_operation_merkle_proof_get_handler: {
-    parameters: {
-      query: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description User operation merkle proof returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleProof"];
-        };
-      };
-      /** @description User operation merkle proof not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleProofError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of user operation merkle proofs
-   * @description Returns a list of user operation merkle proofs
-   */
-  v1_user_operation_merkle_proof_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first User operation merkle proof to return. */
-        offset?: number | null;
-        /** @description The maximum number of User operation merkle proofs to return. */
-        limit?: number | null;
-      };
-    };
-    responses: {
-      /** @description User operation merkle proofs returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleProof"][];
-        };
-      };
-      /** @description User operation merkle proofs bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["UserOperationMerkleProofError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet billing
-   * @description Get a wallet billing
-   */
-  v1_wallet_billing_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet billing. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Wallet billing returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletBilling"];
-        };
-      };
-      /** @description Wallet billing not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletBillingError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the wallet billing
-   * @description Update the wallet billing
-   */
-  v1_wallet_billing_update_handler: {
-    parameters: {
-      query: {
-        /** @description The hash of the wallet billing. */
-        address: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletBillingUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet billing updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletBilling"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["WalletBillingError"];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          "application/json": components["schemas"]["WalletBillingError"];
-        };
-      };
-      /** @description Wallet billing internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletBillingError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a wallet
-   * @description Create a wallet
-   */
-  v1_wallet_create_handler: {
-    parameters: {
-      query?: {
-        /** @description Whether to simulate the wallet creation. */
-        simulate?: boolean | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletCreateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-      /** @description Wallet already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-      /** @description Wallet internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet features
-   * @description Get a wallet features
-   */
-  v1_wallet_features_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet features. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Wallet Features returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletFeatures"];
-        };
-      };
-      /** @description Wallet Features not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletFeaturesError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the wallet features
-   * @description Update the wallet features
-   */
-  v1_wallet_features_update_handler: {
-    parameters: {
-      query: {
-        /** @description The hash of the wallet features. */
-        address: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletFeaturesUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet Features updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletFeatures"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["WalletFeaturesError"];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          "application/json": components["schemas"]["WalletFeaturesError"];
-        };
-      };
-      /** @description Wallet Features internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletFeaturesError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet
-   * @description Get a wallet
-   */
-  v1_wallet_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description The chain id of the wallet. */
-        chain_id?: number | null;
-      };
-    };
-    responses: {
-      /** @description Wallet returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a list of wallets
-   * @description Returns a list of wallets
-   */
-  v1_wallet_list_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first wallet to return. */
-        offset?: number | null;
-        /** @description The maximum number of wallets to return. */
-        limit?: number | null;
-        /** @description A filter to return wallets w/ a given owner. */
-        owner?: string | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Wallets returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"][];
-        };
-      };
-      /** @description Wallet bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Returns a count of list of wallets
-   * @description Returns a count of list of wallets
-   */
-  v1_wallet_list_count_handler: {
-    parameters: {
-      query?: {
-        /** @description The offset of the first wallet to return. */
-        offset?: number | null;
-        /** @description The maximum number of wallets to return. */
-        limit?: number | null;
-        /** @description A filter to return wallets w/ a given owner. */
-        owner?: string | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Wallets returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletListCount"];
-        };
-      };
-      /** @description Wallet bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet notification settings
-   * @description Get a wallet notification settings
-   */
-  v1_wallet_notification_settings_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet settings. */
-        address: string;
-        /** @description The user id to filter by. (for admin purposes only) */
-        user_id?: string | null;
-      };
-    };
-    responses: {
-      /** @description Wallet Settings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettings"];
-        };
-      };
-      /** @description Wallet Settings not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the wallet notification settings
-   * @description Update the wallet notification settings
-   */
-  v1_wallet_notification_settings_update_handler: {
-    parameters: {
-      query: {
-        /** @description The hash of the wallet settings. */
-        address: string;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletNotificationSettingsUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet notification settings updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettings"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettingsError"];
-        };
-      };
-      /** @description Wallet notification settings already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettingsError"];
-        };
-      };
-      /** @description Wallet notification settings internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletNotificationSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet settings
-   * @description Get a wallet settings
-   */
-  v1_wallet_settings_get_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet settings. */
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Wallet settings returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletSettings"];
-        };
-      };
-      /** @description Wallet settings not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update the wallet settings
-   * @description Update the wallet settings
-   */
-  v1_wallet_settings_update_handler: {
-    parameters: {
-      query: {
-        /** @description The hash of the wallet settings. */
-        address: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletSettingsUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet Settings updated successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletSettings"];
-        };
-      };
-      /** @description Invalid Configuration */
-      400: {
-        content: {
-          "application/json": components["schemas"]["WalletSettingsError"];
-        };
-      };
-      /** @description Wallet Settings already exists */
-      409: {
-        content: {
-          "application/json": components["schemas"]["WalletSettingsError"];
-        };
-      };
-      /** @description Wallet Settings internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a wallet
-   * @description Update a wallet
-   */
-  v1_wallet_update_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description The chain id of the wallet. */
-        chain_id?: number | null;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["WalletUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Wallet returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
+    v1_activity_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the activity. */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Activity returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+            /** @description Activity not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityError"];
+                };
+            };
+        };
+    };
+    v1_activity_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first activity to return. */
+                offset?: number | null;
+                /** @description The maximum number of activities to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description Flag to query for only user initiated activities. */
+                is_user_related?: boolean | null;
+                /** @description The wallet address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Activities returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"][];
+                };
+            };
+            /** @description Activity bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityError"];
+                };
+            };
+        };
+    };
+    v1_activity_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first activity to return. */
+                offset?: number | null;
+                /** @description The maximum number of activities to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description Flag to query for only user initiated activities. */
+                is_user_related?: boolean | null;
+                /** @description The wallet address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Activities returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityListCount"];
+                };
+            };
+            /** @description Activity bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityError"];
+                };
+            };
+        };
+    };
+    v1_asset_change_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Asset Change returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssetChange"];
+                };
+            };
+            /** @description Asset Change not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssetChangeError"];
+                };
+            };
+        };
+    };
+    v1_asset_change_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first asset change to return. */
+                offset?: number | null;
+                /** @description The maximum number of asset changes to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Asset Changes returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssetChange"][];
+                };
+            };
+            /** @description Asset Change bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssetChangeError"];
+                };
+            };
+        };
+    };
+    v1_auth_logout_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Auth logout returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthSuccess"];
+                };
+            };
+            /** @description Auth logout not succeeded */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+        };
+    };
+    v1_auth_nonce_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Auth nonce returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthNonce"];
+                };
+            };
+            /** @description Auth nonce not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+        };
+    };
+    v1_auth_session_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Auth session returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthSession"];
+                };
+            };
+            /** @description Auth session not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+        };
+    };
+    v1_auth_verify_handler: {
+        parameters: {
+            query: {
+                user_address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AuthVerifyCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Auth verified successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthNonce"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+            /** @description Auth already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+            /** @description Auth internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthError"];
+                };
+            };
+        };
+    };
+    v1_billing_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Billing returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Billing"];
+                };
+            };
+            /** @description Billing not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingError"];
+                };
+            };
+        };
+    };
+    v1_billing_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first billing to return. */
+                offset?: number | null;
+                /** @description The maximum number of billings to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Billings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Billing"][];
+                };
+            };
+            /** @description Billing bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingError"];
+                };
+            };
+        };
+    };
+    v1_billing_update_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the billing id to post for. */
+                billing_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BillingUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Billing updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Billing"];
+                };
+            };
+            /** @description Billing internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingError"];
+                };
+            };
+        };
+    };
+    v1_billing_operation_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the billing operation. */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Billing operation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperation"];
+                };
+            };
+            /** @description Billing operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperationError"];
+                };
+            };
+        };
+    };
+    v1_billing_operation_list_handler: {
+        parameters: {
+            query: {
+                /** @description The offset of the first billing operation to return. */
+                offset?: number | null;
+                /** @description The maximum number of billing operations to return. */
+                limit?: number | null;
+                /** @description The status to filter by. */
+                status?: string | null;
+                /** @description The id to filter by. */
+                id?: string | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description The wallet address to filter by. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Billing operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperation"][];
+                };
+            };
+            /** @description Billing operation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperationError"];
+                };
+            };
+        };
+    };
+    v1_billing_operation_list_count_handler: {
+        parameters: {
+            query: {
+                /** @description The offset of the first billing operation to return. */
+                offset?: number | null;
+                /** @description The maximum number of billing operations to return. */
+                limit?: number | null;
+                /** @description The status to filter by. */
+                status?: string | null;
+                /** @description The id to filter by. */
+                id?: string | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description The wallet address to filter by. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Billing operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperationListCount"];
+                };
+            };
+            /** @description BillingOperation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingOperationError"];
+                };
+            };
+        };
+    };
+    v1_chain_create_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the chain id to create for. */
+                id: number;
+                /** @description The name of the chain. */
+                name: string;
+                /** @description A boolean value to indicate if the chain is testnet. */
+                is_testnet: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Chain created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Chain"];
+                };
+            };
+            /** @description Chain internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChainError"];
+                };
+            };
+        };
+    };
+    v1_chain_get_handler: {
+        parameters: {
+            query: {
+                /** @description The chain id to query for. */
+                id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocola group returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Chain"];
+                };
+            };
+            /** @description Protocola group not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChainError"];
+                };
+            };
+        };
+    };
+    v1_chain_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first protocol group to return. */
+                offset?: number | null;
+                /** @description The maximum number of protocol groups to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocol groups returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Chain"][];
+                };
+            };
+            /** @description Protocol group bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChainError"];
+                };
+            };
+        };
+    };
+    v1_chain_update_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the chain id to updatefor. */
+                id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChainUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Chain updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Chain"];
+                };
+            };
+            /** @description Chain internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChainError"];
+                };
+            };
+        };
+    };
+    handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Check returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    v1_configuration_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the configuration to query. */
+                address: string;
+                /** @description The optional image_hash to filter by. */
+                image_hash?: string | null;
+                /** @description The optional checkpoint to filter by. */
+                checkpoint?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Configuration"];
+                };
+            };
+            /** @description Configuration not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first configuration to return. */
+                offset?: number | null;
+                /** @description The maximum number of configurations to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configurations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Configuration"][];
+                };
+            };
+            /** @description Configurations bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_create_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet. */
+                address: string;
+                /** @description Whether to simulate the configuration operation. */
+                simulate?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfigurationOperationCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Signature created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperation"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+            /** @description Signature already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+            /** @description Signature internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration operation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperation"];
+                };
+            };
+            /** @description Configuration operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first interpretation action to return. */
+                offset?: number | null;
+                /** @description The maximum number of interpretation actions to return. */
+                limit?: number | null;
+                /** @description The status to filter by. */
+                status?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration Operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperation"][];
+                };
+            };
+            /** @description Configuration Operation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first interpretation action to return. */
+                offset?: number | null;
+                /** @description The maximum number of interpretation actions to return. */
+                limit?: number | null;
+                /** @description The status to filter by. */
+                status?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration Operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationListCount"];
+                };
+            };
+            /** @description Configuration Operations bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_update_handler: {
+        parameters: {
+            query: {
+                /** @description The operation of the configuration. */
+                configuration_operation_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration operation updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperation"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+            /** @description Configuration operation internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_owner_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ConfigurationOperationOwner returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationOwner"];
+                };
+            };
+            /** @description ConfigurationOperationOwner not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_owner_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first owner to return. */
+                offset?: number | null;
+                /** @description The maximum number of owners to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration Operation Owners returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationOwner"][];
+                };
+            };
+            /** @description Configuration Operation Owners bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_signature_create_handler: {
+        parameters: {
+            query: {
+                /** @description The operation of the configuration. */
+                configuration_operation_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfigurationOperationSignatureCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Signature created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Signature"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+            /** @description Signature already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+            /** @description Signature internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_signature_get_handler: {
+        parameters: {
+            query: {
+                /** @description The configuration operation id of the signature. */
+                configuration_operation_id: string;
+                /** @description The configuration owner of the signature. */
+                owner_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration Operation Signature returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationSignature"];
+                };
+            };
+            /** @description Configuration Operation Signature not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
+                };
+            };
+        };
+    };
+    v1_configuration_operation_signature_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first signature to return. */
+                offset?: number | null;
+                /** @description The maximum number of signatures to return. */
+                limit?: number | null;
+                /** @description The configuration operation id to filter by. */
+                configuration_operation_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Configuration Signatures returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationSignature"][];
+                };
+            };
+            /** @description Configuration Signature bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
+                };
+            };
+        };
+    };
+    v1_feedback_create_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Feedback created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Feedback"];
+                };
+            };
+            /** @description Feedback internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackError"];
+                };
+            };
+        };
+    };
+    handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Health returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    v1_interpretation_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the interpretation to get. */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Interpretation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Interpretation"];
+                };
+            };
+            /** @description Interpretation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationError"];
+                };
+            };
+        };
+    };
+    v1_interpretation_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first interpretation to return. */
+                offset?: number | null;
+                /** @description The maximum number of interpretations to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Interpretations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Interpretation"][];
+                };
+            };
+            /** @description Interpretations bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationError"];
+                };
+            };
+        };
+    };
+    v1_interpretation_action_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the interpretation action. */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Interpretation action returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationAction"];
+                };
+            };
+            /** @description Interpretation action not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationActionError"];
+                };
+            };
+        };
+    };
+    v1_interpretation_action_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first interpretation action to return. */
+                offset?: number | null;
+                /** @description The maximum number of interpretation actions to return. */
+                limit?: number | null;
+                /** @description The action to filter by. */
+                action?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Interpretation Actions returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationAction"][];
+                };
+            };
+            /** @description Interpretation Action bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationActionError"];
+                };
+            };
+        };
+    };
+    v1_interpretation_action_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first interpretation action to return. */
+                offset?: number | null;
+                /** @description The maximum number of interpretation actions to return. */
+                limit?: number | null;
+                /** @description The action to filter by. */
+                action?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Interpretation actions returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationActionListCount"];
+                };
+            };
+            /** @description InterpretationAction bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationActionError"];
+                };
+            };
+        };
+    };
+    v1_invite_code_create_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Invite code created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCode"];
+                };
+            };
+            /** @description Invite code internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCodeError"];
+                };
+            };
+        };
+    };
+    v1_invite_code_get_handler: {
+        parameters: {
+            query: {
+                /** @description The code of the invite code. */
+                code: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Invite code returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCode"];
+                };
+            };
+            /** @description Invite code not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCodeError"];
+                };
+            };
+        };
+    };
+    v1_invite_code_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first invite code to return. */
+                offset?: number | null;
+                /** @description The maximum number of invite codes to return. */
+                limit?: number | null;
+                /** @description The id of the user to return invite codes for. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Invite Codes returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCode"][];
+                };
+            };
+            /** @description InviteCode bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCodeError"];
+                };
+            };
+        };
+    };
+    v1_invite_code_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first invite code to return. */
+                offset?: number | null;
+                /** @description The maximum number of invite codes to return. */
+                limit?: number | null;
+                /** @description The id of the user to return invite codes for. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Invite Codes returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCodeListCount"];
+                };
+            };
+            /** @description InviteCode bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteCodeError"];
+                };
+            };
+        };
+    };
+    v1_notification_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the notification to get. */
+                notification_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notification returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"];
+                };
+            };
+            /** @description Notification not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationError"];
+                };
+            };
+        };
+    };
+    v1_notification_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first notification to return. */
+                offset?: number | null;
+                /** @description The maximum number of notifications to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notifications returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"][];
+                };
+            };
+            /** @description Notification bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationError"];
+                };
+            };
+        };
+    };
+    v1_notification_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first notification to return. */
+                offset?: number | null;
+                /** @description The maximum number of notifications to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+                /** @description The address to filter by. */
+                address?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notifications returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationListCount"];
+                };
+            };
+            /** @description Notification bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationError"];
+                };
+            };
+        };
+    };
+    v1_notification_read_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotificationReadRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Notification created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": number;
+                };
+            };
+            /** @description Notification internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationError"];
+                };
+            };
+        };
+    };
+    v1_notification_settings_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the notification settings. */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notification settings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettings"];
+                };
+            };
+            /** @description Notification settings not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_notification_settings_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first notification settings to return. */
+                offset?: number | null;
+                /** @description The maximum number of notification settingss to return. */
+                limit?: number | null;
+                /** @description The flag to filter by enabled or disabled. */
+                is_enabled?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notification settingss returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettings"][];
+                };
+            };
+            /** @description Notification settings bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_notification_settings_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first notification settings to return. */
+                offset?: number | null;
+                /** @description The maximum number of notification settingss to return. */
+                limit?: number | null;
+                /** @description The flag to filter by enabled or disabled. */
+                is_enabled?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notification settingss returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettingsListCount"];
+                };
+            };
+            /** @description NotificationSettings bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_owner_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Owner returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Owner"];
+                };
+            };
+            /** @description Owner not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OwnerError"];
+                };
+            };
+        };
+    };
+    v1_owner_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first owner to return. */
+                offset?: number | null;
+                /** @description The maximum number of owners to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Owners returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Owner"][];
+                };
+            };
+            /** @description Owner bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OwnerError"];
+                };
+            };
+        };
+    };
+    v1_paymaster_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Paymaster returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Paymaster"];
+                };
+            };
+            /** @description Paymaster not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterError"];
+                };
+            };
+        };
+    };
+    v1_paymaster_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first paymaster to return. */
+                offset?: number | null;
+                /** @description The maximum number of paymasters to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Paymasters returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Paymaster"][];
+                };
+            };
+            /** @description Paymaster bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterError"];
+                };
+            };
+        };
+    };
+    v1_paymaster_operation_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the paymaster. */
+                address: string;
+                /** @description The chain id of the paymaster. */
+                chain_id: number;
+                /** @description The valid until of the paymaster. */
+                valid_until: number;
+                /** @description The valid after of the paymaster. */
+                valid_after: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Paymaster Operation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterOperation"];
+                };
+            };
+            /** @description Paymaster Operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterOperationError"];
+                };
+            };
+        };
+    };
+    v1_paymaster_operation_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first paymaster operation to return. */
+                offset?: number | null;
+                /** @description The maximum number of paymaster operations to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Paymaster Operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterOperation"][];
+                };
+            };
+            /** @description Paymaster Operation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymasterOperationError"];
+                };
+            };
+        };
+    };
+    v1_portfolio_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the portfolio. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Portfolio returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Portfolio"];
+                };
+            };
+            /** @description Portfolio not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioError"];
+                };
+            };
+        };
+    };
+    v1_protocol_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocol returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Protocol"];
+                };
+            };
+            /** @description Protocol not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolError"];
+                };
+            };
+        };
+    };
+    v1_protocol_group_create_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the protocol id to post for. */
+                protocol_id: string;
+                /** @description The optional id of the protocol group. */
+                group_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocol group created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroup"];
+                };
+            };
+            /** @description Protocol group internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroupError"];
+                };
+            };
+        };
+    };
+    v1_protocol_group_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocola group returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroup"];
+                };
+            };
+            /** @description Protocola group not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroupError"];
+                };
+            };
+        };
+    };
+    v1_protocol_group_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first protocol group to return. */
+                offset?: number | null;
+                /** @description The maximum number of protocol groups to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocol groups returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroup"][];
+                };
+            };
+            /** @description Protocol group bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolGroupError"];
+                };
+            };
+        };
+    };
+    v1_protocol_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first protocol to return. */
+                offset?: number | null;
+                /** @description The maximum number of protocols to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocols returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Protocol"][];
+                };
+            };
+            /** @description Protocol bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolError"];
+                };
+            };
+        };
+    };
+    v1_queue_interpretation_handler: {
+        parameters: {
+            query?: {
+                /** @description The optional transaction hash to queue. */
+                transaction_hash?: string | null;
+                /** @description The optional user operation hash to queue. */
+                user_operation_hash?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_queue_portfolio_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the target queue. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_queue_token_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the target queue. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_queue_transaction_handler: {
+        parameters: {
+            query: {
+                /** @description The transaction hash of the target queue. */
+                hash: string;
+                /** @description The chain id of the target queue. */
+                chain_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_queue_user_operation_handler: {
+        parameters: {
+            query: {
+                /** @description The user operation hash of the target queue. */
+                hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_signature_create_handler: {
+        parameters: {
+            query: {
+                /** @description The hash of the user operation. */
+                user_operation_hash: string;
+                /** @description The procedure to create(default: OnChain) */
+                procedure?: ("Offchain" | "Onchain" | "Erc1271") | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignatureCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Signature created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Signature"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+            /** @description Signature already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+            /** @description Signature internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+        };
+    };
+    v1_signature_get_handler: {
+        parameters: {
+            query: {
+                /** @description The owner of the signature. */
+                owner_id: string;
+                /** @description The hash of the user operation. */
+                user_operation_hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signature returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Signature"];
+                };
+            };
+            /** @description Signature not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+        };
+    };
+    v1_signature_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first signature to return. */
+                offset?: number | null;
+                /** @description The maximum number of signatures to return. */
+                limit?: number | null;
+                /** @description The user operation hash to filter by. */
+                user_operation_hash?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signatures returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Signature"][];
+                };
+            };
+            /** @description Signature bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignatureError"];
+                };
+            };
+        };
+    };
+    v1_simulation_create_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SimulationCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Simulation created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Simulation"];
+                };
+            };
+            /** @description Simulation internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationError"];
+                };
+            };
+        };
+    };
+    v1_simulation_get_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the simulation to get. */
+                simulation_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Simulation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Simulation"];
+                };
+            };
+            /** @description Simulation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationError"];
+                };
+            };
+        };
+    };
+    v1_simulation_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first simulation to return. */
+                offset?: number | null;
+                /** @description The maximum number of simulations to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Simulations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Simulation"][];
+                };
+            };
+            /** @description Simulation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationError"];
+                };
+            };
+        };
+    };
+    v1_simulation_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first simulation to return. */
+                offset?: number | null;
+                /** @description The maximum number of simulations to return. */
+                limit?: number | null;
+                /** @description The user id to filter by. */
+                id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Simulations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationListCount"];
+                };
+            };
+            /** @description Simulation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationError"];
+                };
+            };
+        };
+    };
+    v1_support_request_create_handler: {
+        parameters: {
+            query: {
+                /** @description The wallet address of the user operation. */
+                wallet_address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupportRequestCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description SupportRequest created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupportRequest"];
+                };
+            };
+            /** @description SupportRequest internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupportRequestError"];
+                };
+            };
+        };
+    };
+    v1_token_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the token. */
+                address: string;
+                /** @description The chain id of the token. */
+                chain_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Token returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Token"];
+                };
+            };
+            /** @description Token not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenError"];
+                };
+            };
+        };
+    };
+    v1_token_group_create_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the token id to post for. */
+                token_id: string;
+                /** @description The optional id of the token group. */
+                group_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Token group created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroup"];
+                };
+            };
+            /** @description Token group internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroupError"];
+                };
+            };
+        };
+    };
+    v1_token_group_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Tokena group returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroup"];
+                };
+            };
+            /** @description Tokena group not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroupError"];
+                };
+            };
+        };
+    };
+    v1_token_group_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first token group to return. */
+                offset?: number | null;
+                /** @description The maximum number of token groups to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Token groups returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroup"][];
+                };
+            };
+            /** @description Token group bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenGroupError"];
+                };
+            };
+        };
+    };
+    v1_token_list_handler: {
+        parameters: {
+            query: {
+                /** @description The offset of the first token to return. */
+                offset?: number | null;
+                /** @description The maximum number of tokens to return. */
+                limit?: number | null;
+                /** @description The address of the wallet. */
+                address: string;
+                /** @description The flag to indicate if the token is a spam. */
+                is_spam?: boolean | null;
+                /** @description The flag to indicate if the token is a testnet token. */
+                is_testnet?: boolean | null;
+                /** @description The flag to group the tokens by the token group. */
+                group?: boolean | null;
+                /** @description The optional chain ids of the tokens to query for. */
+                chain_ids?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Tokens returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Token"][];
+                };
+            };
+            /** @description Token bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenError"];
+                };
+            };
+        };
+    };
+    v1_token_list_count_handler: {
+        parameters: {
+            query: {
+                /** @description The offset of the first token to return. */
+                offset?: number | null;
+                /** @description The maximum number of tokens to return. */
+                limit?: number | null;
+                /** @description The address of the wallet. */
+                address: string;
+                /** @description The flag to indicate if the token is a spam. */
+                is_spam?: boolean | null;
+                /** @description The flag to indicate if the token is a testnet token. */
+                is_testnet?: boolean | null;
+                /** @description The flag to group the tokens by the token group. */
+                group?: boolean | null;
+                /** @description The optional chain ids of the tokens to query for. */
+                chain_ids?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Tokens returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenListCount"];
+                };
+            };
+            /** @description Token bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenError"];
+                };
+            };
+        };
+    };
+    v1_token_update_handler: {
+        parameters: {
+            query: {
+                /** @description The id of the token id to post for. */
+                token_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Token updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Token"];
+                };
+            };
+            /** @description Token internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenError"];
+                };
+            };
+        };
+    };
+    v1_token_price_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the token_price. */
+                address: string;
+                /** @description The chain id of the token_price. */
+                chain_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Token returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPrice"];
+                };
+            };
+            /** @description Token not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenError"];
+                };
+            };
+        };
+    };
+    v1_transaction_get_handler: {
+        parameters: {
+            query: {
+                /** @description The transaction hash. */
+                transaction_hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Transaction returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Transaction"];
+                };
+            };
+            /** @description Transaction not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionError"];
+                };
+            };
+        };
+    };
+    v1_transaction_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first transaction to return. */
+                offset?: number | null;
+                /** @description The maximum number of transactions to return. */
+                limit?: number | null;
+                /** @description The sender address to filter by. */
+                address?: string | null;
+                /** @description The flag to indicate if the transaction is a testnet transaction. */
+                is_testnet?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Transactions returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Transaction"][];
+                };
+            };
+            /** @description Transaction bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionError"];
+                };
+            };
+        };
+    };
+    v1_transaction_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first transaction to return. */
+                offset?: number | null;
+                /** @description The maximum number of transactions to return. */
+                limit?: number | null;
+                /** @description The sender address to filter by. */
+                address?: string | null;
+                /** @description The flag to indicate if the transaction is a testnet transaction. */
+                is_testnet?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Transactions returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionListCount"];
+                };
+            };
+            /** @description Transaction bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionError"];
+                };
+            };
+        };
+    };
+    v1_user_get_handler: {
+        parameters: {
+            query?: {
+                /** @description The address of the user. */
+                address?: string | null;
+                /** @description The user id. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserError"];
+                };
+            };
+        };
+    };
+    v1_user_notification_settings_get_handler: {
+        parameters: {
+            query?: {
+                /** @description The user id to filter by. (for admin purposes only) */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Settings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettings"];
+                };
+            };
+            /** @description User Settings not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_user_notification_settings_update_handler: {
+        parameters: {
+            query?: {
+                /** @description The user id to filter by. (for admin purposes only) */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserNotificationSettingsUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description User Settings updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettings"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsError"];
+                };
+            };
+            /** @description User Settings already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsError"];
+                };
+            };
+            /** @description User Settings internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_user_settings_get_handler: {
+        parameters: {
+            query?: {
+                /** @description The user id to filter by. (for admin purposes only) */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Settings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettings"];
+                };
+            };
+            /** @description User Settings not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettingsError"];
+                };
+            };
+        };
+    };
+    v1_user_settings_update_handler: {
+        parameters: {
+            query?: {
+                /** @description The user id to filter by. (for admin purposes only) */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserSettingsUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description User Settings updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettings"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettingsError"];
+                };
+            };
+            /** @description User Settings already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettingsError"];
+                };
+            };
+            /** @description User Settings internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSettingsError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_create_handler: {
+        parameters: {
+            query: {
+                chain_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserOperationCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description User Operation created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperation"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+            /** @description User Operation already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+            /** @description User Operation internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_create_batch_handler: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserOperationCreateBatchRequestParams"];
+            };
+        };
+        responses: {
+            /** @description User Operation created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperation"][];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+            /** @description User Operation already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+            /** @description User Operation internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_get_handler: {
+        parameters: {
+            query: {
+                /** @description The user operation hash to get. */
+                user_operation_hash: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operation returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperation"];
+                };
+            };
+            /** @description User Operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first user operation to return. */
+                offset?: number | null;
+                /** @description The maximum number of user operations to return. */
+                limit?: number | null;
+                /** @description The sender address to filter by. */
+                address?: string | null;
+                /** @description The chain id to filter by. */
+                chain_id?: number | null;
+                /** @description The status to filter by. */
+                status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
+                /** @description The direction to order by.
+                 *     Default is `asc`. */
+                order?: ("asc" | "desc") | null;
+                /** @description The flag to indicate if the operation is a testnet user operation. */
+                is_testnet?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operations returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperation"][];
+                };
+            };
+            /** @description User Operation bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first user operation to return. */
+                offset?: number | null;
+                /** @description The maximum number of user operations to return. */
+                limit?: number | null;
+                /** @description The sender address to filter by. */
+                address?: string | null;
+                /** @description The chain id to filter by. */
+                chain_id?: number | null;
+                /** @description The status to filter by. */
+                status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
+                /** @description The direction to order by.
+                 *     Default is `asc`. */
+                order?: ("asc" | "desc") | null;
+                /** @description The flag to indicate if the operation is a testnet user operation. */
+                is_testnet?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operation count returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationListCount"];
+                };
+            };
+            /** @description User Operation count bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_nonce_handler: {
+        parameters: {
+            query: {
+                /** @description The chain id to get the user operation nonce for. */
+                chain_id: number;
+                /** @description The sender address to filter by. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operation nonce returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationNonce"];
+                };
+            };
+            /** @description User Operation nonce not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_signature_handler: {
+        parameters: {
+            query: {
+                /** @description The user operation hash to get. */
+                user_operation_hash: string;
+                /** @description The optional configuration id that is on the current wallet. */
+                configuration_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operation signature returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
+            };
+            /** @description User Operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_update_handler: {
+        parameters: {
+            query: {
+                /** @description The sender address to filter by. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User Operation updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationSuccess"];
+                };
+            };
+            /** @description User Operation not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_merkle_create_handler: {
+        parameters: {
+            query: {
+                /** @description The root of the merkle root to post for. */
+                user_operation_merkle_root: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User operation merkle created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkle"];
+                };
+            };
+            /** @description User operation merkle internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_merkle_get_handler: {
+        parameters: {
+            query: {
+                root: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocola group returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkle"];
+                };
+            };
+            /** @description Protocola group not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_merkle_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first protocol group to return. */
+                offset?: number | null;
+                /** @description The maximum number of protocol groups to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Protocol groups returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkle"][];
+                };
+            };
+            /** @description Protocol group bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_merkle_proof_get_handler: {
+        parameters: {
+            query: {
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User operation merkle proof returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleProof"];
+                };
+            };
+            /** @description User operation merkle proof not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleProofError"];
+                };
+            };
+        };
+    };
+    v1_user_operation_merkle_proof_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first User operation merkle proof to return. */
+                offset?: number | null;
+                /** @description The maximum number of User operation merkle proofs to return. */
+                limit?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User operation merkle proofs returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleProof"][];
+                };
+            };
+            /** @description User operation merkle proofs bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOperationMerkleProofError"];
+                };
+            };
+        };
+    };
+    v1_wallet_billing_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet billing. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallet billing returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBilling"];
+                };
+            };
+            /** @description Wallet billing not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBillingError"];
+                };
+            };
+        };
+    };
+    v1_wallet_billing_update_handler: {
+        parameters: {
+            query: {
+                /** @description The hash of the wallet billing. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletBillingUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet billing updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBilling"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBillingError"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBillingError"];
+                };
+            };
+            /** @description Wallet billing internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletBillingError"];
+                };
+            };
+        };
+    };
+    v1_wallet_create_handler: {
+        parameters: {
+            query?: {
+                /** @description Whether to simulate the wallet creation. */
+                simulate?: boolean | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletCreateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Wallet"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+            /** @description Wallet already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+            /** @description Wallet internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+        };
+    };
+    v1_wallet_features_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet features. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallet Features returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeatures"];
+                };
+            };
+            /** @description Wallet Features not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeaturesError"];
+                };
+            };
+        };
+    };
+    v1_wallet_features_update_handler: {
+        parameters: {
+            query: {
+                /** @description The hash of the wallet features. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletFeaturesUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet Features updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeatures"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeaturesError"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeaturesError"];
+                };
+            };
+            /** @description Wallet Features internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletFeaturesError"];
+                };
+            };
+        };
+    };
+    v1_wallet_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet. */
+                address: string;
+                /** @description The chain id of the wallet. */
+                chain_id?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallet returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Wallet"];
+                };
+            };
+            /** @description Wallet not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+        };
+    };
+    v1_wallet_list_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first wallet to return. */
+                offset?: number | null;
+                /** @description The maximum number of wallets to return. */
+                limit?: number | null;
+                /** @description A filter to return wallets w/ a given owner. */
+                owner?: string | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallets returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Wallet"][];
+                };
+            };
+            /** @description Wallet bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+        };
+    };
+    v1_wallet_list_count_handler: {
+        parameters: {
+            query?: {
+                /** @description The offset of the first wallet to return. */
+                offset?: number | null;
+                /** @description The maximum number of wallets to return. */
+                limit?: number | null;
+                /** @description A filter to return wallets w/ a given owner. */
+                owner?: string | null;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallets returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletListCount"];
+                };
+            };
+            /** @description Wallet bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+        };
+    };
+    v1_wallet_notification_settings_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet settings. */
+                address: string;
+                /** @description The user id to filter by. (for admin purposes only) */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallet Settings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettings"];
+                };
+            };
+            /** @description Wallet Settings not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_wallet_notification_settings_update_handler: {
+        parameters: {
+            query: {
+                /** @description The hash of the wallet settings. */
+                address: string;
+                /** @description The user id to filter by. */
+                user_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletNotificationSettingsUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet notification settings updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettings"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettingsError"];
+                };
+            };
+            /** @description Wallet notification settings already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettingsError"];
+                };
+            };
+            /** @description Wallet notification settings internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletNotificationSettingsError"];
+                };
+            };
+        };
+    };
+    v1_wallet_settings_get_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet settings. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wallet settings returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettings"];
+                };
+            };
+            /** @description Wallet settings not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettingsError"];
+                };
+            };
+        };
+    };
+    v1_wallet_settings_update_handler: {
+        parameters: {
+            query: {
+                /** @description The hash of the wallet settings. */
+                address: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletSettingsUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet Settings updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettings"];
+                };
+            };
+            /** @description Invalid Configuration */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettingsError"];
+                };
+            };
+            /** @description Wallet Settings already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettingsError"];
+                };
+            };
+            /** @description Wallet Settings internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletSettingsError"];
+                };
+            };
+        };
+    };
+    v1_wallet_update_handler: {
+        parameters: {
+            query: {
+                /** @description The address of the wallet. */
+                address: string;
+                /** @description The chain id of the wallet. */
+                chain_id?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WalletUpdateRequestParams"];
+            };
+        };
+        responses: {
+            /** @description Wallet returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Wallet"];
+                };
+            };
+            /** @description Wallet bad request */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WalletError"];
+                };
+            };
+        };
+    };
 }

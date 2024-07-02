@@ -21,5 +21,6 @@ import type { Address } from "viem";
 export type PaymasterOperationGetParams = {
   address: Address | null | undefined;
   chain_id: number;
+  valid_until: number;
   valid_after: number;
 };

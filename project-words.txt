@@ -790,6 +790,7 @@ KSUID
 KUJIRA
 Kukg
 kvstore
+kyberswap
 kysely
 Kysely
 kysley
@@ -831,6 +832,7 @@ libudev
 libuniffi
 libvips
 libzip
+lifi
 LIFI
 lifuel
 lightdotso
@@ -1025,6 +1027,7 @@ occurences
 oclif
 ococ
 ocxt
+odos
 Odos
 oeprations
 ofetch
@@ -1196,6 +1199,7 @@ qzzad
 ramda
 randombytes
 randomfill
+rango
 Rango
 Rapi
 rapidoc

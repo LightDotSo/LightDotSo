@@ -51,11 +51,6 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
 
       const res = await createFeedback(
         {
-          params: {
-            query: {
-              user_id: params.user_id,
-            },
-          },
           body: {
             feedback: body.feedback,
           },
