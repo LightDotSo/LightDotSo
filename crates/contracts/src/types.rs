@@ -80,10 +80,7 @@ pub struct GasAndPaymasterAndData {
     pub call_gas_limit: U256,
     pub verification_gas_limit: U256,
     pub pre_verification_gas: U256,
-    pub max_fee_per_gas: U256,
-    pub max_priority_fee_per_gas: U256,
     pub paymaster_and_data: Bytes,
-    pub paymaster_nonce: U256,
 }
 
 /// User operation required for the request.

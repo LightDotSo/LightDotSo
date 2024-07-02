@@ -18,9 +18,12 @@
 use ethers::types::{Address, Bytes};
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::types::{
-    EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
-    UserOperationRequest,
+use lightdotso_contracts::{
+    types::{
+        EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
+        UserOperationRequest,
+    },
+    utils::is_testnet,
 };
 use lightdotso_db::{
     db::create_client,
@@ -62,12 +65,16 @@ pub async fn fetch_user_operation_sponsorship(
             info!("pimlico policy: {:?}", policy);
 
             let sponsorship = get_user_operation_sponsorship(
-                format!("{}/{}/rpc?apiKey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
+                format!("{}/{}/rpc?apikey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
                 entry_point,
                 &user_operation,
-                json!({
-                    "sponsorshipPolicy": policy
-                }),
+                if !is_testnet(chain_id) {
+                    Some(json!({
+                        "sponsorshipPolicyId": policy
+                    }))
+                } else {
+                    None
+                },
             )
             .await
             .map_err(JsonRpcError::from);
@@ -290,11 +297,12 @@ pub async fn get_user_operation_sponsorship(
     rpc_url: String,
     entry_point: Address,
     user_operation_construct: &UserOperationConstruct,
-    sponsorship_policy: Value,
+    sponsorship_policy: Option<Value>,
 ) -> Result<Response<GasAndPaymasterAndData>> {
     let user_operation = UserOperationRequest {
         call_data: user_operation_construct.call_data.clone(),
         init_code: user_operation_construct.init_code.clone(),
+        signature: user_operation_construct.signature.clone(),
         nonce: user_operation_construct.nonce,
         sender: user_operation_construct.sender,
         pre_verification_gas: Some(user_operation_construct.pre_verification_gas),
@@ -303,10 +311,13 @@ pub async fn get_user_operation_sponsorship(
         max_fee_per_gas: Some(user_operation_construct.max_fee_per_gas),
         max_priority_fee_per_gas: Some(user_operation_construct.max_priority_fee_per_gas),
         paymaster_and_data: Some(Bytes::default()),
-        signature: Bytes::default(),
     };
 
-    let params = vec![json!(user_operation), json!(entry_point), sponsorship_policy];
+    let params = if let Some(policy) = sponsorship_policy {
+        vec![json!(user_operation), json!(entry_point), policy]
+    } else {
+        vec![json!(user_operation), json!(entry_point)]
+    };
     info!("params: {:?}", params);
 
     let req_body = Request {

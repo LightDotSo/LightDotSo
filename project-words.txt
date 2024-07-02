@@ -840,6 +840,7 @@ lightrouter
 lightwallet
 Likeasset
 lilconfig
+Linea
 LINEA
 linewrap
 Linkcolors
