@@ -18,6 +18,7 @@ pub mod covalent;
 pub mod error_transaction;
 pub mod interpretation;
 pub mod notification;
+pub mod paymaster_operation;
 pub mod portfolio;
 pub mod routescan;
 pub mod transaction;

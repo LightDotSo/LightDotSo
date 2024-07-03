@@ -441,7 +441,7 @@
     "_id": "12a14442-6f5f-4b2a-ba22-c23859cc53f9",
     "colId": "history",
     "containerId": "",
-    "name": "paymaster_requestPaymasterAndData",
+    "name": "eth_estimateUserOperationGas",
     "url": "https://rpc.light.so/1",
     "method": "POST",
     "sortNum": 0,

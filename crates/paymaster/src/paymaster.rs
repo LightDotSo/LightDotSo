@@ -19,19 +19,11 @@ use ethers::types::{Address, Bytes};
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::{
-    paymaster::{decode_paymaster_and_data, get_paymaster},
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
     },
     utils::is_testnet,
-};
-use lightdotso_db::{
-    db::create_client,
-    models::{
-        billing_operation::create_billing_operation,
-        paymaster_operation::create_paymaster_operation,
-    },
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -39,10 +31,14 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_prisma::paymaster_operation;
+use lightdotso_kafka::{
+    get_producer, topics::paymaster_operation::produce_paymaster_operation_message,
+    types::paymaster_operation::PaymasterOperationMessage,
+};
 use lightdotso_rpc::constants::{PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::{json, Value};
+use std::sync::Arc;
 
 use crate::constants::{
     PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
@@ -51,8 +47,30 @@ use crate::constants::{
 /// The paymaster api implementation.
 pub(crate) struct PaymasterApi {}
 
+// Create the paymaster topic message..
+pub async fn create_billing_operation_msg(
+    chain_id: u64,
+    user_operation: UserOperationRequest,
+    gas_and_paymaster_and_data: GasAndPaymasterAndData,
+) -> Result<()> {
+    // Get the producer.
+    let producer = Arc::new(get_producer()?);
+
+    // Construct the paymaster operation message.
+    let paymaster_operation_message = PaymasterOperationMessage {
+        chain_id,
+        sender: user_operation.sender,
+        gas_and_paymaster_and_data,
+    };
+
+    // Produce the paymaster operation message.
+    produce_paymaster_operation_message(producer, &paymaster_operation_message).await?;
+
+    Ok(())
+}
+
 // Retryable sponsorship fetch function.
-pub async fn fetch_user_operation_sponsorship(
+pub async fn fetch_gas_and_paymaster_and_data(
     user_operation: UserOperationRequest,
     entry_point: Address,
     chain_id: u64,
@@ -65,7 +83,7 @@ pub async fn fetch_user_operation_sponsorship(
 
     // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
     if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
-        let sponsorship = get_user_operation_sponsorship(
+        let sponsorship = get_gas_and_paymaster_and_data(
             format!(
                 "{}?chainId={}&projectUuid={}&projectKey=${}",
                 *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
@@ -96,7 +114,7 @@ pub async fn fetch_user_operation_sponsorship(
         for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
             info!("pimlico policy: {:?}", policy);
 
-            let sponsorship = get_user_operation_sponsorship(
+            let sponsorship = get_gas_and_paymaster_and_data(
                 format!("{}/{}/rpc?apikey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
                 entry_point,
                 &user_operation,
@@ -122,40 +140,6 @@ pub async fn fetch_user_operation_sponsorship(
     Err(eyre::eyre!("Failed to fetch user operation sponsorship"))
 }
 
-// Write the paymaster operation to the database.
-pub async fn write_paymaster_operation_to_db(
-    chain_id: u64,
-    user_operation: UserOperationRequest,
-    sponsorship: GasAndPaymasterAndData,
-) -> Result<()> {
-    // Get the paymasterAndData.
-    let (verifying_paymaster_address, valid_until, valid_after, _signature) =
-        decode_paymaster_and_data(sponsorship.paymaster_and_data.to_vec())?;
-
-    // Get the paymaster contract.
-    let paymaster_contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
-
-    // Call the paymaster contract to get the nonce.
-    let paymaster_nonce =
-        paymaster_contract.sender_nonce(user_operation.sender).await.unwrap_or(0.into());
-
-    // Finally, create the paymaster operation.
-    let op = db_create_paymaster_operation(
-        chain_id,
-        verifying_paymaster_address,
-        user_operation.sender,
-        paymaster_nonce.as_u64(),
-        valid_until,
-        valid_after,
-    )
-    .await?;
-
-    // Before exit, create the billing operation.
-    db_create_billing_operation(user_operation.sender, op.id.clone()).await?;
-
-    Ok(())
-}
-
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
         &self,
@@ -164,17 +148,17 @@ impl PaymasterApi {
         chain_id: u64,
     ) -> RpcResult<PaymasterAndData> {
         // Get the paymaster operation sponsor.
-        let uop_sponsorship =
-            fetch_user_operation_sponsorship(user_operation.clone(), entry_point, chain_id)
+        let gas_and_paymaster_and_data =
+            fetch_gas_and_paymaster_and_data(user_operation.clone(), entry_point, chain_id)
                 .await
                 .map_err(JsonRpcError::from)?;
 
         // Write the paymaster operation to the database.
-        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+        create_billing_operation_msg(chain_id, user_operation, gas_and_paymaster_and_data.clone())
             .await
             .map_err(JsonRpcError::from)?;
 
-        Ok(uop_sponsorship.paymaster_and_data)
+        Ok(gas_and_paymaster_and_data.paymaster_and_data)
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
@@ -206,57 +190,18 @@ impl PaymasterApi {
         };
 
         // Get the paymaster operation sponsor.
-        let uop_sponsorship =
-            fetch_user_operation_sponsorship(user_operation.clone(), entry_point, chain_id)
+        let gas_and_paymaster_and_data =
+            fetch_gas_and_paymaster_and_data(user_operation.clone(), entry_point, chain_id)
                 .await
                 .map_err(JsonRpcError::from)?;
 
         // Write the paymaster operation to the database.
-        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+        create_billing_operation_msg(chain_id, user_operation, gas_and_paymaster_and_data.clone())
             .await
             .map_err(JsonRpcError::from)?;
 
-        Ok(uop_sponsorship)
+        Ok(gas_and_paymaster_and_data)
     }
-}
-
-pub async fn db_create_billing_operation(
-    sender_address: Address,
-    paymaster_operation_id: String,
-) -> Result<()> {
-    // Create the client.
-    let client = create_client().await?;
-
-    // Create the billing operation.
-    create_billing_operation(client.into(), sender_address, paymaster_operation_id).await?;
-
-    Ok(())
-}
-
-pub async fn db_create_paymaster_operation(
-    chain_id: u64,
-    paymaster_address: Address,
-    sender_address: Address,
-    sender_nonce: u64,
-    valid_until: u64,
-    valid_after: u64,
-) -> Result<paymaster_operation::Data> {
-    // Create the client.
-    let client = create_client().await?;
-
-    // Create the paymaster operation.
-    let (_, op) = create_paymaster_operation(
-        client.into(),
-        chain_id as i64,
-        paymaster_address,
-        sender_address,
-        sender_nonce as i64,
-        valid_until as i64,
-        valid_after as i64,
-    )
-    .await?;
-
-    Ok(op)
 }
 
 /// Construct the user operation w/ rpc.
@@ -373,7 +318,7 @@ pub async fn estimate_user_operation_gas(
     handle_response(response).await
 }
 
-pub async fn get_user_operation_sponsorship(
+pub async fn get_gas_and_paymaster_and_data(
     rpc_url: String,
     entry_point: Address,
     user_operation: &UserOperationRequest,
