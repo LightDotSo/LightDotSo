@@ -18,6 +18,7 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
 };
+use eyre::{eyre, Report};
 use prisma_client_rust::{
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
     QueryError,
@@ -40,8 +41,8 @@ impl From<DbError> for eyre::Report {
     fn from(error: DbError) -> Self {
         match error {
             DbError::EyreError(err) => err,
-            DbError::PrismaError(err) => eyre::Report::new(err),
-            DbError::NotFound => eyre::eyre!("Record not found"),
+            DbError::PrismaError(err) => Report::new(err),
+            DbError::NotFound => eyre!("Record not found"),
         }
     }
 }

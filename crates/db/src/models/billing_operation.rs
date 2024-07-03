@@ -17,7 +17,7 @@
 use crate::types::Database;
 use autometrics::autometrics;
 use ethers::utils::to_checksum;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_prisma::{
     billing, paymaster_operation, wallet, wallet_billing, BillingOperationStatus,
 };
@@ -49,8 +49,8 @@ pub async fn create_billing_operation(
         .unwrap()
         .wallet_billing
         .and_then(|wb| wb.map(|wb| wb.billing))
-        .ok_or(eyre::eyre!("Wallet Billing not found"))?
-        .ok_or(eyre::eyre!("Billing not found"))?;
+        .ok_or(eyre!("Wallet Billing not found"))?
+        .ok_or(eyre!("Billing not found"))?;
     info!(?billing);
 
     let billing_operation = db

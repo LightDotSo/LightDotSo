@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use ethers::types::{Address, Bytes};
-use eyre::Result;
+use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::{
     types::{
@@ -78,7 +78,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
 ) -> Result<GasAndPaymasterAndData> {
     // Get the environment variable, `ALCHEMY_API_KEY`.
     let alchemy_api_key =
-        std::env::var("ALCHEMY_API_KEY").map_err(|_| eyre::eyre!("ALCHEMY_API_KEY not set"))?;
+        std::env::var("ALCHEMY_API_KEY").map_err(|_| eyre!("ALCHEMY_API_KEY not set"))?;
 
     // Check if the `chain_id` is one of the key of `ALCHEMY_POLICY_IDS`.
     if (*ALCHEMY_POLICY_IDS).contains_key(&chain_id) {
@@ -112,9 +112,9 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // Get the environment variable, `PARTICLE_NETWORK_PROJECT_ID`.
     let particle_network_project_id = std::env::var("PARTICLE_NETWORK_PROJECT_ID")
-        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
+        .map_err(|_| eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
     let particle_network_paymaster_project_key = std::env::var("PARTICLE_NETWORK_PROJECT_KEY")
-        .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_KEY not set"))?;
+        .map_err(|_| eyre!("PARTICLE_NETWORK_PROJECT_KEY not set"))?;
 
     // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
     if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
@@ -143,7 +143,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // Get the environment variable, `PIMLICO_API_KEY`.
     let pimlico_api_key =
-        std::env::var("PIMLICO_API_KEY").map_err(|_| eyre::eyre!("PIMLICO_API_KEY not set"))?;
+        std::env::var("PIMLICO_API_KEY").map_err(|_| eyre!("PIMLICO_API_KEY not set"))?;
 
     // Check if the `chain_id` is one of the key of `PIMLICO_RPC_URLS`.
     if (*PIMLICO_RPC_URLS).contains_key(&chain_id) {
@@ -176,7 +176,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
     }
 
     // If the sponsorship is not successful, return error.
-    Err(eyre::eyre!("Failed to fetch user operation sponsorship"))
+    Err(eyre!("Failed to fetch user operation sponsorship"))
 }
 
 impl PaymasterApi {
