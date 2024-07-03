@@ -85,7 +85,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
     if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
         let sponsorship = get_gas_and_paymaster_and_data(
             format!(
-                "{}?chainId={}&projectUuid={}&projectKey=${}",
+                "{}?chainId={}&projectUuid={}&projectKey={}",
                 *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
                 chain_id,
                 particle_network_project_id,

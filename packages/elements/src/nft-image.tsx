@@ -36,13 +36,7 @@ type NftImageProps = {
 
 export const NftImage: FC<NftImageProps> = ({
   className,
-  nft: {
-    contract_address,
-    image_url,
-    collection,
-    previews: { blurhash, image_large_url },
-    extra_metadata,
-  },
+  nft: { contract_address, image_url, collection, previews, extra_metadata },
 }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -61,9 +55,9 @@ export const NftImage: FC<NftImageProps> = ({
         className,
       )}
     >
-      {!isImageLoaded && blurhash && (
+      {!isImageLoaded && previews && previews.blurhash && (
         <div className="absolute inset-0 size-full">
-          <Blurhash width="100%" height="100%" hash={blurhash} />
+          <Blurhash width="100%" height="100%" hash={previews.blurhash} />
         </div>
       )}
       <img
@@ -76,7 +70,9 @@ export const NftImage: FC<NftImageProps> = ({
         )}
         src={
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          image_url ?? image_large_url ?? extra_metadata?.image_original_url!
+          image_url ??
+          previews?.image_large_url ??
+          extra_metadata?.image_original_url!
         }
         alt={collection?.description ?? contract_address!}
         onLoad={() => setIsImageLoaded(true)}
