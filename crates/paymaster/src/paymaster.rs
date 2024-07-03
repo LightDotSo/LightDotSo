@@ -19,19 +19,11 @@ use ethers::types::{Address, Bytes};
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::{
-    paymaster::{decode_paymaster_and_data, get_paymaster},
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
     },
     utils::is_testnet,
-};
-use lightdotso_db::{
-    db::create_client,
-    models::{
-        billing_operation::create_billing_operation,
-        paymaster_operation::create_paymaster_operation,
-    },
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -39,7 +31,6 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_prisma::paymaster_operation;
 use lightdotso_rpc::constants::{PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::{json, Value};
@@ -122,40 +113,6 @@ pub async fn fetch_user_operation_sponsorship(
     Err(eyre::eyre!("Failed to fetch user operation sponsorship"))
 }
 
-// Write the paymaster operation to the database.
-pub async fn write_paymaster_operation_to_db(
-    chain_id: u64,
-    user_operation: UserOperationRequest,
-    sponsorship: GasAndPaymasterAndData,
-) -> Result<()> {
-    // Get the paymasterAndData.
-    let (verifying_paymaster_address, valid_until, valid_after, _signature) =
-        decode_paymaster_and_data(sponsorship.paymaster_and_data.to_vec())?;
-
-    // Get the paymaster contract.
-    let paymaster_contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
-
-    // Call the paymaster contract to get the nonce.
-    let paymaster_nonce =
-        paymaster_contract.sender_nonce(user_operation.sender).await.unwrap_or(0.into());
-
-    // Finally, create the paymaster operation.
-    let op = db_create_paymaster_operation(
-        chain_id,
-        verifying_paymaster_address,
-        user_operation.sender,
-        paymaster_nonce.as_u64(),
-        valid_until,
-        valid_after,
-    )
-    .await?;
-
-    // Before exit, create the billing operation.
-    db_create_billing_operation(user_operation.sender, op.id.clone()).await?;
-
-    Ok(())
-}
-
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
         &self,
@@ -170,9 +127,9 @@ impl PaymasterApi {
                 .map_err(JsonRpcError::from)?;
 
         // Write the paymaster operation to the database.
-        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
-            .await
-            .map_err(JsonRpcError::from)?;
+        // write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+        //     .await
+        //     .map_err(JsonRpcError::from)?;
 
         Ok(uop_sponsorship.paymaster_and_data)
     }
@@ -212,51 +169,12 @@ impl PaymasterApi {
                 .map_err(JsonRpcError::from)?;
 
         // Write the paymaster operation to the database.
-        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
-            .await
-            .map_err(JsonRpcError::from)?;
+        // write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+        //     .await
+        //     .map_err(JsonRpcError::from)?;
 
         Ok(uop_sponsorship)
     }
-}
-
-pub async fn db_create_billing_operation(
-    sender_address: Address,
-    paymaster_operation_id: String,
-) -> Result<()> {
-    // Create the client.
-    let client = create_client().await?;
-
-    // Create the billing operation.
-    create_billing_operation(client.into(), sender_address, paymaster_operation_id).await?;
-
-    Ok(())
-}
-
-pub async fn db_create_paymaster_operation(
-    chain_id: u64,
-    paymaster_address: Address,
-    sender_address: Address,
-    sender_nonce: u64,
-    valid_until: u64,
-    valid_after: u64,
-) -> Result<paymaster_operation::Data> {
-    // Create the client.
-    let client = create_client().await?;
-
-    // Create the paymaster operation.
-    let (_, op) = create_paymaster_operation(
-        client.into(),
-        chain_id as i64,
-        paymaster_address,
-        sender_address,
-        sender_nonce as i64,
-        valid_until as i64,
-        valid_after as i64,
-    )
-    .await?;
-
-    Ok(op)
 }
 
 /// Construct the user operation w/ rpc.

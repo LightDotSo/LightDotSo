@@ -79,6 +79,11 @@ lazy_static! {
     pub static ref ERROR_TRANSACTION: String = "error-transaction".to_string();
 }
 
+// The paymaster operation namesapce
+lazy_static! {
+    pub static ref PAYMASTER_OPERATION: String = "paymaster-operation".to_string();
+}
+
 // The user operation namesapce
 lazy_static! {
     pub static ref USER_OPERATION: String = "user-operation".to_string();
