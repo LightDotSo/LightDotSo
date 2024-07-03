@@ -1526,7 +1526,9 @@ model PaymasterOperation {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
   // Fields

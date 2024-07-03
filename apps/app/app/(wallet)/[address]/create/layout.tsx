@@ -55,10 +55,10 @@ export default function UserOperationLayout({
     <BannerSection
       title={TITLES.UserOperation.title}
       description={TITLES.UserOperation.description}
-      size="sm"
+      size="xs"
     >
       <HStackFull>
-        <BaseLayerWrapper size="sm">
+        <BaseLayerWrapper size="xs">
           <BasicPageWrapper>
             <DialogSectionWrapper>{children}</DialogSectionWrapper>
           </BasicPageWrapper>
