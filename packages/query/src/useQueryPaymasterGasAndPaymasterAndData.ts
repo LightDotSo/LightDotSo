@@ -61,12 +61,9 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     }).queryKey,
     queryFn: async () => {
       if (
-        !params.callGasLimit ||
-        !params.verificationGasLimit ||
-        !params.preVerificationGas
-        // !params.preVerificationGas ||
-        // !params.maxFeePerGas ||
-        // !params.maxPriorityFeePerGas
+        params.callGasLimit === BigInt(0) ||
+        params.verificationGasLimit === BigInt(0) ||
+        params.preVerificationGas === BigInt(0)
       ) {
         return null;
       }

@@ -330,13 +330,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const maxPriorityFeePerGas = useMemo(() => {
     // If the chain is Celo, `maxFeePerGas` is the same as `maxPriorityFeePerGas`
     return targetUserOperation.chainId === BigInt(42220)
-      ? feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas
+      ? maxFeePerGas
       : // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
         estimatedMaxPriorityFeePerGas === BigInt(0)
         ? BigInt(1)
         : estimatedMaxPriorityFeePerGas ??
           targetUserOperation.maxPriorityFeePerGas;
-  }, [targetUserOperation.chainId, feesPerGas, estimatedMaxPriorityFeePerGas]);
+  }, [
+    targetUserOperation.chainId,
+    maxFeePerGas,
+    estimatedMaxPriorityFeePerGas,
+    targetUserOperation.maxPriorityFeePerGas,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Query
