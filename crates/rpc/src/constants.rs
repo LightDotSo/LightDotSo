@@ -56,17 +56,30 @@ lazy_static! {
         // Mainnet
         m.insert(1, "https://eth-mainnet.g.alchemy.com/v2/".to_string());
         m.insert(10, "https://opt-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(56, "https://bnb-mainnet.g.alchemy.com/v2/".to_string());
         m.insert(137, "https://polygon-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(252, "https://frax-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(592, "https://astar-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(1088, "https://metis-mainnet.g.alchemy.com/v2/".to_string());
         m.insert(1101, "https://polygonzkevm-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(7000, "https://zetachain-mainnet.g.alchemy.com/v2/".to_string());
         m.insert(8453, "https://base-mainnet.g.alchemy.com/v2/".to_string());
         m.insert(42161, "https://arb-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(81457, "https://blast-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(7777777, "https://zora-mainnet.g.alchemy.com/v2/".to_string());
 
         // Testnet
-        m.insert(80001, "https://polygon-mumbai.g.alchemy.com/v2/".to_string());
+        m.insert(97, "https://bnb-testnet.g.alchemy.com/v2/".to_string());
+        m.insert(2442, "https://polygonzkevm-cardona.g.alchemy.com/v2/".to_string());
+        m.insert(2522, "https://frax-sepolia.g.alchemy.com/v2/".to_string());
+        m.insert(7001, "https://zetachain-testnet.g.alchemy.com/v2/".to_string());
+        m.insert(80002, "https://polygon-amoy.g.alchemy.com/v2/".to_string());
         m.insert(84532, "https://base-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(421614, "https://arb-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(11155111, "https://eth-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(11155420, "https://opt-sepolia.g.alchemy.com/v2/".to_string());
+        m.insert(168587773, "https://blast-sepolia.g.alchemy.com/v2/".to_string());
+        m.insert(999999999, "https://zora-sepolia.g.alchemy.com/v2/".to_string());
 
         m
     };

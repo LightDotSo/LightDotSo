@@ -71,7 +71,13 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     pub is_reverted: bool,
 }
 
-pub type PaymasterAndData = Bytes;
+/// Thee paymaster and data returned by the paymaster.
+/// This is a separate struct to allow for easy serialization and deserialization.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PaymasterAndData {
+    pub paymaster_and_data: Bytes,
+}
 
 /// The gas and paymaster and data returned by the paymaster.
 #[derive(Clone, Debug, Serialize, Deserialize)]

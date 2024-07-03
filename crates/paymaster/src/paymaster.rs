@@ -35,19 +35,20 @@ use lightdotso_kafka::{
     get_producer, topics::paymaster_operation::produce_paymaster_operation_message,
     types::paymaster_operation::PaymasterOperationMessage,
 };
-use lightdotso_rpc::constants::{PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
+use lightdotso_rpc::constants::{ALCHEMY_RPC_URLS, PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::{json, Value};
 use std::sync::Arc;
 
 use crate::constants::{
-    PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
+    ALCHEMY_POLICY_IDS, PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL,
+    PIMLICO_SPONSORSHIP_POLICIES,
 };
 
 /// The paymaster api implementation.
 pub(crate) struct PaymasterApi {}
 
-// Create the paymaster topic message..
+// Create the paymaster topic message.
 pub async fn create_billing_operation_msg(
     chain_id: u64,
     user_operation: UserOperationRequest,
@@ -75,6 +76,40 @@ pub async fn fetch_gas_and_paymaster_and_data(
     entry_point: Address,
     chain_id: u64,
 ) -> Result<GasAndPaymasterAndData> {
+    // Get the environment variable, `ALCHEMY_API_KEY`.
+    let alchemy_api_key =
+        std::env::var("ALCHEMY_API_KEY").map_err(|_| eyre::eyre!("ALCHEMY_API_KEY not set"))?;
+
+    // Check if the `chain_id` is one of the key of `ALCHEMY_POLICY_IDS`.
+    if (*ALCHEMY_POLICY_IDS).contains_key(&chain_id) {
+        // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
+        if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
+            let sponsorship = get_alchemy_paymaster_and_data(
+                format!("{}{}", alchemy_rpc_url, alchemy_api_key),
+                entry_point,
+                &user_operation,
+                (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
+            )
+            .await
+            .map_err(JsonRpcError::from);
+
+            // If the sponsorship is successful, return the result.
+            if let Ok(sponsorship_data) = sponsorship {
+                return Ok(GasAndPaymasterAndData {
+                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
+                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
+                    verification_gas_limit: user_operation
+                        .verification_gas_limit
+                        .unwrap_or_default(),
+                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
+                });
+            } else {
+                warn!("Failed to fetch user operation sponsorship from alchemy");
+                // error!("{:?}", sponsorship.unwrap_err());
+            }
+        }
+    }
+
     // Get the environment variable, `PARTICLE_NETWORK_PROJECT_ID`.
     let particle_network_project_id = std::env::var("PARTICLE_NETWORK_PROJECT_ID")
         .map_err(|_| eyre::eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
@@ -101,6 +136,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
         // If the sponsorship is successful, return the result.
         if let Ok(sponsorship_data) = sponsorship {
             return Ok(sponsorship_data.result);
+        } else {
+            warn!("Failed to fetch user operation sponsorship from particle network");
         }
     }
 
@@ -132,6 +169,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
             // If the sponsorship is successful, return the result.
             if let Ok(sponsorship_data) = sponsorship {
                 return Ok(sponsorship_data.result);
+            } else {
+                warn!("Failed to fetch user operation sponsorship from pimlico");
             }
         }
     }
@@ -158,7 +197,7 @@ impl PaymasterApi {
             .await
             .map_err(JsonRpcError::from)?;
 
-        Ok(gas_and_paymaster_and_data.paymaster_and_data)
+        Ok(PaymasterAndData { paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data })
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
@@ -334,6 +373,31 @@ pub async fn get_gas_and_paymaster_and_data(
     let req_body = Request {
         jsonrpc: "2.0".to_string(),
         method: "pm_sponsorUserOperation".to_string(),
+        params: params.clone(),
+        id: 1,
+    };
+
+    let client = reqwest::Client::new();
+    let response = client.post(rpc_url).json(&req_body).send().await?;
+
+    // Handle the response for the JSON-RPC API.
+    handle_response(response).await
+}
+
+pub async fn get_alchemy_paymaster_and_data(
+    rpc_url: String,
+    entry_point: Address,
+    user_operation: &UserOperationRequest,
+    policy_id: String,
+) -> Result<Response<PaymasterAndData>> {
+    let params = vec![
+        json!({"policyId": policy_id, "entryPoint": entry_point, "userOperation": user_operation}),
+    ];
+    info!("params: {:?}", params);
+
+    let req_body = Request {
+        jsonrpc: "2.0".to_string(),
+        method: "alchemy_requestPaymasterAndData".to_string(),
         params: params.clone(),
         id: 1,
     };
