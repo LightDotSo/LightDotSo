@@ -71,22 +71,22 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "a0036482-3134-4c7d-87d2-79c41293a347".to_string());
-        m.insert(10, "ee2d5ea7-2f71-4fc2-bf3e-56ccbb3be844".to_string());
-        m.insert(137, "e404a9c5-be89-46e8-b5bc-f0264b655841".to_string());
-        m.insert(252, "50ebd75d-8584-4fdf-b4d8-b10c1d00b6a7".to_string());
-        m.insert(8453, "1a57369f-23d0-4e10-9115-cae1bfb16886".to_string());
-        m.insert(42161, "87746b0e-7bce-4a4a-8f90-4635355bbd06".to_string());
-        m.insert(7777777, "66bf3331-f5c0-4d12-bb8c-77b4f071e835".to_string());
+        m.insert(1, "dd589d48-9d24-4147-bd84-e58ae1e0c230".to_string());
+        m.insert(10, "c43f82d6-71a2-46b9-9974-4d4aeacfb6be".to_string());
+        m.insert(137, "aa975c1f-f330-42c6-ac69-fbd9a8e2acc0".to_string());
+        m.insert(252, "c4ce6a98-17aa-484a-a6ca-df91a27fe47e".to_string());
+        m.insert(8453, "1e571063-c278-47c0-9746-c338276d40e1".to_string());
+        m.insert(42161, "bda8abe2-a5ce-43f1-9382-16f3f56e9f30".to_string());
+        m.insert(7777777, "de5723e2-65d4-428c-b154-1d3e72d7ccf4".to_string());
 
         // Testnet
-        m.insert(2522, "f77a0088-cab9-447a-9ffc-c9a8bb6e9ab8".to_string());
-        m.insert(80002, "7236e9bd-0171-429e-a062-928ade9cc376".to_string());
-        m.insert(84532, "e3ccac03-aaf8-43d1-836c-8a25e9ad6bc7".to_string());
-        m.insert(421614, "2328eb5a-63ad-4cc7-ad1d-3b51cd86a4fc".to_string());
-        m.insert(11155111, "f090827f-44c1-4134-af21-458f88e7a854".to_string());
-        m.insert(11155420, "aef503bc-8eab-441b-a3f5-5ba73869e62a".to_string());
-        m.insert(999999999, "15c2d580-f017-4961-aedf-fa2e637beb3a".to_string());
+        m.insert(2522, "764f5629-df9d-40a7-a465-1056f297a595".to_string());
+        m.insert(80002, "8cc31361-3500-4220-975c-5844acc8ce9d".to_string());
+        m.insert(84532, "44bcbdce-2122-478e-ad7e-dcf82d721167".to_string());
+        m.insert(421614, "3e07561b-8b43-4cd1-8498-16c9cf04bbe8".to_string());
+        m.insert(11155111, "0264de95-c0bc-422b-86a7-70f0c372546c".to_string());
+        m.insert(11155420, "94e3559b-4b3f-427f-9d50-70c5fc02f51a".to_string());
+        m.insert(999999999, "f29dfce1-d309-443e-ba1b-405273752fc2".to_string());
 
         m
     };
