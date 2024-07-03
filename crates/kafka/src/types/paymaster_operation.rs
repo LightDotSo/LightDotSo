@@ -22,7 +22,6 @@ use serde_json::{json, Value};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct PaymasterOperationMessage {
     pub chain_id: u64,
     pub sender: H160,
