@@ -6407,6 +6407,7 @@ dependencies = [
  "lightdotso-gas",
  "lightdotso-hyper",
  "lightdotso-jsonrpsee",
+ "lightdotso-kafka",
  "lightdotso-prisma",
  "lightdotso-rpc",
  "lightdotso-signer",

@@ -25,6 +25,7 @@
   lightdotso-gas = { workspace = true }
   lightdotso-hyper = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
+  lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-rpc = { workspace = true }
   lightdotso-signer = { workspace = true }
