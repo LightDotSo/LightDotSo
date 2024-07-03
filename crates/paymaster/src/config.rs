@@ -25,6 +25,9 @@ use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
+    /// The alchemy API key
+    #[clap(long, env = "ALCHEMY_API_KEY")]
+    pub alchemy_api_key: String,
     /// The pilmico API key
     #[clap(long, env = "PIMLICO_API_KEY")]
     pub pimlico_api_key: String,
