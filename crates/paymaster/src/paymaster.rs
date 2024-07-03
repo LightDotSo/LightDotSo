@@ -344,3 +344,28 @@ pub async fn get_gas_and_paymaster_and_data(
     // Handle the response for the JSON-RPC API.
     handle_response(response).await
 }
+
+pub async fn get_alchemy_paymaster_and_data(
+    rpc_url: String,
+    entry_point: Address,
+    user_operation: &UserOperationRequest,
+    policy_id: String,
+) -> Result<Response<PaymasterAndData>> {
+    let params = vec![
+        json!({"policyId": policy_id, "entryPoint": entry_point, "userOperation": user_operation}),
+    ];
+    info!("params: {:?}", params);
+
+    let req_body = Request {
+        jsonrpc: "2.0".to_string(),
+        method: "alchemy_requestPaymasterAndData".to_string(),
+        params: params.clone(),
+        id: 1,
+    };
+
+    let client = reqwest::Client::new();
+    let response = client.post(rpc_url).json(&req_body).send().await?;
+
+    // Handle the response for the JSON-RPC API.
+    handle_response(response).await
+}
