@@ -14,14 +14,11 @@
 
 "use client";
 
-import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
 import { useModals } from "@lightdotso/stores";
-import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import {
   Command,
   CommandList,
-  CommandItem,
   CommandInput,
   TabsList,
   TabsTrigger,
@@ -47,7 +44,7 @@ export function CartModal() {
   return (
     <Command className="bg-transparent">
       <CommandList className="max-h-full">
-        <Tabs className="w-full" defaultValue="mainnet">
+        <Tabs className="w-full" defaultValue="all">
           <Modal
             isSheet
             open={isCartModalVisible}
@@ -61,48 +58,22 @@ export function CartModal() {
             }
             bannerContent={
               <TabsList className="w-full">
-                <TabsTrigger className="w-full" value="mainnet">
-                  Mainnet
+                <TabsTrigger className="w-full" value="all">
+                  All
                 </TabsTrigger>
-                <TabsTrigger className="w-full" value="testnet">
-                  Testnet
+                <TabsTrigger className="w-full" value="queue">
+                  Queue
+                </TabsTrigger>
+                <TabsTrigger className="w-full" value="history">
+                  History
                 </TabsTrigger>
               </TabsList>
             }
             onClose={hideCartModal}
           >
-            <TabsContent value="mainnet">
-              {MAINNET_CHAINS.map(chain => (
-                <CommandItem
-                  key={chain.id}
-                  value={chain.name}
-                  onSelect={() => {
-                    hideCartModal();
-                  }}
-                >
-                  <>
-                    <ChainLogo chainId={chain.id} />
-                    <span className="ml-2">{chain.name}</span>
-                  </>
-                </CommandItem>
-              ))}
-            </TabsContent>
-            <TabsContent value="testnet">
-              {TESTNET_CHAINS.map(chain => (
-                <CommandItem
-                  key={chain.id}
-                  value={chain.name}
-                  onSelect={() => {
-                    hideCartModal();
-                  }}
-                >
-                  <div className="flex items-center space-x-2">
-                    <ChainLogo chainId={chain.id} />
-                    <span className="ml-2">{chain.name}</span>
-                  </div>
-                </CommandItem>
-              ))}
-            </TabsContent>
+            <TabsContent value="all"></TabsContent>
+            <TabsContent value="queue"></TabsContent>
+            <TabsContent value="history"></TabsContent>
           </Modal>
         </Tabs>
       </CommandList>
