@@ -259,13 +259,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   return (
     <Modal
+      size="default"
       open={isOpen}
       isOverflowHidden={isOverflowHidden}
       isHeightFixed={isHeightFixed}
       isHidden={isBackground}
       bannerContent={bannerContent}
       footerContent={footerContent}
-      size={type === "op" ? "lg" : "default"}
       onClose={onDismiss}
     >
       {children}

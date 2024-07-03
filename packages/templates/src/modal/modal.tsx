@@ -47,7 +47,7 @@ const modalDialogVariants = cva(["flex max-h-[80%] flex-col"], {
   variants: {
     size: {
       lg: "max-w-6xl",
-      default: "max-w-3xl",
+      default: "max-w-2xl",
       sm: "max-w-md",
     },
   },
