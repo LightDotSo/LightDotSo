@@ -1055,6 +1055,8 @@ optout
 orbridge
 orderedmap
 Orderflow
+Otel
+otlp
 oujwutko
 OURCYGPATTERN
 Outamounts
@@ -1220,6 +1222,7 @@ rechoir
 redb
 redent
 redeyed
+redis
 rediscommander
 rediss
 redoc
