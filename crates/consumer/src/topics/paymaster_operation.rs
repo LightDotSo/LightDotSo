@@ -39,9 +39,7 @@ pub async fn paymaster_operation_consumer(
 
         // Get the paymasterAndData.
         if let Ok((verifying_paymaster_address, valid_until, valid_after, _signature)) =
-            decode_paymaster_and_data(
-                payload.gas_and_paymaster_and_data.paymaster_and_data.to_vec(),
-            )
+            decode_paymaster_and_data(payload.paymaster_and_data.to_vec())
         {
             // Get the paymaster contract.
             let paymaster_contract =

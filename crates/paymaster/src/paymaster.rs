@@ -61,7 +61,10 @@ pub async fn create_billing_operation_msg(
     let paymaster_operation_message = PaymasterOperationMessage {
         chain_id,
         sender: user_operation.sender,
-        gas_and_paymaster_and_data,
+        call_gas_limit: gas_and_paymaster_and_data.call_gas_limit,
+        verification_gas_limit: gas_and_paymaster_and_data.verification_gas_limit,
+        pre_verification_gas: gas_and_paymaster_and_data.pre_verification_gas,
+        paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data,
     };
 
     // Produce the paymaster operation message.
