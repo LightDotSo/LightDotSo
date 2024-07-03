@@ -17,10 +17,11 @@ use ethers::{
     providers::{Http, Provider},
     types::Address,
 };
-use eyre::{Context, Result};
+use eyre::{eyre, Context, Result};
+use prisma_client_rust::chrono::NaiveDateTime;
 use std::convert::TryInto;
 
-use crate::provider::get_provider;
+use crate::{constants::ALCHEMY_V060_GAS_MANAGER_ADDRESS, provider::get_provider};
 
 abigen!(LightPaymaster, "abi/LightPaymaster.json",);
 
@@ -40,8 +41,34 @@ pub async fn get_paymaster(
 
 /// Construct the paymaster and data.
 pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec<u8>)> {
+    // Internal function to make sure the timestamp is valid.
+    fn is_valid_timestamp(timestamp: u64) -> bool {
+        NaiveDateTime::from_timestamp_opt(timestamp as i64, 0).is_some()
+    }
+
     // Get the verifying paymaster address.
     let verifying_paymaster_address = Address::from_slice(&msg[0..20]);
+
+    // If the verifying paymaster address matches the `ALCHEMY_V060_GAS_MANAGER_ADDRESS`,
+    // then the message is encoded differently.
+    if verifying_paymaster_address == *ALCHEMY_V060_GAS_MANAGER_ADDRESS {
+        // Get the valid until.
+        let valid_until = u32::from_be_bytes(
+            msg[28..32].try_into().wrap_err("Failed to convert valid_until data")?,
+        )
+        .into();
+        // Get the valid after.
+        let valid_after = 0_u64;
+        // Get the signature.
+        let signature = msg[52..].to_vec();
+
+        // Check if the timestamp is valid.
+        if !is_valid_timestamp(valid_until) {
+            return Err(eyre!("Invalid timestamp"));
+        }
+
+        return Ok((verifying_paymaster_address, valid_until, valid_after, signature));
+    }
 
     // Get the valid until.
     let valid_until =
@@ -51,6 +78,11 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec
         u64::from_be_bytes(msg[76..84].try_into().wrap_err("Failed to convert valid_after data")?);
     // Get the signature.
     let signature = msg[84..].to_vec();
+
+    // Check if the timestamp is valid.
+    if !is_valid_timestamp(valid_until) || !is_valid_timestamp(valid_after) {
+        return Err(eyre!("Invalid timestamp"));
+    }
 
     Ok((verifying_paymaster_address, valid_until, valid_after, signature))
 }
@@ -175,7 +207,7 @@ mod tests {
         let number_one_msg: Vec<u8> = hex::decode("0x4fd9098af9ddcb41da48a1d78f91f1398965addc00000000000000006685d0520000000000000000000000000000000000000000bab40d3c364ad63d5bcf59da8a8c872a2c6f2aad81a4bd8b46812e16271855115b9d6479508ad438ad247884664ef7cb40cbc1898891f08da75509df37e089051c").unwrap();
 
         // Decode the paymaster and data.
-        let (verifying_paymaster_address, valid_until, valid_after, _signature) =
+        let (verifying_paymaster_address, valid_until, valid_after, signature) =
             decode_paymaster_and_data(number_one_msg)?;
 
         // Log the result.
@@ -184,6 +216,16 @@ mod tests {
         println!("valid_until: {:?}", valid_until);
         println!("valid_after: {:?}", valid_after);
 
+        // Convert each byte to a hex string and concatenate them
+        let mut hex_string = String::new();
+        for byte in signature {
+            hex_string.push_str(&format!("{:02x}", byte));
+        }
+
+        println!("signature: 0x{}", hex_string);
+
         Ok(())
     }
 }
+
+// 0x6685D05200000000

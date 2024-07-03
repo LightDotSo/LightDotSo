@@ -167,7 +167,7 @@ impl WalletConfig {
             .iter()
             .map(|config| {
                 let len: Result<u32, _> =
-                    usize::try_into(config.len()).map_err(|_| eyre::eyre!("Failed to convert"));
+                    usize::try_into(config.len()).map_err(|_| eyre!("Failed to convert"));
                 len
             })
             .collect();

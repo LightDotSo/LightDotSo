@@ -6160,6 +6160,7 @@ dependencies = [
  "eyre",
  "lazy_static",
  "lightdotso-constants",
+ "prisma-client-rust",
  "serde",
  "serde_json",
  "tokio",

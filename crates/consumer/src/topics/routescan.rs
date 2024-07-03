@@ -15,7 +15,7 @@
 #![allow(clippy::unwrap_used)]
 
 use ethers::utils::to_checksum;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_contracts::utils::is_testnet;
 use lightdotso_kafka::types::routescan::RoutescanMessage;
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
@@ -124,7 +124,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                 });
 
                 // Convert the Option to a Result
-                let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
+                let token_result = token.ok_or(eyre!("Item not found for token: {:?}", ite));
 
                 // If valid item found, build data, else propagate error
                 // Temporary fix for quote rate

@@ -94,6 +94,14 @@ lazy_static! {
       "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse().unwrap();
 }
 
+// The alchemy v0.6.0 gas manager address
+// From: https://docs.alchemy.com/reference/gas-manager-deployment-addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref ALCHEMY_V060_GAS_MANAGER_ADDRESS: Address =
+      "0x4Fd9098af9ddcB41DA48A1d78F91F1398965addc".parse().unwrap();
+}
+
 #[cfg(test)]
 mod tests {
     use ethers::utils::to_checksum;

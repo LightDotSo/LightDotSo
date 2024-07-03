@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::{namespace::QUEUE_USER_OPERATION, rate_limit::RateLimiter};
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
 use redis::Client;
 use std::{sync::Arc, time::Duration};
@@ -28,7 +28,7 @@ pub fn user_operation_rate_limit(client: Arc<Client>, address: String) -> Result
     info!("user_operation rate count: {}", count);
 
     if count > 3 {
-        return Err(eyre::eyre!("Rate limit exceeded by {} for {}", count, address));
+        return Err(eyre!("Rate limit exceeded by {} for {}", count, address));
     }
 
     Ok(())

@@ -15,7 +15,7 @@
 #![allow(clippy::unwrap_used)]
 
 use ethers::utils::to_checksum;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_contracts::utils::is_testnet;
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::{
@@ -134,7 +134,7 @@ pub async fn covalent_consumer(
                 });
 
                 // Convert the Option to a Result
-                let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
+                let token_result = token.ok_or(eyre!("Item not found for token: {:?}", ite));
 
                 // If valid item found, build data, else propagate error
                 token_result.map(|token| {
