@@ -23,6 +23,7 @@ use serde_json::{json, Value};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PaymasterOperationMessage {
     pub chain_id: u64,
     pub sender: H160,
@@ -36,10 +37,10 @@ pub struct PaymasterOperationMessage {
 impl ToJson for PaymasterOperationMessage {
     fn to_json(&self) -> String {
         let gas_and_paymaster_and_data = json!({
-            "call_gas_limit": self.gas_and_paymaster_and_data.call_gas_limit,
-            "verification_gas_limit": self.gas_and_paymaster_and_data.verification_gas_limit,
-            "pre_verification_gas": self.gas_and_paymaster_and_data.pre_verification_gas,
-            "paymaster_and_data": self.gas_and_paymaster_and_data.paymaster_and_data,
+            "callGasLimit": self.gas_and_paymaster_and_data.call_gas_limit,
+            "verificationGasLimit": self.gas_and_paymaster_and_data.verification_gas_limit,
+            "preVerificationGas": self.gas_and_paymaster_and_data.pre_verification_gas,
+            "paymasterAndData": self.gas_and_paymaster_and_data.paymaster_and_data,
         });
 
         let msg_value: Value = json!({

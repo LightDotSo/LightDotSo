@@ -83,9 +83,13 @@ pub struct PaymasterAndData {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GasAndPaymasterAndData {
+    #[serde(rename = "callGasLimit")]
     pub call_gas_limit: U256,
+    #[serde(rename = "verificationGasLimit")]
     pub verification_gas_limit: U256,
+    #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
+    #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
 }
 
