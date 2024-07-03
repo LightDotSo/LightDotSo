@@ -13,8 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::types::H160;
-use lightdotso_contracts::types::GasAndPaymasterAndData;
+use ethers::types::{Bytes, H160, U256};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -27,7 +26,10 @@ use serde_json::{json, Value};
 pub struct PaymasterOperationMessage {
     pub chain_id: u64,
     pub sender: H160,
-    pub gas_and_paymaster_and_data: GasAndPaymasterAndData,
+    pub call_gas_limit: U256,
+    pub verification_gas_limit: U256,
+    pub pre_verification_gas: U256,
+    pub paymaster_and_data: Bytes,
 }
 
 // -----------------------------------------------------------------------------
@@ -36,17 +38,13 @@ pub struct PaymasterOperationMessage {
 
 impl ToJson for PaymasterOperationMessage {
     fn to_json(&self) -> String {
-        let gas_and_paymaster_and_data = json!({
-            "callGasLimit": self.gas_and_paymaster_and_data.call_gas_limit,
-            "verificationGasLimit": self.gas_and_paymaster_and_data.verification_gas_limit,
-            "preVerificationGas": self.gas_and_paymaster_and_data.pre_verification_gas,
-            "paymasterAndData": self.gas_and_paymaster_and_data.paymaster_and_data,
-        });
-
         let msg_value: Value = json!({
             "chain_id": self.chain_id,
             "sender": self.sender,
-            "gas_and_paymaster_and_data": gas_and_paymaster_and_data,
+            "call_gas_limit": self.call_gas_limit,
+            "verification_gas_limit": self.verification_gas_limit,
+            "pre_verification_gas": self.pre_verification_gas,
+            "paymaster_and_data": self.paymaster_and_data,
         });
 
         msg_value.to_string()
@@ -65,12 +63,10 @@ mod tests {
         let msg = PaymasterOperationMessage {
             chain_id: 1u64,
             sender: H160::zero(),
-            gas_and_paymaster_and_data: GasAndPaymasterAndData {
-                call_gas_limit: 0u64.into(),
-                verification_gas_limit: 0u64.into(),
-                pre_verification_gas: 0u64.into(),
-                paymaster_and_data: Bytes::default(),
-            },
+            call_gas_limit: 0u64.into(),
+            verification_gas_limit: 0u64.into(),
+            pre_verification_gas: 0u64.into(),
+            paymaster_and_data: Bytes::default(),
         };
 
         let json_str = msg.to_json();
@@ -84,12 +80,10 @@ mod tests {
         let original_msg = PaymasterOperationMessage {
             chain_id: 1u64,
             sender: H160::zero(),
-            gas_and_paymaster_and_data: GasAndPaymasterAndData {
-                call_gas_limit: 0u64.into(),
-                verification_gas_limit: 0u64.into(),
-                pre_verification_gas: 0u64.into(),
-                paymaster_and_data: Bytes::default(),
-            },
+            call_gas_limit: 0u64.into(),
+            verification_gas_limit: 0u64.into(),
+            pre_verification_gas: 0u64.into(),
+            paymaster_and_data: Bytes::default(),
         };
 
         let serialized = serde_json::to_string(&original_msg)?;
@@ -97,10 +91,7 @@ mod tests {
 
         assert_eq!(original_msg.chain_id, deserialized.chain_id);
         assert_eq!(original_msg.sender, deserialized.sender);
-        assert_eq!(
-            original_msg.gas_and_paymaster_and_data.call_gas_limit,
-            deserialized.gas_and_paymaster_and_data.call_gas_limit
-        );
+        assert_eq!(original_msg.call_gas_limit, deserialized.call_gas_limit);
 
         Ok(())
     }
