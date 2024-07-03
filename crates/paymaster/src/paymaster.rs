@@ -96,13 +96,16 @@ pub async fn fetch_gas_and_paymaster_and_data(
             // If the sponsorship is successful, return the result.
             if let Ok(sponsorship_data) = sponsorship {
                 return Ok(GasAndPaymasterAndData {
-                    paymaster_and_data: sponsorship_data.result,
+                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
                     call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
                     verification_gas_limit: user_operation
                         .verification_gas_limit
                         .unwrap_or_default(),
                     pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
                 });
+            } else {
+                warn!("Failed to fetch user operation sponsorship from alchemy");
+                // error!("{:?}", sponsorship.unwrap_err());
             }
         }
     }
@@ -133,6 +136,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
         // If the sponsorship is successful, return the result.
         if let Ok(sponsorship_data) = sponsorship {
             return Ok(sponsorship_data.result);
+        } else {
+            warn!("Failed to fetch user operation sponsorship from particle network");
         }
     }
 
@@ -164,6 +169,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
             // If the sponsorship is successful, return the result.
             if let Ok(sponsorship_data) = sponsorship {
                 return Ok(sponsorship_data.result);
+            } else {
+                warn!("Failed to fetch user operation sponsorship from pimlico");
             }
         }
     }
@@ -190,7 +197,7 @@ impl PaymasterApi {
             .await
             .map_err(JsonRpcError::from)?;
 
-        Ok(gas_and_paymaster_and_data.paymaster_and_data)
+        Ok(PaymasterAndData { paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data })
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(

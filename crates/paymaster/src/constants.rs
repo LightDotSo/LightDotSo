@@ -84,7 +84,7 @@ lazy_static! {
         m.insert(80002, "7236e9bd-0171-429e-a062-928ade9cc376".to_string());
         m.insert(84532, "e3ccac03-aaf8-43d1-836c-8a25e9ad6bc7".to_string());
         m.insert(421614, "2328eb5a-63ad-4cc7-ad1d-3b51cd86a4fc".to_string());
-        m.insert(11155111, "07812124-68ca-45ca-b8da-062716f1ce1a".to_string());
+        m.insert(11155111, "f090827f-44c1-4134-af21-458f88e7a854".to_string());
         m.insert(11155420, "aef503bc-8eab-441b-a3f5-5ba73869e62a".to_string());
         m.insert(999999999, "15c2d580-f017-4961-aedf-fa2e637beb3a".to_string());
 
