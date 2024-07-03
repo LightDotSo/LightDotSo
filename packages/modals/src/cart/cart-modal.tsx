@@ -71,9 +71,9 @@ export function CartModal() {
             }
             onClose={hideCartModal}
           >
-            <TabsContent value="all"></TabsContent>
-            <TabsContent value="queue"></TabsContent>
-            <TabsContent value="history"></TabsContent>
+            <TabsContent value="all" />
+            <TabsContent value="queue" />
+            <TabsContent value="history" />
           </Modal>
         </Tabs>
       </CommandList>
