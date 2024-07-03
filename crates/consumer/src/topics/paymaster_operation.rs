@@ -38,33 +38,34 @@ pub async fn paymaster_operation_consumer(
         info!("payload: {:?}", payload);
 
         // Get the paymasterAndData.
-        let (verifying_paymaster_address, valid_until, valid_after, _signature) =
+        if let Ok((verifying_paymaster_address, valid_until, valid_after, _signature)) =
             decode_paymaster_and_data(
                 payload.gas_and_paymaster_and_data.paymaster_and_data.to_vec(),
-            )?;
+            )
+        {
+            // Get the paymaster contract.
+            let paymaster_contract =
+                get_paymaster(payload.chain_id, verifying_paymaster_address).await?;
 
-        // Get the paymaster contract.
-        let paymaster_contract =
-            get_paymaster(payload.chain_id, verifying_paymaster_address).await?;
+            // Call the paymaster contract to get the nonce.
+            let paymaster_nonce =
+                paymaster_contract.sender_nonce(payload.sender).await.unwrap_or(0.into());
 
-        // Call the paymaster contract to get the nonce.
-        let paymaster_nonce =
-            paymaster_contract.sender_nonce(payload.sender).await.unwrap_or(0.into());
+            // Finally, create the paymaster operation.
+            let (_, paymaster_operation) = create_paymaster_operation(
+                db.clone(),
+                payload.chain_id as i64,
+                verifying_paymaster_address,
+                payload.sender,
+                paymaster_nonce.as_u64() as i64,
+                valid_until as i64,
+                valid_after as i64,
+            )
+            .await?;
 
-        // Finally, create the paymaster operation.
-        let (_, paymaster_operation) = create_paymaster_operation(
-            db.clone(),
-            payload.chain_id as i64,
-            verifying_paymaster_address,
-            payload.sender,
-            paymaster_nonce.as_u64() as i64,
-            valid_until as i64,
-            valid_after as i64,
-        )
-        .await?;
-
-        // Before exit, create the billing operation.
-        create_billing_operation(db.clone(), payload.sender, paymaster_operation.id).await?;
+            // Before exit, create the billing operation.
+            create_billing_operation(db.clone(), payload.sender, paymaster_operation.id).await?;
+        }
     }
 
     Ok(())

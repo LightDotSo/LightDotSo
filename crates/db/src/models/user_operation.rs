@@ -85,55 +85,59 @@ pub async fn upsert_user_operation(
     if let Some(paymaster_and_data) = uow.paymaster_and_data {
         info!("Upserting paymaster operation");
 
-        // Parse the paymaster and data
-        let (paymaster_address, valid_until, valid_after, _sig) =
-            decode_paymaster_and_data(paymaster_and_data.to_vec())?;
+        // Parse the paymaster and data, and upsert the paymaster if it matches one of ours
+        if let Ok((paymaster_address, valid_until, valid_after, _sig)) =
+            decode_paymaster_and_data(paymaster_and_data.to_vec())
+        {
+            // Upsert the paymaster if matches one of ours
+            if LIGHT_PAYMASTER_ADDRESSES.contains(&paymaster_address) {
+                info!("Upserting paymaster {:?}", paymaster_address);
 
-        // Upsert the paymaster if matches one of ours
-        if LIGHT_PAYMASTER_ADDRESSES.contains(&paymaster_address) {
-            info!("Upserting paymaster {:?}", paymaster_address);
-
-            let pm = db
-                .paymaster()
-                .upsert(
-                    paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
-                    paymaster::create(
-                        to_checksum(&paymaster_address, None),
-                        chain::id::equals(chain_id),
+                let pm = db
+                    .paymaster()
+                    .upsert(
+                        paymaster::address_chain_id(
+                            to_checksum(&paymaster_address, None),
+                            chain_id,
+                        ),
+                        paymaster::create(
+                            to_checksum(&paymaster_address, None),
+                            chain::id::equals(chain_id),
+                            vec![paymaster::user_operations::connect(vec![
+                                user_operation::hash::equals(format!("{:?}", uow.hash)),
+                            ])],
+                        ),
                         vec![paymaster::user_operations::connect(vec![
                             user_operation::hash::equals(format!("{:?}", uow.hash)),
                         ])],
-                    ),
-                    vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
-                        format!("{:?}", uow.hash),
-                    )])],
-                )
-                .exec()
-                .await?;
+                    )
+                    .exec()
+                    .await?;
 
-            // Update the paymaster operation
-            let _ = db
-                .paymaster_operation()
-                .update(
-                    paymaster_operation::valid_until_valid_after_paymaster_id(
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        pm.clone().id.clone(),
-                    ),
-                    vec![paymaster_operation::user_operation::connect(
-                        user_operation::hash::equals(format!("{:?}", uow.hash)),
-                    )],
-                )
-                .exec()
-                .await?;
+                // Update the paymaster operation
+                let _ = db
+                    .paymaster_operation()
+                    .update(
+                        paymaster_operation::valid_until_valid_after_paymaster_id(
+                            DateTime::<Utc>::from_utc(
+                                NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                                Utc,
+                            )
+                            .into(),
+                            DateTime::<Utc>::from_utc(
+                                NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                                Utc,
+                            )
+                            .into(),
+                            pm.clone().id.clone(),
+                        ),
+                        vec![paymaster_operation::user_operation::connect(
+                            user_operation::hash::equals(format!("{:?}", uow.hash)),
+                        )],
+                    )
+                    .exec()
+                    .await?;
+            }
         }
     }
 

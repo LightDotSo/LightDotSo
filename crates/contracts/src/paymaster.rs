@@ -168,4 +168,22 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_decode_paymaster_and_data_alchemy() -> Result<()> {
+        // Get the expected msg.
+        let number_one_msg: Vec<u8> = hex::decode("0x4fd9098af9ddcb41da48a1d78f91f1398965addc00000000000000006685d0520000000000000000000000000000000000000000bab40d3c364ad63d5bcf59da8a8c872a2c6f2aad81a4bd8b46812e16271855115b9d6479508ad438ad247884664ef7cb40cbc1898891f08da75509df37e089051c").unwrap();
+
+        // Decode the paymaster and data.
+        let (verifying_paymaster_address, valid_until, valid_after, _signature) =
+            decode_paymaster_and_data(number_one_msg)?;
+
+        // Log the result.
+        println!("#1");
+        println!("verifying_paymaster_address: {:?}", verifying_paymaster_address);
+        println!("valid_until: {:?}", valid_until);
+        println!("valid_after: {:?}", valid_after);
+
+        Ok(())
+    }
 }
