@@ -85,7 +85,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
         // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
         if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
             let sponsorship = get_alchemy_paymaster_and_data(
-                format!("{}/{}", alchemy_rpc_url, alchemy_api_key),
+                format!("{}{}", alchemy_rpc_url, alchemy_api_key),
                 entry_point,
                 &user_operation,
                 (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
