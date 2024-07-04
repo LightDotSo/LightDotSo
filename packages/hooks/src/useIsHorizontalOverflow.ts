@@ -23,7 +23,15 @@ import { type RefObject, useLayoutEffect, useState } from "react";
 export const useIsHorizontalOverflow = (
   ref: RefObject<HTMLElement>,
 ): boolean => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [isOverflow, setIsOverflow] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Layout Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useLayoutEffect(() => {
     const { current } = ref;
@@ -42,6 +50,10 @@ export const useIsHorizontalOverflow = (
       trigger();
     }
   }, [ref]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return isOverflow;
 };

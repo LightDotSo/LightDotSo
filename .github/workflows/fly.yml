@@ -630,5 +630,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-consumer,fly-deploy-consumer-actvty,fly-deploy-consumer-cvalnt,fly-deploy-consumer-error,fly-deploy-consumer-intptn,fly-deploy-consumer-nfn,fly-deploy-consumer-prtflo,fly-deploy-consumer-retry,fly-deploy-consumer-rtscn,fly-deploy-consumer-tx,fly-deploy-consumer-uop,fly-deploy-gas,fly-deploy-grafana,fly-deploy-log-shipper,fly-deploy-metabase,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-soketi
+          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-consumer,fly-deploy-consumer-actvty,fly-deploy-consumer-cvalnt,fly-deploy-consumer-error,fly-deploy-consumer-intptn,fly-deploy-consumer-nfn,fly-deploy-consumer-pop,fly-deploy-consumer-prtflo,fly-deploy-consumer-retry,fly-deploy-consumer-rtscn,fly-deploy-consumer-tx,fly-deploy-consumer-uop,fly-deploy-gas,fly-deploy-grafana,fly-deploy-log-shipper,fly-deploy-metabase,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-soketi
           jobs: ${{ toJSON(needs) }}

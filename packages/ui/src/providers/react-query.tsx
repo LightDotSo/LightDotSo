@@ -70,7 +70,6 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       defaultOptions: {
         queries: {
           gcTime: Infinity,
-          staleTime: 5 * 1000,
         },
         dehydrate: {
           shouldDehydrateQuery: query =>

@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationReceipt } from "@lightdotso/client";
+import {
+  type GasEstimationResponse,
+  getRequestGasEstimation,
+} from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
-import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
+import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryUserOperationReceipt = (
-  params: Pick<UserOperation, "hash"> & { chainId: number | null },
-) => {
+export const useQueryGasEstimation = (params: { chainId: number }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,26 +37,20 @@ export const useQueryUserOperationReceipt = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: userOperationReceipt,
-    isLoading: isUserOperationReceiptLoading,
-    isError: isUserOperationReceiptError,
-    error: userOperationReceiptError,
-  } = useQuery({
-    retry: false,
-    queryKey: queryKeys.rpc.get_user_operation_receipt({
-      chainId: Number(params.chainId),
-      hash: params.hash,
+    data: gasEstimation,
+    isLoading: isGasEstimationLoading,
+    error: gasEstimationError,
+  } = useQuery<GasEstimationResponse>({
+    retry: 10,
+    queryKeyHashFn: key => {
+      return serialize(key);
+    },
+    queryKey: queryKeys.rpc.get_gas_estimation({
+      chainId: params.chainId,
     }).queryKey,
     queryFn: async () => {
-      // If no `chainId` or `hash` is provided, return null
-      if (!params.chainId || !params.hash) {
-        return null;
-      }
-
-      // Get the user operation receipt
-      const res = await getUserOperationReceipt(
-        Number(params.chainId),
-        [params.hash],
+      const res = await getRequestGasEstimation(
+        Number(params.chainId) as number,
         clientType,
       );
 
@@ -65,9 +60,8 @@ export const useQueryUserOperationReceipt = (
   });
 
   return {
-    userOperationReceipt: userOperationReceipt,
-    isUserOperationReceiptLoading: isUserOperationReceiptLoading,
-    isUserOperationReceiptError: isUserOperationReceiptError,
-    userOperationReceiptError: userOperationReceiptError,
+    gasEstimation: gasEstimation,
+    isGasEstimationLoading: isGasEstimationLoading,
+    gasEstimationError: gasEstimationError,
   };
 };

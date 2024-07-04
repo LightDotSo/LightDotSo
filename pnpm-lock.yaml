@@ -2197,6 +2197,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
@@ -2206,6 +2209,9 @@ importers:
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:../sequence
@@ -2215,6 +2221,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../wagmi

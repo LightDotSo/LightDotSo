@@ -36,6 +36,9 @@ export const rpc = createQueryKeys("rpc", {
   ) => ({
     queryKey: [{ params: params }],
   }),
+  get_gas_estimation: (params: { chainId: number }) => ({
+    queryKey: [{ params: params }],
+  }),
   get_paymaster_gas_and_paymaster_and_data: (
     params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
   ) => ({

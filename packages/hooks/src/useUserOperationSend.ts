@@ -159,8 +159,7 @@ export const useUserOperationSend = ({
 
   const { userOperationReceipt, isUserOperationReceiptError } =
     useQueryUserOperationReceipt({
-      // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
-      chainId: userOperation?.chain_id!,
+      chainId: userOperation?.chain_id ?? null,
       hash: hash,
     });
 
