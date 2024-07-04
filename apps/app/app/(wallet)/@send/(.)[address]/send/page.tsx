@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { ModalInterception } from "@lightdotso/templates";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@send/(.)[address]/send/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/send/page";

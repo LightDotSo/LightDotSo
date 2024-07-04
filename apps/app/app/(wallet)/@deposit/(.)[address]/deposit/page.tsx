@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { ModalInterception } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/deposit/(components)/modal-interception-footer";

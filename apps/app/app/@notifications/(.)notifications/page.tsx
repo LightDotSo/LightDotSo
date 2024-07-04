@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(authenticated)/notifications/page";
 import { ModalInterceptionFooter } from "@/app/@notifications/(.)notifications/(components)/modal-interception-footer";
