@@ -20,7 +20,7 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import {
   useAccount,
   useSignMessage,
@@ -69,11 +69,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const {
-    setCustomFormSuccessText,
-    setIsFormLoading,
-    // setIsFormDisabled
-  } = useFormRef();
+  // const {
+  //   setCustomFormSuccessText,
+  //   setIsFormLoading,
+  //   // setIsFormDisabled
+  // } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
@@ -296,19 +296,11 @@ export const useUserOperationsCreate = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const {
-    userOperationCreate,
-    isUserOperationCreateLoading,
-    isUserOperationCreateSuccess,
-  } = useMutationUserOperationCreate({
+  const { userOperationCreate } = useMutationUserOperationCreate({
     address: address as Address,
   });
 
-  const {
-    userOperationCreateBatch,
-    isUserOperationCreateBatchLoading,
-    isUserOperationCreateBatchSuccess,
-  } = useMutationUserOperationCreateBatch({
+  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
     address: address as Address,
   });
 
@@ -490,11 +482,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Get the delayed success value
-  const delayedIsSuccess = useDelayedValue<boolean>(
-    isUserOperationCreateSuccess,
-    false,
-    3000,
-  );
+  // const delayedIsSuccess = useDelayedValue<boolean>(
+  //   isUserOperationCreateSuccess,
+  //   false,
+  //   3000,
+  // );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -525,9 +517,9 @@ export const useUserOperationsCreate = ({
     //   return "Creating transactions...";
     // }
 
-    if (delayedIsSuccess) {
-      return "Success";
-    }
+    // if (delayedIsSuccess) {
+    //   return "Success";
+    // }
 
     return "Sign";
   }, [
@@ -535,33 +527,33 @@ export const useUserOperationsCreate = ({
     owner,
     isConnecting,
     // isSignLoading,
-    isUserOperationCreateLoading,
-    isUserOperationCreateBatchLoading,
-    delayedIsSuccess,
+    // isUserOperationCreateLoading,
+    // isUserOperationCreateBatchLoading,
+    // delayedIsSuccess,
   ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Set the custom form success text
-  useEffect(() => {
-    if (!formStateText) {
-      return;
-    }
-    setCustomFormSuccessText(formStateText);
-  }, [formStateText, setCustomFormSuccessText]);
+  // // Set the custom form success text
+  // useEffect(() => {
+  //   if (!formStateText) {
+  //     return;
+  //   }
+  //   setCustomFormSuccessText(formStateText);
+  // }, [formStateText, setCustomFormSuccessText]);
 
-  // Set the form loading state to true if the status is success
-  useEffect(() => {
-    if (isUserOperationCreateSuccess) {
-      setIsFormLoading(isUserOperationCreateLoading);
-    }
-  }, [
-    isUserOperationCreateSuccess,
-    isUserOperationCreateLoading,
-    setIsFormLoading,
-  ]);
+  // // Set the form loading state to true if the status is success
+  // useEffect(() => {
+  //   if (isUserOperationCreateSuccess) {
+  //     setIsFormLoading(isUserOperationCreateLoading);
+  //   }
+  // }, [
+  //   isUserOperationCreateSuccess,
+  //   isUserOperationCreateLoading,
+  //   setIsFormLoading,
+  // ]);
 
   // If the transaction is disabled, set the form disabled to true
   // useEffect(() => {

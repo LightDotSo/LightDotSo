@@ -56,12 +56,7 @@ export const useMutationUserOperationCreateBatch = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: userOperationCreateBatch,
-    isPending: isUserOperationCreateBatchLoading,
-    isSuccess: isUserOperationCreateBatchSuccess,
-    failureCount,
-  } = useMutation({
+  const { mutate: userOperationCreateBatch, failureCount } = useMutation({
     mutationKey: ["userOperationCreateBatch"],
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
       let hasInvalidData = body.userOperations.some(userOperation => {
@@ -224,7 +219,5 @@ export const useMutationUserOperationCreateBatch = (
 
   return {
     userOperationCreateBatch: userOperationCreateBatch,
-    isUserOperationCreateBatchLoading: isUserOperationCreateBatchLoading,
-    isUserOperationCreateBatchSuccess: isUserOperationCreateBatchSuccess,
   };
 };

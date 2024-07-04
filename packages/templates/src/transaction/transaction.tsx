@@ -90,17 +90,11 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [pageIndex, setPageIndex] = useState(0);
-
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { pageIndex, setPageIndex } = useModalSwiper();
   const {
     internalUserOperations,
     userOperationDetails,

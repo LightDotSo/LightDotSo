@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { queryKeys } from "@lightdotso/query-keys";
 import { useMutationState } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -45,7 +44,7 @@ export const useMutationStateUserOperationCreate = () => {
     select: mutations => mutations.state.status,
   });
 
-  const userOpeartionCreateBatchStatus = useMutationState({
+  const userOperationCreateBatchStatus = useMutationState({
     filters: {
       mutationKey: ["userOperationCreateBatch"],
       exact: true,
@@ -56,18 +55,17 @@ export const useMutationStateUserOperationCreate = () => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
   const isSignMessageAsyncLoading = useMemo(() => {
-    return signMessageStatus?.[0] === "pending";
+    return signMessageStatus?.some(status => status === "pending");
   }, [signMessageStatus]);
 
   const isUserOperationCreateLoading = useMemo(() => {
-    return userOperationCreateStatus?.[0] === "pending";
+    return userOperationCreateStatus?.some(status => status === "pending");
   }, [userOperationCreateStatus]);
 
   const isUserOperationCreateBatchLoading = useMemo(() => {
-    return userOpeartionCreateBatchStatus?.[0] === "pending";
-  }, [userOpeartionCreateBatchStatus]);
+    return userOperationCreateBatchStatus?.some(status => status === "pending");
+  }, [userOperationCreateBatchStatus]);
 
   // Check if the userOperation is loading
   const isMutationStateUserOperationCreateLoading = useMemo(() => {
@@ -85,15 +83,25 @@ export const useMutationStateUserOperationCreate = () => {
   // Check if the userOperation is successful
   const isMutationStateUserOperationCreateSuccess = useMemo(() => {
     return (
-      userOperationCreateStatus?.[0] === "success" ||
-      userOpeartionCreateBatchStatus?.[0] === "success"
+      userOperationCreateStatus?.some(status => status === "success") ||
+      userOperationCreateBatchStatus?.some(status => status === "success")
     );
-  }, [userOperationCreateStatus, userOpeartionCreateBatchStatus]);
+  }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
+
+  // Check if the userOperation is failed
+  const isMutationStateUserOperationCreateError = useMemo(() => {
+    return (
+      userOperationCreateStatus?.some(status => status === "error") ||
+      userOperationCreateBatchStatus?.some(status => status === "error")
+    );
+  }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
   return {
     isMutationStateUserOperationCreateLoading:
       isMutationStateUserOperationCreateLoading,
     isMutationStateUserOperationCreateSuccess:
       isMutationStateUserOperationCreateSuccess,
+    isMutationStateUserOperationCreateError:
+      isMutationStateUserOperationCreateError,
   };
 };

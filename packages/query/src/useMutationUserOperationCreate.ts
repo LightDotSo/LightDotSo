@@ -51,12 +51,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: userOperationCreate,
-    isPending: isUserOperationCreateLoading,
-    isSuccess: isUserOperationCreateSuccess,
-    failureCount,
-  } = useMutation({
+  const { mutate: userOperationCreate, failureCount } = useMutation({
     mutationKey: ["userOperationCreate"],
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
@@ -218,7 +213,5 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
 
   return {
     userOperationCreate: userOperationCreate,
-    isUserOperationCreateLoading: isUserOperationCreateLoading,
-    isUserOperationCreateSuccess: isUserOperationCreateSuccess,
   };
 };
