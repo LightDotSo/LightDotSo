@@ -299,7 +299,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Get the paymaster and data from the target user operation
-  const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
+  const { gasAndPaymasterAndData, isGasAndPaymasterAndDataLoading } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
       chainId: targetUserOperation.chainId,
@@ -331,14 +331,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         callGasLimit: callGasLimit,
         preVerificationGas: preVerificationGas,
         verificationGasLimit: verificationGasLimit,
-        paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
+        paymasterAndData: gasAndPaymasterAndData?.paymasterAndData ?? "0x",
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       // Only paymaster and data is required to compute the gas limits and paymaster
       // The rest of the values are dependencies of the paymaster and data
       // As it is the final layer of computation
-      paymasterAndData,
+      gasAndPaymasterAndData,
     ]);
 
   // ---------------------------------------------------------------------------
@@ -456,8 +456,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const isTransactionFetcherLoading = useMemo(() => {
-    return isUserOperationEstimateGasLoading || isPaymasterAndDataLoading;
-  }, [isUserOperationEstimateGasLoading, isPaymasterAndDataLoading]);
+    return isUserOperationEstimateGasLoading || isGasAndPaymasterAndDataLoading;
+  }, [isUserOperationEstimateGasLoading, isGasAndPaymasterAndDataLoading]);
 
   // ---------------------------------------------------------------------------
   // Hooks

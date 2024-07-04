@@ -20,7 +20,7 @@ import {
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
-import type { Address, Hex } from "viem";
+import { fromHex, type Address, type Hex } from "viem";
 import { useMemo } from "react";
 import { findContractAddressByAddress } from "@lightdotso/utils";
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
@@ -111,7 +111,9 @@ export const useUserOperationFeePerGas = ({
       const estimatedMaxFeePerGas = gasEstimation[gasSpeed].maxFeePerGas;
 
       // Parse the Hex to BigInt
-      return BigInt(estimatedMaxFeePerGas);
+      return fromHex(estimatedMaxFeePerGas as Hex, {
+        to: "bigint",
+      });
     }
 
     // Return null if no gas estimation is available

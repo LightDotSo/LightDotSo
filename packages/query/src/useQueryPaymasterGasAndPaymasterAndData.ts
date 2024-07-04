@@ -39,9 +39,9 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: paymasterAndData,
-    isLoading: isPaymasterAndDataLoading,
-    error: paymasterAndDataError,
+    data: gasAndPaymasterAndData,
+    isLoading: isGasAndPaymasterAndDataLoading,
+    error: gasAndPaymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
     retry: 10,
     refetchIntervalInBackground: true,
@@ -102,8 +102,8 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   });
 
   return {
-    paymasterAndData: paymasterAndData,
-    isPaymasterAndDataLoading: isPaymasterAndDataLoading,
-    paymasterAndDataError: paymasterAndDataError,
+    gasAndPaymasterAndData: gasAndPaymasterAndData,
+    isGasAndPaymasterAndDataLoading: isGasAndPaymasterAndDataLoading,
+    gasAndPaymasterAndDataError: gasAndPaymasterAndDataError,
   };
 };

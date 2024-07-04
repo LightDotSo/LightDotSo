@@ -23,7 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationReceipt = (
-  params: Pick<UserOperation, "hash"> & { chainId: number },
+  params: Pick<UserOperation, "hash"> & { chainId: number | null },
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -43,12 +43,18 @@ export const useQueryUserOperationReceipt = (
   } = useQuery({
     retry: false,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
-      chainId: params.chainId,
+      chainId: Number(params.chainId),
       hash: params.hash,
     }).queryKey,
     queryFn: async () => {
+      // If no `chainId` or `hash` is provided, return null
+      if (!params.chainId || !params.hash) {
+        return null;
+      }
+
+      // Get the user operation receipt
       const res = await getUserOperationReceipt(
-        params.chainId,
+        Number(params.chainId),
         [params.hash],
         clientType,
       );
