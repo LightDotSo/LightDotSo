@@ -24,6 +24,8 @@ import { toast } from "@lightdotso/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
+import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
+import { useQueryUserOperation } from "./useQueryUserOperation";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -36,6 +38,14 @@ export const useMutationUserOperationSend = (
   // Query
   // ---------------------------------------------------------------------------
 
+  const { userOperation } = useQueryUserOperation({
+    hash: params.hash,
+  });
+  const { userOperationReceipt, refetchUserOperationReceipt } =
+    useQueryUserOperationReceipt({
+      chainId: userOperation?.chain_id ?? null,
+      hash: params.hash,
+    });
   const queryClient = useQueryClient();
 
   // ---------------------------------------------------------------------------
@@ -49,8 +59,13 @@ export const useMutationUserOperationSend = (
     isSuccess: isUserOperationSendSuccess,
     failureCount,
   } = useMutation({
-    retry: 10,
+    retryDelay: 1000,
     mutationFn: async (body: UserOperationSendBodyParams) => {
+      // If the user operation receipt is already fetched, return
+      if (userOperationReceipt) {
+        return;
+      }
+
       const loadingToast = toast.loading("Submitting the transaction...");
 
       const { userOperation, userOperationSignature } = body;
@@ -92,6 +107,10 @@ export const useMutationUserOperationSend = (
           throw err;
         },
       );
+    },
+    onError: async () => {
+      // Refetch the user operation receipt if there is an error
+      await refetchUserOperationReceipt();
     },
     onMutate: async (data: UserOperationSendBodyParams) => {
       const previousData: UserOperationData[] | undefined =

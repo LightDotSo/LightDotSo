@@ -50,7 +50,7 @@ import {
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import type * as z from "zod";
@@ -89,10 +89,15 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [pageIndex, setPageIndex] = useState(0);
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { pageIndex, setPageIndex } = useModalSwiper();
   const {
     internalUserOperations,
     userOperationDetails,

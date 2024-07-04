@@ -40,8 +40,8 @@ export const useQueryUserOperationReceipt = (
     isLoading: isUserOperationReceiptLoading,
     isError: isUserOperationReceiptError,
     error: userOperationReceiptError,
+    refetch: refetchUserOperationReceipt,
   } = useQuery({
-    retry: false,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: Number(params.chainId),
       hash: params.hash,
@@ -69,5 +69,6 @@ export const useQueryUserOperationReceipt = (
     isUserOperationReceiptLoading: isUserOperationReceiptLoading,
     isUserOperationReceiptError: isUserOperationReceiptError,
     userOperationReceiptError: userOperationReceiptError,
+    refetchUserOperationReceipt: refetchUserOperationReceipt,
   };
 };

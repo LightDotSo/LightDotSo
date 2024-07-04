@@ -1437,6 +1437,7 @@ Surl
 sveltejs
 swiftlint
 swiftytexttable
+swiper
 swxmlhash
 sxwjr
 symbolicate

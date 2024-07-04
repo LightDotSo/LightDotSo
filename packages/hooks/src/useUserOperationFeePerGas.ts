@@ -120,15 +120,33 @@ export const useUserOperationFeePerGas = ({
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {
+      const CELO_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(12000000000);
+
       // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
-      const celoFeePerGas =
+      const baseCeloFeePerGas =
         baseMaxFeePerGas &&
         baseMaxPriorityFeePerGas &&
         baseMaxFeePerGas > baseMaxPriorityFeePerGas
           ? baseMaxFeePerGas
           : baseMaxPriorityFeePerGas;
 
-      return [celoFeePerGas, celoFeePerGas];
+      // For Celo, we need to multiply the gas price by 3/2
+      // https://github.com/pimlicolabs/alto/blob/58bcc4e75a214f9074c7d4c73626960527fa43ce/packages/utils/src/gasPrice.ts#L73-L79
+      // License: GPL-3.0
+      if (baseCeloFeePerGas) {
+        // Multiply the fee by 1.5 to get the max fee per gas
+        const celoFeePerGas = (baseCeloFeePerGas * BigInt(3)) / BigInt(2);
+
+        // Return compared to the celo base max priority fee per gas
+        return [
+          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+            ? celoFeePerGas
+            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+            ? celoFeePerGas
+            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
+        ];
+      }
     }
 
     // For polygon, there's a base max fee per gas
