@@ -120,6 +120,8 @@ export const useUserOperationFeePerGas = ({
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {
+      const CELO_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(12000000000);
+
       // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
       const baseCeloFeePerGas =
         baseMaxFeePerGas &&
@@ -135,7 +137,15 @@ export const useUserOperationFeePerGas = ({
         // Multiply the fee by 1.5 to get the max fee per gas
         const celoFeePerGas = (baseCeloFeePerGas * BigInt(3)) / BigInt(2);
 
-        return [celoFeePerGas, celoFeePerGas];
+        // Return compared to the celo base max priority fee per gas
+        return [
+          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+            ? celoFeePerGas
+            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+            ? celoFeePerGas
+            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
+        ];
       }
     }
 
