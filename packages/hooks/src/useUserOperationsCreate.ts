@@ -88,6 +88,7 @@ export const useUserOperationsCreate = ({
   const [signedData, setSignedData] = useState<Hex>();
   const [isSigningUserOperations, setIsSigningUserOperations] =
     useState<boolean>(false);
+  console.debug("isSigningUserOperations", isSigningUserOperations);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -192,6 +193,7 @@ export const useUserOperationsCreate = ({
     signMessageAsync,
     isPending: isSignMessageAsyncLoading,
   } = useSignMessage();
+  console.debug(isSignMessageAsyncLoading);
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,

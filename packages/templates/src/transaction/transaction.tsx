@@ -152,6 +152,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   } = useUserOperationsCreate({
     address: address as Address,
   });
+  console.debug("isUserOperationsCreateLoading", isUserOperationsCreateLoading);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
