@@ -260,7 +260,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Get the gas estimate for the user operation
   const { maxFeePerGas, maxPriorityFeePerGas } = useUserOperationFeePerGas({
     address: address as Address,
-    chainId: targetUserOperation.chainId,
+    chainId: Number(targetUserOperation.chainId),
     callData: targetUserOperation.callData as Hex,
   });
 
