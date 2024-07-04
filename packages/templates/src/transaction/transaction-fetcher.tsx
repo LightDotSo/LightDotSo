@@ -19,7 +19,6 @@ import {
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import {
-  useDebouncedValue,
   useProxyImplementationAddress,
   useUserOperationEstimateGas,
   useUserOperationFeePerGas,
@@ -460,33 +459,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [isUserOperationEstimateGasLoading, isGasAndPaymasterAndDataLoading]);
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const debouncedUserOperationWithHash = useDebouncedValue(
-    userOperationWithHash,
-    300,
-  );
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Sync `userOperationWithHash` to the store
-  useEffect(() => {
-    if (!debouncedUserOperationWithHash) {
-      return;
-    }
-
-    setInternalUserOperationByChainId(
-      Number(targetUserOperation.chainId),
-      debouncedUserOperationWithHash,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    // Debounced user operation with hash is the only dependency
-    debouncedUserOperationWithHash,
-  ]);
 
   useEffect(() => {
     setIsFormDisabled(isDisabled);
@@ -581,18 +555,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // On mount, set the user operation details
+  // Sync `userOperationWithHash` to the store
   useEffect(() => {
-    setUserOperationDetails(
+    if (!userOperationWithHash) {
+      return;
+    }
+    setInternalUserOperationByChainId(
       Number(targetUserOperation.chainId),
-      userOperationDetails,
+      userOperationWithHash,
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    targetUserOperation.chainId,
+    setInternalUserOperationByChainId,
+    userOperationWithHash,
+  ]);
 
   // Sync the user operation details
   useEffect(() => {
-    if (!targetUserOperation || isDisabled) {
+    if (!targetUserOperation) {
       return;
     }
 

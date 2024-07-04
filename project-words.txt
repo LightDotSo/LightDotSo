@@ -1581,6 +1581,7 @@ upser
 upsert
 Upserting
 Upserts
+upstash
 uqszcm
 uqza
 urlpattern
