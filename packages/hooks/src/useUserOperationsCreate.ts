@@ -533,6 +533,10 @@ export const useUserOperationsCreate = ({
       return "Connect Wallet";
     }
 
+    if (!owner) {
+      return "Not Owner";
+    }
+
     if (isConnecting) {
       return "Connecting...";
     }
@@ -556,6 +560,7 @@ export const useUserOperationsCreate = ({
     return "Sign";
   }, [
     address,
+    owner,
     isConnecting,
     isSignLoading,
     isUserOperationCreateLoading,
