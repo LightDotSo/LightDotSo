@@ -603,19 +603,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperationDetails]);
 
-  // Sync the user operation dev info
-  // useEffect(() => {
-  //   if (isDisabled) {
-  //     return;
-  //   }
-
-  //   setUserOperationDevInfo(
-  //     Number(targetUserOperation.chainId),
-  //     userOperationDetails,
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [userOperationDetails]);
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

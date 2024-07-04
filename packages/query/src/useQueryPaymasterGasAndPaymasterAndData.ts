@@ -41,6 +41,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   const {
     data: gasAndPaymasterAndData,
     isLoading: isGasAndPaymasterAndDataLoading,
+    isSuccess: isGasAndPaymasterAndDataSuccess,
     error: gasAndPaymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
     retry: 10,
@@ -66,11 +67,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
       if (
         // Both can be BigInt(0) if the operation is from `initialUserOperation`
         params.maxFeePerGas === BigInt(0) ||
-        params.maxPriorityFeePerGas === BigInt(0) ||
-        // Both can be BigInt(0) if `estimateUserOperationGasData` is pending
-        params.callGasLimit === BigInt(0) ||
-        params.verificationGasLimit === BigInt(0) ||
-        params.preVerificationGas === BigInt(0)
+        params.maxPriorityFeePerGas === BigInt(0)
       ) {
         return null;
       }
