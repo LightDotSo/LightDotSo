@@ -19,6 +19,7 @@ import type { Address } from "viem";
 import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
 import { handler } from "@/handlers/[address]/create/handler";
 import { preloader } from "@/preloaders/[address]/create/preloader";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 // ------------------------------------------------------c-----------------------
 // Props
@@ -72,5 +73,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <CreateDialog address={params.address as Address} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CreateDialog address={params.address as Address} />
+    </HydrationBoundary>
+  );
 }

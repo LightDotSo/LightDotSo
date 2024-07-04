@@ -39,13 +39,13 @@
     "@lightdotso/wagmi": "workspace:*",
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
-    "merkletreejs": "^0.3.11",
+    "merkletreejs": "^0.4.0",
     "next": "15.0.0-canary.49",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
     "siwe": "^2.3.2",
-    "viem": "^2.16.5"
+    "viem": "^2.17.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

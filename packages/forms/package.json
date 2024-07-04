@@ -28,7 +28,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.4",
     "@hookform/devtools": "^4.3.1",
-    "@hookform/resolvers": "^3.6.0",
+    "@hookform/resolvers": "^3.7.0",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -45,8 +45,8 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.400.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
-    "react-hook-form": "^7.52.0",
-    "viem": "^2.16.5",
+    "react-hook-form": "^7.52.1",
+    "viem": "^2.17.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

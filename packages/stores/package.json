@@ -34,9 +34,9 @@
     "lodash": "^4.17.21",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
-    "react-hook-form": "^7.52.0",
+    "react-hook-form": "^7.52.1",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.16.5",
+    "viem": "^2.17.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
