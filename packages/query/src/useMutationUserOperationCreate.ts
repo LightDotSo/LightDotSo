@@ -19,6 +19,7 @@ import type {
   UserOperationCreateBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -51,12 +52,8 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: userOperationCreate,
-    isPending: isUserOperationCreateLoading,
-    isSuccess: isUserOperationCreateSuccess,
-    failureCount,
-  } = useMutation({
+  const { mutate: userOperationCreate, failureCount } = useMutation({
+    mutationKey: queryKeys.user_operation.create._def,
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
         !body.userOperation.chainId ||
@@ -217,7 +214,5 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
 
   return {
     userOperationCreate: userOperationCreate,
-    isUserOperationCreateLoading: isUserOperationCreateLoading,
-    isUserOperationCreateSuccess: isUserOperationCreateSuccess,
   };
 };

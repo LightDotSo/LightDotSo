@@ -19,12 +19,15 @@ import { auth } from "./auth";
 import { configuration } from "./configuration";
 import { configuration_operation } from "./configuration_operation";
 import { ens } from "./ens";
+import { feedback } from "./feedback";
 import { nft } from "./nft";
 import { nft_valuation } from "./nft_valation";
 import { notification } from "./notification";
 import { paymaster_operation } from "./paymaster_operation";
 import { portfolio } from "./portfolio";
+import { queue } from "./queue";
 import { rpc } from "./rpc";
+import { signature } from "./signature";
 import { simulation } from "./simulation";
 import { socket } from "./socket";
 import { token } from "./token";
@@ -33,6 +36,7 @@ import { transaction } from "./transaction";
 import { user } from "./user";
 import { user_operation } from "./user_operation";
 import { wallet } from "./wallet";
+import { wallet_settings } from "./wallet_settings";
 
 export const queryKeys = mergeQueryKeys(
   auth,
@@ -40,12 +44,15 @@ export const queryKeys = mergeQueryKeys(
   configuration,
   configuration_operation,
   ens,
+  feedback,
   nft,
   nft_valuation,
   notification,
   paymaster_operation,
   portfolio,
+  queue,
   rpc,
+  signature,
   simulation,
   socket,
   transaction,
@@ -54,6 +61,7 @@ export const queryKeys = mergeQueryKeys(
   token,
   token_price,
   wallet,
+  wallet_settings,
 );
 
 export type QueryKeys = inferQueryKeyStore<typeof queryKeys>;

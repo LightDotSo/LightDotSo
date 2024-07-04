@@ -42,6 +42,18 @@ export const user_operation = createQueryKeys("user_operation", {
   signature: (params: UserOperationSignatureGetParams) => ({
     queryKey: [{ params: params }],
   }),
+  create: () => ({
+    queryKey: ["create"],
+  }),
+  create_batch: () => ({
+    queryKey: ["create_batch"],
+  }),
+  send: () => ({
+    queryKey: ["send"],
+  }),
+  update: () => ({
+    queryKey: ["update"],
+  }),
 });
 
 // -----------------------------------------------------------------------------

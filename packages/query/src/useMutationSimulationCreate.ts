@@ -14,6 +14,7 @@
 
 import { createSimulation } from "@lightdotso/client";
 import type { SimulationCreateBodyParams } from "@lightdotso/params/src/simulation";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -34,6 +35,7 @@ export const useMutationSimulationCreate = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: logout } = useMutation({
+    mutationKey: queryKeys.simulation.create._def,
     mutationFn: async (body: SimulationCreateBodyParams) => {
       const res = await createSimulation(
         {

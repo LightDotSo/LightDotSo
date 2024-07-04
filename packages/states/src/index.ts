@@ -13,4 +13,5 @@
 // limitations under the License.
 
 export { AuthState } from "./auth-state";
+export { FormState } from "./form-state";
 export { QueueState } from "./queue-state";

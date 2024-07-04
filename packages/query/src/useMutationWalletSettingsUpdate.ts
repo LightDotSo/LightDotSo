@@ -46,6 +46,7 @@ export const useMutationWalletSettingsUpdate = (
     isPending: isWalletSettingsUpdatePending,
     failureCount,
   } = useMutation({
+    mutationKey: queryKeys.wallet_settings.update._def,
     mutationFn: async (body: WaleltSettingsUpdateBodyParams) => {
       if (!params.address) {
         return;
@@ -137,8 +138,6 @@ export const useMutationWalletSettingsUpdate = (
       // Invalidate the cache for the address
       fetch(`/api/revalidate/tag?tag=${params.address}`);
     },
-    mutationKey: queryKeys.wallet.settings({ address: params.address })
-      .queryKey,
   });
 
   return {

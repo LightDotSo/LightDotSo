@@ -14,7 +14,10 @@
 
 "use client";
 
-import { useUserOperationSend } from "@lightdotso/hooks";
+import {
+  useUserOperationSend,
+  useUserOperationsSendState,
+} from "@lightdotso/hooks";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
@@ -47,11 +50,8 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const {
-    handleSubmit,
-    isUserOperationSendLoading,
-    isUserOperationSendDisabled,
-  } = useUserOperationSend({
+  const { isUserOperationsSendLoading } = useUserOperationsSendState();
+  const { handleSubmit, isUserOperationSendDisabled } = useUserOperationSend({
     address: address as Address,
     hash: userOperationHash,
   });
@@ -73,8 +73,8 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     <FooterButton
       isModal
       className="pt-0"
-      disabled={isUserOperationSendLoading || isUserOperationSendDisabled}
-      isLoading={isUserOperationSendLoading}
+      disabled={isUserOperationsSendLoading || isUserOperationSendDisabled}
+      isLoading={isUserOperationsSendLoading}
       customSuccessText="Refresh"
       cancelClick={onDismiss}
       onClick={handleSubmit}

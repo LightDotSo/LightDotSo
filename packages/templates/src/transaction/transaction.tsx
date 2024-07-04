@@ -15,7 +15,10 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
-import { useUserOperationsCreate } from "@lightdotso/hooks";
+import {
+  useUserOperationsCreate,
+  useUserOperationsCreateState,
+} from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
@@ -49,7 +52,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -83,21 +85,10 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 
 export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [pageIndex, setPageIndex] = useState(0);
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { pageIndex, setPageIndex } = useModalSwiper();
   const {
     internalUserOperations,
     userOperationDetails,
@@ -143,15 +134,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const {
-    isUserOperationsCreateLoading,
-    isUserOperationsCreateSuccess,
-    isUserOperationsCreateSubmittable,
-    resetUserOperationsCreate,
-    signUserOperations,
-  } = useUserOperationsCreate({
-    address: address as Address,
-  });
+  const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
+    useUserOperationsCreateState();
+  const { isUserOperationsCreateSubmittable, signUserOperations } =
+    useUserOperationsCreate({
+      address: address as Address,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -197,11 +185,11 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
-  useEffect(() => {
-    resetUserOperationsCreate();
-    resetAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetUserOperationsCreate, resetAll]);
+  // useEffect(() => {
+  //   resetUserOperationsCreate();
+  //   resetAll();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [pathname, resetUserOperationsCreate, resetAll]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

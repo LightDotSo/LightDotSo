@@ -2785,6 +2785,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query

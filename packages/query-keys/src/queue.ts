@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { AuthParams } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -20,18 +19,21 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // Keys
 // -----------------------------------------------------------------------------
 
-export const auth = createQueryKeys("auth", {
-  nonce: (params: AuthParams) => ({
-    queryKey: [{ params: params }],
+export const queue = createQueryKeys("queue", {
+  interpretation: () => ({
+    queryKey: ["interpretation"],
   }),
-  session: (params: AuthParams) => ({
-    queryKey: [{ params: params }],
+  portfolio: () => ({
+    queryKey: ["portfolio"],
   }),
-  logout: () => ({
-    queryKey: ["logout"],
+  token: () => ({
+    queryKey: ["token"],
   }),
-  verify: () => ({
-    queryKey: ["verify"],
+  user_operation: () => ({
+    queryKey: ["user_operation"],
+  }),
+  transaction: () => ({
+    queryKey: ["transaction"],
   }),
 });
 
@@ -39,4 +41,4 @@ export const auth = createQueryKeys("auth", {
 // Infer
 // -----------------------------------------------------------------------------
 
-export type AuthKeys = inferQueryKeys<typeof auth>;
+export type QueueKeys = inferQueryKeys<typeof queue>;

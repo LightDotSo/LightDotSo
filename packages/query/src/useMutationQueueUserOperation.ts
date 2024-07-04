@@ -17,6 +17,7 @@ import type {
   QueueParams,
   QueueUserOpeartionBodyParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -41,6 +42,7 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
     isPending: isLoadingQueueUserOperation,
     failureCount,
   } = useMutation({
+    mutationKey: queryKeys.queue.user_operation._def,
     mutationFn: async (body: QueueUserOpeartionBodyParams) => {
       if (!params.address) {
         return;

@@ -19,6 +19,7 @@ import type {
   UserOperationCreateBatchBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -56,12 +57,8 @@ export const useMutationUserOperationCreateBatch = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: userOperationCreateBatch,
-    isPending: isUserOperationCreateBatchLoading,
-    isSuccess: isUserOperationCreateBatchSuccess,
-    failureCount,
-  } = useMutation({
+  const { mutate: userOperationCreateBatch, failureCount } = useMutation({
+    mutationKey: queryKeys.user_operation.create_batch._def,
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
       let hasInvalidData = body.userOperations.some(userOperation => {
         return (
@@ -223,7 +220,5 @@ export const useMutationUserOperationCreateBatch = (
 
   return {
     userOperationCreateBatch: userOperationCreateBatch,
-    isUserOperationCreateBatchLoading: isUserOperationCreateBatchLoading,
-    isUserOperationCreateBatchSuccess: isUserOperationCreateBatchSuccess,
   };
 };

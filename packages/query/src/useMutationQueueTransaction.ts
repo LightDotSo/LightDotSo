@@ -17,6 +17,7 @@ import type {
   QueueMinimalParams,
   QueueTransactionBodyParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -41,6 +42,7 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
     isPending: isLoadingQueueTransaction,
     failureCount,
   } = useMutation({
+    mutationKey: queryKeys.queue.transaction._def,
     mutationFn: async (body: QueueTransactionBodyParams) => {
       const loadingToast = params.isMinimal
         ? toast.loading(undefined, toastMinimalLoadingStyles)

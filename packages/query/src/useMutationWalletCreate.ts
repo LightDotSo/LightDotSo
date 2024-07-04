@@ -46,6 +46,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
     isError: isWalletCreateError,
     failureCount,
   } = useMutation({
+    mutationKey: queryKeys.wallet.create._def,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutationFn: async (body: WalletCreateBodyParams) => {
       const loadingToast = toast.loading("Creating wallet...");
@@ -142,7 +143,6 @@ export const useMutationWalletCreate = (params: WalletParams) => {
       // Invalidate the cache for the address
       // fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: queryKeys.wallet.get({ address: params.address }).queryKey,
   });
 
   return {

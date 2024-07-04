@@ -12,58 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { authLogout } from "@lightdotso/client";
-import { queryKeys } from "@lightdotso/query-keys";
-import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
-import { useMutation } from "@tanstack/react-query";
+import { useMutationStateSignMessage } from "@lightdotso/query";
+import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationAuthLogout = () => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
+export const useSignMessageState = () => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { mutate: logout, failureCount } = useMutation({
-    mutationKey: queryKeys.auth.logout._def,
-    mutationFn: async () => {
-      const loadingToast = toast.loading("Attepmting to logout...");
+  const userOperationSendStatus = useMutationStateSignMessage();
 
-      const res = await authLogout({}, clientType);
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
-      toast.dismiss(loadingToast);
-
-      res.match(
-        _ => {
-          toast.success("Successfully logged out!");
-        },
-        err => {
-          if (failureCount % 3 !== 2) {
-            throw err;
-          }
-
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to log out.");
-          }
-
-          throw err;
-        },
-      );
-    },
-  });
+  // Check if the userOperation is loading
+  const isSignMessageLoading = useMemo(() => {
+    return userOperationSendStatus?.some(status => status === "pending");
+  }, [userOperationSendStatus]);
 
   return {
-    logout: logout,
+    isSignMessageLoading: isSignMessageLoading,
   };
 };

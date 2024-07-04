@@ -23,7 +23,6 @@ import {
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
-import { useFormRef } from "@lightdotso/stores";
 import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
@@ -37,7 +36,6 @@ import {
   fromHex,
   recoverMessageAddress,
 } from "viem";
-import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,12 +59,6 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { setCustomFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -163,26 +155,11 @@ export const useUserOperationSend = ({
       hash: hash,
     });
 
-  const {
-    userOperationSend,
-    isUserOperationSendIdle: isMutationUserOperationSendIdle,
-    isUserOperationSendSuccess: isMutationUserOperationSendSuccess,
-    isUserOperationSendPending: isMutationUserOperationSendLoading,
-  } = useMutationUserOperationSend({
+  const { userOperationSend } = useMutationUserOperationSend({
     address: address as Address,
     configuration: configuration,
     hash: userOperation?.hash as Hex,
   });
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const delayedIsSuccess = useDelayedValue<boolean>(
-    isMutationUserOperationSendSuccess,
-    false,
-    3000,
-  );
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -206,22 +183,6 @@ export const useUserOperationSend = ({
     : false;
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const formStateText = useMemo(() => {
-    if (isMutationUserOperationSendLoading) {
-      return "Sending transaction...";
-    }
-
-    if (delayedIsSuccess) {
-      return "Success";
-    }
-
-    return "Send";
-  }, [delayedIsSuccess, isMutationUserOperationSendLoading]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -243,14 +204,6 @@ export const useUserOperationSend = ({
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
 
-  // Set the custom form success text
-  useEffect(() => {
-    if (!formStateText) {
-      return;
-    }
-    setCustomFormSuccessText(formStateText);
-  }, [formStateText, setCustomFormSuccessText]);
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -265,21 +218,6 @@ export const useUserOperationSend = ({
     [userOperation],
   );
 
-  const isUserOperationReloading = useMemo(
-    () => isUserOperationFetching,
-    [isUserOperationFetching],
-  );
-
-  const isUserOperationSendIdle = useMemo(
-    () => isMutationUserOperationSendIdle,
-    [isMutationUserOperationSendIdle],
-  );
-
-  const isUserOperationSendLoading = useMemo(
-    () => isLoadingQueueUserOperation || isMutationUserOperationSendLoading,
-    [isLoadingQueueUserOperation, isMutationUserOperationSendLoading],
-  );
-
   const isUserOperationSendDisabled = useMemo(
     () =>
       userOperation?.status === "INVALID" ||
@@ -287,8 +225,6 @@ export const useUserOperationSend = ({
       userOperation?.status === "REVERTED",
     [userOperation],
   );
-
-  const isUserOperationSendSuccess = isUserOperationSendDisabled;
 
   const isUserOperationSendReady = useMemo(
     () =>
@@ -356,11 +292,7 @@ export const useUserOperationSend = ({
     recoveredAddress: recoveredAddress,
     isUserOperationSendValid: isUserOperationSendValid,
     isUserOperationSendReady: isUserOperationSendReady,
-    isUserOperationReloading: isUserOperationReloading,
-    isUserOperationSendIdle: isUserOperationSendIdle,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
-    isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
 };

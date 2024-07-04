@@ -49,6 +49,12 @@ export const wallet = createQueryKeys("wallet", {
   simulation: (params: WalletParams) => ({
     queryKey: [{ params: params }],
   }),
+  create: () => ({
+    queryKey: ["create"],
+  }),
+  update: () => ({
+    queryKey: ["update"],
+  }),
 });
 
 // -----------------------------------------------------------------------------

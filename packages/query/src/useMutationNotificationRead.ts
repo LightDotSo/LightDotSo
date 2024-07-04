@@ -14,6 +14,7 @@
 
 import { readNotification } from "@lightdotso/client";
 import type { NotificationReadBodyParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -34,6 +35,7 @@ export const useMutationNotificationRead = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: notificationsRead, failureCount } = useMutation({
+    mutationKey: queryKeys.notification.read._def,
     mutationFn: async (body: NotificationReadBodyParams) => {
       const res = await readNotification(
         {

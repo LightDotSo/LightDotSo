@@ -20,7 +20,7 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import {
   useAccount,
   useSignMessage,
@@ -69,11 +69,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const {
-    setCustomFormSuccessText,
-    setIsFormLoading,
-    // setIsFormDisabled
-  } = useFormRef();
+  // const {
+  //   setCustomFormSuccessText,
+  //   setIsFormLoading,
+  //   // setIsFormDisabled
+  // } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
@@ -86,8 +86,6 @@ export const useUserOperationsCreate = ({
 
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
-  const [isSigningUserOperations, setIsSigningUserOperations] =
-    useState<boolean>(false);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -187,11 +185,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the message of the subdigest
-  const {
-    data,
-    signMessageAsync,
-    isPending: isSignMessageAsyncLoading,
-  } = useSignMessage();
+  const { data, signMessage } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -287,38 +281,26 @@ export const useUserOperationsCreate = ({
   }, []);
 
   // Sign the userOperation
-  const signUserOperations = useCallback(async () => {
+  const signUserOperations = useCallback(() => {
+    // console.info(subdigest);
+
     if (!subdigest) {
       return;
     }
-    setIsSigningUserOperations(true);
 
-    try {
-      await signMessageAsync({ message: { raw: toBytes(subdigest) } });
-    } catch (err) {
-      console.error(err);
-    }
-
-    setIsSigningUserOperations(false);
+    signMessage({ message: { raw: toBytes(subdigest) } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subdigest]);
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const {
-    userOperationCreate,
-    isUserOperationCreateLoading,
-    isUserOperationCreateSuccess,
-  } = useMutationUserOperationCreate({
+  const { userOperationCreate } = useMutationUserOperationCreate({
     address: address as Address,
   });
 
-  const {
-    userOperationCreateBatch,
-    isUserOperationCreateBatchLoading,
-    isUserOperationCreateBatchSuccess,
-  } = useMutationUserOperationCreateBatch({
+  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
     address: address as Address,
   });
 
@@ -466,39 +448,9 @@ export const useUserOperationsCreate = ({
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
 
-  // Check if the userOperation is loading
-  const isUserOperationsCreateLoading = useMemo(() => {
-    return (
-      isSignMessageAsyncLoading ||
-      isSigningUserOperations ||
-      isUserOperationCreateLoading ||
-      isUserOperationCreateBatchLoading
-    );
-  }, [
-    isSignMessageAsyncLoading,
-    isSigningUserOperations,
-    isUserOperationCreateLoading,
-    isUserOperationCreateBatchLoading,
-  ]);
-
-  // Check if the userOperation is success
-  const isUserOperationsCreateSuccess = useMemo(() => {
-    return isUserOperationCreateSuccess || isUserOperationCreateBatchSuccess;
-  }, [isUserOperationCreateSuccess, isUserOperationCreateBatchSuccess]);
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  // Set the transaction loading state
-  const isUserOperationsTransactionLoading = useMemo(() => {
-    // Only set the loading state if the user operation is not yet created
-    if (isUserOperationsCreateSuccess) {
-      return isUserOperationsCreateLoading;
-    }
-    // Otherwise, the transaction loading state is set from the individual transaction fetcher
-    return false;
-  }, [isUserOperationsCreateSuccess, isUserOperationsCreateLoading]);
 
   // Set the transaction disabled state
   const isUserOperationsDisabled = useMemo(() => {
@@ -530,11 +482,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Get the delayed success value
-  const delayedIsSuccess = useDelayedValue<boolean>(
-    isUserOperationCreateSuccess,
-    false,
-    3000,
-  );
+  // const delayedIsSuccess = useDelayedValue<boolean>(
+  //   isUserOperationCreateSuccess,
+  //   false,
+  //   3000,
+  // );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -553,56 +505,55 @@ export const useUserOperationsCreate = ({
       return "Connecting...";
     }
 
-    if (isSignMessageAsyncLoading || isSigningUserOperations) {
-      return "Signing...";
-    }
+    // if (isSignLoading) {
+    //   return "Signing...";
+    // }
 
-    if (isUserOperationCreateLoading) {
-      return "Creating transaction...";
-    }
+    // if (isUserOperationCreateLoading) {
+    //   return "Creating transaction...";
+    // }
 
-    if (isUserOperationCreateBatchLoading) {
-      return "Creating transactions...";
-    }
+    // if (isUserOperationCreateBatchLoading) {
+    //   return "Creating transactions...";
+    // }
 
-    if (delayedIsSuccess) {
-      return "Success";
-    }
+    // if (delayedIsSuccess) {
+    //   return "Success";
+    // }
 
     return "Sign";
   }, [
     address,
     owner,
     isConnecting,
-    isSignMessageAsyncLoading,
-    isSigningUserOperations,
-    isUserOperationCreateLoading,
-    isUserOperationCreateBatchLoading,
-    delayedIsSuccess,
+    // isSignLoading,
+    // isUserOperationCreateLoading,
+    // isUserOperationCreateBatchLoading,
+    // delayedIsSuccess,
   ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Set the custom form success text
-  useEffect(() => {
-    if (!formStateText) {
-      return;
-    }
-    setCustomFormSuccessText(formStateText);
-  }, [formStateText, setCustomFormSuccessText]);
+  // // Set the custom form success text
+  // useEffect(() => {
+  //   if (!formStateText) {
+  //     return;
+  //   }
+  //   setCustomFormSuccessText(formStateText);
+  // }, [formStateText, setCustomFormSuccessText]);
 
-  // Set the form loading state to true if the status is success
-  useEffect(() => {
-    if (isUserOperationCreateSuccess) {
-      setIsFormLoading(isUserOperationCreateLoading);
-    }
-  }, [
-    isUserOperationCreateSuccess,
-    isUserOperationCreateLoading,
-    setIsFormLoading,
-  ]);
+  // // Set the form loading state to true if the status is success
+  // useEffect(() => {
+  //   if (isUserOperationCreateSuccess) {
+  //     setIsFormLoading(isUserOperationCreateLoading);
+  //   }
+  // }, [
+  //   isUserOperationCreateSuccess,
+  //   isUserOperationCreateLoading,
+  //   setIsFormLoading,
+  // ]);
 
   // If the transaction is disabled, set the form disabled to true
   // useEffect(() => {
@@ -617,9 +568,6 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable: isUserOperationsCreateable,
     isUserOperationsMerkleEqual: isUserOperationsMerkleEqual,
     isUserOperationsCreateSubmittable: isUserOperationsCreateSubmittable,
-    isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
-    isUserOperationsCreateLoading: isUserOperationsCreateLoading,
-    isUserOperationsTransactionLoading: isUserOperationsTransactionLoading,
     isUserOperationsDisabled: isUserOperationsDisabled,
     isValidUserOperations: isValidUserOperations,
     // decodedCallData,

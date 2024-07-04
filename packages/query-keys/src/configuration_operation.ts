@@ -26,6 +26,9 @@ export const configuration_operation = createQueryKeys(
     simulation: (params: ConfigurationOperationParams) => ({
       queryKey: [{ params: params }],
     }),
+    create: () => ({
+      queryKey: ["create"],
+    }),
   },
 );
 

@@ -14,6 +14,7 @@
 
 import { authVerify } from "@lightdotso/client";
 import type { AuthParams, AuthVerifyBodyParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -48,6 +49,7 @@ export const useMutationAuthVerify = (params: AuthParams) => {
     isSuccess: isVerifySuccess,
     failureCount,
   } = useMutation({
+    mutationKey: queryKeys.auth.verify._def,
     mutationFn: async (body: AuthVerifyBodyParams) => {
       if (!params.address) {
         return;

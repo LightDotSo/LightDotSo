@@ -17,6 +17,7 @@ import type {
   ConfigurationOperationCreateBodyParams,
   ConfigurationOperationParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -47,6 +48,7 @@ export const useMutationConfigurationOperationCreate = (
   // ---------------------------------------------------------------------------
 
   const { mutate: configurationOperationCreate, failureCount } = useMutation({
+    mutationKey: queryKeys.configuration_operation.create._def,
     mutationFn: async (body: ConfigurationOperationCreateBodyParams) => {
       const loadingToast = toast.loading("Upgrading the wallet...");
 
