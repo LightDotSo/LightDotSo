@@ -96,12 +96,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const {
-    customFormSuccessText,
-    isFormLoading,
-    isFormDisabled,
-    setIsFormDisabled,
-  } = useFormRef();
+  const { customFormSuccessText, isFormLoading, isFormDisabled } = useFormRef();
   const { isDev } = useDev();
   const {
     setTokenModalProps,
@@ -141,13 +136,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
-  const {
-    isUserOperationsCreateSubmittable,
-    isUserOperationsDisabled,
-    signUserOperations,
-  } = useUserOperationsCreate({
-    address: address as Address,
-  });
+  const { isUserOperationsCreateSubmittable, signUserOperations } =
+    useUserOperationsCreate({
+      address: address as Address,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -175,10 +167,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setIsFormDisabled(isUserOperationsDisabled);
-  }, [setIsFormDisabled, isUserOperationsDisabled]);
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
