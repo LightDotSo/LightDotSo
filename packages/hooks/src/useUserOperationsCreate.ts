@@ -86,6 +86,8 @@ export const useUserOperationsCreate = ({
 
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
+  const [isSigningUserOperations, setIsSigningUserOperations] =
+    useState<boolean>(false);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -185,7 +187,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the message of the subdigest
-  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  const {
+    data,
+    signMessageAsync,
+    isPending: isSignMessageAsyncLoading,
+  } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -281,15 +287,19 @@ export const useUserOperationsCreate = ({
   }, []);
 
   // Sign the userOperation
-  const signUserOperations = useCallback(() => {
-    // console.info(subdigest);
-
+  const signUserOperations = useCallback(async () => {
     if (!subdigest) {
       return;
     }
+    setIsSigningUserOperations(true);
 
-    signMessage({ message: { raw: toBytes(subdigest) } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    try {
+      await signMessageAsync({ message: { raw: toBytes(subdigest) } });
+    } catch (err) {
+      console.error(err);
+    }
+
+    setIsSigningUserOperations(false);
   }, [subdigest]);
 
   // ---------------------------------------------------------------------------
@@ -459,12 +469,14 @@ export const useUserOperationsCreate = ({
   // Check if the userOperation is loading
   const isUserOperationsCreateLoading = useMemo(() => {
     return (
-      isSignLoading ||
+      isSignMessageAsyncLoading ||
+      isSigningUserOperations ||
       isUserOperationCreateLoading ||
       isUserOperationCreateBatchLoading
     );
   }, [
-    isSignLoading,
+    isSignMessageAsyncLoading,
+    isSigningUserOperations,
     isUserOperationCreateLoading,
     isUserOperationCreateBatchLoading,
   ]);
@@ -541,7 +553,7 @@ export const useUserOperationsCreate = ({
       return "Connecting...";
     }
 
-    if (isSignLoading) {
+    if (isSignMessageAsyncLoading || isSigningUserOperations) {
       return "Signing...";
     }
 
@@ -562,7 +574,8 @@ export const useUserOperationsCreate = ({
     address,
     owner,
     isConnecting,
-    isSignLoading,
+    isSignMessageAsyncLoading,
+    isSigningUserOperations,
     isUserOperationCreateLoading,
     isUserOperationCreateBatchLoading,
     delayedIsSuccess,
