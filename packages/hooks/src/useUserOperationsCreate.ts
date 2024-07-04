@@ -86,6 +86,7 @@ export const useUserOperationsCreate = ({
 
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
+  const [isSignLoading, setIsSignLoading] = useState<boolean>(false);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -185,7 +186,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the message of the subdigest
-  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  const { data, signMessageAsync } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -281,16 +282,19 @@ export const useUserOperationsCreate = ({
   }, []);
 
   // Sign the userOperation
-  const signUserOperations = useCallback(() => {
+  const signUserOperations = useCallback(async () => {
     // console.info(subdigest);
 
     if (!subdigest) {
       return;
     }
 
-    signMessage({ message: { raw: toBytes(subdigest) } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subdigest]);
+    setIsSignLoading(true);
+
+    await signMessageAsync({ message: { raw: toBytes(subdigest) } });
+
+    setIsSignLoading(false);
+  }, [subdigest, setIsSignLoading, signMessageAsync]);
 
   // ---------------------------------------------------------------------------
   // Query

@@ -19,20 +19,19 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 // Props
 // -----------------------------------------------------------------------------
 
-// interface PageProps {
-//   searchParams: {
-//     userOperations?: string;
-//   };
-// }
+interface PageProps {
+  searchParams: {
+    userOperations?: string;
+  };
+}
 
 // -----------------------------------------------------------------------------
 // Original Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ searchParams }: PageProps) {
   return OriginalPage({
     params: { address: DEMO_WALLET_ADDRESS },
-    // searchParams: searchParams,
+    searchParams: searchParams,
   });
 }
