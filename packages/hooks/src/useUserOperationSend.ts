@@ -64,12 +64,11 @@ export const useUserOperationSend = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation, isLoadingQueueUserOperation } =
-    useMutationQueueUserOperation({
-      address: address as Address,
-    });
+  const { queueUserOperation } = useMutationQueueUserOperation({
+    address: address as Address,
+  });
 
-  const { userOperation, isUserOperationFetching } = useQueryUserOperation({
+  const { userOperation } = useQueryUserOperation({
     hash: hash,
   });
 
@@ -170,7 +169,7 @@ export const useUserOperationSend = ({
   )}` as Hex;
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
-  const isUserOperationSendValid = userOperation
+  const isUserOperationSendReady = userOperation
     ? userOperation.signatures.reduce((acc, signature) => {
         return (
           acc +
@@ -226,12 +225,12 @@ export const useUserOperationSend = ({
     [userOperation],
   );
 
-  const isUserOperationSendReady = useMemo(
+  const isUserOperationSendValid = useMemo(
     () =>
       typeof userOperation !== "undefined" &&
       typeof userOperationSignature !== "undefined" &&
-      isUserOperationSendValid,
-    [userOperation, userOperationSignature, isUserOperationSendValid],
+      isUserOperationSendReady,
+    [userOperation, userOperationSignature, isUserOperationSendReady],
   );
 
   // ---------------------------------------------------------------------------
@@ -291,7 +290,6 @@ export const useUserOperationSend = ({
     paymasterSignedMsg: paymasterSignedMsg,
     recoveredAddress: recoveredAddress,
     isUserOperationSendValid: isUserOperationSendValid,
-    isUserOperationSendReady: isUserOperationSendReady,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
   };

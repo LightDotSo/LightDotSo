@@ -43,11 +43,10 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const isMounted = useIsMounted();
   const {
     userOperation,
     // isUserOperationSendLoading,
-    isUserOperationSendReady,
+    // isUserOperationSendReady,
     // isUserOperationSendSuccess,
     handleSubmit,
   } = useUserOperationSend({
@@ -59,11 +58,15 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Handle on mount, and when the operation is ready
+  // Submit user operation every 30 seconds
   useEffect(() => {
-    handleSubmit();
+    const interval = setInterval(() => {
+      handleSubmit();
+    }, 30000);
+
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted, isUserOperationSendReady]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render

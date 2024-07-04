@@ -14,10 +14,7 @@
 
 "use client";
 
-import {
-  CONTRACT_ADDRESSES,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import {
   useProxyImplementationAddress,
   useUserOperationEstimateGas,
@@ -81,7 +78,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isDisabled, setIsDisabled] = useState(false);
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
 
@@ -89,7 +85,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setIsFormDisabled, setIsFormLoading } = useFormRef();
+  const { setIsFormLoading } = useFormRef();
   const {
     setInternalUserOperationByChainId,
     setUserOperationDetails,
@@ -101,6 +97,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Get the implementation address
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const implAddress = useProxyImplementationAddress({
     address: address as Address,
     chainId: Number(initialUserOperation.chainId),
@@ -459,10 +456,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setIsFormDisabled(isDisabled);
-  }, [isDisabled]);
 
   useEffect(() => {
     setIsFormLoading(isTransactionFetcherLoading);

@@ -566,7 +566,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
           {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
-      {userOperations &&
+      {pageIndex === 0 &&
+        userOperations &&
         userOperations.length > 0 &&
         userOperations.map((userOperation, index) => {
           if (!userOperation) {

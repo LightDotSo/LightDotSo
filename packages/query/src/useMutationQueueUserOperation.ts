@@ -37,11 +37,7 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: queueUserOperation,
-    isPending: isLoadingQueueUserOperation,
-    failureCount,
-  } = useMutation({
+  const { mutate: queueUserOperation, failureCount } = useMutation({
     mutationKey: queryKeys.queue.user_operation._def,
     mutationFn: async (body: QueueUserOpeartionBodyParams) => {
       if (!params.address) {
@@ -91,6 +87,5 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
 
   return {
     queueUserOperation: queueUserOperation,
-    isLoadingQueueUserOperation: isLoadingQueueUserOperation,
   };
 };
