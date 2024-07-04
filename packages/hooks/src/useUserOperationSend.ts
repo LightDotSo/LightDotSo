@@ -238,6 +238,10 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
+    if (!isUserOperationSendDisabled) {
+      return;
+    }
+
     if (!userOperation) {
       console.warn("User operation not found");
       return;
