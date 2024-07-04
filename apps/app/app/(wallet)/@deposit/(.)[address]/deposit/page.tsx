@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
 import { ModalInterception } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
-import type { Address } from "viem";
-import { DepositDialog } from "@/app/(wallet)/[address]/deposit/(components)/deposit-dialog";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/deposit/(components)/modal-interception-footer";
-// import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
+import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -27,17 +23,16 @@ import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/de
 
 type PageProps = {
   params: { address: string };
-  // searchParams: {
-  //   transfer?: string;
-  // };
+  searchParams: {
+    transfer?: string;
+  };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-// export default async function Page({ params, searchParams }: PageProps) {
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -55,11 +50,7 @@ export default async function Page({ params }: PageProps) {
       footerContent={<ModalInterceptionFooter />}
       type="deposit"
     >
-      {/* <OriginalPage params={params} searchParams={searchParams} /> */}
-      <DepositDialog
-        address={params.address as Address}
-        initialTransfer={undefined}
-      />
+      <OriginalPage params={params} searchParams={searchParams} />
     </ModalInterception>
   );
 }

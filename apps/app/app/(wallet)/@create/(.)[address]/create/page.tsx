@@ -14,8 +14,9 @@
 
 import { ModalInterception } from "@lightdotso/templates";
 import type { Address } from "viem";
+import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@create/(.)[address]/create/(components)/modal-interception-footer";
-import OriginalPage from "@/app/(wallet)/[address]/create/page";
+// import OriginalPage from "@/app/(wallet)/[address]/create/page";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -23,16 +24,17 @@ import OriginalPage from "@/app/(wallet)/[address]/create/page";
 
 type PageProps = {
   params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
+  // searchParams: {
+  //   userOperations?: string;
+  // };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
+  // export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -46,7 +48,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       }
       type="create"
     >
-      <OriginalPage params={params} searchParams={searchParams} />
+      <CreateDialog address={params.address as Address} />
+      {/* <OriginalPage params={params} searchParams={searchParams} /> */}
     </ModalInterception>
   );
 }
