@@ -20,6 +20,7 @@ import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(compo
 import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
 import { handler } from "@/handlers/wallets/handler";
 import { preloader } from "@/preloaders/wallets/preloader";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -76,10 +77,10 @@ export default async function Page({ searchParams }: PageProps) {
   );
 
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <WalletsDataTableToolbar />
       <WalletsDataTable />
       <WalletsDataTablePagination />
-    </>
+    </HydrationBoundary>
   );
 }

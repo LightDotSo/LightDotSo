@@ -67,7 +67,6 @@ type UserOperationFormValues = UserOperation;
 type TransactionFetcherProps = {
   address: Address;
   initialUserOperation: Partial<UserOperation>;
-  userOperationIndex: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -77,7 +76,6 @@ type TransactionFetcherProps = {
 export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   address,
   initialUserOperation,
-  userOperationIndex = 0,
 }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -346,24 +344,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // If the implementation address is available and is the version 0.1.0 and is after index 0
   // Remove the user operation itself
-  useEffect(() => {
-    if (
-      userOperationIndex > 0 &&
-      implAddress &&
-      implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
-    ) {
-      // Remove the user operation from the list
-      // setUserOperations(prev => {
-      //   const next = [...prev];
-      //   next.splice(userOperationIndex, 1);
-      //   return next;
-      // });
+  // useEffect(() => {
+  //   if (
+  //     userOperationIndex > 0 &&
+  //     implAddress &&
+  //     implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
+  //   ) {
+  //     // Remove the user operation from the list
+  //     // setUserOperations(prev => {
+  //     //   const next = [...prev];
+  //     //   next.splice(userOperationIndex, 1);
+  //     //   return next;
+  //     // });
 
-      // Set the disabled state
-      setIsDisabled(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [implAddress, userOperationIndex]);
+  //     // Set the disabled state
+  //     setIsDisabled(true);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [implAddress, userOperationIndex]);
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {

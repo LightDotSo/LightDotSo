@@ -589,7 +589,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
               key={userOperation.chainId || index}
               address={address}
               initialUserOperation={userOperation}
-              userOperationIndex={index}
             />
           );
         })}
