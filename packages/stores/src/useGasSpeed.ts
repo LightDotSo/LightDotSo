@@ -19,19 +19,19 @@ import { devtools } from "zustand/middleware";
 // Const
 // -----------------------------------------------------------------------------
 
-// Get the gas speed bumpAmount in bigint from the gas speed
+// Get the gas speed bumpAmount from the gas speed
 export const getGasSpeedBumpAmount = (
   gasSpeed: "low" | "medium" | "high" | "instant",
 ) => {
   switch (gasSpeed) {
     case "low":
-      return BigInt(110);
+      return 110;
     case "medium":
-      return BigInt(115);
+      return 115;
     case "high":
-      return BigInt(120);
+      return 120;
     case "instant":
-      return BigInt(125);
+      return 125;
   }
 };
 
@@ -42,7 +42,7 @@ export const getGasSpeedBumpAmount = (
 type GasSpeed = {
   gasSpeed: "low" | "medium" | "high" | "instant";
   setGasSpeed: (gasSpeed: "low" | "medium" | "high" | "instant") => void;
-  gasSpeedBumpAmount: bigint;
+  gasSpeedBumpAmount: number;
   setGasSpeedBumpAmount: (
     gasSpeed: "low" | "medium" | "high" | "instant",
   ) => void;

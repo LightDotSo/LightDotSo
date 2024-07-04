@@ -109,11 +109,12 @@ export const useUserOperationFeePerGas = ({
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
     const baseMaxPriorityFeePerGas = feesPerGas?.maxPriorityFeePerGas
       ? // Get the `maxPriorityFeePerGas` and apply the speed bump
-        (feesPerGas?.maxPriorityFeePerGas * gasSpeedBumpAmount) / BigInt(100)
+        (feesPerGas?.maxPriorityFeePerGas * BigInt(gasSpeedBumpAmount)) /
+        BigInt(100)
       : null;
     const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
       ? // Get the `maxFeePerGas` and apply the speed bump
-        (feesPerGas?.maxFeePerGas * gasSpeedBumpAmount) / BigInt(100)
+        (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
         baseMaxPriorityFeePerGas ?? null;
 
