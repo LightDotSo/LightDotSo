@@ -44,6 +44,9 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     error: paymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
     retry: 10,
+    refetchIntervalInBackground: true,
+    refetchInterval: 1000 * 30,
+    retryOnMount: false,
     queryKeyHashFn: key => {
       return serialize(key);
     },
