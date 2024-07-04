@@ -34,6 +34,7 @@ export const useMutationSimulationCreate = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: logout } = useMutation({
+    mutationKey: ["simulationCreate"],
     mutationFn: async (body: SimulationCreateBodyParams) => {
       const res = await createSimulation(
         {

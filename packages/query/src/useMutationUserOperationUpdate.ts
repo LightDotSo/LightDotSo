@@ -38,6 +38,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
     isPending: isLoadingUserOperationUpdate,
     failureCount,
   } = useMutation({
+    mutationKey: ["userOperationUpdate"],
     mutationFn: async () => {
       if (!params.address) {
         return;

@@ -48,6 +48,7 @@ export const useMutationWalletUpdate = (params: WalletParams) => {
     isError: isWalletUpdateError,
     failureCount,
   } = useMutation({
+    mutationKey: ["walletUpdate"],
     mutationFn: async (body: WalletUpdateBodyParams) => {
       if (!params.address) {
         return;
@@ -142,7 +143,6 @@ export const useMutationWalletUpdate = (params: WalletParams) => {
       // Invalidate the cache for the address
       // fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: queryKeys.wallet.get({ address: params.address }).queryKey,
   });
 
   return {

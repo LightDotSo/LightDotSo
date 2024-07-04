@@ -47,6 +47,7 @@ export const useMutationConfigurationOperationCreate = (
   // ---------------------------------------------------------------------------
 
   const { mutate: configurationOperationCreate, failureCount } = useMutation({
+    mutationKey: ["configurationOperationCreate"],
     mutationFn: async (body: ConfigurationOperationCreateBodyParams) => {
       const loadingToast = toast.loading("Upgrading the wallet...");
 

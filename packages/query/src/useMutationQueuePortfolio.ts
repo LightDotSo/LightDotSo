@@ -34,6 +34,7 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // ---------------------------------------------------------------------------
 
   const { mutate: queuePortfolio, failureCount } = useMutation({
+    mutationKey: ["queuePortfolio"],
     mutationFn: async () => {
       if (!params.address) {
         return;

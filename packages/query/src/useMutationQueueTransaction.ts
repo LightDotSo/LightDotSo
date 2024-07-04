@@ -41,6 +41,7 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
     isPending: isLoadingQueueTransaction,
     failureCount,
   } = useMutation({
+    mutationKey: ["queueTransaction"],
     mutationFn: async (body: QueueTransactionBodyParams) => {
       const loadingToast = params.isMinimal
         ? toast.loading(undefined, toastMinimalLoadingStyles)

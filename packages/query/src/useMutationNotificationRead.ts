@@ -34,6 +34,7 @@ export const useMutationNotificationRead = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: notificationsRead, failureCount } = useMutation({
+    mutationKey: ["notificationRead"],
     mutationFn: async (body: NotificationReadBodyParams) => {
       const res = await readNotification(
         {

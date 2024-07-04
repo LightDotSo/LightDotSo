@@ -60,6 +60,7 @@ export const useMutationUserOperationSend = (
     failureCount,
   } = useMutation({
     retryDelay: 1000,
+    mutationKey: ["userOperationSend"],
     mutationFn: async (body: UserOperationSendBodyParams) => {
       // If the user operation receipt is already fetched, return
       if (userOperationReceipt) {

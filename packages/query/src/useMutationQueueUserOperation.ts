@@ -41,6 +41,7 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
     isPending: isLoadingQueueUserOperation,
     failureCount,
   } = useMutation({
+    mutationKey: ["queueUserOperation"],
     mutationFn: async (body: QueueUserOpeartionBodyParams) => {
       if (!params.address) {
         return;

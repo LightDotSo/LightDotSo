@@ -38,6 +38,7 @@ export const useMutationSignatureCreate = (params: SignatureParams) => {
   // ---------------------------------------------------------------------------
 
   const { mutate: signatureCreate, failureCount } = useMutation({
+    mutationKey: ["signatureCreate"],
     mutationFn: async (body: SignatureCreateBodyParams) => {
       const loadingToast = toast.loading("Creating the signature...");
 

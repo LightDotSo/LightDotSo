@@ -42,6 +42,7 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
     isPending: isFeedbackCreateLoading,
     failureCount,
   } = useMutation({
+    mutationKey: ["feedbackCreate"],
     mutationFn: async (body: FeedbackCreateBodyParams) => {
       if (!params.user_id) {
         return toast.error("Sorry, something went wrong.");

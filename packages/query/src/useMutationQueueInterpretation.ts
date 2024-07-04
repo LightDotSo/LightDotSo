@@ -34,6 +34,7 @@ export const useMutationQueueInterpretation = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: queueInterpretation, failureCount } = useMutation({
+    mutationKey: ["queueInterpretation"],
     mutationFn: async (body: QueueInterpretationBodyParams) => {
       const loadingToast = toast.loading("Queueing...");
 
