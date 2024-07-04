@@ -20,7 +20,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useAccount, useEnsName } from "@lightdotso/wagmi";
 import { useQueryClient, QueryObserver } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -43,7 +43,6 @@ export const AuthState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Stores

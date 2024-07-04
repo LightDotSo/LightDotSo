@@ -52,7 +52,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -85,11 +84,6 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const Transaction: FC<TransactionProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -143,13 +137,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const { userOperationsCreateStateLoading, userOperationsCreateStateSuccess } =
     useUserOperationsCreateState();
 
-  const {
-    isUserOperationsCreateSubmittable,
-    resetUserOperationsCreate,
-    signUserOperations,
-  } = useUserOperationsCreate({
-    address: address as Address,
-  });
+  const { isUserOperationsCreateSubmittable, signUserOperations } =
+    useUserOperationsCreate({
+      address: address as Address,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -195,11 +186,11 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   }, [userOperationsCreateStateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
-  useEffect(() => {
-    resetUserOperationsCreate();
-    resetAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetUserOperationsCreate, resetAll]);
+  // useEffect(() => {
+  //   resetUserOperationsCreate();
+  //   resetAll();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [pathname, resetUserOperationsCreate, resetAll]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

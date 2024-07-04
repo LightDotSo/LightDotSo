@@ -63,12 +63,6 @@ export const useUserOperationSend = ({
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { setCustomFormSuccessText } = useFormRef();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -206,22 +200,6 @@ export const useUserOperationSend = ({
     : false;
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const formStateText = useMemo(() => {
-    if (isMutationUserOperationSendLoading) {
-      return "Sending transaction...";
-    }
-
-    if (delayedIsSuccess) {
-      return "Success";
-    }
-
-    return "Send";
-  }, [delayedIsSuccess, isMutationUserOperationSendLoading]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -242,14 +220,6 @@ export const useUserOperationSend = ({
 
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
-
-  // Set the custom form success text
-  useEffect(() => {
-    if (!formStateText) {
-      return;
-    }
-    setCustomFormSuccessText(formStateText);
-  }, [formStateText, setCustomFormSuccessText]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
