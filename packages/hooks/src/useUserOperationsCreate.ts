@@ -185,7 +185,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the message of the subdigest
-  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  const { data, signMessage } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -456,37 +456,9 @@ export const useUserOperationsCreate = ({
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
 
-  // Check if the userOperation is loading
-  const isUserOperationsCreateLoading = useMemo(() => {
-    return (
-      isSignLoading ||
-      isUserOperationCreateLoading ||
-      isUserOperationCreateBatchLoading
-    );
-  }, [
-    isSignLoading,
-    isUserOperationCreateLoading,
-    isUserOperationCreateBatchLoading,
-  ]);
-
-  // Check if the userOperation is success
-  const isUserOperationsCreateSuccess = useMemo(() => {
-    return isUserOperationCreateSuccess || isUserOperationCreateBatchSuccess;
-  }, [isUserOperationCreateSuccess, isUserOperationCreateBatchSuccess]);
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  // Set the transaction loading state
-  const isUserOperationsTransactionLoading = useMemo(() => {
-    // Only set the loading state if the user operation is not yet created
-    if (isUserOperationsCreateSuccess) {
-      return isUserOperationsCreateLoading;
-    }
-    // Otherwise, the transaction loading state is set from the individual transaction fetcher
-    return false;
-  }, [isUserOperationsCreateSuccess, isUserOperationsCreateLoading]);
 
   // Set the transaction disabled state
   const isUserOperationsDisabled = useMemo(() => {
@@ -541,17 +513,17 @@ export const useUserOperationsCreate = ({
       return "Connecting...";
     }
 
-    if (isSignLoading) {
-      return "Signing...";
-    }
+    // if (isSignLoading) {
+    //   return "Signing...";
+    // }
 
-    if (isUserOperationCreateLoading) {
-      return "Creating transaction...";
-    }
+    // if (isUserOperationCreateLoading) {
+    //   return "Creating transaction...";
+    // }
 
-    if (isUserOperationCreateBatchLoading) {
-      return "Creating transactions...";
-    }
+    // if (isUserOperationCreateBatchLoading) {
+    //   return "Creating transactions...";
+    // }
 
     if (delayedIsSuccess) {
       return "Success";
@@ -562,7 +534,7 @@ export const useUserOperationsCreate = ({
     address,
     owner,
     isConnecting,
-    isSignLoading,
+    // isSignLoading,
     isUserOperationCreateLoading,
     isUserOperationCreateBatchLoading,
     delayedIsSuccess,
@@ -604,9 +576,6 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable: isUserOperationsCreateable,
     isUserOperationsMerkleEqual: isUserOperationsMerkleEqual,
     isUserOperationsCreateSubmittable: isUserOperationsCreateSubmittable,
-    isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
-    isUserOperationsCreateLoading: isUserOperationsCreateLoading,
-    isUserOperationsTransactionLoading: isUserOperationsTransactionLoading,
     isUserOperationsDisabled: isUserOperationsDisabled,
     isValidUserOperations: isValidUserOperations,
     // decodedCallData,

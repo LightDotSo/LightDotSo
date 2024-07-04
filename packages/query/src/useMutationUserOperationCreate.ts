@@ -57,6 +57,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
     isSuccess: isUserOperationCreateSuccess,
     failureCount,
   } = useMutation({
+    mutationKey: ["userOperationCreate"],
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
         !body.userOperation.chainId ||

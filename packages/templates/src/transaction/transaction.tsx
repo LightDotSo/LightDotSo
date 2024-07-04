@@ -17,7 +17,10 @@
 import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationsCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { useQueryTokens } from "@lightdotso/query";
+import {
+  useMutationStateUserOperationCreate,
+  useQueryTokens,
+} from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
   useDev,
@@ -144,8 +147,11 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    isUserOperationsCreateLoading,
-    isUserOperationsCreateSuccess,
+    isMutationStateUserOperationCreateLoading,
+    isMutationStateUserOperationCreateSuccess,
+  } = useMutationStateUserOperationCreate();
+
+  const {
     isUserOperationsCreateSubmittable,
     resetUserOperationsCreate,
     signUserOperations,
@@ -182,19 +188,23 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isUserOperationsCreateLoading) {
+    if (isMutationStateUserOperationCreateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationsCreateLoading, setPageIndex]);
+  }, [isMutationStateUserOperationCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isUserOperationsCreateSuccess && watchIsDirectSubmit) {
+    if (isMutationStateUserOperationCreateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
+  }, [
+    isMutationStateUserOperationCreateSuccess,
+    watchIsDirectSubmit,
+    setPageIndex,
+  ]);
 
   // On pathname change, reset all user operations
   useEffect(() => {

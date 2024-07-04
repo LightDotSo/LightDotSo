@@ -48,6 +48,7 @@ export const useMutationAuthVerify = (params: AuthParams) => {
     isSuccess: isVerifySuccess,
     failureCount,
   } = useMutation({
+    mutationKey: ["authVerify"],
     mutationFn: async (body: AuthVerifyBodyParams) => {
       if (!params.address) {
         return;

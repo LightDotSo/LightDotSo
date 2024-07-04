@@ -24,6 +24,7 @@ export { useMutationQueueTransaction } from "./useMutationQueueTransaction";
 export { useMutationQueueUserOperation } from "./useMutationQueueUserOperation";
 export { useMutationSignatureCreate } from "./useMutationSignatureCreate";
 export { useMutationSimulationCreate } from "./useMutationSimulationCreate";
+export { useMutationStateUserOperationCreate } from "./useMutationStateUserOperationCreate";
 export { useMutationUserOperationCreate } from "./useMutationUserOperationCreate";
 export { useMutationUserOperationCreateBatch } from "./useMutationUserOperationCreateBatch";
 export { useMutationUserOperationUpdate } from "./useMutationUserOperationUpdate";

@@ -62,6 +62,7 @@ export const useMutationUserOperationCreateBatch = (
     isSuccess: isUserOperationCreateBatchSuccess,
     failureCount,
   } = useMutation({
+    mutationKey: ["userOperationCreateBatch"],
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
       let hasInvalidData = body.userOperations.some(userOperation => {
         return (
