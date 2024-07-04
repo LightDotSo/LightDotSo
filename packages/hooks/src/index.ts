@@ -29,5 +29,7 @@ export { useRefinement } from "./useRefinement";
 export type { RefinementCallback, Refinement } from "./useRefinement";
 export { useSignInWithSiwe } from "./useSignInWithSiwe";
 export { useUserOperationsCreate } from "./useUserOperationsCreate";
+export { useUserOperationEstimateGas } from "./useUserOperationEstimateGas";
+export { useUserOperationFeePerGas } from "./useUserOperationFeePerGas";
 export { useUserOperationSend } from "./useUserOperationSend";
 export { useUserOperationSign } from "./useUserOperationSign";

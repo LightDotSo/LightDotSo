@@ -57,7 +57,7 @@ pub async fn create_billing_operation(
         .billing_operation()
         .create(
             0.0,
-            BillingOperationStatus::Sponsored,
+            BillingOperationStatus::Pending,
             billing::id::equals(billing.id),
             paymaster_operation::id::equals(paymaster_operation_id),
             vec![],

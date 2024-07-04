@@ -50,14 +50,47 @@ const HexStringSchema = z
 // GetUserOperation
 // -----------------------------------------------------------------------------
 
-const GetUserOperationReceiptResponse = z
+const maxFeeGasEstimation = z.object({
+  maxPriorityFeePerGas: HexStringSchema,
+  maxFeePerGas: HexStringSchema,
+});
+
+const getGasEstimationResponse = z.object({
+  low: maxFeeGasEstimation,
+  medium: maxFeeGasEstimation,
+  high: maxFeeGasEstimation,
+  instant: maxFeeGasEstimation,
+});
+
+export type GasEstimationResponse = z.infer<typeof getGasEstimationResponse>;
+
+export const getRequestGasEstimation = async (
+  chainId: number,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "gas_requestGasEstimation",
+      [],
+      getGasEstimationResponse,
+    ),
+    e => e,
+  );
+};
+
+// -----------------------------------------------------------------------------
+// GetUserOperation
+// -----------------------------------------------------------------------------
+
+const getUserOperationReceiptResponse = z
   .any()
   .refine(value => typeof value !== "undefined" && !!value);
 
-const GetUserOperationReceiptRequest = z.array(HexStringSchema);
+const getUserOperationReceiptRequest = z.array(HexStringSchema);
 
 type GetUserOperationReceiptRequestType = z.infer<
-  typeof GetUserOperationReceiptRequest
+  typeof getUserOperationReceiptRequest
 >;
 
 export const getUserOperationReceipt = async (
@@ -70,7 +103,7 @@ export const getUserOperationReceipt = async (
       rpcClient(chainId, clientType),
       "eth_getUserOperationReceipt",
       params,
-      GetUserOperationReceiptResponse,
+      getUserOperationReceiptResponse,
     ),
     e => e,
   );
@@ -80,9 +113,9 @@ export const getUserOperationReceipt = async (
 // SendUserOperation
 // -----------------------------------------------------------------------------
 
-const SendUserOperationResponse = z.string();
+const sendUserOperationResponse = z.string();
 
-const SendUserOperationRequest = z.array(
+const sendUserOperationRequest = z.array(
   z
     .object({
       sender: HexStringSchema,
@@ -100,7 +133,7 @@ const SendUserOperationRequest = z.array(
     .or(z.string()),
 );
 
-type SendUserOperationRequestType = z.infer<typeof SendUserOperationRequest>;
+type SendUserOperationRequestType = z.infer<typeof sendUserOperationRequest>;
 
 export const sendUserOperation = async (
   chainId: number,
@@ -112,7 +145,7 @@ export const sendUserOperation = async (
       rpcClient(chainId, clientType),
       "eth_sendUserOperation",
       params,
-      SendUserOperationResponse,
+      sendUserOperationResponse,
     ),
     e => e,
   );
@@ -122,14 +155,14 @@ export const sendUserOperation = async (
 // EstimateUserOperationGas
 // -----------------------------------------------------------------------------
 
-const EstimateUserOperationGasResponse = z.object({
+const estimateUserOperationGasResponse = z.object({
   callGasLimit: HexStringSchema,
   verificationGas: HexStringSchema.nullable().optional(),
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
 });
 
-const EstimateUserOperationGasRequest = z.array(
+const estimateUserOperationGasRequest = z.array(
   z
     .object({
       sender: HexStringSchema,
@@ -148,7 +181,7 @@ const EstimateUserOperationGasRequest = z.array(
 );
 
 type EstimateUserOperationGasRequestType = z.infer<
-  typeof EstimateUserOperationGasRequest
+  typeof estimateUserOperationGasRequest
 >;
 
 export const estimateUserOperationGas = async (
@@ -161,7 +194,7 @@ export const estimateUserOperationGas = async (
       rpcClient(chainId, clientType),
       "eth_estimateUserOperationGas",
       params,
-      EstimateUserOperationGasResponse,
+      estimateUserOperationGasResponse,
     ),
     e => e,
   );
@@ -171,14 +204,14 @@ export const estimateUserOperationGas = async (
 // Paymaster
 // -----------------------------------------------------------------------------
 
-const PaymasterGasAndPaymasterAndDataResponse = z.object({
+const paymasterGasAndPaymasterAndDataResponse = z.object({
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
 });
 
-const PaymasterGasAndPaymasterAndDataRequest = z.array(
+const paymasterGasAndPaymasterAndDataRequest = z.array(
   z.object({
     sender: HexStringSchema,
     nonce: HexStringSchema,
@@ -195,7 +228,7 @@ const PaymasterGasAndPaymasterAndDataRequest = z.array(
 );
 
 type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
-  typeof PaymasterGasAndPaymasterAndDataRequest
+  typeof paymasterGasAndPaymasterAndDataRequest
 >;
 
 export const getPaymasterGasAndPaymasterAndData = async (
@@ -208,7 +241,7 @@ export const getPaymasterGasAndPaymasterAndData = async (
       rpcClient(chainId, clientType),
       "paymaster_requestGasAndPaymasterAndData",
       params,
-      PaymasterGasAndPaymasterAndDataResponse,
+      paymasterGasAndPaymasterAndDataResponse,
     ),
     e => e,
   );

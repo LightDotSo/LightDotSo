@@ -38,6 +38,7 @@ export { useQueryConfiguration } from "./useQueryConfiguration";
 export { useQueryConfigurationOperationSimulation } from "./useQueryConfigurationOperationSimulation";
 export { useQueryEnsDomains } from "./useQueryEnsDomains";
 export { useQueryEstimateUserOperationGas } from "./useQueryEstimateUserOperationGas";
+export { useQueryGasEstimation } from "./useQueryGasEstimation";
 export { useQueryNotifications } from "./useQueryNotifications";
 export { useQueryNotificationsCount } from "./useQueryNotificationsCount";
 export { useQueryNftPortfolio } from "./useQueryNftPortfolio";

@@ -43,6 +43,18 @@ impl GasApi {
         let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;
         info!("Gas price for chain {} is {:?}", chain_id, gas_price);
 
+        // For Celo, we need to multiply the gas price by 3/2
+        // https://github.com/pimlicolabs/alto/blob/58bcc4e75a214f9074c7d4c73626960527fa43ce/packages/utils/src/gasPrice.ts#L73-L79
+        // License: GPL-3.0
+        if chain_id == 42220 {
+            let gas_price = gas_price * 3 / 2;
+            let params = GasEstimationParams {
+                max_fee_per_gas: gas_price,
+                max_priority_fee_per_gas: gas_price,
+            };
+            return Ok(create_gas_estimation(&params));
+        }
+
         // For Arbitrum, we need to multiply the gas price by 5/4
         // From: https://github.com/pimlicolabs/alto/blob/58bcc4e75a214f9074c7d4c73626960527fa43ce/packages/utils/src/gasPrice.ts#L81
         // License: GPL-3.0
@@ -81,6 +93,13 @@ impl GasApi {
         }
         let max_priority_fee_per_gas = gas_price;
 
+        // If chain is DFK, multiply the gas price by 2
+        // From: https://github.com/pimlicolabs/alto/blob/58bcc4e75a214f9074c7d4c73626960527fa43ce/packages/utils/src/gasPrice.ts#L107-L109
+        // License: GPL-3.0
+        if chain_id == 53935 {
+            gas_price *= 2;
+        }
+
         // Use the gas price to create the params
         let params = GasEstimationParams { max_fee_per_gas: gas_price, max_priority_fee_per_gas };
 
@@ -100,7 +119,7 @@ fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
             .div(U256::from(100)),
     };
 
-    let average_params = GasEstimationParams {
+    let medium_params = GasEstimationParams {
         max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(115)).div(U256::from(100)),
         max_priority_fee_per_gas: gas_price
             .max_priority_fee_per_gas
@@ -126,7 +145,7 @@ fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
 
     GasEstimation {
         low: low_params,
-        average: average_params,
+        medium: medium_params,
         high: high_params,
         instant: instant_params,
     }

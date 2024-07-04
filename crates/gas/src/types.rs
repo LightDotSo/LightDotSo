@@ -26,7 +26,7 @@ pub struct GasEstimationParams {
 #[serde(rename_all = "camelCase")]
 pub struct GasEstimation {
     pub low: GasEstimationParams,
-    pub average: GasEstimationParams,
+    pub medium: GasEstimationParams,
     pub high: GasEstimationParams,
     pub instant: GasEstimationParams,
 }

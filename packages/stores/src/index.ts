@@ -17,6 +17,7 @@ export { useBanners } from "./useBanners";
 export { useComboDialogs } from "./useComboDialogs";
 export { useDev } from "./useDev";
 export { useFormRef } from "./useFormRef";
+export { useGasSpeed } from "./useGasSpeed";
 export { useModals } from "./useModals";
 export type {
   AddressModalProps,

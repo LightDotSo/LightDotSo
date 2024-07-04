@@ -21,10 +21,18 @@ import { type RefObject, useEffect, useState } from "react";
 // -----------------------------------------------------------------------------
 
 export const useContainerDimensions = (ref: RefObject<HTMLElement>) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [dimensions, setDimensions] = useState<{
     width: number;
     height: number;
   }>({ width: 0, height: 0 });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const updateSize = () => {
@@ -42,6 +50,10 @@ export const useContainerDimensions = (ref: RefObject<HTMLElement>) => {
 
     return () => window.removeEventListener("resize", updateSize);
   }, [ref]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return dimensions;
 };

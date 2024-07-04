@@ -254,12 +254,18 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   }, []);
 
   // ---------------------------------------------------------------------------
+  // Styles
+  // ---------------------------------------------------------------------------
+
+  const modalSize = type === "op" ? "lg" : "default";
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <Modal
-      size="default"
+      size={modalSize}
       open={isOpen}
       isOverflowHidden={isOverflowHidden}
       isHeightFixed={isHeightFixed}
