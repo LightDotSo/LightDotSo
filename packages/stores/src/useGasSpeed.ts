@@ -32,7 +32,7 @@ export const useGasSpeed = create(
   devtools<GasSpeed>(
     set => ({
       gasSpeed: "medium",
-      setGasSpeed: gasSpeed => set(() => ({ gasSpeed })),
+      setGasSpeed: gasSpeed => set(() => ({ gasSpeed: gasSpeed })),
     }),
     {
       anonymousActionType: "useGasSpeed",
