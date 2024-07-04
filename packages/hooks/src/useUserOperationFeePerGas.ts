@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Gas estimation logic heavily adapted from Pimlico's alto bundler.
+// From: https://github.com/pimlicolabs/alto/blob/f8dc197e0158615c26dfb91ba522abbed467d709/src/utils/gasPriceManager.ts
+// License: GPL-3.0
+
 "use client";
 
 import { useQueryGasEstimation, useQueryWallet } from "@lightdotso/query";
