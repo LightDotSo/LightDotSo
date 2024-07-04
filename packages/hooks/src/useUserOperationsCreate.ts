@@ -282,7 +282,7 @@ export const useUserOperationsCreate = ({
 
   // Sign the userOperation
   const signUserOperations = useCallback(() => {
-    console.info(subdigest);
+    // console.info(subdigest);
 
     if (!subdigest) {
       return;
@@ -333,8 +333,8 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      console.info("sign...");
-      console.info(signedData);
+      // // console.info("sign...");
+      // console.info(signedData);
 
       userOperationCreate({
         ownerId: owner.id,
@@ -353,9 +353,9 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      console.info("signBatch...");
-      console.info(merkleTree);
-      console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
+      // console.info("signBatch...");
+      // console.info(merkleTree);
+      // console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
       userOperationCreateBatch({
         ownerId: owner.id,
