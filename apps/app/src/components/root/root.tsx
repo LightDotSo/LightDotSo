@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { FormDevTools } from "@lightdotso/forms";
-import { AuthState, QueueState } from "@lightdotso/states";
+import { AuthState, FormState, QueueState } from "@lightdotso/states";
 import {
   Footer,
   ProgressTransaction,
@@ -162,6 +162,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <ProgressUserOperation />
               {/* States */}
               <AuthState />
+              <FormState />
               <QueueState />
               <WssState />
             </Web3Provider>

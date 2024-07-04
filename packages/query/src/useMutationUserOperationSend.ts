@@ -52,13 +52,7 @@ export const useMutationUserOperationSend = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: userOperationSend,
-    isPending: isUserOperationSendPending,
-    isIdle: isUserOperationSendIdle,
-    isSuccess: isUserOperationSendSuccess,
-    failureCount,
-  } = useMutation({
+  const { mutate: userOperationSend, failureCount } = useMutation({
     retryDelay: 1000,
     mutationKey: queryKeys.user_operation.send._def,
     mutationFn: async (body: UserOperationSendBodyParams) => {
@@ -188,9 +182,6 @@ export const useMutationUserOperationSend = (
   });
 
   return {
-    isUserOperationSendPending: isUserOperationSendPending,
-    isUserOperationSendIdle: isUserOperationSendIdle,
-    isUserOperationSendSuccess: isUserOperationSendSuccess,
     userOperationSend: userOperationSend,
   };
 };

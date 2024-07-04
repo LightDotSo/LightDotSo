@@ -134,9 +134,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperationsCreateStateLoading, userOperationsCreateStateSuccess } =
+  const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
-
   const { isUserOperationsCreateSubmittable, signUserOperations } =
     useUserOperationsCreate({
       address: address as Address,
@@ -171,19 +170,19 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (userOperationsCreateStateLoading) {
+    if (isUserOperationsCreateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [userOperationsCreateStateLoading, setPageIndex]);
+  }, [isUserOperationsCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (userOperationsCreateStateSuccess && watchIsDirectSubmit) {
+    if (isUserOperationsCreateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [userOperationsCreateStateSuccess, watchIsDirectSubmit, setPageIndex]);
+  }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   // useEffect(() => {

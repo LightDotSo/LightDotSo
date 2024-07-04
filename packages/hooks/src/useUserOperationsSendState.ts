@@ -23,7 +23,7 @@ import { useMemo } from "react";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useUserOperationsCreateState = () => {
+export const useUserOperationsSend = () => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -49,7 +49,7 @@ export const useUserOperationsCreateState = () => {
   }, [userOperationCreateBatchStatus]);
 
   // Check if the userOperation is loading
-  const isUserOperationsCreateLoading = useMemo(() => {
+  const isUserOperationsSendLoading = useMemo(() => {
     return (
       isSignMessageAsyncLoading ||
       isUserOperationCreateLoading ||
@@ -62,7 +62,7 @@ export const useUserOperationsCreateState = () => {
   ]);
 
   // Check if the userOperation is successful
-  const isUserOperationsCreateSuccess = useMemo(() => {
+  const isUserOperationsSendSuccess = useMemo(() => {
     return (
       userOperationCreateStatus?.some(status => status === "success") ||
       userOperationCreateBatchStatus?.some(status => status === "success")
@@ -70,16 +70,25 @@ export const useUserOperationsCreateState = () => {
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
   // Check if the userOperation is failed
-  const isUserOperationsCreateError = useMemo(() => {
+  const isUserOperationsSendError = useMemo(() => {
     return (
       userOperationCreateStatus?.some(status => status === "error") ||
       userOperationCreateBatchStatus?.some(status => status === "error")
     );
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
+  // Check if the userOperation is idle
+  const isUserOperationsSendIdle = useMemo(() => {
+    return (
+      userOperationCreateStatus?.some(status => status === "idle") ||
+      userOperationCreateBatchStatus?.some(status => status === "idle")
+    );
+  }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
+
   return {
-    isUserOperationsCreateLoading: isUserOperationsCreateLoading,
-    isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
-    isUserOperationsCreateError: isUserOperationsCreateError,
+    isUserOperationsSendLoading: isUserOperationsSendLoading,
+    isUserOperationsSendSuccess: isUserOperationsSendSuccess,
+    isUserOperationsSendError: isUserOperationsSendError,
+    isUserOperationsSendIdle: isUserOperationsSendIdle,
   };
 };

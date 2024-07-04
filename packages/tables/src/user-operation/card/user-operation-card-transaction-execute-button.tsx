@@ -15,7 +15,7 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { useUserOperationSend } from "@lightdotso/hooks";
+import { useUserOperationSend, useUserOperationsSend } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -47,12 +47,11 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // ---------------------------------------------------------------------------
 
   const {
-    isUserOperationSendValid,
-    isUserOperationSendLoading,
-    isUserOperationSendIdle,
-    isUserOperationSendSuccess,
-    handleSubmit,
-  } = useUserOperationSend({
+    isUserOperationsSendLoading,
+    isUserOperationsSendIdle,
+    isUserOperationsSendSuccess,
+  } = useUserOperationsSend();
+  const { isUserOperationSendValid, handleSubmit } = useUserOperationSend({
     address: address as Address,
     hash: userOperation.hash as Hex,
   });
@@ -68,11 +67,11 @@ export const UserOperationCardTransactionExecuteButton: FC<
           <Button
             disabled={
               !isUserOperationSendValid ||
-              isUserOperationSendLoading ||
-              (!isUserOperationSendIdle && isUserOperationSendSuccess) ||
+              isUserOperationsSendLoading ||
+              (!isUserOperationsSendIdle && isUserOperationsSendSuccess) ||
               userOperation.status !== "PROPOSED"
             }
-            isLoading={isUserOperationSendLoading}
+            isLoading={isUserOperationsSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"
             onClick={handleSubmit}
