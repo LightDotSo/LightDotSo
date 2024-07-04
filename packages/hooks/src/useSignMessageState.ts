@@ -12,48 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useMutationStateUserOperationSend } from "@lightdotso/query";
+import { useMutationStateSignMessage } from "@lightdotso/query";
 import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useUserOperationsSendState = () => {
+export const useSignMessageState = () => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const userOperationSendStatus = useMutationStateUserOperationSend();
+  const userOperationSendStatus = useMutationStateSignMessage();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // Check if the userOperation is loading
-  const isUserOperationsSendLoading = useMemo(() => {
+  const isSignMessageLoading = useMemo(() => {
     return userOperationSendStatus?.some(status => status === "pending");
   }, [userOperationSendStatus]);
 
-  // Check if the userOperation is successful
-  const isUserOperationsSendSuccess = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "success");
-  }, [userOperationSendStatus]);
-
-  // Check if the userOperation is failed
-  const isUserOperationsSendError = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "error");
-  }, [userOperationSendStatus]);
-
-  // Check if the userOperation is idle
-  const isUserOperationsSendIdle = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "idle");
-  }, [userOperationSendStatus]);
-
   return {
-    isUserOperationsSendLoading: isUserOperationsSendLoading,
-    isUserOperationsSendSuccess: isUserOperationsSendSuccess,
-    isUserOperationsSendError: isUserOperationsSendError,
-    isUserOperationsSendIdle: isUserOperationsSendIdle,
+    isSignMessageLoading: isSignMessageLoading,
   };
 };

@@ -15,7 +15,10 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { useUserOperationSend, useUserOperationsSend } from "@lightdotso/hooks";
+import {
+  useUserOperationSend,
+  useUserOperationsSendState,
+} from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -46,15 +49,16 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const {
-    isUserOperationsSendLoading,
-    isUserOperationsSendIdle,
-    isUserOperationsSendSuccess,
-  } = useUserOperationsSend();
   const { isUserOperationSendValid, handleSubmit } = useUserOperationSend({
     address: address as Address,
     hash: userOperation.hash as Hex,
   });
+
+  const {
+    isUserOperationsSendLoading,
+    isUserOperationsSendIdle,
+    isUserOperationsSendSuccess,
+  } = useUserOperationsSendState();
 
   // ---------------------------------------------------------------------------
   // Render

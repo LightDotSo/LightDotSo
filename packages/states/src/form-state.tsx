@@ -14,6 +14,12 @@
 
 "use client";
 
+import {
+  useDelayedValue,
+  useSignMessageState,
+  useUserOperationsCreateState,
+  useUserOperationsSendState,
+} from "@lightdotso/hooks";
 import { useFormRef } from "@lightdotso/stores";
 import { useAccount } from "@lightdotso/wagmi";
 import { useEffect, useMemo } from "react";
@@ -34,12 +40,30 @@ export const FormState: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the user operations create state
+  const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
+    useUserOperationsCreateState();
+
+  // Get the user operations send state
+  const { isUserOperationsSendLoading, isUserOperationsSendSuccess } =
+    useUserOperationsSendState();
+
+  // Get the user operations sign state
+  const { isSignMessageLoading } = useSignMessageState();
+
   // Get the delayed success value
-  // const delayedIsSuccess = useDelayedValue<boolean>(
-  //   isUserOperationCreateSuccess,
-  //   false,
-  //   3000,
-  // );
+  const delayedIsUserOperationsCreateSuccess = useDelayedValue<boolean>(
+    isUserOperationsCreateSuccess,
+    false,
+    3000,
+  );
+
+  // Get the delayed success value
+  const delayedIsUserOperationsSendSuccess = useDelayedValue<boolean>(
+    isUserOperationsSendSuccess,
+    false,
+    3000,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -54,36 +78,37 @@ export const FormState: FC = () => {
       return "Connecting...";
     }
 
-    // if (!owner) {
-    //   return "Not Owner";
-    // }
+    if (isSignMessageLoading) {
+      return "Signing...";
+    }
 
-    // if (isSignMessageAsyncLoading || isSigningUserOperations) {
-    //   return "Signing...";
-    // }
+    if (isUserOperationsCreateLoading) {
+      return "Creating transactions...";
+    }
 
-    // if (isUserOperationCreateLoading) {
-    //   return "Creating transaction...";
-    // }
+    if (isUserOperationsSendLoading) {
+      return "Sending transactions...";
+    }
 
-    // if (isUserOperationCreateBatchLoading) {
-    //   return "Creating transactions...";
-    // }
+    if (delayedIsUserOperationsCreateSuccess) {
+      return "Success";
+    }
 
-    // if (delayedIsSuccess) {
-    //   return "Success";
-    // }
+    if (delayedIsUserOperationsSendSuccess) {
+      return "Sent";
+    }
 
-    // return "Sign";
+    return null;
   }, [
     address,
     isConnecting,
-    // isSignMessageAsyncLoading,
-    // isSigningUserOperations,
-    // isUserOperationCreateLoading,
-    // isUserOperationCreateBatchLoading,
-    // delayedIsSuccess,
+    isSignMessageLoading,
+    isUserOperationsCreateLoading,
+    isUserOperationsSendLoading,
+    delayedIsUserOperationsCreateSuccess,
+    delayedIsUserOperationsSendSuccess,
   ]);
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -101,6 +126,7 @@ export const FormState: FC = () => {
     }
     setCustomFormSuccessText(formStateText);
   }, [formStateText, setCustomFormSuccessText]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

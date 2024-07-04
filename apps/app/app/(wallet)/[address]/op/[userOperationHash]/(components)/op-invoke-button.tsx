@@ -15,7 +15,10 @@
 "use client";
 
 import { InvokeButton } from "@lightdotso/elements";
-import { useUserOperationSend, useUserOperationsSend } from "@lightdotso/hooks";
+import {
+  useUserOperationSend,
+  useUserOperationsSendState,
+} from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
 
@@ -40,7 +43,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isUserOperationsSendLoading } = useUserOperationsSend();
+  const { isUserOperationsSendLoading } = useUserOperationsSendState();
   const { handleSubmit } = useUserOperationSend({
     address: address as Address,
     hash: userOperationHash,

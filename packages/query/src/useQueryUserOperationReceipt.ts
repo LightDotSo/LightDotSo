@@ -42,6 +42,8 @@ export const useQueryUserOperationReceipt = (
     error: userOperationReceiptError,
     refetch: refetchUserOperationReceipt,
   } = useQuery({
+    // The user operation receipt is used for subsequent operations like sending and queuing.
+    retry: false,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: Number(params.chainId),
       hash: params.hash,
