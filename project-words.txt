@@ -26,6 +26,7 @@ agxx
 ahocorasick
 Airg
 AKASH
+Alfajores
 aligmnent
 alltogether
 aloz

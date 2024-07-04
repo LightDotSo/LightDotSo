@@ -16,12 +16,36 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+// Get the gas speed bumpAmount in bigint from the gas speed
+export const getGasSpeedBumpAmount = (
+  gasSpeed: "low" | "medium" | "high" | "instant",
+) => {
+  switch (gasSpeed) {
+    case "low":
+      return BigInt(110);
+    case "medium":
+      return BigInt(115);
+    case "high":
+      return BigInt(120);
+    case "instant":
+      return BigInt(125);
+  }
+};
+
+// -----------------------------------------------------------------------------
 // State
 // -----------------------------------------------------------------------------
 
 type GasSpeed = {
   gasSpeed: "low" | "medium" | "high" | "instant";
   setGasSpeed: (gasSpeed: "low" | "medium" | "high" | "instant") => void;
+  gasSpeedBumpAmount: bigint;
+  setGasSpeedBumpAmount: (
+    gasSpeed: "low" | "medium" | "high" | "instant",
+  ) => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -32,7 +56,12 @@ export const useGasSpeed = create(
   devtools<GasSpeed>(
     set => ({
       gasSpeed: "medium",
+      gasSpeedBumpAmount: getGasSpeedBumpAmount("medium"),
       setGasSpeed: gasSpeed => set(() => ({ gasSpeed: gasSpeed })),
+      setGasSpeedBumpAmount: gasSpeed =>
+        set(() => ({
+          gasSpeedBumpAmount: getGasSpeedBumpAmount(gasSpeed),
+        })),
     }),
     {
       anonymousActionType: "useGasSpeed",

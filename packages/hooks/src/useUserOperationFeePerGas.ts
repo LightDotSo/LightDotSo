@@ -25,6 +25,14 @@ import { useMemo } from "react";
 import { findContractAddressByAddress } from "@lightdotso/utils";
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import { useGasSpeed } from "@lightdotso/stores";
+import {
+  avalanche,
+  avalancheFuji,
+  celo,
+  celoAlfajores,
+  polygon,
+  polygonAmoy,
+} from "viem/chains";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -32,7 +40,7 @@ import { useGasSpeed } from "@lightdotso/stores";
 
 type UserOperationFeePerGasProps = {
   address: Address;
-  chainId: BigInt;
+  chainId: number;
   callData: Hex;
 };
 
@@ -49,7 +57,7 @@ export const useUserOperationFeePerGas = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { gasSpeed } = useGasSpeed();
+  const { gasSpeed, gasSpeedBumpAmount } = useGasSpeed();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -94,45 +102,97 @@ export const useUserOperationFeePerGas = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const maxFeePerGas = useMemo(() => {
-    if (feesPerGas?.maxFeePerGas) {
-      // If target chain is Celo, multiply the gas estimate by 3/2.
-      if (chainId === BigInt(42220)) {
-        return feesPerGas?.maxFeePerGas * (BigInt(3) / BigInt(2));
-      }
+  const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
+    const baseMaxPriorityFeePerGas = feesPerGas?.maxPriorityFeePerGas
+      ? // Get the `maxPriorityFeePerGas` and apply the speed bump
+        (feesPerGas?.maxPriorityFeePerGas * gasSpeedBumpAmount) / BigInt(100)
+      : null;
+    const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
+      ? // Get the `maxFeePerGas` and apply the speed bump
+        (feesPerGas?.maxFeePerGas * gasSpeedBumpAmount) / BigInt(100)
+      : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
+        baseMaxPriorityFeePerGas ?? null;
 
-      // Return the max fee per gas
-      return feesPerGas?.maxFeePerGas;
+    // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
+    if (chainId === celo.id || chainId === celoAlfajores.id) {
+      // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
+      const celoFeePerGas =
+        baseMaxFeePerGas &&
+        baseMaxPriorityFeePerGas &&
+        baseMaxFeePerGas > baseMaxPriorityFeePerGas
+          ? baseMaxFeePerGas
+          : baseMaxPriorityFeePerGas;
+
+      return [celoFeePerGas, celoFeePerGas];
+    }
+
+    // For polygon, there's a base max fee per gas
+    if (chainId === polygon.id || chainId === polygonAmoy.id) {
+      const POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(35);
+
+      return [
+        // Return the larger of the `baseMaxFeePerGas` and the base fee
+        baseMaxFeePerGas &&
+        baseMaxFeePerGas > POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS
+          ? baseMaxFeePerGas
+          : POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS,
+        // Do the same for the `baseMaxPriorityFeePerGas`
+        baseMaxPriorityFeePerGas &&
+        baseMaxPriorityFeePerGas > POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS
+          ? baseMaxPriorityFeePerGas
+          : POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS,
+      ];
+    }
+
+    // For avalanche, there's a minimum fee per gas since it returns 0
+    if (chainId === avalanche.id || chainId === avalancheFuji.id) {
+      const AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(1500000000);
+
+      return [
+        // Return the larger of the `baseMaxFeePerGas` and the base fee
+        baseMaxFeePerGas &&
+        baseMaxFeePerGas > AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS
+          ? baseMaxFeePerGas
+          : AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS,
+        // Do the same for the `baseMaxPriorityFeePerGas`
+        baseMaxPriorityFeePerGas &&
+        baseMaxPriorityFeePerGas > AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS
+          ? baseMaxPriorityFeePerGas
+          : AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS,
+      ];
     }
 
     // If gas estimation is available, return the gas estimation
     if (gasEstimation) {
       // Get the estimated max fee per gas
-      const estimatedMaxFeePerGas = gasEstimation[gasSpeed].maxFeePerGas;
+      const estimatedGas = gasEstimation[gasSpeed];
 
       // Parse the Hex to BigInt
-      return fromHex(estimatedMaxFeePerGas as Hex, {
-        to: "bigint",
-      });
+      return [
+        fromHex(estimatedGas.maxFeePerGas as Hex, {
+          to: "bigint",
+        }),
+        fromHex(estimatedGas.maxPriorityFeePerGas as Hex, { to: "bigint" }),
+      ];
     }
 
     // Return null if no gas estimation is available
-    return null;
-  }, [feesPerGas?.maxFeePerGas, chainId, gasEstimation, gasSpeed]);
-
-  const maxPriorityFeePerGas = useMemo(() => {
-    // If the chain is Celo, `maxFeePerGas` is the same as `maxPriorityFeePerGas`
-    return chainId === BigInt(42220)
-      ? maxFeePerGas
-      : estimatedMaxPriorityFeePerGas;
-  }, [chainId, maxFeePerGas, estimatedMaxPriorityFeePerGas]);
+    return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
+  }, [
+    feesPerGas?.maxFeePerGas,
+    feesPerGas?.maxPriorityFeePerGas,
+    chainId,
+    gasEstimation,
+    gasSpeed,
+    gasSpeedBumpAmount,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
   return {
-    maxFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
+    maxFeePerGas: maxFeePerGas ?? BigInt(0),
     maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
   };
 };
