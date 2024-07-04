@@ -19,6 +19,7 @@ import type {
   UserOperationCreateBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -52,7 +53,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // ---------------------------------------------------------------------------
 
   const { mutate: userOperationCreate, failureCount } = useMutation({
-    mutationKey: ["userOperationCreate"],
+    mutationKey: queryKeys.user_operation.create._def,
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
         !body.userOperation.chainId ||

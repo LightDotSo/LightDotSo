@@ -14,6 +14,7 @@
 
 import { createQueueInterpretation } from "@lightdotso/client";
 import type { QueueInterpretationBodyParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ export const useMutationQueueInterpretation = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: queueInterpretation, failureCount } = useMutation({
-    mutationKey: ["queueInterpretation"],
+    mutationKey: queryKeys.queue.interpretation._def,
     mutationFn: async (body: QueueInterpretationBodyParams) => {
       const loadingToast = toast.loading("Queueing...");
 

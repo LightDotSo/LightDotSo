@@ -18,6 +18,7 @@ import type {
 } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import { read } from "fs";
 
 // -----------------------------------------------------------------------------
 // Keys
@@ -29,6 +30,9 @@ export const notification = createQueryKeys("notification", {
   }),
   listCount: (params: NotificationListCountParams) => ({
     queryKey: [{ params: params }],
+  }),
+  read: () => ({
+    queryKey: ["read"],
   }),
 });
 

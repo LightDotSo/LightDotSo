@@ -14,6 +14,7 @@
 
 import { updateUserOperation } from "@lightdotso/client";
 import type { UserOperationParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -38,7 +39,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
     isPending: isLoadingUserOperationUpdate,
     failureCount,
   } = useMutation({
-    mutationKey: ["userOperationUpdate"],
+    mutationKey: queryKeys.user_operation.update._def,
     mutationFn: async () => {
       if (!params.address) {
         return;

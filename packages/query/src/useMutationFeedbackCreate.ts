@@ -17,6 +17,7 @@ import type {
   FeedbackCreateBodyParams,
   FeedbackParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -42,7 +43,7 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
     isPending: isFeedbackCreateLoading,
     failureCount,
   } = useMutation({
-    mutationKey: ["feedbackCreate"],
+    mutationKey: queryKeys.feedback.create._def,
     mutationFn: async (body: FeedbackCreateBodyParams) => {
       if (!params.user_id) {
         return toast.error("Sorry, something went wrong.");

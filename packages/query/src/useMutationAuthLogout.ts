@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { authLogout } from "@lightdotso/client";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -33,7 +34,7 @@ export const useMutationAuthLogout = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate: logout, failureCount } = useMutation({
-    mutationKey: ["authLogout"],
+    mutationKey: queryKeys.auth.logout._def,
     mutationFn: async () => {
       const loadingToast = toast.loading("Attepmting to logout...");
 

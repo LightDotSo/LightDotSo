@@ -14,6 +14,7 @@
 
 import { createQueuePortfolio } from "@lightdotso/client";
 import type { QueueParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // ---------------------------------------------------------------------------
 
   const { mutate: queuePortfolio, failureCount } = useMutation({
-    mutationKey: ["queuePortfolio"],
+    mutationKey: queryKeys.queue.portfolio._def,
     mutationFn: async () => {
       if (!params.address) {
         return;

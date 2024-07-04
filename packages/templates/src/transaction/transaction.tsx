@@ -15,12 +15,12 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
-import { useUserOperationsCreate } from "@lightdotso/hooks";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
-  useMutationStateUserOperationCreate,
-  useQueryTokens,
-} from "@lightdotso/query";
+  useUserOperationsCreate,
+  useUserOperationsCreateState,
+} from "@lightdotso/hooks";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
   useDev,
@@ -140,10 +140,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const {
-    isMutationStateUserOperationCreateLoading,
-    isMutationStateUserOperationCreateSuccess,
-  } = useMutationStateUserOperationCreate();
+  const { userOperationsCreateStateLoading, userOperationsCreateStateSuccess } =
+    useUserOperationsCreateState();
 
   const {
     isUserOperationsCreateSubmittable,
@@ -182,23 +180,19 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isMutationStateUserOperationCreateLoading) {
+    if (userOperationsCreateStateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isMutationStateUserOperationCreateLoading, setPageIndex]);
+  }, [userOperationsCreateStateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isMutationStateUserOperationCreateSuccess && watchIsDirectSubmit) {
+    if (userOperationsCreateStateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [
-    isMutationStateUserOperationCreateSuccess,
-    watchIsDirectSubmit,
-    setPageIndex,
-  ]);
+  }, [userOperationsCreateStateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {

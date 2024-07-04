@@ -17,6 +17,7 @@ import type {
   SignatureCreateBodyParams,
   SignatureParams,
 } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -38,7 +39,7 @@ export const useMutationSignatureCreate = (params: SignatureParams) => {
   // ---------------------------------------------------------------------------
 
   const { mutate: signatureCreate, failureCount } = useMutation({
-    mutationKey: ["signatureCreate"],
+    mutationKey: queryKeys.signature.create._def,
     mutationFn: async (body: SignatureCreateBodyParams) => {
       const loadingToast = toast.loading("Creating the signature...");
 

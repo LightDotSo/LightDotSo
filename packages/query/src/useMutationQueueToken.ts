@@ -14,6 +14,7 @@
 
 import { createQueueToken } from "@lightdotso/client";
 import type { QueueParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -38,7 +39,7 @@ export const useMutationQueueToken = (params: QueueParams) => {
     isPending: isLoadingQueueToken,
     failureCount,
   } = useMutation({
-    mutationKey: ["queueToken"],
+    mutationKey: queryKeys.queue.token._def,
     mutationFn: async () => {
       if (!params.address) {
         return;

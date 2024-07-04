@@ -46,7 +46,7 @@ export const useMutationWalletSettingsUpdate = (
     isPending: isWalletSettingsUpdatePending,
     failureCount,
   } = useMutation({
-    mutationKey: ["walletSettingsUpdate"],
+    mutationKey: queryKeys.wallet_settings.update._def,
     mutationFn: async (body: WaleltSettingsUpdateBodyParams) => {
       if (!params.address) {
         return;

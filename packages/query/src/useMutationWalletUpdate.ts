@@ -48,7 +48,7 @@ export const useMutationWalletUpdate = (params: WalletParams) => {
     isError: isWalletUpdateError,
     failureCount,
   } = useMutation({
-    mutationKey: ["walletUpdate"],
+    mutationKey: queryKeys.wallet.update._def,
     mutationFn: async (body: WalletUpdateBodyParams) => {
       if (!params.address) {
         return;

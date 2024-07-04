@@ -12,25 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { queryKeys } from "@lightdotso/query-keys";
 import { useMutationState } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationStateUserOperationCreate = () => {
+export const useMutationStateSignMessage = () => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const userOperationCreateStatus = useMutationState({
+  // Get the global mutation state of the `useSignMessage` hook
+  // There can be multiple hooks initialized, so we need to sync them
+  // From: https://github.com/wevm/wagmi/blob/ba43ba24ab2608876da24d388295ec46faf727d4/packages/core/src/query/signMessage.ts#L18
+  const signMessageStatus = useMutationState({
     filters: {
-      mutationKey: queryKeys.user_operation.create._def,
+      mutationKey: ["signMessage"],
       exact: true,
     },
+    // Get the first mutation state because only there is one unique `useSignMessage` hook
     select: mutations => mutations.state.status,
   });
 
-  return userOperationCreateStatus;
+  return signMessageStatus;
 };

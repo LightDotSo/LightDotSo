@@ -12,31 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { AuthParams } from "@lightdotso/params";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useMutationState } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Query Mutation
 // -----------------------------------------------------------------------------
 
-export const auth = createQueryKeys("auth", {
-  nonce: (params: AuthParams) => ({
-    queryKey: [{ params: params }],
-  }),
-  session: (params: AuthParams) => ({
-    queryKey: [{ params: params }],
-  }),
-  logout: () => ({
-    queryKey: ["logout"],
-  }),
-  verify: () => ({
-    queryKey: ["verify"],
-  }),
-});
+export const useMutationStateUserOperationCreateBatch = () => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Infer
-// -----------------------------------------------------------------------------
+  const userOperationCreateBatchStatus = useMutationState({
+    filters: {
+      mutationKey: queryKeys.user_operation.create_batch._def,
+      exact: true,
+    },
+    select: mutations => mutations.state.status,
+  });
 
-export type AuthKeys = inferQueryKeys<typeof auth>;
+  return userOperationCreateBatchStatus;
+};

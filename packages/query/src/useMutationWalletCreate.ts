@@ -46,7 +46,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
     isError: isWalletCreateError,
     failureCount,
   } = useMutation({
-    mutationKey: ["walletCreate"],
+    mutationKey: queryKeys.wallet.create._def,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutationFn: async (body: WalletCreateBodyParams) => {
       const loadingToast = toast.loading("Creating wallet...");
