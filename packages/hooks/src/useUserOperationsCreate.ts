@@ -430,6 +430,11 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
   ]);
+  console.warn("isUserOperationsDisabled", isUserOperationsDisabled);
+  console.warn("subdigest", subdigest);
+  console.warn("isValidUserOperations", isValidUserOperations);
+  console.warn("isUserOperationsCreateable", isUserOperationsCreateable);
+  console.warn("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
 
   // ---------------------------------------------------------------------------
   // Render
