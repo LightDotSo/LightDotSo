@@ -1469,6 +1469,8 @@ enum BillingOperationStatus {
   PAYMENT
   SPONSORED
   PENDING
+  INITIATED
+  DEBITED
 }
 
 // -----------------------------------------------------------------------------
