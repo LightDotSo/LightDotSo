@@ -96,7 +96,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const { customFormSuccessText, isFormLoading, isFormDisabled } = useFormRef();
+  const {
+    customFormSuccessText,
+    isFormLoading,
+    isFormDisabled,
+    setIsFormDisabled,
+  } = useFormRef();
   const { isDev } = useDev();
   const {
     setTokenModalProps,
@@ -136,10 +141,22 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
-  const { isUserOperationsCreateSubmittable, signUserOperations } =
-    useUserOperationsCreate({
-      address: address as Address,
-    });
+  const {
+    isUserOperationsCreateSubmittable,
+    isUserOperationsDisabled,
+    signUserOperations,
+  } = useUserOperationsCreate({
+    address: address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // If the transaction is disabled, set the form disabled to true
+  useEffect(() => {
+    setIsFormDisabled(isUserOperationsDisabled);
+  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

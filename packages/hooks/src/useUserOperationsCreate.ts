@@ -432,15 +432,6 @@ export const useUserOperationsCreate = ({
   ]);
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // If the transaction is disabled, set the form disabled to true
-  useEffect(() => {
-    setIsFormDisabled(isUserOperationsDisabled);
-  }, [isUserOperationsDisabled, setIsFormDisabled]);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
