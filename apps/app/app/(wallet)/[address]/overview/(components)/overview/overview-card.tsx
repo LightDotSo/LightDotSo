@@ -13,12 +13,9 @@
 // limitations under the License.
 
 import { Button } from "@lightdotso/ui";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRaisedShadow";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -26,7 +23,6 @@ import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRa
 
 interface OverviewCardProps {
   href: string;
-  value: string;
   title: string;
   children: ReactNode;
   nav: ReactNode;
@@ -41,35 +37,15 @@ export const OverviewCard = ({
   children,
   nav,
   title,
-  value,
 }: OverviewCardProps) => {
-  // ---------------------------------------------------------------------------
-  // Operation Hooks
-  // ---------------------------------------------------------------------------
-
-  const y = useMotionValue(0);
-  const boxShadow = useRaisedShadow(y);
-  const dragControls = useDragControls();
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Reorder.Item
-      className="space-y-3 rounded-md border border-border bg-background p-4"
-      value={value}
-      id={value}
-      style={{ boxShadow: boxShadow, y: y }}
-      dragListener={false}
-      dragControls={dragControls}
-    >
+    <div className="space-y-3 rounded-md border border-border bg-background p-4">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
-          <DragHandleDots2Icon
-            className="size-5 cursor-move text-text-icon-weaker"
-            onPointerDown={event => dragControls.start(event)}
-          />
           <div className="ml-2 text-lg font-semibold text-text-primary">
             {title}
           </div>
@@ -85,6 +61,6 @@ export const OverviewCard = ({
         </div>
       </div>
       {children}
-    </Reorder.Item>
+    </div>
   );
 };
