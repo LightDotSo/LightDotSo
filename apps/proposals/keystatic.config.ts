@@ -9,14 +9,14 @@ export default config({
     project: "lightdotso/proposals",
   },
   collections: {
-    posts: collection({
-      label: "Posts",
+    proposals: collection({
+      label: "Proposals",
       slugField: "title",
-      path: "src/content/posts/*",
+      path: "./content/proposals/*",
       format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
-        content: fields.markdoc({ label: "Content" }),
+        content: fields.markdoc({ label: "Content", extension: "md" }),
       },
     }),
   },
