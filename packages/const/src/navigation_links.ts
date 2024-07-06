@@ -26,13 +26,13 @@ export const NAVIGATION_LINKS = {
     { name: "Governance", href: INTERNAL_LINKS.Governance },
     { name: "Paper", href: INTERNAL_LINKS.Paper },
     { name: "Proposals", href: INTERNAL_LINKS.Proposals },
-    { name: "Support", href: SOCIAL_LINKS.Discord },
   ],
   company: [
     { name: "Careers", href: NOTION_LINKS.Careers },
     { name: "Home", href: INTERNAL_LINKS.Home },
     { name: "Open", href: INTERNAL_LINKS.Open },
     { name: "Notion", href: SOCIAL_LINKS.Notion },
+    { name: "Support", href: INTERNAL_LINKS.Support },
     { name: "Status", href: INTERNAL_LINKS.Status },
   ],
   legal: [

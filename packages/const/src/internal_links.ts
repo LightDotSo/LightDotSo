@@ -23,6 +23,7 @@ export enum Internal {
   PROPOSALS = "Proposals",
   HOME = "Home",
   STATUS = "Status",
+  SUPPORT = "Support",
   WAITLIST = "Waitlist",
 }
 
@@ -39,5 +40,6 @@ export const INTERNAL_LINKS: {
   [Internal.PROPOSALS]: "https://proposals.light.so",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
+  [Internal.SUPPORT]: "https://light.so/support",
   [Internal.WAITLIST]: "https://waitlist.light.so",
 };
