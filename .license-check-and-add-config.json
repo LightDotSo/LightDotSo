@@ -75,6 +75,7 @@
     "apps/app/public/mockServiceWorker.js",
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
+    "apps/proposals/content/**/*.{md,mdx}",
     "apps/subgraph/generated/**",
     "apps/subgraph/subgraph.yaml",
     "configurations/kysely/src/db/**/*.ts",
