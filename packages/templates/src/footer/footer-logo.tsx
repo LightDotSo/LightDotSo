@@ -14,6 +14,7 @@
 
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import type { FC } from "react";
+import Link from "next/link";
 import { FooterCopy } from "./footer-copy";
 
 // -----------------------------------------------------------------------------
@@ -27,7 +28,9 @@ export const FooterLogo: FC = () => {
 
   return (
     <div className="flex shrink-0 items-center space-x-1">
-      <LightHorizontalLogo className="block h-8" />
+      <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
+        <LightHorizontalLogo className="block h-8" />
+      </Link>
       <span className="md:hidden">
         <FooterCopy />
       </span>
