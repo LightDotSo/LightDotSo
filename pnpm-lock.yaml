@@ -3481,6 +3481,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@wagmi/core':
+        specifier: ^2.10.9
+        version: 2.11.6(@tanstack/query-core@5.49.1)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.3)(utf-8-validate@5.0.10)(viem@2.17.0(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       connectkit:
         specifier: ^1.8.2
         version: 1.8.2(f5iy4dsa3m7h3sfchgkd4vztqe)
