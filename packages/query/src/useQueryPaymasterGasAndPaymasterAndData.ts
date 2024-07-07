@@ -17,7 +17,6 @@ import type { PaymasterAndData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
@@ -47,9 +46,6 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     refetchIntervalInBackground: true,
     refetchInterval: 1000 * 30,
     retryOnMount: false,
-    queryKeyHashFn: key => {
-      return serialize(key);
-    },
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
       chainId: params.chainId,
       nonce: params.nonce,

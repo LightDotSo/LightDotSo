@@ -17,7 +17,6 @@ import type { EstimateUserOperationGasData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
@@ -54,9 +53,9 @@ export const useQueryEstimateUserOperationGas = (
     error: estimateUserOperationGasDataError,
   } = useQuery<EstimateUserOperationGasData | null>({
     retry: 10,
-    queryKeyHashFn: key => {
-      return serialize(key);
-    },
+    refetchIntervalInBackground: true,
+    refetchInterval: 1000 * 30,
+    retryOnMount: false,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params.nonce,
       nonce: params.nonce,

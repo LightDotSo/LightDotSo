@@ -94,6 +94,11 @@ export const useUserOperationFeePerGas = ({
   // Get the max fee per gas, fallbacks to mainnet
   const { data: feesPerGas } = useEstimateFeesPerGas({
     chainId: Number(chainId),
+    query: {
+      refetchOnMount: false,
+      refetchInterval: 1000 * 30,
+      retryOnMount: false,
+    },
   });
 
   // Get the max priority fee per gas, fallbacks to mainnet
@@ -202,9 +207,9 @@ export const useUserOperationFeePerGas = ({
     // Return null if no gas estimation is available
     return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
   }, [
+    chainId,
     feesPerGas?.maxFeePerGas,
     feesPerGas?.maxPriorityFeePerGas,
-    chainId,
     gasEstimation,
     gasSpeed,
     gasSpeedBumpAmount,
