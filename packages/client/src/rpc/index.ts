@@ -83,9 +83,7 @@ export const getRequestGasEstimation = async (
 // GetUserOperation
 // -----------------------------------------------------------------------------
 
-const getUserOperationReceiptResponse = z
-  .any()
-  .refine(value => typeof value !== "undefined" && !!value);
+const getUserOperationReceiptResponse = z.string();
 
 const getUserOperationReceiptRequest = z.array(HexStringSchema);
 
