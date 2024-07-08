@@ -45,9 +45,7 @@ export async function generateMetadata({
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(
-    params.slug.replace("/blog/", ""),
-  );
+  const blog = await reader.collections.posts.read(params.slug);
   if (!blog) {
     return notFound();
   }
@@ -73,9 +71,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(
-    params.slug.replace("/blog/", ""),
-  );
+  const blog = await reader.collections.posts.read(params.slug);
   if (!blog) {
     return notFound();
   }
