@@ -22,6 +22,7 @@ import {
 import { createReader } from "@keystatic/core/reader";
 import Markdoc from "@markdoc/markdoc";
 import React from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import keystaticConfig from "~/keystatic.config";
 
@@ -32,14 +33,32 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const proposal = await reader.collections.proposals.read(params.slug);
+  if (!proposal) {
+    return notFound();
+  }
+
+  return {
+    title: proposal.title,
+    openGraph: {
+      images: proposal.ogp.src,
+    },
+  };
+}
+
+// -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  // ---------------------------------------------------------------------------
-  // Reader
-  // ---------------------------------------------------------------------------
-
   const proposal = await reader.collections.proposals.read(params.slug);
   if (!proposal) {
     return notFound();
@@ -56,10 +75,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     throw new Error("Invalid content");
   }
   const renderable = Markdoc.transform(node);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
 
   return (
     <BannerSection size="sm" title={proposal.title}>

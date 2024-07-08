@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import { Banner, Footer, Nav, Root } from "@lightdotso/templates";
+import { Footer, Nav, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
 import { PROPOSAL_TABS } from "@/const";
 
@@ -32,8 +32,6 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <Root>
-      {/* Banner */}
-      <Banner kind="beta" />
       {/* Layout */}
       <Nav tabs={PROPOSAL_TABS}>{children}</Nav>
       <Footer />

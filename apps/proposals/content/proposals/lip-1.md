@@ -2,6 +2,8 @@
 title: "LIP-1: LIP Purpose and Guidelines"
 # authors: Shun Kakinoki shunkakinoki@gmail.com
 # created: 2024-07-01
+ogp:
+  src: "https://assets.light.so/proposals/lip-1.png"
 ---
 
 ### What is a LIP?
