@@ -54,7 +54,7 @@ export const UserOperationStateOp: FC<UserOperationStateOpProps> = ({
   useEffect(() => {
     const interval = setInterval(() => {
       handleSubmit();
-    }, 3000);
+    }, 3_000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,7 +102,7 @@ export const UserOperationState: FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetchPendingUserOperations();
-    }, 30000);
+    }, 30_000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
