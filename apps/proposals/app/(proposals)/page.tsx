@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-// import Link from "next/link";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
