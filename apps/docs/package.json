@@ -14,7 +14,7 @@
   "author": "Light, Inc.",
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit || exit 0"

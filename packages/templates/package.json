@@ -31,6 +31,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/msw": "workspace:*",
     "@lightdotso/nuqs": "workspace:*",

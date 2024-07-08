@@ -12,16 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import "@lightdotso/styles/global.css";
+import { Footer, Nav, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
+import { PROPOSAL_TABS } from "@/const";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface RootLayoutProps {
+  children: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <Root>
+      {/* Layout */}
+      <Nav tabs={PROPOSAL_TABS}>{children}</Nav>
+      <Footer />
+    </Root>
   );
 }

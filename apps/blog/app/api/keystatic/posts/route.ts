@@ -13,13 +13,28 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-
 import keystaticConfig from "~/keystatic.config";
+
+// -----------------------------------------------------------------------------
+// Reader
+// -----------------------------------------------------------------------------
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
-export async function GET() {
-  const posts = await reader.collections.posts.all();
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
 
-  return Response.json({ posts: posts });
+export async function GET() {
+  // ---------------------------------------------------------------------------
+  // Reader
+  // ---------------------------------------------------------------------------
+
+  const proposals = await reader.collections.posts.all();
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
+  return Response.json({ proposals: proposals });
 }

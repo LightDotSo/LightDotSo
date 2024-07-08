@@ -28,7 +28,10 @@ export const FooterLogo: FC = () => {
 
   return (
     <div className="flex shrink-0 items-center space-x-1">
-      <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
+      <Link
+        href="/"
+        className="p-2 hover:rounded-md hover:bg-background-stronger"
+      >
         <LightHorizontalLogo className="block h-8" />
       </Link>
       <span className="md:hidden">

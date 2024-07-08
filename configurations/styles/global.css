@@ -353,7 +353,6 @@ html,
 body,
 main {
   @apply bg-background-body text-text;
-  font-weight: 300;
 }
 
 * {

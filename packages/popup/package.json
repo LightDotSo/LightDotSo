@@ -18,7 +18,7 @@
     "cp:ios": "pnpm run cp:ios:popup && pnpm run cp:ios:index",
     "cp:ios:index": "cp \"../../ios/LightWalletSafariExtension/Resources/popup/index.html\" \"../../ios/LightWalletSafariExtension/Resources/popup.html\"",
     "cp:ios:popup": "cp -r \"out\" \"../../ios/LightWalletSafariExtension/Resources/popup\"",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },

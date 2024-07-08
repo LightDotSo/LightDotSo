@@ -20,14 +20,14 @@ import {
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { SidebarNav } from "@/components/nav/sidebar-nav";
+import { NavSidebar } from "@/components/nav/nav-sidebar";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
-const sidebarNavItems = [
+const navSidebarItems = [
   {
     title: "Profile",
     href: "/settings",
@@ -72,7 +72,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     >
       <HStackFull>
         <BaseLayerWrapper size="sm">
-          <SettingsPageWrapper nav={<SidebarNav items={sidebarNavItems} />}>
+          <SettingsPageWrapper nav={<NavSidebar items={navSidebarItems} />}>
             {children}
           </SettingsPageWrapper>
         </BaseLayerWrapper>

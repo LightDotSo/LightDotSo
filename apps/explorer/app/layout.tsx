@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
+import { Banner, Footer, Nav, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import { EXPLORER_TABS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,5 +30,13 @@ interface RootLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  return <Root>{children}</Root>;
+  return (
+    <Root>
+      {/* Banner */}
+      <Banner kind="beta" />
+      {/* Layout */}
+      <Nav tabs={EXPLORER_TABS}>{children}</Nav>
+      <Footer />
+    </Root>
+  );
 }
