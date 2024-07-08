@@ -63,40 +63,12 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/blog",
-        destination: "https://blog.light.so/blog",
-      },
-      {
-        source: "/blog/:path*",
-        destination: "https://blog.light.so/blog/:path*",
-      },
-      {
-        source: "/changelog",
-        destination: "https://changelog.light.so/changelog",
-      },
-      {
-        source: "/changelog/:path*",
-        destination: "https://changelog.light.so/changelog/:path*",
-      },
-      {
-        source: "/home",
-        destination: "https://lightdotso.framer.website",
-      },
-      {
         source: "/home",
         destination: "https://lightdotso.framer.website",
       },
       {
         source: "/home/:path*",
         destination: "https://lightdotso.framer.website/:path*",
-      },
-      {
-        source: "/proposals",
-        destination: "https://proposals.light.so/proposals",
-      },
-      {
-        source: "/proposals/:path*",
-        destination: "https://proposals.light.so/proposals/:path*",
       },
     ];
   },

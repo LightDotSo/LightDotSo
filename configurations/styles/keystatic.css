@@ -1,71 +1,71 @@
 .keystatic {
-    @apply leading-relaxed;
+  @apply leading-relaxed;
 }
 
 .keystatic a {
-    @apply underline;
+  @apply underline;
 }
 
 .keystatic p {
-    @apply my-3;
+  @apply my-3;
 }
 
 .keystatic h1 {
-    @apply my-8 text-6xl font-semibold tracking-tight;
+  @apply my-8 text-6xl font-semibold tracking-tight;
 }
 
 .keystatic h2 {
-    @apply my-6 text-4xl font-semibold leading-tight;
+  @apply my-6 text-4xl font-semibold leading-tight;
 }
 
 .keystatic h3 {
-    @apply my-5 text-2xl font-semibold leading-snug;
+  @apply my-5 text-2xl font-semibold leading-snug;
 }
 
 .keystatic h4 {
-    @apply my-4 text-2xl;
+  @apply my-4 text-2xl;
 }
 
 .keystatic h5 {
-    @apply my-3 text-3xl font-light;
+  @apply my-3 text-3xl font-light;
 }
 
 .keystatic h6 {
-    @apply my-3 text-xl font-thin;
+  @apply my-3 text-xl font-thin;
 }
 
 .keystatic ul {
-    @apply mx-4 my-6 text-lg font-semibold list-disc sm:my-9;
+  @apply mx-4 my-6 text-lg font-semibold list-disc sm:my-9;
 }
 
 .keystatic li {
-    @apply my-1;
+  @apply my-1;
 }
 
 .keystatic ol {
-    @apply mx-4 my-6 text-lg font-semibold list-decimal list-inside sm:my-9;
+  @apply mx-4 my-6 text-lg font-semibold list-decimal list-inside sm:my-9;
 }
 
 .keystatic table {
-    @apply table-caption w-full max-w-screen-lg overflow-hidden table-auto;
+  @apply table-caption w-full max-w-screen-lg overflow-hidden table-auto;
 }
 
 .keystatic th {
-    @apply relative font-serif text-2xl font-semibold leading-relaxed text-left border-collapse;
+  @apply relative font-serif text-2xl font-semibold leading-relaxed text-left border-collapse;
 }
 
 .keystatic td {
-    @apply px-4 py-2 font-serif leading-relaxed;
+  @apply px-4 py-2 font-serif leading-relaxed;
 }
 
 .keystatic blockquote {
-    @apply p-3 mx-16 my-auto font-serif text-xl italic;
+  @apply p-3 mx-16 my-auto font-serif text-xl italic;
 }
 
-.keystatic blockquote>p {
-    @apply max-w-screen-md mx-0 my-auto text-2xl font-bold;
+.keystatic blockquote > p {
+  @apply max-w-screen-md mx-0 my-auto text-2xl font-bold;
 }
 
 .keystatic img {
-    @apply w-full relative mx-auto py-3 rounded-sm;
+  @apply w-full relative mx-auto py-3 rounded-sm;
 }
