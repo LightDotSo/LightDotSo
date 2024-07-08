@@ -6,3 +6,6 @@ ignores:
   - tsup
   - exponential-backoff
   - neverthrow
+  - react-dom
+  - react-is
+  - "@types/react"
