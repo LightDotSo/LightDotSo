@@ -272,10 +272,6 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    if (isUserOperationSendLoading || !isUserOperationSendSuccess) {
-      return;
-    }
-
     if (!userOperation) {
       console.warn("User operation not found");
       return;
@@ -309,7 +305,6 @@ export const useUserOperationSend = ({
     userOperation,
     userOperationReceipt,
     userOperationSignature,
-    isUserOperationSendLoading,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
