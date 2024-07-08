@@ -20,3 +20,4 @@ ignores:
   - typescript
   - "@next/bundle-analyzer"
   - "@sentry/integrations"
+  - "content-collections"

@@ -536,6 +536,7 @@ ftch
 Ftqz
 fullscreen
 fullwidth
+fumadocs
 futoin
 Gasestimate
 Gasestimatevalue
@@ -912,6 +913,7 @@ merkletreejs
 messageformat
 metabase
 metaplex
+Metas
 mfiles
 mfpg
 MGWC
