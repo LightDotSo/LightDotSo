@@ -22,6 +22,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    manualClientBasePath: true,
+  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };
 
