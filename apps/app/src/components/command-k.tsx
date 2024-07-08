@@ -15,7 +15,7 @@
 "use client";
 
 import { useCopy } from "@lightdotso/hooks";
-import { useAuth, useDev } from "@lightdotso/stores";
+import { useAuth, useDev, useSettings } from "@lightdotso/stores";
 import {
   CommandDialog,
   CommandEmpty,
@@ -72,6 +72,7 @@ export const CommandK: FC = () => {
 
   const { wallet } = useAuth();
   const { toggleDev } = useDev();
+  const { toggleQueryDevTools } = useSettings();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -195,6 +196,16 @@ export const CommandK: FC = () => {
             <Computer className="mr-2 size-4" />
             <span>Toggle Dev</span>
             <CommandShortcut>⌘⇧V</CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            onSelect={() => {
+              toggleQueryDevTools();
+              setOpen(false);
+            }}
+          >
+            <DeleteIcon className="mr-2 size-4" />
+            <span>Toggle Query</span>
+            <CommandShortcut>⌘⇧A</CommandShortcut>
           </CommandItem>
           <CommandItem
             onSelect={() => {

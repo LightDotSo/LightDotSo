@@ -14,9 +14,58 @@
 
 "use client";
 
+import { useUserOperationSend } from "@lightdotso/hooks";
 import { useQueryUserOperations } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
+import type { Address, Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface UserOperationStateOpProps {
+  address: Address;
+  hash: Hex;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const UserOperationStateOp: FC<UserOperationStateOpProps> = ({
+  address,
+  hash,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { handleSubmit } = useUserOperationSend({
+    address: address as Address,
+    hash: hash,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Submit user operation every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleSubmit();
+    }, 3000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return null;
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -34,8 +83,7 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const {
-    // userOperations: pendingUserOperations,
-    // isUserOperationsLoading: isPendingUserOperationsLoading,
+    userOperations: pendingUserOperations,
     refetchUserOperations: refetchPendingUserOperations,
   } = useQueryUserOperations({
     address: wallet,
@@ -64,5 +112,19 @@ export const UserOperationState: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return null;
+  if (!pendingUserOperations || !wallet) {
+    return null;
+  }
+
+  return (
+    <>
+      {pendingUserOperations.map(pendingUserOperation => (
+        <UserOperationStateOp
+          key={pendingUserOperation.hash}
+          address={wallet}
+          hash={pendingUserOperation.hash as Hex}
+        />
+      ))}
+    </>
+  );
 };
