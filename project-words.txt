@@ -568,6 +568,7 @@ goken
 goldsky
 GOLDSKY
 goldskycom
+Goodger
 gopd
 gopz
 gradlew
