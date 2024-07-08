@@ -30,6 +30,7 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 interface InvokeButtonProps {
+  isDisabled?: boolean;
   isLoading?: boolean;
   onClick: () => void;
 }
@@ -38,7 +39,11 @@ interface InvokeButtonProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const InvokeButton: FC<InvokeButtonProps> = ({ onClick, isLoading }) => {
+export const InvokeButton: FC<InvokeButtonProps> = ({
+  onClick,
+  isLoading,
+  isDisabled,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -51,7 +56,7 @@ export const InvokeButton: FC<InvokeButtonProps> = ({ onClick, isLoading }) => {
             <ButtonIcon
               size="sm"
               className={cn(isLoading && "text-text-weaker")}
-              disabled={isLoading}
+              disabled={isLoading || isDisabled}
               variant="shadow"
               onClick={onClick}
             >
