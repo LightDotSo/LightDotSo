@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
+import Link from "next/link";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -22,19 +23,27 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
-// Route
+// Page
 // -----------------------------------------------------------------------------
 
-export async function GET() {
+export default async function Page() {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposals = await reader.collections.posts.all();
+  const blog = await reader.collections.posts.all();
 
   // ---------------------------------------------------------------------------
-  // Return
+  // Render
   // ---------------------------------------------------------------------------
 
-  return Response.json({ proposals: proposals });
+  return (
+    <ul className="text-lg hover:underline">
+      {blog.map(blog => (
+        <li key={blog.slug}>
+          <Link href={`/${blog.slug}`}>{blog.entry.title}</Link>
+        </li>
+      ))}
+    </ul>
+  );
 }

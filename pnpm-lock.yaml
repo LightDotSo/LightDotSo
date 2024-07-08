@@ -662,6 +662,9 @@ importers:
       '@sentry/nextjs':
         specifier: ^8.15.0
         version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@15.0.0-canary.49(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(webpack@5.91.0(@swc/core@1.6.13(@swc/helpers@0.5.11))(esbuild@0.23.0))
+      '@tanstack/react-query':
+        specifier: ^5.50.1
+        version: 5.50.1(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@types/node':
         specifier: ^20.14.10
         version: 20.14.10
@@ -692,6 +695,9 @@ importers:
       react-dom:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-error-boundary:
+        specifier: ^4.0.13
+        version: 4.0.13(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4(ts-node@10.9.2(@swc/core@1.6.13(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.3))
@@ -747,6 +753,9 @@ importers:
       '@sentry/nextjs':
         specifier: ^8.15.0
         version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@15.0.0-canary.49(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(webpack@5.91.0(@swc/core@1.6.13(@swc/helpers@0.5.11))(esbuild@0.23.0))
+      '@tanstack/react-query':
+        specifier: ^5.50.1
+        version: 5.50.1(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@types/node':
         specifier: ^20.14.10
         version: 20.14.10
@@ -777,6 +786,9 @@ importers:
       react-dom:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-error-boundary:
+        specifier: ^4.0.13
+        version: 4.0.13(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4(ts-node@10.9.2(@swc/core@1.6.13(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.3))

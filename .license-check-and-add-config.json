@@ -74,6 +74,8 @@
     "*.txt",
     "*.yml",
     "apps/app/public/mockServiceWorker.js",
+    "apps/blog/content/**/*.{md,mdx}",
+    "apps/changelog/content/**/*.{md,mdx}",
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
     "apps/proposals/content/**/*.{md,mdx}",
