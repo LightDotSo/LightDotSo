@@ -44,6 +44,7 @@ import {
 type UserOperationSendProps = {
   address: Address;
   hash: Hex;
+  isSend?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -53,6 +54,7 @@ type UserOperationSendProps = {
 export const useUserOperationSend = ({
   address,
   hash,
+  isSend = false,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -285,8 +287,18 @@ export const useUserOperationSend = ({
       return;
     }
 
-    // If the user operation receipt is an error, send the user operation
-    if (isUserOperationReceiptError) {
+    if (userOperationReceipt) {
+      if (isUserOperationSendPending) {
+        // Queue the user operation if the user operation has been sent but isn't indexed yet
+        queueUserOperation({ hash: hash });
+      }
+      // Finally, return early
+      return;
+    }
+
+    // If the optional parameter isSend is true or the user operation receipt
+    // is an error, send the user operation
+    if (isSend || isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
       userOperationSend({
         userOperation: userOperation,
@@ -295,19 +307,11 @@ export const useUserOperationSend = ({
       // Finally, return
       return;
     }
-
-    if (userOperationReceipt) {
-      if (isUserOperationSendPending) {
-        // Queue the user operation if the user operation has been sent but isn't indexed yet
-        queueUserOperation({ hash: hash });
-        // Finally, return
-        return;
-      }
-    }
   }, [
     userOperation,
     userOperationReceipt,
     userOperationSignature,
+    isSend,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
@@ -321,7 +325,6 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit: handleSubmit,
-    userOperation: userOperation,
     paymasterNonce: paymasterNonce,
     paymasterOperation: paymasterOperation,
     paymasterSignedMsg: paymasterSignedMsg,

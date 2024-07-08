@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AuthState, FormState, QueueState } from "@lightdotso/states";
+import {
+  AuthState,
+  FormState,
+  QueueState,
+  UserOperationState,
+} from "@lightdotso/states";
 import {
   Footer,
   ProgressTransaction,
@@ -138,6 +143,7 @@ export const Root: FC<RootProps> = ({ children }) => {
         <AuthState />
         <FormState />
         <QueueState />
+        <UserOperationState />
         <WssState />
       </Web3Provider>
     </LightRoot>

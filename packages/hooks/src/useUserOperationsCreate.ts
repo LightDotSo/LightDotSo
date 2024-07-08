@@ -54,8 +54,8 @@ export const useUserOperationsCreate = ({
 
   const { address: userAddress } = useAuth();
   const {
-    internalUserOperations,
     addPendingSubmitUserOperationHash,
+    internalUserOperations,
     resetInternalUserOperations,
   } = useUserOperations();
   const { setIsFormDisabled } = useFormRef();
@@ -237,8 +237,6 @@ export const useUserOperationsCreate = ({
 
   // Sign the userOperation
   const signUserOperations = useCallback(() => {
-    // console.info(subdigest);
-
     if (!subdigest) {
       return;
     }
@@ -280,8 +278,6 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      // console.info(signedData);
-
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
@@ -298,10 +294,6 @@ export const useUserOperationsCreate = ({
       if (!owner || !signedData || !merkleTree || !internalUserOperations) {
         return;
       }
-
-      // console.info("signBatch...");
-      // console.info(merkleTree);
-      // console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
       userOperationCreateBatch({
         ownerId: owner.id,

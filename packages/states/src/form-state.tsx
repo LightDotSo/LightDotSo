@@ -41,12 +41,18 @@ export const FormState: FC = () => {
   // ---------------------------------------------------------------------------
 
   // Get the user operations create state
-  const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
-    useUserOperationsCreateState();
+  const {
+    isUserOperationCreateLoadingSingle,
+    isUserOperationsCreateLoading,
+    isUserOperationsCreateSuccess,
+  } = useUserOperationsCreateState();
 
   // Get the user operations send state
-  const { isUserOperationsSendLoading, isUserOperationsSendSuccess } =
-    useUserOperationsSendState();
+  const {
+    isUserOperationsSendLoadingSingle,
+    isUserOperationsSendLoading,
+    isUserOperationsSendSuccess,
+  } = useUserOperationsSendState();
 
   // Get the user operations sign state
   const { isSignMessageLoading } = useSignMessageState();
@@ -82,8 +88,16 @@ export const FormState: FC = () => {
       return "Signing...";
     }
 
+    if (isUserOperationCreateLoadingSingle) {
+      return "Creating transaction...";
+    }
+
     if (isUserOperationsCreateLoading) {
       return "Creating transactions...";
+    }
+
+    if (isUserOperationsSendLoadingSingle) {
+      return "Sending transaction...";
     }
 
     if (isUserOperationsSendLoading) {
@@ -104,7 +118,9 @@ export const FormState: FC = () => {
     isConnecting,
     isSignMessageLoading,
     isUserOperationsCreateLoading,
+    isUserOperationCreateLoadingSingle,
     isUserOperationsSendLoading,
+    isUserOperationsSendLoadingSingle,
     delayedIsUserOperationsCreateSuccess,
     delayedIsUserOperationsSendSuccess,
   ]);

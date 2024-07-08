@@ -21,7 +21,7 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import {
   // useQueryClient,
@@ -46,6 +46,7 @@ export const useMutationUserOperationCreateBatch = (
   // ---------------------------------------------------------------------------
 
   const { clientType } = useAuth();
+  const { resetInternalUserOperations } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -209,6 +210,11 @@ export const useMutationUserOperationCreateBatch = (
     //   );
     //   return { previousData };
     // },
+    onSuccess: () => {
+      // Only reset the internal user operations if the transaction is successful
+      // This disables the transaction fetcher from fetching the transactions again
+      resetInternalUserOperations();
+    },
     onError: (err, _newWalletSettings, _context) => {
       if (err instanceof Error) {
         toast.error(err.message);

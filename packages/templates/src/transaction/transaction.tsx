@@ -54,6 +54,7 @@ import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
+import { usePathname } from "next/navigation";
 import type { Address } from "viem";
 import type * as z from "zod";
 import { FooterButton } from "../footer-button";
@@ -136,11 +137,18 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
+
   const {
     isUserOperationsCreateSubmittable,
     isUserOperationsDisabled,
@@ -202,11 +210,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
-  // useEffect(() => {
-  //   resetUserOperationsCreate();
-  //   resetAll();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pathname, resetUserOperationsCreate, resetAll]);
+  useEffect(() => {
+    resetAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, resetAll]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

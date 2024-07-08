@@ -36,32 +36,44 @@ export const useUserOperationsCreateState = () => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  // Check if the signMessage is loading
   const isSignMessageAsyncLoading = useMemo(() => {
     return signMessageStatus?.some(status => status === "pending");
   }, [signMessageStatus]);
 
+  // Check if the userOperation is loading and there is only one status
+  const isUserOperationCreateLoadingSingle = useMemo(() => {
+    return (
+      userOperationCreateStatus?.length === 1 &&
+      userOperationCreateStatus[0] === "pending"
+    );
+  }, [userOperationCreateStatus]);
+
+  // Check if the userOperations are all loading
   const isUserOperationCreateLoading = useMemo(() => {
     return userOperationCreateStatus?.some(status => status === "pending");
   }, [userOperationCreateStatus]);
 
-  const isUserOperationCreateBatchLoading = useMemo(() => {
+  // Check if the userOperations are all loading
+  const isUserOperationsCreateBatchLoading = useMemo(() => {
     return userOperationCreateBatchStatus?.some(status => status === "pending");
   }, [userOperationCreateBatchStatus]);
 
-  // Check if the userOperation is loading
+  // Check if the userOperations are all loading
   const isUserOperationsCreateLoading = useMemo(() => {
     return (
       isSignMessageAsyncLoading ||
       isUserOperationCreateLoading ||
-      isUserOperationCreateBatchLoading
+      isUserOperationsCreateBatchLoading
     );
   }, [
     isSignMessageAsyncLoading,
     isUserOperationCreateLoading,
-    isUserOperationCreateBatchLoading,
+    isUserOperationsCreateBatchLoading,
   ]);
 
-  // Check if the userOperation is successful
+  // Check if the userOperations are all successful
   const isUserOperationsCreateSuccess = useMemo(() => {
     return (
       userOperationCreateStatus?.some(status => status === "success") ||
@@ -69,7 +81,7 @@ export const useUserOperationsCreateState = () => {
     );
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
-  // Check if the userOperation is failed
+  // Check if the userOperations are all failed
   const isUserOperationsCreateError = useMemo(() => {
     return (
       userOperationCreateStatus?.some(status => status === "error") ||
@@ -78,6 +90,7 @@ export const useUserOperationsCreateState = () => {
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
   return {
+    isUserOperationCreateLoadingSingle: isUserOperationCreateLoadingSingle,
     isUserOperationsCreateLoading: isUserOperationsCreateLoading,
     isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
     isUserOperationsCreateError: isUserOperationsCreateError,

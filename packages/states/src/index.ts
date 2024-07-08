@@ -15,3 +15,4 @@
 export { AuthState } from "./auth-state";
 export { FormState } from "./form-state";
 export { QueueState } from "./queue-state";
+export { UserOperationState } from "./user-operation-state";

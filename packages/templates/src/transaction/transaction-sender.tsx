@@ -14,7 +14,8 @@
 
 "use client";
 
-import { useIsMounted, useUserOperationSend } from "@lightdotso/hooks";
+import { useUserOperationSend } from "@lightdotso/hooks";
+import { useQueryUserOperation } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
@@ -43,7 +44,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperation, handleSubmit } = useUserOperationSend({
+  const { userOperation } = useQueryUserOperation({
+    hash: hash,
+  });
+
+  const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
     address: address as Address,
     hash: hash,
   });
@@ -52,11 +57,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Submit user operation every 30 seconds
+  // Submit user operation every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       handleSubmit();
-    }, 30000);
+    }, 3000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +73,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {userOperation?.transaction?.hash && (
+      {isUserOperationSendSuccess && userOperation && (
         <Button asChild variant="link">
           <a
             target="_blank"

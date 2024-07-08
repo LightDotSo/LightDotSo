@@ -198,6 +198,8 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return {
+        internalUserOperations: [],
+        pendingSubmitUserOperationHashes: [],
         userOperationDetails: {},
         userOperationDevInfo: {},
         userOperationSimulations: {},
