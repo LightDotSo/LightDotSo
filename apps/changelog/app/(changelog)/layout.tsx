@@ -12,29 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createReader } from "@keystatic/core/reader";
-import keystaticConfig from "~/keystatic.config";
+import {
+  HStackFull,
+  BannerSection,
+  BasicPageWrapper,
+  BaseLayerWrapper,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Reader
+// Metadata
 // -----------------------------------------------------------------------------
 
-const reader = createReader(process.cwd(), keystaticConfig);
+export const metadata: Metadata = {
+  title: TITLES.Changelog.title,
+  description: TITLES.Changelog.description,
+};
 
 // -----------------------------------------------------------------------------
-// Route
+// Props
 // -----------------------------------------------------------------------------
 
-export async function GET() {
+interface ProposalsLayoutProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function ProposalsLayout({ children }: ProposalsLayoutProps) {
   // ---------------------------------------------------------------------------
-  // Reader
+  // Render
   // ---------------------------------------------------------------------------
 
-  const proposals = await reader.collections.posts.all();
-
-  // ---------------------------------------------------------------------------
-  // Return
-  // ---------------------------------------------------------------------------
-
-  return Response.json({ proposals: proposals });
+  return (
+    <BannerSection
+      title={TITLES.Changelog.title}
+      description={TITLES.Changelog.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
+  );
 }

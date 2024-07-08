@@ -45,10 +45,10 @@ export async function generateMetadata({
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.proposals.read(
-    params.slug.replace("/proposals/", ""),
+  const changelog = await reader.collections.posts.read(
+    params.slug.replace("/changelog/", ""),
   );
-  if (!proposal) {
+  if (!changelog) {
     return notFound();
   }
 
@@ -57,9 +57,9 @@ export async function generateMetadata({
   // ---------------------------------------------------------------------------
 
   return {
-    title: proposal.title,
+    title: changelog.title,
     openGraph: {
-      images: proposal.ogp.src,
+      images: changelog.ogp.src,
     },
   };
 }
@@ -73,10 +73,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.proposals.read(
-    params.slug.replace("/proposals/", ""),
+  const changelog = await reader.collections.posts.read(
+    params.slug.replace("/changelog/", ""),
   );
-  if (!proposal) {
+  if (!changelog) {
     return notFound();
   }
 
@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Markdoc
   // ---------------------------------------------------------------------------
 
-  const { node } = await proposal.content();
+  const { node } = await changelog.content();
   const errors = Markdoc.validate(node);
   if (errors.length) {
     console.error(errors);
@@ -97,7 +97,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection size="sm" title={proposal.title}>
+    <BannerSection size="sm" title={changelog.title}>
       <HStackFull>
         <BaseLayerWrapper size="sm">
           <BasicPageWrapper>

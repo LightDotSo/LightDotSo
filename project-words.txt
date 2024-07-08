@@ -1213,6 +1213,7 @@ ratelimit
 Rbday
 rbuf
 rcfg
+rclone
 rdkafka
 readablestream
 readdir
