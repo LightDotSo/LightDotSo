@@ -155,16 +155,18 @@ export const useUserOperationSend = ({
     isUserOperationReceiptLoading,
     isUserOperationReceiptError,
     refetchUserOperationReceipt,
+    userOperationReceiptFailureCount,
   } = useQueryUserOperationReceipt({
     chainId: userOperation?.chain_id ?? null,
     hash: hash,
   });
 
-  const { userOperationSend } = useMutationUserOperationSend({
-    address: address as Address,
-    configuration: configuration,
-    hash: userOperation?.hash as Hex,
-  });
+  const { userOperationSend, isUserOperationSendPending } =
+    useMutationUserOperationSend({
+      address: address as Address,
+      configuration: configuration,
+      hash: userOperation?.hash as Hex,
+    });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -213,24 +215,16 @@ export const useUserOperationSend = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationSendPending = useMemo(
-    () =>
-      userOperation
-        ? userOperation?.status === "PROPOSED" ||
-          userOperation?.status === "PENDING"
-        : // Send is pending if the operation is not found
-          true,
-    [userOperation],
-  );
-
   const isUserOperationSendLoading = useMemo(
     () =>
       isQueueUserOperationPending ||
+      isUserOperationSendPending ||
       isUserOperationLoading ||
       isUserOperationSignatureLoading ||
       isUserOperationReceiptLoading,
     [
       isQueueUserOperationPending,
+      isUserOperationSendPending,
       isUserOperationLoading,
       isUserOperationSignatureLoading,
       isUserOperationReceiptLoading,
@@ -279,24 +273,30 @@ export const useUserOperationSend = ({
       return;
     }
 
+    if (userOperation.status === "PENDING") {
+      // Refetch the user operation receipt again
+      refetchUserOperationReceipt();
+
+      // If the user operation receipt has failed to fetch less than 3 times, then return
+      // This is to prevent the user operation from being sent multiple times
+      if (userOperationReceiptFailureCount < 3) {
+        return;
+      }
+    }
+
     // Send the user operation if the user operation hasn't been sent yet
     userOperationSend({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
-
-    // Wait for 3 seconds for the user operation to be indexed
-    await new Promise(resolve => setTimeout(resolve, 3_000));
-
-    // Refetch the user operation receipt again
-    refetchUserOperationReceipt();
   }, [
     userOperation,
-    userOperationReceipt,
     userOperationSignature,
-    isUserOperationReceiptError,
+    userOperationReceipt,
     isUserOperationSendPending,
+    isUserOperationReceiptError,
     userOperationSend,
+    refetchUserOperationReceipt,
     queueUserOperation,
     hash,
   ]);
