@@ -12,7 +12,7 @@ export default config({
     posts: collection({
       label: "Changelog",
       slugField: "title",
-      path: "content/posts/*",
+      path: "content/**",
       format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),

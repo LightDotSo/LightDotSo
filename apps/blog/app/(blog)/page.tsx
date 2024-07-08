@@ -31,7 +31,7 @@ export default async function Page() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.all();
+  const blogs = await reader.collections.posts.all();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -39,7 +39,7 @@ export default async function Page() {
 
   return (
     <ul className="text-lg hover:underline">
-      {blog.map(blog => (
+      {blogs.map(blog => (
         <li key={blog.slug}>
           <Link href={`/${blog.slug}`}>{blog.entry.title}</Link>
         </li>

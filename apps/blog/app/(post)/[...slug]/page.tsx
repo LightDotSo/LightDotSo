@@ -39,13 +39,13 @@ const reader = createReader(process.cwd(), keystaticConfig);
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string[] };
 }): Promise<Metadata> {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(params.slug);
+  const blog = await reader.collections.posts.read(params.slug.join("/"));
   if (!blog) {
     return notFound();
   }
@@ -66,12 +66,12 @@ export async function generateMetadata({
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string[] } }) {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(params.slug);
+  const blog = await reader.collections.posts.read(params.slug.join("/"));
   if (!blog) {
     return notFound();
   }

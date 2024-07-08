@@ -30,11 +30,11 @@ export async function GET() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposals = await reader.collections.posts.all();
+  const posts = await reader.collections.posts.all();
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  return Response.json({ proposals: proposals });
+  return Response.json({ posts: posts });
 }

@@ -72,11 +72,11 @@ const nextConfig = {
       },
       {
         source: "/changelog",
-        destination: "https://changes.light.so/changelog",
+        destination: "https://changelog.light.so/changelog",
       },
       {
         source: "/changelog/:path*",
-        destination: "https://changes.light.so/changelog/:path*",
+        destination: "https://changelog.light.so/changelog/:path*",
       },
       {
         source: "/home",

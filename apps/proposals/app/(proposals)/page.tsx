@@ -32,7 +32,7 @@ export default async function Page() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposals = await reader.collections.proposals.all();
+  const proposals = await reader.collections.posts.all();
 
   // ---------------------------------------------------------------------------
   // Render
