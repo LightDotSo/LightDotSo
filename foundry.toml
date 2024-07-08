@@ -91,6 +91,7 @@
   bsc = "${PROTECTED_RPC_URL}/56"
   gnosis = "${PROTECTED_RPC_URL}/100"
   polygon = "${PROTECTED_RPC_URL}/137"
+  base = "${PROTECTED_RPC_URL}/8453"
   arbitrum = "${PROTECTED_RPC_URL}/42161"
   avalanche = "${PROTECTED_RPC_URL}/43114"
   sepolia = "${PROTECTED_RPC_URL}/11155111"

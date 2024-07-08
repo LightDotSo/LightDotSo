@@ -31,7 +31,6 @@ concurrency:
   cancel-in-progress: true
 env:
   FOUNDRY_PROFILE: ci
-  PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
 jobs:
   contracts-turbo:
     runs-on: ubuntu-latest
@@ -137,9 +136,9 @@ jobs:
           files: lcov.info
           flags: contracts
   contracts-fork:
-    if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'schedule'
-    needs:
-      - contracts-turbo
+    # if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'schedule'
+    # needs:
+    # - contracts-turbo
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -177,6 +176,7 @@ jobs:
             forge test
         env:
           NETWORK_NAME: ${{ matrix.network }}
+          PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
       - name: Run Script Fork
         uses: nick-fields/retry@v2
         with:
@@ -189,6 +189,7 @@ jobs:
           FOUNDRY_PROFILE: script
           NETWORK_NAME: ${{ matrix.network }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
   contracts-script:
     if: github.event_name == 'workflow_dispatch'
     needs:
