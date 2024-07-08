@@ -21,3 +21,4 @@ ignores:
   - "@next/bundle-analyzer"
   - "@sentry/integrations"
   - "content-collections"
+  - "next-themes"
