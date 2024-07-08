@@ -43,13 +43,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const {
-    userOperation,
-    // isUserOperationSendLoading,
-    // isUserOperationSendReady,
-    // isUserOperationSendSuccess,
-    handleSubmit,
-  } = useUserOperationSend({
+  const { userOperation, handleSubmit } = useUserOperationSend({
     address: address as Address,
     hash: hash,
   });

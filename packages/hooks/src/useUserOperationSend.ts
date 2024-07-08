@@ -217,7 +217,7 @@ export const useUserOperationSend = ({
     [userOperation],
   );
 
-  const isUserOperationSendDisabled = useMemo(
+  const isUserOperationSendSuccess = useMemo(
     () =>
       userOperation?.status === "INVALID" ||
       userOperation?.status === "EXECUTED" ||
@@ -233,12 +233,24 @@ export const useUserOperationSend = ({
     [userOperation, userOperationSignature, isUserOperationSendReady],
   );
 
+  const isUserOperationSendDisabled = useMemo(
+    () =>
+      !isUserOperationSendValid ||
+      isUserOperationSendPending ||
+      isUserOperationSendSuccess,
+    [
+      isUserOperationSendValid,
+      isUserOperationSendPending,
+      isUserOperationSendSuccess,
+    ],
+  );
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    if (!isUserOperationSendDisabled) {
+    if (!isUserOperationSendSuccess) {
       return;
     }
 
@@ -294,7 +306,8 @@ export const useUserOperationSend = ({
     paymasterSignedMsg: paymasterSignedMsg,
     recoveredAddress: recoveredAddress,
     isUserOperationSendValid: isUserOperationSendValid,
-    isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
+    isUserOperationSendPending: isUserOperationSendPending,
+    isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
 };
