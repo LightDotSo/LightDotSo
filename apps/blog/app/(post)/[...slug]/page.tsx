@@ -70,7 +70,7 @@ export async function generateStaticParams() {
   const blogs = await reader.collections.posts.all();
 
   return blogs.map(blog => ({
-    slug: blog.slug,
+    slug: blog.slug.split("/"),
   }));
 }
 

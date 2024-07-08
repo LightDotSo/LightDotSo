@@ -70,7 +70,7 @@ export async function generateStaticParams() {
   const proposals = await reader.collections.posts.all();
 
   return proposals.map(proposal => ({
-    slug: proposal.slug,
+    slug: proposal.slug.split("/"),
   }));
 }
 

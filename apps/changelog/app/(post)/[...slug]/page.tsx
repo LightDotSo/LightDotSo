@@ -70,7 +70,7 @@ export async function generateStaticParams() {
   const changelogs = await reader.collections.posts.all();
 
   return changelogs.map(changelog => ({
-    slug: changelog.slug,
+    slug: changelog.slug.split("/"),
   }));
 }
 
