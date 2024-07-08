@@ -50,6 +50,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // ---------------------------------------------------------------------------
 
   const {
+    isUserOperationSendPending,
     isUserOperationSendValid,
     isUserOperationSendLoading,
     isUserOperationSendDisabled,
@@ -68,7 +69,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            disabled={isUserOperationSendDisabled}
+            disabled={isUserOperationSendPending || isUserOperationSendDisabled}
             isLoading={isUserOperationSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"

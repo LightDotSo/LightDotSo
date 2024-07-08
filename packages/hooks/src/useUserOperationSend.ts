@@ -261,15 +261,8 @@ export const useUserOperationSend = ({
   );
 
   const isUserOperationSendDisabled = useMemo(
-    () =>
-      !isUserOperationSendValid ||
-      !isUserOperationSendPending ||
-      isUserOperationSendSuccess,
-    [
-      isUserOperationSendValid,
-      isUserOperationSendPending,
-      isUserOperationSendSuccess,
-    ],
+    () => !isUserOperationSendValid || isUserOperationSendSuccess,
+    [isUserOperationSendValid, isUserOperationSendSuccess],
   );
 
   // ---------------------------------------------------------------------------
