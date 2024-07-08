@@ -46,17 +46,13 @@ const ReactQueryDevtoolsProduction = dynamic(() =>
 
 type ReactQueryProviderProps = {
   children: ReactNode;
-  showDevTools?: boolean;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
-  children,
-  showDevTools = false,
-}) => {
+const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -67,11 +63,19 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isQueryDevToolsOpen } = useSettings();
+  const { isQueryDevToolsOpen, setIsQueryDevToolsOpen } = useSettings();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Only set once on initial render
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
+      setIsQueryDevToolsOpen(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const client = new QueryClient({
@@ -118,7 +122,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       {/* <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration> */}
-      {(showDevTools || isQueryDevToolsOpen) && (
+      {isQueryDevToolsOpen && (
         <div className="hidden lg:block">
           <ReactQueryDevtoolsProduction />
         </div>
