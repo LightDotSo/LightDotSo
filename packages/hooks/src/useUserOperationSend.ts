@@ -68,7 +68,7 @@ export const useUserOperationSend = ({
     address: address as Address,
   });
 
-  const { userOperation } = useQueryUserOperation({
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: hash,
   });
 
@@ -129,10 +129,11 @@ export const useUserOperationSend = ({
     checkpoint: !imageHash ? 0 : undefined,
   });
 
-  const { userOperationSignature } = useQueryUserOperationSignature({
-    hash: hash,
-    configuration_id: configuration?.id,
-  });
+  const { userOperationSignature, isUserOperationSignatureLoading } =
+    useQueryUserOperationSignature({
+      hash: hash,
+      configuration_id: configuration?.id,
+    });
 
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
@@ -229,8 +230,16 @@ export const useUserOperationSend = ({
     () =>
       typeof userOperation !== "undefined" &&
       typeof userOperationSignature !== "undefined" &&
+      isUserOperationLoading === false &&
+      isUserOperationSignatureLoading === false &&
       isUserOperationSendReady,
-    [userOperation, userOperationSignature, isUserOperationSendReady],
+    [
+      userOperation,
+      userOperationSignature,
+      isUserOperationLoading,
+      isUserOperationSignatureLoading,
+      isUserOperationSendReady,
+    ],
   );
 
   const isUserOperationSendDisabled = useMemo(
@@ -250,7 +259,11 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    if (!isUserOperationSendSuccess) {
+    if (
+      isUserOperationLoading ||
+      isUserOperationSignatureLoading ||
+      !isUserOperationSendSuccess
+    ) {
       return;
     }
 
@@ -287,6 +300,8 @@ export const useUserOperationSend = ({
     userOperation,
     userOperationReceipt,
     userOperationSignature,
+    isUserOperationLoading,
+    isUserOperationSignatureLoading,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
