@@ -70,7 +70,7 @@ export const useUserOperationSign = ({
     return owners.find(owner => owner.address === userAddress)?.id;
   }, [owners, userAddress]);
 
-  const isOwner = useMemo(() => {
+  const isUserOperationOwner = useMemo(() => {
     if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
       return false;
     }
@@ -81,7 +81,7 @@ export const useUserOperationSign = ({
     );
   }, [owners, userAddress]);
 
-  const isSigned = useMemo(() => {
+  const isUserOperationSigned = useMemo(() => {
     if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
       return false;
     }
@@ -92,10 +92,10 @@ export const useUserOperationSign = ({
     );
   }, [userAddress, userOperation.signatures, userOwnerId]);
 
-  const isSignable = useMemo(() => {
+  const isUserOperationSignable = useMemo(() => {
     // Check if the user has not yet signed and is an owner
-    return !isSigned && isOwner && !isLoading;
-  }, [isSigned, isOwner, isLoading]);
+    return !isUserOperationSigned && isUserOperationOwner && !isLoading;
+  }, [isUserOperationSigned, isUserOperationOwner, isLoading]);
 
   const subdigest = useMemo(
     () =>
@@ -113,7 +113,7 @@ export const useUserOperationSign = ({
 
   const {
     data: signedMessage,
-    isPending: isSignLoading,
+    isPending: isUserOperationSignPending,
     signMessage,
   } = useSignMessage();
 
@@ -128,11 +128,6 @@ export const useUserOperationSign = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Sync the loading state
-  useEffect(() => {
-    setIsLoading(isSignLoading);
-  }, [isSignLoading]);
 
   // A handler for submitting the signature
   useEffect(() => {
@@ -170,10 +165,10 @@ export const useUserOperationSign = ({
   // ---------------------------------------------------------------------------
 
   return {
-    isLoading: isLoading,
-    isOwner: isOwner,
-    isSigned: isSigned,
-    isSignable: isSignable,
+    isUserOperationSignPending: isUserOperationSignPending,
+    isUserOperationOwner: isUserOperationOwner,
+    isUserOperationSigned: isUserOperationSigned,
+    isUserOperationSignable: isUserOperationSignable,
     signedMessage: signedMessage,
     signUserOperation: signUserOperation,
   };

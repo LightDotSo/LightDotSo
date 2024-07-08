@@ -32,7 +32,8 @@ export const useSignInWithSiwe = () => {
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { isPending, signMessageAsync } = useSignMessage();
+  const { isPending: isSignInWithSiwePending, signMessageAsync } =
+    useSignMessage();
   const { chain } = useAccount();
 
   // ---------------------------------------------------------------------------
@@ -45,9 +46,10 @@ export const useSignInWithSiwe = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { verify, isVerifySuccess: isSuccess } = useMutationAuthVerify({
-    address: address as Address,
-  });
+  const { verify, isVerifySuccess: isSignInWithSiweSuccess } =
+    useMutationAuthVerify({
+      address: address as Address,
+    });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -99,7 +101,7 @@ export const useSignInWithSiwe = () => {
 
   return {
     handleSignIn: handleSignIn,
-    isPending: isPending,
-    isSuccess: isSuccess,
+    isSignInWithSiwePending: isSignInWithSiwePending,
+    isSignInWithSiweSuccess: isSignInWithSiweSuccess,
   };
 };

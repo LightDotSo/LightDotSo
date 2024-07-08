@@ -36,7 +36,7 @@ export const useMutationQueueToken = (params: QueueParams) => {
 
   const {
     mutate: queueToken,
-    isPending: isLoadingQueueToken,
+    isPending: isQueueTokenPending,
     failureCount,
   } = useMutation({
     mutationKey: queryKeys.queue.token._def,
@@ -88,6 +88,6 @@ export const useMutationQueueToken = (params: QueueParams) => {
 
   return {
     queueToken: queueToken,
-    isLoadingQueueToken: isLoadingQueueToken,
+    isQueueTokenPending: isQueueTokenPending,
   };
 };

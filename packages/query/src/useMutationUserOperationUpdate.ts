@@ -36,7 +36,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
 
   const {
     mutate: userOperationUpdate,
-    isPending: isLoadingUserOperationUpdate,
+    isPending: isUserOperationUpdatePending,
     failureCount,
   } = useMutation({
     mutationKey: queryKeys.user_operation.update._def,
@@ -82,7 +82,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   });
 
   return {
-    isLoadingUserOperationUpdate: isLoadingUserOperationUpdate,
+    isUserOperationUpdatePending: isUserOperationUpdatePending,
     userOperationUpdate: userOperationUpdate,
   };
 };

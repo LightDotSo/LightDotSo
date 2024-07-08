@@ -79,8 +79,6 @@ export const useConfigurationOperationCreate = ({
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isConfigurationOperationLoading, setIsConfigurationOperationLoading] =
-    useState(false);
   const [signedData, setSignedData] = useState<Hex>();
 
   // ---------------------------------------------------------------------------
@@ -118,7 +116,7 @@ export const useConfigurationOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  const { data, signMessage } = useSignMessage();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -154,13 +152,6 @@ export const useConfigurationOperationCreate = ({
   useEffect(() => {
     refetchConfigurationOperationSimulation();
   }, [params, refetchConfigurationOperationSimulation]);
-
-  // Sync the loading state
-  useEffect(() => {
-    setIsConfigurationOperationLoading(
-      isSignLoading || isConfigurationOperationSimulationLoading,
-    );
-  }, [isSignLoading, isConfigurationOperationSimulationLoading]);
 
   // Sync the signed data
   useEffect(() => {
@@ -205,7 +196,6 @@ export const useConfigurationOperationCreate = ({
 
   return {
     isConfigurationOperationCreatable: isConfigurationOperationCreatable,
-    isConfigurationOperationLoading: isConfigurationOperationLoading,
     signConfigurationOperation: signConfigurationOperation,
     subdigest: subdigest,
     owner: owner,

@@ -38,7 +38,7 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationUpdate, isLoadingUserOperationUpdate } =
+  const { userOperationUpdate, isUserOperationUpdatePending } =
     useMutationUserOperationUpdate({
       address: address as Address,
     });
@@ -49,7 +49,7 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
 
   return (
     <InvokeButton
-      isLoading={isLoadingUserOperationUpdate}
+      isLoading={isUserOperationUpdatePending}
       onClick={() => userOperationUpdate()}
     />
   );
