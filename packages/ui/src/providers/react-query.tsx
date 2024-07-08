@@ -14,6 +14,7 @@
 
 "use client";
 
+import { useSettings } from "@lightdotso/stores";
 import { hashFn } from "@lightdotso/wagmi";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
@@ -61,6 +62,12 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
   // ---------------------------------------------------------------------------
 
   const [queryClient, setQueryClient] = useState<QueryClient | null>(null);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isQueryDevToolsOpen } = useSettings();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -111,7 +118,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       {/* <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration> */}
-      {showDevTools && process.env.NEXT_PUBLIC_VERCEL_ENV !== "production" && (
+      {(showDevTools || isQueryDevToolsOpen) && (
         <div className="hidden lg:block">
           <ReactQueryDevtoolsProduction />
         </div>

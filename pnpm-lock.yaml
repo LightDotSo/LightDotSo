@@ -3280,6 +3280,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
