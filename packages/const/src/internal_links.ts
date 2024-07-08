@@ -30,14 +30,14 @@ export enum Internal {
 export const INTERNAL_LINKS: {
   readonly [key in Internal]: string;
 } = {
-  [Internal.BLOG]: "https://blog.light.so",
-  [Internal.CHANGELOG]: "https://changelog.light.so",
+  [Internal.BLOG]: "https://light.so/blog",
+  [Internal.CHANGELOG]: "https://light.so/changelog",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
   [Internal.GOVERNANCE]: "https://gov.light.so",
   [Internal.PAPER]: "https://paper.light.so",
   [Internal.OPEN]: "https://open.light.so",
-  [Internal.PROPOSALS]: "https://proposals.light.so",
+  [Internal.PROPOSALS]: "https://light.so/proposals",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
   [Internal.SUPPORT]: "https://light.so/support",

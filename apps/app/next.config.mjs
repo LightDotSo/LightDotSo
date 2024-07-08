@@ -60,20 +60,23 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
-  redirects: async () => {
-    return [
-      {
-        source: "/changelog/:path*",
-        destination: "https://lightdotso.notion.site/:path*",
-        permanent: true,
-      },
-    ];
-  },
   rewrites: async () => {
     return [
       {
+        source: "/blog/:path*",
+        destination: "https://blog.light.so/blog/:path*",
+      },
+      {
+        source: "/changelog/:path*",
+        destination: "https://changes.light.so/changelog/:path*",
+      },
+      {
         source: "/home/:path*",
         destination: "https://lightdotso.framer.website/:path*",
+      },
+      {
+        source: "/proposals/:path*",
+        destination: "https://proposals.light.so/proposals/:path*",
       },
     ];
   },

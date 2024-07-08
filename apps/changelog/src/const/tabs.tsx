@@ -24,7 +24,7 @@ import type { RefAttributes } from "react";
 // Const
 // -----------------------------------------------------------------------------
 
-export const PROPOSAL_TABS: Tab[] = [
+export const CHANGELOG_TABS: Tab[] = [
   {
     label: "Home",
     id: "changelog",

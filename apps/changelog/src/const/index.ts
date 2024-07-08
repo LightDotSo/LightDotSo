@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { PROPOSAL_TABS } from "./tabs";
+export { CHANGELOG_TABS } from "./tabs";
 export { TITLES } from "./titles";
