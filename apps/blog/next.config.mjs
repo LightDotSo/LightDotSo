@@ -18,6 +18,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/blog",
   eslint: {
     ignoreDuringBuilds: true,
   },
