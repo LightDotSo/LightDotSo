@@ -52,8 +52,8 @@ export const UserOperationStateOp: FC<UserOperationStateOpProps> = ({
 
   // Submit user operation every 3 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleSubmit();
+    const interval = setInterval(async () => {
+      await handleSubmit();
     }, 3_000);
 
     return () => clearInterval(interval);

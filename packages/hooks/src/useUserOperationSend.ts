@@ -154,6 +154,7 @@ export const useUserOperationSend = ({
     userOperationReceipt,
     isUserOperationReceiptLoading,
     isUserOperationReceiptError,
+    refetchUserOperationReceipt,
   } = useQueryUserOperationReceipt({
     chainId: userOperation?.chain_id ?? null,
     hash: hash,
@@ -267,23 +268,14 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = useCallback(() => {
-    if (!userOperation) {
-      console.warn("User operation not found");
-      return;
-    }
-
-    if (!userOperationSignature) {
-      console.warn("User operation signature not found");
+  const handleSubmit = useCallback(async () => {
+    if (!userOperation || !userOperationSignature) {
       return;
     }
 
     if (userOperationReceipt) {
-      if (isUserOperationSendPending) {
-        // Queue the user operation if the user operation has been sent but isn't indexed yet
-        queueUserOperation({ hash: hash });
-      }
-      // Finally, return early
+      // Queue the user operation if the user operation has been sent but isn't indexed yet
+      queueUserOperation({ hash: hash });
       return;
     }
 
@@ -292,6 +284,12 @@ export const useUserOperationSend = ({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
+
+    // Wait for 3 seconds for the user operation to be indexed
+    await new Promise(resolve => setTimeout(resolve, 3_000));
+
+    // Refetch the user operation receipt again
+    refetchUserOperationReceipt();
   }, [
     userOperation,
     userOperationReceipt,

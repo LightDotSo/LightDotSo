@@ -65,8 +65,8 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // Refetch user operation every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      refetchUserOperation();
       handleSubmit();
+      refetchUserOperation();
     }, 30_000);
 
     return () => clearInterval(interval);
