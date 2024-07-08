@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-import Link from "next/link";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -41,7 +40,7 @@ export default async function Page() {
     <ul className="text-lg hover:underline">
       {blogs.map(blog => (
         <li key={blog.slug}>
-          <Link href={`/${blog.slug}`}>{blog.entry.title}</Link>
+          <a href={`/blog/${blog.slug}`}>{blog.entry.title}</a>
         </li>
       ))}
     </ul>
