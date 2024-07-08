@@ -1,0 +1,5 @@
+upgrade: true
+reject:
+  - react-dom
+  - react-is
+  - "@types/react"
