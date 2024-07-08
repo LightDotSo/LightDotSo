@@ -26,7 +26,7 @@
     "postpack": "clean-package restore"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.7.0",
+    "@hookform/resolvers": "^3.9.0",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/demo": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -76,7 +76,7 @@
     "@storybook/react-vite": "^8.1.11",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "^8.1.11",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",

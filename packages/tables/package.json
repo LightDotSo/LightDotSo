@@ -43,17 +43,17 @@
     "@storybook/react": "^8.1.11",
     "@tanstack/react-table": "^8.19.2",
     "@tremor/react": "^3.17.4",
-    "lucide-react": "^0.400.0",
+    "lucide-react": "^0.401.0",
     "next": "15.0.0-canary.49",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
     "recharts": "2.13.0-alpha.4",
-    "viem": "^2.17.0"
+    "viem": "^2.17.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.3"
