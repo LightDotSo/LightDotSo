@@ -149,11 +149,14 @@ export const useUserOperationSend = ({
     ),
   });
 
-  const { userOperationReceipt, isUserOperationReceiptError } =
-    useQueryUserOperationReceipt({
-      chainId: userOperation?.chain_id ?? null,
-      hash: hash,
-    });
+  const {
+    userOperationReceipt,
+    isUserOperationReceiptLoading,
+    isUserOperationReceiptError,
+  } = useQueryUserOperationReceipt({
+    chainId: userOperation?.chain_id ?? null,
+    hash: hash,
+  });
 
   const { userOperationSend } = useMutationUserOperationSend({
     address: address as Address,
@@ -230,14 +233,16 @@ export const useUserOperationSend = ({
     () =>
       typeof userOperation !== "undefined" &&
       typeof userOperationSignature !== "undefined" &&
-      isUserOperationLoading === false &&
-      isUserOperationSignatureLoading === false &&
+      !isUserOperationLoading &&
+      !isUserOperationSignatureLoading &&
+      !isUserOperationReceiptLoading &&
       isUserOperationSendReady,
     [
       userOperation,
       userOperationSignature,
       isUserOperationLoading,
       isUserOperationSignatureLoading,
+      isUserOperationReceiptLoading,
       isUserOperationSendReady,
     ],
   );
@@ -262,6 +267,7 @@ export const useUserOperationSend = ({
     if (
       isUserOperationLoading ||
       isUserOperationSignatureLoading ||
+      isUserOperationReceiptLoading ||
       !isUserOperationSendSuccess
     ) {
       return;
@@ -302,6 +308,7 @@ export const useUserOperationSend = ({
     userOperationSignature,
     isUserOperationLoading,
     isUserOperationSignatureLoading,
+    isUserOperationReceiptLoading,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
