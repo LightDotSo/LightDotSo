@@ -3,6 +3,7 @@ import { Root } from "@lightdotso/templates";
 import { DocsLayout } from "fumadocs-ui/layout";
 import { RootProvider } from "fumadocs-ui/provider";
 import type { ReactNode } from "react";
+
 import "./fumadocs.css";
 import { docsOptions } from "./layout.config";
 
