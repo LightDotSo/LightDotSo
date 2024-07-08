@@ -41,10 +41,18 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
+  // ---------------------------------------------------------------------------
+  // Reader
+  // ---------------------------------------------------------------------------
+
   const proposal = await reader.collections.proposals.read(params.slug);
   if (!proposal) {
     return notFound();
   }
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return {
     title: proposal.title,
@@ -59,6 +67,10 @@ export async function generateMetadata({
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  // ---------------------------------------------------------------------------
+  // Reader
+  // ---------------------------------------------------------------------------
+
   const proposal = await reader.collections.proposals.read(params.slug);
   if (!proposal) {
     return notFound();
@@ -75,6 +87,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     throw new Error("Invalid content");
   }
   const renderable = Markdoc.transform(node);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <BannerSection size="sm" title={proposal.title}>
