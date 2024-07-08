@@ -10,7 +10,7 @@ const config = {
     tests: "contracts/spec",
   },
   docgen: {
-    outputDir: "apps/docs/src/pages/posts",
+    outputDir: "apps/content/hardhat",
     exclude: ["proxies", "samples", "utils"],
     pages: "items",
     pageExtension: ".mdx",

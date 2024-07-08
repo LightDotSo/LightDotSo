@@ -77,7 +77,7 @@
     "apps/blog/content/**/*.{md,mdx}",
     "apps/changelog/content/**/*.{md,mdx}",
     "apps/extension/**/*.js",
-    "apps/docs/src/pages/posts/**/*.mdx",
+    "apps/docs/content/**/*.{md,mdx}",
     "apps/proposals/content/**/*.{md,mdx}",
     "apps/subgraph/generated/**",
     "apps/subgraph/subgraph.yaml",
