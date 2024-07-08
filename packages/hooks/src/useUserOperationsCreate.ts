@@ -53,11 +53,8 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const {
-    internalUserOperations,
-    addPendingSubmitUserOperationHash,
-    resetInternalUserOperations,
-  } = useUserOperations();
+  const { internalUserOperations, resetInternalUserOperations } =
+    useUserOperations();
   const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
@@ -288,7 +285,7 @@ export const useUserOperationsCreate = ({
         userOperation: internalUserOperation,
       });
 
-      addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
+      // addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
 
       setSignedData(undefined);
     };
@@ -310,9 +307,9 @@ export const useUserOperationsCreate = ({
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
 
-      for (const userOperation of internalUserOperations) {
-        addPendingSubmitUserOperationHash(userOperation.hash as Hex);
-      }
+      // for (const userOperation of internalUserOperations) {
+      //   addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      // }
 
       setSignedData(undefined);
     };

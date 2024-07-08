@@ -44,6 +44,7 @@ import {
 type UserOperationSendProps = {
   address: Address;
   hash: Hex;
+  isSend?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -53,6 +54,7 @@ type UserOperationSendProps = {
 export const useUserOperationSend = ({
   address,
   hash,
+  isSend = false,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -285,8 +287,9 @@ export const useUserOperationSend = ({
       return;
     }
 
-    // If the user operation receipt is an error, send the user operation
-    if (isUserOperationReceiptError) {
+    // If the optional parameter isSend is true or the user operation receipt
+    // is an error, send the user operation
+    if (isSend || isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
       userOperationSend({
         userOperation: userOperation,
@@ -308,6 +311,7 @@ export const useUserOperationSend = ({
     userOperation,
     userOperationReceipt,
     userOperationSignature,
+    isSend,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
