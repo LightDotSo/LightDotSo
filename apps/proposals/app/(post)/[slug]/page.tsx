@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {
+  HStackFull,
+  BannerSection,
+  BasicPageWrapper,
+  BaseLayerWrapper,
+} from "@lightdotso/ui";
 import { createReader } from "@keystatic/core/reader";
 import Markdoc from "@markdoc/markdoc";
 import React from "react";
@@ -55,11 +61,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <h1>{proposal.title}</h1>
-      {Markdoc.renderers.react(renderable, React)}
-      <hr />
-      <a href={`/`}>Back to Proposals</a>
-    </>
+    <BannerSection title={proposal.title}>
+      <HStackFull>
+        <BaseLayerWrapper>
+          <BasicPageWrapper>
+            {Markdoc.renderers.react(renderable, React)}
+            <a href={`/`}>Back to Proposals</a>
+          </BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

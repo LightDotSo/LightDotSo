@@ -9,3 +9,4 @@ ignores:
   - react-dom
   - react-is
   - "@types/react"
+  - "@types/react-dom"
