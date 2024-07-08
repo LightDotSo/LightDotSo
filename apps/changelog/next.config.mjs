@@ -18,7 +18,6 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/changelog",
   eslint: {
     ignoreDuringBuilds: true,
   },
