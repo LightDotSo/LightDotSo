@@ -45,9 +45,7 @@ export async function generateMetadata({
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await reader.collections.posts.read(
-    params.slug.replace("/changelog/", ""),
-  );
+  const changelog = await reader.collections.posts.read(params.slug);
   if (!changelog) {
     return notFound();
   }
@@ -73,9 +71,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await reader.collections.posts.read(
-    params.slug.replace("/changelog/", ""),
-  );
+  const changelog = await reader.collections.posts.read(params.slug);
   if (!changelog) {
     return notFound();
   }

@@ -45,9 +45,7 @@ export async function generateMetadata({
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.proposals.read(
-    params.slug.replace("/proposals/", ""),
-  );
+  const proposal = await reader.collections.proposals.read(params.slug);
   if (!proposal) {
     return notFound();
   }
@@ -73,9 +71,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.proposals.read(
-    params.slug.replace("/proposals/", ""),
-  );
+  const proposal = await reader.collections.proposals.read(params.slug);
   if (!proposal) {
     return notFound();
   }

@@ -939,9 +939,6 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
-      '@lightdotso/hooks':
-        specifier: workspace:*
-        version: link:../../packages/hooks
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
@@ -972,9 +969,6 @@ importers:
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
-      '@lightdotso/svg':
-        specifier: workspace:*
-        version: link:../../packages/svg
       '@lightdotso/tables':
         specifier: workspace:*
         version: link:../../packages/tables

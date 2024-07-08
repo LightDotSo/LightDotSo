@@ -18,7 +18,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.VERCEL_ENV === "production" ? "/proposals" : "",
+  basePath: "/proposals",
   eslint: {
     ignoreDuringBuilds: true,
   },
