@@ -31,7 +31,7 @@ export default async function Page() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await reader.collections.posts.all();
+  const changelogs = await reader.collections.posts.all();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -39,7 +39,7 @@ export default async function Page() {
 
   return (
     <ul className="text-lg hover:underline">
-      {changelog.map(changelog => (
+      {changelogs.map(changelog => (
         <li key={changelog.slug}>
           <Link href={`/${changelog.slug}`}>{changelog.entry.title}</Link>
         </li>

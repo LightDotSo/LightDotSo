@@ -10,14 +10,14 @@ export default config({
   },
   collections: {
     posts: collection({
-      label: "Posts",
+      label: "Blog",
       slugField: "title",
-      path: "src/content/posts/*",
+      path: "content/**",
       format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
         ogp: fields.cloudImage({ label: "OGP" }),
-        content: fields.markdoc({ label: "Content" }),
+        content: fields.markdoc({ label: "Content", extension: "md" }),
       },
     }),
   },

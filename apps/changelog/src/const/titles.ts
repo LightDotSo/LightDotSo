@@ -29,7 +29,7 @@ export enum Category {
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.Changelog]: {
     title: "Changelog",
-    description: "See all Light governance changelog.",
+    description: "See all Light changelog.",
     subcategories: {},
   },
 };

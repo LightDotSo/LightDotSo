@@ -9,7 +9,7 @@ export default config({
     project: "lightdotso/proposals",
   },
   collections: {
-    proposals: collection({
+    posts: collection({
       label: "Proposals",
       slugField: "title",
       path: "content/proposals/*",
