@@ -27,7 +27,7 @@ export const FooterCopy: FC = () => {
   return (
     <p className="text-xs text-text-weak/60 xl:text-center">
       &copy; {new Date().getFullYear()}
-      <span className="hidden md:inline-flex">&nbsp;LightDotSo. - </span>{" "}
+      <span className="hidden md:inline-flex">&nbsp;LightDotSo - </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["Repo"]}
