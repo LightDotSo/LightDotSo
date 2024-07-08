@@ -44,7 +44,6 @@ import {
 type UserOperationSendProps = {
   address: Address;
   hash: Hex;
-  isSend?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -54,7 +53,6 @@ type UserOperationSendProps = {
 export const useUserOperationSend = ({
   address,
   hash,
-  isSend = false,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -156,16 +154,19 @@ export const useUserOperationSend = ({
     userOperationReceipt,
     isUserOperationReceiptLoading,
     isUserOperationReceiptError,
+    refetchUserOperationReceipt,
+    userOperationReceiptFailureCount,
   } = useQueryUserOperationReceipt({
     chainId: userOperation?.chain_id ?? null,
     hash: hash,
   });
 
-  const { userOperationSend } = useMutationUserOperationSend({
-    address: address as Address,
-    configuration: configuration,
-    hash: userOperation?.hash as Hex,
-  });
+  const { userOperationSend, isUserOperationSendPending } =
+    useMutationUserOperationSend({
+      address: address as Address,
+      configuration: configuration,
+      hash: userOperation?.hash as Hex,
+    });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -214,24 +215,16 @@ export const useUserOperationSend = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationSendPending = useMemo(
-    () =>
-      userOperation
-        ? userOperation?.status === "PROPOSED" ||
-          userOperation?.status === "PENDING"
-        : // Send is pending if the operation is not found
-          true,
-    [userOperation],
-  );
-
   const isUserOperationSendLoading = useMemo(
     () =>
       isQueueUserOperationPending ||
+      isUserOperationSendPending ||
       isUserOperationLoading ||
       isUserOperationSignatureLoading ||
       isUserOperationReceiptLoading,
     [
       isQueueUserOperationPending,
+      isUserOperationSendPending,
       isUserOperationLoading,
       isUserOperationSignatureLoading,
       isUserOperationReceiptLoading,
@@ -261,60 +254,49 @@ export const useUserOperationSend = ({
   );
 
   const isUserOperationSendDisabled = useMemo(
-    () =>
-      !isUserOperationSendValid ||
-      !isUserOperationSendPending ||
-      isUserOperationSendSuccess,
-    [
-      isUserOperationSendValid,
-      isUserOperationSendPending,
-      isUserOperationSendSuccess,
-    ],
+    () => !isUserOperationSendValid || isUserOperationSendSuccess,
+    [isUserOperationSendValid, isUserOperationSendSuccess],
   );
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = useCallback(() => {
-    if (!userOperation) {
-      console.warn("User operation not found");
-      return;
-    }
-
-    if (!userOperationSignature) {
-      console.warn("User operation signature not found");
+  const handleSubmit = useCallback(async () => {
+    if (!userOperation || !userOperationSignature) {
       return;
     }
 
     if (userOperationReceipt) {
-      if (isUserOperationSendPending) {
-        // Queue the user operation if the user operation has been sent but isn't indexed yet
-        queueUserOperation({ hash: hash });
-      }
-      // Finally, return early
+      // Queue the user operation if the user operation has been sent but isn't indexed yet
+      queueUserOperation({ hash: hash });
       return;
     }
 
-    // If the optional parameter isSend is true or the user operation receipt
-    // is an error, send the user operation
-    if (isSend || isUserOperationReceiptError) {
-      // Send the user operation if the user operation hasn't been sent yet
-      userOperationSend({
-        userOperation: userOperation,
-        userOperationSignature: userOperationSignature as Hex,
-      });
-      // Finally, return
-      return;
+    if (userOperation.status === "PENDING") {
+      // Refetch the user operation receipt again
+      refetchUserOperationReceipt();
+
+      // If the user operation receipt has failed to fetch less than 3 times, then return
+      // This is to prevent the user operation from being sent multiple times
+      if (userOperationReceiptFailureCount < 3) {
+        return;
+      }
     }
+
+    // Send the user operation if the user operation hasn't been sent yet
+    userOperationSend({
+      userOperation: userOperation,
+      userOperationSignature: userOperationSignature as Hex,
+    });
   }, [
     userOperation,
-    userOperationReceipt,
     userOperationSignature,
-    isSend,
-    isUserOperationReceiptError,
+    userOperationReceipt,
     isUserOperationSendPending,
+    isUserOperationReceiptError,
     userOperationSend,
+    refetchUserOperationReceipt,
     queueUserOperation,
     hash,
   ]);

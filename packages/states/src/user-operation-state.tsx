@@ -15,7 +15,10 @@
 "use client";
 
 import { useUserOperationSend } from "@lightdotso/hooks";
-import { useQueryUserOperations } from "@lightdotso/query";
+import {
+  useMutationStateUserOperationReceipt,
+  useQueryUserOperations,
+} from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -52,8 +55,8 @@ export const UserOperationStateOp: FC<UserOperationStateOpProps> = ({
 
   // Submit user operation every 3 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleSubmit();
+    const interval = setInterval(async () => {
+      await handleSubmit();
     }, 3_000);
 
     return () => clearInterval(interval);
@@ -94,6 +97,8 @@ export const UserOperationState: FC = () => {
     is_testnet: true,
   });
 
+  const userOperationReceiptStatus = useMutationStateUserOperationReceipt();
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -107,6 +112,14 @@ export const UserOperationState: FC = () => {
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    for (const receiptStatus of userOperationReceiptStatus) {
+      if (receiptStatus === "success") {
+        refetchPendingUserOperations();
+      }
+    }
+  }, [userOperationReceiptStatus, refetchPendingUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Render

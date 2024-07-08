@@ -26,6 +26,7 @@ import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 import { useQueryUserOperation } from "./useQueryUserOperation";
+import { useMutationQueueUserOperation } from "./useMutationQueueUserOperation";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -37,6 +38,10 @@ export const useMutationUserOperationSend = (
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
+
+  const { queueUserOperation } = useMutationQueueUserOperation({
+    address: params.address as Address,
+  });
 
   const { userOperation } = useQueryUserOperation({
     hash: params.hash,
@@ -159,6 +164,10 @@ export const useMutationUserOperationSend = (
           status: "queued",
           is_testnet: params.is_testnet ?? false,
         }).queryKey,
+      });
+
+      queueUserOperation({
+        hash: params.hash,
       });
     },
     onSettled: () => {

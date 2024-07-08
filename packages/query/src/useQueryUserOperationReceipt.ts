@@ -40,6 +40,7 @@ export const useQueryUserOperationReceipt = (
     isLoading: isUserOperationReceiptLoading,
     isError: isUserOperationReceiptError,
     error: userOperationReceiptError,
+    failureCount: userOperationReceiptFailureCount,
     refetch: refetchUserOperationReceipt,
   } = useQuery({
     // The user operation receipt is used for subsequent operations like sending and queuing.
@@ -68,6 +69,7 @@ export const useQueryUserOperationReceipt = (
 
   return {
     userOperationReceipt: userOperationReceipt,
+    userOperationReceiptFailureCount: userOperationReceiptFailureCount,
     isUserOperationReceiptLoading: isUserOperationReceiptLoading,
     isUserOperationReceiptError: isUserOperationReceiptError,
     userOperationReceiptError: userOperationReceiptError,

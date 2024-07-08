@@ -68,7 +68,9 @@ export const UserOperationCardTransactionExecuteButton: FC<
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            disabled={isUserOperationSendDisabled}
+            disabled={
+              isUserOperationSendDisabled || userOperation.status !== "PROPOSED"
+            }
             isLoading={isUserOperationSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"
