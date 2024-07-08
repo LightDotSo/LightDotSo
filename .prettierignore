@@ -3,7 +3,7 @@ generated.ts
 /CHANGELOG.md
 
 apps/app/public/mockServiceWorker.js
-apps/docs/src/pages/posts/**/*.mdx
+apps/docs/content/**/*.mdx
 apps/subgraph/generated/**/*.ts
 apps/extension/**
 configurations/prisma/src/zod/**
