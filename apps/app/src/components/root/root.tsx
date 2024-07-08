@@ -12,29 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { FormDevTools } from "@lightdotso/forms";
 import { AuthState, FormState, QueueState } from "@lightdotso/states";
 import {
   Footer,
   ProgressTransaction,
   ProgressUserOperation,
+  Root as LightRoot,
 } from "@lightdotso/templates";
-import {
-  TailwindIndicator,
-  ThemeProvider,
-  ReactQueryProvider,
-  Toaster,
-  VercelToolbar,
-  Web3Provider,
-} from "@lightdotso/ui";
+import { Toaster, Web3Provider } from "@lightdotso/ui";
 import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
 import dynamic from "next/dynamic";
-import { Inter } from "next/font/google";
 import { headers } from "next/headers";
-import Script from "next/script";
 import type { FC, ReactNode } from "react";
 import { AppBanner } from "@/components/app-banner";
-import { MainNav } from "@/components/nav/main-nav";
+import { Nav } from "@/components/nav/nav";
 import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
@@ -99,16 +90,6 @@ const TokenModal = dynamic(
 );
 
 // -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -131,49 +112,34 @@ export const Root: FC<RootProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <html
-      suppressHydrationWarning
-      lang="en"
-      className={`${inter.variable} font-sans`}
-    >
-      <body className="min-h-dvh bg-background-body">
-        <ThemeProvider attribute="class">
-          <ReactQueryProvider showDevTools>
-            <Web3Provider initialState={initialState}>
-              {/* Banner */}
-              <AppBanner />
-              {/* Layout */}
-              <MainNav>{children}</MainNav>
-              <Footer />
-              {/* Utility Functions */}
-              <CommandK />
-              <Toaster />
-              {/* Modals */}
-              <AddressModal />
-              <AuthModal />
-              <CartModal />
-              <ChainModal />
-              <ConnectModal />
-              <OwnerModal />
-              <NftModal />
-              <TokenModal />
-              {/* Templates */}
-              <ProgressTransaction />
-              <ProgressUserOperation />
-              {/* States */}
-              <AuthState />
-              <FormState />
-              <QueueState />
-              <WssState />
-            </Web3Provider>
-          </ReactQueryProvider>
-        </ThemeProvider>
-        {/* Dev */}
-        <FormDevTools />
-        <TailwindIndicator />
-        <VercelToolbar />
-      </body>
-      <Script async src="https://data.light.so/p.js" />
-    </html>
+    <LightRoot>
+      <Web3Provider initialState={initialState}>
+        {/* Banner */}
+        <AppBanner />
+        {/* Layout */}
+        <Nav>{children}</Nav>
+        <Footer />
+        {/* Utility Functions */}
+        <CommandK />
+        <Toaster />
+        {/* Modals */}
+        <AddressModal />
+        <AuthModal />
+        <CartModal />
+        <ChainModal />
+        <ConnectModal />
+        <OwnerModal />
+        <NftModal />
+        <TokenModal />
+        {/* Templates */}
+        <ProgressTransaction />
+        <ProgressUserOperation />
+        {/* States */}
+        <AuthState />
+        <FormState />
+        <QueueState />
+        <WssState />
+      </Web3Provider>
+    </LightRoot>
   );
 };

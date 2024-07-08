@@ -33,7 +33,7 @@ import { useState, useEffect } from "react";
 // -----------------------------------------------------------------------------
 
 const ReactQueryDevtoolsProduction = dynamic(() =>
-  //@ts-expect-error
+  // @ts-ignore
   import("@tanstack/react-query-devtools/production").then(d => ({
     default: d.ReactQueryDevtools,
   })),

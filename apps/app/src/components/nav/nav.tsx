@@ -22,8 +22,8 @@ import { baseWidthWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { useMemo } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
-import { AppNav } from "@/components/nav/app-nav";
-import { TabsNav } from "@/components/nav/tabs-nav";
+import { NavApp } from "@/components/nav/nav-app";
+import { NavTabs } from "@/components/nav/nav-tabs";
 import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
@@ -32,7 +32,7 @@ import { useTabs } from "@/hooks";
 // Props
 // -----------------------------------------------------------------------------
 
-type MainNavProps = HTMLAttributes<HTMLElement> & {
+type NavProps = HTMLAttributes<HTMLElement> & {
   children: ReactNode;
 };
 
@@ -40,7 +40,7 @@ type MainNavProps = HTMLAttributes<HTMLElement> & {
 // Component
 // -----------------------------------------------------------------------------
 
-export const MainNav: FC<MainNavProps> = ({ children }) => {
+export const Nav: FC<NavProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   const TabsNavComponent = useMemo(() => {
-    return tabProps && <TabsNav {...tabProps} />;
+    return tabProps && <NavTabs {...tabProps} />;
   }, [tabProps]);
 
   // ---------------------------------------------------------------------------
@@ -69,7 +69,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
-            <AppNav mobile={<ConnectButton />} tabs={tabProps.tabs} />
+            <NavApp mobile={<ConnectButton />} tabs={tabProps.tabs} />
           </div>
           {isTabsNavigationVisible && (
             <div

@@ -15,17 +15,24 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import { MobileAppDrawer } from "@lightdotso/templates";
+import { useAuth } from "@lightdotso/stores";
+import {
+  FeedbackComboDialog,
+  MobileAppDrawer,
+  NotificationComboDialog,
+} from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
-import { Button } from "@lightdotso/ui";
-import Link from "next/link";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
+import { CartBadgeCountButton } from "@/components/cart/cart-badge-count-button";
+import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
+import { NavUser } from "@/components/nav/nav-user";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type AppNavProps = {
+export type NavAppProps = {
+  mobile: ReactNode;
   tabs: Tab[];
 };
 
@@ -33,7 +40,13 @@ type AppNavProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const AppNav: FC<AppNavProps> = ({ tabs }) => {
+export const NavApp: FC<NavAppProps> = ({ mobile, tabs }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -50,41 +63,20 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
   }
 
   if (!isDesktop) {
-    return <MobileAppDrawer tabs={tabs} />;
+    return <MobileAppDrawer tabs={tabs}>{mobile}</MobileAppDrawer>;
   }
 
   return (
-    <div className="ml-auto hidden items-center space-x-1 md:flex">
-      {tabs.map(tab => {
-        if (tab.id === "app") {
-          return (
-            <Button
-              key="app"
-              asChild
-              variant="link"
-              size="sm"
-              className="text-sm font-medium"
-            >
-              <a href={tab.href} target="_blank" rel="noreferrer">
-                {<tab.icon className="mr-2 size-4" />}
-                {tab.label}
-              </a>
-            </Button>
-          );
-        }
-
-        return (
-          <Button
-            key={tab.id}
-            asChild
-            variant="ghost"
-            size="sm"
-            className="text-sm font-medium"
-          >
-            <Link href={tab.href}>{tab.label}</Link>
-          </Button>
-        );
-      })}
+    <div className="ml-auto hidden items-center space-x-2.5 md:flex">
+      {address && (
+        <>
+          <ChainComboDialog />
+          <FeedbackComboDialog />
+          <NotificationComboDialog />
+          <CartBadgeCountButton />
+        </>
+      )}
+      <NavUser />
     </div>
   );
 };

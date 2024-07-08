@@ -12,24 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { Banner } from "@lightdotso/templates";
-import type { FC } from "react";
+import type { CategoryObject } from "@lightdotso/types";
 
 // -----------------------------------------------------------------------------
-// Component
+// Main
 // -----------------------------------------------------------------------------
 
-export const ExplorerBanner: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export enum Category {
+  UserOperations = "UserOperations",
+  Transactions = "Transactions",
+}
 
-  return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
-      <Banner kind="beta" />
-    </>
-  );
+// -----------------------------------------------------------------------------
+// All
+// -----------------------------------------------------------------------------
+
+export const TITLES: Record<Category, CategoryObject> = {
+  [Category.UserOperations]: {
+    title: "Light Explorer",
+    description: "See all Light transactions executed on our platform.",
+    subcategories: {},
+  },
+  [Category.Transactions]: {
+    title: "Transactions",
+    description: "See all transactions to and from Light accounts.",
+    subcategories: {},
+  },
 };

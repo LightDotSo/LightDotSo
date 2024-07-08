@@ -20,14 +20,14 @@ import {
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { SidebarNav } from "@/components/nav/sidebar-nav";
+import { NavSidebar } from "@/components/nav/nav-sidebar";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
-const sidebarNavItems = [
+const navSidebarItems = [
   {
     title: TITLES.WalletSettings.subcategories["Wallet Settings"].title,
     href: "/settings",
@@ -81,7 +81,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
       <HStackFull>
         <BaseLayerWrapper size="sm">
           <SettingsPageWrapper
-            nav={<SidebarNav baseRef items={sidebarNavItems} />}
+            nav={<NavSidebar baseRef items={navSidebarItems} />}
           >
             {children}
           </SettingsPageWrapper>

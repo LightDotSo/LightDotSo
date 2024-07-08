@@ -24,7 +24,7 @@ import type { FC, HTMLAttributes } from "react";
 // Type
 // -----------------------------------------------------------------------------
 
-interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
+interface NavSidebarProps extends HTMLAttributes<HTMLElement> {
   items: {
     href: string;
     title: string;
@@ -36,7 +36,7 @@ interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
 // Component
 // -----------------------------------------------------------------------------
 
-export const SidebarNav: FC<SidebarNavProps> = ({
+export const NavSidebar: FC<NavSidebarProps> = ({
   className,
   baseRef,
   items,

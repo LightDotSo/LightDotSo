@@ -12,31 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import { Banner, Footer, Nav, Root } from "@lightdotso/templates";
-import type { ReactNode } from "react";
-import { EXPLORER_TABS } from "@/const";
+import { Tab } from "@lightdotso/types";
+import { BaseLayerWrapper } from "@lightdotso/ui";
+import type { FC, HTMLAttributes, ReactNode } from "react";
+import { NavLocation } from "./nav-location";
+import { NavLogo } from "./nav-logo";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
+type NavProps = HTMLAttributes<HTMLElement> & {
+  tabs: Tab[];
   children: ReactNode;
-}
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export const Nav: FC<NavProps> = ({ children, tabs }) => {
   return (
-    <Root>
-      {/* Banner */}
-      <Banner kind="beta" />
-      {/* Layout */}
-      <Nav tabs={EXPLORER_TABS}>{children}</Nav>
-      <Footer />
-    </Root>
+    <main>
+      <div className="flex flex-col">
+        <div className="overflow-y-visible border-b border-b-border py-2">
+          <div className="flex h-16 items-center">
+            <BaseLayerWrapper>
+              <div className="flex items-center justify-between">
+                <NavLogo />
+                <NavLocation tabs={tabs} />
+              </div>
+            </BaseLayerWrapper>
+          </div>
+        </div>
+        {children}
+      </div>
+    </main>
   );
-}
+};

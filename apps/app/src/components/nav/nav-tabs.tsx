@@ -38,7 +38,7 @@ const transition = {
 // Props
 // -----------------------------------------------------------------------------
 
-type TabNavProps = {
+type NavTabsProps = {
   setSelectedTabIndex: (_index: number) => void;
   selectedTabIndex: number | undefined;
   tabs: Tab[];
@@ -48,7 +48,7 @@ type TabNavProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TabsNav: FC<TabNavProps> = ({
+export const NavTabs: FC<NavTabsProps> = ({
   tabs,
   selectedTabIndex,
   setSelectedTabIndex,

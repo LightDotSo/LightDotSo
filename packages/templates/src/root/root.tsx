@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import { AuthState } from "@lightdotso/states";
-import { Footer } from "@lightdotso/templates";
+import { FormDevTools } from "@lightdotso/forms";
 import {
   TailwindIndicator,
   ThemeProvider,
@@ -24,8 +23,6 @@ import {
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
-import { ExplorerBanner } from "../explorer-banner";
-import { MainNav } from "../nav/main-nav";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -63,17 +60,11 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-dvh bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider showDevTools>
-            {/* Banner */}
-            <ExplorerBanner />
-            {/* Layout */}
-            <MainNav>{children}</MainNav>
-            <Footer />
-            {/* States */}
-            {/* <AuthState /> */}
-            {/* Utility Functions */}
+            <>{children}</>
             <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>
+        <FormDevTools />
         <TailwindIndicator />
         <VercelToolbar />
       </body>
