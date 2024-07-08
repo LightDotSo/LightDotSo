@@ -18,57 +18,14 @@ import {
   useUserOperationSend,
   useUserOperationsSendState,
 } from "@lightdotso/hooks";
-import { useQueryUserOperations } from "@lightdotso/query";
+import {
+  useQueryUserOperations,
+  useQueryUserOperationsCount,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface UserOperationStateOpProps {
-  address: Address;
-  hash: Hex;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const UserOperationStateOp: FC<UserOperationStateOpProps> = ({
-  address,
-  hash,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { handleSubmit } = useUserOperationSend({
-    address: address as Address,
-    hash: hash,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Submit user operation every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      await handleSubmit();
-    }, 3_000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return null;
-};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -85,16 +42,24 @@ export const UserOperationState: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const {
-    userOperations: pendingUserOperations,
-    refetchUserOperations: refetchPendingUserOperations,
-  } = useQueryUserOperations({
-    address: wallet,
-    status: "pending",
-    order: "desc",
-    limit: Number.MAX_SAFE_INTEGER,
-    offset: 0,
-    is_testnet: true,
+  const { refetchUserOperations: refetchPendingUserOperations } =
+    useQueryUserOperations({
+      address: wallet,
+      status: "pending",
+      order: "desc",
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      is_testnet: true,
+    });
+
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
+  });
+
+  const { refetchUserOperationsCount } = useQueryUserOperationsCount({
+    address: wallet as Address,
+    status: "queued",
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------
@@ -110,26 +75,17 @@ export const UserOperationState: FC = () => {
   useEffect(() => {
     if (isUserOperationsSendSuccess) {
       refetchPendingUserOperations();
+      refetchUserOperationsCount();
     }
-  }, [isUserOperationsSendSuccess, refetchPendingUserOperations]);
+  }, [
+    isUserOperationsSendSuccess,
+    refetchPendingUserOperations,
+    refetchUserOperationsCount,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pendingUserOperations || !wallet) {
-    return null;
-  }
-
-  return (
-    <>
-      {pendingUserOperations.map(pendingUserOperation => (
-        <UserOperationStateOp
-          key={pendingUserOperation.hash}
-          address={wallet}
-          hash={pendingUserOperation.hash as Hex}
-        />
-      ))}
-    </>
-  );
+  return null;
 };
