@@ -19,8 +19,7 @@ import type { CategoryObject } from "@lightdotso/types";
 // -----------------------------------------------------------------------------
 
 export enum Category {
-  UserOperations = "UserOperations",
-  Transactions = "Transactions",
+  Proposals = "Proposals",
 }
 
 // -----------------------------------------------------------------------------
@@ -28,14 +27,9 @@ export enum Category {
 // -----------------------------------------------------------------------------
 
 export const TITLES: Record<Category, CategoryObject> = {
-  [Category.UserOperations]: {
-    title: "Light Explorer",
-    description: "See all Light transactions executed on our platform.",
-    subcategories: {},
-  },
-  [Category.Transactions]: {
-    title: "Transactions",
-    description: "See all transactions to and from Light accounts.",
+  [Category.Proposals]: {
+    title: "Proposals",
+    description: "See all Light governance proposals.",
     subcategories: {},
   },
 };
