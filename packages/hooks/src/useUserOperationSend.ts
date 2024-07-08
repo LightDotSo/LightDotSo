@@ -262,7 +262,7 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(() => {
     if (!userOperation || !userOperationSignature) {
       return;
     }
