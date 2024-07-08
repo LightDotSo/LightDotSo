@@ -14,15 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
 
-OUTPUT=$(graph test --recompile)
-echo "${OUTPUT}"
-
-if echo "${OUTPUT}" | grep -q "tests passed!"; then
-    echo "Tests passed!"
-    exit 0
-else
-    echo "Tests didn't pass, acting accordingly"
-    exit 1
-fi
+rclone sync r2:assets ./ -P
