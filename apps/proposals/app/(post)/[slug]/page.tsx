@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import "@lightdotso/styles/keystatic.css";
 import {
   HStackFull,
   BannerSection,
@@ -61,12 +62,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection title={proposal.title}>
+    <BannerSection size="sm" title={proposal.title}>
       <HStackFull>
-        <BaseLayerWrapper>
+        <BaseLayerWrapper size="sm">
           <BasicPageWrapper>
-            {Markdoc.renderers.react(renderable, React)}
-            <a href={`/`}>Back to Proposals</a>
+            <div className="keystatic">
+              {Markdoc.renderers.react(renderable, React)}
+            </div>
           </BasicPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>

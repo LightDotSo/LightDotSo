@@ -27,19 +27,11 @@ import type { RefAttributes } from "react";
 export const PROPOSAL_TABS: Tab[] = [
   {
     label: "Home",
-    id: "user-operations",
+    id: "proposals",
     href: "/",
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
-  },
-  {
-    label: "Transactions",
-    id: "transactions",
-    href: "/transactions",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <WidthIcon {...props} />,
   },
   {
     label: "App",

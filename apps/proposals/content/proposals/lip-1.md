@@ -12,7 +12,7 @@ Light Improvement Proposal (LIP) is a design document providing information to t
 
 LIPs are the primary mechanisms for proposing new features, for collecting community input on an issue, and for documenting the design decisions that have gone into Light Network. The history of a feature's proposal and rationale is preserved in the LIPs, which are maintained as text files in a versioned repository.
 
-## LIP Formats and Templates
+### LIP Formats and Templates
 
 LIPs should use concise and specific language and follow the standard LIP template. Include sections for the preamble, abstract, motivation (optional), specification, rationale, security considerations, and reference implementation (optional).
 
