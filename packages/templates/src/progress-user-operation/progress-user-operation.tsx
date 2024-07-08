@@ -14,7 +14,6 @@
 
 "use client";
 
-import { useUserOperationSend } from "@lightdotso/hooks";
 import {
   useQueryUserOperation,
   useQueryUserOperations,
@@ -22,7 +21,7 @@ import {
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { type FC, useEffect, useState } from "react";
-import type { Address, Hex } from "viem";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -30,7 +29,6 @@ import type { Address, Hex } from "viem";
 
 type PendingUserOperationOpProps = {
   hash: Hex;
-  onExecuted: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -39,39 +37,18 @@ type PendingUserOperationOpProps = {
 
 export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   hash,
-  onExecuted,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperation, refetchUserOperation } = useQueryUserOperation({
-    hash: hash,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { handleSubmit } = useUserOperationSend({
-    address: userOperation?.sender as Address,
+  const { userOperation } = useQueryUserOperation({
     hash: hash,
   });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Refetch user operation every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      await handleSubmit();
-      refetchUserOperation();
-    }, 30_000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Display a `toast.success` when the user operation is executed
   useEffect(() => {
@@ -81,11 +58,8 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
       toast.success("Transaction executed!", {
         position: "top-right",
       });
-
-      // Refetch all pending user operations upon execution
-      onExecuted();
     }
-  }, [hash, userOperation, onExecuted]);
+  }, [hash, userOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -118,7 +92,6 @@ export const ProgressUserOperation: FC = () => {
   const {
     userOperations: pendingUserOperations,
     isUserOperationsLoading: isPendingUserOperationsLoading,
-    refetchUserOperations: refetchPendingUserOperations,
   } = useQueryUserOperations({
     address: wallet,
     status: "pending",
@@ -189,7 +162,6 @@ export const ProgressUserOperation: FC = () => {
       <ProgressUserOperationOp
         key={pendingUserOperation.hash}
         hash={pendingUserOperation.hash as Hex}
-        onExecuted={refetchPendingUserOperations}
       />
     ))
   );

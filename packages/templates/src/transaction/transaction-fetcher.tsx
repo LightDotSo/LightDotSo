@@ -507,7 +507,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       });
     }
 
-    if (updatedUserOperation.maxPriorityFeePerGas) {
+    if (updatedUserOperation?.maxPriorityFeePerGas) {
       items.push({
         title: "Max Priority Fee Per Gas",
         value: updatedUserOperation.maxPriorityFeePerGas.toLocaleString(),
