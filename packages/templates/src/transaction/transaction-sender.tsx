@@ -14,13 +14,13 @@
 
 "use client";
 
-import { useIsMounted, useUserOperationSend } from "@lightdotso/hooks";
-import { useQueryUserOperations } from "@lightdotso/query";
+import { useUserOperationSend } from "@lightdotso/hooks";
+import { useQueryUserOperation } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +44,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperation, handleSubmit } = useUserOperationSend({
+  const { userOperation } = useQueryUserOperation({
+    hash: hash,
+  });
+
+  const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
     address: address as Address,
     hash: hash,
   });
@@ -53,11 +57,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Submit user operation every 30 seconds
+  // Submit user operation every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       handleSubmit();
-    }, 30000);
+    }, 3000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +73,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {userOperation?.transaction?.hash && (
+      {isUserOperationSendSuccess && userOperation && (
         <Button asChild variant="link">
           <a
             target="_blank"
@@ -100,77 +104,38 @@ type TransactionSenderProps = {
 
 export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Query
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const {
-    userOperations: pendingUserOperations,
-    isUserOperationsLoading: isPendingUserOperationsLoading,
-  } = useQueryUserOperations({
-    address: address,
-    status: "pending",
-    order: "desc",
-    limit: Number.MAX_SAFE_INTEGER,
-    offset: 0,
-    is_testnet: true,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const initialPendingUserOperations = useMemo(() => {
-    if (pendingUserOperations) {
-      return pendingUserOperations;
-    }
-  }, [isPendingUserOperationsLoading]);
+  const { pendingSubmitUserOperationHashes } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isPendingUserOperationsLoading) {
-    return (
-      <StateInfoSection
-        icon={
-          <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
-        }
-        title="Loading..."
-        description="Please wait while we fetch your pending transactions."
-      >
-        <></>
-      </StateInfoSection>
-    );
-  }
-
   return (
     <StateInfoSection
       icon={
-        pendingUserOperations && pendingUserOperations.length > 0 ? (
+        pendingSubmitUserOperationHashes.length > 0 ? (
           <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
         ) : (
           <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
         )
       }
       title={
-        pendingUserOperations && pendingUserOperations.length > 0
+        pendingSubmitUserOperationHashes.length > 0
           ? "Sending Transaction..."
           : "Success"
       }
       description={
-        pendingUserOperations && pendingUserOperations.length > 0
+        pendingSubmitUserOperationHashes.length > 0
           ? "Please wait while we handle your request..."
           : "Your transaction has been sent successfully."
       }
     >
-      {pendingUserOperations &&
-        pendingUserOperations.map((pendingUserOperation, index) => (
-          <TransactionSenderOp
-            key={index}
-            address={address}
-            hash={pendingUserOperation.hash as Hex}
-          />
-        ))}
+      {pendingSubmitUserOperationHashes.map((hash, index) => (
+        <TransactionSenderOp key={index} address={address} hash={hash} />
+      ))}
     </StateInfoSection>
   );
 };

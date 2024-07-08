@@ -287,6 +287,15 @@ export const useUserOperationSend = ({
       return;
     }
 
+    if (userOperationReceipt) {
+      if (isUserOperationSendPending) {
+        // Queue the user operation if the user operation has been sent but isn't indexed yet
+        queueUserOperation({ hash: hash });
+      }
+      // Finally, return early
+      return;
+    }
+
     // If the optional parameter isSend is true or the user operation receipt
     // is an error, send the user operation
     if (isSend || isUserOperationReceiptError) {
@@ -297,15 +306,6 @@ export const useUserOperationSend = ({
       });
       // Finally, return
       return;
-    }
-
-    if (userOperationReceipt) {
-      if (isUserOperationSendPending) {
-        // Queue the user operation if the user operation has been sent but isn't indexed yet
-        queueUserOperation({ hash: hash });
-        // Finally, return
-        return;
-      }
     }
   }, [
     userOperation,
@@ -325,7 +325,6 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit: handleSubmit,
-    userOperation: userOperation,
     paymasterNonce: paymasterNonce,
     paymasterOperation: paymasterOperation,
     paymasterSignedMsg: paymasterSignedMsg,

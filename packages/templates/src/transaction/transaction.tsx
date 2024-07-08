@@ -64,6 +64,7 @@ import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
+import { usePathname } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -136,11 +137,18 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
+
   const {
     isUserOperationsCreateSubmittable,
     isUserOperationsDisabled,
@@ -202,11 +210,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
-  // useEffect(() => {
-  //   resetUserOperationsCreate();
-  //   resetAll();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pathname, resetUserOperationsCreate, resetAll]);
+  useEffect(() => {
+    resetAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, resetAll]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

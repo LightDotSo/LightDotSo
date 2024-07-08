@@ -44,6 +44,9 @@ type UserOperationsStore = {
     chainId: number,
     operation: UserOperation,
   ) => void;
+  pendingSubmitUserOperationHashes: Hex[];
+  addPendingSubmitUserOperationHash: (hash: Hex) => void;
+  resetPendingSubmitUserOperationHashes: () => void;
   userOperationDetails: { [chainId: number]: UserOperationDetailsItem[] };
   userOperationDevInfo: { [chainId: number]: UserOperationDevInfo[] };
   userOperationSimulations: { [chainId: number]: SimulationData };
@@ -96,6 +99,20 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       }
 
       return { internalUserOperations: internalUserOperations };
+    }),
+  pendingSubmitUserOperationHashes: [],
+  addPendingSubmitUserOperationHash: hash =>
+    set(state => {
+      return {
+        pendingSubmitUserOperationHashes: [
+          ...state.pendingSubmitUserOperationHashes,
+          hash,
+        ],
+      };
+    }),
+  resetPendingSubmitUserOperationHashes: () =>
+    set(() => {
+      return { pendingSubmitUserOperationHashes: [] };
     }),
   userOperationDetails: {},
   userOperationDevInfo: {},
@@ -181,6 +198,8 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return {
+        internalUserOperations: [],
+        pendingSubmitUserOperationHashes: [],
         userOperationDetails: {},
         userOperationDevInfo: {},
         userOperationSimulations: {},

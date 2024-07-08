@@ -53,8 +53,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { internalUserOperations, resetInternalUserOperations } =
-    useUserOperations();
+  const {
+    addPendingSubmitUserOperationHash,
+    internalUserOperations,
+    resetInternalUserOperations,
+  } = useUserOperations();
   const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
@@ -234,8 +237,6 @@ export const useUserOperationsCreate = ({
 
   // Sign the userOperation
   const signUserOperations = useCallback(() => {
-    // console.info(subdigest);
-
     if (!subdigest) {
       return;
     }
@@ -277,15 +278,13 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      // console.info(signedData);
-
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
         userOperation: internalUserOperation,
       });
 
-      // addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
+      addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
 
       setSignedData(undefined);
     };
@@ -296,10 +295,6 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      // console.info("signBatch...");
-      // console.info(merkleTree);
-      // console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
-
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
@@ -307,9 +302,9 @@ export const useUserOperationsCreate = ({
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
 
-      // for (const userOperation of internalUserOperations) {
-      //   addPendingSubmitUserOperationHash(userOperation.hash as Hex);
-      // }
+      for (const userOperation of internalUserOperations) {
+        addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      }
 
       setSignedData(undefined);
     };
