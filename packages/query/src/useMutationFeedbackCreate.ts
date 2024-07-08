@@ -40,7 +40,7 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
   const {
     mutate: feedbackCreate,
     isSuccess: isFeedbackCreateSuccess,
-    isPending: isFeedbackCreateLoading,
+    isPending: isFeedbackCreatePending,
     failureCount,
   } = useMutation({
     mutationKey: queryKeys.feedback.create._def,
@@ -86,6 +86,6 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
   return {
     feedbackCreate: feedbackCreate,
     isFeedbackCreateSuccess: isFeedbackCreateSuccess,
-    isFeedbackCreateLoading: isFeedbackCreateLoading,
+    isFeedbackCreatePending: isFeedbackCreatePending,
   };
 };

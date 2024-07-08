@@ -50,8 +50,11 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isUserOperationsSendLoading } = useUserOperationsSendState();
-  const { handleSubmit, isUserOperationSendDisabled } = useUserOperationSend({
+  const {
+    handleSubmit,
+    isUserOperationSendDisabled,
+    isUserOperationSendPending,
+  } = useUserOperationSend({
     address: address as Address,
     hash: userOperationHash,
   });
@@ -73,8 +76,8 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     <FooterButton
       isModal
       className="pt-0"
-      disabled={isUserOperationsSendLoading || isUserOperationSendDisabled}
-      isLoading={isUserOperationsSendLoading}
+      disabled={isUserOperationSendPending || isUserOperationSendDisabled}
+      isLoading={isUserOperationSendPending}
       customSuccessText="Refresh"
       cancelClick={onDismiss}
       onClick={handleSubmit}

@@ -12,30 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { publicClient } from "./client";
-export { projectId, wagmiConfig } from "./config";
-export {
-  lightWalletAbi,
-  lightWalletFactoryAbi,
-  useReadLightWalletImageHash,
-  useReadLightPaymaster,
-  useReadLightPaymasterEntryPoint,
-  useReadLightPaymasterGetDeposit,
-  useReadLightPaymasterGetHash,
-  useReadLightPaymasterOwner,
-  useReadLightPaymasterParsePaymasterAndData,
-  useReadLightPaymasterSenderNonce,
-  useReadLightPaymasterVerifyingSigner,
-  useReadLightVerifyingPaymaster,
-  useReadLightVerifyingPaymasterEntryPoint,
-  useReadLightVerifyingPaymasterGetDeposit,
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterOwner,
-  useReadLightVerifyingPaymasterParsePaymasterAndData,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightVerifyingPaymasterVerifyingSigner,
-} from "./generated";
-
+export { hashFn } from "@wagmi/core/query";
 export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";
 export type { State } from "wagmi";
 export {
@@ -63,3 +40,27 @@ export {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
+
+export { publicClient } from "./client";
+export { projectId, wagmiConfig } from "./config";
+export {
+  lightWalletAbi,
+  lightWalletFactoryAbi,
+  useReadLightWalletImageHash,
+  useReadLightPaymaster,
+  useReadLightPaymasterEntryPoint,
+  useReadLightPaymasterGetDeposit,
+  useReadLightPaymasterGetHash,
+  useReadLightPaymasterOwner,
+  useReadLightPaymasterParsePaymasterAndData,
+  useReadLightPaymasterSenderNonce,
+  useReadLightPaymasterVerifyingSigner,
+  useReadLightVerifyingPaymaster,
+  useReadLightVerifyingPaymasterEntryPoint,
+  useReadLightVerifyingPaymasterGetDeposit,
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterOwner,
+  useReadLightVerifyingPaymasterParsePaymasterAndData,
+  useReadLightVerifyingPaymasterSenderNonce,
+  useReadLightVerifyingPaymasterVerifyingSigner,
+} from "./generated";

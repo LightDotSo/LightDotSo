@@ -13,31 +13,29 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-import React from "react";
-import Markdoc from "@markdoc/markdoc";
-
+import Link from "next/link";
 import keystaticConfig from "~/keystatic.config";
+
+// -----------------------------------------------------------------------------
+// Reader
+// -----------------------------------------------------------------------------
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
-export default async function Post({ params }: { params: { slug: string } }) {
-  const post = await reader.collections.posts.read(params.slug);
-  if (!post) {
-    return <div>No Post Found</div>;
-  }
-  const { node } = await post.content();
-  const errors = Markdoc.validate(node);
-  if (errors.length) {
-    console.error(errors);
-    throw new Error("Invalid content");
-  }
-  const renderable = Markdoc.transform(node);
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page() {
+  const proposals = await reader.collections.proposals.all();
+
   return (
-    <>
-      <h1>{post.title}</h1>
-      {Markdoc.renderers.react(renderable, React)}
-      <hr />
-      <a href={`/posts`}>Back to Posts</a>
-    </>
+    <ul>
+      {proposals.map(proposal => (
+        <li key={proposal.slug}>
+          <Link href={`/${proposal.slug}`}>{proposal.entry.title}</Link>
+        </li>
+      ))}
+    </ul>
   );
 }

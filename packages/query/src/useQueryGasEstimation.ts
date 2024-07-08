@@ -18,7 +18,6 @@ import {
 } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
@@ -42,9 +41,6 @@ export const useQueryGasEstimation = (params: { chainId: number }) => {
     error: gasEstimationError,
   } = useQuery<GasEstimationResponse>({
     retry: 10,
-    queryKeyHashFn: key => {
-      return serialize(key);
-    },
     queryKey: queryKeys.rpc.get_gas_estimation({
       chainId: params.chainId,
     }).queryKey,

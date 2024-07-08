@@ -35,7 +35,8 @@ export function AuthModal() {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const { isPending, handleSignIn, isSuccess } = useSignInWithSiwe();
+  const { isSignInWithSiwePending, handleSignIn, isSignInWithSiweSuccess } =
+    useSignInWithSiwe();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -43,10 +44,10 @@ export function AuthModal() {
 
   // Close modal on success
   useEffect(() => {
-    if (isSuccess) {
+    if (isSignInWithSiweSuccess) {
       hideAuthModal();
     }
-  }, [isSuccess, hideAuthModal]);
+  }, [isSignInWithSiweSuccess, hideAuthModal]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -59,8 +60,8 @@ export function AuthModal() {
       footerContent={
         <div className="flex justify-end">
           <Button
-            disabled={isPending}
-            isLoading={isPending}
+            disabled={isSignInWithSiwePending}
+            isLoading={isSignInWithSiwePending}
             type="submit"
             size="sm"
             className="w-full md:w-auto"

@@ -39,7 +39,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueToken, isLoadingQueueToken } = useMutationQueueToken({
+  const { queueToken, isQueueTokenPending } = useMutationQueueToken({
     address: address as Address,
   });
 
@@ -49,7 +49,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
 
   return (
     <InvokeButton
-      isLoading={isLoadingQueueToken}
+      isLoading={isQueueTokenPending}
       onClick={async () => {
         invokePortfolioAction(address as Address);
 

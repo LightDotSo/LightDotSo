@@ -47,12 +47,16 @@ export const UserOperationCardTransactionSignButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isSigned, isSignable, signUserOperation } =
-    useUserOperationSign({
-      address: address as Address,
-      configuration: configuration,
-      userOperation: userOperation,
-    });
+  const {
+    isUserOperationSignPending,
+    isUserOperationSigned,
+    isUserOperationSignable,
+    signUserOperation,
+  } = useUserOperationSign({
+    address: address as Address,
+    configuration: configuration,
+    userOperation: userOperation,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -63,9 +67,9 @@ export const UserOperationCardTransactionSignButton: FC<
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            disabled={!isSignable}
-            isLoading={isLoading}
-            variant={isSignable ? "default" : "outline"}
+            disabled={!isUserOperationSignable}
+            isLoading={isUserOperationSignPending}
+            variant={isUserOperationSignable ? "default" : "outline"}
             className="w-full"
             onClick={signUserOperation}
           >
@@ -73,9 +77,9 @@ export const UserOperationCardTransactionSignButton: FC<
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          {isSignable
+          {isUserOperationSignable
             ? "Sign this transaction"
-            : isSigned
+            : isUserOperationSigned
               ? "You have already signed this transaction"
               : "This transaction is not signable"}
         </TooltipContent>

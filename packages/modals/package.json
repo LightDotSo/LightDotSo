@@ -26,7 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.7.0",
+    "@hookform/resolvers": "^3.9.0",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -46,12 +46,12 @@
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.1",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.17.0",
+    "viem": "^2.17.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.3"

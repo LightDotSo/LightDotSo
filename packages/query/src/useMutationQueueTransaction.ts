@@ -39,7 +39,7 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
 
   const {
     mutate: queueTransaction,
-    isPending: isLoadingQueueTransaction,
+    isPending: isQueueTransactionPending,
     failureCount,
   } = useMutation({
     mutationKey: queryKeys.queue.transaction._def,
@@ -88,6 +88,6 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
 
   return {
     queueTransaction: queueTransaction,
-    isLoadingQueueTransaction: isLoadingQueueTransaction,
+    isQueueTransactionPending: isQueueTransactionPending,
   };
 };

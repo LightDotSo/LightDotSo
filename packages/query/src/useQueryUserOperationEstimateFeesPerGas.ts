@@ -12,13 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Gas estimation logic heavily adapted from Pimlico's alto bundler.
-// From: https://github.com/pimlicolabs/alto/blob/f8dc197e0158615c26dfb91ba522abbed467d709/src/utils/gasPriceManager.ts
-// License: GPL-3.0
-
-"use client";
-
-import { useQueryGasEstimation, useQueryWallet } from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
 import {
   useEstimateFeesPerGas,
   useEstimateGas,
@@ -37,6 +31,9 @@ import {
   polygon,
   polygonAmoy,
 } from "viem/chains";
+import { USER_OPERATION_CONFIG } from "./config";
+import { useQueryGasEstimation } from "./useQueryGasEstimation";
+import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -49,14 +46,32 @@ type UserOperationFeePerGasProps = {
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Query
 // -----------------------------------------------------------------------------
 
-export const useUserOperationFeePerGas = ({
+export const useQueryUserOperationEstimateFeesPerGas = ({
   address,
   chainId,
   callData,
 }: UserOperationFeePerGasProps) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  // Get the max fee per gas, fallbacks to mainnet
+  const { data: feesPerGas } = useEstimateFeesPerGas({
+    chainId: Number(chainId),
+    query: {
+      ...USER_OPERATION_CONFIG,
+    },
+  });
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -82,6 +97,7 @@ export const useUserOperationFeePerGas = ({
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
+  // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: estimateGas, error: estimateGasError } = useEstimateGas({
     chainId: Number(chainId),
     account: address as Address,
@@ -91,12 +107,8 @@ export const useUserOperationFeePerGas = ({
     ],
   });
 
-  // Get the max fee per gas, fallbacks to mainnet
-  const { data: feesPerGas } = useEstimateFeesPerGas({
-    chainId: Number(chainId),
-  });
-
   // Get the max priority fee per gas, fallbacks to mainnet
+  // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: estimatedMaxPriorityFeePerGas } =
     useEstimateMaxPriorityFeePerGas({
       chainId: Number(chainId),
@@ -202,9 +214,9 @@ export const useUserOperationFeePerGas = ({
     // Return null if no gas estimation is available
     return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
   }, [
+    chainId,
     feesPerGas?.maxFeePerGas,
     feesPerGas?.maxPriorityFeePerGas,
-    chainId,
     gasEstimation,
     gasSpeed,
     gasSpeedBumpAmount,

@@ -31,8 +31,6 @@ export { useSignInWithSiwe } from "./useSignInWithSiwe";
 export { useSignMessageState } from "./useSignMessageState";
 export { useUserOperationsCreate } from "./useUserOperationsCreate";
 export { useUserOperationsCreateState } from "./useUserOperationsCreateState";
-export { useUserOperationEstimateGas } from "./useUserOperationEstimateGas";
-export { useUserOperationFeePerGas } from "./useUserOperationFeePerGas";
 export { useUserOperationSend } from "./useUserOperationSend";
 export { useUserOperationSign } from "./useUserOperationSign";
 export { useUserOperationsSendState } from "./useUserOperationsSendState";

@@ -52,7 +52,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import type * as z from "zod";
@@ -96,7 +96,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const { customFormSuccessText, isFormLoading, isFormDisabled } = useFormRef();
+  const {
+    customFormSuccessText,
+    isFormLoading,
+    isFormDisabled,
+    setIsFormDisabled,
+  } = useFormRef();
   const { isDev } = useDev();
   const {
     setTokenModalProps,
@@ -136,10 +141,22 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const { isUserOperationsCreateLoading, isUserOperationsCreateSuccess } =
     useUserOperationsCreateState();
-  const { isUserOperationsCreateSubmittable, signUserOperations } =
-    useUserOperationsCreate({
-      address: address as Address,
-    });
+  const {
+    isUserOperationsCreateSubmittable,
+    isUserOperationsDisabled,
+    signUserOperations,
+  } = useUserOperationsCreate({
+    address: address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // If the transaction is disabled, set the form disabled to true
+  useEffect(() => {
+    setIsFormDisabled(isUserOperationsDisabled);
+  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -566,7 +583,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
           {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
-      {userOperations &&
+      {pageIndex === 0 &&
+        userOperations &&
         userOperations.length > 0 &&
         userOperations.map((userOperation, index) => {
           if (!userOperation) {

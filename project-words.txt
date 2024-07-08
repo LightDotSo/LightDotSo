@@ -641,6 +641,7 @@ hwowzd
 hwpi
 hyiz
 hyke
+Hylton
 hynhaqlg
 Hyperlane's
 hyperlinker
@@ -1445,6 +1446,7 @@ synckit
 Synthetix
 systemjs
 szmarczak
+Taaki
 tabletype
 Tacaw
 tagfilter

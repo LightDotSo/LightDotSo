@@ -49,16 +49,15 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isUserOperationSendValid, handleSubmit } = useUserOperationSend({
+  const {
+    isUserOperationSendValid,
+    isUserOperationSendLoading,
+    isUserOperationSendDisabled,
+    handleSubmit,
+  } = useUserOperationSend({
     address: address as Address,
     hash: userOperation.hash as Hex,
   });
-
-  const {
-    isUserOperationsSendLoading,
-    isUserOperationsSendIdle,
-    isUserOperationsSendSuccess,
-  } = useUserOperationsSendState();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -69,13 +68,8 @@ export const UserOperationCardTransactionExecuteButton: FC<
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            disabled={
-              !isUserOperationSendValid ||
-              isUserOperationsSendLoading ||
-              (!isUserOperationsSendIdle && isUserOperationsSendSuccess) ||
-              userOperation.status !== "PROPOSED"
-            }
-            isLoading={isUserOperationsSendLoading}
+            disabled={isUserOperationSendDisabled}
+            isLoading={isUserOperationSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"
             onClick={handleSubmit}

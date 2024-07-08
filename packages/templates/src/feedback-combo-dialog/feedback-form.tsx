@@ -85,7 +85,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { feedbackCreate, isFeedbackCreateSuccess, isFeedbackCreateLoading } =
+  const { feedbackCreate, isFeedbackCreateSuccess, isFeedbackCreatePending } =
     useMutationFeedbackCreate({ user_id: userId });
 
   // ---------------------------------------------------------------------------
@@ -194,8 +194,8 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
         />
         <div className="flex justify-end px-4">
           <Button
-            isLoading={isFeedbackCreateLoading}
-            disabled={isFeedbackCreateLoading}
+            isLoading={isFeedbackCreatePending}
+            disabled={isFeedbackCreatePending}
             type="submit"
           >
             Send Feedback

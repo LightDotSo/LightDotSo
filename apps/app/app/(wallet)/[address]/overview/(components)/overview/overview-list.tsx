@@ -16,11 +16,9 @@
 
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
 import { useIsDemoPathname } from "@lightdotso/hooks";
-import { AnimatePresence, Reorder } from "framer-motion";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
-import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { NftsList } from "@/components/nft/nfts-list";
@@ -55,12 +53,6 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const isDemo = useIsDemoPathname();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [items, setItems] = useState(initialItems);
 
   // ---------------------------------------------------------------------------
   // Component Mapping
@@ -100,30 +92,19 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <OverviewWrapper>
-      <Reorder.Group
-        className="relative flex flex-col space-y-6"
-        axis="y"
-        values={items}
-        onReorder={setItems}
-      >
-        <AnimatePresence>
-          {items.map(item => (
-            <OverviewCard
-              key={item}
-              href={`/${!isDemo ? address : "demo"}${
-                OVERVIEW_NAV_ITEMS.find(nav => nav.category === item)?.href ??
-                ""
-              }`}
-              value={item}
-              title={TITLES.Overview.subcategories[item]?.title}
-              nav={itemToNav(item)}
-            >
-              {itemToComponent(item)}
-            </OverviewCard>
-          ))}
-        </AnimatePresence>
-      </Reorder.Group>
-    </OverviewWrapper>
+    <div className="relative flex flex-col space-y-6">
+      {initialItems.map(item => (
+        <OverviewCard
+          key={item}
+          href={`/${!isDemo ? address : "demo"}${
+            OVERVIEW_NAV_ITEMS.find(nav => nav.category === item)?.href ?? ""
+          }`}
+          title={TITLES.Overview.subcategories[item]?.title}
+          nav={itemToNav(item)}
+        >
+          {itemToComponent(item)}
+        </OverviewCard>
+      ))}
+    </div>
   );
 };

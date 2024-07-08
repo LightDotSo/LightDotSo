@@ -20,9 +20,8 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useUserOperations } from "@lightdotso/stores";
+import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
 import {
-  useAccount,
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
@@ -32,16 +31,7 @@ import {
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
-import {
-  isAddressEqual,
-  toBytes,
-  hexToBytes,
-  keccak256,
-  // fromHex,
-  // decodeFunctionData,
-} from "viem";
-// import { useDebouncedValue } from "./useDebouncedValue";
-import { useDelayedValue } from "./useDelayedValue";
+import { isAddressEqual, toBytes, hexToBytes, keccak256 } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -59,26 +49,16 @@ export const useUserOperationsCreate = ({
   address,
 }: UserOperationsCreateProps) => {
   // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
-  const { isConnecting } = useAccount();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  // const {
-  //   setCustomFormSuccessText,
-  //   setIsFormLoading,
-  //   // setIsFormDisabled
-  // } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
     resetInternalUserOperations,
   } = useUserOperations();
+  const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -94,31 +74,6 @@ export const useUserOperationsCreate = ({
   const { configuration } = useQueryConfiguration({
     address: address as Address,
   });
-
-  // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  // const [, setInternalUserOperations] = useInternalUserOperationsQueryState();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  // Get the delayed internalUserOperations value
-  // const debouncedInternalUserOperations = useDebouncedValue(
-  //   internalUserOperations,
-  //   1000,
-  // );
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Set the internalUserOperations state
-  // useEffect(() => {
-  //   setInternalUserOperations(debouncedInternalUserOperations);
-  // }, [debouncedInternalUserOperations, setInternalUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -325,7 +280,6 @@ export const useUserOperationsCreate = ({
         return;
       }
 
-      // // console.info("sign...");
       // console.info(signedData);
 
       userOperationCreate({
@@ -455,19 +409,16 @@ export const useUserOperationsCreate = ({
   // Set the transaction disabled state
   const isUserOperationsDisabled = useMemo(() => {
     // A combination of conditions that would disable the transaction
-    return !(
-      // If the subdigest is not undefined
-      (
-        typeof subdigest === "undefined" ||
-        // Nor if the user operations all have a hash
-        // !internalUserOperations.every(userOperation => userOperation.hash) ||
-        // Nor if the user operations are not valid
-        !isValidUserOperations ||
-        // Nor if the user operations are not createable
-        !isUserOperationsCreateable ||
-        // Nor if the merkle root is not equal
-        !isUserOperationsMerkleEqual
-      )
+    return (
+      typeof subdigest === "undefined" ||
+      // Nor if the user operations all have a hash
+      // !internalUserOperations.every(userOperation => userOperation.hash) ||
+      // Nor if the user operations are not valid
+      !isValidUserOperations ||
+      // Nor if the user operations are not createable
+      !isUserOperationsCreateable ||
+      // Nor if the merkle root is not equal
+      !isUserOperationsMerkleEqual
     );
   }, [
     subdigest,
@@ -478,87 +429,13 @@ export const useUserOperationsCreate = ({
   ]);
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  // Get the delayed success value
-  // const delayedIsSuccess = useDelayedValue<boolean>(
-  //   isUserOperationCreateSuccess,
-  //   false,
-  //   3000,
-  // );
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const formStateText = useMemo(() => {
-    if (!address) {
-      return "Connect Wallet";
-    }
-
-    if (!owner) {
-      return "Not Owner";
-    }
-
-    if (isConnecting) {
-      return "Connecting...";
-    }
-
-    // if (isSignLoading) {
-    //   return "Signing...";
-    // }
-
-    // if (isUserOperationCreateLoading) {
-    //   return "Creating transaction...";
-    // }
-
-    // if (isUserOperationCreateBatchLoading) {
-    //   return "Creating transactions...";
-    // }
-
-    // if (delayedIsSuccess) {
-    //   return "Success";
-    // }
-
-    return "Sign";
-  }, [
-    address,
-    owner,
-    isConnecting,
-    // isSignLoading,
-    // isUserOperationCreateLoading,
-    // isUserOperationCreateBatchLoading,
-    // delayedIsSuccess,
-  ]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // // Set the custom form success text
-  // useEffect(() => {
-  //   if (!formStateText) {
-  //     return;
-  //   }
-  //   setCustomFormSuccessText(formStateText);
-  // }, [formStateText, setCustomFormSuccessText]);
-
-  // // Set the form loading state to true if the status is success
-  // useEffect(() => {
-  //   if (isUserOperationCreateSuccess) {
-  //     setIsFormLoading(isUserOperationCreateLoading);
-  //   }
-  // }, [
-  //   isUserOperationCreateSuccess,
-  //   isUserOperationCreateLoading,
-  //   setIsFormLoading,
-  // ]);
-
-  // If the transaction is disabled, set the form disabled to true
-  // useEffect(() => {
-  //   setIsFormDisabled(isUserOperationsDisabled);
-  // }, [isUserOperationsDisabled, setIsFormDisabled]);
+  // Set the form disabled state
+  useEffect(() => {
+    setIsFormDisabled(isUserOperationsDisabled);
+  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Render

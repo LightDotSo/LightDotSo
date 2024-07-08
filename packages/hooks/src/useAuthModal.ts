@@ -28,7 +28,7 @@ export const useAuthModal = (isOpenModal = true) => {
   // Local Hooks
   // ---------------------------------------------------------------------------
 
-  const { isPending, handleSignIn } = useSignInWithSiwe();
+  const { isSignInWithSiwePending, handleSignIn } = useSignInWithSiwe();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -74,8 +74,8 @@ export const useAuthModal = (isOpenModal = true) => {
   }, [sessionId, address]);
 
   const isAuthLoading = useMemo(() => {
-    return isPending || open;
-  }, [isPending, open]);
+    return isSignInWithSiwePending || open;
+  }, [isSignInWithSiwePending, open]);
 
   // ---------------------------------------------------------------------------
   // Return

@@ -12,45 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { InvokeButton } from "@lightdotso/elements";
-import { useMutationUserOperationUpdate } from "@lightdotso/query";
-import type { FC } from "react";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface InvokeUserOperationProps {
-  address: Address;
-}
+import { createReader } from "@keystatic/core/reader";
+import Markdoc from "@markdoc/markdoc";
+import React from "react";
+import { notFound } from "next/navigation";
+import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
-// Component
+// Reader
 // -----------------------------------------------------------------------------
 
-export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
-  address,
-}) => {
+const reader = createReader(process.cwd(), keystaticConfig);
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: { params: { slug: string } }) {
   // ---------------------------------------------------------------------------
-  // Query
+  // Reader
   // ---------------------------------------------------------------------------
 
-  const { userOperationUpdate, isUserOperationUpdatePending } =
-    useMutationUserOperationUpdate({
-      address: address as Address,
-    });
+  const proposal = await reader.collections.proposals.read(params.slug);
+  if (!proposal) {
+    return notFound();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Markdoc
+  // ---------------------------------------------------------------------------
+
+  const { node } = await proposal.content();
+  const errors = Markdoc.validate(node);
+  if (errors.length) {
+    console.error(errors);
+    throw new Error("Invalid content");
+  }
+  const renderable = Markdoc.transform(node);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <InvokeButton
-      isLoading={isUserOperationUpdatePending}
-      onClick={() => userOperationUpdate()}
-    />
+    <>
+      <h1>{proposal.title}</h1>
+      {Markdoc.renderers.react(renderable, React)}
+      <hr />
+      <a href={`/`}>Back to Proposals</a>
+    </>
   );
-};
+}

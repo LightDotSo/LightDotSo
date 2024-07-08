@@ -17,15 +17,15 @@ import type { EstimateUserOperationGasData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
-import { toHex } from "viem";
+import { fromHex, Hex, toHex } from "viem";
+import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryEstimateUserOperationGas = (
+export const useQueryUserOperationEstimateGas = (
   params: Omit<
     UserOperation,
     | "hash"
@@ -54,9 +54,7 @@ export const useQueryEstimateUserOperationGas = (
     error: estimateUserOperationGasDataError,
   } = useQuery<EstimateUserOperationGasData | null>({
     retry: 10,
-    queryKeyHashFn: key => {
-      return serialize(key);
-    },
+    ...USER_OPERATION_CONFIG,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params.nonce,
       nonce: params.nonce,
@@ -94,9 +92,22 @@ export const useQueryEstimateUserOperationGas = (
   });
 
   return {
-    estimateUserOperationGasData: estimateUserOperationGasData,
-    isEstimateUserOperationGasDataLoading:
-      isEstimateUserOperationGasDataLoading,
-    estimateUserOperationGasDataError: estimateUserOperationGasDataError,
+    isUserOperationEstimateGasLoading: isEstimateUserOperationGasDataLoading,
+    userOperationEstimateGasError: estimateUserOperationGasDataError,
+    callGasLimit: estimateUserOperationGasData?.callGasLimit
+      ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+          to: "bigint",
+        })
+      : BigInt(0),
+    preVerificationGas: estimateUserOperationGasData?.preVerificationGas
+      ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+          to: "bigint",
+        })
+      : BigInt(0),
+    verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
+      ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
+          to: "bigint",
+        })
+      : BigInt(0),
   };
 };

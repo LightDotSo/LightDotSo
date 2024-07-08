@@ -182,6 +182,7 @@ lazy_static! {
         m.insert(56, "https://bsc-dataseed.binance.org".to_string());
         m.insert(100, "https://rpc.gnosischain.com".to_string());
         m.insert(169, "https://pacific-rpc.manta.network/http".to_string());
+        m.insert(1329, "https://evm-rpc.sei-apis.com".to_string());
         m.insert(5000, "https://rpc.mantle.xyz".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());

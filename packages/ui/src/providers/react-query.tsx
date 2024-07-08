@@ -14,6 +14,7 @@
 
 "use client";
 
+import { hashFn } from "@lightdotso/wagmi";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
   QueryClient,
@@ -70,6 +71,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       defaultOptions: {
         queries: {
           gcTime: Infinity,
+          queryKeyHashFn: hashFn,
         },
         dehydrate: {
           shouldDehydrateQuery: query =>

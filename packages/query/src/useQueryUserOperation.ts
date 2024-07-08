@@ -45,7 +45,6 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
   const {
     data: userOperation,
     isLoading: isUserOperationLoading,
-    isFetching: isUserOperationFetching,
     refetch: refetchUserOperation,
     failureCount,
   } = useQuery<UserOperationData | null>({
@@ -84,7 +83,6 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
 
   return {
     userOperation: userOperation,
-    isUserOperationFetching: isUserOperationFetching,
     isUserOperationLoading: isUserOperationLoading,
     refetchUserOperation: refetchUserOperation,
   };
