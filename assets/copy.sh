@@ -13,12 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-git ls-files --others --ignored --exclude-standard > exclude.txt
-
-# Append .gitignore, copy.sh, and README.md to exclude.txt
-echo ".gitignore" >> exclude.txt
-echo "copy.sh" >> exclude.txt
-echo "README.md" >> exclude.txt
-
 rclone copy -P --exclude-from exclude.txt ./ r2:assets/
