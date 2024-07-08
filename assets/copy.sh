@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2023-2024 Light, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
 
-OUTPUT=$(graph test --recompile)
-echo "${OUTPUT}"
+git ls-files --others --ignored --exclude-standard > exclude.txt
 
-if echo "${OUTPUT}" | grep -q "tests passed!"; then
-    echo "Tests passed!"
-    exit 0
-else
-    echo "Tests didn't pass, acting accordingly"
-    exit 1
-fi
+# Append .gitignore, copy.sh, and README.md to exclude.txt
+echo ".gitignore" >> exclude.txt
+echo "copy.sh" >> exclude.txt
+echo "README.md" >> exclude.txt
+
+rclone copy -P --exclude-from exclude.txt ./ r2:assets/
