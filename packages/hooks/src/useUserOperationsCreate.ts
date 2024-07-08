@@ -53,12 +53,12 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setIsFormDisabled } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
     resetInternalUserOperations,
   } = useUserOperations();
+  const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -409,19 +409,16 @@ export const useUserOperationsCreate = ({
   // Set the transaction disabled state
   const isUserOperationsDisabled = useMemo(() => {
     // A combination of conditions that would disable the transaction
-    return !(
-      // If the subdigest is not undefined
-      (
-        typeof subdigest === "undefined" ||
-        // Nor if the user operations all have a hash
-        // !internalUserOperations.every(userOperation => userOperation.hash) ||
-        // Nor if the user operations are not valid
-        !isValidUserOperations ||
-        // Nor if the user operations are not createable
-        !isUserOperationsCreateable ||
-        // Nor if the merkle root is not equal
-        !isUserOperationsMerkleEqual
-      )
+    return (
+      typeof subdigest === "undefined" ||
+      // Nor if the user operations all have a hash
+      // !internalUserOperations.every(userOperation => userOperation.hash) ||
+      // Nor if the user operations are not valid
+      !isValidUserOperations ||
+      // Nor if the user operations are not createable
+      !isUserOperationsCreateable ||
+      // Nor if the merkle root is not equal
+      !isUserOperationsMerkleEqual
     );
   }, [
     subdigest,
@@ -430,11 +427,15 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
   ]);
-  console.warn("isUserOperationsDisabled", isUserOperationsDisabled);
-  console.warn("subdigest", subdigest);
-  console.warn("isValidUserOperations", isValidUserOperations);
-  console.warn("isUserOperationsCreateable", isUserOperationsCreateable);
-  console.warn("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the form disabled state
+  useEffect(() => {
+    setIsFormDisabled(isUserOperationsDisabled);
+  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Render

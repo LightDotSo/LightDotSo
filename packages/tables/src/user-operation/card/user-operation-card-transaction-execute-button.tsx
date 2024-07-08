@@ -51,7 +51,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
 
   const {
     isUserOperationSendValid,
-    isUserOperationSendPending,
+    isUserOperationSendLoading,
     isUserOperationSendDisabled,
     handleSubmit,
   } = useUserOperationSend({
@@ -69,7 +69,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
         <TooltipTrigger asChild>
           <Button
             disabled={isUserOperationSendDisabled}
-            isLoading={isUserOperationSendPending}
+            isLoading={isUserOperationSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"
             onClick={handleSubmit}

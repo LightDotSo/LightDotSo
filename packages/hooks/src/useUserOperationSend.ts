@@ -221,6 +221,18 @@ export const useUserOperationSend = ({
     [userOperation],
   );
 
+  const isUserOperationSendLoading = useMemo(
+    () =>
+      isUserOperationLoading ||
+      isUserOperationSignatureLoading ||
+      isUserOperationReceiptLoading,
+    [
+      isUserOperationLoading,
+      isUserOperationSignatureLoading,
+      isUserOperationReceiptLoading,
+    ],
+  );
+
   const isUserOperationSendSuccess = useMemo(
     () =>
       userOperation?.status === "INVALID" ||
@@ -233,16 +245,12 @@ export const useUserOperationSend = ({
     () =>
       typeof userOperation !== "undefined" &&
       typeof userOperationSignature !== "undefined" &&
-      !isUserOperationLoading &&
-      !isUserOperationSignatureLoading &&
-      !isUserOperationReceiptLoading &&
+      !isUserOperationSendLoading &&
       isUserOperationSendReady,
     [
       userOperation,
       userOperationSignature,
       isUserOperationLoading,
-      isUserOperationSignatureLoading,
-      isUserOperationReceiptLoading,
       isUserOperationSendReady,
     ],
   );
@@ -264,12 +272,7 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    if (
-      isUserOperationLoading ||
-      isUserOperationSignatureLoading ||
-      isUserOperationReceiptLoading ||
-      !isUserOperationSendSuccess
-    ) {
+    if (isUserOperationSendLoading || !isUserOperationSendSuccess) {
       return;
     }
 
@@ -306,9 +309,7 @@ export const useUserOperationSend = ({
     userOperation,
     userOperationReceipt,
     userOperationSignature,
-    isUserOperationLoading,
-    isUserOperationSignatureLoading,
-    isUserOperationReceiptLoading,
+    isUserOperationSendLoading,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
@@ -329,6 +330,7 @@ export const useUserOperationSend = ({
     recoveredAddress: recoveredAddress,
     isUserOperationSendValid: isUserOperationSendValid,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
+    isUserOperationSendLoading: isUserOperationSendLoading,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
