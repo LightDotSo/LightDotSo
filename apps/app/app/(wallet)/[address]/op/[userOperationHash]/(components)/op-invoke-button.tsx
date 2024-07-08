@@ -40,7 +40,11 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { handleSubmit, isUserOperationSendLoading } = useUserOperationSend({
+  const {
+    handleSubmit,
+    isUserOperationSendLoading,
+    isUserOperationSendDisabled,
+  } = useUserOperationSend({
     address: address as Address,
     hash: userOperationHash,
   });
@@ -51,6 +55,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
 
   return (
     <InvokeButton
+      isDisabled={isUserOperationSendDisabled}
       isLoading={isUserOperationSendLoading}
       onClick={handleSubmit}
     />
