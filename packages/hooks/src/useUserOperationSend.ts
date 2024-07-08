@@ -277,9 +277,9 @@ export const useUserOperationSend = ({
       // Refetch the user operation receipt again
       refetchUserOperationReceipt();
 
-      // If the user operation receipt has failed to fetch less than 3 times, then return
+      // If the user operation receipt has failed to fetch every 3 times, then return
       // This is to prevent the user operation from being sent multiple times
-      if (userOperationReceiptFailureCount < 3) {
+      if (userOperationReceiptFailureCount % 3 !== 0) {
         return;
       }
     }
