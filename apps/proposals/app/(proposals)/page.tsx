@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-import type { Metadata, ResolvingMetadata } from "next";
-import Link from "next/link";
+// import Link from "next/link";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -42,7 +41,7 @@ export default async function Page() {
     <ul className="text-lg hover:underline">
       {proposals.map(proposal => (
         <li key={proposal.slug}>
-          <Link href={`/${proposal.slug}`}>{proposal.entry.title}</Link>
+          <a href={`/${proposal.slug}`}>{proposal.entry.title}</a>
         </li>
       ))}
     </ul>
