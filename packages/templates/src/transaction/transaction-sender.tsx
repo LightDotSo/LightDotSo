@@ -124,7 +124,7 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
       }
       title={
         pendingSubmitUserOperationHashes.length > 0
-          ? "Sending Transaction..."
+          ? `Pending ${pendingSubmitUserOperationHashes.length} transactions...`
           : "Success"
       }
       description={
