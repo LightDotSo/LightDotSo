@@ -252,6 +252,11 @@ export const useUserOperationSend = ({
       isUserOperationSendReady,
     ],
   );
+  console.info("isUserOperationSendValid", isUserOperationSendValid);
+  console.info("userOperation", userOperation);
+  console.info("userOperationSignature", userOperationSignature);
+  console.info("isUserOperationSendLoading", isUserOperationSendLoading);
+  console.info("isUserOperationSendReady", isUserOperationSendReady);
 
   const isUserOperationSendDisabled = useMemo(
     () => !isUserOperationSendValid || isUserOperationSendSuccess,
@@ -263,27 +268,43 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
+    console.info("Submitting user operation", hash);
+
     if (!userOperation || !userOperationSignature) {
+      console.error("User operation or user operation signature is missing");
+      console.error("User operation", userOperation);
+      console.error("User operation signature", userOperationSignature);
       return;
     }
 
     if (userOperationReceipt) {
+      console.info(
+        "User operation receipt already exists",
+        userOperationReceipt,
+      );
       // Queue the user operation if the user operation has been sent but isn't indexed yet
       queueUserOperation({ hash: hash });
       return;
     }
 
     if (userOperation.status === "PENDING") {
+      console.info("User operation is pending", userOperation);
       // Refetch the user operation receipt again
       refetchUserOperationReceipt();
 
       // If the user operation receipt has failed to fetch every 3 times, then return
       // This is to prevent the user operation from being sent multiple times
       if (userOperationReceiptErrorUpdateCount % 3 !== 2) {
+        console.error("User operation receipt failed to fetch");
+        console.error(
+          "User operation receipt error update count",
+          userOperationReceiptErrorUpdateCount,
+        );
         return;
       }
     }
 
+    console.info("Sending user operation", hash);
     // Send the user operation if the user operation hasn't been sent yet
     userOperationSend({
       userOperation: userOperation,

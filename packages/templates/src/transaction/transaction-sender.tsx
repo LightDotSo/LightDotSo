@@ -48,7 +48,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     hash: hash,
   });
 
-  const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
+  const { handleSubmit } = useUserOperationSend({
     address: address as Address,
     hash: hash,
   });
@@ -60,6 +60,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Submit user operation every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
+      console.info("Submitting user operation...", new Date().toISOString());
       handleSubmit();
     }, 3_000);
 
@@ -73,7 +74,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {isUserOperationSendSuccess && userOperation && (
+      {userOperation && (
         <Button asChild variant="link">
           <a
             target="_blank"
