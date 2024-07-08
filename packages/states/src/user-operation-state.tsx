@@ -14,9 +14,12 @@
 
 "use client";
 
-import { useUserOperationSend } from "@lightdotso/hooks";
 import {
-  useMutationStateUserOperationReceipt,
+  useUserOperationSend,
+  useUserOperationsSendState,
+} from "@lightdotso/hooks";
+import {
+  useMutationStateUserOperationSend,
   useQueryUserOperations,
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
@@ -97,7 +100,11 @@ export const UserOperationState: FC = () => {
     is_testnet: true,
   });
 
-  const userOperationReceiptStatus = useMutationStateUserOperationReceipt();
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isUserOperationsSendSuccess } = useUserOperationsSendState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -114,12 +121,10 @@ export const UserOperationState: FC = () => {
   }, []);
 
   useEffect(() => {
-    for (const receiptStatus of userOperationReceiptStatus) {
-      if (receiptStatus === "success") {
-        refetchPendingUserOperations();
-      }
+    if (isUserOperationsSendSuccess) {
+      refetchPendingUserOperations();
     }
-  }, [userOperationReceiptStatus, refetchPendingUserOperations]);
+  }, [isUserOperationsSendSuccess, refetchPendingUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Render
