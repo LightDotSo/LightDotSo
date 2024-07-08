@@ -11,7 +11,7 @@
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "LightDotSo",
   "scripts": {
     "build": "tsc",
     "dev": "wrangler pages dev . functions --r2=ASSETS"

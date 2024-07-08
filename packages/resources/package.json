@@ -11,7 +11,7 @@
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "LightDotSo",
   "scripts": {
     "build": "pnpm run build:locales && pnpm run build:images",
     "build:images": "pnpm run cp:images:ios && pnpm run cp:images:chrome && pnpm run cp:images:firefox",

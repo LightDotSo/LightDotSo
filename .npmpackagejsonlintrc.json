@@ -29,7 +29,7 @@
     "scripts-type": "error",
     "version-type": "error",
     "valid-values-license": ["error", ["Apache-2.0"]],
-    "valid-values-author": ["error", ["Light, Inc."]],
+    "valid-values-author": ["error", ["LightDotSo"]],
     "name-format": "error",
     "version-format": "error"
   }

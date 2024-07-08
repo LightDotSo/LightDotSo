@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright © 2024, Light, Inc.
+Copyright © 2024, LightDotSo.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

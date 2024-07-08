@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 LightDotSo.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ export function Footer() {
   return (
     <div className="footer">
       <div>Released under the MIT License.</div>
-      <div>Copyright © 2024, Light, Inc.</div>
+      <div>Copyright © 2024, LightDotSo.</div>
     </div>
   );
 }

@@ -11,7 +11,7 @@
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "LightDotSo",
   "scripts": {
     "build": "cross-env NODE_ENV=production next build && pnpm run cp:ios",
     "build:dev": "cross-env NODE_ENV=development next build && pnpm run cp:ios",
