@@ -67,7 +67,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
     const interval = setInterval(() => {
       refetchUserOperation();
       handleSubmit();
-    }, 30000);
+    }, 30_000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -57,11 +57,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Submit user operation every 3 seconds
+  // Submit user operation every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       handleSubmit();
-    }, 3000);
+    }, 10_000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
