@@ -14,10 +14,7 @@
 
 "use client";
 
-import {
-  useUserOperationSend,
-  useUserOperationsSendState,
-} from "@lightdotso/hooks";
+import { useUserOperationSend } from "@lightdotso/hooks";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
