@@ -11,7 +11,7 @@
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "LightDotSo",
   "scripts": {
     "build": "pnpm run build:chrome && pnpm run build:firefox",
     "build:chrome": "crx pack chrome --zip-output chrome.zip",
