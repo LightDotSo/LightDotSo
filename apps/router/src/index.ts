@@ -57,7 +57,7 @@ app.get(
       keyGenerator: c => c.req.header("cf-connecting-ip") ?? "",
       handler: (_, next) => next(),
     })(c, next),
-  c => c.json({ message: `lightrouter.net rateLimit: ${c.get("rateLimit")}` }),
+  c => c.json({ message: `router.light.so rateLimit: ${c.get("rateLimit")}` }),
 );
 
 app.all("/lifi/*", basicProxy(API_URLS.LIFI_API_URL));

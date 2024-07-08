@@ -3,7 +3,7 @@ main = "src/index.ts"
 compatibility_date = "2023-12-01"
 workers_dev = false
 
-routes = [{ pattern = "lightrouter.net", custom_domain = true }]
+routes = [{ pattern = "router.light.so", custom_domain = true }]
 
 # The rate limiting API is in open beta.
 [[unsafe.bindings]]
