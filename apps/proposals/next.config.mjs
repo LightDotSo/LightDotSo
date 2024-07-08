@@ -18,6 +18,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/proposals",
   eslint: {
     ignoreDuringBuilds: true,
   },
