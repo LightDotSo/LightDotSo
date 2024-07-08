@@ -155,7 +155,7 @@ export const useUserOperationSend = ({
     isUserOperationReceiptLoading,
     isUserOperationReceiptError,
     refetchUserOperationReceipt,
-    userOperationReceiptFailureCount,
+    userOperationReceiptErrorUpdateCount,
   } = useQueryUserOperationReceipt({
     chainId: userOperation?.chain_id ?? null,
     hash: hash,
@@ -279,7 +279,7 @@ export const useUserOperationSend = ({
 
       // If the user operation receipt has failed to fetch every 3 times, then return
       // This is to prevent the user operation from being sent multiple times
-      if (userOperationReceiptFailureCount % 3 !== 0) {
+      if (userOperationReceiptErrorUpdateCount % 3 !== 2) {
         return;
       }
     }
