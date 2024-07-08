@@ -54,6 +54,7 @@ import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
+import { usePathname } from "next/navigation";
 import type { Address } from "viem";
 import type * as z from "zod";
 import { FooterButton } from "../footer-button";
@@ -64,7 +65,6 @@ import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
-import { usePathname } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Props
