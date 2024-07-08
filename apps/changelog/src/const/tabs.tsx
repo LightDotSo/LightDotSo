@@ -12,21 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ---------------------------------------------------------------------------
-// Next Config
-// ---------------------------------------------------------------------------
+"use client";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  basePath: process.env.VERCEL_ENV === "production" ? "/blog" : "",
-  eslint: {
-    ignoreDuringBuilds: true,
+import type { Tab } from "@lightdotso/types";
+import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
+import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import { ArrowUpRightFromSquare } from "lucide-react";
+import type { RefAttributes } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+export const PROPOSAL_TABS: Tab[] = [
+  {
+    label: "Home",
+    id: "changelog",
+    href: "/",
+    icon: (
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <DashboardIcon {...props} />,
   },
-  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
-};
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-export default nextConfig;
+  {
+    label: "App",
+    id: "app",
+    href: "https://light.so",
+    icon: (
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <ArrowUpRightFromSquare {...props} />,
+  },
+];

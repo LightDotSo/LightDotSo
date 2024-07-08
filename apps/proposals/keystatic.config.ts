@@ -12,7 +12,7 @@ export default config({
     proposals: collection({
       label: "Proposals",
       slugField: "title",
-      path: "./content/proposals/*",
+      path: "content/proposals/*",
       format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),

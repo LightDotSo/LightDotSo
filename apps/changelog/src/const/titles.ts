@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ---------------------------------------------------------------------------
-// Next Config
-// ---------------------------------------------------------------------------
+import type { CategoryObject } from "@lightdotso/types";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  basePath: process.env.VERCEL_ENV === "production" ? "/blog" : "",
-  eslint: {
-    ignoreDuringBuilds: true,
+// -----------------------------------------------------------------------------
+// Main
+// -----------------------------------------------------------------------------
+
+export enum Category {
+  Changelog = "Changelog",
+}
+
+// -----------------------------------------------------------------------------
+// All
+// -----------------------------------------------------------------------------
+
+export const TITLES: Record<Category, CategoryObject> = {
+  [Category.Changelog]: {
+    title: "Changelog",
+    description: "See all Light governance changelog.",
+    subcategories: {},
   },
-  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-export default nextConfig;

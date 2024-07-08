@@ -10,13 +10,13 @@ export default config({
   },
   collections: {
     posts: collection({
-      label: "Posts",
+      label: "Changelog",
       slugField: "title",
-      path: "src/content/posts/*",
+      path: "content/posts/*",
       format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
-        content: fields.markdoc({ label: "Content" }),
+        content: fields.markdoc({ label: "Content", extension: "md" }),
       },
     }),
   },
