@@ -3,7 +3,7 @@ import { pageTree } from "@/source";
 
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    title: "My App",
+    title: "Light Documentation",
   },
   links: [
     {
@@ -16,5 +16,6 @@ export const baseOptions: BaseLayoutProps = {
 
 export const docsOptions: DocsLayoutProps = {
   ...baseOptions,
+
   tree: pageTree,
 };
