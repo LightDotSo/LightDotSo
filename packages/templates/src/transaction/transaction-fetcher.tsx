@@ -15,11 +15,7 @@
 "use client";
 
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
-import {
-  useProxyImplementationAddress,
-  useUserOperationEstimateGas,
-  useUserOperationFeePerGas,
-} from "@lightdotso/hooks";
+import { useProxyImplementationAddress } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
@@ -27,6 +23,8 @@ import {
   useQueryUserOperationNonce,
   useQueryUserOperations,
   useQueryWallet,
+  useQueryUserOperationEstimateGas,
+  useQueryUserOperationEstimateFeesPerGas,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
@@ -248,15 +246,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   ]);
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Query
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  const { maxFeePerGas, maxPriorityFeePerGas } = useUserOperationFeePerGas({
-    address: address as Address,
-    chainId: Number(targetUserOperation.chainId),
-    callData: targetUserOperation.callData as Hex,
-  });
+  const { maxFeePerGas, maxPriorityFeePerGas } =
+    useQueryUserOperationEstimateFeesPerGas({
+      address: address as Address,
+      chainId: Number(targetUserOperation.chainId),
+      callData: targetUserOperation.callData as Hex,
+    });
 
   // Gets the gas estimate for the user operation
   const {
@@ -264,19 +263,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas,
     verificationGasLimit,
     isUserOperationEstimateGasLoading,
-  } = useUserOperationEstimateGas({
-    address: address as Address,
-    targetUserOperation: {
-      chainId: targetUserOperation.chainId,
-      nonce: targetUserOperation.nonce,
-      initCode: targetUserOperation.initCode,
-      callData: targetUserOperation.callData,
-    },
+  } = useQueryUserOperationEstimateGas({
+    sender: address as Address,
+    chainId: targetUserOperation.chainId,
+    nonce: targetUserOperation.nonce,
+    initCode: targetUserOperation.initCode,
+    callData: targetUserOperation.callData,
   });
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
 
   // Gets the simulation for the user operation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

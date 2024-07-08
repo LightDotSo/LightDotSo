@@ -19,6 +19,7 @@ import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
+import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -43,9 +44,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     error: gasAndPaymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
     retry: 10,
-    refetchIntervalInBackground: true,
-    refetchInterval: 1000 * 30,
-    retryOnMount: false,
+    ...USER_OPERATION_CONFIG,
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
       chainId: params.chainId,
       nonce: params.nonce,

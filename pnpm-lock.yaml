@@ -2609,6 +2609,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../wagmi
