@@ -15,10 +15,7 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import {
-  useUserOperationSend,
-  useUserOperationsSendState,
-} from "@lightdotso/hooks";
+import { useUserOperationSend } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -69,7 +66,9 @@ export const UserOperationCardTransactionExecuteButton: FC<
         <TooltipTrigger asChild>
           <Button
             disabled={
-              isUserOperationSendDisabled || userOperation.status !== "PROPOSED"
+              isUserOperationSendLoading ||
+              isUserOperationSendDisabled ||
+              userOperation.status !== "PROPOSED"
             }
             isLoading={isUserOperationSendLoading}
             variant={isUserOperationSendValid ? "default" : "outline"}

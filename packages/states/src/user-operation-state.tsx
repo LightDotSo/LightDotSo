@@ -18,10 +18,7 @@ import {
   useUserOperationSend,
   useUserOperationsSendState,
 } from "@lightdotso/hooks";
-import {
-  useMutationStateUserOperationSend,
-  useQueryUserOperations,
-} from "@lightdotso/query";
+import { useQueryUserOperations } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -109,16 +106,6 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Refetch pending user operation every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refetchPendingUserOperations();
-    }, 30_000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (isUserOperationsSendSuccess) {
