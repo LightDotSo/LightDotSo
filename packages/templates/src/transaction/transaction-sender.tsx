@@ -48,10 +48,11 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     hash: hash,
   });
 
-  const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
-    address: address as Address,
-    hash: hash,
-  });
+  const { handleSubmit, isUserOperationSendReady, isUserOperationSendSuccess } =
+    useUserOperationSend({
+      address: address as Address,
+      hash: hash,
+    });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -60,7 +61,9 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Submit user operation every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      handleSubmit();
+      if (isUserOperationSendReady) {
+        handleSubmit();
+      }
     }, 3_000);
 
     return () => clearInterval(interval);

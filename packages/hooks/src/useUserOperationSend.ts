@@ -122,7 +122,7 @@ export const useUserOperationSend = ({
   // Get the cumulative weight of all owners in the userOperation signatures array
   // and check if it is greater than or equal to the threshold
   const isUserOperationSendReady = useMemo(() => {
-    return userOperation
+    return userOperation && userOperationSignature
       ? userOperation.signatures.reduce((acc, signature) => {
           return (
             acc +
@@ -134,7 +134,7 @@ export const useUserOperationSend = ({
           );
         }, 0) >= (configuration ? configuration.threshold : 0)
       : false;
-  }, [userOperation, configuration]);
+  }, [userOperation, userOperationSignature, configuration]);
 
   const isUserOperationSendLoading = useMemo(
     () =>
@@ -183,7 +183,14 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
+    if (!isUserOperationSendReady) {
+      console.error("User operation is not ready to be sent");
+      console.error("User operation", userOperation);
+      console.error("User operation signature", userOperationSignature);
+      return;
+    }
+
     if (!userOperation || !userOperationSignature) {
       console.error("User operation or user operation signature is missing");
       console.error("Params", address, hash);
@@ -225,7 +232,16 @@ export const useUserOperationSend = ({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isUserOperationSendReady,
+    userOperation,
+    userOperationSignature,
+    userOperationReceipt,
+    refetchUserOperationReceipt,
+    userOperationSend,
+    queueUserOperation,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -238,5 +254,6 @@ export const useUserOperationSend = ({
     isUserOperationSendLoading: isUserOperationSendLoading,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
+    isUserOperationSendReady: isUserOperationSendReady,
   };
 };
