@@ -91,7 +91,20 @@ export const useUserOperations = create(
       }),
       {
         name: "user-operations-state-v1",
-        storage: createJSONStorage(() => sessionStorage),
+        storage: createJSONStorage(() => sessionStorage, {
+          reviver: (_key: string, value: any): any => {
+            if (value && typeof value === "object" && value.type === "bigint") {
+              return BigInt(value.value);
+            }
+            return value;
+          },
+          replacer: (_key: string, value: any): any => {
+            if (typeof value === "bigint") {
+              return { type: "bigint", value: value.toString() };
+            }
+            return value;
+          },
+        }),
         skipHydration: true,
         version: 0,
       },
