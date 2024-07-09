@@ -230,6 +230,15 @@ export const useUserOperationSend = ({
       isUserOperationReceiptLoading,
     ],
   );
+  console.info("isUserOperationSendLoading", isUserOperationSendLoading);
+  console.info("isQueueUserOperationPending", isQueueUserOperationPending);
+  console.info("isUserOperationSendPending", isUserOperationSendPending);
+  console.info("isUserOperationLoading", isUserOperationLoading);
+  console.info(
+    "isUserOperationSignatureLoading",
+    isUserOperationSignatureLoading,
+  );
+  console.info("isUserOperationReceiptLoading", isUserOperationReceiptLoading);
 
   const isUserOperationSendSuccess = useMemo(
     () =>
