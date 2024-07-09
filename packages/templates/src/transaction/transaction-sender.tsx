@@ -27,76 +27,6 @@ import type { Address, Hex } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-interface TransactionSenderOpProps {
-  address: Address;
-  hash: Hex;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
-  address,
-  hash,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { userOperation } = useQueryUserOperation({
-    hash: hash,
-  });
-
-  const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
-    address: address as Address,
-    hash: hash,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Submit user operation every 3 seconds
-  useEffect(() => {
-    if (!isUserOperationSendSuccess) {
-      const interval = setInterval(() => {
-        handleSubmit();
-      }, 3_000);
-
-      return () => clearInterval(interval);
-    }
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserOperationSendSuccess]);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div>
-      {userOperation && isUserOperationSendSuccess && (
-        <Button asChild variant="link">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`${getEtherscanUrl(
-              getChainById(userOperation?.chain_id),
-            )}/tx/${userOperation?.transaction?.hash}`}
-          >
-            {userOperation?.transaction?.hash}
-          </a>
-        </Button>
-      )}
-    </div>
-  );
-};
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
 type TransactionSenderProps = {
   address: Address;
 };
@@ -137,10 +67,6 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
           ? "Please wait while we handle your request..."
           : "Your transaction has been sent successfully."
       }
-    >
-      {pendingSubmitUserOperationHashes.map(hash => (
-        <TransactionSenderOp key={hash} address={address} hash={hash} />
-      ))}
-    </StateInfoSection>
+    />
   );
 };
