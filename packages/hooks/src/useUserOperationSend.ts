@@ -277,7 +277,7 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    console.info("Submitting user operation", hash);
+    console.info("Submitting user operation", hash, new Date().toISOString());
 
     if (!userOperation || !userOperationSignature) {
       console.error("User operation or user operation signature is missing");

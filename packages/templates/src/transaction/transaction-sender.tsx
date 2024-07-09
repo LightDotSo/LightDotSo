@@ -60,7 +60,6 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Submit user operation every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      console.info("Submitting user operation...", new Date().toISOString());
       handleSubmit();
     }, 3_000);
 
