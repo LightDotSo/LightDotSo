@@ -56,6 +56,7 @@ export const useUserOperationSend = ({
   const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: hash,
   });
+  console.info("User operation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -81,6 +82,7 @@ export const useUserOperationSend = ({
       hash: hash,
       configuration_id: configuration?.id,
     });
+  console.info("User operation signature", userOperationSignature);
 
   // const { paymasterOperation } = useQueryPaymasterOperation({
   //   address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
@@ -99,7 +101,6 @@ export const useUserOperationSend = ({
   const {
     userOperationReceipt,
     isUserOperationReceiptLoading,
-    isUserOperationReceiptError,
     refetchUserOperationReceipt,
     userOperationReceiptErrorUpdateCount,
   } = useQueryUserOperationReceipt({
@@ -134,7 +135,6 @@ export const useUserOperationSend = ({
         }, 0) >= (configuration ? configuration.threshold : 0)
       : false;
   }, [userOperation, configuration]);
-  console.info("isUserOperationSendReady", isUserOperationSendReady);
 
   const isUserOperationSendLoading = useMemo(
     () =>
@@ -183,7 +183,7 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = () => {
     if (!userOperation || !userOperationSignature) {
       console.error("User operation or user operation signature is missing");
       console.error("Params", address, hash);
@@ -225,15 +225,7 @@ export const useUserOperationSend = ({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
-  }, [
-    userOperation,
-    userOperationSignature,
-    userOperationReceipt,
-    userOperationReceiptErrorUpdateCount,
-    refetchUserOperationReceipt,
-    userOperationSend,
-    queueUserOperation,
-  ]);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
