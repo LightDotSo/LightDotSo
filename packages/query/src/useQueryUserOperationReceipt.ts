@@ -17,6 +17,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
+import { USER_OPERATION_RECEIPT_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -43,15 +44,14 @@ export const useQueryUserOperationReceipt = (
     errorUpdateCount: userOperationReceiptErrorUpdateCount,
     refetch: refetchUserOperationReceipt,
   } = useQuery({
-    // The user operation receipt is used for subsequent operations like sending and queuing.
-    retry: false,
+    ...USER_OPERATION_RECEIPT_CONFIG,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: Number(params.chainId),
       hash: params.hash,
     }).queryKey,
     queryFn: async () => {
-      // If no `chainId` or `hash` is provided, return null
-      if (!params.chainId || !params.hash) {
+      // If no `chainId` is provided, return null
+      if (!params.chainId) {
         return null;
       }
 

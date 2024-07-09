@@ -26,7 +26,6 @@ import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 import { useQueryUserOperation } from "./useQueryUserOperation";
-import { useMutationQueueUserOperation } from "./useMutationQueueUserOperation";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -39,18 +38,13 @@ export const useMutationUserOperationSend = (
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation } = useMutationQueueUserOperation({
-    address: params.address as Address,
-  });
-
   const { userOperation } = useQueryUserOperation({
     hash: params.hash,
   });
-  const { userOperationReceipt, refetchUserOperationReceipt } =
-    useQueryUserOperationReceipt({
-      chainId: userOperation?.chain_id ?? null,
-      hash: params.hash,
-    });
+  const { userOperationReceipt } = useQueryUserOperationReceipt({
+    chainId: userOperation?.chain_id ?? null,
+    hash: params.hash,
+  });
   const queryClient = useQueryClient();
 
   // ---------------------------------------------------------------------------
@@ -112,10 +106,6 @@ export const useMutationUserOperationSend = (
         },
       );
     },
-    onError: async () => {
-      // Refetch the user operation receipt if there is an error
-      await refetchUserOperationReceipt();
-    },
     onMutate: async (data: UserOperationSendBodyParams) => {
       const previousData: UserOperationData[] | undefined =
         queryClient.getQueryData(
@@ -164,10 +154,6 @@ export const useMutationUserOperationSend = (
           status: "queued",
           is_testnet: params.is_testnet ?? false,
         }).queryKey,
-      });
-
-      queueUserOperation({
-        hash: params.hash,
       });
     },
     onSettled: () => {

@@ -302,8 +302,8 @@ export const useUserOperationsCreate = ({
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
 
-      for (const userOperation of internalUserOperations) {
-        addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      for (const internalUserOperation of internalUserOperations) {
+        addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
       }
 
       setSignedData(undefined);

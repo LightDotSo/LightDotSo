@@ -12,8 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
 export const USER_OPERATION_CONFIG = {
   refetchIntervalInBackground: true,
   refetchInterval: 1000 * 30,
   retryOnMount: false,
+};
+
+export const USER_OPERATION_RECEIPT_CONFIG = {
+  retry: false,
 };

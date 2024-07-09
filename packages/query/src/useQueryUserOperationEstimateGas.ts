@@ -53,8 +53,8 @@ export const useQueryUserOperationEstimateGas = (
     isLoading: isEstimateUserOperationGasDataLoading,
     error: estimateUserOperationGasDataError,
   } = useQuery<EstimateUserOperationGasData | null>({
-    retry: 10,
     ...USER_OPERATION_CONFIG,
+    retry: 10,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params.nonce,
       nonce: params.nonce,

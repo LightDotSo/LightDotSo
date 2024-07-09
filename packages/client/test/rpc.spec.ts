@@ -24,13 +24,10 @@ test("getChainId", async () => {
 });
 
 test("getUserOperationReceipt", async () => {
-  // const result = await getUserOperationReceipt(137, [
-  //   // Valid hex string
-  //   "0x1f5db705609eb03604d24aa0ea154100d638050162131952e8ea7cca69e461a3",
-  // ]);
-  // // eslint-disable-next-line no-console
-  // console.log(result);
-
+  const result = await getUserOperationReceipt(137, [
+    "0xe627c1e5e10d3c267692c6b6b1d4ed803a26a237af489f14e597badf87e415a6",
+  ]);
+  console.log(result);
   // expect(result._unsafeUnwrap()).toBeDefined();
 
   // Invalid hex string
