@@ -43,15 +43,13 @@ export const useQueryUserOperationReceipt = (
     errorUpdateCount: userOperationReceiptErrorUpdateCount,
     refetch: refetchUserOperationReceipt,
   } = useQuery({
-    // The user operation receipt is used for subsequent operations like sending and queuing.
-    retry: false,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: Number(params.chainId),
       hash: params.hash,
     }).queryKey,
     queryFn: async () => {
-      // If no `chainId` or `hash` is provided, return null
-      if (!params.chainId || !params.hash) {
+      // If no `chainId` is provided, return null
+      if (!params.chainId) {
         return null;
       }
 
