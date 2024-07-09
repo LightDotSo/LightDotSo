@@ -121,7 +121,7 @@ export const useUserOperationSend = ({
   // Get the cumulative weight of all owners in the userOperation signatures array
   // and check if it is greater than or equal to the threshold
   const isUserOperationSendReady = useMemo(() => {
-    userOperation
+    return userOperation
       ? userOperation.signatures.reduce((acc, signature) => {
           return (
             acc +
@@ -229,10 +229,9 @@ export const useUserOperationSend = ({
     userOperation,
     userOperationSignature,
     userOperationReceipt,
-    isUserOperationSendPending,
-    isUserOperationReceiptError,
-    userOperationSend,
+    userOperationReceiptErrorUpdateCount,
     refetchUserOperationReceipt,
+    userOperationSend,
     queueUserOperation,
   ]);
 

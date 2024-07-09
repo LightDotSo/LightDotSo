@@ -59,16 +59,13 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Submit user operation every 3 seconds
   useEffect(() => {
-    if (!isUserOperationSendSuccess) {
-      const interval = setInterval(() => {
-        handleSubmit();
-      }, 3_000);
+    const interval = setInterval(() => {
+      handleSubmit();
+    }, 3_000);
 
-      return () => clearInterval(interval);
-    }
-    return () => {};
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserOperationSendSuccess]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
