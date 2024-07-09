@@ -281,6 +281,7 @@ export const useUserOperationSend = ({
 
     if (!userOperation || !userOperationSignature) {
       console.error("User operation or user operation signature is missing");
+      console.error("Params", address, hash);
       console.error("User operation", userOperation);
       console.error("User operation signature", userOperationSignature);
       return;
@@ -304,8 +305,8 @@ export const useUserOperationSend = ({
       // If the user operation receipt has failed to fetch every 3 times, then return
       // This is to prevent the user operation from being sent multiple times
       if (userOperationReceiptErrorUpdateCount % 3 !== 2) {
-        console.error("User operation receipt failed to fetch");
-        console.error(
+        console.info("User operation receipt failed to fetch");
+        console.info(
           "User operation receipt error update count",
           userOperationReceiptErrorUpdateCount,
         );
