@@ -31,8 +31,4 @@ export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";
 export type { PendingTransaction } from "./useTransactions";
 export { useTransactions } from "./useTransactions";
-export type {
-  UserOperationDetailsItem,
-  UserOperationDevInfo,
-} from "./useUserOperations";
 export { useUserOperations } from "./useUserOperations";

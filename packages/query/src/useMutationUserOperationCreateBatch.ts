@@ -46,7 +46,7 @@ export const useMutationUserOperationCreateBatch = (
   // ---------------------------------------------------------------------------
 
   const { clientType } = useAuth();
-  const { resetInternalUserOperations } = useUserOperations();
+  const { resetUserOperations } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -213,7 +213,7 @@ export const useMutationUserOperationCreateBatch = (
     onSuccess: () => {
       // Only reset the internal user operations if the transaction is successful
       // This disables the transaction fetcher from fetching the transactions again
-      resetInternalUserOperations();
+      resetUserOperations();
     },
     onError: (err, _newWalletSettings, _context) => {
       if (err instanceof Error) {
