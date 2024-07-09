@@ -523,13 +523,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
       {pageIndex === 0 &&
         userOperationsQueryState &&
         userOperationsQueryState.length > 0 &&
-        userOperationsQueryState.map((userOperationQueryState, index) => {
-          if (!userOperationQueryState) {
-            return;
-          }
+        userOperationsQueryState.map(userOperationQueryState => {
           return (
             <TransactionFetcher
-              key={userOperationQueryState.chainId || index}
+              key={userOperationQueryState.hash}
               address={address}
               initialUserOperation={userOperationQueryState}
             />

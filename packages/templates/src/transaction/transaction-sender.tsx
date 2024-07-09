@@ -138,8 +138,8 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
           : "Your transaction has been sent successfully."
       }
     >
-      {pendingSubmitUserOperationHashes.map((hash, index) => (
-        <TransactionSenderOp key={index} address={address} hash={hash} />
+      {pendingSubmitUserOperationHashes.map(hash => (
+        <TransactionSenderOp key={hash} address={address} hash={hash} />
       ))}
     </StateInfoSection>
   );
