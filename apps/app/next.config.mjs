@@ -32,7 +32,6 @@ const nextConfig = {
   },
   experimental: {
     ppr: "incremental",
-    // esmExternals: "loose",
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
