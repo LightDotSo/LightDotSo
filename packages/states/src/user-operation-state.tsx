@@ -14,16 +14,13 @@
 
 "use client";
 
-import {
-  useUserOperationSend,
-  useUserOperationsSendState,
-} from "@lightdotso/hooks";
+import { useUserOperationsSendState } from "@lightdotso/hooks";
 import {
   useQueryUserOperations,
   useQueryUserOperationsCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
 
@@ -37,6 +34,7 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
+  const { pendingSubmitUserOperationHashes } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -73,11 +71,13 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isUserOperationsSendSuccess) {
-      refetchPendingUserOperations();
-      refetchUserOperationsCount();
-    }
+    refetchPendingUserOperations();
+    refetchUserOperationsCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    // Refetch when the pending submit user operation hashes change
+    pendingSubmitUserOperationHashes,
+    // Also refetch when the user operations send state changes
     isUserOperationsSendSuccess,
     refetchPendingUserOperations,
     refetchUserOperationsCount,

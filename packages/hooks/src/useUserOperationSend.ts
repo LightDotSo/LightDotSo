@@ -54,6 +54,9 @@ export const useUserOperationSend = ({
   address,
   hash,
 }: UserOperationSendProps) => {
+  console.info("address", address);
+  console.info("hash", hash);
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
