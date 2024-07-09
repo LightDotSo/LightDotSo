@@ -48,6 +48,7 @@ export const preloader = async (searchParams: { pagination?: string }) => {
     limit: paginationState.pageSize,
     user_id: userId,
   });
+
   preloadGetNotificationsCount({
     address: null,
     user_id: userId,
