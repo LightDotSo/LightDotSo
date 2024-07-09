@@ -206,8 +206,9 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // On pathname change, reset all user operations
   useEffect(() => {
     resetAll();
+    setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetAll]);
+  }, [pathname, resetAll, setPageIndex]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
