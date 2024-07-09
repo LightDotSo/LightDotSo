@@ -31,15 +31,10 @@ import {
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionContent,
-  AccordionTrigger,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  Textarea,
   Form,
   FormItem,
   FormField,
@@ -61,10 +56,10 @@ import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
-import { TransactionDetailInfo } from "./transaction-details-info";
-import { TransactionDevInfo } from "./transaction-dev-info";
+import { TransactionDetails } from "./transaction-details";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
+import { TransactionCalldata } from "./transaction-calldata";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -257,47 +252,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                   value="transaction"
                 >
                   <div className="space-y-3 pt-3">
-                    {userOperations.map((userOperation, index) => {
-                      const chain = getChainById(Number(userOperation.chainId));
-                      return (
-                        <Accordion
-                          key={index}
-                          collapsible
-                          defaultValue="value-0"
-                          className="rounded-md border border-border bg-background-weak p-4"
-                          type="single"
-                        >
-                          <AccordionItem
-                            className="border-0"
-                            value={`value-${index}`}
-                          >
-                            <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                              <div className="flex items-center">
-                                <span className="mr-2.5">
-                                  Transaction on {chain.name}
-                                </span>
-                                <ChainLogo chainId={chain.id} />
-                              </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="px-1 pt-4">
-                              {Object.entries(userOperation).map(
-                                ([key, value], itemIndex) => (
-                                  <TransactionDetailInfo
-                                    key={`${index}-${itemIndex}`}
-                                    title={key}
-                                    value={
-                                      typeof value === "bigint"
-                                        ? value.toString()
-                                        : value
-                                    }
-                                  />
-                                ),
-                              )}
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      );
-                    })}
+                    <TransactionDetails />
                     <Form {...form}>
                       <form className="space-y-4">
                         <FormField
@@ -470,43 +425,17 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                 <TabsContent
                   className={cn(isInsideModal && "h-72 overflow-y-auto")}
                   value="details"
-                />
+                >
+                  <div className="space-y-3 pt-3">
+                    <TransactionDetails />
+                  </div>
+                </TabsContent>
                 <TabsContent
                   className={cn(isInsideModal && "h-72 overflow-y-auto")}
                   value="data"
                 >
                   <div className="space-y-3 pt-3">
-                    {userOperations &&
-                      userOperations.length > 0 &&
-                      userOperations.map((userOperation, index) => {
-                        return (
-                          <Accordion
-                            key={index}
-                            collapsible
-                            defaultValue="value-0"
-                            className="rounded-md border border-border bg-background-weak p-4"
-                            type="single"
-                          >
-                            <AccordionItem
-                              className="border-0"
-                              value={`value-${index}`}
-                            >
-                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                Calldata #{index + 1}
-                              </AccordionTrigger>
-                              <AccordionContent className="px-1 pt-4">
-                                <pre className="text-sm italic">
-                                  <Textarea
-                                    readOnly
-                                    className="h-auto w-full"
-                                    value={userOperation.callData}
-                                  />
-                                </pre>
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      })}
+                    <TransactionCalldata />
                   </div>
                 </TabsContent>
                 <TabsContent
