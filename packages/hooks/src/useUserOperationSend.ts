@@ -118,7 +118,8 @@ export const useUserOperationSend = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
+  // Get the cumulative weight of all owners in the userOperation signatures array
+  // and check if it is greater than or equal to the threshold
   const isUserOperationSendReady = useMemo(() => {
     userOperation
       ? userOperation.signatures.reduce((acc, signature) => {
@@ -133,6 +134,7 @@ export const useUserOperationSend = ({
         }, 0) >= (configuration ? configuration.threshold : 0)
       : false;
   }, [userOperation, configuration]);
+  console.info("isUserOperationSendReady", isUserOperationSendReady);
 
   const isUserOperationSendLoading = useMemo(
     () =>
