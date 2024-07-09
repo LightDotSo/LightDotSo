@@ -46,11 +46,10 @@ export const useMutationUserOperationSend = (
   const { userOperation } = useQueryUserOperation({
     hash: params.hash,
   });
-  const { userOperationReceipt, refetchUserOperationReceipt } =
-    useQueryUserOperationReceipt({
-      chainId: userOperation?.chain_id ?? null,
-      hash: params.hash,
-    });
+  const { userOperationReceipt } = useQueryUserOperationReceipt({
+    chainId: userOperation?.chain_id ?? null,
+    hash: params.hash,
+  });
   const queryClient = useQueryClient();
 
   // ---------------------------------------------------------------------------
@@ -111,10 +110,6 @@ export const useMutationUserOperationSend = (
           throw err;
         },
       );
-    },
-    onError: async () => {
-      // Refetch the user operation receipt if there is an error
-      await refetchUserOperationReceipt();
     },
     onMutate: async (data: UserOperationSendBodyParams) => {
       const previousData: UserOperationData[] | undefined =

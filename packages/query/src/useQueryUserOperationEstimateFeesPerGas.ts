@@ -58,6 +58,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // Stores
   // ---------------------------------------------------------------------------
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
