@@ -93,6 +93,10 @@ export const useUserOperations = create(
         name: "user-operations-state-v1",
         storage: createJSONStorage(() => sessionStorage, {
           reviver: (_key: string, value: any): any => {
+            // Ignore functions during serialization
+            if (typeof value === "function") {
+              return undefined;
+            }
             if (value && typeof value === "object" && value.type === "bigint") {
               return BigInt(value.value);
             }
