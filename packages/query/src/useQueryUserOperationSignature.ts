@@ -56,6 +56,10 @@ export const useQueryUserOperationSignature = (
       configuration_id: params.configuration_id,
     }).queryKey,
     queryFn: async () => {
+      if (!params.hash) {
+        return null;
+      }
+
       const res = await getUserOperationSignature(
         {
           params: {

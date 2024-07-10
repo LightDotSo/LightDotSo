@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Hex } from "viem";
+import { Hex } from "viem";
 
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
-
-export type UserOperationMerkleGetParams = {
-  root: Hex | null | undefined;
+export type RpcUserOperationReceiptParams = {
+  hash: Hex | null | undefined;
+  chainId: number | null | undefined;
 };

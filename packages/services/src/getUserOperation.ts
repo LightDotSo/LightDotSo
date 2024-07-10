@@ -30,7 +30,7 @@ export const preloadGetUserOperation = (params: UserOperationGetParams) => {
 
 export const getUserOperation = async (params: UserOperationGetParams) => {
   return getClientUserOperation(
-    { params: { query: { user_operation_hash: params.hash } } },
+    { params: { query: { user_operation_hash: params.hash! } } },
     "admin",
   );
 };

@@ -52,7 +52,7 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
       hash: params.hash,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.hash === "undefined") {
+      if (!params.hash) {
         return null;
       }
 

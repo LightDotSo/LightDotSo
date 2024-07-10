@@ -14,7 +14,10 @@
 
 "use client";
 
-import { useQueryUserOperationMerkle } from "@lightdotso/query";
+import {
+  useQueryUserOperation,
+  useQueryUserOperationMerkle,
+} from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { shortenBytes32 } from "@lightdotso/utils";
@@ -39,6 +42,13 @@ export const TransactionStatus: FC = () => {
 
   const { userOperationMerkle } = useQueryUserOperationMerkle({
     root: pendingUserOperationMerkleRoot,
+  });
+
+  const { userOperation } = useQueryUserOperation({
+    hash:
+      pendingUserOperationHashes && pendingUserOperationHashes.length === 1
+        ? pendingUserOperationHashes[0]
+        : null,
   });
 
   // ---------------------------------------------------------------------------
@@ -83,9 +93,17 @@ export const TransactionStatus: FC = () => {
             .filter(userOperation => userOperation.transaction !== null)
             .map(userOperation => (
               <div key={userOperation.hash} className="text-xs text-text-weak">
-                Transaction Hash: {shortenBytes32(userOperation.hash)}
+                Transaction Hash:{" "}
+                {userOperation &&
+                  userOperation.transaction &&
+                  shortenBytes32(userOperation.transaction?.hash)}
               </div>
             ))}
+        {userOperation && (
+          <div className="text-xs text-text-weak">
+            Transaction Hash: {shortenBytes32(userOperation.hash)}
+          </div>
+        )}
       </div>
     </StateInfoSection>
   );

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { RpcUserOperationReceiptParams } from "@lightdotso/params";
 import type { UserOperation } from "@lightdotso/schemas";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
@@ -44,9 +45,7 @@ export const rpc = createQueryKeys("rpc", {
   ) => ({
     queryKey: [{ params: params }],
   }),
-  get_user_operation_receipt: (
-    params: Pick<UserOperation, "hash"> & { chainId: number },
-  ) => ({
+  get_user_operation_receipt: (params: RpcUserOperationReceiptParams) => ({
     queryKey: [{ params: params }],
   }),
 });

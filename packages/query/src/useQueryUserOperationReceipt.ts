@@ -14,7 +14,7 @@
 
 import { getUserOperationReceipt } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
-import type { UserOperation } from "@lightdotso/schemas";
+import type { RpcUserOperationReceiptParams } from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { USER_OPERATION_RECEIPT_CONFIG } from "./config";
@@ -24,7 +24,7 @@ import { USER_OPERATION_RECEIPT_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationReceipt = (
-  params: Pick<UserOperation, "hash"> & { chainId: number | null },
+  params: RpcUserOperationReceiptParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -46,12 +46,12 @@ export const useQueryUserOperationReceipt = (
   } = useQuery({
     ...USER_OPERATION_RECEIPT_CONFIG,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
-      chainId: Number(params.chainId),
-      hash: params.hash,
+      chainId: params.chainId ?? null,
+      hash: params.hash ?? null,
     }).queryKey,
     queryFn: async () => {
-      // If no `chainId` is provided, return null
-      if (!params.chainId) {
+      // If no `chainId` or `hash` is provided, return null
+      if (!params.chainId || !params.hash) {
         return null;
       }
 

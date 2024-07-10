@@ -38,6 +38,7 @@ export type {
   QueueTransactionBodyParams,
   QueueUserOpeartionBodyParams,
 } from "./queue";
+export type { RpcUserOperationReceiptParams } from "./rpc";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
