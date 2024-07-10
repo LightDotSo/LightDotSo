@@ -13,7 +13,11 @@
 // limitations under the License.
 
 import { RpcUserOperationReceiptParams } from "@lightdotso/params";
-import type { UserOperation } from "@lightdotso/schemas";
+import {
+  RpcEstimateUserOperationGasParams,
+  RpcGasEstimationParams,
+  RpcPaymasterGasAndPaymasterAndDataParams,
+} from "@lightdotso/params/src/rpc";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -22,26 +26,14 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // -----------------------------------------------------------------------------
 
 export const rpc = createQueryKeys("rpc", {
-  estimate_user_operation_gas: (
-    params: Omit<
-      UserOperation,
-      | "hash"
-      | "signature"
-      | "paymasterAndData"
-      | "callGasLimit"
-      | "verificationGasLimit"
-      | "preVerificationGas"
-      | "maxFeePerGas"
-      | "maxPriorityFeePerGas"
-    >,
-  ) => ({
+  estimate_user_operation_gas: (params: RpcEstimateUserOperationGasParams) => ({
     queryKey: [{ params: params }],
   }),
-  get_gas_estimation: (params: { chainId: number }) => ({
+  get_gas_estimation: (params: RpcGasEstimationParams) => ({
     queryKey: [{ params: params }],
   }),
   get_paymaster_gas_and_paymaster_and_data: (
-    params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+    params: RpcPaymasterGasAndPaymasterAndDataParams,
   ) => ({
     queryKey: [{ params: params }],
   }),
