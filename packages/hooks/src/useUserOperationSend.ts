@@ -38,103 +38,61 @@ type UserOperationSendProps = {
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
-
 export const useUserOperationSend = ({
   address,
   hash,
 }: UserOperationSendProps) => {
   console.info("User operation send", address, hash);
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
 
   const { queueUserOperation, isQueueUserOperationPending } =
-    useMutationQueueUserOperation({
-      address: address as Address,
-    });
-
+    useMutationQueueUserOperation({ address });
   const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: hash,
+    hash,
   });
-  console.info("User operation", userOperation);
-
-  // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
   const { data: imageHash } = useReadLightWalletImageHash({
-    address: userOperation?.sender as Address,
-    chainId: userOperation?.chain_id ?? undefined,
+    address: (userOperation?.sender as Address) ?? "0x",
+    chainId: userOperation?.chain_id,
   });
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
   const { configuration } = useQueryConfiguration({
-    address: address as Address,
+    address,
     image_hash: imageHash,
     checkpoint: !imageHash ? 0 : undefined,
   });
-
   const { userOperationSignature, isUserOperationSignatureLoading } =
     useQueryUserOperationSignature({
-      hash: hash,
+      hash,
       configuration_id: configuration?.id,
     });
-  console.info("User operation signature", userOperationSignature);
-
-  // const { paymasterOperation } = useQueryPaymasterOperation({
-  //   address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-  //   // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
-  //   chain_id: userOperation?.chain_id!,
-  //   valid_until: fromHex(
-  //     `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
-  //     "number",
-  //   ),
-  //   valid_after: fromHex(
-  //     `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
-  //     "number",
-  //   ),
-  // });
-
   const {
     userOperationReceipt,
     isUserOperationReceiptLoading,
     refetchUserOperationReceipt,
-    userOperationReceiptErrorUpdateCount,
   } = useQueryUserOperationReceipt({
-    chainId: userOperation?.chain_id ?? null,
-    hash: hash,
+    chainId: userOperation?.chain_id ?? 0,
+    hash,
   });
 
   const { userOperationSend, isUserOperationSendPending } =
     useMutationUserOperationSend({
-      address: address as Address,
-      configuration: configuration,
-      hash: userOperation?.hash as Hex,
+      address,
+      configuration,
+      hash: (userOperation?.hash as Hex) ?? "0x",
     });
 
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  // Get the cumulative weight of all owners in the userOperation signatures array
-  // and check if it is greater than or equal to the threshold
-  const isUserOperationSendReady = useMemo(() => {
-    return userOperation && userOperationSignature
-      ? userOperation.signatures.reduce((acc, signature) => {
-          return (
-            acc +
-            ((configuration &&
-              configuration.owners.find(
+  const isUserOperationSendReady = useMemo(
+    () =>
+      userOperation && userOperationSignature
+        ? userOperation.signatures.reduce(
+            (acc, signature) =>
+              acc +
+              (configuration?.owners.find(
                 owner => owner.id === signature?.owner_id,
-              )?.weight) ||
-              0)
-          );
-        }, 0) >= (configuration ? configuration.threshold : 0)
-      : false;
-  }, [userOperation, userOperationSignature, configuration]);
+              )?.weight || 0),
+            0,
+          ) >= (configuration ? configuration.threshold : 0)
+        : false,
+    [userOperation, userOperationSignature, configuration],
+  );
 
   const isUserOperationSendLoading = useMemo(
     () =>
@@ -152,18 +110,10 @@ export const useUserOperationSend = ({
     ],
   );
 
-  const isUserOperationSendSuccess = useMemo(
-    () =>
-      userOperation?.status === "INVALID" ||
-      userOperation?.status === "EXECUTED" ||
-      userOperation?.status === "REVERTED",
-    [userOperation],
-  );
-
   const isUserOperationSendValid = useMemo(
     () =>
-      typeof userOperation !== "undefined" &&
-      typeof userOperationSignature !== "undefined" &&
+      userOperation &&
+      userOperationSignature &&
       !isUserOperationSendLoading &&
       isUserOperationSendReady,
     [
@@ -175,27 +125,19 @@ export const useUserOperationSend = ({
   );
 
   const isUserOperationSendDisabled = useMemo(
-    () => !isUserOperationSendValid || isUserOperationSendSuccess,
-    [isUserOperationSendValid, isUserOperationSendSuccess],
+    () => !isUserOperationSendValid,
+    [isUserOperationSendValid],
   );
 
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
   const handleSubmit = useCallback(() => {
-    if (!isUserOperationSendReady) {
-      console.error("User operation is not ready to be sent");
-      console.error("User operation", userOperation);
-      console.error("User operation signature", userOperationSignature);
-      return;
-    }
-
-    if (!userOperation || !userOperationSignature) {
-      console.error("User operation or user operation signature is missing");
-      console.error("Params", address, hash);
-      console.error("User operation", userOperation);
-      console.error("User operation signature", userOperationSignature);
+    if (
+      !isUserOperationSendReady ||
+      !userOperation ||
+      !userOperationSignature
+    ) {
+      console.error(
+        "User operation is not ready to be sent or data is missing",
+      );
       return;
     }
 
@@ -204,35 +146,19 @@ export const useUserOperationSend = ({
         "User operation receipt already exists",
         userOperationReceipt,
       );
-      // Queue the user operation if the user operation has been sent but isn't indexed yet
-      queueUserOperation({ hash: hash });
+      queueUserOperation({ hash });
       return;
     }
 
     if (userOperation.status === "PENDING") {
       console.info("User operation is pending", userOperation);
-      // Refetch the user operation receipt again
       refetchUserOperationReceipt();
-
-      // If the user operation receipt has failed to fetch every 3 times, then return
-      // This is to prevent the user operation from being sent multiple times
-      if (userOperationReceiptErrorUpdateCount % 3 !== 2) {
-        console.info("User operation receipt failed to fetch");
-        console.info(
-          "User operation receipt error update count",
-          userOperationReceiptErrorUpdateCount,
-        );
-        return;
-      }
+      return;
     }
 
     console.info("Sending user operation", hash);
-    // Send the user operation if the user operation hasn't been sent yet
-    userOperationSend({
-      userOperation: userOperation,
-      userOperationSignature: userOperationSignature as Hex,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // @ts-ignore
+    userOperationSend({ userOperation, userOperationSignature });
   }, [
     isUserOperationSendReady,
     userOperation,
@@ -243,17 +169,12 @@ export const useUserOperationSend = ({
     queueUserOperation,
   ]);
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
   return {
-    handleSubmit: handleSubmit,
-    isUserOperationSendValid: isUserOperationSendValid,
-    isUserOperationSendDisabled: isUserOperationSendDisabled,
-    isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendPending: isUserOperationSendPending,
-    isUserOperationSendSuccess: isUserOperationSendSuccess,
-    isUserOperationSendReady: isUserOperationSendReady,
+    handleSubmit,
+    isUserOperationSendValid,
+    isUserOperationSendDisabled,
+    isUserOperationSendLoading,
+    isUserOperationSendPending,
+    isUserOperationSendReady,
   };
 };

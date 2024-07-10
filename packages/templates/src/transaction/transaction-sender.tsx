@@ -47,7 +47,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
       hash: hash,
     });
 
-    const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
+    const { handleSubmit } = useUserOperationSend({
       address: address as Address,
       hash: hash,
     });
@@ -72,7 +72,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
 
     return (
       <div key={`${address}-${hash}`}>
-        {userOperation && isUserOperationSendSuccess && (
+        {userOperation && (
           <Button asChild variant="link">
             <a
               target="_blank"
@@ -104,17 +104,17 @@ type TransactionSenderProps = {
 
 export const TransactionSender: FC<TransactionSenderProps> = memo(
   ({ address }) => {
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Stores
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     const pendingSubmitUserOperationHashes = useUserOperations(
       useShallow(state => state.pendingSubmitUserOperationHashes),
     );
 
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Render
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     return (
       <StateInfoSection
