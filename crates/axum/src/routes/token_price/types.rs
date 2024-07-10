@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use lightdotso_prisma::token_price;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -43,6 +44,21 @@ impl Default for TokenPrice {
         }
     }
 }
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<token_price::Data> for TokenPrice.
+impl From<token_price::Data> for TokenPrice {
+    fn from(token: token_price::Data) -> Self {
+        Self { price: token.price, ..Default::default() }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
