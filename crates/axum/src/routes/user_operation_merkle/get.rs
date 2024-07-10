@@ -52,8 +52,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Protocola group returned successfully", body = UserOperationMerkle),
-            (status = 404, description = "Protocola group not found", body = UserOperationMerkleError),
+            (status = 200, description = "User operation merkle returned successfully", body = UserOperationMerkle),
+            (status = 404, description = "User operation merkle not found", body = UserOperationMerkleError),
         )
     )]
 #[autometrics]
