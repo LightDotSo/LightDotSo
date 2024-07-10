@@ -74,6 +74,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
       <div>
         {address}
         {hash}
+        {JSON.stringify(userOperation)}
         {userOperation && userOperation?.transaction ? (
           <Button asChild variant="link">
             <a
