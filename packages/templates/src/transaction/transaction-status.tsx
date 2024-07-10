@@ -28,7 +28,8 @@ export const TransactionStatus: FC = () => {
   // Stores
   // -------------------------------------------------------------------------
 
-  const { pendingUserOperationHashes } = useUserOperations();
+  const { pendingUserOperationMerkleRoot, pendingUserOperationHashes } =
+    useUserOperations();
 
   // -------------------------------------------------------------------------
   // Render
@@ -56,7 +57,13 @@ export const TransactionStatus: FC = () => {
           : "Your transaction has been sent successfully."
       }
     >
-      <></>
+      <div className="space-y-3">
+        {pendingUserOperationMerkleRoot && (
+          <div className="text-xs text-text-weak">
+            Merkle Root: {pendingUserOperationMerkleRoot}
+          </div>
+        )}
+      </div>
     </StateInfoSection>
   );
 };
