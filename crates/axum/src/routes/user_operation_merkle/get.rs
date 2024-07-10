@@ -23,7 +23,8 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
-    asset_change, interpretation, signature, user_operation, user_operation_merkle,
+    asset_change, billing_operation, interpretation, paymaster_operation, signature, token_price,
+    user_operation, user_operation_merkle,
 };
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
@@ -82,7 +83,11 @@ pub(crate) async fn v1_user_operation_merkle_get_handler(
         .with(
             user_operation_merkle::user_operations::fetch(vec![])
                 .with(user_operation::paymaster::fetch())
-                .with(user_operation::paymaster_operation::fetch())
+                .with(user_operation::paymaster_operation::fetch().with(
+                    paymaster_operation::billing_operation::fetch().with(
+                        billing_operation::token_price::fetch().with(token_price::token::fetch()),
+                    ),
+                ))
                 .with(user_operation::transaction::fetch())
                 .with(user_operation::signatures::fetch(vec![
                     signature::user_operation_hash::equals(query.root),

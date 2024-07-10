@@ -23,7 +23,8 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
-    asset_change, billing_operation, interpretation, paymaster_operation, signature, user_operation,
+    asset_change, billing_operation, interpretation, paymaster_operation, signature, token_price,
+    user_operation,
 };
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -74,32 +75,32 @@ pub(crate) async fn v1_user_operation_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the user operations from the database.
-    let user_operation = state
-        .client
-        .user_operation()
-        .find_unique(user_operation::hash::equals(query.user_operation_hash))
-        .with(user_operation::paymaster::fetch())
-        .with(
-            user_operation::paymaster_operation::fetch().with(
-                paymaster_operation::billing_operation::fetch()
-                    .with(billing_operation::token_price::fetch()),
-            ),
-        )
-        .with(user_operation::transaction::fetch())
-        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
-            user_operation_hash,
-        )]))
-        .with(
-            user_operation::interpretation::fetch()
-                .with(interpretation::actions::fetch(vec![]))
-                .with(
-                    interpretation::asset_changes::fetch(vec![])
-                        .with(asset_change::interpretation_action::fetch())
-                        .with(asset_change::token::fetch()),
+    let user_operation =
+        state
+            .client
+            .user_operation()
+            .find_unique(user_operation::hash::equals(query.user_operation_hash))
+            .with(user_operation::paymaster::fetch())
+            .with(user_operation::paymaster_operation::fetch().with(
+                paymaster_operation::billing_operation::fetch().with(
+                    billing_operation::token_price::fetch().with(token_price::token::fetch()),
                 ),
-        )
-        .exec()
-        .await?;
+            ))
+            .with(user_operation::transaction::fetch())
+            .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+                user_operation_hash,
+            )]))
+            .with(
+                user_operation::interpretation::fetch()
+                    .with(interpretation::actions::fetch(vec![]))
+                    .with(
+                        interpretation::asset_changes::fetch(vec![])
+                            .with(asset_change::interpretation_action::fetch())
+                            .with(asset_change::token::fetch()),
+                    ),
+            )
+            .exec()
+            .await?;
 
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(RouteError::UserOperationError(
