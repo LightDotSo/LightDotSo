@@ -6349,6 +6349,15 @@ name = "lightdotso-keychain"
 version = "0.1.0"
 
 [[package]]
+name = "lightdotso-node"
+version = "0.1.0"
+dependencies = [
+ "clap 4.4.0",
+ "eyre",
+ "lightdotso-tracing",
+]
+
+[[package]]
 name = "lightdotso-notifier"
 version = "0.1.0"
 dependencies = [
