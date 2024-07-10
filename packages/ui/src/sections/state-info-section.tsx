@@ -23,7 +23,7 @@ import { baseHeightWrapper } from "../wrappers/base";
 // -----------------------------------------------------------------------------
 
 type StateInfoSectionProps = HTMLAttributes<HTMLDivElement> & {
-  children: ReactNode;
+  children?: ReactNode;
   icon: ReactNode;
   title: string;
   description: string;

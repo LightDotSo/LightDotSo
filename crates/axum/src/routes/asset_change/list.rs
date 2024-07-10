@@ -49,8 +49,8 @@ pub struct ListQuery {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Asset Changes returned successfully", body = [AssetChange]),
-            (status = 500, description = "Asset Change bad request", body = AssetChangeError),
+            (status = 200, description = "Asset changes returned successfully", body = [AssetChange]),
+            (status = 500, description = "Asset change bad request", body = AssetChangeError),
         )
     )]
 #[autometrics]

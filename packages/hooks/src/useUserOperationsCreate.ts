@@ -54,9 +54,10 @@ export const useUserOperationsCreate = ({
 
   const { address: userAddress } = useAuth();
   const {
-    addPendingSubmitUserOperationHash,
-    internalUserOperations,
-    resetInternalUserOperations,
+    addPendingUserOperationMerkleRoot,
+    addPendingUserOperationHash,
+    userOperations,
+    resetUserOperations,
   } = useUserOperations();
   const { setIsFormDisabled } = useFormRef();
 
@@ -81,12 +82,12 @@ export const useUserOperationsCreate = ({
 
   const subdigest = useMemo(() => {
     // If the userOperation length is 0, return
-    if (internalUserOperations.length === 0) {
+    if (userOperations.length === 0) {
       return;
     }
 
     // If the userOperation length is 1, get the first userOperation
-    const userOperation = internalUserOperations[0];
+    const userOperation = userOperations[0];
 
     // Check if the userOperation has hash and chainId
     if (!userOperation?.hash || !userOperation?.chainId) {
@@ -94,7 +95,7 @@ export const useUserOperationsCreate = ({
     }
 
     // Return the subdigest of the userOperation w/ hash and chainId encoded (type 1)
-    if (internalUserOperations.length === 1) {
+    if (userOperations.length === 1) {
       return subdigestOf(
         address,
         hexToBytes(userOperation?.hash as Hex),
@@ -102,18 +103,18 @@ export const useUserOperationsCreate = ({
       );
     }
 
-    // Check if all of the internalUserOperations have hash
-    const isAllHashed = internalUserOperations.every(
+    // Check if all of the userOperations have hash
+    const isAllHashed = userOperations.every(
       userOperation => userOperation.hash,
     );
     if (!isAllHashed) {
       return;
     }
 
-    // If the userOperation length is greater than 1, get the merkle root of the internalUserOperations
-    if (internalUserOperations.length > 1) {
+    // If the userOperation length is greater than 1, get the merkle root of the userOperations
+    if (userOperations.length > 1) {
       // Get the leaves of the merkle tree
-      const leaves = internalUserOperations
+      const leaves = userOperations
         .map(userOperation => hexToBytes(userOperation.hash as Hex))
         .sort(Buffer.compare);
 
@@ -131,8 +132,8 @@ export const useUserOperationsCreate = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    // Solely dependent on internalUserOperations for the subdigest
-    internalUserOperations,
+    // Solely dependent on userOperations for the subdigest
+    userOperations,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -227,11 +228,11 @@ export const useUserOperationsCreate = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  // Reset the signed data, merkle tree, and internalUserOperations
+  // Reset the signed data, merkle tree, and userOperations
   const resetUserOperationsCreate = useCallback(() => {
     setSignedData(undefined);
     setMerkleTree(undefined);
-    resetInternalUserOperations();
+    resetUserOperations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -274,79 +275,77 @@ export const useUserOperationsCreate = ({
   useEffect(() => {
     // Create a single user operation
     const createUserOp = async () => {
-      if (!owner || !signedData || !internalUserOperation) {
+      if (!owner || !signedData || !userOperation) {
         return;
       }
 
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperation: internalUserOperation,
+        userOperation: userOperation,
       });
 
-      addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
+      addPendingUserOperationHash(userOperation.hash as Hex);
 
       setSignedData(undefined);
     };
 
     // Create a batch of user operations
     const createUserOpBatch = async () => {
-      if (!owner || !signedData || !merkleTree || !internalUserOperations) {
+      if (!owner || !signedData || !merkleTree || !userOperations) {
         return;
       }
+
+      const merkleRoot = `0x${merkleTree.getRoot().toString("hex")}` as Hex;
 
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperations: internalUserOperations,
-        merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
+        userOperations: userOperations,
+        merkleRoot: merkleRoot,
       });
 
-      for (const internalUserOperation of internalUserOperations) {
-        addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
+      addPendingUserOperationMerkleRoot(merkleRoot);
+
+      for (const userOperation of userOperations) {
+        addPendingUserOperationHash(userOperation.hash as Hex);
       }
 
       setSignedData(undefined);
     };
 
-    // If the internalUserOperations length is 0, return
-    if (internalUserOperations.length === 0) {
+    // If the userOperations length is 0, return
+    if (userOperations.length === 0) {
       return;
     }
 
-    // If the internalUserOperations length is 1, get the first userOperation
-    const internalUserOperation = internalUserOperations[0];
-    if (internalUserOperations.length === 1) {
+    // If the userOperations length is 1, get the first userOperation
+    const userOperation = userOperations[0];
+    if (userOperations.length === 1) {
       createUserOp();
       return;
     }
 
-    // If the internalUserOperations length is greater than 1
-    if (internalUserOperations.length > 1) {
+    // If the userOperations length is greater than 1
+    if (userOperations.length > 1) {
       createUserOpBatch();
       return;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    signedData,
-    owner,
-    internalUserOperations,
-    configuration?.threshold,
-    address,
-  ]);
+  }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // Check if the internalUserOperations are valid
+  // Check if the userOperations are valid
   // Should be all defined and not undefined for all required fields
   const isValidUserOperations = useMemo(() => {
     return (
-      internalUserOperations &&
-      internalUserOperations.length > 0 &&
-      internalUserOperations.every(userOperation => {
+      userOperations &&
+      userOperations.length > 0 &&
+      userOperations.every(userOperation => {
         return !!(
           typeof owner !== "undefined" &&
           userOperation &&
@@ -365,11 +364,11 @@ export const useUserOperationsCreate = ({
         );
       })
     );
-  }, [owner, internalUserOperations]);
+  }, [owner, userOperations]);
 
-  // Check if the current subdigest is equal to the merkle tree root if the internalUserOperations length is greater than 1
+  // Check if the current subdigest is equal to the merkle tree root if the userOperations length is greater than 1
   const isUserOperationsMerkleEqual = useMemo(() => {
-    if (internalUserOperations.length > 1) {
+    if (userOperations.length > 1) {
       return (
         typeof merkleTree !== "undefined" &&
         subdigest === subdigestOf(address, merkleTree.getRoot(), BigInt(0))
@@ -377,7 +376,7 @@ export const useUserOperationsCreate = ({
     }
 
     return true;
-  }, [address, internalUserOperations.length, merkleTree, subdigest]);
+  }, [address, userOperations.length, merkleTree, subdigest]);
 
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
@@ -403,8 +402,6 @@ export const useUserOperationsCreate = ({
     // A combination of conditions that would disable the transaction
     return (
       typeof subdigest === "undefined" ||
-      // Nor if the user operations all have a hash
-      // !internalUserOperations.every(userOperation => userOperation.hash) ||
       // Nor if the user operations are not valid
       !isValidUserOperations ||
       // Nor if the user operations are not createable
@@ -414,7 +411,6 @@ export const useUserOperationsCreate = ({
     );
   }, [
     subdigest,
-    // internalUserOperations,
     isValidUserOperations,
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,

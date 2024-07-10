@@ -252,8 +252,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a billing operation
+         * @description Get a billing operation
          */
         get: operations["v1_billing_operation_get_handler"];
         put?: never;
@@ -732,8 +732,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a interpretation action
+         * @description Get a interpretation action
          */
         get: operations["v1_interpretation_action_get_handler"];
         put?: never;
@@ -812,8 +812,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get an invite code
+         * @description Get an invite code
          */
         get: operations["v1_invite_code_get_handler"];
         put?: never;
@@ -952,8 +952,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a notification settings
+         * @description Get a notification settings
          */
         get: operations["v1_notification_settings_get_handler"];
         put?: never;
@@ -1092,8 +1092,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a paymaster operation
+         * @description Get a paymaster operation
          */
         get: operations["v1_paymaster_operation_get_handler"];
         put?: never;
@@ -1258,6 +1258,26 @@ export interface paths {
          * @description Queue interpretation handler
          */
         post: operations["v1_queue_interpretation_handler"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue/node": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Queue user operation handler
+         * @description Queue user operation handler
+         */
+        post: operations["v1_queue_node_handler"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3393,6 +3413,8 @@ export interface components {
             proofs: components["schemas"]["UserOperationMerkleProof"][];
             /** @description The root of the merkle tree. */
             root: string;
+            /** @description The user operations in the merkle tree. */
+            user_operations: components["schemas"]["UserOperation"][];
         };
         /** @description UserOperationMerkle errors */
         UserOperationMerkleError: {
@@ -3771,7 +3793,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Asset Change returned successfully */
+            /** @description Asset change returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3780,7 +3802,7 @@ export interface operations {
                     "application/json": components["schemas"]["AssetChange"];
                 };
             };
-            /** @description Asset Change not found */
+            /** @description Asset change not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -3805,7 +3827,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Asset Changes returned successfully */
+            /** @description Asset changes returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3814,7 +3836,7 @@ export interface operations {
                     "application/json": components["schemas"]["AssetChange"][];
                 };
             };
-            /** @description Asset Change bad request */
+            /** @description Asset change bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -4230,7 +4252,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description Chain returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4239,7 +4261,7 @@ export interface operations {
                     "application/json": components["schemas"]["Chain"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description Chain not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -4623,7 +4645,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description ConfigurationOperationOwner returned successfully */
+            /** @description Configuration operation owner returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4632,7 +4654,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperationOwner"];
                 };
             };
-            /** @description ConfigurationOperationOwner not found */
+            /** @description Configuration operation owner found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -4745,7 +4767,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Configuration Operation Signature returned successfully */
+            /** @description Configuration operation signature returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4754,7 +4776,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperationSignature"];
                 };
             };
-            /** @description Configuration Operation Signature not found */
+            /** @description Configuration operation signature not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -5552,7 +5574,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Paymaster Operation returned successfully */
+            /** @description Paymaster operation returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5561,7 +5583,7 @@ export interface operations {
                     "application/json": components["schemas"]["PaymasterOperation"];
                 };
             };
-            /** @description Paymaster Operation not found */
+            /** @description Paymaster operation not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -5714,7 +5736,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description Protocol group returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5723,7 +5745,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProtocolGroup"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description Protocol group not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -5809,6 +5831,38 @@ export interface operations {
                 transaction_hash?: string | null;
                 /** @description The optional user operation hash to queue. */
                 user_operation_hash?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Queue created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueSuccess"];
+                };
+            };
+            /** @description Queue internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueError"];
+                };
+            };
+        };
+    };
+    v1_queue_node_handler: {
+        parameters: {
+            query: {
+                /** @description The user operation hash or the user operation merkle root of the target queue. */
+                hash: string;
             };
             header?: never;
             path?: never;
@@ -6710,7 +6764,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Settings returned successfully */
+            /** @description User settings returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6719,7 +6773,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserNotificationSettings"];
                 };
             };
-            /** @description User Settings not found */
+            /** @description User settings not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -6796,7 +6850,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Settings returned successfully */
+            /** @description User settings returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6805,7 +6859,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserSettings"];
                 };
             };
-            /** @description User Settings not found */
+            /** @description User settings not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -6986,7 +7040,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operation returned successfully */
+            /** @description User operation returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6995,7 +7049,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperation"];
                 };
             };
-            /** @description User Operation not found */
+            /** @description User operation not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7110,7 +7164,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operation nonce returned successfully */
+            /** @description  User operation nonce returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7119,7 +7173,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationNonce"];
                 };
             };
-            /** @description User Operation nonce not found */
+            /** @description  User operation nonce not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7153,7 +7207,7 @@ export interface operations {
                     "text/plain": string;
                 };
             };
-            /** @description User Operation not found */
+            /** @description User operation not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7185,7 +7239,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationSuccess"];
                 };
             };
-            /** @description User Operation not found */
+            /** @description User operation not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7239,7 +7293,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description User operation merkle returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7248,7 +7302,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationMerkle"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description User operation merkle not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7510,7 +7564,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Wallet Features returned successfully */
+            /** @description Wallet features returned  successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7519,7 +7573,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletFeatures"];
                 };
             };
-            /** @description Wallet Features not found */
+            /** @description Wallet features not found  */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7708,7 +7762,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Wallet Settings returned successfully */
+            /** @description Wallet settings returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7717,7 +7771,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletNotificationSettings"];
                 };
             };
-            /** @description Wallet Settings not found */
+            /** @description Wallet settings not found */
             404: {
                 headers: {
                     [name: string]: unknown;

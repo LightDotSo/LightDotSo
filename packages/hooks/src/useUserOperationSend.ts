@@ -18,24 +18,13 @@ import {
   useMutationQueueUserOperation,
   useMutationUserOperationSend,
   useQueryConfiguration,
-  useQueryPaymasterOperation,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
-import {
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightWalletImageHash,
-} from "@lightdotso/wagmi";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  type Hex,
-  type Address,
-  toHex,
-  fromHex,
-  recoverMessageAddress,
-} from "viem";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import { useCallback, useMemo } from "react";
+import { type Hex, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -54,12 +43,7 @@ export const useUserOperationSend = ({
   address,
   hash,
 }: UserOperationSendProps) => {
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-
+  console.info("User operation send", address, hash);
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -72,48 +56,11 @@ export const useUserOperationSend = ({
   const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: hash,
   });
+  console.info("User operation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
-
-  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
-    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-    chainId: userOperation?.chain_id,
-    args: [
-      {
-        sender: userOperation?.sender as Address,
-        nonce: BigInt(userOperation?.nonce ?? 0),
-        initCode: userOperation?.init_code as Hex,
-        callData: userOperation?.call_data as Hex,
-        callGasLimit: BigInt(userOperation?.call_gas_limit ?? 0),
-        verificationGasLimit: BigInt(
-          userOperation?.verification_gas_limit ?? 0,
-        ),
-        preVerificationGas: BigInt(userOperation?.pre_verification_gas ?? 0),
-        maxFeePerGas: BigInt(userOperation?.max_fee_per_gas ?? 0),
-        maxPriorityFeePerGas: BigInt(
-          userOperation?.max_priority_fee_per_gas ?? 0,
-        ),
-        paymasterAndData: userOperation?.paymaster_and_data as Hex,
-        signature: toHex(new Uint8Array([2])),
-      },
-      fromHex(
-        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
-        "number",
-      ),
-      fromHex(
-        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
-        "number",
-      ),
-    ],
-  });
-
-  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
-    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-    chainId: Number(userOperation?.chain_id),
-    args: [userOperation?.sender as Address],
-  });
 
   const { data: imageHash } = useReadLightWalletImageHash({
     address: userOperation?.sender as Address,
@@ -135,25 +82,25 @@ export const useUserOperationSend = ({
       hash: hash,
       configuration_id: configuration?.id,
     });
+  console.info("User operation signature", userOperationSignature);
 
-  const { paymasterOperation } = useQueryPaymasterOperation({
-    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-    // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
-    chain_id: userOperation?.chain_id!,
-    valid_until: fromHex(
-      `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
-      "number",
-    ),
-    valid_after: fromHex(
-      `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
-      "number",
-    ),
-  });
+  // const { paymasterOperation } = useQueryPaymasterOperation({
+  //   address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
+  //   // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+  //   chain_id: userOperation?.chain_id!,
+  //   valid_until: fromHex(
+  //     `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
+  //     "number",
+  //   ),
+  //   valid_after: fromHex(
+  //     `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
+  //     "number",
+  //   ),
+  // });
 
   const {
     userOperationReceipt,
     isUserOperationReceiptLoading,
-    isUserOperationReceiptError,
     refetchUserOperationReceipt,
     userOperationReceiptErrorUpdateCount,
   } = useQueryUserOperationReceipt({
@@ -169,51 +116,25 @@ export const useUserOperationSend = ({
     });
 
   // ---------------------------------------------------------------------------
-  // Local Variables
-  // ---------------------------------------------------------------------------
-
-  const paymasterSignedMsg = `0x${userOperation?.paymaster_and_data.slice(
-    170,
-  )}` as Hex;
-
-  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
-  const isUserOperationSendReady = userOperation
-    ? userOperation.signatures.reduce((acc, signature) => {
-        return (
-          acc +
-          ((configuration &&
-            configuration.owners.find(owner => owner.id === signature?.owner_id)
-              ?.weight) ||
-            0)
-        );
-      }, 0) >= (configuration ? configuration.threshold : 0)
-    : false;
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    const recoverAddress = async () => {
-      if (paymasterHash) {
-        try {
-          const address = await recoverMessageAddress({
-            message: { raw: paymasterHash },
-            signature: paymasterSignedMsg,
-          });
-          setRecoveredAddress(address);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    };
-
-    recoverAddress();
-  }, [paymasterHash, paymasterSignedMsg]);
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  // Get the cumulative weight of all owners in the userOperation signatures array
+  // and check if it is greater than or equal to the threshold
+  const isUserOperationSendReady = useMemo(() => {
+    return userOperation && userOperationSignature
+      ? userOperation.signatures.reduce((acc, signature) => {
+          return (
+            acc +
+            ((configuration &&
+              configuration.owners.find(
+                owner => owner.id === signature?.owner_id,
+              )?.weight) ||
+              0)
+          );
+        }, 0) >= (configuration ? configuration.threshold : 0)
+      : false;
+  }, [userOperation, userOperationSignature, configuration]);
 
   const isUserOperationSendLoading = useMemo(
     () =>
@@ -263,10 +184,12 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
-    console.info("Submitting user operation", hash, new Date().toISOString());
-
-    if (!userOperation || !userOperationSignature) {
-      console.error("User operation or user operation signature is missing");
+    if (
+      !isUserOperationSendReady ||
+      !userOperation ||
+      !userOperationSignature
+    ) {
+      console.error("User operation is not ready to be sent");
       console.error("Params", address, hash);
       console.error("User operation", userOperation);
       console.error("User operation signature", userOperationSignature);
@@ -306,17 +229,8 @@ export const useUserOperationSend = ({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
-  }, [
-    userOperation,
-    userOperationSignature,
-    userOperationReceipt,
-    isUserOperationSendPending,
-    isUserOperationReceiptError,
-    userOperationSend,
-    refetchUserOperationReceipt,
-    queueUserOperation,
-    hash,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -324,14 +238,11 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit: handleSubmit,
-    paymasterNonce: paymasterNonce,
-    paymasterOperation: paymasterOperation,
-    paymasterSignedMsg: paymasterSignedMsg,
-    recoveredAddress: recoveredAddress,
     isUserOperationSendValid: isUserOperationSendValid,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
+    isUserOperationSendReady: isUserOperationSendReady,
   };
 };

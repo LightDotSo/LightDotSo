@@ -289,6 +289,7 @@ use utoipa_swagger_ui::SwaggerUi;
         protocol_group::v1_protocol_group_list_handler,
         queue::v1_queue_interpretation_handler,
         queue::v1_queue_portfolio_handler,
+        queue::v1_queue_node_handler,
         queue::v1_queue_token_handler,
         queue::v1_queue_transaction_handler,
         queue::v1_queue_user_operation_handler,
@@ -346,7 +347,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     tags(
         (name = "activity", description = "Activity API"),
-        (name = "asset_change", description = "Asset Change API"),
+        (name = "asset_change", description = "Asset change API"),
         (name = "auth", description = "Auth API"),
         (name = "billing", description = "Billing API"),
         (name = "billing_operation", description = "Billing Operation API"),

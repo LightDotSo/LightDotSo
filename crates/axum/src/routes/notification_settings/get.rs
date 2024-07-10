@@ -42,7 +42,7 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a paymaster
+/// Get a notification settings
 #[utoipa::path(
         get,
         path = "/notification_settings/get",

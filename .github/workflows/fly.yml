@@ -103,6 +103,22 @@ jobs:
         working-directory: ./fly/consumer-actvty
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-consumer-bop:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/consumer-bop
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-cvalnt:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
     runs-on: ubuntu-latest
@@ -165,6 +181,22 @@ jobs:
       - name: Fly Deploy
         run: flyctl deploy --remote-only
         working-directory: ./fly/consumer-pop
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-consumer-node:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/consumer-node
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-nfn:
@@ -592,10 +624,12 @@ jobs:
       # - fly-deploy-bundler
       - fly-deploy-consumer
       - fly-deploy-consumer-actvty
+      - fly-deploy-consumer-bop
       - fly-deploy-consumer-cvalnt
       - fly-deploy-consumer-error
       - fly-deploy-consumer-intptn
       - fly-deploy-consumer-pop
+      - fly-deploy-consumer-node
       - fly-deploy-consumer-nfn
       - fly-deploy-consumer-prtflo
       - fly-deploy-consumer-retry
@@ -630,5 +664,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-consumer,fly-deploy-consumer-actvty,fly-deploy-consumer-cvalnt,fly-deploy-consumer-error,fly-deploy-consumer-intptn,fly-deploy-consumer-nfn,fly-deploy-consumer-pop,fly-deploy-consumer-prtflo,fly-deploy-consumer-retry,fly-deploy-consumer-rtscn,fly-deploy-consumer-tx,fly-deploy-consumer-uop,fly-deploy-gas,fly-deploy-grafana,fly-deploy-log-shipper,fly-deploy-metabase,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-soketi
+          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-consumer,fly-deploy-consumer-actvty,fly-deploy-consumer-bop,fly-deploy-consumer-cvalnt,fly-deploy-consumer-error,fly-deploy-consumer-intptn,fly-deploy-consumer-nfn,fly-deploy-consumer-node,fly-deploy-consumer-pop,fly-deploy-consumer-prtflo,fly-deploy-consumer-retry,fly-deploy-consumer-rtscn,fly-deploy-consumer-tx,fly-deploy-consumer-uop,fly-deploy-gas,fly-deploy-grafana,fly-deploy-log-shipper,fly-deploy-metabase,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-soketi
           jobs: ${{ toJSON(needs) }}

@@ -51,7 +51,7 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a paymaster
+/// Get a paymaster operation
 #[utoipa::path(
         get,
         path = "/paymaster_operation/get",
@@ -59,8 +59,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Paymaster Operation returned successfully", body = PaymasterOperation),
-            (status = 404, description = "Paymaster Operation not found", body = PaymasterOperationError),
+            (status = 200, description = "Paymaster operation returned successfully", body = PaymasterOperation),
+            (status = 404, description = "Paymaster operation not found", body = PaymasterOperationError),
         )
     )]
 #[autometrics]
@@ -133,7 +133,7 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
 
     // If the paymaster is not found, return a 404.
     let paymaster_operation = paymaster_operation.ok_or(RouteError::PaymasterOperationError(
-        PaymasterOperationError::NotFound("Paymaster Operation not found".to_string()),
+        PaymasterOperationError::NotFound("Paymaster operation not found".to_string()),
     ))?;
 
     // -------------------------------------------------------------------------

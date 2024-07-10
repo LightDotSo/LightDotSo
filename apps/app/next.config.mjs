@@ -15,17 +15,7 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
-// import path, { dirname } from "path";
-// import { fileURLToPath } from "url";
-// import withSerwistInit from "@serwist/next";
 import packageJson from "./package.json" assert { type: "json" };
-
-// -----------------------------------------------------------------------------
-// Path Config
-// -----------------------------------------------------------------------------
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
 
 // ---------------------------------------------------------------------------
 // Next Config
@@ -42,7 +32,6 @@ const nextConfig = {
   },
   experimental: {
     ppr: "incremental",
-    // esmExternals: "loose",
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",

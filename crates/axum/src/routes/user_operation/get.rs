@@ -50,8 +50,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User Operation returned successfully", body = UserOperation),
-            (status = 404, description = "User Operation not found", body = UserOperationError),
+            (status = 200, description = "User operation returned successfully", body = UserOperation),
+            (status = 404, description = "User operation not found", body = UserOperationError),
         )
     )]
 #[autometrics]

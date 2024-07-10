@@ -31,15 +31,10 @@ import {
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionContent,
-  AccordionTrigger,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  Textarea,
   Form,
   FormItem,
   FormField,
@@ -61,10 +56,10 @@ import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
-import { TransactionDetailInfo } from "./transaction-details-info";
-import { TransactionDevInfo } from "./transaction-dev-info";
+import { TransactionCalldata } from "./transaction-calldata";
+import { TransactionDetails } from "./transaction-details";
 import { TransactionFetcher } from "./transaction-fetcher";
-import { TransactionSender } from "./transaction-sender";
+import { TransactionStatus } from "./transaction-status";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -90,13 +85,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { pageIndex, setPageIndex } = useModalSwiper();
-  const {
-    internalUserOperations,
-    userOperationDetails,
-    userOperationDevInfo,
-    // userOperationSimulations,
-    resetAll,
-  } = useUserOperations();
+  const { resetAll } = useUserOperations();
   const {
     customFormSuccessText,
     isFormLoading,
@@ -128,7 +117,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [userOperations] = useUserOperationsQueryState();
+  const [userOperationsQueryState] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Local Hooks
@@ -212,8 +201,9 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // On pathname change, reset all user operations
   useEffect(() => {
     resetAll();
+    setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetAll]);
+  }, [pathname, resetAll, setPageIndex]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
@@ -262,55 +252,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                   value="transaction"
                 >
                   <div className="space-y-3 pt-3">
-                    {/* {Object.values(userOperationSimulations).map(simulation => {
-                      return simulation.interpretation.asset_changes.map(
-                        (assetChange, index) => {
-                          return (
-                            <AssetChange
-                              key={`${assetChange.id}-${index}`}
-                              assetChange={assetChange}
-                            />
-                          );
-                        },
-                      );
-                    })} */}
-                    {Object.entries(userOperationDetails).map(
-                      ([chainId, details], index) => {
-                        const chain = getChainById(Number(chainId));
-                        return (
-                          <Accordion
-                            key={index}
-                            collapsible
-                            defaultValue="value-0"
-                            className="rounded-md border border-border bg-background-weak p-4"
-                            type="single"
-                          >
-                            <AccordionItem
-                              className="border-0"
-                              value={`value-${index}`}
-                            >
-                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                <div className="flex items-center">
-                                  <span className="mr-2.5">
-                                    Transaction on {chain.name}
-                                  </span>
-                                  <ChainLogo chainId={chain.id} />
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="px-1 pt-4">
-                                {details.map((item, itemIndex) => (
-                                  <TransactionDetailInfo
-                                    key={`${index}-${itemIndex}`}
-                                    title={item.title}
-                                    value={item.value}
-                                  />
-                                ))}
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      },
-                    )}
+                    <TransactionDetails />
                     <Form {...form}>
                       <form className="space-y-4">
                         <FormField
@@ -485,43 +427,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                   value="details"
                 >
                   <div className="space-y-3 pt-3">
-                    {Object.entries(userOperationDetails).map(
-                      ([chainId, details], index) => {
-                        const chain = getChainById(Number(chainId));
-                        return (
-                          <Accordion
-                            key={index}
-                            collapsible
-                            defaultValue="value-0"
-                            className="rounded-md border border-border bg-background-weak p-4"
-                            type="single"
-                          >
-                            <AccordionItem
-                              className="border-0"
-                              value={`value-${index}`}
-                            >
-                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                <div className="flex items-center">
-                                  <span className="mr-2.5">
-                                    Transaction on {chain.name}
-                                  </span>
-                                  <ChainLogo chainId={chain.id} />
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="px-1 pt-4">
-                                {details.map((item, itemIndex) => (
-                                  <TransactionDetailInfo
-                                    key={`${index}-${itemIndex}`}
-                                    title={item.title}
-                                    value={item.value}
-                                  />
-                                ))}
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      },
-                    )}
+                    <TransactionDetails />
                   </div>
                 </TabsContent>
                 <TabsContent
@@ -529,79 +435,29 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                   value="data"
                 >
                   <div className="space-y-3 pt-3">
-                    {internalUserOperations &&
-                      internalUserOperations.length > 0 &&
-                      internalUserOperations.map(
-                        (internalUserOperation, index) => {
-                          return (
-                            <Accordion
-                              key={index}
-                              collapsible
-                              defaultValue="value-0"
-                              className="rounded-md border border-border bg-background-weak p-4"
-                              type="single"
-                            >
-                              <AccordionItem
-                                className="border-0"
-                                value={`value-${index}`}
-                              >
-                                <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                  Calldata #{index + 1}
-                                </AccordionTrigger>
-                                <AccordionContent className="px-1 pt-4">
-                                  <pre className="text-sm italic">
-                                    <Textarea
-                                      readOnly
-                                      className="h-auto w-full"
-                                      value={internalUserOperation.callData}
-                                    />
-                                  </pre>
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion>
-                          );
-                        },
-                      )}
+                    <TransactionCalldata />
                   </div>
                 </TabsContent>
                 <TabsContent
                   className={cn(isInsideModal && "h-72 overflow-y-auto")}
                   value="dev"
-                >
-                  <div className="pt-3">
-                    {Object.values(userOperationDevInfo).map((info, index) => {
-                      return info.map((item, itemIndex) => {
-                        return (
-                          <TransactionDevInfo
-                            key={`${index}-${itemIndex}`}
-                            data={item.data}
-                            title={item.title}
-                            isNumber={item.isNumber}
-                          />
-                        );
-                      });
-                    })}
-                  </div>
-                </TabsContent>
+                />
               </Tabs>
             </>
           )}
           {pageIndex === 1 && <Loading />}
-          {pageIndex === 2 && <TransactionSender address={address} />}
+          {pageIndex === 2 && <TransactionStatus />}
         </ModalSwiper>
       </div>
       {pageIndex === 0 &&
-        userOperations &&
-        userOperations.length > 0 &&
-        userOperations.map((userOperation, index) => {
-          if (!userOperation) {
-            return;
-          }
+        userOperationsQueryState &&
+        userOperationsQueryState.length > 0 &&
+        userOperationsQueryState.map(userOperationQueryState => {
           return (
             <TransactionFetcher
-              key={userOperation.chainId || index}
+              key={userOperationQueryState.hash}
               address={address}
-              initialUserOperation={userOperation}
+              initialUserOperation={userOperationQueryState}
             />
           );
         })}

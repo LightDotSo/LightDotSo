@@ -50,8 +50,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Protocola group returned successfully", body = ProtocolGroup),
-            (status = 404, description = "Protocola group not found", body = ProtocolGroupError),
+            (status = 200, description = "Protocol group returned successfully", body = ProtocolGroup),
+            (status = 404, description = "Protocol group not found", body = ProtocolGroupError),
         )
     )]
 #[autometrics]

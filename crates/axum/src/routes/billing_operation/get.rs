@@ -42,7 +42,7 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a paymaster
+/// Get a billing operation
 #[utoipa::path(
         get,
         path = "/billing_operation/get",

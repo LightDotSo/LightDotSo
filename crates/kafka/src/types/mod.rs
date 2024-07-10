@@ -16,6 +16,7 @@ pub mod activity;
 pub mod billing_operation;
 pub mod covalent;
 pub mod interpretation;
+pub mod node;
 pub mod notification;
 pub mod paymaster_operation;
 pub mod portfolio;

@@ -42,7 +42,7 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a paymaster
+/// Get an invite code
 #[utoipa::path(
         get,
         path = "/invite_code/get",

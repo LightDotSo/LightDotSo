@@ -14,10 +14,7 @@
 
 "use client";
 
-import {
-  useUserOperationSend,
-  useUserOperationsSendState,
-} from "@lightdotso/hooks";
+import { useUserOperationsSendState } from "@lightdotso/hooks";
 import {
   useQueryUserOperations,
   useQueryUserOperationsCount,
@@ -25,7 +22,7 @@ import {
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -73,11 +70,11 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isUserOperationsSendSuccess) {
-      refetchPendingUserOperations();
-      refetchUserOperationsCount();
-    }
+    refetchPendingUserOperations();
+    refetchUserOperationsCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    // Also refetch when the user operations send state changes
     isUserOperationsSendSuccess,
     refetchPendingUserOperations,
     refetchUserOperationsCount,

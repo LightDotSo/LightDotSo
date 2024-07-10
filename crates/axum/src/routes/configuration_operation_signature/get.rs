@@ -54,8 +54,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Configuration Operation Signature returned successfully", body = ConfigurationOperationSignature),
-            (status = 404, description = "Configuration Operation Signature not found", body = ConfigurationOperationSignatureError),
+            (status = 200, description = "Configuration operation signature returned successfully", body = ConfigurationOperationSignature),
+            (status = 404, description = "Configuration operation signature not found", body = ConfigurationOperationSignatureError),
         )
     )]
 #[autometrics]

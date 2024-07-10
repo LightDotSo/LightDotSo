@@ -57,8 +57,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User Settings returned successfully", body = UserNotificationSettings),
-            (status = 404, description = "User Settings not found", body = UserNotificationSettingsError),
+            (status = 200, description = "User settings returned successfully", body = UserNotificationSettings),
+            (status = 404, description = "User settings not found", body = UserNotificationSettingsError),
         )
     )]
 #[autometrics]

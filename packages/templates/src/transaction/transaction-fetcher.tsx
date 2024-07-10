@@ -29,13 +29,7 @@ import {
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
-import type { UserOperationDetailsItem } from "@lightdotso/stores";
-import {
-  findContractAddressByAddress,
-  getChainById,
-  shortenAddress,
-  shortenBytes32,
-} from "@lightdotso/utils";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
@@ -84,11 +78,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { setIsFormLoading } = useFormRef();
-  const {
-    setInternalUserOperationByChainId,
-    setUserOperationDetails,
-    // setUserOperationDevInfo,
-  } = useUserOperations();
+  const { setUserOperationByChainIdAndNonce } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -455,87 +445,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [isTransactionFetcherLoading]);
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const chain = useMemo(
-    () => getChainById(Number(targetUserOperation.chainId)),
-    [targetUserOperation.chainId],
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const userOperationDetails = useMemo(() => {
-    const items: UserOperationDetailsItem[] = [
-      { title: "Nonce", value: Number(updatedUserOperation.nonce) },
-      {
-        title: "Sender",
-        value: shortenAddress(updatedUserOperation.sender),
-      },
-      {
-        title: "Threshold",
-        // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
-        value: configuration?.threshold!,
-      },
-      { title: "Chain", value: chain?.name },
-    ];
-
-    if (updatedUserOperation?.callGasLimit) {
-      items.push({
-        title: "Call Gas Limit",
-        value: updatedUserOperation.callGasLimit.toLocaleString(),
-      });
-    }
-
-    if (updatedUserOperation?.preVerificationGas) {
-      items.push({
-        title: "Pre-Verification Gas",
-        value: updatedUserOperation.preVerificationGas.toLocaleString(),
-      });
-    }
-
-    if (updatedUserOperation?.verificationGasLimit) {
-      items.push({
-        title: "Verification Gas Limit",
-        value: updatedUserOperation.verificationGasLimit.toLocaleString(),
-      });
-    }
-
-    if (updatedUserOperation?.maxFeePerGas) {
-      items.push({
-        title: "Max Fee Per Gas",
-        value: updatedUserOperation.maxFeePerGas.toLocaleString(),
-      });
-    }
-
-    if (updatedUserOperation?.maxPriorityFeePerGas) {
-      items.push({
-        title: "Max Priority Fee Per Gas",
-        value: updatedUserOperation.maxPriorityFeePerGas.toLocaleString(),
-      });
-    }
-
-    if (userOperationWithHash?.hash) {
-      items.push({
-        title: "Hash",
-        value: shortenBytes32(userOperationWithHash.hash),
-      });
-    }
-
-    return items;
-  }, [
-    chain,
-    configuration?.threshold,
-    updatedUserOperation.nonce,
-    updatedUserOperation.sender,
-    updatedUserOperation?.callGasLimit,
-    updatedUserOperation?.preVerificationGas,
-    updatedUserOperation?.verificationGasLimit,
-    updatedUserOperation?.maxFeePerGas,
-    updatedUserOperation?.maxPriorityFeePerGas,
-    userOperationWithHash?.hash,
-  ]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -544,28 +453,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     if (!userOperationWithHash) {
       return;
     }
-    setInternalUserOperationByChainId(
-      Number(targetUserOperation.chainId),
+    setUserOperationByChainIdAndNonce(
+      targetUserOperation.chainId,
+      targetUserOperation.nonce,
       userOperationWithHash,
     );
   }, [
     targetUserOperation.chainId,
-    setInternalUserOperationByChainId,
+    setUserOperationByChainIdAndNonce,
     userOperationWithHash,
   ]);
-
-  // Sync the user operation details
-  useEffect(() => {
-    if (!targetUserOperation) {
-      return;
-    }
-
-    setUserOperationDetails(
-      Number(targetUserOperation.chainId),
-      userOperationDetails,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperationDetails]);
 
   // ---------------------------------------------------------------------------
   // Render

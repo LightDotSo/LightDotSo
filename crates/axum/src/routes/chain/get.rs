@@ -50,8 +50,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Protocola group returned successfully", body = Chain),
-            (status = 404, description = "Protocola group not found", body = ChainError),
+            (status = 200, description = "Chain returned successfully", body = Chain),
+            (status = 404, description = "Chain not found", body = ChainError),
         )
     )]
 #[autometrics]

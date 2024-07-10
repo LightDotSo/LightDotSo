@@ -20,10 +20,11 @@ use crate::{
     topics::{
         activity::activity_consumer, billing_operation::billing_operation_consumer,
         covalent::covalent_consumer, error_transaction::error_transaction_consumer,
-        interpretation::interpretation_consumer, notification::notification_consumer,
-        paymaster_operation::paymaster_operation_consumer, portfolio::portfolio_consumer,
-        routescan::routescan_consumer, transaction::transaction_consumer,
-        unknown::unknown_consumer, user_operation::user_operation_consumer,
+        interpretation::interpretation_consumer, node::node_consumer,
+        notification::notification_consumer, paymaster_operation::paymaster_operation_consumer,
+        portfolio::portfolio_consumer, routescan::routescan_consumer,
+        transaction::transaction_consumer, unknown::unknown_consumer,
+        user_operation::user_operation_consumer,
     },
 };
 use clap::Parser;
@@ -33,8 +34,8 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION,
-        PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
+        ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE,
+        NOTIFICATION, PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
         RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
@@ -197,6 +198,15 @@ impl Consumer {
                             if let Err(e) = res {
                                 // Log the error
                                 warn!("Routescan consumer failed with error: {:?}", e);
+                            }
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == NODE.to_string() => {
+                            let res = node_consumer(&m).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Node consumer failed with error: {:?}", e);
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }

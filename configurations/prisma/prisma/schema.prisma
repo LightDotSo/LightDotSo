@@ -1442,6 +1442,9 @@ model BillingOperation {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  tokenPrice   TokenPrice? @relation(fields: [tokenPriceId], references: [id])
+  tokenPriceId String?
+
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?
 
@@ -1455,6 +1458,7 @@ model BillingOperation {
   // Relations
   @@index([billingId])
   @@index([paymasterOperationId])
+  @@index([tokenPriceId])
   @@index([transactionHash])
   @@index([userOperationHash])
 }
@@ -1470,7 +1474,6 @@ enum BillingOperationStatus {
   SPONSORED
   PENDING
   INITIATED
-  DEBITED
 }
 
 // -----------------------------------------------------------------------------
@@ -1955,6 +1958,12 @@ model TokenPrice {
 
   token   Token  @relation(fields: [tokenId], references: [id])
   tokenId String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperations BillingOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings

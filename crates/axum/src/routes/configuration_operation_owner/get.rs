@@ -51,8 +51,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "ConfigurationOperationOwner returned successfully", body = ConfigurationOperationOwner),
-            (status = 404, description = "ConfigurationOperationOwner not found", body = ConfigurationOperationOwnerError),
+            (status = 200, description = "Configuration operation owner returned successfully", body = ConfigurationOperationOwner),
+            (status = 404, description = "Configuration operation owner found", body = ConfigurationOperationOwnerError),
         )
     )]
 #[autometrics]
@@ -84,7 +84,7 @@ pub(crate) async fn v1_configuration_operation_owner_get_handler(
     // If the configuration owner is not found, return a 404.
     let configuration_operation_owner = configuration_operation_owner.ok_or(
         RouteError::ConfigurationOperationOwnerError(ConfigurationOperationOwnerError::NotFound(
-            "ConfigurationOperationOwner not found".to_string(),
+            "Configuration operation owner found".to_string(),
         )),
     )?;
 
