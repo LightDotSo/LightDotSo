@@ -2492,10 +2492,16 @@ export interface components {
         };
         /** @description BillingOperation root type. */
         BillingOperation: {
+            /**
+             * Format: double
+             * @description The balance USD of the billing operation.
+             */
+            balance_usd: number;
             /** @description The id of the billing operation. */
             id: string;
             /** @description The status of the billing operation. */
             status: string;
+            token_price?: components["schemas"]["TokenPrice"] | null;
         };
         /** @description BillingOperation errors */
         BillingOperationError: {
@@ -3196,6 +3202,7 @@ export interface components {
             price_change_24h_percentage: number;
             /** @description The historical prices of the token price. */
             prices: components["schemas"]["TokenPriceDate"][];
+            token?: components["schemas"]["Token"] | null;
         };
         TokenPriceDate: {
             /** @description The date of the token price. */
@@ -4193,7 +4200,7 @@ export interface operations {
                     "application/json": components["schemas"]["BillingOperationListCount"];
                 };
             };
-            /** @description BillingOperation bad request */
+            /** @description Billing operation bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -4535,7 +4542,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Configuration Operations returned successfully */
+            /** @description Configuration operations returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4544,7 +4551,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperation"][];
                 };
             };
-            /** @description Configuration Operation bad request */
+            /** @description Configuration operation bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -4573,7 +4580,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Configuration Operations returned successfully */
+            /** @description Configuration operations returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4582,7 +4589,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperationListCount"];
                 };
             };
-            /** @description Configuration Operations bad request */
+            /** @description Configuration operations bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -4679,7 +4686,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Configuration Operation Owners returned successfully */
+            /** @description Configuration operation owners returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4688,7 +4695,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperationOwner"][];
                 };
             };
-            /** @description Configuration Operation Owners bad request */
+            /** @description Configuration operation owners bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -4990,7 +4997,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Interpretation Actions returned successfully */
+            /** @description Interpretation actions returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4999,7 +5006,7 @@ export interface operations {
                     "application/json": components["schemas"]["InterpretationAction"][];
                 };
             };
-            /** @description Interpretation Action bad request */
+            /** @description Interpretation action bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -5037,7 +5044,7 @@ export interface operations {
                     "application/json": components["schemas"]["InterpretationActionListCount"];
                 };
             };
-            /** @description InterpretationAction bad request */
+            /** @description Interpretation action bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -5125,7 +5132,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Invite Codes returned successfully */
+            /** @description Invite codes returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5134,7 +5141,7 @@ export interface operations {
                     "application/json": components["schemas"]["InviteCode"][];
                 };
             };
-            /** @description InviteCode bad request */
+            /** @description Invite code bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -5161,7 +5168,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Invite Codes returned successfully */
+            /** @description Invite codes returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5170,7 +5177,7 @@ export interface operations {
                     "application/json": components["schemas"]["InviteCodeListCount"];
                 };
             };
-            /** @description InviteCode bad request */
+            /** @description Invite code bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -5370,7 +5377,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Notification settingss returned successfully */
+            /** @description Notification settings returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5406,7 +5413,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Notification settingss returned successfully */
+            /** @description Notification settings returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5415,7 +5422,7 @@ export interface operations {
                     "application/json": components["schemas"]["NotificationSettingsListCount"];
                 };
             };
-            /** @description NotificationSettings bad request */
+            /** @description Notification settings bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -5608,7 +5615,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Paymaster Operations returned successfully */
+            /** @description Paymaster operations returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5617,7 +5624,7 @@ export interface operations {
                     "application/json": components["schemas"]["PaymasterOperation"][];
                 };
             };
-            /** @description Paymaster Operation bad request */
+            /** @description Paymaster operation bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -7085,7 +7092,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operations returned successfully */
+            /** @description User operations returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7094,7 +7101,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperation"][];
                 };
             };
-            /** @description User Operation bad request */
+            /** @description User operation bad request */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -7130,7 +7137,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operation count returned successfully */
+            /** @description User operation count returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7139,7 +7146,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationListCount"];
                 };
             };
-            /** @description User Operation count bad request */
+            /** @description User operation count bad request */
             500: {
                 headers: {
                     [name: string]: unknown;

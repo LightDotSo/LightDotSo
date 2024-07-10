@@ -65,8 +65,8 @@ pub(crate) struct InviteCodeListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Invite Codes returned successfully", body = [InviteCode]),
-            (status = 500, description = "InviteCode bad request", body = InviteCodeError),
+            (status = 200, description = "Invite codes returned successfully", body = [InviteCode]),
+            (status = 500, description = "Invite code bad request", body = InviteCodeError),
         )
     )]
 #[autometrics]
@@ -135,8 +135,8 @@ pub(crate) async fn v1_invite_code_list_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Invite Codes returned successfully", body = InviteCodeListCount),
-            (status = 500, description = "InviteCode bad request", body = InviteCodeError),
+            (status = 200, description = "Invite codes returned successfully", body = InviteCodeListCount),
+            (status = 500, description = "Invite code bad request", body = InviteCodeError),
         )
     )]
 #[autometrics]

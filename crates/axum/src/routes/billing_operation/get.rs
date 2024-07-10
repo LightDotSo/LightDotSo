@@ -75,6 +75,7 @@ pub(crate) async fn v1_billing_operation_get_handler(
         .client
         .billing_operation()
         .find_unique(billing_operation::id::equals(query.id))
+        .with(billing_operation::token_price::fetch())
         .exec()
         .await?;
 

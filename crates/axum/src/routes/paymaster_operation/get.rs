@@ -23,7 +23,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{paymaster, paymaster_operation};
+use lightdotso_prisma::{billing_operation, paymaster, paymaster_operation, token_price};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{NaiveDateTime, Utc};
 use serde::Deserialize;
@@ -127,7 +127,10 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
             valid_after.into(),
             paymaster.id,
         ))
-        .with(paymaster_operation::billing_operation::fetch())
+        .with(
+            paymaster_operation::billing_operation::fetch()
+                .with(billing_operation::token_price::fetch().with(token_price::token::fetch())),
+        )
         .exec()
         .await?;
 

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::routes::token_price::types::TokenPrice;
 use lightdotso_prisma::billing_operation;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -28,6 +29,10 @@ pub(crate) struct BillingOperation {
     id: String,
     /// The status of the billing operation.
     status: String,
+    /// The balance USD of the billing operation.
+    balance_usd: f64,
+    /// The token price of the operation.
+    token_price: Option<TokenPrice>,
 }
 
 // -----------------------------------------------------------------------------
@@ -37,6 +42,13 @@ pub(crate) struct BillingOperation {
 /// Implement From<billing_operation::Data> for BillingOperation.
 impl From<billing_operation::Data> for BillingOperation {
     fn from(billing_operation: billing_operation::Data) -> Self {
-        Self { id: billing_operation.id, status: billing_operation.status.to_string() }
+        Self {
+            id: billing_operation.id,
+            status: billing_operation.status.to_string(),
+            balance_usd: billing_operation.balance_usd,
+            token_price: billing_operation.token_price.and_then(|maybe_token_price| {
+                maybe_token_price.map(|token_price| TokenPrice::from(*token_price))
+            }),
+        }
     }
 }

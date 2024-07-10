@@ -171,6 +171,7 @@ pub(crate) async fn v1_token_price_get_handler(
         price_change_24h,
         price_change_24h_percentage,
         prices: result.into_iter().map(|x| x.into()).collect(),
+        token: None,
     };
 
     Ok(Json::from(token_price))

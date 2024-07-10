@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::routes::token::types::Token;
+use lightdotso_prisma::token_price;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -31,6 +33,8 @@ pub(crate) struct TokenPrice {
     pub price_change_24h_percentage: f64,
     /// The historical prices of the token price.
     pub prices: Vec<TokenPriceDate>,
+    /// The token.
+    pub token: Option<Token>,
 }
 
 impl Default for TokenPrice {
@@ -40,9 +44,29 @@ impl Default for TokenPrice {
             price_change_24h: 0.0,
             price_change_24h_percentage: 0.0,
             prices: Vec::new(),
+            token: None,
         }
     }
 }
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<token_price::Data> for TokenPrice.
+impl From<token_price::Data> for TokenPrice {
+    fn from(token_price: token_price::Data) -> Self {
+        Self {
+            price: token_price.price,
+            token: token_price.token.map(|token| Token::from(*token)),
+            ..Default::default()
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]

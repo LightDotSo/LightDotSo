@@ -66,8 +66,8 @@ pub(crate) struct InterpretationActionListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Interpretation Actions returned successfully", body = [InterpretationAction]),
-            (status = 500, description = "Interpretation Action bad request", body = InterpretationActionError),
+            (status = 200, description = "Interpretation actions returned successfully", body = [InterpretationAction]),
+            (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
         )
     )]
 #[autometrics]
@@ -123,7 +123,7 @@ pub(crate) async fn v1_interpretation_action_list_handler(
         ),
         responses(
             (status = 200, description = "Interpretation actions returned successfully", body = InterpretationActionListCount),
-            (status = 500, description = "InterpretationAction bad request", body = InterpretationActionError),
+            (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
         )
     )]
 #[autometrics]

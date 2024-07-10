@@ -19,7 +19,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::paymaster_operation;
+use lightdotso_prisma::{billing_operation, paymaster_operation, token_price};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -49,8 +49,8 @@ pub struct ListQuery {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Paymaster Operations returned successfully", body = [PaymasterOperation]),
-            (status = 500, description = "Paymaster Operation bad request", body = PaymasterOperationError),
+            (status = 200, description = "Paymaster operations returned successfully", body = [PaymasterOperation]),
+            (status = 500, description = "Paymaster operation bad request", body = PaymasterOperationError),
         )
     )]
 #[autometrics]
@@ -74,7 +74,10 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
         .client
         .paymaster_operation()
         .find_many(vec![])
-        .with(paymaster_operation::billing_operation::fetch())
+        .with(
+            paymaster_operation::billing_operation::fetch()
+                .with(billing_operation::token_price::fetch().with(token_price::token::fetch())),
+        )
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

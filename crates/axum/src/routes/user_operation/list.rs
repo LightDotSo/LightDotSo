@@ -99,8 +99,8 @@ pub(crate) struct UserOperationListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "User Operations returned successfully", body = [UserOperation]),
-            (status = 500, description = "User Operation bad request", body = UserOperationError),
+            (status = 200, description = "User operations returned successfully", body = [UserOperation]),
+            (status = 500, description = "User operation bad request", body = UserOperationError),
         )
     )]
 #[autometrics]
@@ -184,8 +184,8 @@ pub(crate) async fn v1_user_operation_list_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "User Operation count returned successfully", body = UserOperationListCount),
-            (status = 500, description = "User Operation count bad request", body = UserOperationError),
+            (status = 200, description = "User operation count returned successfully", body = UserOperationListCount),
+            (status = 500, description = "User operation count bad request", body = UserOperationError),
         )
     )]
 #[autometrics]
