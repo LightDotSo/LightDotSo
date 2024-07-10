@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::routes::user_operation_merkle_proof::types::UserOperationMerkleProof;
+use crate::routes::{
+    user_operation::types::UserOperation,
+    user_operation_merkle_proof::types::UserOperationMerkleProof,
+};
 use lightdotso_prisma::user_operation_merkle;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -27,6 +30,8 @@ use utoipa::ToSchema;
 pub(crate) struct UserOperationMerkle {
     /// The root of the merkle tree.
     root: String,
+    /// The user operations in the merkle tree.
+    user_operations: Vec<UserOperation>,
     /// The proofs of the merkle tree.
     proofs: Vec<UserOperationMerkleProof>,
 }
@@ -40,6 +45,12 @@ impl From<user_operation_merkle::Data> for UserOperationMerkle {
     fn from(user_operation_merkle: user_operation_merkle::Data) -> Self {
         Self {
             root: user_operation_merkle.root,
+            user_operations: user_operation_merkle
+                .user_operations
+                .unwrap_or_default()
+                .into_iter()
+                .map(UserOperation::from)
+                .collect(),
             proofs: user_operation_merkle
                 .user_operation_merkle_proofs
                 .unwrap_or_default()

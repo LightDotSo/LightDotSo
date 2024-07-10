@@ -22,7 +22,9 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::user_operation_merkle;
+use lightdotso_prisma::{
+    asset_change, interpretation, signature, user_operation, user_operation_merkle,
+};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -76,7 +78,25 @@ pub(crate) async fn v1_user_operation_merkle_get_handler(
     let user_operation_merkle = state
         .client
         .user_operation_merkle()
-        .find_unique(user_operation_merkle::root::equals(query.root))
+        .find_unique(user_operation_merkle::root::equals(query.root.clone()))
+        .with(
+            user_operation_merkle::user_operations::fetch(vec![])
+                .with(user_operation::paymaster::fetch())
+                .with(user_operation::paymaster_operation::fetch())
+                .with(user_operation::transaction::fetch())
+                .with(user_operation::signatures::fetch(vec![
+                    signature::user_operation_hash::equals(query.root),
+                ]))
+                .with(
+                    user_operation::interpretation::fetch()
+                        .with(interpretation::actions::fetch(vec![]))
+                        .with(
+                            interpretation::asset_changes::fetch(vec![])
+                                .with(asset_change::interpretation_action::fetch())
+                                .with(asset_change::token::fetch()),
+                        ),
+                ),
+        )
         .with(user_operation_merkle::user_operation_merkle_proofs::fetch(vec![]))
         .exec()
         .await?;
