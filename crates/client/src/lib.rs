@@ -12,20 +12,87 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/src/main.rs
-// License: MPL-2.0
+#![allow(clippy::unwrap_used)]
 
+mod constants;
+
+use backon::{ExponentialBuilder, Retryable};
+use constants::{ADMIN_BASE_API_URL, PUBLIC_BASE_API_URL};
 use eyre::Result;
+use http::HeaderMap;
+use lightdotso_common::traits::HexToBytes;
+use reqwest::Client;
+use serde::de::DeserializeOwned;
+use std::sync::Arc;
 
-// Include the generated code.
-// include!(concat!(env!("OUT_DIR"), "/mod.rs"));
+/// Get the api json response
+pub async fn get_api_json_response<T: DeserializeOwned>(
+    client: Arc<Client>,
+    url: String,
+    headers: Option<HeaderMap>,
+) -> Result<T, reqwest::Error> {
+    // Get the api json response
+    let response =
+        client.get(url).headers(headers.unwrap_or_default()).send().await?.json::<T>().await?;
 
-pub async fn main() -> Result<()> {
-    // let client = Client::new("https://foo/bar");
+    Ok(response)
+}
 
-    // client
-    //     .enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() })
-    //     .await?;
+/// Get the api text response
+pub async fn get_api_text_response(
+    client: Arc<Client>,
+    url: String,
+    headers: Option<HeaderMap>,
+) -> Result<String> {
+    // Get the api text response
+    let response =
+        client.get(url).headers(headers.unwrap_or_default()).send().await?.text().await?;
 
-    Ok(())
+    Ok(response)
+}
+
+/// Construct the api.light.so url and exponential backoff
+pub async fn request_api_json<T: DeserializeOwned>(path: String) -> Result<T> {
+    // Create a new reqwest client
+    let client = Arc::new(Client::new());
+
+    // Check if there is an environment variable, `LIGHT_ADMIN_TOKEN`, if so set that to
+    // Authorization header
+    let mut headers = HeaderMap::new();
+    if let Ok(token) = std::env::var("LIGHT_ADMIN_TOKEN") {
+        headers.insert("Authorization", token.parse().unwrap());
+    }
+
+    // Try the admin api url if the header is set
+    if !headers.is_empty() {
+        let url = ADMIN_BASE_API_URL.to_string() + &path;
+        let res = {
+            || get_api_json_response::<T>(client.clone(), url.to_string(), Some(headers.clone()))
+        }
+        .retry(&ExponentialBuilder::default())
+        .await;
+
+        // Return the response if it is Ok
+        if let Ok(response) = res {
+            return Ok(response);
+        }
+    }
+
+    // Try the public api url if the header is not set
+    let url = PUBLIC_BASE_API_URL.to_string() + &path;
+    let response = get_api_json_response(client, url.to_string(), None).await?;
+
+    Ok(response)
+}
+
+// Get the signature of the user operation
+pub async fn get_user_operaton_signature() -> Result<Vec<u8>> {
+    // The path to the user operation signature
+    let path = "/user_operation/signature".to_string();
+
+    // Get the response from the api
+    let response = request_api_json::<String>(path).await?;
+
+    // Convert to GasEstimation using From trait
+    Ok(response.hex_to_bytes()?)
 }
