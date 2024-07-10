@@ -56,10 +56,10 @@ import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
+import { TransactionCalldata } from "./transaction-calldata";
 import { TransactionDetails } from "./transaction-details";
 import { TransactionFetcher } from "./transaction-fetcher";
-import { TransactionSender } from "./transaction-sender";
-import { TransactionCalldata } from "./transaction-calldata";
+import { TransactionStatus } from "./transaction-status";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -446,7 +446,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
             </>
           )}
           {pageIndex === 1 && <Loading />}
-          {pageIndex === 2 && <TransactionSender address={address} />}
+          {pageIndex === 2 && <TransactionStatus />}
         </ModalSwiper>
       </div>
       {pageIndex === 0 &&
