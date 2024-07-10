@@ -67,7 +67,7 @@
     "test": "./test.sh"
   },
   "dependencies": {
-    "@goldskycom/cli": "^9.1.1",
+    "@goldskycom/cli": "^9.1.2",
     "@graphprotocol/graph-cli": "^0.78.0",
     "@graphprotocol/graph-ts": "^0.35.1",
     "yaml": "^2.4.5"

@@ -25,6 +25,7 @@
     "crates/jsonrpsee",
     "crates/kafka",
     "crates/keychain",
+    "crates/node",
     "crates/notifier",
     "crates/opentelemetry",
     "crates/polling",
@@ -127,6 +128,7 @@
     lightdotso-jsonrpsee = { path = "./crates/jsonrpsee" }
     lightdotso-kafka = { path = "./crates/kafka" }
     lightdotso-keychain = { path = "./crates/indexer" }
+    lightdotso-node = { path = "./crates/node" }
     lightdotso-notifier = { path = "./crates/notifier" }
     lightdotso-opentelemetry = { path = "./crates/opentelemetry" }
     lightdotso-paymaster = { path = "./crates/paymaster" }

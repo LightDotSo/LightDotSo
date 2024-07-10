@@ -43,7 +43,7 @@
     "@types/lodash": "^4.17.6",
     "abitype": "^1.0.5",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.404.0",
+    "lucide-react": "^0.407.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.1",
     "viem": "^2.17.3",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.1.11",
+    "@storybook/react": "^8.2.1",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
