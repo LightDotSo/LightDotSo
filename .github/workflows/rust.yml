@@ -179,14 +179,7 @@ jobs:
             --all-features \
             --message-format=json \
             ${{ matrix.package }} \
-            -- --no-deps -D clippy::expect_used -D clippy::unwrap_used \
-            | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
-      - if: matrix.check
-        name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        continue-on-error: true
-        with:
-          sarif_file: rust-clippy-results.sarif
+            -- --no-deps -D clippy::expect_used -D clippy::unwrap_used
       - if: always()
         name: Run sccache stats
         shell: bash
