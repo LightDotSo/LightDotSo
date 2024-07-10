@@ -77,10 +77,10 @@ pub struct UserNotificationSettingsUpdateRequestParams {
         ),
         request_body = UserNotificationSettingsUpdateRequestParams,
         responses(
-            (status = 200, description = "User Settings updated successfully", body = UserNotificationSettings),
+            (status = 200, description = "User settings updated successfully", body = UserNotificationSettings),
             (status = 400, description = "Invalid configuration", body = UserNotificationSettingsError),
-            (status = 409, description = "User Settings already exists", body = UserNotificationSettingsError),
-            (status = 500, description = "User Settings internal error", body = UserNotificationSettingsError),
+            (status = 409, description = "User settings already exists", body = UserNotificationSettingsError),
+            (status = 500, description = "User settings internal error", body = UserNotificationSettingsError),
         )
     )]
 #[autometrics]
