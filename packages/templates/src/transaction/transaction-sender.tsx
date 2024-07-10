@@ -20,7 +20,7 @@ import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
-import { useEffect, type FC } from "react";
+import { memo, useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -36,62 +36,64 @@ interface TransactionSenderOpProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
-  address,
-  hash,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
+export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
+  ({ address, hash }) => {
+    // ---------------------------------------------------------------------------
+    // Hooks
+    // ---------------------------------------------------------------------------
 
-  const { userOperation } = useQueryUserOperation({
-    hash: hash,
-  });
+    const { userOperation } = useQueryUserOperation({
+      hash: hash,
+    });
 
-  const { handleSubmit, isUserOperationSendReady, isUserOperationSendSuccess } =
-    useUserOperationSend({
+    const {
+      handleSubmit,
+      isUserOperationSendReady,
+      isUserOperationSendSuccess,
+    } = useUserOperationSend({
       address: address as Address,
       hash: hash,
     });
 
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // Effect Hooks
+    // ---------------------------------------------------------------------------
 
-  // Submit user operation every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isUserOperationSendReady) {
-        handleSubmit();
-      }
-    }, 3_000);
+    // Submit user operation every 3 seconds
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (isUserOperationSendReady) {
+          handleSubmit();
+        }
+      }, 3_000);
 
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      return () => clearInterval(interval);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // Render
+    // ---------------------------------------------------------------------------
 
-  return (
-    <div>
-      {userOperation && isUserOperationSendSuccess && (
-        <Button asChild variant="link">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`${getEtherscanUrl(
-              getChainById(userOperation?.chain_id),
-            )}/tx/${userOperation?.transaction?.hash}`}
-          >
-            {userOperation?.transaction?.hash}
-          </a>
-        </Button>
-      )}
-    </div>
-  );
-};
+    return (
+      <div key={`${address}-${hash}`}>
+        {userOperation && isUserOperationSendSuccess && (
+          <Button asChild variant="link">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${getEtherscanUrl(
+                getChainById(userOperation?.chain_id),
+              )}/tx/${userOperation?.transaction?.hash}`}
+            >
+              {userOperation?.transaction?.hash}
+            </a>
+          </Button>
+        )}
+      </div>
+    );
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Props
@@ -105,42 +107,44 @@ type TransactionSenderProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
+export const TransactionSender: FC<TransactionSenderProps> = memo(
+  ({ address }) => {
+    // ---------------------------------------------------------------------------
+    // Stores
+    // ---------------------------------------------------------------------------
 
-  const { pendingSubmitUserOperationHashes } = useUserOperations();
+    const { pendingSubmitUserOperationHashes } = useUserOperations();
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // Render
+    // ---------------------------------------------------------------------------
 
-  return (
-    <StateInfoSection
-      icon={
-        pendingSubmitUserOperationHashes.length > 0 ? (
-          <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
-        ) : (
-          <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
-        )
-      }
-      title={
-        pendingSubmitUserOperationHashes.length > 0
-          ? pendingSubmitUserOperationHashes.length === 1
-            ? "Pending 1 transaction..."
-            : `Pending ${pendingSubmitUserOperationHashes.length} transactions...`
-          : "Success"
-      }
-      description={
-        pendingSubmitUserOperationHashes.length > 0
-          ? "Please wait while we handle your request..."
-          : "Your transaction has been sent successfully."
-      }
-    >
-      {pendingSubmitUserOperationHashes.map(hash => (
-        <TransactionSenderOp key={hash} address={address} hash={hash} />
-      ))}
-    </StateInfoSection>
-  );
-};
+    return (
+      <StateInfoSection
+        icon={
+          pendingSubmitUserOperationHashes.length > 0 ? (
+            <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
+          ) : (
+            <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
+          )
+        }
+        title={
+          pendingSubmitUserOperationHashes.length > 0
+            ? pendingSubmitUserOperationHashes.length === 1
+              ? "Pending 1 transaction..."
+              : `Pending ${pendingSubmitUserOperationHashes.length} transactions...`
+            : "Success"
+        }
+        description={
+          pendingSubmitUserOperationHashes.length > 0
+            ? "Please wait while we handle your request..."
+            : "Your transaction has been sent successfully."
+        }
+      >
+        {pendingSubmitUserOperationHashes.map(hash => (
+          <TransactionSenderOp key={hash} address={address} hash={hash} />
+        ))}
+      </StateInfoSection>
+    );
+  },
+);

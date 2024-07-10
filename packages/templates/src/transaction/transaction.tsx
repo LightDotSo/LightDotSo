@@ -85,7 +85,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { pageIndex, setPageIndex } = useModalSwiper();
-  const { userOperations, resetAll } = useUserOperations();
+  const { resetAll } = useUserOperations();
   const {
     customFormSuccessText,
     isFormLoading,
