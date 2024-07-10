@@ -14,10 +14,11 @@
 
 use eyre::Result;
 use lightdotso_kafka::types::node::NodeMessage;
+use lightdotso_node::node::Node;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
-pub async fn node_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
+pub async fn node_consumer(msg: &BorrowedMessage<'_>, _node: &Node) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -27,6 +28,9 @@ pub async fn node_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
         // Parse the payload into a JSON object, `NodeMessage`
         let payload: NodeMessage = serde_json::from_slice(payload.as_bytes())?;
         info!("payload: {:?}", payload);
+
+        // Get the hash from the payload
+        let _hash = payload.hash;
     }
 
     Ok(())

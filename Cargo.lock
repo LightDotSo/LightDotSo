@@ -6139,6 +6139,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-interpreter",
  "lightdotso-kafka",
+ "lightdotso-node",
  "lightdotso-notifier",
  "lightdotso-opentelemetry",
  "lightdotso-polling",
@@ -6353,8 +6354,14 @@ name = "lightdotso-node"
 version = "0.1.0"
 dependencies = [
  "clap 4.4.0",
+ "ethers 2.0.8",
  "eyre",
+ "lightdotso-contracts",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
+ "reqwest",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

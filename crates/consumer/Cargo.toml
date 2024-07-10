@@ -20,6 +20,7 @@
   lightdotso-indexer = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-kafka = { workspace = true }
+  lightdotso-node = { workspace = true }
   lightdotso-notifier = { workspace = true }
   lightdotso-opentelemetry = { workspace = true }
   lightdotso-polling = { workspace = true }
