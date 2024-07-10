@@ -3215,9 +3215,6 @@ importers:
       zod:
         specifier: ^3.23.8
         version: 3.23.8
-      zustand:
-        specifier: ^4.5.4
-        version: 4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
