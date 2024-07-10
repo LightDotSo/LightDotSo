@@ -34,6 +34,11 @@ lazy_static! {
     pub static ref INTERPRETATION: String = "interpretation".to_string();
 }
 
+// The node namesapce
+lazy_static! {
+    pub static ref NODE: String = "node".to_string();
+}
+
 // The notification namesapce
 lazy_static! {
     pub static ref NOTIFICATION: String = "notification".to_string();

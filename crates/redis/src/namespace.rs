@@ -19,6 +19,11 @@ lazy_static! {
     pub static ref WALLETS: String = "wallets".to_string();
 }
 
+// The node queue namespace
+lazy_static! {
+    pub static ref QUEUE_NODE: String = "queue:node".to_string();
+}
+
 // The portfolio queue namespace
 lazy_static! {
     pub static ref QUEUE_PORTFOLIO: String = "queue:portfolio".to_string();

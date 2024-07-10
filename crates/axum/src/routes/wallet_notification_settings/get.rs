@@ -61,8 +61,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Wallet Settings returned successfully", body = WalletNotificationSettings),
-            (status = 404, description = "Wallet Settings not found", body = WalletNotificationSettingsError),
+            (status = 200, description = "Wallet settings returned successfully", body = WalletNotificationSettings),
+            (status = 404, description = "Wallet settings not found", body = WalletNotificationSettingsError),
         )
     )]
 #[autometrics]

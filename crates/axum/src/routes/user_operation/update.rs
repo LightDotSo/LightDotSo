@@ -52,7 +52,7 @@ pub struct PutQuery {
         ),
         responses(
             (status = 200, description = "User Operation updated successfully", body = UserOperationSuccess),
-            (status = 404, description = "User Operation not found", body = UserOperationError),
+            (status = 404, description = "User operation not found", body = UserOperationError),
         )
     )]
 #[autometrics]

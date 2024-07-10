@@ -73,7 +73,7 @@ pub struct GetQuery {
         ),
         responses(
             (status = 200, description = "User Operation signature returned successfully", body = String),
-            (status = 404, description = "User Operation not found", body = UserOperationError),
+            (status = 404, description = "User operation not found", body = UserOperationError),
         )
     )]
 #[autometrics]

@@ -49,8 +49,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Wallet Features returned successfully", body = WalletFeatures),
-            (status = 404, description = "Wallet Features not found", body = WalletFeaturesError),
+            (status = 200, description = "Wallet features returned  successfully", body = WalletFeatures),
+            (status = 404, description = "Wallet features not found ", body = WalletFeaturesError),
         )
     )]
 #[autometrics]

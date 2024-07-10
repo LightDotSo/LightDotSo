@@ -50,8 +50,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Asset Change returned successfully", body = AssetChange),
-            (status = 404, description = "Asset Change not found", body = AssetChangeError),
+            (status = 200, description = "Asset change returned successfully", body = AssetChange),
+            (status = 404, description = "Asset change not found", body = AssetChangeError),
         )
     )]
 #[autometrics]

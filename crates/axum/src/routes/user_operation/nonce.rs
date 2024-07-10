@@ -64,8 +64,8 @@ pub(crate) struct UserOperationNonce {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User Operation nonce returned successfully", body = UserOperationNonce),
-            (status = 404, description = "User Operation nonce not found", body = UserOperationError),
+            (status = 200, description = " User operation nonce returned successfully", body = UserOperationNonce),
+            (status = 404, description = " User operation nonce not found", body = UserOperationError),
         )
     )]
 #[autometrics]
