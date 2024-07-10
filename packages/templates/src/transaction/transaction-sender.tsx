@@ -22,6 +22,7 @@ import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { memo, useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
+import { useShallow } from "zustand/react/shallow";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,11 +47,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
       hash: hash,
     });
 
-    const {
-      handleSubmit,
-      isUserOperationSendReady,
-      isUserOperationSendSuccess,
-    } = useUserOperationSend({
+    const { handleSubmit, isUserOperationSendSuccess } = useUserOperationSend({
       address: address as Address,
       hash: hash,
     });
@@ -62,9 +59,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
     // Submit user operation every 3 seconds
     useEffect(() => {
       const interval = setInterval(() => {
-        if (isUserOperationSendReady) {
-          handleSubmit();
-        }
+        handleSubmit();
       }, 3_000);
 
       return () => clearInterval(interval);
@@ -113,7 +108,9 @@ export const TransactionSender: FC<TransactionSenderProps> = memo(
     // Stores
     // ---------------------------------------------------------------------------
 
-    const { pendingSubmitUserOperationHashes } = useUserOperations();
+    const pendingSubmitUserOperationHashes = useUserOperations(
+      useShallow(state => state.pendingSubmitUserOperationHashes),
+    );
 
     // ---------------------------------------------------------------------------
     // Render
