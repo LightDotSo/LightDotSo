@@ -69,7 +69,7 @@ pub struct UserSettingsUpdateRequestParams {
         request_body = UserSettingsUpdateRequestParams,
         responses(
             (status = 200, description = "User Settings updated successfully", body = UserSettings),
-            (status = 400, description = "Invalid Configuration", body = UserSettingsError),
+            (status = 400, description = "Invalid configuration", body = UserSettingsError),
             (status = 409, description = "User Settings already exists", body = UserSettingsError),
             (status = 500, description = "User Settings internal error", body = UserSettingsError),
         )

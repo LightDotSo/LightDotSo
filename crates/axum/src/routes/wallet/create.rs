@@ -113,7 +113,7 @@ pub(crate) struct WalletCreateOwnerParams {
         request_body = WalletCreateRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
-            (status = 400, description = "Invalid Configuration", body = WalletError),
+            (status = 400, description = "Invalid configuration", body = WalletError),
             (status = 409, description = "Wallet already exists", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
         )

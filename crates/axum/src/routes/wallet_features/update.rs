@@ -68,7 +68,7 @@ pub struct WalletFeaturesUpdateRequestParams {
         request_body = WalletFeaturesUpdateRequestParams,
         responses(
             (status = 200, description = "Wallet Features updated successfully", body = WalletFeatures),
-            (status = 400, description = "Invalid Configuration", body = WalletFeaturesError),
+            (status = 400, description = "Invalid configuration", body = WalletFeaturesError),
             (status = 401, description = "Unauthorized", body = WalletFeaturesError),
             (status = 500, description = "Wallet Features internal error", body = WalletFeaturesError),
         )

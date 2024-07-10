@@ -72,7 +72,7 @@ pub struct AuthVerifyCreateRequestParams {
         // request_body = AuthCreateRequestParams,
         responses(
             (status = 200, description = "Auth verified successfully", body = AuthNonce),
-            (status = 400, description = "Invalid Configuration", body = AuthError),
+            (status = 400, description = "Invalid configuration", body = AuthError),
             (status = 409, description = "Auth already exists", body = AuthError),
             (status = 500, description = "Auth internal error", body = AuthError),
         )

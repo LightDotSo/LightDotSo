@@ -124,7 +124,7 @@ pub struct ConfigurationOperationSignatureCreateParams {
         request_body = ConfigurationOperationCreateRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = ConfigurationOperation),
-            (status = 400, description = "Invalid Configuration", body = ConfigurationOperationError),
+            (status = 400, description = "Invalid configuration", body = ConfigurationOperationError),
             (status = 409, description = "Signature already exists", body = ConfigurationOperationError),
             (status = 500, description = "Signature internal error", body = ConfigurationOperationError),
         )

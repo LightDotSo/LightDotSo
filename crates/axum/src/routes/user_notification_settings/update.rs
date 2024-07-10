@@ -78,7 +78,7 @@ pub struct UserNotificationSettingsUpdateRequestParams {
         request_body = UserNotificationSettingsUpdateRequestParams,
         responses(
             (status = 200, description = "User Settings updated successfully", body = UserNotificationSettings),
-            (status = 400, description = "Invalid Configuration", body = UserNotificationSettingsError),
+            (status = 400, description = "Invalid configuration", body = UserNotificationSettingsError),
             (status = 409, description = "User Settings already exists", body = UserNotificationSettingsError),
             (status = 500, description = "User Settings internal error", body = UserNotificationSettingsError),
         )

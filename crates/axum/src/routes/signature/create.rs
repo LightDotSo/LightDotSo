@@ -97,7 +97,7 @@ pub struct SignatureCreateParams {
         request_body = SignatureCreateRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = Signature),
-            (status = 400, description = "Invalid Configuration", body = SignatureError),
+            (status = 400, description = "Invalid configuration", body = SignatureError),
             (status = 409, description = "Signature already exists", body = SignatureError),
             (status = 500, description = "Signature internal error", body = SignatureError),
         )

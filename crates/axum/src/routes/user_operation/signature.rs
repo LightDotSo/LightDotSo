@@ -72,7 +72,7 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User Operation signature returned successfully", body = String),
+            (status = 200, description = "User operation signature returned successfully", body = String),
             (status = 404, description = "User operation not found", body = UserOperationError),
         )
     )]
