@@ -20,3 +20,9 @@ The MVP is intended to be a starting point for further development and refinemen
 - **Complexity**: The MVP is intentionally simple and does not include all the features that will be present in the final version of the protocol.
 - **Decentralization**: The MVP is not designed to be fully decentralized, but rather to provide a starting point for further development in this area.
 - **Finality**: The MVP does not include finality guarantees, but rather focuses on providing a fast and efficient chain abstraction experience.
+
+### Protocol Components
+
+- **Batch Execution** User operation merkle is a merkle tree of user operations, which is used to batch submit user operations to the protocol.
+- **Billing** Billing page on the dashboard is "emulated" as the protocol balance, where nodes keep track of the balance of each user. Right now, escrow is a featureset for the protocol, where users can escrow their assets in the protocol in exchange for fronted services + cross-chain gas fees.
+- **Intent Engine** Intent engine powers the automatic routing of assets throughout.
