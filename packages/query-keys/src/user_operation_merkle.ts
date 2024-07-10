@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
-  NotificationListParams,
-  NotificationListCountParams,
-} from "@lightdotso/params";
+import type { UserOperationMerkleGetParams } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -23,15 +20,9 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // Keys
 // -----------------------------------------------------------------------------
 
-export const notification = createQueryKeys("notification", {
-  list: (params: NotificationListParams) => ({
+export const user_operation_merkle = createQueryKeys("user_operation_merkle", {
+  get: (params: UserOperationMerkleGetParams) => ({
     queryKey: [{ params: params }],
-  }),
-  listCount: (params: NotificationListCountParams) => ({
-    queryKey: [{ params: params }],
-  }),
-  read: () => ({
-    queryKey: ["read"],
   }),
 });
 
@@ -39,4 +30,6 @@ export const notification = createQueryKeys("notification", {
 // Infer
 // -----------------------------------------------------------------------------
 
-export type NotificationKeys = inferQueryKeys<typeof notification>;
+export type UserOperationMerkleKeys = inferQueryKeys<
+  typeof user_operation_merkle
+>;

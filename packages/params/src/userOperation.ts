@@ -26,7 +26,7 @@ export type UserOperationParams = {
 };
 
 export type UserOperationGetParams = {
-  hash: Hex;
+  hash: Hex | null | undefined;
 };
 
 export type UserOperationNonceParams = {

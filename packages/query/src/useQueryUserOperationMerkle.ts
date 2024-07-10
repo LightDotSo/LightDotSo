@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationSignature } from "@lightdotso/client";
-import type { UserOperationSignatureData } from "@lightdotso/data";
-import type { UserOperationSignatureGetParams } from "@lightdotso/params";
+import { getUserOperationMerkle } from "@lightdotso/client";
+import type { UserOperationMerkleData } from "@lightdotso/data";
+import type { UserOperationMerkleGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,8 +23,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryUserOperationSignature = (
-  params: UserOperationSignatureGetParams,
+export const useQueryUserOperationMerkle = (
+  params: UserOperationMerkleGetParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -38,34 +38,32 @@ export const useQueryUserOperationSignature = (
 
   const queryClient = useQueryClient();
 
-  const currentData: UserOperationSignatureData | undefined =
+  const currentData: UserOperationMerkleData | undefined =
     queryClient.getQueryData(
-      queryKeys.user_operation.signature({
-        hash: params.hash,
-        configuration_id: params.configuration_id,
+      queryKeys.user_operation_merkle.get({
+        root: params.root,
       }).queryKey,
     );
 
   const {
-    data: userOperationSignature,
-    isLoading: isUserOperationSignatureLoading,
+    data: userOperationMerkle,
+    isLoading: isUserOperationMerkleLoading,
+    refetch: refetchUserOperationMerkle,
     failureCount,
-  } = useQuery<UserOperationSignatureData | null>({
-    queryKey: queryKeys.user_operation.signature({
-      hash: params.hash,
-      configuration_id: params.configuration_id,
+  } = useQuery<UserOperationMerkleData | null>({
+    queryKey: queryKeys.user_operation_merkle.get({
+      root: params.root,
     }).queryKey,
     queryFn: async () => {
-      if (!params.hash) {
+      if (!params.root) {
         return null;
       }
 
-      const res = await getUserOperationSignature(
+      const res = await getUserOperationMerkle(
         {
           params: {
             query: {
-              user_operation_hash: params.hash,
-              configuration_id: params.configuration_id,
+              root: params.root,
             },
           },
         },
@@ -74,7 +72,7 @@ export const useQueryUserOperationSignature = (
 
       return res.match(
         data => {
-          return data as UserOperationSignatureData;
+          return data as UserOperationMerkleData;
         },
         err => {
           if (failureCount % 3 !== 2) {
@@ -87,7 +85,8 @@ export const useQueryUserOperationSignature = (
   });
 
   return {
-    userOperationSignature: userOperationSignature,
-    isUserOperationSignatureLoading: isUserOperationSignatureLoading,
+    userOperationMerkle: userOperationMerkle,
+    isUserOperationMerkleLoading: isUserOperationMerkleLoading,
+    refetchUserOperationMerkle: refetchUserOperationMerkle,
   };
 };

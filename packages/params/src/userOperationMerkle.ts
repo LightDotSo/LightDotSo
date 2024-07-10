@@ -12,25 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
-import type { UserOperationGetParams } from "@lightdotso/params";
-import "server-only";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Params
 // -----------------------------------------------------------------------------
 
-export const preloadGetUserOperation = (params: UserOperationGetParams) => {
-  void getUserOperation(params);
-};
-
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getUserOperation = async (params: UserOperationGetParams) => {
-  return getClientUserOperation(
-    { params: { query: { user_operation_hash: params.hash! } } },
-    "admin",
-  );
+export type UserOperationMerkleGetParams = {
+  root: Hex | null | undefined;
 };

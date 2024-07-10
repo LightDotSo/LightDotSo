@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import type { InterpretationData } from "./interpretation";
+import type { PaymasterOperationData } from "./paymasterOperation";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -46,6 +47,7 @@ export type UserOperationData = {
   verification_gas_limit: number;
   created_at: string;
   updated_at: string;
+  paymaster_operation?: PaymasterOperationData | null | undefined;
   interpretation?: InterpretationData | null | undefined;
 };
 

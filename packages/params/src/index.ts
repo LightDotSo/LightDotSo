@@ -38,6 +38,12 @@ export type {
   QueueTransactionBodyParams,
   QueueUserOpeartionBodyParams,
 } from "./queue";
+export type {
+  RpcGasEstimationParams,
+  RpcEstimateUserOperationGasParams,
+  RpcPaymasterGasAndPaymasterAndDataParams,
+  RpcUserOperationReceiptParams,
+} from "./rpc";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
@@ -61,6 +67,7 @@ export type {
   UserOperationUpdateBodyParams,
   UserOperationSendBodyParams,
 } from "./userOperation";
+export type { UserOperationMerkleGetParams } from "./userOperationMerkle";
 export type {
   WalletParams,
   WalletListParams,

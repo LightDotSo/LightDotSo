@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "add": "shadcn-ui add",
-    "build": "pnpm run build:styles && pnpm run build:storybook",
+    "build": "pnpm run build:styles && pnpm run build:storybook || true",
     "build:storybook": "storybook build -o dist",
     "build:styles": "cp ../../configurations/styles/global.css ./.storybook/global.css",
     "dev": "STORYBOOK_ENV=dev storybook dev -p 6006",

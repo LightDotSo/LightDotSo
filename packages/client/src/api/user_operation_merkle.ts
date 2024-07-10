@@ -12,13 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { BillingOperationData } from "./billingOperation";
+import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
+import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
-// Data
+// GET
 // -----------------------------------------------------------------------------
 
-export type PaymasterOperationData = {
-  id: string;
-  billing_operation?: BillingOperationData | null | undefined;
+export const getUserOperationMerkle = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { root: string };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation_merkle/get", {
+      params: params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };

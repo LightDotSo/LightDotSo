@@ -63,6 +63,7 @@ export { useQueryUserOperations } from "./useQueryUserOperations";
 export { useQueryUserOperationsCount } from "./useQueryUserOperationsCount";
 export { useQueryUserOperationEstimateGas } from "./useQueryUserOperationEstimateGas";
 export { useQueryUserOperationEstimateFeesPerGas } from "./useQueryUserOperationEstimateFeesPerGas";
+export { useQueryUserOperationMerkle } from "./useQueryUserOperationMerkle";
 export { useQueryUserOperationNonce } from "./useQueryUserOperationNonce";
 export { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 export { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";

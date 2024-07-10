@@ -43,7 +43,7 @@ export const useMutationUserOperationSend = (
   });
   const { userOperationReceipt } = useQueryUserOperationReceipt({
     chainId: userOperation?.chain_id ?? null,
-    hash: params.hash,
+    hash: params.hash ?? null,
   });
   const queryClient = useQueryClient();
 

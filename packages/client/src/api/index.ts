@@ -28,6 +28,7 @@ export * from "./token_price";
 export * from "./token";
 export * from "./transaction";
 export * from "./user_operation";
+export * from "./user_operation_merkle";
 export * from "./user";
 export * from "./wallet";
 export * from "./wallet_billing";
