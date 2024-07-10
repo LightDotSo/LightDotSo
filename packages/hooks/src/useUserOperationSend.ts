@@ -230,7 +230,7 @@ export const useUserOperationSend = ({
       userOperationSignature: userOperationSignature as Hex,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserOperationSendReady]);
+  }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------
   // Render

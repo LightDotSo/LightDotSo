@@ -71,8 +71,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
     // ---------------------------------------------------------------------------
 
     return (
-      <div key={`${address}-${hash}`}>
-        {userOperation && (
+      <div>
+        {userOperation && userOperation?.transaction ? (
           <Button asChild variant="link">
             <a
               target="_blank"
@@ -84,6 +84,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = memo(
               {userOperation?.transaction?.hash}
             </a>
           </Button>
+        ) : (
+          <div>{hash}</div>
         )}
       </div>
     );
