@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::utils::to_checksum;
+use ethers::{types::Address, utils::to_checksum};
 use eyre::Result;
+use lightdotso_client::get_user_operaton_signature;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet};
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
@@ -43,23 +44,45 @@ pub async fn node_consumer(
         let hash = payload.hash;
 
         // Get the unique user operation from the db
-        let (uop, chain_id) = get_user_operation_with_chain_id(db.clone(), hash).await?;
+        let (mut uop, chain_id) = get_user_operation_with_chain_id(db.clone(), hash).await?;
 
-        // Get the light wallet contract
-        let light_wallet_contract = get_light_wallet(chain_id, uop.sender).await?;
+        // Inner function to get the configuration id
+        async fn get_configuration_id(
+            db: Arc<PrismaClient>,
+            chain_id: u64,
+            sender: Address,
+        ) -> Result<Option<String>> {
+            // Get the light wallet contract
+            let light_wallet_contract = get_light_wallet(chain_id, sender).await?;
 
-        // Get the image from the chain_id
-        let image_hash: [u8; 32] = light_wallet_contract.image_hash().await?;
+            // Get the image from the chain_id
+            let image_hash: [u8; 32] = light_wallet_contract.image_hash().await?;
 
-        // Get the configuration from the chain_id
-        let _configuration = db
-            .configuration()
-            .find_unique(configuration::address_image_hash(
-                to_checksum(&uop.sender, None),
-                image_hash.to_vec().to_hex_string(),
-            ))
-            .exec()
-            .await?;
+            // Get the configuration from the chain_id
+            let configuration = db
+                .configuration()
+                .find_unique(configuration::address_image_hash(
+                    to_checksum(&sender, None),
+                    image_hash.to_vec().to_hex_string(),
+                ))
+                .exec()
+                .await?;
+
+            // Get the configuration id
+            let configuration_id = configuration.map(|c| c.id);
+
+            Ok(configuration_id)
+        }
+
+        // Get the configuration id
+        let configuration_id =
+            get_configuration_id(db.clone(), chain_id, uop.sender).await.unwrap_or_default();
+
+        // Get the user operation signature
+        let signature = get_user_operaton_signature(hash, configuration_id).await?;
+
+        // Set the signature
+        uop.signature = signature.into();
 
         // Attempt to submit the user operation to the node
         let res = node.send_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;

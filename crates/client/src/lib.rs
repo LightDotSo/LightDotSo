@@ -18,9 +18,11 @@ mod constants;
 
 use backon::{ExponentialBuilder, Retryable};
 use constants::{ADMIN_BASE_API_URL, PUBLIC_BASE_API_URL};
+use ethers::types::H256;
 use eyre::Result;
 use http::HeaderMap;
 use lightdotso_common::traits::HexToBytes;
+use lightdotso_tracing::tracing::info;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
 use std::sync::Arc;
@@ -86,12 +88,24 @@ pub async fn request_api_json<T: DeserializeOwned>(path: String) -> Result<T> {
 }
 
 // Get the signature of the user operation
-pub async fn get_user_operaton_signature() -> Result<Vec<u8>> {
+pub async fn get_user_operaton_signature(
+    hash: H256,
+    configuration_id: Option<String>,
+) -> Result<Vec<u8>> {
     // The path to the user operation signature
-    let path = "/user_operation/signature".to_string();
+    let path = format!("/user_operation/signature?hash=0x{:#x}", hash,);
+
+    // If the configuration id is present, append it to the path
+    let path = if let Some(configuration_id) = configuration_id {
+        format!("{}&configuration_id={}", path, configuration_id)
+    } else {
+        path
+    };
+    info!("path: {}", path);
 
     // Get the response from the api
     let response = request_api_json::<String>(path).await?;
+    info!("response: {}", response);
 
     // Convert to GasEstimation using From trait
     Ok(response.hex_to_bytes()?)

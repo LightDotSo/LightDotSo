@@ -6077,10 +6077,12 @@ name = "lightdotso-client"
 version = "0.1.0"
 dependencies = [
  "backon",
+ "ethers 2.0.8",
  "eyre",
  "http",
  "lazy_static",
  "lightdotso-common",
+ "lightdotso-tracing",
  "reqwest",
  "serde",
  "serde_json",
@@ -6112,6 +6114,7 @@ dependencies = [
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-client",
  "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-covalent",
