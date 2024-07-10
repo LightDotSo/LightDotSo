@@ -69,8 +69,8 @@ pub(crate) struct ConfigurationOperationListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Configuration Operations returned successfully", body = [ConfigurationOperation]),
-            (status = 500, description = "Configuration Operation bad request", body = ConfigurationOperationError),
+            (status = 200, description = "Configuration operations returned successfully", body = [ConfigurationOperation]),
+            (status = 500, description = "Configuration operation bad request", body = ConfigurationOperationError),
         )
     )]
 #[autometrics]
@@ -125,8 +125,8 @@ pub(crate) async fn v1_configuration_operation_list_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Configuration Operations returned successfully", body = ConfigurationOperationListCount),
-            (status = 500, description = "Configuration Operations bad request", body = ConfigurationOperationError),
+            (status = 200, description = "Configuration operations returned successfully", body = ConfigurationOperationListCount),
+            (status = 500, description = "Configuration operations bad request", body = ConfigurationOperationError),
         )
     )]
 #[autometrics]

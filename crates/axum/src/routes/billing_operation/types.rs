@@ -28,6 +28,8 @@ pub(crate) struct BillingOperation {
     id: String,
     /// The status of the billing operation.
     status: String,
+    /// The balance USD of the billing operation.
+    balance_usd: f64,
 }
 
 // -----------------------------------------------------------------------------
@@ -37,6 +39,10 @@ pub(crate) struct BillingOperation {
 /// Implement From<billing_operation::Data> for BillingOperation.
 impl From<billing_operation::Data> for BillingOperation {
     fn from(billing_operation: billing_operation::Data) -> Self {
-        Self { id: billing_operation.id, status: billing_operation.status.to_string() }
+        Self {
+            id: billing_operation.id,
+            status: billing_operation.status.to_string(),
+            balance_usd: billing_operation.balance_usd,
+        }
     }
 }

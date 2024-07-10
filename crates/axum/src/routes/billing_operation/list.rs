@@ -145,7 +145,7 @@ pub(crate) async fn v1_billing_operation_list_handler(
         ),
         responses(
             (status = 200, description = "Billing operations returned successfully", body = BillingOperationListCount),
-            (status = 500, description = "BillingOperation bad request", body = BillingOperationError),
+            (status = 500, description = "Billing operation bad request", body = BillingOperationError),
         )
     )]
 #[autometrics]

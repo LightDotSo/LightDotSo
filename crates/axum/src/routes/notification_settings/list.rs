@@ -63,7 +63,7 @@ pub(crate) struct NotificationSettingsListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Notification settingss returned successfully", body = [NotificationSettings]),
+            (status = 200, description = "Notification settings returned successfully", body = [NotificationSettings]),
             (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
         )
     )]
@@ -119,8 +119,8 @@ pub(crate) async fn v1_notification_settings_list_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Notification settingss returned successfully", body = NotificationSettingsListCount),
-            (status = 500, description = "NotificationSettings bad request", body = NotificationSettingsError),
+            (status = 200, description = "Notification settings returned successfully", body = NotificationSettingsListCount),
+            (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
         )
     )]
 #[autometrics]

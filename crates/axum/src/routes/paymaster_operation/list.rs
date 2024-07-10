@@ -49,8 +49,8 @@ pub struct ListQuery {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Paymaster Operations returned successfully", body = [PaymasterOperation]),
-            (status = 500, description = "Paymaster Operation bad request", body = PaymasterOperationError),
+            (status = 200, description = "Paymaster operations returned successfully", body = [PaymasterOperation]),
+            (status = 500, description = "Paymaster operation bad request", body = PaymasterOperationError),
         )
     )]
 #[autometrics]

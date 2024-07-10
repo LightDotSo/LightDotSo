@@ -48,8 +48,8 @@ pub struct ListQuery {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Configuration Operation Owners returned successfully", body = [ConfigurationOperationOwner]),
-            (status = 500, description = "Configuration Operation Owners bad request", body = ConfigurationOperationOwnerError),
+            (status = 200, description = "Configuration operation owners returned successfully", body = [ConfigurationOperationOwner]),
+            (status = 500, description = "Configuration operation owners bad request", body = ConfigurationOperationOwnerError),
         )
     )]
 #[autometrics]
