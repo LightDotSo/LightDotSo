@@ -13,12 +13,20 @@
 // limitations under the License.
 
 use eyre::Result;
+use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
+use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
 use lightdotso_node::node::Node;
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
+use std::sync::Arc;
 
-pub async fn node_consumer(msg: &BorrowedMessage<'_>, _node: &Node) -> Result<()> {
+pub async fn node_consumer(
+    msg: &BorrowedMessage<'_>,
+    node: &Node,
+    db: Arc<PrismaClient>,
+) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -30,7 +38,16 @@ pub async fn node_consumer(msg: &BorrowedMessage<'_>, _node: &Node) -> Result<()
         info!("payload: {:?}", payload);
 
         // Get the hash from the payload
-        let _hash = payload.hash;
+        let hash = payload.hash;
+
+        // Get the unique user operation from the db
+        let (uop, chain_id) = get_user_operation_with_chain_id(db.clone(), hash).await?;
+
+        // Attempt to submit the user operation to the node
+        let res = node.send_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
+
+        // Log the response
+        info!("res: {:?}", res);
     }
 
     Ok(())

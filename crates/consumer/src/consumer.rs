@@ -209,7 +209,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NODE.to_string() => {
-                            let res = node_consumer(&m, &node).await;
+                            let res = node_consumer(&m, &node, db.clone()).await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error

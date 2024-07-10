@@ -41,6 +41,7 @@ impl Node {
     /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L128
     /// License: MIT
     pub async fn send_user_operation(
+        &self,
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
