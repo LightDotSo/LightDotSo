@@ -252,8 +252,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a billing operation
+         * @description Get a billing operation
          */
         get: operations["v1_billing_operation_get_handler"];
         put?: never;
@@ -732,8 +732,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a interpretation action
+         * @description Get a interpretation action
          */
         get: operations["v1_interpretation_action_get_handler"];
         put?: never;
@@ -812,8 +812,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get an invite code
+         * @description Get an invite code
          */
         get: operations["v1_invite_code_get_handler"];
         put?: never;
@@ -952,8 +952,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a notification settings
+         * @description Get a notification settings
          */
         get: operations["v1_notification_settings_get_handler"];
         put?: never;
@@ -1092,8 +1092,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a paymaster
-         * @description Get a paymaster
+         * Get a paymaster operation
+         * @description Get a paymaster operation
          */
         get: operations["v1_paymaster_operation_get_handler"];
         put?: never;
@@ -3393,6 +3393,8 @@ export interface components {
             proofs: components["schemas"]["UserOperationMerkleProof"][];
             /** @description The root of the merkle tree. */
             root: string;
+            /** @description The user operations in the merkle tree. */
+            user_operations: components["schemas"]["UserOperation"][];
         };
         /** @description UserOperationMerkle errors */
         UserOperationMerkleError: {
@@ -4230,7 +4232,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description Chain returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4239,7 +4241,7 @@ export interface operations {
                     "application/json": components["schemas"]["Chain"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description Chain not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -5714,7 +5716,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description Protocol group returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5723,7 +5725,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProtocolGroup"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description Protocol group not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7239,7 +7241,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Protocola group returned successfully */
+            /** @description User operation merkle returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7248,7 +7250,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationMerkle"];
                 };
             };
-            /** @description Protocola group not found */
+            /** @description User operation merkle not found */
             404: {
                 headers: {
                     [name: string]: unknown;
