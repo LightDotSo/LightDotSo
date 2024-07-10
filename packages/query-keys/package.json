@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@lightdotso/params": "workspace:*",
-    "@lightdotso/schemas": "workspace:*",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@tanstack/react-query": "^5.50.1"
   },
