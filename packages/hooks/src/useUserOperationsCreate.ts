@@ -54,7 +54,8 @@ export const useUserOperationsCreate = ({
 
   const { address: userAddress } = useAuth();
   const {
-    addPendingSubmitUserOperationHash,
+    addPendingUserOperationMerkleRoot,
+    addPendingUserOperationHash,
     userOperations,
     resetUserOperations,
   } = useUserOperations();
@@ -284,7 +285,7 @@ export const useUserOperationsCreate = ({
         userOperation: userOperation,
       });
 
-      addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      addPendingUserOperationHash(userOperation.hash as Hex);
 
       setSignedData(undefined);
     };
@@ -295,15 +296,19 @@ export const useUserOperationsCreate = ({
         return;
       }
 
+      const merkleRoot = `0x${merkleTree.getRoot().toString("hex")}` as Hex;
+
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
         userOperations: userOperations,
-        merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
+        merkleRoot: merkleRoot,
       });
 
+      addPendingUserOperationMerkleRoot(merkleRoot);
+
       for (const userOperation of userOperations) {
-        addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+        addPendingUserOperationHash(userOperation.hash as Hex);
       }
 
       setSignedData(undefined);

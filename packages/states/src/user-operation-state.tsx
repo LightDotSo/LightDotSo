@@ -20,9 +20,9 @@ import {
   useQueryUserOperationsCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { useAuth, useUserOperations } from "@lightdotso/stores";
+import { useAuth } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -34,7 +34,6 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
-  const { pendingSubmitUserOperationHashes } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -75,8 +74,6 @@ export const UserOperationState: FC = () => {
     refetchUserOperationsCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    // Refetch when the pending submit user operation hashes change
-    pendingSubmitUserOperationHashes,
     // Also refetch when the user operations send state changes
     isUserOperationsSendSuccess,
     refetchPendingUserOperations,

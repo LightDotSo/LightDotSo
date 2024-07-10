@@ -14,42 +14,10 @@
 
 "use client";
 
-import { useQueryUserOperation } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
-import { memo, type FC } from "react";
-import type { Hex } from "viem";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface TransactionStatusOpProps {
-  hash: Hex;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const TransactionStatusOp: FC<TransactionStatusOpProps> = memo(
-  ({ hash }) => {
-    // ---------------------------------------------------------------------------
-    // Hooks
-    // ---------------------------------------------------------------------------
-
-    const { userOperation } = useQueryUserOperation({
-      hash: hash,
-    });
-
-    // ---------------------------------------------------------------------------
-    // Render
-    // ---------------------------------------------------------------------------
-
-    return <div>{userOperation?.status}</div>;
-  },
-);
+import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -60,7 +28,7 @@ export const TransactionStatus: FC = () => {
   // Stores
   // -------------------------------------------------------------------------
 
-  const { pendingSubmitUserOperationHashes } = useUserOperations();
+  const { pendingUserOperationHashes } = useUserOperations();
 
   // -------------------------------------------------------------------------
   // Render
@@ -69,28 +37,26 @@ export const TransactionStatus: FC = () => {
   return (
     <StateInfoSection
       icon={
-        pendingSubmitUserOperationHashes.length > 0 ? (
+        pendingUserOperationHashes.length > 0 ? (
           <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
         ) : (
           <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
         )
       }
       title={
-        pendingSubmitUserOperationHashes.length > 0
-          ? pendingSubmitUserOperationHashes.length === 1
+        pendingUserOperationHashes.length > 0
+          ? pendingUserOperationHashes.length === 1
             ? "Pending 1 transaction..."
-            : `Pending ${pendingSubmitUserOperationHashes.length} transactions...`
+            : `Pending ${pendingUserOperationHashes.length} transactions...`
           : "Success"
       }
       description={
-        pendingSubmitUserOperationHashes.length > 0
+        pendingUserOperationHashes.length > 0
           ? "Please wait while we handle your request..."
           : "Your transaction has been sent successfully."
       }
     >
-      {pendingSubmitUserOperationHashes.map(hash => (
-        <TransactionStatusOp key={hash} hash={hash} />
-      ))}
+      <></>
     </StateInfoSection>
   );
 };

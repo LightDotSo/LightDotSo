@@ -29,9 +29,12 @@ type UserOperationsStore = {
     nonce: bigint,
     operation: UserOperation,
   ) => void;
-  pendingSubmitUserOperationHashes: Hex[];
-  addPendingSubmitUserOperationHash: (hash: Hex) => void;
-  resetPendingSubmitUserOperationHashes: () => void;
+  pendingUserOperationMerkleRoot: Hex | null;
+  addPendingUserOperationMerkleRoot: (hash: Hex) => void;
+  resetPendingUserOperationMerkleRoot: () => void;
+  pendingUserOperationHashes: Hex[];
+  addPendingUserOperationHash: (hash: Hex) => void;
+  resetPendingUserOperationHashes: () => void;
   resetAll: () => void;
 };
 
@@ -67,25 +70,35 @@ export const useUserOperations = create(
 
             return { userOperations: userOperations };
           }),
-        pendingSubmitUserOperationHashes: [],
-        addPendingSubmitUserOperationHash: hash =>
+        pendingUserOperationMerkleRoot: null,
+        addPendingUserOperationMerkleRoot: hash =>
+          set(() => {
+            return { pendingUserOperationMerkleRoot: hash };
+          }),
+        resetPendingUserOperationMerkleRoot: () =>
+          set(() => {
+            return { pendingUserOperationMerkleRoot: null };
+          }),
+        pendingUserOperationHashes: [],
+        addPendingUserOperationHash: hash =>
           set(state => {
             return {
-              pendingSubmitUserOperationHashes: [
-                ...state.pendingSubmitUserOperationHashes,
+              pendingUserOperationHashes: [
+                ...state.pendingUserOperationHashes,
                 hash,
               ],
             };
           }),
-        resetPendingSubmitUserOperationHashes: () =>
+        resetPendingUserOperationHashes: () =>
           set(() => {
-            return { pendingSubmitUserOperationHashes: [] };
+            return { pendingUserOperationHashes: [] };
           }),
         resetAll: () =>
           set(() => {
             return {
               userOperations: [],
-              pendingSubmitUserOperationHashes: [],
+              pendingUserOperationMerkleRoot: null,
+              pendingUserOperationHashes: [],
             };
           }),
       }),
