@@ -61,6 +61,7 @@ export type {
   UserOperationUpdateBodyParams,
   UserOperationSendBodyParams,
 } from "./userOperation";
+export type { UserOperationMerkleGetParams } from "./userOperationMerkle";
 export type {
   WalletParams,
   WalletListParams,

@@ -35,6 +35,7 @@ import { token_price } from "./token_price";
 import { transaction } from "./transaction";
 import { user } from "./user";
 import { user_operation } from "./user_operation";
+import { user_operation_merkle } from "./user_operation_merkle";
 import { wallet } from "./wallet";
 import { wallet_settings } from "./wallet_settings";
 
@@ -57,6 +58,7 @@ export const queryKeys = mergeQueryKeys(
   socket,
   transaction,
   user_operation,
+  user_operation_merkle,
   user,
   token,
   token_price,

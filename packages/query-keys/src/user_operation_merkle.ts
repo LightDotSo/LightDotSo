@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { BillingOperationData } from "./billingOperation";
+import type { UserOperationMerkleGetParams } from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// Data
+// Keys
 // -----------------------------------------------------------------------------
 
-export type PaymasterOperationData = {
-  id: string;
-  billing_operation?: BillingOperationData | null | undefined;
-};
+export const user_operation_merkle = createQueryKeys("user_operation_merkle", {
+  get: (params: UserOperationMerkleGetParams) => ({
+    queryKey: [{ params: params }],
+  }),
+});
+
+// -----------------------------------------------------------------------------
+// Infer
+// -----------------------------------------------------------------------------
+
+export type UserOperationMerkleKeys = inferQueryKeys<
+  typeof user_operation_merkle
+>;

@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { BillingOperationData } from "./billingOperation";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
-// Data
+// Params
 // -----------------------------------------------------------------------------
 
-export type PaymasterOperationData = {
-  id: string;
-  billing_operation?: BillingOperationData | null | undefined;
+export type UserOperationMerkleGetParams = {
+  root: Hex | null;
 };

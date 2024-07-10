@@ -16,6 +16,7 @@ export type { ActivityData, ActivityCountData } from "./activity";
 export type { AssetChangeData } from "./assetChange";
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { BillingData } from "./billing";
+export type { BillingOperationData } from "./billingOperation";
 export type { ConfigurationData } from "./configuration";
 export type { ConfigurationOperationData } from "./configurationOperation";
 export type { EnsDataPage } from "./ens";
@@ -40,6 +41,7 @@ export type {
   UserOperationNonceData,
   UserOperationSignatureData,
 } from "./userOperation";
+export type { UserOperationMerkleData } from "./userOperationMerkle";
 export type { WalletData, WalletCountData } from "./wallet";
 export type { WalletBillingData } from "./walletBilling";
 export type { WalletFeaturesData } from "./walletFeatures";

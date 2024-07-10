@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { BillingOperationData } from "./billingOperation";
+import { UserOperationData } from "./userOperation";
+import { UserOperationMerkleProofData } from "./userOperationMerkleProof";
 
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
 
-export type PaymasterOperationData = {
+export type UserOperationMerkleData = {
   id: string;
-  billing_operation?: BillingOperationData | null | undefined;
+  root: string;
+  user_operations: UserOperationData[];
+  proofs: UserOperationMerkleProofData[];
 };

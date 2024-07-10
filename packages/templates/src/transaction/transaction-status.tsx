@@ -14,8 +14,10 @@
 
 "use client";
 
+import { useQueryUserOperationMerkle } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
+import { shortenBytes32 } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { type FC } from "react";
 
@@ -24,16 +26,24 @@ import { type FC } from "react";
 // -----------------------------------------------------------------------------
 
 export const TransactionStatus: FC = () => {
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Stores
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const { pendingUserOperationMerkleRoot, pendingUserOperationHashes } =
     useUserOperations();
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperationMerkle } = useQueryUserOperationMerkle({
+    root: pendingUserOperationMerkleRoot,
+  });
+
+  // ---------------------------------------------------------------------------
   // Render
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   return (
     <StateInfoSection
@@ -47,7 +57,7 @@ export const TransactionStatus: FC = () => {
       title={
         pendingUserOperationHashes.length > 0
           ? pendingUserOperationHashes.length === 1
-            ? "Pending 1 transaction..."
+            ? "Pending transaction..."
             : `Pending ${pendingUserOperationHashes.length} transactions...`
           : "Success"
       }
@@ -60,9 +70,22 @@ export const TransactionStatus: FC = () => {
       <div className="space-y-3">
         {pendingUserOperationMerkleRoot && (
           <div className="text-xs text-text-weak">
-            Merkle Root: {pendingUserOperationMerkleRoot}
+            Merkle Root: {shortenBytes32(pendingUserOperationMerkleRoot)}
           </div>
         )}
+        {pendingUserOperationHashes.length === 1 && (
+          <div className="text-xs text-text-weak">
+            Transaction Hash: {shortenBytes32(pendingUserOperationHashes[0])}
+          </div>
+        )}
+        {userOperationMerkle &&
+          userOperationMerkle.user_operations
+            .filter(userOperation => userOperation.transaction !== null)
+            .map(userOperation => (
+              <div key={userOperation.hash} className="text-xs text-text-weak">
+                Transaction Hash: {shortenBytes32(userOperation.hash)}
+              </div>
+            ))}
       </div>
     </StateInfoSection>
   );

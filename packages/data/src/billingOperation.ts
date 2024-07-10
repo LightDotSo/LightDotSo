@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { BillingOperationData } from "./billingOperation";
+import { TokenPriceData } from "./tokenPrice";
 
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
 
-export type PaymasterOperationData = {
+export type BillingOperationData = {
+  balance_usd: number;
   id: string;
-  billing_operation?: BillingOperationData | null | undefined;
+  status: string;
+  token_price?: TokenPriceData | null | undefined;
 };
