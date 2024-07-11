@@ -22,3 +22,4 @@ ignores:
   - "@sentry/integrations"
   - "content-collections"
   - "next-themes"
+  - "fumadocs-openapi"

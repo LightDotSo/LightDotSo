@@ -24,7 +24,7 @@ import { StateInfoSection } from "@lightdotso/ui";
 import { shortenBytes32 } from "@lightdotso/utils";
 import { getEtherscanUrlWithChainId } from "@lightdotso/utils/src/etherscan";
 import { ArrowUpRight, CheckCircle2, LoaderIcon } from "lucide-react";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -60,27 +60,50 @@ export const TransactionStatus: FC = () => {
   );
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isStatusPending = useMemo(() => {
+    // Get the status from the user operation merkle
+    if (userOperationMerkle) {
+      return userOperationMerkle.user_operations.every(
+        userOperation => userOperation.transaction !== null,
+      )
+        ? false
+        : true;
+    }
+
+    // Get the status from the single user operation
+    if (userOperation) {
+      return userOperation.transaction === null;
+    }
+
+    // Default to true if no data is available
+    return true;
+  }, [userOperationMerkle]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <StateInfoSection
       icon={
-        pendingUserOperationHashes.length > 0 ? (
+        isStatusPending ? (
           <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
         ) : (
           <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
         )
       }
       title={
-        pendingUserOperationHashes.length > 0
+        isStatusPending
           ? pendingUserOperationHashes.length === 1
             ? "Pending transaction..."
             : `Pending ${pendingUserOperationHashes.length} transactions...`
           : "Success"
       }
       description={
-        pendingUserOperationHashes.length > 0
+        isStatusPending
           ? "Please wait while we handle your request..."
           : "Your transaction has been sent successfully."
       }
@@ -90,17 +113,14 @@ export const TransactionStatus: FC = () => {
           <div className="text-xs text-text-weak">
             Merkle Root:{" "}
             <a
-              className="hover:underline"
+              className="inline-flex items-center hover:underline"
               href={`${INTERNAL_LINKS.Explorer}/root/${pendingUserOperationMerkleRoot}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {shortenBytes32(pendingUserOperationMerkleRoot)}
               <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
             </a>
-          </div>
-        )}
-        {pendingUserOperationHashes.length === 1 && (
-          <div className="text-xs text-text-weak">
-            Transaction Hash: {shortenBytes32(pendingUserOperationHashes[0])}
           </div>
         )}
         {userOperationMerkle &&
@@ -110,8 +130,10 @@ export const TransactionStatus: FC = () => {
               <div key={userOperation.hash} className="text-xs text-text-weak">
                 Transaction Hash:{" "}
                 <a
-                  className="hover:underline"
+                  className="inline-flex items-center hover:underline"
                   href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction!.hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {shortenBytes32(userOperationMerkle.root)}
                   <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
@@ -122,8 +144,10 @@ export const TransactionStatus: FC = () => {
           <div className="text-xs text-text-weak">
             Transaction Hash:{" "}
             <a
-              className="hover:underline"
+              className="inline-flex items-center hover:underline"
               href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction.hash}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {shortenBytes32(userOperation.transaction.hash)}
               <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
