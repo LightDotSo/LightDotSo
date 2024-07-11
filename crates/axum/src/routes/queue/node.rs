@@ -76,6 +76,14 @@ pub(crate) async fn v1_queue_node_handler(
     info!("parsed_query_hash: {:?}", parsed_query_hash);
 
     // -------------------------------------------------------------------------
+    // Redis
+    // -------------------------------------------------------------------------
+
+    // Rate limit the queue.
+    node_rate_limit(state.redis, full_op_hash.clone())
+        .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
+
+    // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
@@ -84,19 +92,14 @@ pub(crate) async fn v1_queue_node_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(full_op_hash.clone()))
-        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
-            full_op_hash.clone(),
-        )]))
+        .with(
+            user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+                full_op_hash.clone(),
+            )])
+            .with(signature::owner::fetch()),
+        )
         .exec()
         .await?;
-
-    // -------------------------------------------------------------------------
-    // Redis
-    // -------------------------------------------------------------------------
-
-    // Rate limit the queue.
-    node_rate_limit(state.redis, full_op_hash.clone())
-        .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
     // -------------------------------------------------------------------------
     // DB
@@ -117,9 +120,16 @@ pub(crate) async fn v1_queue_node_handler(
         let configuration = configuration
             .ok_or(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())))?;
 
-        // Compare with the configuration's threshold and the uop's number of signatures, if the
-        // threshold is not met, return a 404
-        if configuration.threshold as usize > uop.signatures.unwrap_or_default().len() {
+        // Compare with the configuration's threshold and the uop's signature's owner's culmative
+        // weight, if the threshold is not met, return a 404
+        if configuration.threshold >=
+            uop.signatures
+                .unwrap_or_default()
+                .into_iter()
+                .filter_map(|s| s.owner.clone())
+                .map(|owner| owner.weight)
+                .sum()
+        {
             return Err(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())).into());
         }
 
@@ -132,9 +142,12 @@ pub(crate) async fn v1_queue_node_handler(
             .client
             .user_operation_merkle()
             .find_unique(user_operation_merkle::root::equals(full_op_hash.clone()))
-            .with(user_operation_merkle::signatures::fetch(vec![
-                signature::user_operation_merkle_root::equals(Some(full_op_hash.clone())),
-            ]))
+            .with(
+                user_operation_merkle::signatures::fetch(vec![
+                    signature::user_operation_merkle_root::equals(Some(full_op_hash.clone())),
+                ])
+                .with(signature::owner::fetch()),
+            )
             .with(user_operation_merkle::user_operations::fetch(vec![
                 user_operation::user_operation_merkle_root::equals(Some(full_op_hash.clone())),
             ]))
@@ -165,9 +178,17 @@ pub(crate) async fn v1_queue_node_handler(
         let configuration = configuration
             .ok_or(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())))?;
 
-        // Compare with the configuration's threshold and the uop's number of signatures, if the
-        // threshold is not met, return a 404
-        if configuration.threshold as usize > uop_merkle.signatures.unwrap_or_default().len() {
+        // Compare with the configuration's threshold and the uop's culmative weight of the
+        // signature's owner, if the threshold is not met, return a 404
+        if configuration.threshold >=
+            uop_merkle
+                .signatures
+                .unwrap_or_default()
+                .into_iter()
+                .filter_map(|s| s.owner.clone())
+                .map(|owner| owner.weight)
+                .sum()
+        {
             return Err(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())).into());
         }
 
