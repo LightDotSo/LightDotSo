@@ -14,7 +14,7 @@
 
 use ethers::{types::Address, utils::to_checksum};
 use eyre::Result;
-use lightdotso_client::get_user_operaton_signature;
+use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet};
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
@@ -82,7 +82,7 @@ pub async fn node_consumer(
             get_configuration_id(db.clone(), chain_id, uop.sender).await.unwrap_or_default();
 
         // Get the user operation signature
-        let signature = get_user_operaton_signature(hash, configuration_id).await?;
+        let signature = get_user_operation_signature(hash, configuration_id).await?;
 
         // Set the signature
         uop.signature = signature.into();

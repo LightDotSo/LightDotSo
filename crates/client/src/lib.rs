@@ -88,7 +88,7 @@ pub async fn request_api_json<T: DeserializeOwned>(path: String) -> Result<T> {
 }
 
 // Get the signature of the user operation
-pub async fn get_user_operaton_signature(
+pub async fn get_user_operation_signature(
     hash: H256,
     configuration_id: Option<String>,
 ) -> Result<Vec<u8>> {
@@ -116,12 +116,12 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_get_user_operaton_signature() {
+    async fn test_get_user_operation_signature() {
         // Run the test
         let hash =
             "0x76ed9304a5c7de17666abbc35d9c36a3aa83e54a9e1f8e23d564e808fbcb3c98".parse().unwrap();
         let configuration_id = None;
-        let result = get_user_operaton_signature(hash, configuration_id).await;
+        let result = get_user_operation_signature(hash, configuration_id).await;
 
         // Print the result
         println!("{:?}", result);
