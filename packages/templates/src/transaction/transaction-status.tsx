@@ -80,7 +80,7 @@ export const TransactionStatus: FC = () => {
 
     // Default to true if no data is available
     return true;
-  }, [userOperationMerkle]);
+  }, [userOperationMerkle, userOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
