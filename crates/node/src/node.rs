@@ -48,7 +48,7 @@ impl Node {
         entry_point: Address,
         user_operation: &UserOperation,
     ) -> Result<Response<H256>> {
-        let params = vec![json!(user_operation), json!(entry_point)];
+        let params = vec![json!(user_operation.clone()), json!(entry_point)];
         info!("params: {:?}", params);
 
         let req_body = Request {
@@ -60,7 +60,11 @@ impl Node {
 
         let node_send_operation = || async {
             // Log the time before sending the user operation to the node
-            info!("Sending user operation to the node at {}", chrono::Utc::now());
+            info!(
+                "Sending user operation {:?} to the node at {}",
+                user_operation.clone(),
+                chrono::Utc::now()
+            );
 
             // Send the user operation to the node
             let client = reqwest::Client::new();
@@ -75,6 +79,7 @@ impl Node {
             handle_response(response).await
         };
 
+        // Retry the user operation if it fails
         let res =
             { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(3)).await;
         info!("res: {:?}", res);

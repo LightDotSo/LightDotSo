@@ -113,6 +113,24 @@ pub struct UserOperation {
     pub signature: Bytes,
 }
 
+impl fmt::Debug for UserOperation {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("UserOperation")
+            .field("sender", &format!("{:#x}", self.sender))
+            .field("nonce", &format!("{:#x}", self.nonce))
+            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
+            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
+            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
+            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
+            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
+            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
+            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
+            .field("paymaster_and_data", &format!("0x{}", hex::encode(&self.paymaster_and_data)))
+            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
+            .finish()
+    }
+}
+
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
