@@ -477,9 +477,14 @@ pub(crate) async fn v1_user_operation_create_handler(
 
     // Send the user operation to the node if the flag is set.
     if is_direct_send {
-        // Send the user operation to the node.
-        let _ =
-            produce_node_message(state.producer.clone(), &NodeMessage { hash: rundler_hash }).await;
+        // If the owner's signature's culmative weight is greater than the threshold, queue
+        // the user operation to the node.
+        if owner.weight >= configuration.threshold {
+            // Send the user operation to the node.
+            let _ =
+                produce_node_message(state.producer.clone(), &NodeMessage { hash: rundler_hash })
+                    .await;
+        }
     }
 
     // Produce an activity message.
@@ -774,7 +779,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let mut return_user_operations = vec![];
 
     // Iterate through the user operations and create them in the database.
-    for user_operation in user_operations.into_iter() {
+    for user_operation in user_operations.clone().into_iter() {
         let chain_id = user_operation.clone().chain_id;
         let user_operation_hash = user_operation.clone().hash;
 
@@ -951,13 +956,20 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         // ---------------------------------------------------------------------
 
         // Send the user operation to the node if the flag is set.
-        if is_direct_send {
-            // Send the user operation to the node.
-            let _ = produce_node_message(
-                state.producer.clone(),
-                &NodeMessage { hash: merkle_root.parse().unwrap() },
-            )
-            .await;
+        if is_direct_send && owner.weight >= configuration.threshold {
+            // Send all user operations to the node.
+            for user_operation in user_operations.clone().iter() {
+                // Send the user operation to the node.
+                let _ = produce_node_message(
+                    state.producer.clone(),
+                    &NodeMessage {
+                        hash: RundlerUserOperation::try_from(user_operation.clone())
+                            .unwrap()
+                            .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64),
+                    },
+                )
+                .await;
+            }
         }
 
         // Produce an activity message.
