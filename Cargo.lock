@@ -6147,6 +6147,7 @@ dependencies = [
  "lightdotso-constants",
  "lightdotso-prisma",
  "prisma-client-rust",
+ "rundler-types",
  "serde",
  "serde_json",
  "tokio",

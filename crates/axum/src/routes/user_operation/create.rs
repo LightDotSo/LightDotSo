@@ -36,7 +36,8 @@ use lightdotso_contracts::{
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
-    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+    topics::{activity::produce_activity_message, node::produce_node_message},
+    types::{activity::ActivityMessage, node::NodeMessage},
 };
 use lightdotso_prisma::{
     chain, configuration, owner, paymaster, paymaster_operation, user_operation,
@@ -107,6 +108,8 @@ impl MerkleHasher for KeccakAlgorithm {
 pub struct PostQuery {
     // The chain id to create the user operation for.
     pub chain_id: i64,
+    // The optional flag to whether to directly send the user operation to node.
+    pub is_direct_send: Option<bool>,
 }
 
 // -----------------------------------------------------------------------------
@@ -210,6 +213,9 @@ pub(crate) async fn v1_user_operation_create_handler(
 
     // Get the chain id from the post query.
     let chain_id = query.chain_id;
+
+    // Get the flag to directly send the user operation to the node.
+    let is_direct_send = query.is_direct_send.unwrap_or(true);
 
     let user_operation = params.user_operation.clone();
     let user_operation_hash = params.user_operation.clone().hash;
@@ -469,6 +475,13 @@ pub(crate) async fn v1_user_operation_create_handler(
     // Kafka
     // -------------------------------------------------------------------------
 
+    // Send the user operation to the node if the flag is set.
+    if is_direct_send {
+        // Send the user operation to the node.
+        let _ =
+            produce_node_message(state.producer.clone(), &NodeMessage { hash: rundler_hash }).await;
+    }
+
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
@@ -521,6 +534,9 @@ pub(crate) async fn v1_user_operation_create_handler(
 #[utoipa::path(
         post,
         path = "/user_operation/create/batch",
+        params(
+            PostQuery
+        ),
         request_body = UserOperationCreateBatchRequestParams,
         responses(
             (status = 200, description = "User operation created successfully", body = [UserOperation]),
@@ -531,12 +547,20 @@ pub(crate) async fn v1_user_operation_create_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_batch_handler(
+    post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<UserOperationCreateBatchRequestParams>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
+
+    // Get the post query.
+    let Query(query) = post_query;
+    info!(?query);
+
+    // Get the flag to directly send the user operation to the node.
+    let is_direct_send = query.is_direct_send.unwrap_or(true);
 
     let user_operations = params.user_operations.clone();
     // let user_operation_hash = params.user_operation.clone().hash;
@@ -925,6 +949,16 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         // ---------------------------------------------------------------------
         // Kafka
         // ---------------------------------------------------------------------
+
+        // Send the user operation to the node if the flag is set.
+        if is_direct_send {
+            // Send the user operation to the node.
+            let _ = produce_node_message(
+                state.producer.clone(),
+                &NodeMessage { hash: merkle_root.parse().unwrap() },
+            )
+            .await;
+        }
 
         // Produce an activity message.
         let _ = produce_activity_message(
