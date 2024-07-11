@@ -24,8 +24,10 @@ use axum::extract::Json;
 use ethers::{types::U256, utils::to_checksum};
 use eyre::Result;
 use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::decode_paymaster_and_data,
-    types::UserOperationWithTransactionAndReceiptLogs, utils::is_testnet,
+    constants::LIGHT_PAYMASTER_ADDRESSES,
+    paymaster::decode_paymaster_and_data,
+    types::{UserOperation, UserOperationWithTransactionAndReceiptLogs},
+    utils::is_testnet,
 };
 use lightdotso_prisma::{
     chain, log, paymaster, paymaster_operation, transaction, user_operation, wallet,
@@ -190,6 +192,29 @@ pub async fn upsert_user_operation_logs(
 // -----------------------------------------------------------------------------
 // Get
 // -----------------------------------------------------------------------------
+
+pub async fn get_user_operation_with_chain_id(
+    db: Database,
+    user_operation_hash: ethers::types::H256,
+) -> Result<(UserOperation, u64)> {
+    info!("Getting user operation");
+
+    // Get the user operation
+    let user_operation = db
+        .user_operation()
+        .find_unique(user_operation::hash::equals(format!("{:?}", user_operation_hash)))
+        .exec()
+        .await?;
+
+    // If user operation is none, throw an error
+    let user_operation_data = user_operation.ok_or_else(|| DbError::NotFound)?;
+
+    // Convert the user operation into a UserOperation
+    let user_operation = user_operation_data.clone().into();
+
+    // Return the user operation
+    Ok((user_operation, user_operation_data.chain_id as u64))
+}
 
 pub async fn get_user_operation_with_logs(
     db: Database,

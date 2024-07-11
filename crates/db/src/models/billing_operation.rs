@@ -49,7 +49,7 @@ pub async fn create_billing_operation(
         .unwrap()
         .wallet_billing
         .and_then(|wb| wb.map(|wb| wb.billing))
-        .ok_or(eyre!("Wallet Billing not found"))?
+        .ok_or(eyre!("Wallet billing not found"))?
         .ok_or(eyre!("Billing not found"))?;
     info!(?billing);
 

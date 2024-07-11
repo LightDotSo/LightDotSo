@@ -347,7 +347,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     tags(
         (name = "activity", description = "Activity API"),
-        (name = "asset_change", description = "Asset change API"),
+        (name = "asset_change", description = "Asset Change API"),
         (name = "auth", description = "Auth API"),
         (name = "billing", description = "Billing API"),
         (name = "billing_operation", description = "Billing Operation API"),

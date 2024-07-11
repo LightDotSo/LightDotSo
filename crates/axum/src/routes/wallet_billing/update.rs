@@ -68,7 +68,7 @@ pub struct WalletBillingUpdateRequestParams {
         request_body = WalletBillingUpdateRequestParams,
         responses(
             (status = 200, description = "Wallet billing updated successfully", body = WalletBilling),
-            (status = 400, description = "Invalid Configuration", body = WalletBillingError),
+            (status = 400, description = "Invalid configuration", body = WalletBillingError),
             (status = 401, description = "Unauthorized", body = WalletBillingError),
             (status = 500, description = "Wallet billing internal error", body = WalletBillingError),
         )

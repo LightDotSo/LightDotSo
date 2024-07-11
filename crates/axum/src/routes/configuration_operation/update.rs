@@ -66,7 +66,7 @@ pub struct PutQuery {
         ),
         responses(
             (status = 200, description = "Configuration operation updated successfully", body = ConfigurationOperation),
-            (status = 400, description = "Invalid Configuration", body = SignatureError),
+            (status = 400, description = "Invalid configuration", body = SignatureError),
             (status = 500, description = "Configuration operation internal error", body = SignatureError),
         )
     )]

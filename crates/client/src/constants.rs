@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod constants;
-pub mod erc1271;
-pub mod light_wallet;
-pub mod paymaster;
-pub mod provider;
-pub mod types;
-pub mod utils;
+use lazy_static::lazy_static;
+
+// The public base api url
+lazy_static! {
+    pub static ref PUBLIC_BASE_API_URL: String = "https://api.light.so/v1".to_string();
+}
+
+// The admin base api url
+lazy_static! {
+    pub static ref ADMIN_BASE_API_URL: String = "https://api.light.so/admin/v1".to_string();
+}

@@ -188,10 +188,10 @@ impl TryFrom<UserOperationCreateParams> for RundlerUserOperation {
         ),
         request_body = UserOperationCreateRequestParams,
         responses(
-            (status = 200, description = "User Operation created successfully", body = UserOperation),
-            (status = 400, description = "Invalid Configuration", body = UserOperationError),
-            (status = 409, description = "User Operation already exists", body = UserOperationError),
-            (status = 500, description = "User Operation internal error", body = UserOperationError),
+            (status = 200, description = "User operation created successfully", body = UserOperation),
+            (status = 400, description = "Invalid configuration", body = UserOperationError),
+            (status = 409, description = "User operation already exists", body = UserOperationError),
+            (status = 500, description = "User operation internal error", body = UserOperationError),
         )
     )]
 #[autometrics]
@@ -523,10 +523,10 @@ pub(crate) async fn v1_user_operation_create_handler(
         path = "/user_operation/create/batch",
         request_body = UserOperationCreateBatchRequestParams,
         responses(
-            (status = 200, description = "User Operation created successfully", body = [UserOperation]),
-            (status = 400, description = "Invalid Configuration", body = UserOperationError),
-            (status = 409, description = "User Operation already exists", body = UserOperationError),
-            (status = 500, description = "User Operation internal error", body = UserOperationError),
+            (status = 200, description = "User operation created successfully", body = [UserOperation]),
+            (status = 400, description = "Invalid configuration", body = UserOperationError),
+            (status = 409, description = "User operation already exists", body = UserOperationError),
+            (status = 500, description = "User operation internal error", body = UserOperationError),
         )
     )]
 #[autometrics]

@@ -39,6 +39,7 @@ use lightdotso_kafka::{
         RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
+use lightdotso_node::config::NodeArgs;
 use lightdotso_notifier::config::NotifierArgs;
 use lightdotso_polling::config::PollingArgs;
 use lightdotso_tracing::tracing::{info, warn};
@@ -92,6 +93,9 @@ impl Consumer {
         // Parse the polling command line arguments
         let polling_args = PollingArgs::parse();
 
+        // Parse the node command line arguments
+        let node_args = NodeArgs::parse();
+
         // Parse the notifer command line arguments
         let notifier_args = NotifierArgs::parse();
 
@@ -100,6 +104,9 @@ impl Consumer {
 
         // Create the indexer
         let indexer = args.create().await;
+
+        // Create the node
+        let node = node_args.create().await?;
 
         // Create the notifier
         let notifier = notifier_args.create().await?;
@@ -202,7 +209,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NODE.to_string() => {
-                            let res = node_consumer(&m).await;
+                            let res = node_consumer(&m, &node, db.clone()).await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error

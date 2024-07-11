@@ -51,7 +51,7 @@ pub struct PutQuery {
             PutQuery
         ),
         responses(
-            (status = 200, description = "User Operation updated successfully", body = UserOperationSuccess),
+            (status = 200, description = "User operation updated successfully", body = UserOperationSuccess),
             (status = 404, description = "User operation not found", body = UserOperationError),
         )
     )]

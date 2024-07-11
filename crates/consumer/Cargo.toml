@@ -14,12 +14,15 @@
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-client = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-covalent = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-kafka = { workspace = true }
+  lightdotso-node = { workspace = true }
   lightdotso-notifier = { workspace = true }
   lightdotso-opentelemetry = { workspace = true }
   lightdotso-polling = { workspace = true }

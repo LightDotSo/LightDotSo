@@ -83,7 +83,7 @@ pub(crate) async fn v1_configuration_operation_get_handler(
     // If the configuration_operation is not found, return a 404.
     let configuration_operation =
         configuration_operation.ok_or(RouteError::ConfigurationOperationError(
-            ConfigurationOperationError::NotFound("Configuration Operation not found".to_string()),
+            ConfigurationOperationError::NotFound("Configuration operation not found".to_string()),
         ))?;
 
     // -------------------------------------------------------------------------

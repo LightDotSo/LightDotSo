@@ -12,10 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use ethers::{
     types::{Address, Bytes, Log, Transaction, TransactionReceipt, H256, U256},
     utils::hex,
 };
+use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -91,6 +94,41 @@ pub struct GasAndPaymasterAndData {
     pub pre_verification_gas: U256,
     #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
+}
+
+/// User operation required for the request.
+#[derive(Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UserOperation {
+    pub sender: Address,
+    pub nonce: U256,
+    pub init_code: Bytes,
+    pub call_data: Bytes,
+    pub call_gas_limit: U256,
+    pub verification_gas_limit: U256,
+    pub pre_verification_gas: U256,
+    pub max_fee_per_gas: U256,
+    pub max_priority_fee_per_gas: U256,
+    pub paymaster_and_data: Bytes,
+    pub signature: Bytes,
+}
+
+impl From<user_operation::Data> for UserOperation {
+    fn from(user_operation: user_operation::Data) -> Self {
+        Self {
+            sender: user_operation.sender.parse().unwrap(),
+            nonce: user_operation.nonce.into(),
+            init_code: user_operation.init_code.into(),
+            call_data: user_operation.call_data.into(),
+            call_gas_limit: user_operation.call_gas_limit.into(),
+            verification_gas_limit: user_operation.verification_gas_limit.into(),
+            pre_verification_gas: user_operation.pre_verification_gas.into(),
+            max_fee_per_gas: user_operation.max_fee_per_gas.into(),
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.into(),
+            paymaster_and_data: user_operation.paymaster_and_data.into(),
+            signature: user_operation.signature.unwrap_or_default().into(),
+        }
+    }
 }
 
 /// User operation required for the request.
