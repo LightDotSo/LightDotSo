@@ -12,8 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { validateAddress } from "./address";
-export { validateHex } from "./hex";
-export { validateNumber } from "./number";
-export { validateUserOperationHash } from "./userOperation";
-export { validateUserOperationMerkleRoot } from "./userOperationMerkleRoot";
+import { preloadGetUserOperationMerkle } from "@lightdotso/services";
+import type { Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Preloader
+// -----------------------------------------------------------------------------
+
+export const preloader = async (params: {
+  userOperationMerkleRoot: string;
+}) => {
+  preloadGetUserOperationMerkle({
+    root: params.userOperationMerkleRoot as Hex,
+  });
+};

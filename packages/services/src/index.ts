@@ -41,6 +41,10 @@ export {
 } from "./getTransactionsCount";
 export { preloadGetUserOperation, getUserOperation } from "./getUserOperation";
 export {
+  preloadGetUserOperationMerkle,
+  getUserOperationMerkle,
+} from "./getUserOperationMerkle";
+export {
   preloadGetUserOperationNonce,
   getUserOperationNonce,
 } from "./getUserOperationNonce";

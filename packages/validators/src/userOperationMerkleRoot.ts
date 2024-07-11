@@ -12,8 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { validateAddress } from "./address";
-export { validateHex } from "./hex";
-export { validateNumber } from "./number";
-export { validateUserOperationHash } from "./userOperation";
-export { validateUserOperationMerkleRoot } from "./userOperationMerkleRoot";
+import { hexBytes32Regex } from "@lightdotso/regexs";
+import { isHex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
+export const validateUserOperationMerkleRoot = (str: string): boolean => {
+  if (!isHex(str)) {
+    return false;
+  }
+
+  if (!hexBytes32Regex.test(str)) {
+    return false;
+  }
+
+  return true;
+};
