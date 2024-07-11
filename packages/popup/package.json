@@ -23,7 +23,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.8",
     "@metamask/eth-sig-util": "^7.0.2",
     "@types/firefox-webext-browser": "^120.0.4",
     "buffer": "^6.0.3",
