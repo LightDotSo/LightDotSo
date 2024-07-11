@@ -63,7 +63,7 @@ export default async function Page({ searchParams }: PageProps) {
     queryKeys.user_operation.list({
       address: null,
       status: "history",
-      order: "asc",
+      order: "desc",
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: isTestnetState ?? false,

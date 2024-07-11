@@ -12,54 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { useQueryUserOperation } from "@lightdotso/query";
-import { userOperationColumns } from "@lightdotso/tables";
-import { TableSectionWrapper } from "@lightdotso/ui";
-import { type FC } from "react";
+import { getUserOperationMerkle } from "@lightdotso/services";
+import { validateUserOperationHash } from "@lightdotso/validators";
+import { notFound } from "next/navigation";
 import type { Hex } from "viem";
-import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
-// Props
+// Handler
 // -----------------------------------------------------------------------------
 
-interface OpDataTableProps {
-  userOperationHash: Hex;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
+export const handler = async (params: { userOperationMerkleRoot: string }) => {
   // ---------------------------------------------------------------------------
-  // Query
+  // Validators
   // ---------------------------------------------------------------------------
 
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: userOperationHash,
+  if (!validateUserOperationHash(params.userOperationMerkleRoot)) {
+    return notFound();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Fetch
+  // ---------------------------------------------------------------------------
+
+  const userOperationMerkle = await getUserOperationMerkle({
+    root: params.userOperationMerkleRoot as Hex,
   });
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Parse
   // ---------------------------------------------------------------------------
 
-  if (!userOperation) {
-    return null;
-  }
-
-  return (
-    <TableSectionWrapper>
-      <DataTable
-        isDefaultOpen
-        isTestnet
-        isLoading={isUserOperationLoading}
-        data={userOperation ? [userOperation] : []}
-        columns={userOperationColumns}
-        pageCount={1}
-      />
-    </TableSectionWrapper>
+  return userOperationMerkle.match(
+    userOperationMerkle => {
+      return {
+        userOperationMerkle: userOperationMerkle,
+      };
+    },
+    () => {
+      notFound();
+    },
   );
 };

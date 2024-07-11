@@ -16,16 +16,16 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Hex } from "viem";
-import { OpDataTable } from "@/app/(user-operation)/op/[userOperationHash]/(components)/op-data-table";
-import { handler } from "@/handlers/op/[userOperationHash]/handler";
-import { preloader } from "@/preloaders/op/[userOperationHash]/preloader";
+import { OpDataTable } from "@/app/(user-operation)/ops/[userOperationMerkleRoot]/(components)/op-data-table";
+import { handler } from "@/handlers/ops/[userOperationMerkleRoot]/handler";
+import { preloader } from "@/preloaders/ops/[userOperationMerkleRoot]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { userOperationHash: string };
+  params: { userOperationMerkleRoot: string };
 };
 
 // -----------------------------------------------------------------------------
@@ -43,7 +43,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperation } = await handler(params);
+  const { userOperationMerkle } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -52,10 +52,10 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.user_operation.get({
-      hash: params.userOperationHash as Hex,
+    queryKeys.user_operation_merkle.get({
+      root: params.userOperationMerkleRoot as Hex,
     }).queryKey,
-    userOperation,
+    userOperationMerkle,
   );
 
   // ---------------------------------------------------------------------------
@@ -64,7 +64,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OpDataTable userOperationHash={params.userOperationHash as Hex} />
+      <OpDataTable
+        userOperationMerkleRoot={params.userOperationMerkleRoot as Hex}
+      />
     </HydrationBoundary>
   );
 }

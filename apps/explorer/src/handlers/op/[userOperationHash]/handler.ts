@@ -24,17 +24,10 @@ import type { Hex } from "viem";
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: {
-  address: string;
-  userOperationHash: string;
-}) => {
+export const handler = async (params: { userOperationHash: string }) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
-
-  if (!validateAddress(params.address)) {
-    return notFound();
-  }
 
   if (!validateUserOperationHash(params.userOperationHash)) {
     return notFound();

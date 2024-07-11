@@ -14,9 +14,9 @@
 
 "use client";
 
-import { useQueryUserOperation } from "@lightdotso/query";
-import { userOperationColumns } from "@lightdotso/tables";
+import { useQueryUserOperationMerkle } from "@lightdotso/query";
 import { TableSectionWrapper } from "@lightdotso/ui";
+import { userOperationColumns } from "@lightdotso/tables";
 import { type FC } from "react";
 import type { Hex } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
@@ -26,27 +26,30 @@ import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-t
 // -----------------------------------------------------------------------------
 
 interface OpDataTableProps {
-  userOperationHash: Hex;
+  userOperationMerkleRoot: Hex;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
+export const OpDataTable: FC<OpDataTableProps> = ({
+  userOperationMerkleRoot,
+}) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: userOperationHash,
-  });
+  const { userOperationMerkle, isUserOperationMerkleLoading } =
+    useQueryUserOperationMerkle({
+      root: userOperationMerkleRoot,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!userOperation) {
+  if (!userOperationMerkle) {
     return null;
   }
 
@@ -55,8 +58,8 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
       <DataTable
         isDefaultOpen
         isTestnet
-        isLoading={isUserOperationLoading}
-        data={userOperation ? [userOperation] : []}
+        isLoading={isUserOperationMerkleLoading}
+        data={userOperationMerkle ? userOperationMerkle.user_operations : []}
         columns={userOperationColumns}
         pageCount={1}
       />
