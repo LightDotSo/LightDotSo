@@ -82,6 +82,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
           params: {
             query: {
               chain_id: Number(body.userOperation.chainId),
+              is_direct_send: true,
             },
           },
           body: {

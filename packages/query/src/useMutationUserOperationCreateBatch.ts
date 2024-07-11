@@ -88,7 +88,12 @@ export const useMutationUserOperationCreateBatch = (
       // Replace with your actual fetch logic
       const res = await createBatchUserOperation(
         {
-          params: {},
+          params: {
+            query: {
+              chain_id: 0,
+              is_direct_send: true,
+            },
+          },
           body: {
             merkle_root: body.merkleRoot,
             signature: {
