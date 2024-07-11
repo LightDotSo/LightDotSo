@@ -19,9 +19,6 @@ import type { Hex } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: {
-  address: string;
-  userOperationHash: string;
-}) => {
+export const preloader = async (params: { userOperationHash: string }) => {
   preloadGetUserOperation({ hash: params.userOperationHash as Hex });
 };

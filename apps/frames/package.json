@@ -14,7 +14,7 @@
   "author": "LightDotSo",
   "scripts": {
     "build": "next build || exit 0",
-    "dev": "next dev --port 3003",
+    "dev": "next dev --turbo --port 3008",
     "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"

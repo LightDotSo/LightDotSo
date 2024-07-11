@@ -25,7 +25,7 @@ import { preloader } from "@/preloaders/op/[userOperationHash]/preloader";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string; userOperationHash: string };
+  params: { userOperationHash: string };
 };
 
 // -----------------------------------------------------------------------------
