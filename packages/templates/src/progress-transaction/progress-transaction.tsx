@@ -17,7 +17,7 @@
 import { useMutationQueueTransaction } from "@lightdotso/query";
 import { type PendingTransaction, useTransactions } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
-import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
+import { getEtherscanUrlWithChainId } from "@lightdotso/utils";
 import { useWaitForTransactionReceipt } from "@lightdotso/wagmi";
 import { type FC, useEffect } from "react";
 
@@ -74,7 +74,7 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
           label: "View",
           onClick: () => {
             window.open(
-              `${getEtherscanUrl(getChainById(chainId))}/tx/${hash}`,
+              `${getEtherscanUrlWithChainId(chainId)}/tx/${hash}`,
               "_blank",
             );
           },

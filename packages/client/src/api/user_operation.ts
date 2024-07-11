@@ -179,6 +179,7 @@ export const createUserOperation = async (
     params: {
       query: {
         chain_id: number;
+        is_direct_send?: boolean;
       };
     };
     body: {
@@ -228,7 +229,12 @@ export const createBatchUserOperation = async (
     params,
     body,
   }: {
-    params: {};
+    params: {
+      query: {
+        chain_id: number;
+        is_direct_send?: boolean;
+      };
+    };
     body: {
       paymaster?: {
         address: string;

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 export {
-  getChainById,
-  getChainNameById,
+  getChainWithChainId,
+  getChainNameWithChainId,
   getChainBySimplehashChainName,
   getChainIdBySimplehashChainName,
   isTestnet,
@@ -22,6 +22,6 @@ export {
 export { cn } from "./cn";
 export { findContractAddressByAddress } from "./contract";
 export { debounce } from "./debounce";
-export { getEtherscanUrl } from "./etherscan";
+export { getEtherscanUrl, getEtherscanUrlWithChainId } from "./etherscan";
 export { refineNumberFormat } from "./number";
 export { shortenAddress, shortenBytes32, shortenName } from "./shorten";

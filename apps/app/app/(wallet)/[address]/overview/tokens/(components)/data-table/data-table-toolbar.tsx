@@ -23,7 +23,7 @@ import {
   DataTableViewOptions,
 } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
-import { getChainNameById } from "@lightdotso/utils";
+import { getChainNameWithChainId } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
@@ -111,7 +111,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             title="Chain"
             options={Array.from(uniqueChainIdValues).map(i => ({
               value: i.toString(),
-              label: getChainNameById(i),
+              label: getChainNameWithChainId(i),
             }))}
           />
         )}

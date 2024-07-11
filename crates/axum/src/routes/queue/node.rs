@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -20,7 +22,7 @@ use axum::{
 };
 use ethers_main::types::H256;
 use lightdotso_kafka::{topics::node::produce_node_message, types::node::NodeMessage};
-use lightdotso_prisma::user_operation;
+use lightdotso_prisma::{configuration, signature, user_operation, user_operation_merkle};
 use lightdotso_redis::query::node::node_rate_limit;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
@@ -82,37 +84,103 @@ pub(crate) async fn v1_queue_node_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(full_op_hash.clone()))
+        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+            full_op_hash.clone(),
+        )]))
         .exec()
         .await?;
-
-    // If the user operation is not found, search for the user operation merkle root.
-    uop.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
-
-    // // Get the user operation merkle root from the database.
-    // let uop_merkle = state
-    //     .client
-    //     .user_operation_merkle()
-    //     .find_unique(user_operation_merkle::root::equals(full_op_hash.clone()))
-    //     .exec()
-    //     .await?;
-
-    // // If the user operation merkle root is not found, return a 404.
-    // uop_merkle.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
 
     // -------------------------------------------------------------------------
     // Redis
     // -------------------------------------------------------------------------
 
     // Rate limit the queue.
-    node_rate_limit(state.redis, full_op_hash)
+    node_rate_limit(state.redis, full_op_hash.clone())
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
     // -------------------------------------------------------------------------
-    // Kafka
+    // DB
     // -------------------------------------------------------------------------
 
-    // For each chain, run the kafka producer.
-    produce_node_message(state.producer.clone(), &NodeMessage { hash: parsed_query_hash }).await?;
+    if let Some(uop) = uop {
+        info!("uop: {:?}", uop);
+
+        // Get the latest configuration from the database.
+        let configuration = state
+            .client
+            .configuration()
+            .find_first(vec![configuration::address::equals(uop.sender.clone())])
+            .exec()
+            .await?;
+
+        // If the configuration is not found, return a 404.
+        let configuration = configuration
+            .ok_or(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())))?;
+
+        // Compare with the configuration's threshold and the uop's number of signatures, if the
+        // threshold is not met, return a 404
+        if configuration.threshold as usize > uop.signatures.unwrap_or_default().len() {
+            return Err(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())).into());
+        }
+
+        // For each chain, run the kafka producer.
+        produce_node_message(state.producer.clone(), &NodeMessage { hash: parsed_query_hash })
+            .await?;
+    } else {
+        // If the user operation is not found, search for the user operation merkle root.
+        let uop_merkle = state
+            .client
+            .user_operation_merkle()
+            .find_unique(user_operation_merkle::root::equals(full_op_hash.clone()))
+            .with(user_operation_merkle::signatures::fetch(vec![
+                signature::user_operation_merkle_root::equals(Some(full_op_hash.clone())),
+            ]))
+            .with(user_operation_merkle::user_operations::fetch(vec![
+                user_operation::user_operation_merkle_root::equals(Some(full_op_hash.clone())),
+            ]))
+            .exec()
+            .await?;
+
+        // If the user operation merkle root is not found, return a 404.
+        let uop_merkle =
+            uop_merkle.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
+
+        // Get the first user operation that is associated with the user operation merkle root.
+        let uop = uop_merkle
+            .user_operations
+            .as_ref()
+            .ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?
+            .first()
+            .ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
+
+        // Get the latest configuration from the database.
+        let configuration = state
+            .client
+            .configuration()
+            .find_first(vec![configuration::address::equals(uop.sender.clone())])
+            .exec()
+            .await?;
+
+        // If the configuration is not found, return a 404.
+        let configuration = configuration
+            .ok_or(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())))?;
+
+        // Compare with the configuration's threshold and the uop's number of signatures, if the
+        // threshold is not met, return a 404
+        if configuration.threshold as usize > uop_merkle.signatures.unwrap_or_default().len() {
+            return Err(RouteError::QueueError(QueueError::NotFound(uop.sender.clone())).into());
+        }
+
+        // ---------------------------------------------------------------------
+        // Kafka
+        // ---------------------------------------------------------------------
+
+        // For each user operation, run the kafka producer.
+        for uop in uop_merkle.user_operations.as_ref().unwrap() {
+            produce_node_message(state.producer.clone(), &NodeMessage { hash: uop.hash.parse()? })
+                .await?;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Return

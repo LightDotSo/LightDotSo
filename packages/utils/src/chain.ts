@@ -24,7 +24,11 @@ import type { Chain } from "viem";
 import { extractChain } from "viem";
 import { mainnet } from "viem/chains";
 
-export function getChainById(chainId: number): Chain {
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+export function getChainWithChainId(chainId: number): Chain {
   // Extract chain from CHAINS and DEPRECATED_CHAINS
   const maybeChain = extractChain({
     chains: [...CHAINS, ...DEPRECATED_CHAINS],
@@ -45,8 +49,8 @@ export function getChainById(chainId: number): Chain {
   };
 }
 
-export function getChainNameById(chainId: number): string {
-  const chain = getChainById(chainId);
+export function getChainNameWithChainId(chainId: number): string {
+  const chain = getChainWithChainId(chainId);
   return chain?.name ?? "Unknown";
 }
 
@@ -72,7 +76,7 @@ export function getChainIdBySimplehashChainName(chain: string): number {
 
 export function getChainBySimplehashChainName(chain: string): Chain {
   const chainId = getChainIdBySimplehashChainName(chain);
-  const chainInfo = getChainById(chainId);
+  const chainInfo = getChainWithChainId(chainId);
   return chainInfo;
 }
 

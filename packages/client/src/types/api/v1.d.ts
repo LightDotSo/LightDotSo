@@ -1274,8 +1274,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Queue user operation handler
-         * @description Queue user operation handler
+         * Queue node handler
+         * @description Queue node handler
          */
         post: operations["v1_queue_node_handler"];
         delete?: never;
@@ -3965,7 +3965,7 @@ export interface operations {
                     "application/json": components["schemas"]["AuthNonce"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -4464,7 +4464,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperation"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -4621,7 +4621,7 @@ export interface operations {
                     "application/json": components["schemas"]["ConfigurationOperation"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -4731,7 +4731,7 @@ export interface operations {
                     "application/json": components["schemas"]["Signature"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -6054,7 +6054,7 @@ export interface operations {
                     "application/json": components["schemas"]["Signature"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -6807,7 +6807,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description User Settings updated successfully */
+            /** @description User settings updated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6816,7 +6816,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserNotificationSettings"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -6825,7 +6825,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserNotificationSettingsError"];
                 };
             };
-            /** @description User Settings already exists */
+            /** @description User settings already exists */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -6834,7 +6834,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserNotificationSettingsError"];
                 };
             };
-            /** @description User Settings internal error */
+            /** @description User settings internal error */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -6893,7 +6893,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description User Settings updated successfully */
+            /** @description User settings updated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6902,7 +6902,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserSettings"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -6911,7 +6911,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserSettingsError"];
                 };
             };
-            /** @description User Settings already exists */
+            /** @description User settings already exists */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -6920,7 +6920,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserSettingsError"];
                 };
             };
-            /** @description User Settings internal error */
+            /** @description User settings internal error */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -6935,6 +6935,7 @@ export interface operations {
         parameters: {
             query: {
                 chain_id: number;
+                is_direct_send?: boolean | null;
             };
             header?: never;
             path?: never;
@@ -6946,7 +6947,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description User Operation created successfully */
+            /** @description User operation created successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6955,7 +6956,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperation"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -6964,7 +6965,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationError"];
                 };
             };
-            /** @description User Operation already exists */
+            /** @description User operation already exists */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -6973,7 +6974,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationError"];
                 };
             };
-            /** @description User Operation internal error */
+            /** @description User operation internal error */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -6986,7 +6987,10 @@ export interface operations {
     };
     v1_user_operation_create_batch_handler: {
         parameters: {
-            query?: never;
+            query: {
+                chain_id: number;
+                is_direct_send?: boolean | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -6997,7 +7001,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description User Operation created successfully */
+            /** @description User operation created successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7006,7 +7010,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperation"][];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7015,7 +7019,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationError"];
                 };
             };
-            /** @description User Operation already exists */
+            /** @description User operation already exists */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -7024,7 +7028,7 @@ export interface operations {
                     "application/json": components["schemas"]["UserOperationError"];
                 };
             };
-            /** @description User Operation internal error */
+            /** @description User operation internal error */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -7205,7 +7209,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operation signature returned successfully */
+            /** @description User operation signature returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7237,7 +7241,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description User Operation updated successfully */
+            /** @description User operation updated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7476,7 +7480,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletBilling"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7530,7 +7534,7 @@ export interface operations {
                     "application/json": components["schemas"]["Wallet"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7607,7 +7611,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Wallet Features updated successfully */
+            /** @description Wallet features updated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7616,7 +7620,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletFeatures"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7634,7 +7638,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletFeaturesError"];
                 };
             };
-            /** @description Wallet Features internal error */
+            /** @description Wallet features internal error */
             500: {
                 headers: {
                     [name: string]: unknown;
@@ -7816,7 +7820,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletNotificationSettings"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7893,7 +7897,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Wallet Settings updated successfully */
+            /** @description Wallet settings updated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7902,7 +7906,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletSettings"];
                 };
             };
-            /** @description Invalid Configuration */
+            /** @description Invalid configuration */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -7911,7 +7915,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletSettingsError"];
                 };
             };
-            /** @description Wallet Settings already exists */
+            /** @description Wallet settings already exists */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -7920,7 +7924,7 @@ export interface operations {
                     "application/json": components["schemas"]["WalletSettingsError"];
                 };
             };
-            /** @description Wallet Settings internal error */
+            /** @description Wallet settings internal error */
             500: {
                 headers: {
                     [name: string]: unknown;

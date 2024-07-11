@@ -51,7 +51,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
-import { getChainById } from "@lightdotso/utils";
+import { getChainWithChainId } from "@lightdotso/utils";
 import {
   useAccount,
   // useChainId,
@@ -694,7 +694,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                   {token?.symbol}
                                   &nbsp;
                                   <span className="text-text-weak">
-                                    on {getChainById(token.chainId)?.name}
+                                    on{" "}
+                                    {getChainWithChainId(token.chainId)?.name}
                                   </span>
                                   &nbsp;
                                   <ChainLogo chainId={token.chainId} />

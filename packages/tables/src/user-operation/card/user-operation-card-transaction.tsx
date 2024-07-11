@@ -31,7 +31,7 @@ import {
 } from "@lightdotso/ui";
 import {
   cn,
-  getChainById,
+  getChainWithChainId,
   getEtherscanUrl,
   shortenBytes32,
 } from "@lightdotso/utils";
@@ -102,7 +102,7 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   const chain = useMemo(
-    () => getChainById(userOperation.chain_id),
+    () => getChainWithChainId(userOperation.chain_id),
     [userOperation],
   );
 

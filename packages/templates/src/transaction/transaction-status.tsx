@@ -14,6 +14,7 @@
 
 "use client";
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import {
   useQueryUserOperation,
   useQueryUserOperationMerkle,
@@ -21,7 +22,8 @@ import {
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { shortenBytes32 } from "@lightdotso/utils";
-import { CheckCircle2, LoaderIcon } from "lucide-react";
+import { getEtherscanUrlWithChainId } from "@lightdotso/utils/src/etherscan";
+import { ArrowUpRight, CheckCircle2, LoaderIcon } from "lucide-react";
 import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -40,16 +42,22 @@ export const TransactionStatus: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationMerkle } = useQueryUserOperationMerkle({
-    root: pendingUserOperationMerkleRoot,
-  });
+  const { userOperationMerkle } = useQueryUserOperationMerkle(
+    {
+      root: pendingUserOperationMerkleRoot,
+    },
+    true,
+  );
 
-  const { userOperation } = useQueryUserOperation({
-    hash:
-      pendingUserOperationHashes && pendingUserOperationHashes.length === 1
-        ? pendingUserOperationHashes[0]
-        : null,
-  });
+  const { userOperation } = useQueryUserOperation(
+    {
+      hash:
+        pendingUserOperationHashes && pendingUserOperationHashes.length === 1
+          ? pendingUserOperationHashes[0]
+          : null,
+    },
+    true,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
@@ -80,7 +88,14 @@ export const TransactionStatus: FC = () => {
       <div className="space-y-3">
         {pendingUserOperationMerkleRoot && (
           <div className="text-xs text-text-weak">
-            Merkle Root: {shortenBytes32(pendingUserOperationMerkleRoot)}
+            Merkle Root:{" "}
+            <a
+              className="hover:underline"
+              href={`${INTERNAL_LINKS.Explorer}/root/${pendingUserOperationMerkleRoot}`}
+            >
+              {shortenBytes32(pendingUserOperationMerkleRoot)}
+              <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+            </a>
           </div>
         )}
         {pendingUserOperationHashes.length === 1 && (
@@ -94,14 +109,25 @@ export const TransactionStatus: FC = () => {
             .map(userOperation => (
               <div key={userOperation.hash} className="text-xs text-text-weak">
                 Transaction Hash:{" "}
-                {userOperation &&
-                  userOperation.transaction &&
-                  shortenBytes32(userOperation.transaction?.hash)}
+                <a
+                  className="hover:underline"
+                  href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction!.hash}`}
+                >
+                  {shortenBytes32(userOperationMerkle.root)}
+                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+                </a>
               </div>
             ))}
-        {userOperation && (
+        {userOperation && userOperation.transaction && (
           <div className="text-xs text-text-weak">
-            Transaction Hash: {shortenBytes32(userOperation.hash)}
+            Transaction Hash:{" "}
+            <a
+              className="hover:underline"
+              href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction.hash}`}
+            >
+              {shortenBytes32(userOperation.transaction.hash)}
+              <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+            </a>
           </div>
         )}
       </div>

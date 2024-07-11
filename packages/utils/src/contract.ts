@@ -16,6 +16,10 @@ import type { ContractAddress } from "@lightdotso/const";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { Address } from "viem";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const findContractAddressByAddress = (
   value: Address,
 ): ContractAddress | undefined => {
