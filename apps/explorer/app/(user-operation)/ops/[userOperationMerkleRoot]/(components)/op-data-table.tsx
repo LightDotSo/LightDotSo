@@ -15,6 +15,7 @@
 "use client";
 
 import { useQueryUserOperationMerkle } from "@lightdotso/query";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { userOperationColumns } from "@lightdotso/tables";
 import { type FC } from "react";
 import type { Hex } from "viem";
@@ -53,13 +54,15 @@ export const OpDataTable: FC<OpDataTableProps> = ({
   }
 
   return (
-    <DataTable
-      isDefaultOpen
-      isTestnet
-      isLoading={isUserOperationMerkleLoading}
-      data={userOperationMerkle ? userOperationMerkle.user_operations : []}
-      columns={userOperationColumns}
-      pageCount={1}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        isDefaultOpen
+        isTestnet
+        isLoading={isUserOperationMerkleLoading}
+        data={userOperationMerkle ? userOperationMerkle.user_operations : []}
+        columns={userOperationColumns}
+        pageCount={1}
+      />
+    </TableSectionWrapper>
   );
 };

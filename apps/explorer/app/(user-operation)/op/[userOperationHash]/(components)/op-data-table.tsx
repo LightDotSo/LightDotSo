@@ -16,6 +16,7 @@
 
 import { useQueryUserOperation } from "@lightdotso/query";
 import { userOperationColumns } from "@lightdotso/tables";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { type FC } from "react";
 import type { Hex } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
@@ -50,13 +51,15 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
   }
 
   return (
-    <DataTable
-      isDefaultOpen
-      isTestnet
-      isLoading={isUserOperationLoading}
-      data={userOperation ? [userOperation] : []}
-      columns={userOperationColumns}
-      pageCount={1}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        isDefaultOpen
+        isTestnet
+        isLoading={isUserOperationLoading}
+        data={userOperation ? [userOperation] : []}
+        columns={userOperationColumns}
+        pageCount={1}
+      />
+    </TableSectionWrapper>
   );
 };
