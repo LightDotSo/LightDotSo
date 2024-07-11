@@ -122,7 +122,7 @@ pub(crate) async fn v1_queue_node_handler(
 
         // Compare with the configuration's threshold and the uop's signature's owner's culmative
         // weight, if the threshold is not met, return a 404
-        if configuration.threshold >=
+        if configuration.threshold >
             uop.signatures
                 .unwrap_or_default()
                 .into_iter()
@@ -180,7 +180,7 @@ pub(crate) async fn v1_queue_node_handler(
 
         // Compare with the configuration's threshold and the uop's culmative weight of the
         // signature's owner, if the threshold is not met, return a 404
-        if configuration.threshold >=
+        if configuration.threshold >
             uop_merkle
                 .signatures
                 .unwrap_or_default()
