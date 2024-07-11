@@ -14,6 +14,7 @@
 
 "use client";
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import {
   useQueryUserOperation,
   useQueryUserOperationMerkle,
@@ -41,16 +42,22 @@ export const TransactionStatus: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationMerkle } = useQueryUserOperationMerkle({
-    root: pendingUserOperationMerkleRoot,
-  });
+  const { userOperationMerkle } = useQueryUserOperationMerkle(
+    {
+      root: pendingUserOperationMerkleRoot,
+    },
+    true,
+  );
 
-  const { userOperation } = useQueryUserOperation({
-    hash:
-      pendingUserOperationHashes && pendingUserOperationHashes.length === 1
-        ? pendingUserOperationHashes[0]
-        : null,
-  });
+  const { userOperation } = useQueryUserOperation(
+    {
+      hash:
+        pendingUserOperationHashes && pendingUserOperationHashes.length === 1
+          ? pendingUserOperationHashes[0]
+          : null,
+    },
+    true,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
@@ -81,7 +88,14 @@ export const TransactionStatus: FC = () => {
       <div className="space-y-3">
         {pendingUserOperationMerkleRoot && (
           <div className="text-xs text-text-weak">
-            Merkle Root: {shortenBytes32(pendingUserOperationMerkleRoot)}
+            Merkle Root:{" "}
+            <a
+              className="hover:underline"
+              href={`${INTERNAL_LINKS.Explorer}/root/${pendingUserOperationMerkleRoot}`}
+            >
+              {shortenBytes32(pendingUserOperationMerkleRoot)}
+              <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+            </a>
           </div>
         )}
         {pendingUserOperationHashes.length === 1 && (
@@ -95,9 +109,13 @@ export const TransactionStatus: FC = () => {
             .map(userOperation => (
               <div key={userOperation.hash} className="text-xs text-text-weak">
                 Transaction Hash:{" "}
-                {userOperation &&
-                  userOperation.transaction &&
-                  shortenBytes32(userOperation.transaction?.hash)}
+                <a
+                  className="hover:underline"
+                  href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction!.hash}`}
+                >
+                  {shortenBytes32(userOperationMerkle.root)}
+                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+                </a>
               </div>
             ))}
         {userOperation && userOperation.transaction && (

@@ -18,12 +18,16 @@ import type { UserOperationGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { LIVE_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryUserOperation = (params: UserOperationGetParams) => {
+export const useQueryUserOperation = (
+  params: UserOperationGetParams,
+  live?: boolean,
+) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -48,6 +52,7 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
     refetch: refetchUserOperation,
     failureCount,
   } = useQuery<UserOperationData | null>({
+    ...(live && LIVE_CONFIG),
     queryKey: queryKeys.user_operation.get({
       hash: params.hash,
     }).queryKey,
