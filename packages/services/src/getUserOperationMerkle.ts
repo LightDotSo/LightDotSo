@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationMerkle as getClienttUserOperationMerkle } from "@lightdotso/client";
+import { getUserOperationMerkle as getClientUserOperationMerkle } from "@lightdotso/client";
 import type { UserOperationMerkleGetParams } from "@lightdotso/params";
 import "server-only";
 
@@ -33,7 +33,7 @@ export const preloadGetUserOperationMerkle = (
 export const getUserOperationMerkle = async (
   params: UserOperationMerkleGetParams,
 ) => {
-  return getClienttUserOperationMerkle(
+  return getClientUserOperationMerkle(
     { params: { query: { root: params.root! } } },
     "admin",
   );
