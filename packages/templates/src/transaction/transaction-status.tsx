@@ -109,17 +109,31 @@ export const TransactionStatus: FC = () => {
       }
     >
       <div className="space-y-3">
+        {userOperation && (
+          <div className="text-xs text-text-weak">
+            User Operation Hash:{" "}
+            <a
+              className="inline-flex items-center hover:underline"
+              href={`${INTERNAL_LINKS.Explorer}/op/${userOperation.hash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {shortenBytes32(userOperation.hash)}
+              <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
+            </a>
+          </div>
+        )}
         {pendingUserOperationMerkleRoot && (
           <div className="text-xs text-text-weak">
             Merkle Root:{" "}
             <a
               className="inline-flex items-center hover:underline"
-              href={`${INTERNAL_LINKS.Explorer}/root/${pendingUserOperationMerkleRoot}`}
+              href={`${INTERNAL_LINKS.Explorer}/ops/${pendingUserOperationMerkleRoot}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               {shortenBytes32(pendingUserOperationMerkleRoot)}
-              <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+              <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
             </a>
           </div>
         )}
@@ -136,7 +150,7 @@ export const TransactionStatus: FC = () => {
                   rel="noopener noreferrer"
                 >
                   {shortenBytes32(userOperationMerkle.root)}
-                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+                  <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
                 </a>
               </div>
             ))}
@@ -150,7 +164,7 @@ export const TransactionStatus: FC = () => {
               rel="noopener noreferrer"
             >
               {shortenBytes32(userOperation.transaction.hash)}
-              <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+              <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
             </a>
           </div>
         )}
