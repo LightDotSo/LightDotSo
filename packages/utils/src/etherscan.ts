@@ -13,9 +13,18 @@
 // limitations under the License.
 
 import type { Chain } from "viem";
+import { getChainWithChainId } from "./chain";
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 export const getEtherscanUrl = (chain: Chain) => {
   return (
     chain?.blockExplorers?.etherscan?.url || chain?.blockExplorers?.default?.url
   );
+};
+
+export const getEtherscanUrlWithChainId = (chainId: number) => {
+  return getEtherscanUrl(getChainWithChainId(chainId));
 };

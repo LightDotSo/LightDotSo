@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { cn, getChainById, shortenName } from "@lightdotso/utils";
+import { cn, getChainWithChainId, shortenName } from "@lightdotso/utils";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type {
@@ -98,7 +98,7 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
         testnetChainLogoVariants({ size: size }),
       )}
     >
-      {shortenName(getChainById(chainId).name)}
+      {shortenName(getChainWithChainId(chainId).name)}
     </span>
   </span>
 );

@@ -39,7 +39,7 @@ import {
   Label,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { getChainById } from "@lightdotso/utils";
+import { getChainWithChainId } from "@lightdotso/utils";
 import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
@@ -238,7 +238,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                 control={form.control}
                 name="chainId"
                 render={({ field }) => {
-                  const chain = getChainById(field.value);
+                  const chain = getChainWithChainId(field.value);
 
                   return (
                     <FormControl>

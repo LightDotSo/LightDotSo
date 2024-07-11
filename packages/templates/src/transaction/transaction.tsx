@@ -45,7 +45,7 @@ import {
   toast,
   Button,
 } from "@lightdotso/ui";
-import { cn, getChainById } from "@lightdotso/utils";
+import { cn, getChainWithChainId } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
@@ -364,7 +364,11 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                                           &nbsp;
                                           <span className="text-text-weak">
                                             on{" "}
-                                            {getChainById(token.chain_id)?.name}
+                                            {
+                                              getChainWithChainId(
+                                                token.chain_id,
+                                              )?.name
+                                            }
                                           </span>
                                           &nbsp;
                                           <ChainLogo chainId={token.chain_id} />

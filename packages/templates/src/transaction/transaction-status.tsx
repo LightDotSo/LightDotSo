@@ -21,6 +21,7 @@ import {
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { shortenBytes32 } from "@lightdotso/utils";
+import { getEtherscanUrlWithChainId } from "@lightdotso/utils/src/etherscan";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { type FC } from "react";
 
@@ -99,9 +100,10 @@ export const TransactionStatus: FC = () => {
                   shortenBytes32(userOperation.transaction?.hash)}
               </div>
             ))}
-        {userOperation && (
+        {userOperation && userOperation.transaction && (
           <div className="text-xs text-text-weak">
-            Transaction Hash: {shortenBytes32(userOperation.hash)}
+            Transaction Hash:{" "}
+            {`${getEtherscanUrlWithChainId(userOperation.chain_id)}`}
           </div>
         )}
       </div>

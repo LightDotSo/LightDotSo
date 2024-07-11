@@ -62,7 +62,7 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { cn, getChainById, refineNumberFormat } from "@lightdotso/utils";
+import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -1461,8 +1461,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 <span className="text-text-weak">
                                                   on{" "}
                                                   {
-                                                    getChainById(token.chain_id)
-                                                      ?.name
+                                                    getChainWithChainId(
+                                                      token.chain_id,
+                                                    )?.name
                                                   }
                                                 </span>
                                                 &nbsp;

@@ -15,7 +15,7 @@
 "use client";
 
 import { ChainLogo } from "@lightdotso/svg";
-import { cn, getChainById } from "@lightdotso/utils";
+import { cn, getChainWithChainId } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ export const ChainCard: FC<ChainCardProps> = ({ chain_id, className }) => {
       <div className="flex items-center justify-start space-x-1.5">
         <ChainLogo className="size-6" chainId={chain_id} />
         <span className="text-xs font-medium text-text md:text-sm">
-          {getChainById(chain_id).name}
+          {getChainWithChainId(chain_id).name}
         </span>
       </div>
     </div>

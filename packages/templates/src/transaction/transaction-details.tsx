@@ -21,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@lightdotso/ui";
 import {
-  getChainById,
+  getChainWithChainId,
   shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
@@ -97,7 +97,7 @@ export const TransactionDetails: FC = () => {
   return (
     <>
       {userOperations.map((userOperation, index) => {
-        const chain = getChainById(Number(userOperation.chainId));
+        const chain = getChainWithChainId(Number(userOperation.chainId));
         return (
           <Accordion
             key={index}
