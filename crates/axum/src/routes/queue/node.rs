@@ -20,8 +20,9 @@ use axum::{
 };
 use ethers_main::types::H256;
 use lightdotso_kafka::{topics::node::produce_node_message, types::node::NodeMessage};
-use lightdotso_prisma::{user_operation, user_operation_merkle};
+use lightdotso_prisma::user_operation;
 use lightdotso_redis::query::node::node_rate_limit;
+use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -43,7 +44,7 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue user operation handler
+/// Queue node handler
 #[utoipa::path(
         post,
         path = "/queue/node",
@@ -70,6 +71,8 @@ pub(crate) async fn v1_queue_node_handler(
     let parsed_query_hash: H256 = query.hash.parse()?;
     let full_op_hash = format!("{:?}", parsed_query_hash);
 
+    info!("parsed_query_hash: {:?}", parsed_query_hash);
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
@@ -85,16 +88,16 @@ pub(crate) async fn v1_queue_node_handler(
     // If the user operation is not found, search for the user operation merkle root.
     uop.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
 
-    // Get the user operation merkle root from the database.
-    let uop_merkle = state
-        .client
-        .user_operation_merkle()
-        .find_unique(user_operation_merkle::root::equals(full_op_hash.clone()))
-        .exec()
-        .await?;
+    // // Get the user operation merkle root from the database.
+    // let uop_merkle = state
+    //     .client
+    //     .user_operation_merkle()
+    //     .find_unique(user_operation_merkle::root::equals(full_op_hash.clone()))
+    //     .exec()
+    //     .await?;
 
-    // If the user operation merkle root is not found, return a 404.
-    uop_merkle.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
+    // // If the user operation merkle root is not found, return a 404.
+    // uop_merkle.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
 
     // -------------------------------------------------------------------------
     // Redis

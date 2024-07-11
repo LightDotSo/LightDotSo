@@ -93,7 +93,7 @@ pub async fn get_user_operaton_signature(
     configuration_id: Option<String>,
 ) -> Result<Vec<u8>> {
     // The path to the user operation signature
-    let path = format!("/user_operation/signature?hash=0x{:#x}", hash,);
+    let path = format!("/user_operation/signature?user_operation_hash={:?}", hash,);
 
     // If the configuration id is present, append it to the path
     let path = if let Some(configuration_id) = configuration_id {
@@ -109,4 +109,24 @@ pub async fn get_user_operaton_signature(
 
     // Convert to GasEstimation using From trait
     Ok(response.hex_to_bytes()?)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_get_user_operaton_signature() {
+        // Run the test
+        let hash =
+            "0x76ed9304a5c7de17666abbc35d9c36a3aa83e54a9e1f8e23d564e808fbcb3c98".parse().unwrap();
+        let configuration_id = None;
+        let result = get_user_operaton_signature(hash, configuration_id).await;
+
+        // Print the result
+        println!("{:?}", result);
+
+        // Check if the result is Ok
+        assert!(result.is_ok());
+    }
 }

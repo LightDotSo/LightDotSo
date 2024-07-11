@@ -71,6 +71,9 @@ pub async fn node_consumer(
             // Get the configuration id
             let configuration_id = configuration.map(|c| c.id);
 
+            // Log the configuration id
+            info!("configuration_id: {:?}", configuration_id);
+
             Ok(configuration_id)
         }
 
