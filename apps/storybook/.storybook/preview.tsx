@@ -24,9 +24,9 @@ import {
   AppRouterContext,
   type AppRouterInstance,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import * as React from "react";
-import { useDarkMode } from "storybook-dark-mode";
+// import { useDarkMode } from "storybook-dark-mode";
 import "./global.css";
 
 // From: https://raw.githubusercontent.com/bendigiorgio/kiso/9de5ae4b8f9d6cab3210fdd8bbe61a5ff47243c0/src/docs/.storybook/DocContainer.tsx
