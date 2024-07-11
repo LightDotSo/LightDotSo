@@ -19,6 +19,7 @@ use ethers::{
     utils::hex,
 };
 use lightdotso_prisma::user_operation;
+use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -111,6 +112,49 @@ pub struct UserOperation {
     pub max_priority_fee_per_gas: U256,
     pub paymaster_and_data: Bytes,
     pub signature: Bytes,
+}
+
+impl UserOperation {
+    pub fn op_hash(&self, entry_point: Address, chain_id: u64) -> H256 {
+        let r_uop = RundlerUserOperation::from(self.clone());
+        r_uop.op_hash(entry_point, chain_id)
+    }
+}
+
+impl From<UserOperation> for RundlerUserOperation {
+    fn from(user_operation: UserOperation) -> Self {
+        Self {
+            sender: user_operation.sender,
+            nonce: user_operation.nonce,
+            init_code: user_operation.init_code.to_vec().into(),
+            call_data: user_operation.call_data.to_vec().into(),
+            call_gas_limit: user_operation.call_gas_limit,
+            verification_gas_limit: user_operation.verification_gas_limit,
+            pre_verification_gas: user_operation.pre_verification_gas,
+            max_fee_per_gas: user_operation.max_fee_per_gas,
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+            paymaster_and_data: user_operation.paymaster_and_data.to_vec().into(),
+            signature: user_operation.signature.to_vec().into(),
+        }
+    }
+}
+
+impl fmt::Debug for UserOperation {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("UserOperation")
+            .field("sender", &format!("{:#x}", self.sender))
+            .field("nonce", &format!("{:#x}", self.nonce))
+            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
+            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
+            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
+            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
+            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
+            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
+            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
+            .field("paymaster_and_data", &format!("0x{}", hex::encode(&self.paymaster_and_data)))
+            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
+            .finish()
+    }
 }
 
 impl From<user_operation::Data> for UserOperation {

@@ -6147,6 +6147,7 @@ dependencies = [
  "lightdotso-constants",
  "lightdotso-prisma",
  "prisma-client-rust",
+ "rundler-types",
  "serde",
  "serde_json",
  "tokio",
@@ -6338,6 +6339,8 @@ version = "0.1.0"
 name = "lightdotso-node"
 version = "0.1.0"
 dependencies = [
+ "backon",
+ "chrono",
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",

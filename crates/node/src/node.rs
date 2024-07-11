@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use crate::config::NodeArgs;
+use backon::{ExponentialBuilder, Retryable};
 use ethers::types::{Address, H256};
 use eyre::Result;
 use lightdotso_contracts::types::UserOperation;
@@ -38,6 +39,7 @@ impl Node {
         info!("Node run, starting");
     }
 
+    /// Send a user operation to the node
     /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L128
     /// License: MIT
     pub async fn send_user_operation(
@@ -46,7 +48,7 @@ impl Node {
         entry_point: Address,
         user_operation: &UserOperation,
     ) -> Result<Response<H256>> {
-        let params = vec![json!(user_operation), json!(entry_point)];
+        let params = vec![json!(user_operation.clone()), json!(entry_point)];
         info!("params: {:?}", params);
 
         let req_body = Request {
@@ -56,14 +58,32 @@ impl Node {
             id: 1,
         };
 
-        let client = reqwest::Client::new();
-        let response = client
-            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
-            .json(&req_body)
-            .send()
-            .await?;
+        let node_send_operation = || async {
+            // Log the time before sending the user operation to the node
+            info!(
+                "Sending user operation {:?} to the node at {}",
+                user_operation.clone(),
+                chrono::Utc::now()
+            );
 
-        // Handle the response for the JSON-RPC API.
-        handle_response(response).await
+            // Send the user operation to the node
+            let client = reqwest::Client::new();
+
+            let response = client
+                .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
+                .json(&req_body)
+                .send()
+                .await?;
+
+            // Handle the response for the JSON-RPC API.
+            handle_response(response).await
+        };
+
+        // Retry the user operation if it fails
+        let res =
+            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(3)).await;
+        info!("res: {:?}", res);
+
+        res
     }
 }
