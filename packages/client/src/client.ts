@@ -34,10 +34,7 @@ export const ensClient = () =>
 // Simplehash
 // -----------------------------------------------------------------------------
 
-export const getSimplehashClient = () =>
-  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-    ? "http://localhost:3000/simplehash"
-    : "https://api.light.so/simplehash";
+export const getSimplehashClient = () => "https://router.light.so/simplehash";
 
 // -----------------------------------------------------------------------------
 // Lifi
@@ -65,24 +62,26 @@ export const localSocketClient: ReturnType<typeof createClient<SocketPaths>> =
 
 export const publicSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "https://api.light.so/socket",
+    baseUrl: "https://router.light.so/socket",
     credentials: "include",
   });
 
 export const authenticatedSocketClient: ReturnType<
   typeof createClient<SocketPaths>
 > = createClient<SocketPaths>({
-  baseUrl: "https://api.light.so/authenticated/v1/socket",
-  credentials: "include",
+  baseUrl: "https://router.light.so/socket",
+  // baseUrl: "https://api.light.so/authenticated/v1/socket",
+  // credentials: "include",
 });
 
 export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "https://api.light.so/admin/v1/socket",
-    headers: {
-      Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
-    },
-    credentials: "include",
+    baseUrl: "https://router.light.so/socket",
+    // baseUrl: "https://api.light.so/admin/v1/socket",
+    // headers: {
+    // Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
+    // },
+    // credentials: "include",
   });
 
 export const getSocketClient: (
