@@ -117,6 +117,68 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [sellQueryToken]);
 
   // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const SwapBalanceButton: FC = () => {
+    return (
+      <Button variant="shadow" size="xs" className="px-1 py-0 gap-1">
+        <WalletIcon className="size-4 text-text-weak" />
+        <span className="text-sm text-text-weak">Balance</span>
+        <span className="text-sm text-text">
+          {buyToken
+            ? refineNumberFormat(buyToken.amount / buyToken.decimals)
+            : 0}
+        </span>
+      </Button>
+    );
+  };
+
+  const SwapTokenSelectButton: FC = () => {
+    return (
+      <Button
+        onClick={() => {
+          setTokenModalProps({
+            address: address as Address,
+            type: "native",
+            isTestnet: walletSettings?.is_enabled_testnet ?? false,
+            onClose: () => {
+              hideTokenModal();
+            },
+            onTokenSelect: token => {
+              form.setValue("buy.token.address", token.address);
+              form.setValue("buy.token.decimals", token.decimals);
+              form.setValue("buy.token.symbol", token.symbol);
+              form.setValue("buy.chainId", token.chain_id);
+
+              form.trigger();
+
+              hideTokenModal();
+            },
+          });
+          showTokenModal();
+        }}
+        variant="shadow"
+        className="gap-2 px-1 rounded-full"
+      >
+        {buyToken ? (
+          <>
+            <TokenImage withChainLogo token={buyToken} />
+            <span className="text-text tracking-wide text-2xl whitespace-nowrap max-w-10 break-all">
+              {buyToken.symbol}
+            </span>
+          </>
+        ) : (
+          <span className="text-text text-lg whitespace-nowrap">
+            Select Token
+          </span>
+        )}
+        <ChevronDown className="size-4 shrink-0 mr-1" />
+      </Button>
+    );
+  };
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -137,57 +199,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               />
             )}
           />
-          <Button
-            onClick={() => {
-              setTokenModalProps({
-                address: address as Address,
-                type: "native",
-                isTestnet: walletSettings?.is_enabled_testnet ?? false,
-                onClose: () => {
-                  hideTokenModal();
-                },
-                onTokenSelect: token => {
-                  form.setValue("buy.token.address", token.address);
-                  form.setValue("buy.token.decimals", token.decimals);
-                  form.setValue("buy.token.symbol", token.symbol);
-                  form.setValue("buy.chainId", token.chain_id);
-
-                  form.trigger();
-
-                  hideTokenModal();
-                },
-              });
-              showTokenModal();
-            }}
-            variant="shadow"
-            className="gap-2 px-1 rounded-full"
-          >
-            {buyToken ? (
-              <>
-                <TokenImage withChainLogo token={buyToken} />
-                <span className="text-text tracking-wide text-2xl whitespace-nowrap max-w-10 break-all">
-                  {buyToken.symbol}
-                </span>
-              </>
-            ) : (
-              <span className="text-text text-lg whitespace-nowrap">
-                Select Token
-              </span>
-            )}
-            <ChevronDown className="size-4 shrink-0 mr-1" />
-          </Button>
+          <SwapTokenSelectButton />
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="px-1 py-0 gap-1">
-            <WalletIcon className="size-4 text-text-weak" />
-            <span className="text-sm text-text-weak">Balance</span>
-            <span className="text-sm text-text">
-              {buyToken
-                ? refineNumberFormat(buyToken.amount / buyToken.decimals)
-                : 0}
-            </span>
-          </Button>
+          <SwapBalanceButton />
         </div>
       </div>
       <div className="z-10 -my-4 flex items-center justify-center">
@@ -202,29 +218,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             placeholder="0"
             className="h-16 border-0 bg-background-strong p-0 text-4xl focus-visible:ring-0"
           />
-          <Button variant="shadow" className="gap-x-2 px-2 whitespace-nowrap">
-            {sellToken ? (
-              <>
-                <TokenImage withChainLogo token={sellToken} />
-                <span className="text-text tracking-wide text-2xl">
-                  {sellToken.symbol}
-                </span>
-              </>
-            ) : (
-              <span className="text-text text-xs line-clamp-1">
-                Select Token
-              </span>
-            )}
-            <ChevronDown className="size-4 shrink-0 mr-1" />
-          </Button>
+          <SwapTokenSelectButton />
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="px-1 py-0">
-            <WalletIcon className="size-4 text-text-weak" />
-            <span className="pl-1 text-sm text-text-weak">Balance</span>
-            <span className="pl-1 text-sm text-text">0.01</span>
-          </Button>
+          <SwapBalanceButton />
         </div>
       </div>
       <Button disabled size="lg" className="mt-1 w-full">
