@@ -18,13 +18,18 @@ import type { Address } from "viem";
 // Params
 // -----------------------------------------------------------------------------
 
+export type TokenGetParams = {
+  address: Address | null | undefined;
+  chain_id: number | null | undefined;
+};
+
 export type TokenListParams = {
   address: Address | null | undefined;
   is_testnet: boolean;
   limit: number;
   offset: number;
   group: boolean;
-  chain_ids: string | null;
+  chain_ids: number[] | null;
 };
 
 export type TokenListCountParams = Omit<

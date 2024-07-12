@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Swap } from "@lightdotso/templates";
+import { SwapDialog } from "@lightdotso/dialogs";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -25,7 +25,7 @@ export default async function Page() {
 
   return (
     <div className="flex w-full justify-center p-4">
-      <Swap className="max-w-lg" />
+      <SwapDialog className="max-w-lg" />
     </div>
   );
 }

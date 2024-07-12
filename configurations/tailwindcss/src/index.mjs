@@ -38,6 +38,7 @@ export default {
     "../../apps/home/app/**/*.{ts,tsx}",
     "../../apps/home/src/components/**/*.{ts,tsx}",
     "../../apps/storybook/.storybook/**/*.{ts,tsx}",
+    "../../packages/dialogs/src/**/*.{ts,tsx}",
     "../../packages/elements/src/**/*.{ts,tsx}",
     "../../packages/modals/src/**/*.{ts,tsx}",
     "../../packages/states/src/**/*.{ts,tsx}",

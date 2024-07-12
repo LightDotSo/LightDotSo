@@ -96,6 +96,7 @@ const preview: Preview = {
           "form",
           "modal",
           "template",
+          "dialog",
           "table",
         ],
       },

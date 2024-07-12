@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Swap } from "./swap";
+import { TransactionDialog } from "./transaction";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Swap> = {
-  title: "template/Swap",
-  component: Swap,
+const meta: Meta<typeof TransactionDialog> = {
+  title: "dialog/TransactionDialog",
+  component: TransactionDialog,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -31,13 +31,24 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Swap>;
+type Story = StoryObj<typeof TransactionDialog>;
+
+// -----------------------------------------------------------------------------
+// MSW
+// -----------------------------------------------------------------------------
+
+if (typeof window !== "undefined") {
+  const { worker } = await import("@lightdotso/msw");
+  worker.start();
+}
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Swap />,
+  render: args => (
+    <TransactionDialog address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" />
+  ),
   args: {},
 };

@@ -13,6 +13,24 @@
 // limitations under the License.
 
 export {
+  abi,
+  abiEncoded,
+  address,
+  addressOrEns,
+  asset,
+  transfer,
+  userOperation,
+} from "./eth";
+export type {
+  Abi,
+  AbiEncoded,
+  Address,
+  AddressOrEns,
+  Asset,
+  Transfer,
+  UserOperation,
+} from "./eth";
+export {
   confirmFormSchema,
   devFormSchema,
   newFormSchema,
@@ -45,21 +63,3 @@ export type {
   SimplehashTestnetChain,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";
-export {
-  abi,
-  abiEncoded,
-  address,
-  addressOrEns,
-  asset,
-  transfer,
-  userOperation,
-} from "./web3";
-export type {
-  Abi,
-  AbiEncoded,
-  Address,
-  AddressOrEns,
-  Asset,
-  Transfer,
-  UserOperation,
-} from "./web3";

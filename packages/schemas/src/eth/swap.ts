@@ -12,43 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { Transaction } from "./transaction";
+import { z } from "zod";
+import { erc20 } from "./asset";
 
 // -----------------------------------------------------------------------------
-// Meta
+// Schema
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Transaction> = {
-  title: "template/Transaction",
-  component: Transaction,
-  tags: ["autodocs"],
-  argTypes: {},
-};
-export default meta;
+export const swap = z.object({
+  token: erc20.merge(z.object({ symbol: z.string().optional() })).optional(),
+  chainId: z.number().optional(),
+});
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Transaction>;
-
-// -----------------------------------------------------------------------------
-// MSW
-// -----------------------------------------------------------------------------
-
-if (typeof window !== "undefined") {
-  const { worker } = await import("@lightdotso/msw");
-  worker.start();
-}
-
-// -----------------------------------------------------------------------------
-// Story
-// -----------------------------------------------------------------------------
-
-export const Base: Story = {
-  render: args => (
-    <Transaction address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" />
-  ),
-  args: {},
-};
+export type Swap = z.infer<typeof swap>;

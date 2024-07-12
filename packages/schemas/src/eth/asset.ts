@@ -13,31 +13,39 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { address, addressOrEns } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-export const ownerFormSchema = z.object({
-  threshold: z
-    .number()
-    .int()
-    .min(1, { message: "Threshold must be at least 1." }),
-  owners: z.array(
-    z.object({
-      address: address.optional(),
-      addressOrEns: addressOrEns.optional(),
-      weight: z
-        .number()
-        .int()
-        .min(1, { message: "Weight must be at least 1." }),
-    }),
-  ),
+export const erc20 = z.object({
+  address: z.string().optional(),
+  decimals: z.number().optional(),
+  quantity: z.number().optional(),
 });
+
+export const erc721 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+export const erc1155 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+export const erc1155Batch = z.object({
+  address: z.string().optional(),
+  tokenIds: z.array(z.number()),
+  quantities: z.array(z.number()),
+});
+
+export const asset = z.union([erc20, erc721, erc1155, erc1155Batch]);
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type OwnerForm = z.infer<typeof ownerFormSchema>;
+export type Asset = z.infer<typeof asset>;
