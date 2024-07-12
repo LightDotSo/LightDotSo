@@ -3240,21 +3240,9 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@lightdotso/msw':
-        specifier: workspace:*
-        version: link:../msw
-      '@lightdotso/nuqs':
-        specifier: workspace:*
-        version: link:../nuqs
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
-      '@lightdotso/sequence':
-        specifier: workspace:*
-        version: link:../sequence
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -3297,9 +3285,6 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      permissionless:
-        specifier: ^0.1.39
-        version: 0.1.39(viem@2.17.3(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@6.0.4)(zod@3.23.8))
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
