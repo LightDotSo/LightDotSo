@@ -19,6 +19,7 @@ import {
 } from "@hono-rate-limiter/cloudflare";
 import { Hono } from "hono";
 import { basicProxy } from "./proxy";
+import { cors } from "hono/cors";
 
 // -----------------------------------------------------------------------------
 // Hono App Types
@@ -48,6 +49,12 @@ const app = new Hono<AppType>();
 // -----------------------------------------------------------------------------
 // Routes
 // -----------------------------------------------------------------------------
+
+app.use(
+  cors({
+    origin: ["https://light.so"],
+  }),
+);
 
 app.get(
   "/",
