@@ -134,6 +134,23 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     );
   };
 
+  const SwapInputFormField: FC = () => {
+    return (
+      <FormField
+        control={form.control}
+        name="buy.token.quantity"
+        render={({ field }) => (
+          <Input
+            placeholder="0"
+            className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            type="number"
+            {...field}
+          />
+        )}
+      />
+    );
+  };
+
   const SwapTokenSelectButton: FC = () => {
     return (
       <Button
@@ -187,18 +204,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Buy</span>
         <div className="flex items-center justify-between">
-          <FormField
-            control={form.control}
-            name="buy.token.quantity"
-            render={({ field }) => (
-              <Input
-                placeholder="0"
-                className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                type="number"
-                {...field}
-              />
-            )}
-          />
+          <SwapInputFormField />
           <SwapTokenSelectButton />
         </div>
         <div className="flex w-full items-center justify-between">
@@ -214,10 +220,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Sell</span>
         <div className="flex items-center justify-between">
-          <Input
-            placeholder="0"
-            className="h-16 border-0 bg-background-strong p-0 text-4xl focus-visible:ring-0"
-          />
+          <SwapInputFormField />
           <SwapTokenSelectButton />
         </div>
         <div className="flex w-full items-center justify-between">
