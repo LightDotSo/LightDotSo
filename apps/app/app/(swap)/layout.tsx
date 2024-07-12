@@ -52,8 +52,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <HStackFull>
-      <BaseLayerWrapper>
-        <MinimalPageWrapper>{children}</MinimalPageWrapper>
+      <BaseLayerWrapper size="xs">
+        <MinimalPageWrapper isScreen>{children}</MinimalPageWrapper>
       </BaseLayerWrapper>
     </HStackFull>
   );

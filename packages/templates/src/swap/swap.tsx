@@ -45,10 +45,18 @@ const tokenGetData = {
 type SwapFormValues = z.infer<typeof swapFormSchema>;
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export type SwapProps = {
+  className?: string;
+};
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Swap: FC = () => {
+export const Swap: FC<SwapProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
@@ -63,7 +71,7 @@ export const Swap: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="max-w-md">
+    <div className={className}>
       <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Buy</span>
         <div className="flex items-center justify-between">

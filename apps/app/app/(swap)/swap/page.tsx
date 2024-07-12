@@ -23,5 +23,9 @@ export default async function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Swap />;
+  return (
+    <div className="flex w-full justify-center p-4">
+      <Swap className="max-w-lg" />
+    </div>
+  );
 }
