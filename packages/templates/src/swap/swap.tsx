@@ -91,6 +91,9 @@ export const Swap: FC = () => {
           </Button>
         </div>
       </div>
+      <Button disabled size="lg" className="mt-4 w-full">
+        Swap
+      </Button>
     </div>
   );
 };
