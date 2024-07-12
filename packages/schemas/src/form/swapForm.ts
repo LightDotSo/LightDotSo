@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { erc20, transfer } from "../web3";
+import { erc20 } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema

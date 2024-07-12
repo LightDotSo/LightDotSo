@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { userOperation } from "../web3";
+import { userOperation } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema

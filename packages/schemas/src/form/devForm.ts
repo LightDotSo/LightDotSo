@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { abi } from "../web3";
+import { abi } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema

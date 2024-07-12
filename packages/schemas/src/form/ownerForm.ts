@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { address, addressOrEns } from "../web3";
+import { address, addressOrEns } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema
