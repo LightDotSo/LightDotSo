@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getTokens } from "@lightdotso/client";
+import { getToken } from "@lightdotso/client";
 import type { TokenData } from "@lightdotso/data";
-import type { TokenListParams } from "@lightdotso/params";
+import type { TokenGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryTokens = (params: TokenListParams) => {
+export const useQueryToken = (params: TokenGetParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,45 +36,33 @@ export const useQueryTokens = (params: TokenListParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queryKeys.token.list({
+  const currentData: TokenData | undefined = queryClient.getQueryData(
+    queryKeys.token.get({
       address: params.address,
-      is_testnet: params.is_testnet,
-      limit: params.limit,
-      offset: params.offset,
-      group: params.group,
-      chain_ids: params.chain_ids,
+      chain_id: params.chain_id,
     }).queryKey,
   );
 
   const {
-    data: tokens,
-    isLoading: isTokensLoading,
+    data: token,
+    isLoading: isTokenLoading,
     failureCount,
-  } = useQuery<TokenData[] | null>({
-    queryKey: queryKeys.token.list({
+  } = useQuery<TokenData | null>({
+    queryKey: queryKeys.token.get({
       address: params.address,
-      is_testnet: params.is_testnet,
-      limit: params.limit,
-      offset: params.offset,
-      group: params.group,
-      chain_ids: params.chain_ids,
+      chain_id: params.chain_id,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (!params.address || !params.chain_id) {
         return null;
       }
 
-      const res = await getTokens(
+      const res = await getToken(
         {
           params: {
             query: {
               address: params.address,
-              is_testnet: params.is_testnet,
-              limit: params.limit,
-              offset: params.offset,
-              group: params.group,
-              chain_ids: params.chain_ids?.join(","),
+              chain_id: params.chain_id,
             },
           },
         },
@@ -83,7 +71,7 @@ export const useQueryTokens = (params: TokenListParams) => {
 
       return res.match(
         data => {
-          return data as TokenData[];
+          return data as TokenData;
         },
         err => {
           if (failureCount % 3 !== 2) {
@@ -96,7 +84,7 @@ export const useQueryTokens = (params: TokenListParams) => {
   });
 
   return {
-    tokens: tokens,
-    isTokensLoading: isTokensLoading,
+    token: token,
+    isTokenLoading: isTokenLoading,
   };
 };

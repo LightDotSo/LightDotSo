@@ -13,14 +13,14 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { asset } from "./asset";
+import { erc20 } from "./asset";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
 export const swap = z.object({
-  asset: asset.optional(),
+  token: erc20.merge(z.object({ symbol: z.string().optional() })).optional(),
   chainId: z.number().optional(),
 });
 

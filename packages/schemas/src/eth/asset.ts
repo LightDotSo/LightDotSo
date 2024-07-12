@@ -24,19 +24,19 @@ export const erc20 = z.object({
   quantity: z.number().optional(),
 });
 
-const erc721 = z.object({
+export const erc721 = z.object({
   address: z.string().optional(),
   tokenId: z.number().optional(),
   quantity: z.number().optional(),
 });
 
-const erc1155 = z.object({
+export const erc1155 = z.object({
   address: z.string().optional(),
   tokenId: z.number().optional(),
   quantity: z.number().optional(),
 });
 
-const erc1155Batch = z.object({
+export const erc1155Batch = z.object({
   address: z.string().optional(),
   tokenIds: z.array(z.number()),
   quantities: z.array(z.number()),

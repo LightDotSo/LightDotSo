@@ -2144,6 +2144,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements

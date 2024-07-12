@@ -47,7 +47,11 @@ export type {
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
-export type { TokenListParams, TokenListCountParams } from "./token";
+export type {
+  TokenGetParams,
+  TokenListParams,
+  TokenListCountParams,
+} from "./token";
 export type { TokenPriceParams } from "./tokenPrice";
 export type {
   TransactionListParams,

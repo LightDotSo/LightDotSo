@@ -14,32 +14,18 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useQueryWalletSettings } from "@lightdotso/query";
+import { useQueryToken, useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Demo
-// -----------------------------------------------------------------------------
-
-const tokenGetData = {
-  id: "clota6rxh0000l308gsist1ix",
-  address: "0x0000000000000000000000000000000000000000",
-  chain_id: 10,
-  name: "Ether",
-  symbol: "ETH",
-  decimals: 18,
-  amount: 1000000000000000,
-  balance_usd: 2.6155005,
-  group: null,
-};
+import { refineNumberFormat } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -79,6 +65,57 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     reValidateMode: "onBlur",
   });
 
+  const buySwap = form.watch("buy");
+  const sellSwap = form.watch("sell");
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { token: buyQueryToken } = useQueryToken({
+    address: (buySwap?.token?.address as Address) ?? undefined,
+    chain_id: buySwap?.chainId,
+  });
+
+  const { token: sellQueryToken } = useQueryToken({
+    address: (sellSwap?.token?.address as Address) ?? undefined,
+    chain_id: sellSwap?.chainId,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const buyToken: TokenData | null = useMemo(() => {
+    if (buyQueryToken) {
+      return buyQueryToken;
+    }
+
+    if (
+      buySwap?.token?.address &&
+      buySwap?.chainId &&
+      buySwap?.token?.symbol &&
+      buySwap?.token?.decimals
+    ) {
+      const buySwapToken: TokenData = {
+        amount: 0,
+        balance_usd: 0,
+        id: `${buySwap?.token?.address}-${buySwap?.chainId}`,
+        address: buySwap?.token?.address as Address,
+        chain_id: buySwap?.chainId,
+        decimals: buySwap?.token?.decimals,
+        symbol: buySwap?.token?.symbol,
+      };
+      return buySwapToken;
+    }
+
+    return null;
+  }, [buyQueryToken]);
+
+  const sellToken: TokenData | null | undefined = useMemo(() => {
+    return sellQueryToken;
+  }, [sellQueryToken]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -90,7 +127,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}
-            name="buy.asset.quantity"
+            name="buy.token.quantity"
             render={({ field }) => (
               <Input
                 placeholder="0"
@@ -110,8 +147,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   hideTokenModal();
                 },
                 onTokenSelect: token => {
-                  form.setValue("buy.asset.address", token.address);
-                  form.setValue("buy.asset.decimals", token.decimals);
+                  form.setValue("buy.token.address", token.address);
+                  form.setValue("buy.token.decimals", token.decimals);
+                  form.setValue("buy.token.symbol", token.symbol);
                   form.setValue("buy.chainId", token.chain_id);
 
                   form.trigger();
@@ -122,19 +160,33 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-x-2 px-2"
+            className="gap-2 px-1 rounded-full"
           >
-            <TokenImage token={tokenGetData} />
-            {tokenGetData.symbol}
-            <ChevronDown className="size-10" />
+            {buyToken ? (
+              <>
+                <TokenImage withChainLogo token={buyToken} />
+                <span className="text-text tracking-wide text-2xl whitespace-nowrap max-w-10 break-all">
+                  {buyToken.symbol}
+                </span>
+              </>
+            ) : (
+              <span className="text-text text-lg whitespace-nowrap">
+                Select Token
+              </span>
+            )}
+            <ChevronDown className="size-4 shrink-0 mr-1" />
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="px-1 py-0">
+          <Button variant="shadow" size="xs" className="px-1 py-0 gap-1">
             <WalletIcon className="size-4 text-text-weak" />
-            <span className="pl-1 text-sm text-text-weak">Balance</span>
-            <span className="pl-1 text-sm text-text">0.01</span>
+            <span className="text-sm text-text-weak">Balance</span>
+            <span className="text-sm text-text">
+              {buyToken
+                ? refineNumberFormat(buyToken.amount / buyToken.decimals)
+                : 0}
+            </span>
           </Button>
         </div>
       </div>
@@ -150,10 +202,20 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             placeholder="0"
             className="h-16 border-0 bg-background-strong p-0 text-4xl focus-visible:ring-0"
           />
-          <Button variant="shadow" className="gap-x-2 px-2">
-            <TokenImage token={tokenGetData} />
-            {tokenGetData.symbol}
-            <ChevronDown className="size-10" />
+          <Button variant="shadow" className="gap-x-2 px-2 whitespace-nowrap">
+            {sellToken ? (
+              <>
+                <TokenImage withChainLogo token={sellToken} />
+                <span className="text-text tracking-wide text-2xl">
+                  {sellToken.symbol}
+                </span>
+              </>
+            ) : (
+              <span className="text-text text-xs line-clamp-1">
+                Select Token
+              </span>
+            )}
+            <ChevronDown className="size-4 shrink-0 mr-1" />
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
