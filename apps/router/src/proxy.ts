@@ -40,7 +40,7 @@ export const basicProxy = (
     // Removes prefix
     // prefix = /app1/*, path = /app1/a/b
     // => suffix_path = /a/b
-    // let path = new URL(c.req.raw.url).pathname
+    // let path = new URL(url).pathname
     let path = c.req.path;
     path = path.replace(
       new RegExp(`^${c.req.routePath.replace("*", "")}`),
@@ -54,30 +54,35 @@ export const basicProxy = (
       url = url + "?" + new URLSearchParams(c.req.query());
     }
 
-    // Add headers
-    if (options?.headers) {
-      switch (url) {
-        case API_URLS.LIFI_API_URL_V1:
-          c.req.raw.headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
-          break;
-        case API_URLS.SIMPLEHASH_API_URL_V0:
-          c.req.raw.headers.set("X-API-KEY", c.env.SIMPLEHASH_API_KEY);
-          break;
-        case API_URLS.SOCKET_API_URL:
-          c.req.raw.headers.set("API-KEY", c.env.SOCKET_API_KEY);
-        default:
-          break;
-      }
+    // Initialize Headers
+    let headers = new Headers();
 
+    headers.set("Content-Type", "application/json");
+    // Automatically add API keys to headers
+    switch (proxy_url) {
+      case API_URLS.LIFI_API_URL_V1:
+        headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
+        break;
+      case API_URLS.SIMPLEHASH_API_URL_V0:
+        headers.set("X-API-KEY", c.env.SIMPLEHASH_API_KEY);
+        break;
+      case API_URLS.SOCKET_API_URL:
+        headers.set("API-KEY", c.env.SOCKET_API_KEY);
+      default:
+        break;
+    }
+
+    // Add headers if provided
+    if (options?.headers) {
       for (const [key, value] of Object.entries(options.headers)) {
-        c.req.raw.headers.set(key, value);
+        headers.set(key, value);
       }
     }
 
     // Return request
     const response = await fetch(url, {
       method: c.req.method,
-      headers: c.req.raw.headers,
+      headers: headers,
       body: c.req.raw.body,
     });
 
