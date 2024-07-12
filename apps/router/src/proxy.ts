@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { API_URLS } from "@lightdotso/const";
+import { THE_GRAPH_SUBGRAPH_IDS } from "@lightdotso/const/src/api_urls";
 import { Handler } from "hono";
 import { StatusCode } from "hono/utils/http-status";
 
@@ -24,6 +25,8 @@ import { StatusCode } from "hono/utils/http-status";
 // -----------------------------------------------------------------------------
 
 export type ProxyOptions = {
+  // Graph URL ID to proxy
+  the_graph?: keyof typeof THE_GRAPH_SUBGRAPH_IDS;
   // Headers to add to the request
   headers?: Record<string, string>;
 };
@@ -48,6 +51,11 @@ export const basicProxy = (
     );
 
     let url = proxy_url ? proxy_url + path : c.req.url;
+
+    // If the_graph is provided, construct the URL
+    if (options?.the_graph && proxy_url == API_URLS.THE_GRAPH_API_URL) {
+      url = `${API_URLS.THE_GRAPH_API_URL}/${c.env.THE_GRAPH_API_KEY}/subgraphs/id/${THE_GRAPH_SUBGRAPH_IDS[options.the_graph]}`;
+    }
 
     // Add params
     if (c.req.query()) {

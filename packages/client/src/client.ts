@@ -27,8 +27,7 @@ export type ClientType = "admin" | "authenticated" | "public";
 // Ens
 // -----------------------------------------------------------------------------
 
-export const ensClient = () =>
-  "https://api.thegraph.com/subgraphs/name/ensdomains/ens";
+export const ensClient = () => "https://router.light.so/ens";
 
 // -----------------------------------------------------------------------------
 // Simplehash
