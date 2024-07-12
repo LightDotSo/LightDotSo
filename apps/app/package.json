@@ -29,6 +29,7 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
+    "@lightdotso/dialogs": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",

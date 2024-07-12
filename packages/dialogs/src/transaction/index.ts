@@ -12,20 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SwapDialog } from "@lightdotso/dialogs";
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div className="flex w-full justify-center p-4">
-      <SwapDialog className="max-w-lg" />
-    </div>
-  );
-}
+export { TransactionDialog } from "./transaction";

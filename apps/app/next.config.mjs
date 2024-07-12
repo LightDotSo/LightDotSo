@@ -93,6 +93,7 @@ const nextConfig = {
     "@lightdotso/client",
     "@lightdotso/const",
     "@lightdotso/data",
+    "@lightdotso/dialogs",
     "@lightdotso/elements",
     "@lightdotso/forms",
     "@lightdotso/hooks",

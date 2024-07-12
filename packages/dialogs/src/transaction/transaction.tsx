@@ -52,10 +52,12 @@ import { useForm } from "react-hook-form";
 import { usePathname } from "next/navigation";
 import type { Address } from "viem";
 import type * as z from "zod";
-import { FooterButton } from "../footer-button";
-import { Loading } from "../loading";
-import { useIsInsideModal } from "../modal";
-import { ModalSwiper } from "../modal-swiper";
+import {
+  FooterButton,
+  Loading,
+  useIsInsideModal,
+  ModalSwiper,
+} from "@lightdotso/templates";
 import { TransactionCalldata } from "./transaction-calldata";
 import { TransactionDetails } from "./transaction-details";
 import { TransactionFetcher } from "./transaction-fetcher";
@@ -65,7 +67,7 @@ import { TransactionStatus } from "./transaction-status";
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionProps = {
+type TransactionDialogProps = {
   address: Address;
 };
 
@@ -79,7 +81,7 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 // Component
 // -----------------------------------------------------------------------------
 
-export const Transaction: FC<TransactionProps> = ({ address }) => {
+export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------

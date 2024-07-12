@@ -48,7 +48,7 @@ type SwapFormValues = z.infer<typeof swapFormSchema>;
 // Props
 // -----------------------------------------------------------------------------
 
-export type SwapProps = {
+export type SwapDialogProps = {
   className?: string;
 };
 
@@ -56,7 +56,7 @@ export type SwapProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Swap: FC<SwapProps> = ({ className }) => {
+export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------

@@ -1,0 +1,64 @@
+{
+  "name": "@lightdotso/dialogs",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "LightDotSo",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@lightdotso/const": "workspace:*",
+    "@lightdotso/elements": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/modals": "workspace:*",
+    "@lightdotso/msw": "workspace:*",
+    "@lightdotso/nuqs": "workspace:*",
+    "@lightdotso/query": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/stores": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
+    "@lightdotso/templates": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/wagmi": "workspace:*",
+    "class-variance-authority": "^0.7.0",
+    "lucide-react": "^0.407.0",
+    "permissionless": "^0.1.39",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-hook-form": "^7.52.1",
+    "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^8.2.2",
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}

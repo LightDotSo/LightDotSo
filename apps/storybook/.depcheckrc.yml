@@ -64,3 +64,6 @@ ignores:
   - "@lightdotso/forms"
   - react-is
   - recharts
+  - "@lightdotso/dialogs"
+  - "@lightdotso/modals"
+  - "@lightdotso/states"

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Transaction } from "@lightdotso/templates";
+import { TransactionDialog } from "@lightdotso/dialogs";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -31,7 +31,7 @@ type CreateDialogProps = {
 export const CreateDialog: FC<CreateDialogProps> = ({ address }) => {
   return (
     <div className="mt-4 flex flex-col items-center justify-center">
-      <Transaction address={address} />
+      <TransactionDialog address={address} />
     </div>
   );
 };
