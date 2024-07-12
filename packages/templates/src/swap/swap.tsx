@@ -22,6 +22,10 @@ import { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Demo
+// -----------------------------------------------------------------------------
+
 const tokenGetData = {
   id: "clota6rxh0000l308gsist1ix",
   address: "0x0000000000000000000000000000000000000000",
@@ -45,6 +49,10 @@ type SwapFormValues = z.infer<typeof swapFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const Swap: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<SwapFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
