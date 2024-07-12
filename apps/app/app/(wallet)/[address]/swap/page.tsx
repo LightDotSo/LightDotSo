@@ -15,6 +15,7 @@
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
+import { Swap } from "@lightdotso/templates";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { handler } from "@/handlers/[address]/swap/handler";
@@ -87,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="h-40" />
+      <Swap />
     </HydrationBoundary>
   );
 }
