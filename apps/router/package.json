@@ -18,18 +18,18 @@
     "dev": "wrangler dev"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240620.0",
+    "@cloudflare/workers-types": "^4.20240701.0",
     "@hono-rate-limiter/cloudflare": "^0.1.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
-    "hono": "^4.4.12",
+    "hono": "^4.4.13",
     "hono-rate-limiter": "^0.4.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.10",
     "typescript": "^5.5.3",
-    "wrangler": "^3.63.2"
+    "wrangler": "^3.64.0"
   },
   "publishConfig": {
     "access": "public"

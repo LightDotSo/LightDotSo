@@ -26,7 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@heroicons/react": "^2.1.4",
+    "@heroicons/react": "^2.1.5",
     "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.9.0",
     "@lightdotso/client": "workspace:*",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.2.1",
+    "@storybook/react": "^8.2.2",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

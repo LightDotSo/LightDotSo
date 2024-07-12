@@ -18,7 +18,7 @@ import { z } from "zod";
 // Schema
 // -----------------------------------------------------------------------------
 
-const erc20 = z.object({
+export const erc20 = z.object({
   address: z.string().optional(),
   decimals: z.number().optional(),
   quantity: z.number().optional(),

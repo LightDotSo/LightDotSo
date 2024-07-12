@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { Abi, AbiEncoded } from "./abi";
-export { abi, abiEncoded } from "./abi";
-export type { Address } from "./address";
-export { address } from "./address";
-export type { AddressOrEns } from "./addressOrEns";
-export { addressOrEns } from "./addressOrEns";
-export type { Asset, Transfer } from "./transfer";
-export { asset, erc20, transfer } from "./transfer";
-export type { UserOperation } from "./userOperation";
-export { userOperation } from "./userOperation";
+import { z } from "zod";
+import { erc20, transfer } from "../web3";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+export const swapFormSchema = z.object({
+  buy: erc20,
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type SwapForm = z.infer<typeof swapFormSchema>;

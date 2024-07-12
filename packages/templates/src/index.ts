@@ -38,4 +38,5 @@ export { ProgressTransaction } from "./progress-transaction";
 export { ProgressUserOperation } from "./progress-user-operation";
 export { Root } from "./root";
 export { Support } from "./support";
+export { Swap } from "./swap";
 export { Transaction } from "./transaction";

@@ -21,7 +21,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.8",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
@@ -47,9 +47,9 @@
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.17.0",
     "@sentry/react": "^8.17.0",
-    "@tanstack/react-query": "^5.50.1",
-    "@tanstack/react-query-devtools": "^5.50.1",
-    "@tanstack/react-query-next-experimental": "^5.50.1",
+    "@tanstack/react-query": "^5.51.1",
+    "@tanstack/react-query-devtools": "^5.51.1",
+    "@tanstack/react-query-next-experimental": "^5.51.1",
     "@tanstack/react-table": "^8.19.2",
     "kysely-postgres-js": "^2.0.0",
     "lucide-react": "^0.407.0",

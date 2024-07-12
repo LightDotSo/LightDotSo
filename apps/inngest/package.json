@@ -23,7 +23,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.8",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/redis": "workspace:*",
     "@next/bundle-analyzer": "15.0.0-canary.49",
