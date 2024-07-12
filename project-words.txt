@@ -1572,6 +1572,7 @@ unpipe
 unplugin
 unsanitized
 unscopables
+unsized
 unstake
 unstorage
 untildify

@@ -22,6 +22,7 @@ export {
   newFormStoreSchema,
   ownerFormSchema,
   sendFormSchema,
+  swapFormSchema,
   transactionFormSchema,
 } from "./form";
 export type {

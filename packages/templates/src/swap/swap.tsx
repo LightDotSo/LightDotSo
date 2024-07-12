@@ -15,9 +15,12 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
-import { Button, ButtonIcon, Input } from "@lightdotso/ui";
+import { swapFormSchema } from "@lightdotso/schemas";
+import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { type FC } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const tokenGetData = {
   id: "clota6rxh0000l308gsist1ix",
@@ -32,24 +35,43 @@ const tokenGetData = {
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type SwapFormValues = z.infer<typeof swapFormSchema>;
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const Swap: FC = () => {
+  const form = useForm<SwapFormValues>({
+    mode: "all",
+    reValidateMode: "onBlur",
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <div className="max-w-md">
-      <div className="bg-background-strong border border-border-weaker hover:border-border-weak focus-within:ring-1 focus-within:ring-border-strong p-4 rounded-md">
+      <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Buy</span>
         <div className="flex items-center justify-between">
-          <Input
-            placeholder="0"
-            className="p-0 h-16 text-4xl border-0 focus-visible:ring-0 bg-background-strong"
+          <FormField
+            control={form.control}
+            name="buy.quantity"
+            render={({ field }) => (
+              <Input
+                placeholder="0"
+                className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                type="number"
+                {...field}
+              />
+            )}
           />
-          <Button variant="shadow" className="px-2 gap-x-2">
+          <Button variant="shadow" className="gap-x-2 px-2">
             <TokenImage token={tokenGetData} />
             {tokenGetData.symbol}
             <ChevronDown className="size-10" />
@@ -58,25 +80,25 @@ export const Swap: FC = () => {
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
           <Button variant="shadow" size="xs" className="px-1 py-0">
-            <WalletIcon className="text-text-weak size-4" />
+            <WalletIcon className="size-4 text-text-weak" />
             <span className="pl-1 text-sm text-text-weak">Balance</span>
             <span className="pl-1 text-sm text-text">0.01</span>
           </Button>
         </div>
       </div>
-      <div className="flex items-center justify-center -my-4 z-10">
+      <div className="z-10 -my-4 flex items-center justify-center">
         <ButtonIcon variant="shadow" size="sm">
           <ArrowDown />
         </ButtonIcon>
       </div>
-      <div className="mt-1 bg-background-strong border border-border-weaker hover:border-border-weak focus-within:ring-1 focus-within:ring-border-strong p-4 rounded-md">
+      <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Sell</span>
         <div className="flex items-center justify-between">
           <Input
             placeholder="0"
-            className="p-0 h-16 text-4xl border-0 focus-visible:ring-0 bg-background-strong"
+            className="h-16 border-0 bg-background-strong p-0 text-4xl focus-visible:ring-0"
           />
-          <Button variant="shadow" className="px-2 gap-x-2">
+          <Button variant="shadow" className="gap-x-2 px-2">
             <TokenImage token={tokenGetData} />
             {tokenGetData.symbol}
             <ChevronDown className="size-10" />
@@ -85,13 +107,13 @@ export const Swap: FC = () => {
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
           <Button variant="shadow" size="xs" className="px-1 py-0">
-            <WalletIcon className="text-text-weak size-4" />
+            <WalletIcon className="size-4 text-text-weak" />
             <span className="pl-1 text-sm text-text-weak">Balance</span>
             <span className="pl-1 text-sm text-text">0.01</span>
           </Button>
         </div>
       </div>
-      <Button disabled size="lg" className="mt-4 w-full">
+      <Button disabled size="lg" className="mt-1 w-full">
         Swap
       </Button>
     </div>

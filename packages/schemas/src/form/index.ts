@@ -31,5 +31,6 @@ export type { OwnerForm } from "./ownerForm";
 export { ownerFormSchema } from "./ownerForm";
 export type { SendForm } from "./sendForm";
 export { sendFormSchema } from "./sendForm";
+export { swapFormSchema } from "./swapForm";
 export type { TransactionForm } from "./transactionForm";
 export { transactionFormSchema } from "./transactionForm";
