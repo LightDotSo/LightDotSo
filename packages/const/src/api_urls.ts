@@ -13,9 +13,10 @@
 // limitations under the License.
 
 export enum API_URLS {
+  THE_GRAPH_API_URL = "https://gateway-arbitrum.network.thegraph.com/api",
   SOCKET_API_URL = "https://api.socket.tech",
   SIMPLEHASH_API_URL_V0 = "https://api.simplehash.com/api/v0",
-  LIFI_API_URL = "https://li.quest/v1",
+  LIFI_API_URL_V1 = "https://li.quest/v1",
 }
 
 export enum BASE_API_URLS {
@@ -26,4 +27,8 @@ export enum BASE_API_URLS {
   BASE_API_AUTHENTICATED_URL = "https://api.light.so/authenticated",
   BASE_API_URL = "https://api.light.so",
   BASE_RPC_URL = "https://rpc.light.so",
+}
+
+export enum THE_GRAPH_SUBGRAPH_IDS {
+  ENS = "5XqPmWe6gjyrJtFn9cLy237i4cWw2j9HcUJEXsP5qGtH",
 }

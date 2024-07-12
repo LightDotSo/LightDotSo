@@ -22,17 +22,22 @@ import { baseHeightWrapper } from "../base";
 
 interface MinimalPageWrapperProps {
   children: ReactNode;
+  isScreen?: boolean;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
+export function MinimalPageWrapper({
+  children,
+  isScreen,
+}: MinimalPageWrapperProps) {
   return (
     <div
       className={cn(
         "relative flex flex-col space-y-6 overflow-y-hidden",
+        isScreen && "h-screen",
         baseHeightWrapper,
       )}
     >

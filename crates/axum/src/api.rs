@@ -37,8 +37,8 @@ use crate::{
         configuration_operation, configuration_operation_owner, configuration_operation_signature,
         feedback, health, interpretation, interpretation_action, invite_code, notification,
         notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
-        token_group, token_price, transaction, user, user_notification_settings, user_operation,
+        protocol_group, queue, signature, simulation, support_request, token, token_group,
+        token_price, transaction, user, user_notification_settings, user_operation,
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
     },
@@ -515,7 +515,6 @@ pub async fn start_api_server() -> Result<()> {
         .merge(queue::router())
         .merge(signature::router())
         .merge(simulation::router())
-        .merge(socket::router())
         .merge(support_request::router())
         .merge(token::router())
         .merge(token_group::router())
@@ -532,9 +531,6 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet_features::router())
         .merge(wallet_notification_settings::router())
         .merge(wallet_settings::router());
-
-    // Create the simplehash api
-    let simplehash_api = Router::new().merge(simplehash::router());
 
     // Create the session store
     let session_store = RedisStore::new(redis);
@@ -577,7 +573,6 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the app for the server
     let app = Router::new()
-        .merge(simplehash_api.clone())
         .layer(
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))

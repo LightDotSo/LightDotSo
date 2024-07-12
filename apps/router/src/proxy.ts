@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { API_URLS } from "@lightdotso/const";
+import { THE_GRAPH_SUBGRAPH_IDS } from "@lightdotso/const/src/api_urls";
 import { Handler } from "hono";
 import { StatusCode } from "hono/utils/http-status";
 
@@ -24,6 +25,8 @@ import { StatusCode } from "hono/utils/http-status";
 // -----------------------------------------------------------------------------
 
 export type ProxyOptions = {
+  // Graph URL ID to proxy
+  the_graph?: keyof typeof THE_GRAPH_SUBGRAPH_IDS;
   // Headers to add to the request
   headers?: Record<string, string>;
 };
@@ -40,7 +43,7 @@ export const basicProxy = (
     // Removes prefix
     // prefix = /app1/*, path = /app1/a/b
     // => suffix_path = /a/b
-    // let path = new URL(c.req.raw.url).pathname
+    // let path = new URL(url).pathname
     let path = c.req.path;
     path = path.replace(
       new RegExp(`^${c.req.routePath.replace("*", "")}`),
@@ -49,35 +52,45 @@ export const basicProxy = (
 
     let url = proxy_url ? proxy_url + path : c.req.url;
 
+    // If the_graph is provided, construct the URL
+    if (options?.the_graph && proxy_url == API_URLS.THE_GRAPH_API_URL) {
+      url = `${API_URLS.THE_GRAPH_API_URL}/${c.env.THE_GRAPH_API_KEY}/subgraphs/id/${THE_GRAPH_SUBGRAPH_IDS[options.the_graph]}`;
+    }
+
     // Add params
     if (c.req.query()) {
       url = url + "?" + new URLSearchParams(c.req.query());
     }
 
-    // Add headers
-    if (options?.headers) {
-      switch (url) {
-        case API_URLS.LIFI_API_URL:
-          c.req.raw.headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
-          break;
-        case API_URLS.SIMPLEHASH_API_URL_V0:
-          c.req.raw.headers.set("X-API-KEY", c.env.SIMPLEHASH_API_KEY);
-          break;
-        case API_URLS.SOCKET_API_URL:
-          c.req.raw.headers.set("API-KEY", c.env.SOCKET_API_KEY);
-        default:
-          break;
-      }
+    // Initialize Headers
+    let headers = new Headers();
 
+    headers.set("Content-Type", "application/json");
+    // Automatically add API keys to headers
+    switch (proxy_url) {
+      case API_URLS.LIFI_API_URL_V1:
+        headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
+        break;
+      case API_URLS.SIMPLEHASH_API_URL_V0:
+        headers.set("X-API-KEY", c.env.SIMPLEHASH_API_KEY);
+        break;
+      case API_URLS.SOCKET_API_URL:
+        headers.set("API-KEY", c.env.SOCKET_API_KEY);
+      default:
+        break;
+    }
+
+    // Add headers if provided
+    if (options?.headers) {
       for (const [key, value] of Object.entries(options.headers)) {
-        c.req.raw.headers.set(key, value);
+        headers.set(key, value);
       }
     }
 
     // Return request
     const response = await fetch(url, {
       method: c.req.method,
-      headers: c.req.raw.headers,
+      headers: headers,
       body: c.req.raw.body,
     });
 

@@ -60,7 +60,8 @@ app.get(
   c => c.json({ message: `router.light.so rateLimit: ${c.get("rateLimit")}` }),
 );
 
-app.all("/lifi/*", basicProxy(API_URLS.LIFI_API_URL));
+app.all("/ens/*", basicProxy(API_URLS.THE_GRAPH_API_URL, { the_graph: "ENS" }));
+app.all("/lifi/v1/*", basicProxy(API_URLS.LIFI_API_URL_V1));
 app.all("/simplehash/v0/*", basicProxy(API_URLS.SIMPLEHASH_API_URL_V0));
 app.all("/socket/*", basicProxy(API_URLS.SOCKET_API_URL));
 
