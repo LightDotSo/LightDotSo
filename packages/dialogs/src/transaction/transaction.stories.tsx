@@ -20,7 +20,7 @@ import { TransactionDialog } from "./transaction";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof TransactionDialog> = {
-  title: "template/Transaction",
+  title: "dialog/TransactionDialog",
   component: TransactionDialog,
   tags: ["autodocs"],
   argTypes: {},

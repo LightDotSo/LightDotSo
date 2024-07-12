@@ -14,13 +14,16 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { SwapDialog } from "./swap";
+import { useAuth } from "@lightdotso/stores";
+import { useEffect } from "react";
+import { TokenModal } from "@lightdotso/modals/src/token/token-modal";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof SwapDialog> = {
-  title: "template/SwapDialog",
+  title: "dialog/SwapDialog",
   component: SwapDialog,
   tags: ["autodocs"],
   argTypes: {},
@@ -38,6 +41,20 @@ type Story = StoryObj<typeof SwapDialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <SwapDialog />,
+  render: () => {
+    const { setAddress } = useAuth();
+
+    useEffect(() => {
+      setAddress("0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F");
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+      <>
+        <SwapDialog />
+        <TokenModal />
+      </>
+    );
+  },
   args: {},
 };

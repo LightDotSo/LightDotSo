@@ -15,12 +15,15 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
+import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
+import { useAuth, useModals } from "@lightdotso/stores";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Demo
@@ -58,6 +61,16 @@ export type SwapDialogProps = {
 
 export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+  const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
+  const { walletSettings } = useQueryWalletSettings({
+    address: address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -87,7 +100,29 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               />
             )}
           />
-          <Button variant="shadow" className="gap-x-2 px-2">
+          <Button
+            onClick={() => {
+              setTokenModalProps({
+                address: address as Address,
+                type: "native",
+                isTestnet: walletSettings?.is_enabled_testnet ?? false,
+                onClose: () => {
+                  hideTokenModal();
+                },
+                onTokenSelect: token => {
+                  form.setValue("buy.address", token.address);
+                  form.setValue("buy.decimals", token.decimals);
+
+                  form.trigger();
+
+                  hideTokenModal();
+                },
+              });
+              showTokenModal();
+            }}
+            variant="shadow"
+            className="gap-x-2 px-2"
+          >
             <TokenImage token={tokenGetData} />
             {tokenGetData.symbol}
             <ChevronDown className="size-10" />
@@ -103,7 +138,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <div className="z-10 -my-4 flex items-center justify-center">
-        <ButtonIcon variant="shadow" size="sm">
+        <ButtonIcon onClick={showTokenModal} variant="shadow" size="sm">
           <ArrowDown />
         </ButtonIcon>
       </div>
