@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { RootWelcomeCards } from "@/app/(unauthenticated)/(components)/root-welcome-cards";
+import { Swap } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -23,5 +23,5 @@ export default async function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <RootWelcomeCards />;
+  return <Swap />;
 }
