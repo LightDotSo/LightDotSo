@@ -13,22 +13,39 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { asset } from "./asset";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-export const transfer = z.object({
+export const erc20 = z.object({
   address: z.string().optional(),
-  addressOrEns: z.string().optional(),
-  asset: asset.optional(),
-  assetType: z.string().optional(),
-  chainId: z.number().optional(),
+  decimals: z.number().optional(),
+  quantity: z.number().optional(),
 });
+
+const erc721 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+const erc1155 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+const erc1155Batch = z.object({
+  address: z.string().optional(),
+  tokenIds: z.array(z.number()),
+  quantities: z.array(z.number()),
+});
+
+export const asset = z.union([erc20, erc721, erc1155, erc1155Batch]);
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type Transfer = z.infer<typeof transfer>;
+export type Asset = z.infer<typeof asset>;

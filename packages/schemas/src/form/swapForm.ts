@@ -13,14 +13,15 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { erc20 } from "../eth";
+import { swap } from "../eth";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
 export const swapFormSchema = z.object({
-  buy: erc20,
+  buy: swap,
+  sell: swap,
 });
 
 // -----------------------------------------------------------------------------

@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { Abi, AbiEncoded } from "./abi";
-export { abi, abiEncoded } from "./abi";
-export type { Address } from "./address";
-export { address } from "./address";
-export type { AddressOrEns } from "./addressOrEns";
-export { addressOrEns } from "./addressOrEns";
-export type { Asset } from "./asset";
-export { asset } from "./asset";
-export type { Transfer } from "./transfer";
-export { transfer } from "./transfer";
-export type { Swap } from "./swap";
-export { swap } from "./swap";
-export type { UserOperation } from "./userOperation";
-export { userOperation } from "./userOperation";
+import { z } from "zod";
+import { asset } from "./asset";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+export const swap = z.object({
+  asset: asset.optional(),
+  chainId: z.number().optional(),
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Swap = z.infer<typeof swap>;

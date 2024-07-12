@@ -90,7 +90,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}
-            name="buy.quantity"
+            name="buy.asset.quantity"
             render={({ field }) => (
               <Input
                 placeholder="0"
@@ -110,8 +110,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   hideTokenModal();
                 },
                 onTokenSelect: token => {
-                  form.setValue("buy.address", token.address);
-                  form.setValue("buy.decimals", token.decimals);
+                  form.setValue("buy.asset.address", token.address);
+                  form.setValue("buy.asset.decimals", token.decimals);
+                  form.setValue("buy.chainId", token.chain_id);
 
                   form.trigger();
 
