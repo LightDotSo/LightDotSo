@@ -15,7 +15,7 @@
 export enum API_URLS {
   SOCKET_API_URL = "https://api.socket.tech",
   SIMPLEHASH_API_URL_V0 = "https://api.simplehash.com/api/v0",
-  LIFI_API_URL = "https://li.quest/v1",
+  LIFI_API_URL_V1 = "https://li.quest/v1",
 }
 
 export enum BASE_API_URLS {

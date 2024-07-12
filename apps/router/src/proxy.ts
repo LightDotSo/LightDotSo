@@ -57,7 +57,7 @@ export const basicProxy = (
     // Add headers
     if (options?.headers) {
       switch (url) {
-        case API_URLS.LIFI_API_URL:
+        case API_URLS.LIFI_API_URL_V1:
           c.req.raw.headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
           break;
         case API_URLS.SIMPLEHASH_API_URL_V0:
