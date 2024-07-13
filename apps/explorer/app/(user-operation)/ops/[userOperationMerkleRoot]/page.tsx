@@ -16,7 +16,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Hex } from "viem";
-import { OpDataTable } from "@/app/(user-operation)/ops/[userOperationMerkleRoot]/(components)/op-data-table";
+import { OpsDataTable } from "@/app/(user-operation)/ops/[userOperationMerkleRoot]/(components)/ops-data-table";
 import { handler } from "@/handlers/ops/[userOperationMerkleRoot]/handler";
 import { preloader } from "@/preloaders/ops/[userOperationMerkleRoot]/preloader";
 
@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OpDataTable
+      <OpsDataTable
         userOperationMerkleRoot={params.userOperationMerkleRoot as Hex}
       />
     </HydrationBoundary>

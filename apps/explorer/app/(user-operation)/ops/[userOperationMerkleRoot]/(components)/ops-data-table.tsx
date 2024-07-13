@@ -25,7 +25,7 @@ import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-t
 // Props
 // -----------------------------------------------------------------------------
 
-interface OpDataTableProps {
+interface OpsDataTableProps {
   userOperationMerkleRoot: Hex;
 }
 
@@ -33,7 +33,7 @@ interface OpDataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpDataTable: FC<OpDataTableProps> = ({
+export const OpsDataTable: FC<OpsDataTableProps> = ({
   userOperationMerkleRoot,
 }) => {
   // ---------------------------------------------------------------------------
@@ -41,9 +41,12 @@ export const OpDataTable: FC<OpDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { userOperationMerkle, isUserOperationMerkleLoading } =
-    useQueryUserOperationMerkle({
-      root: userOperationMerkleRoot,
-    });
+    useQueryUserOperationMerkle(
+      {
+        root: userOperationMerkleRoot,
+      },
+      true,
+    );
 
   // ---------------------------------------------------------------------------
   // Render
