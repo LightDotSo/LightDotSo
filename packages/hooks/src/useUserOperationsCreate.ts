@@ -34,7 +34,7 @@ import type { Address, Hex } from "viem";
 import { isAddressEqual, toBytes, hexToBytes, keccak256 } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Hook Props
 // -----------------------------------------------------------------------------
 
 type UserOperationsCreateProps = {
@@ -42,7 +42,7 @@ type UserOperationsCreateProps = {
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Hook
 // -----------------------------------------------------------------------------
 
 export const useUserOperationsCreate = ({

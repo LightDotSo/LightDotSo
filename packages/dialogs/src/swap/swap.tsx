@@ -16,7 +16,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useDebouncedValue } from "@lightdotso/hooks";
+import { useDebouncedValue, useSwap } from "@lightdotso/hooks";
 import {
   userOperationsParser,
   useBuySwapQueryState,
@@ -163,6 +163,21 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const {
+    isSwapValid,
+    isBuySwapLoading,
+    isSellSwapLoading,
+    isSwapLoading,
+    userOperationsParams,
+  } = useSwap({
+    buySwap,
+    sellSwap,
+  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -370,7 +385,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { lifiQuote, isLifiQuoteLoading } = useQueryLifiQuote({
+  const { lifiQuote } = useQueryLifiQuote({
     fromAddress: wallet,
     fromChain: buyToken?.chain_id,
     fromToken: buyToken?.address as Address,
@@ -379,34 +394,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toChain: sellToken?.chain_id,
     toToken: sellToken?.address as Address,
   });
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
-    let userOperations: Partial<UserOperation>[] = [];
-
-    if (lifiQuote && lifiQuote?.transactionRequest) {
-      userOperations = [
-        {
-          chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
-          sender: lifiQuote?.transactionRequest?.from,
-          callData: encodeFunctionData({
-            abi: lightWalletAbi,
-            functionName: "execute",
-            args: [
-              lifiQuote?.transactionRequest?.to,
-              BigInt(lifiQuote?.transactionRequest?.value),
-              lifiQuote?.transactionRequest?.data,
-            ] as [Address, bigint, Hex],
-          }),
-        },
-      ];
-    }
-
-    return userOperations;
-  }, [lifiQuote]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -436,66 +423,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       );
     }
   }, [buyToken, buySwap?.token?.value, buySwap?.token?.decimals]);
-
-  const isBuySwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-  ]);
-
-  const isSellSwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
-      isLifiQuoteLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
-    isLifiQuoteLoading,
-  ]);
-
-  const isSwapNotEmpty = useMemo(() => {
-    return buyToken?.amount && sellToken?.amount;
-  }, [buyToken?.amount, sellToken?.amount]);
-
-  const isSwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
-      isLifiQuoteLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
-    isLifiQuoteLoading,
-  ]);
-
-  const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid && isSwapNotEmpty;
-  }, [isBuySwapValueValid, isSwapNotEmpty]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

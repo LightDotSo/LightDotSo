@@ -19,7 +19,7 @@ import { useMemo } from "react";
 import { getAddress, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Hook Props
 // -----------------------------------------------------------------------------
 
 type ProxyImplementationAddressProps = {

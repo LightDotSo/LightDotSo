@@ -24,7 +24,7 @@ import { SiweMessage } from "siwe";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Component
+// Hook
 // -----------------------------------------------------------------------------
 
 export const useSignInWithSiwe = () => {

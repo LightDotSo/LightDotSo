@@ -18,12 +18,12 @@
 // Ref: https://github.com/orgs/react-hook-form/discussions/9005
 // Thank you to @lennerd for the original implementation!
 
-// -----------------------------------------------------------------------------
-// Hook
-// -----------------------------------------------------------------------------
-
 import type { MutableRefObject } from "react";
 import { useEffect, useRef } from "react";
+
+// -----------------------------------------------------------------------------
+// Hook Props
+// -----------------------------------------------------------------------------
 
 export interface Refinement<T> {
   /**
@@ -41,6 +41,10 @@ export interface RefinementCallback<T> {
   (data: T, ctx: { signal: AbortSignal }): boolean | Promise<boolean>; // Callback function signature
 }
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 /**
  * Special hook returning a callback to be used in conjunction with zod refinements.
  * When a zod schema is used within a form, it will run on every change, calling all refinements
@@ -56,6 +60,7 @@ export interface RefinementCallback<T> {
  * @returns A refinement function that can be used in zod schemas. Has an `invalidate` method to
  * invalidate the cache and allow re-performing the refinement.
  */
+
 export function useRefinement<T>(
   callback: RefinementCallback<T>,
   { debounce }: { debounce?: number } = {},

@@ -30,6 +30,7 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",

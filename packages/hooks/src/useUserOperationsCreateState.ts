@@ -20,7 +20,7 @@ import {
 import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
-// Query Mutation
+// Hook
 // -----------------------------------------------------------------------------
 
 export const useUserOperationsCreateState = () => {
