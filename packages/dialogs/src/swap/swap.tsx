@@ -19,12 +19,13 @@ import { TokenImage } from "@lightdotso/elements";
 import { useQueryToken, useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { useReadContract, useReadContracts } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import type { Address } from "viem";
+import { erc20Abi, type Address } from "viem";
 import { refineNumberFormat } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
@@ -86,11 +87,34 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: buySwapBalance } = useReadContract({
+    address: buySwap?.token?.address as Address,
+    chainId: buySwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+  });
+
+  const { data: sellSwapBalance } = useReadContract({
+    address: sellSwap?.token?.address as Address,
+    chainId: sellSwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+  });
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const buyToken: TokenData | null = useMemo(() => {
     if (buyQueryToken) {
+      if (buySwapBalance) {
+        buyQueryToken.amount = Number(buySwapBalance);
+      }
       return buyQueryToken;
     }
 
@@ -113,10 +137,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [buyQueryToken]);
+  }, [buyQueryToken, buySwap, buySwapBalance]);
 
   const sellToken: TokenData | null = useMemo(() => {
     if (sellQueryToken) {
+      if (sellSwapBalance) {
+        sellQueryToken.amount = Number(sellSwapBalance);
+      }
       return sellQueryToken;
     }
 
@@ -139,7 +166,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [sellQueryToken]);
+  }, [sellQueryToken, sellSwap, sellSwapBalance]);
 
   // ---------------------------------------------------------------------------
   // Render
