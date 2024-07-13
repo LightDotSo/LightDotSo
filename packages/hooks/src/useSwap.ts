@@ -310,10 +310,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
         callData: encodeFunctionData({
           abi: erc20Abi,
           functionName: "approve",
-          args: [buyToken?.address as Address, BigInt(buySwapAmount)] as [
-            Address,
-            bigint,
-          ],
+          args: [wallet as Address, BigInt(buySwapAmount)] as [Address, bigint],
         }),
         chainId: BigInt(buyToken?.chain_id),
       };
