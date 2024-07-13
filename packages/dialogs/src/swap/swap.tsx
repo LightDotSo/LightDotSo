@@ -229,16 +229,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       <div className="z-10 -my-4 flex items-center justify-center">
         <ButtonIcon
           onClick={() => {
+            // Swap buy and sell values
+            if (buySwap.token?.quantity && sellSwap.token?.quantity) {
+              // Make a copy of the values
+              const buySwapTokenQuantity = buySwap.token.quantity;
+              const sellSwapTokenQuantity = sellSwap.token.quantity;
+
+              form.setValue("buy.token.quantity", sellSwapTokenQuantity);
+              form.setValue("sell.token.quantity", buySwapTokenQuantity);
+            }
+
+            // Set buy values to sell
             if (buyToken) {
-              // Set buy values to sell
               form.setValue("sell.token.address", buyToken.address);
               form.setValue("sell.token.decimals", buyToken.decimals);
               form.setValue("sell.token.symbol", buyToken.symbol);
               form.setValue("sell.chainId", buyToken.chain_id);
             }
 
+            // Set sell values to buy
             if (sellToken) {
-              // Set sell values to buy
               form.setValue("buy.token.address", sellToken.address);
               form.setValue("buy.token.decimals", sellToken.decimals);
               form.setValue("buy.token.symbol", sellToken.symbol);
