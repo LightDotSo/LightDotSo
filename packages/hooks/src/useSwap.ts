@@ -333,7 +333,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
     }
 
     return generatePartialUserOperations(wallet, executions);
-  }, [lifiQuote]);
+  }, [wallet, buySwapAmount, buyToken, lifiQuote]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
