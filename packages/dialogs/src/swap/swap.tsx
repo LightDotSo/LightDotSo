@@ -114,7 +114,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
     return null;
   }, [buyQueryToken]);
-  console.log(buyToken);
 
   const sellToken: TokenData | null = useMemo(() => {
     if (sellQueryToken) {
@@ -228,7 +227,27 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <div className="z-10 -my-4 flex items-center justify-center">
-        <ButtonIcon onClick={showTokenModal} variant="shadow" size="sm">
+        <ButtonIcon
+          onClick={() => {
+            if (buyToken) {
+              // Set buy values to sell
+              form.setValue("sell.token.address", buyToken.address);
+              form.setValue("sell.token.decimals", buyToken.decimals);
+              form.setValue("sell.token.symbol", buyToken.symbol);
+              form.setValue("sell.chainId", buyToken.chain_id);
+            }
+
+            if (sellToken) {
+              // Set sell values to buy
+              form.setValue("buy.token.address", sellToken.address);
+              form.setValue("buy.token.decimals", sellToken.decimals);
+              form.setValue("buy.token.symbol", sellToken.symbol);
+              form.setValue("buy.chainId", sellToken.chain_id);
+            }
+          }}
+          variant="shadow"
+          size="sm"
+        >
           <ArrowDown />
         </ButtonIcon>
       </div>
