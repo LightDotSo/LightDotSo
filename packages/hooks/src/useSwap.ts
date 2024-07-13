@@ -146,7 +146,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       if (buySwapNativeBalance) {
         if (
           buySwapNativeBalanceQueryKey &&
-          buySwapNativeBalanceQueryKey.length > 2 &&
+          buySwapNativeBalanceQueryKey.length > 1 &&
           (buySwapNativeBalanceQueryKey[1] as any).chainId ===
             buyQueryToken.chain_id
         ) {
@@ -157,7 +157,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       if (buySwapBalance) {
         if (
           buySwapBalanceQueryKey &&
-          buySwapBalanceQueryKey.length > 2 &&
+          buySwapBalanceQueryKey.length > 1 &&
           (buySwapBalanceQueryKey[1] as any).chainId === buyQueryToken.chain_id
         ) {
           buyQueryToken.amount = Number(buySwapBalance);
@@ -198,7 +198,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       if (sellSwapNativeBalance) {
         if (
           sellSwapNativeBalanceQueryKey &&
-          sellSwapNativeBalanceQueryKey.length > 2 &&
+          sellSwapNativeBalanceQueryKey.length > 1 &&
           (sellSwapNativeBalanceQueryKey[1] as any).chainId ===
             sellQueryToken.chain_id
         ) {
@@ -209,7 +209,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       if (sellSwapBalance) {
         if (
           sellSwapBalanceQueryKey &&
-          sellSwapBalanceQueryKey.length > 2 &&
+          sellSwapBalanceQueryKey.length > 1 &&
           (sellSwapBalanceQueryKey[1] as any).chainId ===
             sellQueryToken.chain_id
         ) {
