@@ -279,6 +279,13 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const sellSwapAmount = useMemo(() => {
+    if (lifiQuote?.estimate?.toAmount) {
+      return lifiQuote?.estimate?.toAmount;
+    }
+    return null;
+  }, [lifiQuote?.estimate?.toAmount]);
+
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     let userOperations: Partial<UserOperation>[] = [];
 
@@ -379,8 +386,8 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   return {
     buyToken: buyToken,
     sellToken: sellToken,
-    buySwapAmount: buySwapAmount,
-    debouncedBuySwapAmount: debouncedBuySwapAmount,
+    buySwapAmount: debouncedBuySwapAmount,
+    sellSwapAmount: sellSwapAmount,
     isBuySwapLoading: isBuySwapLoading,
     isSellSwapLoading: isSellSwapLoading,
     isSwapLoading: isSwapLoading,
