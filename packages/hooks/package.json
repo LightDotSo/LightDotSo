@@ -34,6 +34,7 @@
     "@lightdotso/sdk": "workspace:*",
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/stores": "workspace:*",
+    "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "copy-to-clipboard": "^3.3.3",

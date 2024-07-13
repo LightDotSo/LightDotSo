@@ -2420,6 +2420,9 @@ importers:
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui

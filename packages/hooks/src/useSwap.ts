@@ -15,12 +15,13 @@
 import { UserOperation, type Swap } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useMemo } from "react";
-import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
+import { useBalance, useReadContract } from "@lightdotso/wagmi";
 import { useDebouncedValue } from "./useDebouncedValue";
 import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
+import { ExecutionWithChainId } from "@lightdotso/types";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -288,6 +289,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   }, [lifiQuote?.estimate?.toAmount]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    let executions: ExecutionWithChainId[] = [];
     let userOperations: Partial<UserOperation>[] = [];
 
     // If wallet is not available, return userOperations
@@ -295,27 +297,42 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       return userOperations;
     }
 
-    if (lifiQuote && lifiQuote?.transactionRequest) {
-      const lifiExecutions = [
-        {
-          address: lifiQuote?.transactionRequest?.to,
-          value: lifiQuote?.transactionRequest?.value
-            ? fromHex(lifiQuote?.transactionRequest?.value as Hex, "bigint")
-            : 0n,
-          callData: lifiQuote?.transactionRequest?.data as Hex,
-          chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
-        },
-      ];
-
-      const lifiUserOperations = generatePartialUserOperations(
-        wallet,
-        lifiExecutions,
-      );
-
-      userOperations.push(...lifiUserOperations);
+    // If the buy token is not native, need to approve the token
+    if (
+      buySwapAmount &&
+      buyToken &&
+      buyToken?.address &&
+      buyToken?.address !== "0x0000000000000000000000000000000000000000"
+    ) {
+      const approveExecution: ExecutionWithChainId = {
+        address: buyToken?.address as Hex,
+        value: 0n,
+        callData: encodeFunctionData({
+          abi: erc20Abi,
+          functionName: "approve",
+          args: [buyToken?.address as Address, BigInt(buySwapAmount)] as [
+            Address,
+            bigint,
+          ],
+        }),
+        chainId: BigInt(buyToken?.chain_id),
+      };
+      executions.push(approveExecution);
     }
 
-    return userOperations;
+    if (lifiQuote && lifiQuote?.transactionRequest) {
+      const lifiExecution: ExecutionWithChainId = {
+        address: lifiQuote?.transactionRequest?.to,
+        value: lifiQuote?.transactionRequest?.value
+          ? fromHex(lifiQuote?.transactionRequest?.value as Hex, "bigint")
+          : 0n,
+        callData: lifiQuote?.transactionRequest?.data as Hex,
+        chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
+      };
+      executions.push(lifiExecution);
+    }
+
+    return generatePartialUserOperations(wallet, executions);
   }, [lifiQuote]);
 
   // ---------------------------------------------------------------------------
