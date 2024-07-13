@@ -17,8 +17,10 @@
 
 "use client";
 
+import { useAppGroup } from "@/hooks";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { useIsMounted } from "@lightdotso/hooks";
+import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ComboDialog } from "@lightdotso/templates";
@@ -43,7 +45,7 @@ import {
   PlusCircledIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
-import { HomeIcon } from "lucide-react";
+import { HomeIcon, WalletIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
@@ -89,6 +91,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -114,7 +117,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -127,41 +130,39 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, setAddressQueryState] = useAddressQueryState();
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (wallets && pathname && pathname.split("/").length > 1) {
-      // Get the slug of the path and find the wallet
-      // ex) /0x1234 -> 0x1234
-      const slug = pathname.split("/")[1];
+    // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
+    if (appGroup === "unauthenticated") {
+      setSelectedWallet(undefined);
+      return;
+    }
 
-      // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
-      if (slug === "new" || slug === "wallets") {
+    // Get the wallet + wallets query result
+    if (wallet && wallets) {
+      // Find the selected wallet from the wallets query
+      const selectedWallet = wallets.find(
+        queryWallet => queryWallet.address === getAddress(wallet),
+      );
+
+      // If the wallet is not found, set the selected wallet to undefined
+      if (!selectedWallet) {
         setSelectedWallet(undefined);
         return;
       }
 
-      // If the slug is not an address, return
-      if (!isAddress(slug)) {
-        return;
-      }
-
-      // Find the wallet from the slug
-      const wallet =
-        wallets && typeof wallets !== "undefined" && wallets?.length > 0
-          ? wallets.find(wallet => wallet.address === getAddress(slug))
-          : undefined;
-
-      // If there is no wallet, set the first wallet as the selected wallet
-      if (!wallet) {
-        setSelectedWallet(wallets[0]);
-        return;
-      }
-
-      setSelectedWallet(wallet);
+      // Set the selected wallet
+      setSelectedWallet(selectedWallet);
     }
-  }, [wallets, address, pathname]);
+  }, [wallets, address, appGroup]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -285,36 +286,56 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                     key={wallet.address}
                     className="text-sm"
                     onSelect={() => {
+                      // Set the selected wallet
                       setSelectedWallet(wallet);
-                      setOpen(false);
-                      // Replace the current wallet address with the new one
+
+                      // If the app group is swap, set the address query state
+                      if (appGroup === "swap") {
+                        setAddressQueryState(wallet.address);
+                        setOpen(false);
+                        return;
+                      }
+
+                      // If the pathname is empty, don't do anything
                       if (!pathname) {
                         return;
                       }
+
+                      // Replace the current wallet address with the new one
                       if (pathname && pathname.split("/").length > 1) {
                         router.push(
                           `${pathname.replace(
                             pathname.split("/")[1],
                             wallet.address,
-                          )}
-                                `,
+                          )}`,
                         );
                       }
                     }}
                   >
                     <Avatar className="mr-2 size-5">
-                      {/* <AvatarImage
-                        src={`https://avatar.vercel.sh/${wallet.value}.png`}
-                        alt={wallet.label}
-                        className="grayscale"
-                      />
-                      <AvatarFallback>SC</AvatarFallback> */}
                       <PlaceholderOrb address={wallet.address} />
                     </Avatar>
                     {wallet.name}
                     <span className="hidden">{wallet.address}</span>
                   </CommandItem>
                 ))}
+          </CommandGroup>
+        </CommandList>
+        <CommandSeparator />
+        <CommandList>
+          <CommandGroup>
+            {appGroup === "swap" && (
+              <CommandItem
+                className="text-sm"
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(`/${wallet}/overview`);
+                }}
+              >
+                <WalletIcon className="mr-2 size-5" />
+                My Wallet
+              </CommandItem>
+            )}
           </CommandGroup>
         </CommandList>
         <CommandSeparator />

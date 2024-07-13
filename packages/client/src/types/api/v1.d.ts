@@ -6333,6 +6333,8 @@ export interface operations {
                 address: string;
                 /** @description The chain id of the token. */
                 chain_id: number;
+                /** @description The wallet that the token holds. */
+                wallet?: string | null;
             };
             header?: never;
             path?: never;

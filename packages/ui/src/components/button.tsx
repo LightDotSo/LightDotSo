@@ -356,6 +356,7 @@ const buttonVariants = cva(
         xs: "h-6 px-2.5 py-1.5",
         sm: "h-8 px-3 py-1.5",
         lg: "h-10 px-8",
+        xl: "h-12 px-10",
         unsized: "",
       },
     },

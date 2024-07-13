@@ -31,6 +31,7 @@ import { headers } from "next/headers";
 import type { FC, ReactNode } from "react";
 import { AppBanner } from "@/components/app-banner";
 import { Nav } from "@/components/nav/nav";
+import { WalletState } from "@/components/state/wallet-state";
 import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
@@ -144,6 +145,7 @@ export const Root: FC<RootProps> = ({ children }) => {
         <FormState />
         <QueueState />
         <UserOperationState />
+        <WalletState />
         <WssState />
       </Web3Provider>
     </LightRoot>
