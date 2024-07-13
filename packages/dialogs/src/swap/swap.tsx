@@ -160,26 +160,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 px-1 rounded-full"
+            className="gap-2 rounded-full px-1"
           >
             {buyToken ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
-                <span className="text-text tracking-wide text-2xl whitespace-nowrap max-w-10 break-all">
+                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
                   {buyToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="text-text text-lg whitespace-nowrap">
+              <span className="whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
-            <ChevronDown className="size-4 shrink-0 mr-1" />
+            <ChevronDown className="mr-1 size-4 shrink-0" />
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="px-1 py-0 gap-1">
+          <Button variant="shadow" size="xs" className="gap-1 px-1 py-0">
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
@@ -234,26 +234,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 px-1 rounded-full"
+            className="gap-2 rounded-full px-1"
           >
             {sellToken ? (
               <>
                 <TokenImage withChainLogo token={sellToken} />
-                <span className="text-text tracking-wide text-2xl whitespace-nowrap max-w-10 break-all">
+                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
                   {sellToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="text-text text-lg whitespace-nowrap">
+              <span className="whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
-            <ChevronDown className="size-4 shrink-0 mr-1" />
+            <ChevronDown className="mr-1 size-4 shrink-0" />
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="px-1 py-0 gap-1">
+          <Button variant="shadow" size="xs" className="gap-1 px-1 py-0">
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
