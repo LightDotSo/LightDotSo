@@ -23,6 +23,7 @@ import { feedback } from "./feedback";
 import { nft } from "./nft";
 import { nft_valuation } from "./nft_valation";
 import { notification } from "./notification";
+import { lifi } from "./lifi";
 import { paymaster_operation } from "./paymaster_operation";
 import { portfolio } from "./portfolio";
 import { queue } from "./queue";
@@ -49,6 +50,7 @@ export const queryKeys = mergeQueryKeys(
   nft,
   nft_valuation,
   notification,
+  lifi,
   paymaster_operation,
   portfolio,
   queue,

@@ -47,6 +47,7 @@ export { useQueryNotifications } from "./useQueryNotifications";
 export { useQueryNotificationsCount } from "./useQueryNotificationsCount";
 export { useQueryNftPortfolio } from "./useQueryNftPortfolio";
 export { useQueryNfts } from "./useQueryNfts";
+export { useQueryLifiQuote } from "./useQueryLifiQuote";
 export { useQueryPaymasterGasAndPaymasterAndData } from "./useQueryPaymasterGasAndPaymasterAndData";
 export { useQueryPaymasterOperation } from "./useQueryPaymasterOperation";
 export { useQueryPortfolio } from "./useQueryPortfolio";

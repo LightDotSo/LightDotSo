@@ -16,17 +16,25 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useQueryToken, useQueryWalletSettings } from "@lightdotso/query";
+import { useDebouncedValue } from "@lightdotso/hooks";
+import { userOperationsParser } from "@lightdotso/nuqs";
+import {
+  useQueryLifiQuote,
+  useQueryToken,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
+import type { UserOperation } from "@lightdotso/schemas";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useBalance, useReadContract } from "@lightdotso/wagmi";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useMemo, type FC } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { erc20Abi, type Address } from "viem";
-import { refineNumberFormat } from "@lightdotso/utils";
+import { encodeFunctionData, erc20Abi, Hex, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -89,12 +97,19 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
   const {
     data: buySwapNativeBalance,
     isLoading: isBuySwapNativeBalanceLoading,
+    queryKey: buySwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: buySwap?.chainId,
@@ -110,6 +125,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const {
     data: sellSwapNativeBalance,
     isLoading: isSellSwapNativeBalanceLoading,
+    queryKey: sellSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: sellSwap?.chainId,
@@ -122,39 +138,45 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     },
   });
 
-  const { data: buySwapBalance, isLoading: isBuySwapBalanceLoading } =
-    useReadContract({
-      address: buySwap?.token?.address as Address,
-      chainId: buySwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          buySwap?.token?.address &&
-            buySwap?.token?.address !==
-              "0x0000000000000000000000000000000000000000" &&
-            buySwap?.chainId,
-        ),
-      },
-    });
+  const {
+    data: buySwapBalance,
+    isLoading: isBuySwapBalanceLoading,
+    queryKey: buySwapBalanceQueryKey,
+  } = useReadContract({
+    address: buySwap?.token?.address as Address,
+    chainId: buySwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+    query: {
+      enabled: Boolean(
+        buySwap?.token?.address &&
+          buySwap?.token?.address !==
+            "0x0000000000000000000000000000000000000000" &&
+          buySwap?.chainId,
+      ),
+    },
+  });
 
-  const { data: sellSwapBalance, isLoading: isSellSwapBalanceLoading } =
-    useReadContract({
-      address: sellSwap?.token?.address as Address,
-      chainId: sellSwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          sellSwap?.token?.address &&
-            sellSwap?.token?.address !==
-              "0x0000000000000000000000000000000000000000" &&
-            sellSwap?.chainId,
-        ),
-      },
-    });
+  const {
+    data: sellSwapBalance,
+    isLoading: isSellSwapBalanceLoading,
+    queryKey: sellSwapBalanceQueryKey,
+  } = useReadContract({
+    address: sellSwap?.token?.address as Address,
+    chainId: sellSwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+    query: {
+      enabled: Boolean(
+        sellSwap?.token?.address &&
+          sellSwap?.token?.address !==
+            "0x0000000000000000000000000000000000000000" &&
+          sellSwap?.chainId,
+      ),
+    },
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -163,11 +185,24 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const buyToken: TokenData | null = useMemo(() => {
     if (buyQueryToken) {
       if (buySwapNativeBalance) {
-        buyQueryToken.amount = Number(buySwapNativeBalance.value);
-        buyQueryToken.symbol = buySwapNativeBalance.symbol;
+        if (
+          buySwapNativeBalanceQueryKey &&
+          buySwapNativeBalanceQueryKey.length > 2 &&
+          (buySwapNativeBalanceQueryKey[1] as any).chainId ===
+            buyQueryToken.chain_id
+        ) {
+          buyQueryToken.amount = Number(buySwapNativeBalance.value);
+          buyQueryToken.symbol = buySwapNativeBalance.symbol;
+        }
       }
       if (buySwapBalance) {
-        buyQueryToken.amount = Number(buySwapBalance);
+        if (
+          buySwapBalanceQueryKey &&
+          buySwapBalanceQueryKey.length > 2 &&
+          (buySwapBalanceQueryKey[1] as any).chainId === buyQueryToken.chain_id
+        ) {
+          buyQueryToken.amount = Number(buySwapBalance);
+        }
       }
       return buyQueryToken;
     }
@@ -191,16 +226,36 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [buyQueryToken, buySwap, buySwapNativeBalance, buySwapBalance]);
+  }, [
+    buyQueryToken,
+    buySwap,
+    buySwapNativeBalance,
+    buySwapBalanceQueryKey,
+    buySwapBalance,
+  ]);
 
   const sellToken: TokenData | null = useMemo(() => {
     if (sellQueryToken) {
       if (sellSwapNativeBalance) {
-        sellQueryToken.amount = Number(sellSwapNativeBalance.value);
-        sellQueryToken.symbol = sellSwapNativeBalance.symbol;
+        if (
+          sellSwapNativeBalanceQueryKey &&
+          sellSwapNativeBalanceQueryKey.length > 2 &&
+          (sellSwapNativeBalanceQueryKey[1] as any).chainId ===
+            sellQueryToken.chain_id
+        ) {
+          sellQueryToken.amount = Number(sellSwapNativeBalance.value);
+          sellQueryToken.symbol = sellSwapNativeBalance.symbol;
+        }
       }
       if (sellSwapBalance) {
-        sellQueryToken.amount = Number(sellSwapBalance);
+        if (
+          sellSwapBalanceQueryKey &&
+          sellSwapBalanceQueryKey.length > 2 &&
+          (sellSwapBalanceQueryKey[1] as any).chainId ===
+            sellQueryToken.chain_id
+        ) {
+          sellQueryToken.amount = Number(sellSwapBalance);
+        }
       }
       return sellQueryToken;
     }
@@ -224,7 +279,92 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [sellQueryToken, sellSwap, sellSwapNativeBalance, sellSwapBalance]);
+  }, [
+    sellQueryToken,
+    sellSwap,
+    sellSwapNativeBalance,
+    sellSwapNativeBalanceQueryKey,
+    sellSwapBalance,
+    sellSwapBalanceQueryKey,
+  ]);
+
+  const buySwapAmount = useMemo(() => {
+    if (buySwap && buySwap?.token?.value && buyToken?.decimals) {
+      // If amount ends in floating point, return the amount without floating point
+      return Math.floor(
+        buySwap?.token?.value * Math.pow(10, buyToken?.decimals),
+      );
+    }
+    return null;
+  }, [buySwap, buySwap?.token?.value, buySwap?.token?.decimals]);
+
+  // ---------------------------------------------------------------------------
+  // Debounced
+  // ---------------------------------------------------------------------------
+
+  const debouncedBuySwapAmount = useDebouncedValue(buySwapAmount, 800);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { lifiQuote, isLifiQuoteLoading } = useQueryLifiQuote({
+    fromAddress: wallet,
+    fromChain: buyToken?.chain_id,
+    fromToken: buyToken?.address as Address,
+    fromAmount: debouncedBuySwapAmount ?? undefined,
+    toAddress: wallet,
+    toChain: sellToken?.chain_id,
+    toToken: sellToken?.address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    let userOperations: Partial<UserOperation>[] = [];
+
+    if (lifiQuote && lifiQuote?.transactionRequest) {
+      userOperations = [
+        {
+          chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
+          sender: lifiQuote?.transactionRequest?.from,
+          callData: encodeFunctionData({
+            abi: lightWalletAbi,
+            functionName: "execute",
+            args: [
+              lifiQuote?.transactionRequest?.to,
+              BigInt(lifiQuote?.transactionRequest?.value),
+              lifiQuote?.transactionRequest?.data,
+            ] as [Address, bigint, Hex],
+          }),
+        },
+      ];
+    }
+
+    return userOperations;
+  }, [lifiQuote]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (lifiQuote && lifiQuote?.estimate?.toAmount && sellToken?.decimals) {
+      form.setValue(
+        "sell.token.value",
+        Number(
+          Number(lifiQuote.estimate?.toAmount) /
+            Math.pow(10, sellToken?.decimals),
+        ),
+      );
+    }
+  }, [lifiQuote, lifiQuote?.estimate?.toAmount, sellToken?.decimals]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
   const isBuySwapValueValid = useMemo(() => {
     if (buyToken && buySwap?.token?.value && buySwap?.token?.decimals) {
@@ -233,25 +373,29 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         buyToken.amount
       );
     }
-  }, [buyToken, buySwap]);
+  }, [buyToken, buySwap?.token?.value, buySwap?.token?.decimals]);
 
-  const isSellSwapValueValid = useMemo(() => {
-    if (sellToken && sellSwap?.token?.value && sellSwap?.token?.decimals) {
-      return (
-        sellSwap.token.value * Math.pow(10, sellSwap.token.decimals) <=
-        sellToken.amount
-      );
-    }
-  }, [sellToken, sellSwap]);
+  const isBuySwapLoading = useMemo(() => {
+    return (
+      isBuyQueryTokenLoading ||
+      isBuySwapNativeBalanceLoading ||
+      isBuySwapBalanceLoading
+    );
+  }, [
+    isBuyQueryTokenLoading,
+    isBuySwapNativeBalanceLoading,
+    isBuySwapBalanceLoading,
+  ]);
 
-  const isSwapLoading = useMemo(() => {
+  const isSellSwapLoading = useMemo(() => {
     return (
       isBuyQueryTokenLoading ||
       isSellQueryTokenLoading ||
       isBuySwapNativeBalanceLoading ||
       isBuySwapBalanceLoading ||
       isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading
+      isSellSwapBalanceLoading ||
+      isLifiQuoteLoading
     );
   }, [
     isBuyQueryTokenLoading,
@@ -260,11 +404,48 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isSellSwapNativeBalanceLoading,
     isBuySwapBalanceLoading,
     isSellSwapBalanceLoading,
+    isLifiQuoteLoading,
+  ]);
+
+  const isSwapNotEmpty = useMemo(() => {
+    return buyToken?.amount && sellToken?.amount;
+  }, [buyToken?.amount, sellToken?.amount]);
+
+  const isSwapLoading = useMemo(() => {
+    return (
+      isBuyQueryTokenLoading ||
+      isSellQueryTokenLoading ||
+      isBuySwapNativeBalanceLoading ||
+      isBuySwapBalanceLoading ||
+      isSellSwapNativeBalanceLoading ||
+      isSellSwapBalanceLoading ||
+      isLifiQuoteLoading
+    );
+  }, [
+    isBuyQueryTokenLoading,
+    isSellQueryTokenLoading,
+    isBuySwapNativeBalanceLoading,
+    isSellSwapNativeBalanceLoading,
+    isBuySwapBalanceLoading,
+    isSellSwapBalanceLoading,
+    isLifiQuoteLoading,
   ]);
 
   const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid && isSellSwapValueValid;
-  }, [isBuySwapValueValid, isSellSwapValueValid]);
+    return isBuySwapValueValid && isSwapNotEmpty;
+  }, [isBuySwapValueValid, isSwapNotEmpty]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleSwap = useCallback(() => {
+    if (lifiQuote && lifiQuote?.transactionRequest) {
+      router.push(
+        `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
+      );
+    }
+  }, [lifiQuote, lifiQuote?.transactionRequest]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -280,6 +461,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             name="buy.token.value"
             render={({ field }) => (
               <Input
+                disabled={isBuySwapLoading}
                 placeholder="0"
                 className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 type="number"
@@ -310,18 +492,23 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full px-1"
+            className="gap-2 rounded-full p-1"
             size="unsized"
           >
             {buyToken && buyToken.address ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
-                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span
+                  className={cn(
+                    "max-w-24 text-2xl tracking-wide text-text",
+                    buyToken.symbol.length > 6 && "truncate",
+                  )}
+                >
                   {buyToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="whitespace-nowrap text-lg text-text">
+              <span className="w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
@@ -329,7 +516,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak truncate">
+          <span className="truncate text-sm text-text-weak">
             $
             {buySwap && buySwap?.token?.value && buyToken
               ? refineNumberFormat(
@@ -408,6 +595,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             name="sell.token.value"
             render={({ field }) => (
               <Input
+                disabled={isSellSwapLoading}
                 placeholder="0"
                 className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 type="number"
@@ -439,17 +627,22 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full px-1"
+            className="gap-2 rounded-full p-1"
           >
             {sellToken ? (
               <>
                 <TokenImage withChainLogo token={sellToken} />
-                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span
+                  className={cn(
+                    "max-w-24 text-2xl tracking-wide text-text",
+                    sellToken.symbol.length > 6 && "truncate",
+                  )}
+                >
                   {sellToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="whitespace-nowrap text-lg text-text">
+              <span className="w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
@@ -457,7 +650,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak truncate">
+          <span className="truncate text-sm text-text-weak">
             $
             {sellSwap && sellSwap?.token?.value && sellToken
               ? refineNumberFormat(
@@ -494,6 +687,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <Button
+        onClick={handleSwap}
         isLoading={isSwapLoading}
         disabled={isSwapLoading || !isSwapValid}
         size="xl"
@@ -503,11 +697,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           ? "Loading..."
           : isSwapValid
             ? "Swap"
-            : isBuySwapValueValid
+            : !isBuySwapValueValid
               ? `Insufficient ${buyToken?.symbol}`
-              : isSellSwapValueValid
-                ? `Insufficient ${sellToken?.symbol}`
-                : "Invalid Swap"}
+              : "Invalid Swap"}
       </Button>
     </div>
   );

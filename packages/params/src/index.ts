@@ -29,6 +29,7 @@ export type {
   NotificationListCountParams,
   NotificationReadBodyParams,
 } from "./notification";
+export type { LifiQuoteParams } from "./lifi";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
 export type {

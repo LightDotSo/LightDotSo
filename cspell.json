@@ -13,5 +13,17 @@
   "ignorePaths": ["node_modules", "pnpm-lock.yaml"],
   "enableFiletypes": ["mdx"],
   "enabled": true,
-  "words": []
+  "words": [
+    "isSwapNotEmpty",
+    "lockb",
+    "mobiledev",
+    "pbxproj",
+    "swiftpm",
+    "venv",
+    "webp",
+    "xcscheme",
+    "xcsettings",
+    "xcuserstate",
+    "xcworkspacedata"
+  ]
 }
