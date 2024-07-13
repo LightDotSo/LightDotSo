@@ -19,5 +19,4 @@ export { ownerColumns, OwnerTable } from "./owner";
 export { tokenColumns, TokenTable } from "./token";
 export { transactionColumns, TransactionTable } from "./transaction";
 export { userOperationColumns, UserOperationTable } from "./user-operation";
-export type { UserOperationTableProps } from "./user-operation";
 export { walletColumns, WalletTable } from "./wallet";

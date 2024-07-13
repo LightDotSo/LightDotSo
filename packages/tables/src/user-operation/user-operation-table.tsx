@@ -51,7 +51,7 @@ import { userOperationColumns } from "./user-operation-columns";
 // Props
 // -----------------------------------------------------------------------------
 
-export type UserOperationTableProps = {
+type UserOperationTableProps = {
   isDefaultOpen?: boolean;
   isLoading: boolean;
   pageSize: number;
@@ -64,7 +64,6 @@ export type UserOperationTableProps = {
     "data" | "columns" | "getCoreRowModel"
   >;
   columns?: ColumnDef<UserOperationData>[];
-  tableType?: "user-operation-details" | "user-operation-tabular";
   setUserOperationTable?: (tableObject: ReactTable<UserOperationData>) => void;
 };
 
@@ -81,7 +80,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   tableOptions,
   address,
   isTestnet,
-  tableType = "user-operation-tabular",
   columns = userOperationColumns,
   setUserOperationTable,
 }) => {
@@ -179,7 +177,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (tableType !== "user-operation-tabular") {
+  if (address === null) {
     return (
       <Table>
         <TableHeader>

@@ -14,4 +14,3 @@
 
 export { userOperationColumns } from "./user-operation-columns";
 export { UserOperationTable } from "./user-operation-table";
-export type { UserOperationTableProps } from "./user-operation-table";
