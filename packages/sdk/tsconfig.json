@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "resolveJsonModule": true,
-    "target": "es2020"
+    "resolveJsonModule": true
   },
   "exclude": ["dist", "build", "node_modules"],
-  "extends": "@lightdotso/tsconfig/react.json",
+  "extends": "@lightdotso/tsconfig/node.json",
   "include": ["."]
 }

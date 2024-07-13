@@ -12,28 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
-import { erc20 } from "./asset";
+import type { Swap } from "@lightdotso/schemas";
+import { useQueryState } from "nuqs";
+import { swapParser } from "./useSwapQueryState";
 
 // -----------------------------------------------------------------------------
-// Schema
+// Hook
 // -----------------------------------------------------------------------------
 
-export const swap = z.object({
-  token: erc20
-    .omit({ quantity: true })
-    .merge(
-      z.object({
-        symbol: z.string().optional(),
-        value: z.number().optional(),
-      }),
-    )
-    .optional(),
-  chainId: z.number().optional(),
-});
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type Swap = z.infer<typeof swap>;
+export const useSellSwapQueryState = (initialSwap?: Swap) => {
+  return useQueryState(
+    "sellSwap",
+    swapParser.withDefault(initialSwap ?? {}).withOptions({
+      throttleMs: 3000,
+    }),
+  );
+};

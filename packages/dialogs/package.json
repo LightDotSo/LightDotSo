@@ -28,7 +28,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@lightdotso/const": "workspace:*",
-    "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/modals": "workspace:*",

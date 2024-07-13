@@ -14,27 +14,24 @@
 
 "use client";
 
-import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useDebouncedValue } from "@lightdotso/hooks";
-import { userOperationsParser } from "@lightdotso/nuqs";
+import { useSwap } from "@lightdotso/hooks";
 import {
-  useQueryLifiQuote,
-  useQueryToken,
-  useQueryWalletSettings,
-} from "@lightdotso/query";
-import type { UserOperation } from "@lightdotso/schemas";
+  userOperationsParser,
+  useBuySwapQueryState,
+  useSellSwapQueryState,
+} from "@lightdotso/nuqs";
+import { useQueryLifiQuote, useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { encodeFunctionData, erc20Abi, Hex, type Address } from "viem";
+import { type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -63,34 +60,78 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
 
   // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
+  const [buySwapQueryState, setBuySwapQueryState] = useBuySwapQueryState();
+  const [sellSwapQueryState, setSellSwapQueryState] = useSellSwapQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // The default values for the form
+  const defaultValues: Partial<SwapFormValues> = useMemo(() => {
+    // Check if the type is valid
+    return {
+      buy: buySwapQueryState ?? undefined,
+      sell: sellSwapQueryState ?? undefined,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
   const form = useForm<SwapFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
+    defaultValues: defaultValues,
   });
 
   const buySwap = form.watch("buy");
   const sellSwap = form.watch("sell");
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  const { token: buyQueryToken, isTokenLoading: isBuyQueryTokenLoading } =
-    useQueryToken({
-      address: (buySwap?.token?.address as Address) ?? undefined,
-      chain_id: buySwap?.chainId,
-      wallet: wallet as Address,
-    });
+  useEffect(() => {
+    const subscription = form.watch((value, { name: _name }) => {
+      // Set buy swap query state
+      if (
+        value.buy &&
+        value.buy.token &&
+        value.buy.token.address &&
+        value.buy.token.value
+      ) {
+        setBuySwapQueryState(value.buy);
+      } else {
+        setBuySwapQueryState(null);
+      }
 
-  const { token: sellQueryToken, isTokenLoading: isSellQueryTokenLoading } =
-    useQueryToken({
-      address: (sellSwap?.token?.address as Address) ?? undefined,
-      chain_id: sellSwap?.chainId,
-      wallet: wallet as Address,
+      // Set sell swap query state
+      if (
+        value.sell &&
+        value.sell.token &&
+        value.sell.token.address &&
+        value.sell.token.value
+      ) {
+        setSellSwapQueryState(value.sell);
+      } else {
+        setSellSwapQueryState(null);
+      }
+
+      return;
     });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch]);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
     address: wallet as Address,
@@ -103,264 +144,50 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Wagmi
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const {
-    data: buySwapNativeBalance,
-    isLoading: isBuySwapNativeBalanceLoading,
-    queryKey: buySwapNativeBalanceQueryKey,
-  } = useBalance({
-    address: wallet as Address,
-    chainId: buySwap?.chainId,
-    query: {
-      enabled: Boolean(
-        buySwap?.token &&
-          buySwap?.token?.address ===
-            "0x0000000000000000000000000000000000000000",
-      ),
-    },
+    buyToken,
+    sellToken,
+    buySwapAmount,
+    sellSwapAmount,
+    isSwapValid,
+    isBuySwapLoading,
+    isSellSwapLoading,
+    isSwapLoading,
+    userOperationsParams,
+  } = useSwap({
+    buySwap: buySwap,
+    sellSwap: sellSwap,
   });
-
-  const {
-    data: sellSwapNativeBalance,
-    isLoading: isSellSwapNativeBalanceLoading,
-    queryKey: sellSwapNativeBalanceQueryKey,
-  } = useBalance({
-    address: wallet as Address,
-    chainId: sellSwap?.chainId,
-    query: {
-      enabled: Boolean(
-        sellSwap?.token &&
-          sellSwap?.token?.address ===
-            "0x0000000000000000000000000000000000000000",
-      ),
-    },
-  });
-
-  const {
-    data: buySwapBalance,
-    isLoading: isBuySwapBalanceLoading,
-    queryKey: buySwapBalanceQueryKey,
-  } = useReadContract({
-    address: buySwap?.token?.address as Address,
-    chainId: buySwap?.chainId,
-    abi: erc20Abi,
-    functionName: "balanceOf",
-    args: [wallet as Address],
-    query: {
-      enabled: Boolean(
-        buySwap?.token?.address &&
-          buySwap?.token?.address !==
-            "0x0000000000000000000000000000000000000000" &&
-          buySwap?.chainId,
-      ),
-    },
-  });
-
-  const {
-    data: sellSwapBalance,
-    isLoading: isSellSwapBalanceLoading,
-    queryKey: sellSwapBalanceQueryKey,
-  } = useReadContract({
-    address: sellSwap?.token?.address as Address,
-    chainId: sellSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "balanceOf",
-    args: [wallet as Address],
-    query: {
-      enabled: Boolean(
-        sellSwap?.token?.address &&
-          sellSwap?.token?.address !==
-            "0x0000000000000000000000000000000000000000" &&
-          sellSwap?.chainId,
-      ),
-    },
-  });
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const buyToken: TokenData | null = useMemo(() => {
-    if (buyQueryToken) {
-      if (buySwapNativeBalance) {
-        if (
-          buySwapNativeBalanceQueryKey &&
-          buySwapNativeBalanceQueryKey.length > 2 &&
-          (buySwapNativeBalanceQueryKey[1] as any).chainId ===
-            buyQueryToken.chain_id
-        ) {
-          buyQueryToken.amount = Number(buySwapNativeBalance.value);
-          buyQueryToken.symbol = buySwapNativeBalance.symbol;
-        }
-      }
-      if (buySwapBalance) {
-        if (
-          buySwapBalanceQueryKey &&
-          buySwapBalanceQueryKey.length > 2 &&
-          (buySwapBalanceQueryKey[1] as any).chainId === buyQueryToken.chain_id
-        ) {
-          buyQueryToken.amount = Number(buySwapBalance);
-        }
-      }
-      return buyQueryToken;
-    }
-
-    if (
-      buySwap?.token?.address &&
-      buySwap?.chainId &&
-      buySwap?.token?.symbol &&
-      buySwap?.token?.decimals
-    ) {
-      const buySwapToken: TokenData = {
-        amount: 0,
-        balance_usd: 0,
-        id: `${buySwap?.token?.address}-${buySwap?.chainId}`,
-        address: buySwap?.token?.address as Address,
-        chain_id: buySwap?.chainId,
-        decimals: buySwap?.token?.decimals,
-        symbol: buySwap?.token?.symbol,
-      };
-      return buySwapToken;
-    }
-
-    return null;
-  }, [
-    buyQueryToken,
-    buySwap,
-    buySwapNativeBalance,
-    buySwapBalanceQueryKey,
-    buySwapBalance,
-  ]);
-
-  const sellToken: TokenData | null = useMemo(() => {
-    if (sellQueryToken) {
-      if (sellSwapNativeBalance) {
-        if (
-          sellSwapNativeBalanceQueryKey &&
-          sellSwapNativeBalanceQueryKey.length > 2 &&
-          (sellSwapNativeBalanceQueryKey[1] as any).chainId ===
-            sellQueryToken.chain_id
-        ) {
-          sellQueryToken.amount = Number(sellSwapNativeBalance.value);
-          sellQueryToken.symbol = sellSwapNativeBalance.symbol;
-        }
-      }
-      if (sellSwapBalance) {
-        if (
-          sellSwapBalanceQueryKey &&
-          sellSwapBalanceQueryKey.length > 2 &&
-          (sellSwapBalanceQueryKey[1] as any).chainId ===
-            sellQueryToken.chain_id
-        ) {
-          sellQueryToken.amount = Number(sellSwapBalance);
-        }
-      }
-      return sellQueryToken;
-    }
-
-    if (
-      sellSwap?.token?.address &&
-      sellSwap?.chainId &&
-      sellSwap?.token?.symbol &&
-      sellSwap?.token?.decimals
-    ) {
-      const sellSwapToken: TokenData = {
-        amount: 0,
-        balance_usd: 0,
-        id: `${sellSwap?.token?.address}-${sellSwap?.chainId}`,
-        address: sellSwap?.token?.address as Address,
-        chain_id: sellSwap?.chainId,
-        decimals: sellSwap?.token?.decimals,
-        symbol: sellSwap?.token?.symbol,
-      };
-      return sellSwapToken;
-    }
-
-    return null;
-  }, [
-    sellQueryToken,
-    sellSwap,
-    sellSwapNativeBalance,
-    sellSwapNativeBalanceQueryKey,
-    sellSwapBalance,
-    sellSwapBalanceQueryKey,
-  ]);
-
-  const buySwapAmount = useMemo(() => {
-    if (buySwap && buySwap?.token?.value && buyToken?.decimals) {
-      // If amount ends in floating point, return the amount without floating point
-      return Math.floor(
-        buySwap?.token?.value * Math.pow(10, buyToken?.decimals),
-      );
-    }
-    return null;
-  }, [buySwap, buySwap?.token?.value, buySwap?.token?.decimals]);
-
-  // ---------------------------------------------------------------------------
-  // Debounced
-  // ---------------------------------------------------------------------------
-
-  const debouncedBuySwapAmount = useDebouncedValue(buySwapAmount, 800);
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { lifiQuote, isLifiQuoteLoading } = useQueryLifiQuote({
+  const { lifiQuote } = useQueryLifiQuote({
     fromAddress: wallet,
     fromChain: buyToken?.chain_id,
     fromToken: buyToken?.address as Address,
-    fromAmount: debouncedBuySwapAmount ?? undefined,
+    fromAmount: buySwapAmount ?? undefined,
     toAddress: wallet,
     toChain: sellToken?.chain_id,
     toToken: sellToken?.address as Address,
   });
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
-    let userOperations: Partial<UserOperation>[] = [];
-
-    if (lifiQuote && lifiQuote?.transactionRequest) {
-      userOperations = [
-        {
-          chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
-          sender: lifiQuote?.transactionRequest?.from,
-          callData: encodeFunctionData({
-            abi: lightWalletAbi,
-            functionName: "execute",
-            args: [
-              lifiQuote?.transactionRequest?.to,
-              BigInt(lifiQuote?.transactionRequest?.value),
-              lifiQuote?.transactionRequest?.data,
-            ] as [Address, bigint, Hex],
-          }),
-        },
-      ];
-    }
-
-    return userOperations;
-  }, [lifiQuote]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (lifiQuote && lifiQuote?.estimate?.toAmount && sellToken?.decimals) {
+    if (sellSwapAmount && sellToken?.decimals) {
       form.setValue(
         "sell.token.value",
-        Number(
-          Number(lifiQuote.estimate?.toAmount) /
-            Math.pow(10, sellToken?.decimals),
-        ),
+        Number(Number(sellSwapAmount) / Math.pow(10, sellToken?.decimals)),
       );
     }
-  }, [lifiQuote, lifiQuote?.estimate?.toAmount, sellToken?.decimals]);
+  }, [lifiQuote, sellSwapAmount, sellToken?.decimals]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -374,66 +201,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       );
     }
   }, [buyToken, buySwap?.token?.value, buySwap?.token?.decimals]);
-
-  const isBuySwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-  ]);
-
-  const isSellSwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
-      isLifiQuoteLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
-    isLifiQuoteLoading,
-  ]);
-
-  const isSwapNotEmpty = useMemo(() => {
-    return buyToken?.amount && sellToken?.amount;
-  }, [buyToken?.amount, sellToken?.amount]);
-
-  const isSwapLoading = useMemo(() => {
-    return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
-      isLifiQuoteLoading
-    );
-  }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
-    isLifiQuoteLoading,
-  ]);
-
-  const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid && isSwapNotEmpty;
-  }, [isBuySwapValueValid, isSwapNotEmpty]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

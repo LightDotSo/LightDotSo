@@ -18,6 +18,7 @@ export {
   address,
   addressOrEns,
   asset,
+  swap,
   transfer,
   userOperation,
 } from "./eth";
@@ -27,6 +28,7 @@ export type {
   Address,
   AddressOrEns,
   Asset,
+  Swap,
   Transfer,
   UserOperation,
 } from "./eth";

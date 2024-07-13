@@ -27,7 +27,7 @@ import { useCallback, useMemo } from "react";
 import { type Hex, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Hook Props
 // -----------------------------------------------------------------------------
 
 type UserOperationSendProps = {
@@ -36,7 +36,7 @@ type UserOperationSendProps = {
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Hook
 // -----------------------------------------------------------------------------
 
 export const useUserOperationSend = ({

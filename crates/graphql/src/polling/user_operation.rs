@@ -336,7 +336,9 @@ mod test {
         insta::assert_snapshot!(query.query);
     }
 
+    // TODO: The Official graph API is down, so we can't run this test.
     #[test]
+    #[ignore]
     fn test_running_query() {
         let result = run_user_operation_query(
             get_graphql_url(137).unwrap(),

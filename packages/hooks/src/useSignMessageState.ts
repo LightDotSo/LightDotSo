@@ -16,7 +16,7 @@ import { useMutationStateSignMessage } from "@lightdotso/query";
 import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
-// Query Mutation
+// Hook
 // -----------------------------------------------------------------------------
 
 export const useSignMessageState = () => {
