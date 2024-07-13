@@ -304,6 +304,11 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
         lifiQuote?.estimate?.approvalAddress ??
         lifiQuote?.transactionRequest?.to;
 
+      // Get the approval amount
+      const approvalAmount = lifiQuote?.estimate?.fromAmount
+        ? fromHex(lifiQuote?.estimate?.fromAmount as Hex, "bigint")
+        : buySwapAmount;
+
       // If the buy token is not native, need to approve the token
       if (
         approvalAddress &&
@@ -318,7 +323,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
           callData: encodeFunctionData({
             abi: erc20Abi,
             functionName: "approve",
-            args: [approvalAddress as Address, BigInt(buySwapAmount)] as [
+            args: [approvalAddress as Address, approvalAmount] as [
               Address,
               bigint,
             ],
