@@ -95,6 +95,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const {
     data: buySwapNativeBalance,
     isLoading: isBuySwapNativeBalanceLoading,
+    queryKey: buySwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: buySwap?.chainId,
@@ -110,6 +111,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const {
     data: sellSwapNativeBalance,
     isLoading: isSellSwapNativeBalanceLoading,
+    queryKey: sellSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: sellSwap?.chainId,
@@ -122,39 +124,45 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     },
   });
 
-  const { data: buySwapBalance, isLoading: isBuySwapBalanceLoading } =
-    useReadContract({
-      address: buySwap?.token?.address as Address,
-      chainId: buySwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          buySwap?.token?.address &&
-            buySwap?.token?.address !==
-              "0x0000000000000000000000000000000000000000" &&
-            buySwap?.chainId,
-        ),
-      },
-    });
+  const {
+    data: buySwapBalance,
+    isLoading: isBuySwapBalanceLoading,
+    queryKey: buySwapBalanceQueryKey,
+  } = useReadContract({
+    address: buySwap?.token?.address as Address,
+    chainId: buySwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+    query: {
+      enabled: Boolean(
+        buySwap?.token?.address &&
+          buySwap?.token?.address !==
+            "0x0000000000000000000000000000000000000000" &&
+          buySwap?.chainId,
+      ),
+    },
+  });
 
-  const { data: sellSwapBalance, isLoading: isSellSwapBalanceLoading } =
-    useReadContract({
-      address: sellSwap?.token?.address as Address,
-      chainId: sellSwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          sellSwap?.token?.address &&
-            sellSwap?.token?.address !==
-              "0x0000000000000000000000000000000000000000" &&
-            sellSwap?.chainId,
-        ),
-      },
-    });
+  const {
+    data: sellSwapBalance,
+    isLoading: isSellSwapBalanceLoading,
+    queryKey: sellSwapBalanceQueryKey,
+  } = useReadContract({
+    address: sellSwap?.token?.address as Address,
+    chainId: sellSwap?.chainId,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [wallet as Address],
+    query: {
+      enabled: Boolean(
+        sellSwap?.token?.address &&
+          sellSwap?.token?.address !==
+            "0x0000000000000000000000000000000000000000" &&
+          sellSwap?.chainId,
+      ),
+    },
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -163,11 +171,24 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const buyToken: TokenData | null = useMemo(() => {
     if (buyQueryToken) {
       if (buySwapNativeBalance) {
-        buyQueryToken.amount = Number(buySwapNativeBalance.value);
-        buyQueryToken.symbol = buySwapNativeBalance.symbol;
+        if (
+          buySwapNativeBalanceQueryKey &&
+          buySwapNativeBalanceQueryKey.length > 2 &&
+          (buySwapNativeBalanceQueryKey[1] as any).chainId ===
+            buyQueryToken.chain_id
+        ) {
+          buyQueryToken.amount = Number(buySwapNativeBalance.value);
+          buyQueryToken.symbol = buySwapNativeBalance.symbol;
+        }
       }
       if (buySwapBalance) {
-        buyQueryToken.amount = Number(buySwapBalance);
+        if (
+          buySwapBalanceQueryKey &&
+          buySwapBalanceQueryKey.length > 2 &&
+          (buySwapBalanceQueryKey[1] as any).chainId === buyQueryToken.chain_id
+        ) {
+          buyQueryToken.amount = Number(buySwapBalance);
+        }
       }
       return buyQueryToken;
     }
@@ -191,16 +212,36 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [buyQueryToken, buySwap, buySwapNativeBalance, buySwapBalance]);
+  }, [
+    buyQueryToken,
+    buySwap,
+    buySwapNativeBalance,
+    buySwapBalanceQueryKey,
+    buySwapBalance,
+  ]);
 
   const sellToken: TokenData | null = useMemo(() => {
     if (sellQueryToken) {
       if (sellSwapNativeBalance) {
-        sellQueryToken.amount = Number(sellSwapNativeBalance.value);
-        sellQueryToken.symbol = sellSwapNativeBalance.symbol;
+        if (
+          sellSwapNativeBalanceQueryKey &&
+          sellSwapNativeBalanceQueryKey.length > 2 &&
+          (sellSwapNativeBalanceQueryKey[1] as any).chainId ===
+            sellQueryToken.chain_id
+        ) {
+          sellQueryToken.amount = Number(sellSwapNativeBalance.value);
+          sellQueryToken.symbol = sellSwapNativeBalance.symbol;
+        }
       }
       if (sellSwapBalance) {
-        sellQueryToken.amount = Number(sellSwapBalance);
+        if (
+          sellSwapBalanceQueryKey &&
+          sellSwapBalanceQueryKey.length > 2 &&
+          (sellSwapBalanceQueryKey[1] as any).chainId ===
+            sellQueryToken.chain_id
+        ) {
+          sellQueryToken.amount = Number(sellSwapBalance);
+        }
       }
       return sellQueryToken;
     }
@@ -224,7 +265,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
 
     return null;
-  }, [sellQueryToken, sellSwap, sellSwapNativeBalance, sellSwapBalance]);
+  }, [
+    sellQueryToken,
+    sellSwap,
+    sellSwapNativeBalance,
+    sellSwapNativeBalanceQueryKey,
+    sellSwapBalance,
+    sellSwapBalanceQueryKey,
+  ]);
 
   const isBuySwapValueValid = useMemo(() => {
     if (buyToken && buySwap?.token?.value && buySwap?.token?.decimals) {
@@ -435,12 +483,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {sellToken ? (
               <>
                 <TokenImage withChainLogo token={sellToken} />
-                <span className="max-w-24 truncate whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span className="max-w-24 truncate text-2xl tracking-wide text-text">
                   {sellToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="whitespace-nowrap text-lg text-text">
+              <span className="w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
