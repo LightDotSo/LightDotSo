@@ -16,22 +16,25 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
+import { useDebouncedValue } from "@lightdotso/hooks";
+import { userOperationsParser } from "@lightdotso/nuqs";
 import {
   useQueryLifiQuote,
   useQueryToken,
   useQueryWalletSettings,
 } from "@lightdotso/query";
+import type { UserOperation } from "@lightdotso/schemas";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useBalance, useReadContract } from "@lightdotso/wagmi";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useEffect, useMemo, type FC } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { erc20Abi, type Address } from "viem";
-import { cn, debounce, refineNumberFormat } from "@lightdotso/utils";
-import { useDebouncedValue } from "@lightdotso/hooks";
+import { encodeFunctionData, erc20Abi, Hex, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -92,6 +95,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { walletSettings } = useQueryWalletSettings({
     address: wallet as Address,
   });
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -310,6 +319,34 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    let userOperations: Partial<UserOperation>[] = [];
+
+    if (lifiQuote && lifiQuote?.transactionRequest) {
+      userOperations = [
+        {
+          chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
+          sender: lifiQuote?.transactionRequest?.from,
+          callData: encodeFunctionData({
+            abi: lightWalletAbi,
+            functionName: "execute",
+            args: [
+              lifiQuote?.transactionRequest?.to,
+              BigInt(lifiQuote?.transactionRequest?.value),
+              lifiQuote?.transactionRequest?.data,
+            ] as [Address, bigint, Hex],
+          }),
+        },
+      ];
+    }
+
+    return userOperations;
+  }, [lifiQuote]);
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -393,6 +430,18 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const isSwapValid = useMemo(() => {
     return isBuySwapValueValid;
   }, [isBuySwapValueValid]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleSwap = useCallback(() => {
+    if (lifiQuote && lifiQuote?.transactionRequest) {
+      router.push(
+        `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
+      );
+    }
+  }, [lifiQuote, lifiQuote?.transactionRequest]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -634,6 +683,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <Button
+        onClick={handleSwap}
         isLoading={isSwapLoading}
         disabled={isSwapLoading || !isSwapValid}
         size="xl"

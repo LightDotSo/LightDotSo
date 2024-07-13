@@ -12,9 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { Address } from "viem";
+
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
+
+export type LifiTransactionRequest = {
+  from: Address;
+  to: Address;
+  value: string;
+  data: string;
+  chainId: number;
+  gasLimit: string;
+  gasPrice?: string;
+  maxFeePerGas?: string;
+  maxPriorityFeePerGas?: string;
+};
 
 export type LifiQuotePageData = {
   id?: string;
@@ -125,4 +139,5 @@ export type LifiQuotePageData = {
       doneAt?: number;
     }[];
   };
+  transactionRequest?: LifiTransactionRequest;
 };
