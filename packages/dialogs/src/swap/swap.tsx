@@ -235,15 +235,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
   }, [buyToken, buySwap]);
 
-  const isSellSwapValueValid = useMemo(() => {
-    if (sellToken && sellSwap?.token?.value && sellSwap?.token?.decimals) {
-      return (
-        sellSwap.token.value * Math.pow(10, sellSwap.token.decimals) <=
-        sellToken.amount
-      );
-    }
-  }, [sellToken, sellSwap]);
-
   const isSwapLoading = useMemo(() => {
     return (
       isBuyQueryTokenLoading ||
@@ -263,8 +254,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid && isSellSwapValueValid;
-  }, [isBuySwapValueValid, isSellSwapValueValid]);
+    return isBuySwapValueValid;
+  }, [isBuySwapValueValid]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -503,11 +494,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           ? "Loading..."
           : isSwapValid
             ? "Swap"
-            : isBuySwapValueValid
+            : !isBuySwapValueValid
               ? `Insufficient ${buyToken?.symbol}`
-              : isSellSwapValueValid
-                ? `Insufficient ${sellToken?.symbol}`
-                : "Invalid Swap"}
+              : "Invalid Swap"}
       </Button>
     </div>
   );
