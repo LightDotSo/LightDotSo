@@ -355,12 +355,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {buyToken && buyToken.address ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
-                <span className="max-w-24 truncate whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span className="max-w-24 truncate text-2xl tracking-wide text-text">
                   {buyToken.symbol}
                 </span>
               </>
             ) : (
-              <span className="whitespace-nowrap text-lg text-text">
+              <span className="w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
