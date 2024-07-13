@@ -22,7 +22,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::token;
+use lightdotso_prisma::{token, wallet_balance};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -39,6 +39,8 @@ pub struct GetQuery {
     pub address: String,
     /// The chain id of the token.
     pub chain_id: i64,
+    /// The wallet that the token holds.
+    pub wallet: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -73,6 +75,11 @@ pub(crate) async fn v1_token_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    let parsed_wallet_address: Option<String> = match query.wallet {
+        Some(wallet) => Some(to_checksum(&(wallet.parse()?), None)),
+        None => None,
+    };
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
@@ -89,6 +96,26 @@ pub(crate) async fn v1_token_get_handler(
     // If the token is not found, return a 404.
     let token =
         token.ok_or(RouteError::TokenError(TokenError::NotFound("Token not found".to_string())))?;
+
+    // If the wallet is provided, get the balance of the token.
+    if let Some(wallet_address) = parsed_wallet_address {
+        let balance = state
+            .client
+            .wallet_balance()
+            .find_first(vec![
+                wallet_balance::token_id::equals(Some(token.id.clone())),
+                wallet_balance::wallet_address::equals(wallet_address),
+                wallet_balance::is_latest::equals(true),
+            ])
+            .exec()
+            .await?;
+
+        // If the balance is found, update the token with the balance.
+        if let Some(balance) = balance {
+            let token: Token = balance.into();
+            return Ok(Json::from(token));
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Return

@@ -178,7 +178,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak">$2,952.49 USD</span>
+          <span className="text-sm text-text-weak">
+            ${buyToken ? buyToken.balance_usd : 0} USD
+          </span>
           <Button variant="shadow" size="xs" className="gap-1 px-1 py-0">
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
