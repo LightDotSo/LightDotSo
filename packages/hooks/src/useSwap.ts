@@ -289,6 +289,7 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   }, [lifiQuote?.estimate?.toAmount]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    let executionIndex = 0;
     let executions: ExecutionWithChainId[] = [];
     let userOperations: Partial<UserOperation>[] = [];
 
@@ -297,27 +298,54 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       return userOperations;
     }
 
-    // If the buy token is not native, need to approve the token
-    if (
-      buySwapAmount &&
-      buyToken &&
-      buyToken?.address &&
-      buyToken?.address !== "0x0000000000000000000000000000000000000000"
-    ) {
-      const approveExecution: ExecutionWithChainId = {
-        address: buyToken?.address as Hex,
-        value: 0n,
-        callData: encodeFunctionData({
-          abi: erc20Abi,
-          functionName: "approve",
-          args: [wallet as Address, BigInt(buySwapAmount)] as [Address, bigint],
-        }),
-        chainId: BigInt(buyToken?.chain_id),
-      };
-      executions.push(approveExecution);
-    }
-
     if (lifiQuote && lifiQuote?.transactionRequest) {
+      // Get the approval address
+      const approvalAddress =
+        lifiQuote?.estimate?.approvalAddress ??
+        lifiQuote?.transactionRequest?.to;
+
+      // If the buy token is not native, need to approve the token
+      if (
+        approvalAddress &&
+        buySwapAmount &&
+        buyToken &&
+        buyToken?.address &&
+        buyToken?.address !== "0x0000000000000000000000000000000000000000"
+      ) {
+        const approveExecution: ExecutionWithChainId = {
+          address: buyToken?.address as Hex,
+          value: 0n,
+          callData: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "approve",
+            args: [approvalAddress as Address, BigInt(buySwapAmount)] as [
+              Address,
+              bigint,
+            ],
+          }),
+          chainId: BigInt(buyToken?.chain_id),
+        };
+
+        const revokeExecution: ExecutionWithChainId = {
+          address: buyToken?.address as Hex,
+          value: 0n,
+          callData: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "approve",
+            args: [approvalAddress as Address, 0n] as [Address, bigint],
+          }),
+          chainId: BigInt(buyToken?.chain_id),
+        };
+
+        executions.push(approveExecution);
+        executions.push(revokeExecution);
+
+        // Set the execution index and increment, since we have two executions
+        // for approval and revoke, the execution index should be sandwiched
+        executionIndex += 1;
+      }
+
+      // Set the lifi execution
       const lifiExecution: ExecutionWithChainId = {
         address: lifiQuote?.transactionRequest?.to,
         value: lifiQuote?.transactionRequest?.value
@@ -326,7 +354,9 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
         callData: lifiQuote?.transactionRequest?.data as Hex,
         chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
       };
-      executions.push(lifiExecution);
+
+      // Add the lifi execution to the corresponding index
+      executions.splice(executionIndex, 0, lifiExecution);
     }
 
     return generatePartialUserOperations(wallet, executions);
