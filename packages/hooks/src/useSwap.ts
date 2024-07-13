@@ -267,7 +267,12 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       }
     }
     return null;
-  }, [buySwap, buySwap?.token?.value, buySwap?.token?.decimals]);
+  }, [
+    buySwap,
+    buySwap?.token?.value,
+    buySwap?.token?.decimals,
+    buyToken?.amount,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Debounced
