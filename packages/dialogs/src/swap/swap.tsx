@@ -280,14 +280,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const buySwapAmount = useMemo(() => {
-    if (buySwap?.token?.value && buyToken?.decimals) {
+    if (buySwap && buySwap?.token?.value && buyToken?.decimals) {
       // If amount ends in floating point, return the amount without floating point
       return Math.floor(
         buySwap?.token?.value * Math.pow(10, buyToken?.decimals),
       );
     }
     return null;
-  }, [buySwap?.token?.value, buySwap?.token?.decimals]);
+  }, [buySwap, buySwap?.token?.value, buySwap?.token?.decimals]);
 
   // ---------------------------------------------------------------------------
   // Debounced
@@ -314,7 +314,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (lifiQuote && lifiQuote.estimate?.toAmount && sellToken?.decimals) {
+    if (lifiQuote && lifiQuote?.estimate?.toAmount && sellToken?.decimals) {
       form.setValue(
         "sell.token.value",
         Number(
@@ -323,7 +323,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         ),
       );
     }
-  }, [lifiQuote, sellToken?.decimals]);
+  }, [lifiQuote, lifiQuote?.estimate?.toAmount, sellToken?.decimals]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -336,7 +336,19 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         buyToken.amount
       );
     }
-  }, [buyToken, buySwap]);
+  }, [buyToken, buySwap?.token?.value, buySwap?.token?.decimals]);
+
+  const isBuySwapLoading = useMemo(() => {
+    return (
+      isBuyQueryTokenLoading ||
+      isBuySwapNativeBalanceLoading ||
+      isBuySwapBalanceLoading
+    );
+  }, [
+    isBuyQueryTokenLoading,
+    isBuySwapNativeBalanceLoading,
+    isBuySwapBalanceLoading,
+  ]);
 
   const isSellSwapLoading = useMemo(() => {
     return (
@@ -396,6 +408,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             name="buy.token.value"
             render={({ field }) => (
               <Input
+                disabled={isBuySwapLoading}
                 placeholder="0"
                 className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 type="number"
