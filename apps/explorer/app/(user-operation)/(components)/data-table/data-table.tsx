@@ -18,21 +18,24 @@ import type { UserOperationData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
-import { UserOperationTable } from "@lightdotso/tables";
+import {
+  UserOperationTable,
+  UserOperationTableProps,
+} from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableProps {
+type DataTableProps = Pick<UserOperationTableProps, "tableType"> & {
   isDefaultOpen?: boolean;
   isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
   data: UserOperationData[];
   isTestnet: boolean;
   pageCount: number;
-}
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -44,6 +47,7 @@ export function DataTable({
   columns,
   data,
   isTestnet,
+  tableType,
   pageCount,
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
@@ -111,6 +115,7 @@ export function DataTable({
       data={data}
       configuration={configuration ?? undefined}
       tableOptions={tableOptions}
+      tableType={tableType}
       setUserOperationTable={setUserOperationTable}
     />
   );
