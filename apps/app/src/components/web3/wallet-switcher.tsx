@@ -17,6 +17,7 @@
 
 "use client";
 
+import { useAppGroup } from "@/hooks";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useQueryWallets } from "@lightdotso/query";
@@ -89,6 +90,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -114,7 +116,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -131,37 +133,29 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (wallets && pathname && pathname.split("/").length > 1) {
-      // Get the slug of the path and find the wallet
-      // ex) /0x1234 -> 0x1234
-      const slug = pathname.split("/")[1];
+    // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
+    if (appGroup === "unauthenticated") {
+      setSelectedWallet(undefined);
+      return;
+    }
 
-      // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
-      if (slug === "new" || slug === "wallets") {
+    // Get the wallet + wallets query result
+    if (wallet && wallets) {
+      // Find the selected wallet from the wallets query
+      const selectedWallet = wallets.find(
+        queryWallet => queryWallet.address === getAddress(wallet),
+      );
+
+      // If the wallet is not found, set the selected wallet to undefined
+      if (!selectedWallet) {
         setSelectedWallet(undefined);
         return;
       }
 
-      // If the slug is not an address, return
-      if (!isAddress(slug)) {
-        return;
-      }
-
-      // Find the wallet from the slug
-      const wallet =
-        wallets && typeof wallets !== "undefined" && wallets?.length > 0
-          ? wallets.find(wallet => wallet.address === getAddress(slug))
-          : undefined;
-
-      // If there is no wallet, set the first wallet as the selected wallet
-      if (!wallet) {
-        setSelectedWallet(wallets[0]);
-        return;
-      }
-
-      setSelectedWallet(wallet);
+      // Set the selected wallet
+      setSelectedWallet(selectedWallet);
     }
-  }, [wallets, address, pathname]);
+  }, [wallets, address, appGroup]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

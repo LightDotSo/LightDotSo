@@ -20,11 +20,9 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useAccount, useEnsName } from "@lightdotso/wagmi";
 import { useQueryClient, QueryObserver } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -39,16 +37,10 @@ export const AuthState: FC = () => {
   const { data: ens } = useEnsName({ address: address as Address, chainId: 1 });
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setAddress, setWallet, setEns, setUserId, setSessionId } = useAuth();
+  const { setAddress, setEns, setUserId, setSessionId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -100,18 +92,6 @@ export const AuthState: FC = () => {
       setSessionId(undefined);
     }
   }, [authSession, setSessionId]);
-
-  // Check if the first segment of the pathname is a valid address w/ isAddress
-  // If it is, set the auth state's wallet to that address
-  useEffect(() => {
-    const segments = pathname.split("/");
-    if (segments.length > 1) {
-      const maybeAddress = segments[1];
-      if (isAddress(maybeAddress)) {
-        setWallet(maybeAddress);
-      }
-    }
-  }, [pathname, address, setWallet]);
 
   // On component mount, or when the address from useAccount changes,
   // update the auth state's address
