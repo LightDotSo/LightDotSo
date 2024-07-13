@@ -21,7 +21,6 @@ import {
   userOperationsParser,
   useBuySwapQueryState,
   useSellSwapQueryState,
-  swapParser,
 } from "@lightdotso/nuqs";
 import {
   useQueryLifiQuote,
@@ -115,7 +114,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         value.buy.token.value
       ) {
         setBuySwapQueryState(value.buy);
+      } else {
+        setBuySwapQueryState(null);
       }
+
       // Set sell swap query state
       if (
         value.sell &&
@@ -124,6 +126,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         value.sell.token.value
       ) {
         setSellSwapQueryState(value.sell);
+      } else {
+        setSellSwapQueryState(null);
       }
 
       return;
