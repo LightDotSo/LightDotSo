@@ -2168,6 +2168,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@lightdotso/sequence':
+        specifier: workspace:*
+        version: link:../sequence
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -2192,6 +2195,9 @@ importers:
       lucide-react:
         specifier: ^0.407.0
         version: 0.407.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+      next:
+        specifier: 15.0.0-canary.49
+        version: 15.0.0-canary.49(@babel/core@7.24.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       permissionless:
         specifier: ^0.1.39
         version: 0.1.39(viem@2.17.3(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@6.0.4)(zod@3.23.8))
@@ -2207,6 +2213,9 @@ importers:
       react-is:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
+      viem:
+        specifier: ^2.17.3
+        version: 2.17.3(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8

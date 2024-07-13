@@ -38,9 +38,12 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: userOperationHash,
-  });
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation(
+    {
+      hash: userOperationHash,
+    },
+    true,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
