@@ -15,10 +15,7 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import {
-  useMutationQueueInterpretation,
-  useMutationQueueUserOperation,
-} from "@lightdotso/query";
+import { useMutationQueueInterpretation } from "@lightdotso/query";
 import {
   Button,
   DropdownMenu,
@@ -29,7 +26,6 @@ import {
 import { getEtherscanUrlWithChainId } from "@lightdotso/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -50,9 +46,6 @@ export function UserOperationTableRowActions({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation } = useMutationQueueUserOperation({
-    address: row.original.sender as Address,
-  });
   const { queueInterpretation } = useMutationQueueInterpretation();
 
   // ---------------------------------------------------------------------------
@@ -93,21 +86,11 @@ export function UserOperationTableRowActions({
             </a>
           </DropdownMenuItem>
           <DropdownMenuItem
-            asChild
-            onClick={() =>
-              queueUserOperation({
-                hash: row.original.hash,
-              })
-            }
-          >
-            Queue
-          </DropdownMenuItem>
-          <DropdownMenuItem
             onClick={() =>
               queueInterpretation({ user_operation_hash: row.original.hash })
             }
           >
-            Queue Interpretation
+            Queue
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

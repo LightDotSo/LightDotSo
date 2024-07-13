@@ -60,7 +60,7 @@ interface TransactionInformationItem {
 // -----------------------------------------------------------------------------
 
 type UserOperationCardTransactionProps = {
-  address: Address | null;
+  address: Address;
   isTestnet: boolean;
   configuration: ConfigurationData;
   userOperation: UserOperationData;
@@ -292,19 +292,17 @@ export const UserOperationCardTransaction: FC<
                       : "grid-cols-1",
                   )}
                 >
-                  {address && userOperation.status === "PROPOSED" && (
+                  {userOperation.status === "PROPOSED" && (
                     <UserOperationCardTransactionSignButton
                       address={address}
                       configuration={configuration}
                       userOperation={userOperation}
                     />
                   )}
-                  {address && (
-                    <UserOperationCardTransactionExecuteButton
-                      address={address}
-                      userOperation={userOperation}
-                    />
-                  )}
+                  <UserOperationCardTransactionExecuteButton
+                    address={address}
+                    userOperation={userOperation}
+                  />
                 </CardFooter>
               </Card>
             </div>
