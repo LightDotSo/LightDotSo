@@ -17,7 +17,12 @@
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useDebouncedValue } from "@lightdotso/hooks";
-import { userOperationsParser } from "@lightdotso/nuqs";
+import {
+  userOperationsParser,
+  useBuySwapQueryState,
+  useSellSwapQueryState,
+  swapParser,
+} from "@lightdotso/nuqs";
 import {
   useQueryLifiQuote,
   useQueryToken,
@@ -63,16 +68,69 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
 
   // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
+  const [buySwapQueryState, setBuySwapQueryState] = useBuySwapQueryState();
+  const [sellSwapQueryState, setSellSwapQueryState] = useSellSwapQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // The default values for the form
+  const defaultValues: Partial<SwapFormValues> = useMemo(() => {
+    // Check if the type is valid
+    return {
+      buy: buySwapQueryState ?? undefined,
+      sell: sellSwapQueryState ?? undefined,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
   const form = useForm<SwapFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
+    defaultValues: defaultValues,
   });
 
   const buySwap = form.watch("buy");
   const sellSwap = form.watch("sell");
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name: _name }) => {
+      // Set buy swap query state
+      if (
+        value.buy &&
+        value.buy.token &&
+        value.buy.token.address &&
+        value.buy.token.value
+      ) {
+        setBuySwapQueryState(value.buy);
+      }
+      // Set sell swap query state
+      if (
+        value.sell &&
+        value.sell.token &&
+        value.sell.token.address &&
+        value.sell.token.value
+      ) {
+        setSellSwapQueryState(value.sell);
+      }
+
+      return;
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch]);
 
   // ---------------------------------------------------------------------------
   // Query
