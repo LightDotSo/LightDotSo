@@ -31,6 +31,7 @@
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/sdk": "workspace:*",
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",

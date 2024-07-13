@@ -17,9 +17,10 @@ import { useAuth } from "@lightdotso/stores";
 import { useMemo } from "react";
 import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
 import { useDebouncedValue } from "./useDebouncedValue";
-import { encodeFunctionData, erc20Abi, Hex, type Address } from "viem";
+import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
+import { generatePartialUserOperations } from "@lightdotso/sdk";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -289,22 +290,29 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     let userOperations: Partial<UserOperation>[] = [];
 
+    // If wallet is not available, return userOperations
+    if (!wallet) {
+      return userOperations;
+    }
+
     if (lifiQuote && lifiQuote?.transactionRequest) {
-      userOperations = [
+      const lifiExecutions = [
         {
+          address: lifiQuote?.transactionRequest?.to,
+          value: lifiQuote?.transactionRequest?.value
+            ? fromHex(lifiQuote?.transactionRequest?.value as Hex, "bigint")
+            : 0n,
+          callData: lifiQuote?.transactionRequest?.data as Hex,
           chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
-          sender: lifiQuote?.transactionRequest?.from,
-          callData: encodeFunctionData({
-            abi: lightWalletAbi,
-            functionName: "execute",
-            args: [
-              lifiQuote?.transactionRequest?.to,
-              BigInt(lifiQuote?.transactionRequest?.value),
-              lifiQuote?.transactionRequest?.data,
-            ] as [Address, bigint, Hex],
-          }),
         },
       ];
+
+      const lifiUserOperations = generatePartialUserOperations(
+        wallet,
+        lifiExecutions,
+      );
+
+      userOperations.push(...lifiUserOperations);
     }
 
     return userOperations;
