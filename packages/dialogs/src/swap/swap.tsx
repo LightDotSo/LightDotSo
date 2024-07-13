@@ -338,6 +338,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     }
   }, [buyToken, buySwap]);
 
+  const isSellSwapLoading = useMemo(() => {
+    return (
+      isBuyQueryTokenLoading ||
+      isSellQueryTokenLoading ||
+      isBuySwapNativeBalanceLoading ||
+      isBuySwapBalanceLoading ||
+      isSellSwapNativeBalanceLoading ||
+      isSellSwapBalanceLoading ||
+      isLifiQuoteLoading
+    );
+  }, [
+    isBuyQueryTokenLoading,
+    isSellQueryTokenLoading,
+    isBuySwapNativeBalanceLoading,
+    isSellSwapNativeBalanceLoading,
+    isBuySwapBalanceLoading,
+    isSellSwapBalanceLoading,
+    isLifiQuoteLoading,
+  ]);
+
   const isSwapLoading = useMemo(() => {
     return (
       isBuyQueryTokenLoading ||
@@ -509,6 +529,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             name="sell.token.value"
             render={({ field }) => (
               <Input
+                disabled={isSellSwapLoading}
                 placeholder="0"
                 className="h-16 truncate border-0 bg-background-strong p-0 text-4xl [appearance:textfield] focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 type="number"
