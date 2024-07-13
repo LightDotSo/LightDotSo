@@ -72,10 +72,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (table.options.data.length === 0) {
-    return null;
-  }
-
   return (
     <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
