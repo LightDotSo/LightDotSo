@@ -93,7 +93,6 @@ export function UserOperationTableRowActions({
             </a>
           </DropdownMenuItem>
           <DropdownMenuItem
-            asChild
             onClick={() =>
               queueUserOperation({
                 hash: row.original.hash,
