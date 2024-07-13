@@ -310,13 +310,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full px-1"
+            className="gap-2 rounded-full p-1"
             size="unsized"
           >
             {buyToken && buyToken.address ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
-                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span className="max-w-24 whitespace-nowrap break-all text-2xl tracking-wide text-text truncate">
                   {buyToken.symbol}
                 </span>
               </>
@@ -439,12 +439,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full px-1"
+            className="gap-2 rounded-full p-1"
           >
             {sellToken ? (
               <>
                 <TokenImage withChainLogo token={sellToken} />
-                <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
+                <span className="max-w-24 whitespace-nowrap break-all text-2xl tracking-wide text-text truncate">
                   {sellToken.symbol}
                 </span>
               </>
