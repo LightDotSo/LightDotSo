@@ -248,11 +248,23 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   ]);
 
   const buySwapAmount = useMemo(() => {
-    if (buySwap && buySwap?.token?.value && buyToken?.decimals) {
+    if (
+      buySwap &&
+      buySwap?.token?.value &&
+      buyToken?.amount &&
+      buyToken?.decimals
+    ) {
       // If amount ends in floating point, return the amount without floating point
-      return Math.floor(
+      const swapAmount = Math.floor(
         buySwap?.token?.value * Math.pow(10, buyToken?.decimals),
       );
+
+      // If swap amount is less than or equal to the buy token amount, return the swap amount
+      if (swapAmount <= buyToken?.amount) {
+        return swapAmount;
+      } else {
+        return buyToken?.amount;
+      }
     }
     return null;
   }, [buySwap, buySwap?.token?.value, buySwap?.token?.decimals]);
