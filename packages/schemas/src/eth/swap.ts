@@ -20,7 +20,14 @@ import { erc20 } from "./asset";
 // -----------------------------------------------------------------------------
 
 export const swap = z.object({
-  token: erc20.merge(z.object({ symbol: z.string().optional() })).optional(),
+  token: erc20
+    .merge(
+      z.object({
+        symbol: z.string().optional(),
+        value: z.number().optional(),
+      }),
+    )
+    .optional(),
   chainId: z.number().optional(),
 });
 

@@ -152,7 +152,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}
-            name="buy.token.quantity"
+            name="buy.token.value"
             render={({ field }) => (
               <Input
                 placeholder="0"
@@ -203,13 +203,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak">
-            ${buyToken ? refineNumberFormat(buyToken.balance_usd) : 0} USD
+          <span className="text-sm text-text-weak truncate">
+            $
+            {buySwap && buySwap?.token?.value && buyToken
+              ? refineNumberFormat(
+                  (buyToken.balance_usd *
+                    (buySwap.token.value * Math.pow(10, buyToken.decimals))) /
+                    buyToken.amount,
+                )
+              : 0}{" "}
+            USD
           </span>
           <Button
-            onClick={() =>
-              form.setValue("buy.token.quantity", buyToken?.amount)
-            }
+            onClick={() => {
+              if (buyToken) {
+                form.setValue(
+                  "buy.token.value",
+                  buyToken?.amount / Math.pow(10, buyToken.decimals),
+                );
+              }
+            }}
             variant="shadow"
             size="xs"
             className="gap-1 px-1 py-0"
@@ -230,13 +243,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         <ButtonIcon
           onClick={() => {
             // Swap buy and sell values
-            if (buySwap.token?.quantity && sellSwap.token?.quantity) {
+            if (buySwap.token?.value && sellSwap.token?.value) {
               // Make a copy of the values
-              const buySwapTokenQuantity = buySwap.token.quantity;
-              const sellSwapTokenQuantity = sellSwap.token.quantity;
+              const buySwapTokenValue = buySwap.token.value;
+              const sellSwapTokenValue = sellSwap.token.value;
 
-              form.setValue("buy.token.quantity", sellSwapTokenQuantity);
-              form.setValue("sell.token.quantity", buySwapTokenQuantity);
+              form.setValue("buy.token.value", sellSwapTokenValue);
+              form.setValue("sell.token.value", buySwapTokenValue);
             }
 
             // Set buy values to sell
@@ -266,7 +279,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}
-            name="sell.token.quantity"
+            name="sell.token.value"
             render={({ field }) => (
               <Input
                 placeholder="0"
@@ -318,13 +331,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak">
-            ${sellToken ? refineNumberFormat(sellToken.balance_usd) : 0} USD
+          <span className="text-sm text-text-weak truncate">
+            $
+            {sellSwap && sellSwap?.token?.value && sellToken
+              ? refineNumberFormat(
+                  (sellToken.balance_usd *
+                    (sellSwap.token.value * Math.pow(10, sellToken.decimals))) /
+                    sellToken.amount,
+                )
+              : 0}{" "}
+            USD
           </span>
           <Button
-            onClick={() =>
-              form.setValue("sell.token.quantity", sellToken?.amount)
-            }
+            onClick={() => {
+              if (sellToken) {
+                form.setValue(
+                  "sell.token.value",
+                  sellToken?.amount / Math.pow(10, sellToken.decimals),
+                );
+              }
+            }}
             variant="shadow"
             size="xs"
             className="gap-1 px-1 py-0"
