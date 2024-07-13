@@ -407,6 +407,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isLifiQuoteLoading,
   ]);
 
+  const isSwapNotEmpty = useMemo(() => {
+    return buyToken?.amount && sellToken?.amount;
+  }, [buyToken?.amount, sellToken?.amount]);
+
   const isSwapLoading = useMemo(() => {
     return (
       isBuyQueryTokenLoading ||
@@ -428,8 +432,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid;
-  }, [isBuySwapValueValid]);
+    return isBuySwapValueValid && isSwapNotEmpty;
+  }, [isBuySwapValueValid, isSwapNotEmpty]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
