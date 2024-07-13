@@ -61,6 +61,7 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
         isLoading={isUserOperationLoading}
         data={userOperation ? [userOperation] : []}
         columns={userOperationColumns}
+        tableType="user-operation-details"
         pageCount={1}
       />
     </TableSectionWrapper>
