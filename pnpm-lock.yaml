@@ -3008,9 +3008,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.51.1
         version: 5.51.1(react@19.0.0-rc-cc1ec60d0d-20240607)
-      next:
-        specifier: 15.0.0-canary.49
-        version: 15.0.0-canary.49(@babel/core@7.24.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
