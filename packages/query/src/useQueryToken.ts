@@ -40,6 +40,7 @@ export const useQueryToken = (params: TokenGetParams) => {
     queryKeys.token.get({
       address: params.address,
       chain_id: params.chain_id,
+      wallet: params.wallet,
     }).queryKey,
   );
 
@@ -51,6 +52,7 @@ export const useQueryToken = (params: TokenGetParams) => {
     queryKey: queryKeys.token.get({
       address: params.address,
       chain_id: params.chain_id,
+      wallet: params.wallet,
     }).queryKey,
     queryFn: async () => {
       if (!params.address || !params.chain_id) {
@@ -63,6 +65,7 @@ export const useQueryToken = (params: TokenGetParams) => {
             query: {
               address: params.address,
               chain_id: params.chain_id,
+              wallet: params.wallet,
             },
           },
         },

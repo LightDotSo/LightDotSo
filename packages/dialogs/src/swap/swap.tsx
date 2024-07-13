@@ -52,9 +52,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const { walletSettings } = useQueryWalletSettings({
-    address: wallet as Address,
-  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -75,11 +72,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { token: buyQueryToken } = useQueryToken({
     address: (buySwap?.token?.address as Address) ?? undefined,
     chain_id: buySwap?.chainId,
+    wallet: wallet as Address,
   });
 
   const { token: sellQueryToken } = useQueryToken({
     address: (sellSwap?.token?.address as Address) ?? undefined,
     chain_id: sellSwap?.chainId,
+    wallet: wallet as Address,
+  });
+
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -111,9 +114,32 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
     return null;
   }, [buyQueryToken]);
+  console.log(buyToken);
 
-  const sellToken: TokenData | null | undefined = useMemo(() => {
-    return sellQueryToken;
+  const sellToken: TokenData | null = useMemo(() => {
+    if (sellQueryToken) {
+      return sellQueryToken;
+    }
+
+    if (
+      sellSwap?.token?.address &&
+      sellSwap?.chainId &&
+      sellSwap?.token?.symbol &&
+      sellSwap?.token?.decimals
+    ) {
+      const sellSwapToken: TokenData = {
+        amount: 0,
+        balance_usd: 0,
+        id: `${sellSwap?.token?.address}-${sellSwap?.chainId}`,
+        address: sellSwap?.token?.address as Address,
+        chain_id: sellSwap?.chainId,
+        decimals: sellSwap?.token?.decimals,
+        symbol: sellSwap?.token?.symbol,
+      };
+      return sellSwapToken;
+    }
+
+    return null;
   }, [sellQueryToken]);
 
   // ---------------------------------------------------------------------------
@@ -162,7 +188,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             variant="shadow"
             className="gap-2 rounded-full px-1"
           >
-            {buyToken ? (
+            {buyToken && buyToken.address ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
                 <span className="max-w-10 whitespace-nowrap break-all text-2xl tracking-wide text-text">
@@ -179,14 +205,23 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-sm text-text-weak">
-            ${buyToken ? buyToken.balance_usd : 0} USD
+            ${buyToken ? refineNumberFormat(buyToken.balance_usd) : 0} USD
           </span>
-          <Button variant="shadow" size="xs" className="gap-1 px-1 py-0">
+          <Button
+            onClick={() =>
+              form.setValue("buy.token.quantity", buyToken?.amount)
+            }
+            variant="shadow"
+            size="xs"
+            className="gap-1 px-1 py-0"
+          >
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
               {buyToken
-                ? refineNumberFormat(buyToken.amount / buyToken.decimals)
+                ? refineNumberFormat(
+                    buyToken.amount / Math.pow(10, buyToken.decimals),
+                  )
                 : 0}
             </span>
           </Button>
@@ -254,13 +289,24 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak">$2,952.49 USD</span>
-          <Button variant="shadow" size="xs" className="gap-1 px-1 py-0">
+          <span className="text-sm text-text-weak">
+            ${sellToken ? refineNumberFormat(sellToken.balance_usd) : 0} USD
+          </span>
+          <Button
+            onClick={() =>
+              form.setValue("sell.token.quantity", sellToken?.amount)
+            }
+            variant="shadow"
+            size="xs"
+            className="gap-1 px-1 py-0"
+          >
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
               {sellToken
-                ? refineNumberFormat(sellToken.amount / sellToken.decimals)
+                ? refineNumberFormat(
+                    sellToken.amount / Math.pow(10, sellToken.decimals),
+                  )
                 : 0}
             </span>
           </Button>

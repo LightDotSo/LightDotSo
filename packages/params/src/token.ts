@@ -21,6 +21,7 @@ import type { Address } from "viem";
 export type TokenGetParams = {
   address: Address | null | undefined;
   chain_id: number | null | undefined;
+  wallet?: Address | null | undefined;
 };
 
 export type TokenListParams = {
