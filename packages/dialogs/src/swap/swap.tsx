@@ -19,11 +19,7 @@ import { TokenImage } from "@lightdotso/elements";
 import { useQueryToken, useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import {
-  useBalance,
-  useReadContract,
-  useReadContracts,
-} from "@lightdotso/wagmi";
+import { useBalance, useReadContract } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useMemo, type FC } from "react";
@@ -103,7 +99,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     address: wallet as Address,
     chainId: buySwap?.chainId,
     query: {
-      enabled: Boolean(buySwap?.chainId),
+      enabled: Boolean(
+        buySwap?.token &&
+          buySwap?.token?.address ===
+            "0x0000000000000000000000000000000000000000",
+      ),
     },
   });
 
@@ -114,7 +114,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     address: wallet as Address,
     chainId: sellSwap?.chainId,
     query: {
-      enabled: Boolean(sellSwap?.chainId),
+      enabled: Boolean(
+        sellSwap?.token &&
+          sellSwap?.token?.address ===
+            "0x0000000000000000000000000000000000000000",
+      ),
     },
   });
 
