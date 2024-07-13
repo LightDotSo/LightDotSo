@@ -159,7 +159,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const buyToken: TokenData | null = useMemo(() => {
     if (buyQueryToken) {
       if (buySwapNativeBalance) {
-        buyQueryToken.amount = Number(buySwapNativeBalance);
+        buyQueryToken.amount = Number(buySwapNativeBalance.value);
+        buyQueryToken.symbol = buySwapNativeBalance.symbol;
       }
       if (buySwapBalance) {
         buyQueryToken.amount = Number(buySwapBalance);
@@ -191,7 +192,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const sellToken: TokenData | null = useMemo(() => {
     if (sellQueryToken) {
       if (sellSwapNativeBalance) {
-        sellQueryToken.amount = Number(sellSwapNativeBalance);
+        sellQueryToken.amount = Number(sellSwapNativeBalance.value);
+        sellQueryToken.symbol = sellSwapNativeBalance.symbol;
       }
       if (sellSwapBalance) {
         sellQueryToken.amount = Number(sellSwapBalance);
