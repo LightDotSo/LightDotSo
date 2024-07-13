@@ -39,10 +39,24 @@ export const getSimplehashClient = () => "https://router.light.so/simplehash";
 // Lifi
 // -----------------------------------------------------------------------------
 
-export const lifiClient: ReturnType<typeof createClient<LifiPaths>> =
+export const localLifiClient: ReturnType<typeof createClient<LifiPaths>> =
   createClient<LifiPaths>({
-    baseUrl: "https://li.quest/v1",
+    baseUrl: "http://localhost:8000/lifi/v1",
   });
+
+export const publicLifiClient: ReturnType<typeof createClient<LifiPaths>> =
+  createClient<LifiPaths>({
+    baseUrl: "https://router.light.so/lifi/v1",
+  });
+
+export const getLifiClient: (
+  clientType?: "admin" | "authenticated" | "public",
+) => ReturnType<typeof createClient<LifiPaths>> = () =>
+  process.env.LOCAL_ENV === "dev" ||
+  process.env.NEXT_PUBLIC_LOCAL_ENV === "dev" ||
+  process.env.STORYBOOK_ENV === "dev"
+    ? localLifiClient
+    : publicLifiClient;
 
 // -----------------------------------------------------------------------------
 // Socket

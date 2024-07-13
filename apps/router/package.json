@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc || true",
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev"
+    "dev": "wrangler dev --port 8000"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20240701.0",

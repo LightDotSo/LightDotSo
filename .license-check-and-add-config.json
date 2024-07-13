@@ -24,6 +24,7 @@
     "**/*.config.js",
     "**/*.config.cjs",
     "**/*.config.ts",
+    "**/*.dev.vars",
     "**/*.entitlements",
     "**/*.env",
     "**/*.env.development",

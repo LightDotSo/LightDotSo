@@ -52,7 +52,14 @@ const app = new Hono<AppType>();
 
 app.use(
   cors({
-    origin: ["https://light.so"],
+    origin: (origin, c) => {
+      if (c.env.LOCAL_ENV === "dev") {
+        return origin;
+      }
+      return origin.endsWith(".light.so") || origin.endsWith(".vercel.app")
+        ? origin
+        : "http://light.so";
+    },
   }),
 );
 
