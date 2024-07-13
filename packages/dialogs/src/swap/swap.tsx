@@ -262,7 +262,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="gap-2 rounded-full p-1"
             size="unsized"
           >
-            {buyToken && buyToken.address ? (
+            {buyToken && buyToken.address && buyToken.symbol ? (
               <>
                 <TokenImage withChainLogo token={buyToken} />
                 <span
@@ -396,7 +396,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             variant="shadow"
             className="gap-2 rounded-full p-1"
           >
-            {sellToken ? (
+            {sellToken && sellToken.address && sellToken.symbol ? (
               <>
                 <TokenImage withChainLogo token={sellToken} />
                 <span
