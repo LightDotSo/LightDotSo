@@ -329,7 +329,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak truncate">
+          <span className="truncate text-sm text-text-weak">
             $
             {buySwap && buySwap?.token?.value && buyToken
               ? refineNumberFormat(
@@ -457,7 +457,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
         <div className="flex w-full items-center justify-between">
-          <span className="text-sm text-text-weak truncate">
+          <span className="truncate text-sm text-text-weak">
             $
             {sellSwap && sellSwap?.token?.value && sellToken
               ? refineNumberFormat(
