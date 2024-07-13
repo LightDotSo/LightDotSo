@@ -41,7 +41,7 @@ export const WalletState: FC = () => {
   const { address } = useAccount();
 
   // ---------------------------------------------------------------------------
-  // Nuqs
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [addressQueryState] = useAddressQueryState();
