@@ -35,7 +35,6 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
-import { Globe } from "lucide-react";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
 import { encodeFunctionData, type Address, type Chain, type Hex } from "viem";

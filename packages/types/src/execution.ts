@@ -12,8 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { AppGroup } from "./app-group";
-export type { Banner } from "./banner";
-export type { Execution, ExecutionWithChainId } from "./execution";
-export type { SubCategory, CategoryObject } from "./category";
-export type { Tab } from "./tab";
+import type { Address, Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Execution = {
+  address: Address;
+  value: bigint;
+  callData: Hex;
+};
+
+export type ExecutionWithChainId = Execution & {
+  chainId: bigint;
+};

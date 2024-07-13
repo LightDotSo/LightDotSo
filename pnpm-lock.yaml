@@ -2935,6 +2935,34 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
 
+  packages/sdk:
+    dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
+      viem:
+        specifier: ^2.17.3
+        version: 2.17.3(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@6.0.4)(zod@3.23.8)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.14.10
+        version: 20.14.10
+      typescript:
+        specifier: ^5.5.3
+        version: 5.5.3
+
   packages/sequence:
     dependencies:
       viem:
@@ -3349,6 +3377,9 @@ importers:
       react-is:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
+      viem:
+        specifier: ^2.17.3
+        version: 2.17.3(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*

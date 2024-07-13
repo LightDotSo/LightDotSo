@@ -14,31 +14,24 @@
 
 "use client";
 
-import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useDebouncedValue, useSwap } from "@lightdotso/hooks";
+import { useSwap } from "@lightdotso/hooks";
 import {
   userOperationsParser,
   useBuySwapQueryState,
   useSellSwapQueryState,
 } from "@lightdotso/nuqs";
-import {
-  useQueryLifiQuote,
-  useQueryToken,
-  useQueryWalletSettings,
-} from "@lightdotso/query";
-import type { UserOperation } from "@lightdotso/schemas";
+import { useQueryLifiQuote, useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { lightWalletAbi, useBalance, useReadContract } from "@lightdotso/wagmi";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { encodeFunctionData, erc20Abi, Hex, type Address } from "viem";
+import { type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -165,8 +158,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isSwapLoading,
     userOperationsParams,
   } = useSwap({
-    buySwap,
-    sellSwap,
+    buySwap: buySwap,
+    sellSwap: sellSwap,
   });
 
   // ---------------------------------------------------------------------------
