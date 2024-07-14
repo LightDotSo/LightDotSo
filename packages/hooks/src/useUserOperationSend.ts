@@ -233,7 +233,7 @@ export const useUserOperationSend = ({
   }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Return
   // ---------------------------------------------------------------------------
 
   return {

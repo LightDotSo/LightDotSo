@@ -89,6 +89,10 @@ export const useUserOperationsCreateState = () => {
     );
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     isUserOperationCreateLoadingSingle: isUserOperationCreateLoadingSingle,
     isUserOperationsCreateLoading: isUserOperationsCreateLoading,

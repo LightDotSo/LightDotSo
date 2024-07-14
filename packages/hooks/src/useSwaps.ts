@@ -28,6 +28,10 @@ type SwapsProps = {
 // -----------------------------------------------------------------------------
 
 export const useSwaps = ({ swaps }: SwapsProps) => {
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   const swapParams = useMemo(() => {
     return swaps.map(swap =>
       useSwap({ fromSwap: swap.fromSwap, toSwap: swap.toSwap }),

@@ -576,6 +576,10 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     return isFromSwapValueValid && isSwapNotEmpty;
   }, [isFromSwapValueValid, isSwapNotEmpty]);
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     fromSwapToken: fromSwapToken,
     toSwapToken: toSwapToken,
