@@ -303,7 +303,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
-              {fromSwapQuantity ? refineNumberFormat(fromSwapQuantity) : 0}
+              {fromSwapMaximumQuantity
+                ? refineNumberFormat(fromSwapMaximumQuantity)
+                : 0}
             </span>
           </Button>
         </div>
@@ -431,7 +433,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             <WalletIcon className="size-4 text-text-weak" />
             <span className="text-sm text-text-weak">Balance</span>
             <span className="text-sm text-text">
-              {toSwapQuantity ? refineNumberFormat(toSwapQuantity) : 0}
+              {toSwapMaximumQuantity
+                ? refineNumberFormat(toSwapMaximumQuantity)
+                : 0}
             </span>
           </Button>
         </div>
