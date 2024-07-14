@@ -21,7 +21,7 @@ import {
   useSwapFromQueryState,
   useSwapToQueryState,
 } from "@lightdotso/nuqs";
-import { useQueryLifiQuote, useQueryWalletSettings } from "@lightdotso/query";
+import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
@@ -140,7 +140,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const {
     fromSwapToken,
     toSwapToken,
-    fromSwapAmount,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
     isFromSwapValueValid,
@@ -165,20 +164,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { lifiQuote } = useQueryLifiQuote({
-    fromAddress: wallet,
-    fromChain: fromSwap?.chainId,
-    fromToken: toSwap?.address as Address,
-    fromAmount: fromSwapAmount ?? undefined,
-    toAddress: wallet,
-    toChain: toSwap?.chainId,
-    toToken: toSwap?.address as Address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -194,12 +179,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const handleSwap = useCallback(() => {
-    if (lifiQuote && lifiQuote?.transactionRequest) {
+    if (wallet && userOperationsParams) {
       router.push(
         `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
       );
     }
-  }, [lifiQuote, lifiQuote?.transactionRequest]);
+  }, [wallet, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Render

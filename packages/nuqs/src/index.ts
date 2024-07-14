@@ -39,6 +39,7 @@ export { saltParser, useSaltQueryState } from "./useSaltQueryState";
 export { useSwapFromQueryState } from "./useSwapFromQueryState";
 export { useSwapToQueryState } from "./useSwapToQueryState";
 export { swapParser, useSwapQueryState } from "./useSwapQueryState";
+export { swapsParser, useSwapsQueryState } from "./useSwapsQueryState";
 export {
   thresholdParser,
   useThresholdQueryState,

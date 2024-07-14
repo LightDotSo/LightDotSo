@@ -39,7 +39,7 @@ type SwapTokenData = Omit<TokenData, "amount"> & {
   amount: bigint;
 };
 
-type SwapProps = {
+export type SwapProps = {
   fromSwap: Swap | undefined;
   toSwap: Swap | undefined;
 };
