@@ -35,6 +35,10 @@ export const useSignMessageState = () => {
     return userOperationSendStatus?.some(status => status === "pending");
   }, [userOperationSendStatus]);
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     isSignMessageLoading: isSignMessageLoading,
   };

@@ -58,6 +58,10 @@ export const useUserOperationsSendState = () => {
     return userOperationSendStatus?.some(status => status === "idle");
   }, [userOperationSendStatus]);
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     isUserOperationsSendLoadingSingle: isUserOperationsSendLoadingSingle,
     isUserOperationsSendLoading: isUserOperationsSendLoading,

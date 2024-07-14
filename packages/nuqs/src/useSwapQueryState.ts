@@ -28,13 +28,11 @@ export const swapParser = createParser({
     }
 
     // Parse the token w/ "|"
-    const [address, chainId, amount, quantity] = value.split("|");
+    const [address, chainId, quantity] = value.split("|");
     // Parse the address as a string (if possible)
     const parsedAddress = address === "_" ? undefined : address;
     // Parse the decimals as a integer (if possible)
     const parsedChainId = parseInt(chainId);
-    // Parse the value as a bigint (if possible)
-    const parsedAmount = BigInt(amount);
     // Parse the value as a float (if possible)
     const parsedQuantity = parseFloat(quantity);
 
@@ -43,17 +41,12 @@ export const swapParser = createParser({
       parsedAddress &&
       isAddress(parsedAddress) &&
       !isNaN(parsedQuantity) &&
-      !isNaN(Number(parsedAmount)) &&
       !isNaN(parsedChainId)
     ) {
       return {
         address: parsedAddress,
-        balanceUSD: undefined,
         chainId: parseInt(chainId),
-        decimals: undefined,
-        symbol: undefined,
         quantity: parsedQuantity,
-        amount: 0n,
       };
     }
 
@@ -69,9 +62,7 @@ export const swapParser = createParser({
     // Serialize the token as a string w/ "|" delimiter
     return `${value?.address ?? "_"}|${
       value && "chainId" in value ? value.chainId : 0
-    }|${
-      value && "amount" in value ? value.amount : 0
-    }|${value && "quantity" in value ? value.quantity : 0}`;
+    }||${value && "quantity" in value ? value.quantity : 0}`;
   },
 });
 

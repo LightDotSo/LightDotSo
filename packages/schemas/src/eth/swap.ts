@@ -23,8 +23,6 @@ export const swap = z.object({
   address: z.string().optional(),
   /// The chain ID of the token.
   chainId: z.number().optional(),
-  /// The amount of the token to swap.
-  amount: z.bigint().optional(),
   /// The quantity of the token to swap in number format. (user input)
   quantity: z.number().optional(),
 });
