@@ -99,7 +99,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const subscription = form.watch((value, { name: _name }) => {
+    const subscription = form.watch(value => {
       // Set buy swap query state
       if (value.from && value.from.address && value.from.quantity) {
         setFromSwapQueryState(value.from);
