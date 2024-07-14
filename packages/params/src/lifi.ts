@@ -25,5 +25,5 @@ export type LifiQuoteParams = {
   toToken: Address | undefined;
   fromAddress: Address | undefined;
   toAddress?: Address | undefined;
-  fromAmount: number | undefined;
+  fromAmount: bigint | undefined;
 };

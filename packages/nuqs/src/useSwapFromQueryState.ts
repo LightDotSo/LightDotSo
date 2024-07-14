@@ -20,9 +20,9 @@ import { swapParser } from "./useSwapQueryState";
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useBuySwapQueryState = (initialSwap?: Swap) => {
+export const useSwapFromQueryState = (initialSwap?: Swap) => {
   return useQueryState(
-    "buySwap",
+    "fromSwap",
     swapParser.withDefault(initialSwap ?? {}).withOptions({
       throttleMs: 3000,
     }),

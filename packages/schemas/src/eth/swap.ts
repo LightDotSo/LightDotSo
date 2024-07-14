@@ -13,23 +13,20 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { erc20 } from "./asset";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
 export const swap = z.object({
-  token: erc20
-    .omit({ quantity: true })
-    .merge(
-      z.object({
-        symbol: z.string().optional(),
-        value: z.number().optional(),
-      }),
-    )
-    .optional(),
+  /// The address of the token.
+  address: z.string().optional(),
+  /// The chain ID of the token.
   chainId: z.number().optional(),
+  /// The amount of the token to swap.
+  amount: z.bigint().optional(),
+  /// The quantity of the token to swap in number format. (user input)
+  quantity: z.number().optional(),
 });
 
 // -----------------------------------------------------------------------------

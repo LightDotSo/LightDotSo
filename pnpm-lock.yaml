@@ -2426,6 +2426,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../wagmi
+      '@tanstack/react-query':
+        specifier: ^5.51.1
+        version: 5.51.1(react@19.0.0-rc-cc1ec60d0d-20240607)
       copy-to-clipboard:
         specifier: ^3.3.3
         version: 3.3.3

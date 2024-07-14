@@ -132,7 +132,7 @@ export const TokenModal: FC = () => {
           ? tokens.filter(token => token.chain_id === chainState.id)
           : tokens;
 
-      return filtered_tokens
+      return filtered_tokens && filtered_tokens?.length > 0
         ? filtered_tokens.map(token => ({
             ...token,
             amount: token.amount / Math.pow(10, token.decimals),

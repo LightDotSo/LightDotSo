@@ -22,21 +22,33 @@ import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { ExecutionWithChainId } from "@lightdotso/types";
+import type { QueryKey } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Hook Props
 // -----------------------------------------------------------------------------
 
+type NativeBalance = {
+  decimals: number;
+  formatted: string;
+  symbol: string;
+  value: bigint;
+};
+
+type SwapTokenData = Omit<TokenData, "amount"> & {
+  amount: bigint;
+};
+
 type SwapProps = {
-  buySwap: Swap | undefined;
-  sellSwap: Swap | undefined;
+  fromSwap: Swap | undefined;
+  toSwap: Swap | undefined;
 };
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
+export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -47,17 +59,17 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { token: buyQueryToken, isTokenLoading: isBuyQueryTokenLoading } =
+  const { token: fromQueryToken, isTokenLoading: isFromQueryTokenLoading } =
     useQueryToken({
-      address: (buySwap?.token?.address as Address) ?? undefined,
-      chain_id: buySwap?.chainId,
+      address: (fromSwap?.address as Address) ?? undefined,
+      chain_id: fromSwap?.chainId,
       wallet: wallet as Address,
     });
 
-  const { token: sellQueryToken, isTokenLoading: isSellQueryTokenLoading } =
+  const { token: toQueryToken, isTokenLoading: isToQueryTokenLoading } =
     useQueryToken({
-      address: (sellSwap?.token?.address as Address) ?? undefined,
-      chain_id: sellSwap?.chainId,
+      address: (toSwap?.address as Address) ?? undefined,
+      chain_id: toSwap?.chainId,
       wallet: wallet as Address,
     });
 
@@ -66,219 +78,319 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const {
-    data: buySwapNativeBalance,
-    isLoading: isBuySwapNativeBalanceLoading,
-    queryKey: buySwapNativeBalanceQueryKey,
+    data: fromSwapNativeBalance,
+    isLoading: isFromSwapNativeBalanceLoading,
+    queryKey: fromSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
-    chainId: buySwap?.chainId,
+    chainId: fromSwap?.chainId,
     query: {
       enabled: Boolean(
-        buySwap?.token &&
-          buySwap?.token?.address ===
-            "0x0000000000000000000000000000000000000000",
+        fromSwap &&
+          fromSwap?.address === "0x0000000000000000000000000000000000000000",
       ),
     },
   });
 
   const {
-    data: sellSwapNativeBalance,
-    isLoading: isSellSwapNativeBalanceLoading,
-    queryKey: sellSwapNativeBalanceQueryKey,
+    data: toSwapNativeBalance,
+    isLoading: isToSwapNativeBalanceLoading,
+    queryKey: toSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
-    chainId: sellSwap?.chainId,
+    chainId: toSwap?.chainId,
     query: {
       enabled: Boolean(
-        sellSwap?.token &&
-          sellSwap?.token?.address ===
-            "0x0000000000000000000000000000000000000000",
+        toSwap &&
+          toSwap?.address === "0x0000000000000000000000000000000000000000",
       ),
     },
   });
 
   const {
-    data: buySwapBalance,
-    isLoading: isBuySwapBalanceLoading,
-    queryKey: buySwapBalanceQueryKey,
+    data: fromSwapBalance,
+    isLoading: isFromSwapBalanceLoading,
+    queryKey: fromSwapBalanceQueryKey,
   } = useReadContract({
-    address: buySwap?.token?.address as Address,
-    chainId: buySwap?.chainId,
+    address: fromSwap?.address as Address,
+    chainId: fromSwap?.chainId,
     abi: erc20Abi,
     functionName: "balanceOf",
     args: [wallet as Address],
     query: {
       enabled: Boolean(
-        buySwap?.token?.address &&
-          buySwap?.token?.address !==
-            "0x0000000000000000000000000000000000000000" &&
-          buySwap?.chainId,
+        fromSwap?.address &&
+          fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+          fromSwap?.chainId,
       ),
     },
   });
 
   const {
-    data: sellSwapBalance,
-    isLoading: isSellSwapBalanceLoading,
-    queryKey: sellSwapBalanceQueryKey,
+    data: toSwapBalance,
+    isLoading: isToSwapBalanceLoading,
+    queryKey: toSwapBalanceQueryKey,
   } = useReadContract({
-    address: sellSwap?.token?.address as Address,
-    chainId: sellSwap?.chainId,
+    address: toSwap?.address as Address,
+    chainId: toSwap?.chainId,
     abi: erc20Abi,
     functionName: "balanceOf",
     args: [wallet as Address],
     query: {
       enabled: Boolean(
-        sellSwap?.token?.address &&
-          sellSwap?.token?.address !==
-            "0x0000000000000000000000000000000000000000" &&
-          sellSwap?.chainId,
+        toSwap?.address &&
+          toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+          toSwap?.chainId,
       ),
     },
   });
+
+  const { data: fromSwapDecimalsNumber } = useReadContract({
+    address: fromSwap?.address as Address,
+    chainId: fromSwap?.chainId,
+    abi: erc20Abi,
+    functionName: "decimals",
+    query: {
+      enabled: Boolean(
+        fromSwap?.address &&
+          fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+          fromSwap?.chainId,
+      ),
+    },
+  });
+
+  const { data: toSwapDecimalsNumber } = useReadContract({
+    address: toSwap?.address as Address,
+    chainId: toSwap?.chainId,
+    abi: erc20Abi,
+    functionName: "decimals",
+    query: {
+      enabled: Boolean(
+        toSwap?.address &&
+          toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+          toSwap?.chainId,
+      ),
+    },
+  });
+
+  // ---------------------------------------------------------------------------
+  // Utils
+  // ---------------------------------------------------------------------------
+
+  function getSwapToken(
+    queryToken: TokenData,
+    swapNativeBalanceQueryKey: QueryKey,
+    swapNativeBalance: NativeBalance | undefined,
+    swapBalanceQueryKey: QueryKey,
+    swapBalance: bigint | undefined,
+  ) {
+    let fromSwapToken: SwapTokenData = {
+      amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
+      balance_usd: queryToken?.balance_usd,
+      id: queryToken?.id ?? `${queryToken?.address}-${queryToken?.chain_id}`,
+      chain_id: queryToken?.chain_id,
+      address: queryToken?.address,
+      decimals: queryToken?.decimals,
+      symbol: queryToken?.symbol,
+    };
+
+    if (swapNativeBalance) {
+      if (
+        swapNativeBalanceQueryKey &&
+        swapNativeBalanceQueryKey.length > 1 &&
+        (swapNativeBalanceQueryKey as any)[1].chainId === fromSwapToken.chain_id
+      ) {
+        fromSwapToken.amount = swapNativeBalance.value;
+        fromSwapToken.symbol = swapNativeBalance.symbol;
+      }
+    }
+
+    if (swapBalance) {
+      if (
+        swapBalanceQueryKey &&
+        swapBalanceQueryKey.length > 1 &&
+        (swapBalanceQueryKey as any)[1].chainId === fromSwapToken.chain_id
+      ) {
+        fromSwapToken.amount = swapBalance;
+      }
+    }
+
+    return fromSwapToken;
+  }
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const buyToken: TokenData | null = useMemo(() => {
-    if (buyQueryToken) {
-      if (buySwapNativeBalance) {
-        if (
-          buySwapNativeBalanceQueryKey &&
-          buySwapNativeBalanceQueryKey.length > 1 &&
-          (buySwapNativeBalanceQueryKey[1] as any).chainId ===
-            buyQueryToken.chain_id
-        ) {
-          buyQueryToken.amount = Number(buySwapNativeBalance.value);
-          buyQueryToken.symbol = buySwapNativeBalance.symbol;
-        }
-      }
-      if (buySwapBalance) {
-        if (
-          buySwapBalanceQueryKey &&
-          buySwapBalanceQueryKey.length > 1 &&
-          (buySwapBalanceQueryKey[1] as any).chainId === buyQueryToken.chain_id
-        ) {
-          buyQueryToken.amount = Number(buySwapBalance);
-        }
-      }
-      return buyQueryToken;
+  const fromSwapToken: SwapTokenData | null = useMemo(() => {
+    if (!fromQueryToken) {
+      return null;
     }
 
-    if (
-      buySwap?.token?.address &&
-      buySwap?.chainId &&
-      buySwap?.token?.symbol &&
-      buySwap?.token?.decimals
-    ) {
-      const buySwapToken: TokenData = {
-        amount: 0,
-        balance_usd: 0,
-        id: `${buySwap?.token?.address}-${buySwap?.chainId}`,
-        address: buySwap?.token?.address as Address,
-        chain_id: buySwap?.chainId,
-        decimals: buySwap?.token?.decimals,
-        symbol: buySwap?.token?.symbol,
-      };
-      return buySwapToken;
-    }
-
-    return null;
+    return getSwapToken(
+      fromQueryToken,
+      fromSwapNativeBalanceQueryKey,
+      fromSwapNativeBalance,
+      fromSwapBalanceQueryKey,
+      fromSwapBalance,
+    );
   }, [
-    buyQueryToken,
-    buySwap,
-    buySwapNativeBalance,
-    buySwapBalanceQueryKey,
-    buySwapBalance,
+    fromQueryToken,
+    fromSwapNativeBalanceQueryKey,
+    fromSwapNativeBalance,
+    fromSwapBalanceQueryKey,
+    fromSwapBalance,
   ]);
 
-  const sellToken: TokenData | null = useMemo(() => {
-    if (sellQueryToken) {
-      if (sellSwapNativeBalance) {
-        if (
-          sellSwapNativeBalanceQueryKey &&
-          sellSwapNativeBalanceQueryKey.length > 1 &&
-          (sellSwapNativeBalanceQueryKey[1] as any).chainId ===
-            sellQueryToken.chain_id
-        ) {
-          sellQueryToken.amount = Number(sellSwapNativeBalance.value);
-          sellQueryToken.symbol = sellSwapNativeBalance.symbol;
-        }
-      }
-      if (sellSwapBalance) {
-        if (
-          sellSwapBalanceQueryKey &&
-          sellSwapBalanceQueryKey.length > 1 &&
-          (sellSwapBalanceQueryKey[1] as any).chainId ===
-            sellQueryToken.chain_id
-        ) {
-          sellQueryToken.amount = Number(sellSwapBalance);
-        }
-      }
-      return sellQueryToken;
+  const toSwapToken: SwapTokenData | null = useMemo(() => {
+    if (!toQueryToken) {
+      return null;
     }
 
-    if (
-      sellSwap?.token?.address &&
-      sellSwap?.chainId &&
-      sellSwap?.token?.symbol &&
-      sellSwap?.token?.decimals
-    ) {
-      const sellSwapToken: TokenData = {
-        amount: 0,
-        balance_usd: 0,
-        id: `${sellSwap?.token?.address}-${sellSwap?.chainId}`,
-        address: sellSwap?.token?.address as Address,
-        chain_id: sellSwap?.chainId,
-        decimals: sellSwap?.token?.decimals,
-        symbol: sellSwap?.token?.symbol,
-      };
-      return sellSwapToken;
-    }
-
-    return null;
+    return getSwapToken(
+      toQueryToken,
+      toSwapNativeBalanceQueryKey,
+      toSwapNativeBalance,
+      toSwapBalanceQueryKey,
+      toSwapBalance,
+    );
   }, [
-    sellQueryToken,
-    sellSwap,
-    sellSwapNativeBalance,
-    sellSwapNativeBalanceQueryKey,
-    sellSwapBalance,
-    sellSwapBalanceQueryKey,
+    toQueryToken,
+    toSwapNativeBalance,
+    toSwapNativeBalanceQueryKey,
+    toSwapBalance,
+    toSwapBalanceQueryKey,
   ]);
 
-  const buySwapAmount = useMemo(() => {
+  const fromSwapDecimals = useMemo(() => {
+    return fromSwapDecimalsNumber ?? fromQueryToken?.decimals;
+  }, [fromSwapDecimalsNumber]);
+
+  const toSwapDecimals = useMemo(() => {
+    return toSwapDecimalsNumber ?? toQueryToken?.decimals;
+  }, [toSwapDecimalsNumber]);
+
+  const fromSwapMaximumAmount = useMemo(() => {
+    return fromSwap?.address &&
+      fromSwap?.address === "0x0000000000000000000000000000000000000000"
+      ? fromSwapNativeBalance?.value
+      : fromSwapBalance
+        ? (fromSwapToken?.amount as bigint)
+        : fromSwapToken?.amount
+          ? fromSwapToken?.amount
+          : null;
+  }, [fromSwap, fromSwapNativeBalance, fromSwapBalance, fromSwapToken]);
+
+  const toSwapMaximumAmount = useMemo(() => {
+    return toSwap?.address &&
+      toSwap?.address === "0x0000000000000000000000000000000000000000"
+      ? toSwapNativeBalance?.value
+      : toSwapBalance
+        ? (toSwapToken?.amount as bigint)
+        : toSwapToken?.amount
+          ? toSwapToken?.amount
+          : null;
+  }, [toSwap, toSwapNativeBalance, toSwapBalance, toSwapToken]);
+
+  const fromSwapMaximumQuantity = useMemo(() => {
+    if (fromSwapMaximumAmount && fromSwapDecimals) {
+      return Number(fromSwapMaximumAmount) / Math.pow(10, fromSwapDecimals);
+    }
+    return null;
+  }, [fromSwapMaximumAmount, fromSwapDecimals]);
+
+  const toSwapMaximumQuantity = useMemo(() => {
+    if (toSwapMaximumAmount && toSwapDecimals) {
+      return Number(toSwapMaximumAmount) / Math.pow(10, toSwapDecimals);
+    }
+    return null;
+  }, [toSwapMaximumAmount, toSwapDecimals]);
+
+  const fromSwapAmount = useMemo(() => {
     if (
-      buySwap &&
-      buySwap?.token?.value &&
-      buyToken?.amount &&
-      buyToken?.decimals
+      fromSwap &&
+      fromSwap?.amount &&
+      fromSwap?.quantity &&
+      fromSwapDecimals &&
+      fromSwapMaximumAmount
     ) {
+      // If amount is same as maximum amount, return the amount
+      if (fromSwap?.amount === fromSwapMaximumAmount) {
+        return fromSwap?.amount;
+      }
+
       // If amount ends in floating point, return the amount without floating point
-      const swapAmount = Math.floor(
-        buySwap?.token?.value * Math.pow(10, buyToken?.decimals),
+      const swapAmount = BigInt(
+        Math.floor(fromSwap?.quantity * Math.pow(10, fromSwapDecimals)),
       );
 
       // If swap amount is less than or equal to the buy token amount, return the swap amount
-      if (swapAmount <= buyToken?.amount) {
+      if (swapAmount <= fromSwapMaximumAmount) {
         return swapAmount;
       } else {
-        return buyToken?.amount;
+        return fromSwap?.amount;
       }
     }
     return null;
   }, [
-    buySwap,
-    buySwap?.token?.value,
-    buySwap?.token?.decimals,
-    buyToken?.amount,
+    fromSwap,
+    fromSwap?.amount,
+    fromSwap?.quantity,
+    fromSwapDecimals,
+    fromSwapMaximumAmount,
   ]);
+
+  const toSwapAmount = useMemo(() => {
+    return toSwap?.amount;
+  }, [toSwap?.amount]);
+
+  const fromSwapQuantity = useMemo(() => {
+    if (fromSwapAmount && fromSwapDecimals) {
+      return Number(fromSwapAmount) / Math.pow(10, fromSwapDecimals);
+    }
+    return null;
+  }, [fromSwapAmount, fromSwapDecimals]);
+
+  const toSwapQuantity = useMemo(() => {
+    if (toSwapAmount && toSwapDecimals) {
+      return Number(toSwapAmount) / Math.pow(10, toSwapDecimals);
+    }
+    return null;
+  }, [toSwapAmount, toSwapDecimals]);
+
+  const fromSwapTokenDollarRatio = useMemo(() => {
+    return fromSwapToken?.balance_usd &&
+      fromSwapToken?.amount &&
+      fromSwapDecimals
+      ? fromSwapToken?.balance_usd /
+          (Number(fromSwapToken?.amount) / Math.pow(10, fromSwapDecimals))
+      : 0;
+  }, [fromSwapToken?.balance_usd, fromSwapToken?.amount, fromSwapDecimals]);
+
+  const toSwapTokenDollarRatio = useMemo(() => {
+    return toSwapToken?.balance_usd && toSwapToken?.amount && toSwapDecimals
+      ? toSwapToken?.balance_usd /
+          (Number(toSwapToken?.amount) / Math.pow(10, toSwapDecimals))
+      : 0;
+  }, [toSwapToken?.balance_usd, toSwapToken?.amount, toSwapDecimals]);
+
+  const fromSwapQuantityDollarValue = useMemo(() => {
+    return fromSwap?.quantity && fromSwapTokenDollarRatio
+      ? fromSwap?.quantity * fromSwapTokenDollarRatio
+      : 0;
+  }, [fromSwap?.quantity, fromSwapTokenDollarRatio]);
+
+  const toSwapQuantityDollarValue = useMemo(() => {
+    return toSwap?.quantity && toSwapTokenDollarRatio
+      ? toSwap?.quantity * toSwapTokenDollarRatio
+      : 0;
+  }, [toSwap?.quantity, toSwapTokenDollarRatio]);
 
   // ---------------------------------------------------------------------------
   // Debounced
   // ---------------------------------------------------------------------------
 
-  const debouncedBuySwapAmount = useDebouncedValue(buySwapAmount, 800);
+  const debouncedFromSwapAmount = useDebouncedValue(fromSwapAmount, 800);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -286,24 +398,31 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
 
   const { lifiQuote, isLifiQuoteLoading } = useQueryLifiQuote({
     fromAddress: wallet,
-    fromChain: buyToken?.chain_id,
-    fromToken: buyToken?.address as Address,
-    fromAmount: debouncedBuySwapAmount ?? undefined,
+    fromChain: fromSwap?.chainId,
+    fromToken: fromSwap?.address as Address,
+    fromAmount: debouncedFromSwapAmount ?? undefined,
     toAddress: wallet,
-    toChain: sellToken?.chain_id,
-    toToken: sellToken?.address as Address,
+    toChain: toSwap?.chainId,
+    toToken: toSwap?.address as Address,
   });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const sellSwapAmount = useMemo(() => {
+  const toSwapQuotedAmount = useMemo(() => {
     if (lifiQuote?.estimate?.toAmount) {
-      return lifiQuote?.estimate?.toAmount;
+      return BigInt(lifiQuote?.estimate?.toAmount);
     }
     return null;
   }, [lifiQuote?.estimate?.toAmount]);
+
+  const toSwapQuotedQuantity = useMemo(() => {
+    if (toSwapQuotedAmount && toSwapDecimals) {
+      return Number(toSwapQuotedAmount) / Math.pow(10, toSwapDecimals);
+    }
+    return null;
+  }, [toSwapQuotedAmount, toSwapDecimals]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     let executionIndex = 0;
@@ -324,18 +443,19 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
       // Get the approval amount
       const approvalAmount = lifiQuote?.estimate?.fromAmount
         ? fromHex(lifiQuote?.estimate?.fromAmount as Hex, "bigint")
-        : buySwapAmount;
+        : fromSwapAmount;
 
       // If the buy token is not native, need to approve the token
       if (
         approvalAddress &&
-        buySwapAmount &&
-        buyToken &&
-        buyToken?.address &&
-        buyToken?.address !== "0x0000000000000000000000000000000000000000"
+        fromSwapAmount &&
+        fromSwap &&
+        fromSwap?.address &&
+        fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+        fromSwap?.chainId
       ) {
         const approveExecution: ExecutionWithChainId = {
-          address: buyToken?.address as Hex,
+          address: fromSwap?.address as Hex,
           value: 0n,
           callData: encodeFunctionData({
             abi: erc20Abi,
@@ -345,18 +465,18 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
               bigint,
             ],
           }),
-          chainId: BigInt(buyToken?.chain_id),
+          chainId: BigInt(fromSwap?.chainId),
         };
 
         const revokeExecution: ExecutionWithChainId = {
-          address: buyToken?.address as Hex,
+          address: fromSwap?.address as Hex,
           value: 0n,
           callData: encodeFunctionData({
             abi: erc20Abi,
             functionName: "approve",
             args: [approvalAddress as Address, 0n] as [Address, bigint],
           }),
-          chainId: BigInt(buyToken?.chain_id),
+          chainId: BigInt(fromSwap?.chainId),
         };
 
         executions.push(approveExecution);
@@ -382,90 +502,104 @@ export const useSwap = ({ buySwap, sellSwap }: SwapProps) => {
     }
 
     return generatePartialUserOperations(wallet, executions);
-  }, [wallet, buySwapAmount, buyToken, lifiQuote]);
+  }, [wallet, fromSwapAmount, fromSwap, lifiQuote]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isBuySwapValueValid = useMemo(() => {
-    if (buyToken && buySwap?.token?.value && buySwap?.token?.decimals) {
-      return (
-        buySwap.token.value * Math.pow(10, buySwap.token.decimals) <=
-        buyToken.amount
-      );
-    }
-  }, [buyToken, buySwap?.token?.value, buySwap?.token?.decimals]);
-
-  const isBuySwapLoading = useMemo(() => {
+  const isFromSwapValueValid = useMemo(() => {
     return (
-      isBuyQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading
+      fromSwapAmount &&
+      fromSwapMaximumAmount &&
+      fromSwapAmount > 0n &&
+      fromSwapAmount <= fromSwapMaximumAmount
+    );
+  }, [fromSwapAmount, fromSwapMaximumAmount]);
+
+  const isFromSwapLoading = useMemo(() => {
+    return (
+      isFromQueryTokenLoading ||
+      isFromSwapNativeBalanceLoading ||
+      isFromSwapBalanceLoading
     );
   }, [
-    isBuyQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
+    isFromQueryTokenLoading,
+    isFromSwapNativeBalanceLoading,
+    isFromSwapBalanceLoading,
   ]);
 
-  const isSellSwapLoading = useMemo(() => {
+  const isToSwapLoading = useMemo(() => {
     return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
+      isFromQueryTokenLoading ||
+      isToQueryTokenLoading ||
+      isFromSwapNativeBalanceLoading ||
+      isFromSwapBalanceLoading ||
+      isToSwapNativeBalanceLoading ||
+      isToSwapBalanceLoading ||
       isLifiQuoteLoading
     );
   }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
+    isFromQueryTokenLoading,
+    isToQueryTokenLoading,
+    isFromSwapNativeBalanceLoading,
+    isToSwapNativeBalanceLoading,
+    isFromSwapBalanceLoading,
+    isToSwapBalanceLoading,
     isLifiQuoteLoading,
   ]);
 
   const isSwapNotEmpty = useMemo(() => {
-    return buyToken?.amount && sellToken?.amount;
-  }, [buyToken?.amount, sellToken?.amount]);
+    return fromSwap?.amount && toSwap?.amount;
+  }, [fromSwap?.amount, toSwap?.amount]);
 
   const isSwapLoading = useMemo(() => {
     return (
-      isBuyQueryTokenLoading ||
-      isSellQueryTokenLoading ||
-      isBuySwapNativeBalanceLoading ||
-      isBuySwapBalanceLoading ||
-      isSellSwapNativeBalanceLoading ||
-      isSellSwapBalanceLoading ||
+      isFromQueryTokenLoading ||
+      isToQueryTokenLoading ||
+      isFromSwapNativeBalanceLoading ||
+      isFromSwapBalanceLoading ||
+      isToSwapNativeBalanceLoading ||
+      isToSwapBalanceLoading ||
       isLifiQuoteLoading
     );
   }, [
-    isBuyQueryTokenLoading,
-    isSellQueryTokenLoading,
-    isBuySwapNativeBalanceLoading,
-    isSellSwapNativeBalanceLoading,
-    isBuySwapBalanceLoading,
-    isSellSwapBalanceLoading,
+    isFromQueryTokenLoading,
+    isToQueryTokenLoading,
+    isFromSwapNativeBalanceLoading,
+    isToSwapNativeBalanceLoading,
+    isFromSwapBalanceLoading,
+    isToSwapBalanceLoading,
     isLifiQuoteLoading,
   ]);
 
   const isSwapValid = useMemo(() => {
-    return isBuySwapValueValid && isSwapNotEmpty;
-  }, [isBuySwapValueValid, isSwapNotEmpty]);
+    return isFromSwapValueValid && isSwapNotEmpty;
+  }, [isFromSwapValueValid, isSwapNotEmpty]);
 
   return {
-    buyToken: buyToken,
-    sellToken: sellToken,
-    buySwapAmount: debouncedBuySwapAmount,
-    sellSwapAmount: sellSwapAmount,
-    isBuySwapLoading: isBuySwapLoading,
-    isSellSwapLoading: isSellSwapLoading,
+    fromSwapToken: fromSwapToken,
+    toSwapToken: toSwapToken,
+    fromSwapAmount: debouncedFromSwapAmount,
+    toSwapQuotedAmount: toSwapQuotedAmount,
+    toSwapQuotedQuantity: toSwapQuotedQuantity,
+    isFromSwapLoading: isFromSwapLoading,
+    isToSwapLoading: isToSwapLoading,
     isSwapLoading: isSwapLoading,
+    isFromSwapValueValid: isFromSwapValueValid,
     isSwapValid: isSwapValid,
+    fromSwapMaximumAmount: fromSwapMaximumAmount,
+    toSwapMaximumAmount: toSwapMaximumAmount,
     userOperationsParams: userOperationsParams,
+    fromSwapDecimals: fromSwapDecimals,
+    toSwapDecimals: toSwapDecimals,
+    fromSwapTokenDollarRatio: fromSwapTokenDollarRatio,
+    toSwapTokenDollarRatio: toSwapTokenDollarRatio,
+    fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
+    toSwapQuantityDollarValue: toSwapQuantityDollarValue,
+    fromSwapMaximumQuantity: fromSwapMaximumQuantity,
+    toSwapMaximumQuantity: toSwapMaximumQuantity,
+    fromSwapQuantity: fromSwapQuantity,
+    toSwapQuantity: toSwapQuantity,
   };
 };
