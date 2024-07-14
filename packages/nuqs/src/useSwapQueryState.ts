@@ -21,60 +21,57 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const swapParser = createParser({
-  parse: function (val) {
+  parse: function (value) {
     // If the value is empty, return null
-    if (val === "") {
+    if (value === "") {
       return null;
     }
 
-    // Split the value into chainId and token w/ ":"
-    const [chainId, token] = val.split(":");
-
     // Parse the token w/ "|"
-    const [address, decimals, value] = token.split("|");
+    const [address, chainId, amount, quantity] = value.split("|");
     // Parse the address as a string (if possible)
     const parsedAddress = address === "_" ? undefined : address;
     // Parse the decimals as a integer (if possible)
-    const parsedDecimals = parseInt(decimals);
+    const parsedChainId = parseInt(chainId);
+    // Parse the value as a bigint (if possible)
+    const parsedAmount = BigInt(amount);
     // Parse the value as a float (if possible)
-    const parsedValue = parseFloat(value);
+    const parsedQuantity = parseFloat(quantity);
 
     // Check if the address is valid, the decimals is a integer, and the value is a float
     if (
       parsedAddress &&
       isAddress(parsedAddress) &&
-      !isNaN(parsedDecimals) &&
-      !isNaN(parsedValue)
+      !isNaN(parsedQuantity) &&
+      !isNaN(Number(parsedAmount)) &&
+      !isNaN(parsedChainId)
     ) {
       return {
+        address: parsedAddress,
+        balanceUSD: undefined,
         chainId: parseInt(chainId),
-        token: {
-          address: parsedAddress,
-          decimals: parsedDecimals,
-          quantity: parsedValue,
-        },
+        decimals: undefined,
+        symbol: undefined,
+        quantity: parsedQuantity,
+        amount: 0n,
       };
     }
 
     return null;
   },
 
-  serialize: function (val: Swap) {
+  serialize: function (value: Swap | null) {
     // If the value is empty, return an empty string
-    if (!val) {
+    if (!value) {
       return "";
     }
 
     // Serialize the token as a string w/ "|" delimiter
-    const token = val.token;
-    const tokenString = `${token?.address ?? "_"}|${
-      token && "decimals" in token ? token.decimals : 0
+    return `${value?.address ?? "_"}|${
+      value && "chainId" in value ? value.chainId : 0
     }|${
-      token && "quantity" in token ? token.quantity : 0
-    }${token && "value" in token ? `|${token.value}` : ""}`;
-
-    // Serialize the chainId and token w/ ":" delimiter
-    return `${val?.chainId ?? 0}:${tokenString}`;
+      value && "amount" in value ? value.amount : 0
+    }|${value && "quantity" in value ? value.quantity : 0}`;
   },
 });
 

@@ -21,8 +21,8 @@ import { useSwap } from "./useSwap";
 // -----------------------------------------------------------------------------
 
 type SwapsSwap = {
-  buySwap: Swap | undefined;
-  sellSwap: Swap | undefined;
+  fromSwap: Swap | undefined;
+  toSwap: Swap | undefined;
 };
 
 type SwapsProps = {
@@ -36,7 +36,7 @@ type SwapsProps = {
 export const useSwaps = ({ swaps }: SwapsProps) => {
   return useMemo(() => {
     return swaps.map(swap =>
-      useSwap({ buySwap: swap.buySwap, sellSwap: swap.sellSwap }),
+      useSwap({ fromSwap: swap.fromSwap, toSwap: swap.toSwap }),
     );
   }, [swaps]);
 };
