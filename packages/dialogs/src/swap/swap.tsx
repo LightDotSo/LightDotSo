@@ -260,11 +260,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="truncate text-sm text-text-weak">
-            $
-            {fromSwapQuantityDollarValue
-              ? refineNumberFormat(fromSwapQuantityDollarValue)
-              : 0}{" "}
-            USD{" "}
+            {fromSwapQuantityDollarValue &&
+              `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
             {fromSwapTokenDollarRatio && (
               <span className="truncate text-xs text-text-weak">
                 {`(1 ${fromSwapToken?.symbol} = $${refineNumberFormat(fromSwapTokenDollarRatio)})`}
@@ -395,11 +392,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="truncate text-sm text-text-weak">
-            $
-            {toSwapQuantityDollarValue
-              ? refineNumberFormat(toSwapQuantityDollarValue)
-              : 0}{" "}
-            USD{" "}
+            {toSwapQuantityDollarValue &&
+              `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
             {toSwapTokenDollarRatio && (
               <span className="truncate text-xs text-text-weak">
                 {`(1 ${toSwapToken?.symbol} = $${refineNumberFormat(toSwapTokenDollarRatio)})`}

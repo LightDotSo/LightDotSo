@@ -364,26 +364,26 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       fromSwapDecimals
       ? fromSwapToken?.balance_usd /
           (Number(fromSwapToken?.amount) / Math.pow(10, fromSwapDecimals))
-      : 0;
+      : null;
   }, [fromSwapToken?.balance_usd, fromSwapToken?.amount, fromSwapDecimals]);
 
   const toSwapTokenDollarRatio = useMemo(() => {
     return toSwapToken?.balance_usd && toSwapToken?.amount && toSwapDecimals
       ? toSwapToken?.balance_usd /
           (Number(toSwapToken?.amount) / Math.pow(10, toSwapDecimals))
-      : 0;
+      : null;
   }, [toSwapToken?.balance_usd, toSwapToken?.amount, toSwapDecimals]);
 
   const fromSwapQuantityDollarValue = useMemo(() => {
     return fromSwap?.quantity && fromSwapTokenDollarRatio
       ? fromSwap?.quantity * fromSwapTokenDollarRatio
-      : 0;
+      : null;
   }, [fromSwap?.quantity, fromSwapTokenDollarRatio]);
 
   const toSwapQuantityDollarValue = useMemo(() => {
     return toSwap?.quantity && toSwapTokenDollarRatio
       ? toSwap?.quantity * toSwapTokenDollarRatio
-      : 0;
+      : null;
   }, [toSwap?.quantity, toSwapTokenDollarRatio]);
 
   // ---------------------------------------------------------------------------
