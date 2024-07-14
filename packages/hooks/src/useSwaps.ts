@@ -28,9 +28,18 @@ type SwapsProps = {
 // -----------------------------------------------------------------------------
 
 export const useSwaps = ({ swaps }: SwapsProps) => {
-  return useMemo(() => {
+  const swapParams = useMemo(() => {
     return swaps.map(swap =>
       useSwap({ fromSwap: swap.fromSwap, toSwap: swap.toSwap }),
     );
   }, [swaps]);
+
+  const executionsParams = useMemo(() => {
+    return swapParams.flatMap(swap => swap.executionsParams);
+  }, [swapParams]);
+
+  return {
+    swapParams,
+    executionsParams,
+  };
 };

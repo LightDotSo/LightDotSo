@@ -424,14 +424,13 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     return null;
   }, [toSwapQuotedAmount, toSwapDecimals]);
 
-  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+  const executionsParams: ExecutionWithChainId[] = useMemo(() => {
     let executionIndex = 0;
     let executions: ExecutionWithChainId[] = [];
-    let userOperations: Partial<UserOperation>[] = [];
 
     // If wallet is not available, return userOperations
     if (!wallet) {
-      return userOperations;
+      return [];
     }
 
     if (lifiQuote && lifiQuote?.transactionRequest) {
@@ -501,7 +500,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       executions.splice(executionIndex, 0, lifiExecution);
     }
 
-    return generatePartialUserOperations(wallet, executions);
+    return executions;
   }, [wallet, fromSwapAmount, fromSwap, lifiQuote]);
 
   // ---------------------------------------------------------------------------
@@ -590,7 +589,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     isSwapValid: isSwapValid,
     fromSwapMaximumAmount: fromSwapMaximumAmount,
     toSwapMaximumAmount: toSwapMaximumAmount,
-    userOperationsParams: userOperationsParams,
+    executionsParams: executionsParams,
     fromSwapDecimals: fromSwapDecimals,
     toSwapDecimals: toSwapDecimals,
     fromSwapTokenDollarRatio: fromSwapTokenDollarRatio,

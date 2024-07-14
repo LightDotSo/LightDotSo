@@ -2168,6 +2168,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@lightdotso/sdk':
+        specifier: workspace:*
+        version: link:../sdk
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:../sequence

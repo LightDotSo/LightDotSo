@@ -22,7 +22,7 @@ import {
   useSwapToQueryState,
 } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
-import { swapFormSchema } from "@lightdotso/schemas";
+import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
@@ -32,6 +32,7 @@ import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type Address } from "viem";
+import { generatePartialUserOperations } from "@lightdotso/sdk";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -147,7 +148,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isFromSwapLoading,
     isToSwapLoading,
     isSwapLoading,
-    userOperationsParams,
+    executionsParams,
     fromSwapDecimals,
     fromSwapQuantityDollarValue,
     fromSwapMaximumAmount,
@@ -173,6 +174,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       form.setValue("to.amount", toSwapQuotedAmount);
     }
   }, [toSwapQuotedAmount, toSwapQuotedQuantity]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    if (!wallet) {
+      return [];
+    }
+    return generatePartialUserOperations(wallet, executionsParams);
+  }, [wallet, executionsParams]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
