@@ -142,6 +142,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapToken,
     fromSwapAmount,
     toSwapQuotedAmount,
+    toSwapQuotedQuantity,
     isFromSwapValueValid,
     isSwapValid,
     isFromSwapLoading,
@@ -182,16 +183,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (toSwapQuotedAmount && toSwapToken?.decimals) {
-      form.setValue(
-        "to.quantity",
-        Number(
-          Number(toSwapQuotedAmount) / Math.pow(10, toSwapToken?.decimals),
-        ),
-      );
+    if (toSwapQuotedAmount && toSwapQuotedQuantity) {
+      form.setValue("to.quantity", toSwapQuotedQuantity);
       form.setValue("to.amount", toSwapQuotedAmount);
     }
-  }, [lifiQuote, toSwapQuotedAmount, toSwapToken?.decimals]);
+  }, [toSwapQuotedAmount, toSwapQuotedQuantity]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

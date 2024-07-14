@@ -417,6 +417,13 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     return null;
   }, [lifiQuote?.estimate?.toAmount]);
 
+  const toSwapQuotedQuantity = useMemo(() => {
+    if (toSwapQuotedAmount && toSwapDecimals) {
+      return Number(toSwapQuotedAmount) / Math.pow(10, toSwapDecimals);
+    }
+    return null;
+  }, [toSwapQuotedAmount, toSwapDecimals]);
+
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     let executionIndex = 0;
     let executions: ExecutionWithChainId[] = [];
@@ -575,6 +582,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     toSwapToken: toSwapToken,
     fromSwapAmount: debouncedFromSwapAmount,
     toSwapQuotedAmount: toSwapQuotedAmount,
+    toSwapQuotedQuantity: toSwapQuotedQuantity,
     isFromSwapLoading: isFromSwapLoading,
     isToSwapLoading: isToSwapLoading,
     isSwapLoading: isSwapLoading,
