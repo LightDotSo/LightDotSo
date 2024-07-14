@@ -185,7 +185,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     swapBalance: bigint | undefined,
   ) {
     let fromSwapToken: SwapTokenData = {
-      amount: BigInt(queryToken?.amount),
+      amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
       balance_usd: queryToken?.balance_usd,
       id: queryToken?.id ?? `${queryToken?.address}-${queryToken?.chain_id}`,
       chain_id: queryToken?.chain_id,
@@ -316,7 +316,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     ) {
       // If amount ends in floating point, return the amount without floating point
       const swapAmount = BigInt(
-        fromSwap?.quantity * Math.pow(10, fromSwapDecimals),
+        Math.floor(fromSwap?.quantity * Math.pow(10, fromSwapDecimals)),
       );
 
       // If swap amount is less than or equal to the buy token amount, return the swap amount
