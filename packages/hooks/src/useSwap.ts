@@ -314,6 +314,11 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       fromSwapDecimals &&
       fromSwapMaximumAmount
     ) {
+      // If amount is same as maximum amount, return the amount
+      if (fromSwap?.amount === fromSwapMaximumAmount) {
+        return fromSwap?.amount;
+      }
+
       // If amount ends in floating point, return the amount without floating point
       const swapAmount = BigInt(
         Math.floor(fromSwap?.quantity * Math.pow(10, fromSwapDecimals)),
@@ -354,26 +359,32 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [toSwapAmount, toSwapDecimals]);
 
   const fromSwapTokenDollarRatio = useMemo(() => {
-    return fromSwapToken?.balance_usd
-      ? fromSwapToken?.balance_usd / Number(fromSwapToken?.amount)
+    return fromSwapToken?.balance_usd &&
+      fromSwapToken?.amount &&
+      fromSwapDecimals
+      ? fromSwapToken?.balance_usd /
+          (Number(fromSwapToken?.amount) / Math.pow(10, fromSwapDecimals))
       : 0;
-  }, [fromSwapToken?.balance_usd, fromSwapToken?.amount]);
+  }, [fromSwapToken?.balance_usd, fromSwapToken?.amount, fromSwapDecimals]);
 
   const toSwapTokenDollarRatio = useMemo(() => {
-    return toSwapToken?.balance_usd
-      ? toSwapToken?.balance_usd / Number(toSwapToken?.amount)
+    return toSwapToken?.balance_usd && toSwapToken?.amount && toSwapDecimals
+      ? toSwapToken?.balance_usd /
+          (Number(toSwapToken?.amount) / Math.pow(10, toSwapDecimals))
       : 0;
-  }, [toSwapToken?.balance_usd, toSwapToken?.amount]);
+  }, [toSwapToken?.balance_usd, toSwapToken?.amount, toSwapDecimals]);
 
-  const fromSwapAmountDollarValue = useMemo(() => {
-    return fromSwapAmount
-      ? Number(fromSwapAmount) * fromSwapTokenDollarRatio
+  const fromSwapQuantityDollarValue = useMemo(() => {
+    return fromSwap?.quantity && fromSwapTokenDollarRatio
+      ? fromSwap?.quantity * fromSwapTokenDollarRatio
       : 0;
-  }, [fromSwapAmount, fromSwapTokenDollarRatio]);
+  }, [fromSwap?.quantity, fromSwapTokenDollarRatio]);
 
-  const toSwapAmountDollarValue = useMemo(() => {
-    return toSwapAmount ? Number(toSwapAmount) * toSwapTokenDollarRatio : 0;
-  }, [toSwapAmount, toSwapTokenDollarRatio]);
+  const toSwapQuantityDollarValue = useMemo(() => {
+    return toSwap?.quantity && toSwapTokenDollarRatio
+      ? toSwap?.quantity * toSwapTokenDollarRatio
+      : 0;
+  }, [toSwap?.quantity, toSwapTokenDollarRatio]);
 
   // ---------------------------------------------------------------------------
   // Debounced
@@ -576,8 +587,8 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     toSwapDecimals: toSwapDecimals,
     fromSwapTokenDollarRatio: fromSwapTokenDollarRatio,
     toSwapTokenDollarRatio: toSwapTokenDollarRatio,
-    fromSwapAmountDollarValue: fromSwapAmountDollarValue,
-    toSwapAmountDollarValue: toSwapAmountDollarValue,
+    fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
+    toSwapQuantityDollarValue: toSwapQuantityDollarValue,
     fromSwapMaximumQuantity: fromSwapMaximumQuantity,
     toSwapMaximumQuantity: toSwapMaximumQuantity,
     fromSwapQuantity: fromSwapQuantity,
