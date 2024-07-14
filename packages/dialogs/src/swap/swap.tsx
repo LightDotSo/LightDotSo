@@ -155,8 +155,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapMaximumAmount,
     fromSwapMaximumQuantity,
     toSwapMaximumQuantity,
-    fromSwapQuantity,
-    toSwapQuantity,
+    fromSwapTokenDollarRatio,
+    toSwapTokenDollarRatio,
     toSwapQuantityDollarValue,
     toSwapDecimals,
   } = useSwap({
@@ -279,7 +279,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {fromSwapQuantityDollarValue
               ? refineNumberFormat(fromSwapQuantityDollarValue)
               : 0}{" "}
-            USD
+            USD{" "}
+            {fromSwapTokenDollarRatio && (
+              <span className="truncate text-xs text-text-weak">
+                {`(1 ${fromSwapToken?.symbol} = $${refineNumberFormat(fromSwapTokenDollarRatio)})`}
+              </span>
+            )}
           </span>
           <Button
             onClick={() => {
@@ -409,7 +414,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {toSwapQuantityDollarValue
               ? refineNumberFormat(toSwapQuantityDollarValue)
               : 0}{" "}
-            USD
+            USD{" "}
+            {toSwapTokenDollarRatio && (
+              <span className="truncate text-xs text-text-weak">
+                {`(1 ${toSwapToken?.symbol} = $${refineNumberFormat(toSwapTokenDollarRatio)})`}
+              </span>
+            )}
           </span>
           <Button
             onClick={() => {
