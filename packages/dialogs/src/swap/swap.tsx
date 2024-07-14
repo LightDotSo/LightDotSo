@@ -171,7 +171,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   useEffect(() => {
     if (toSwapQuotedAmount && toSwapQuotedQuantity) {
       form.setValue("to.quantity", toSwapQuotedQuantity);
-      form.setValue("to.amount", toSwapQuotedAmount);
     }
   }, [toSwapQuotedAmount, toSwapQuotedQuantity]);
 
@@ -288,7 +287,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 fromSwapDecimals
               ) {
                 form.setValue("from.quantity", fromSwapMaximumQuantity);
-                form.setValue("from.amount", fromSwapMaximumAmount);
               }
             }}
             variant="shadow"
@@ -420,7 +418,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 toSwapDecimals
               ) {
                 form.setValue("to.quantity", toSwapMaximumQuantity);
-                form.setValue("to.amount", toSwapMaximumAmount);
               }
             }}
             variant="shadow"

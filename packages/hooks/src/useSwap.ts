@@ -309,14 +309,14 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   const fromSwapAmount = useMemo(() => {
     if (
       fromSwap &&
-      fromSwap?.amount &&
       fromSwap?.quantity &&
       fromSwapDecimals &&
-      fromSwapMaximumAmount
+      fromSwapMaximumAmount &&
+      fromSwapMaximumQuantity
     ) {
       // If amount is same as maximum amount, return the amount
-      if (fromSwap?.amount === fromSwapMaximumAmount) {
-        return fromSwap?.amount;
+      if (fromSwap?.quantity === fromSwapMaximumQuantity) {
+        return fromSwapMaximumAmount;
       }
 
       // If amount ends in floating point, return the amount without floating point
@@ -328,35 +328,17 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       if (swapAmount <= fromSwapMaximumAmount) {
         return swapAmount;
       } else {
-        return fromSwap?.amount;
+        return fromSwapMaximumAmount;
       }
     }
     return null;
   }, [
     fromSwap,
-    fromSwap?.amount,
     fromSwap?.quantity,
     fromSwapDecimals,
     fromSwapMaximumAmount,
+    fromSwapMaximumQuantity,
   ]);
-
-  const toSwapAmount = useMemo(() => {
-    return toSwap?.amount;
-  }, [toSwap?.amount]);
-
-  const fromSwapQuantity = useMemo(() => {
-    if (fromSwapAmount && fromSwapDecimals) {
-      return Number(fromSwapAmount) / Math.pow(10, fromSwapDecimals);
-    }
-    return null;
-  }, [fromSwapAmount, fromSwapDecimals]);
-
-  const toSwapQuantity = useMemo(() => {
-    if (toSwapAmount && toSwapDecimals) {
-      return Number(toSwapAmount) / Math.pow(10, toSwapDecimals);
-    }
-    return null;
-  }, [toSwapAmount, toSwapDecimals]);
 
   const fromSwapTokenDollarRatio = useMemo(() => {
     return fromSwapToken?.balance_usd &&
@@ -549,8 +531,8 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   ]);
 
   const isSwapNotEmpty = useMemo(() => {
-    return fromSwap?.amount && toSwap?.amount;
-  }, [fromSwap?.amount, toSwap?.amount]);
+    return fromSwap?.quantity && toSwap?.quantity;
+  }, [fromSwap?.quantity, toSwap?.quantity]);
 
   const isSwapLoading = useMemo(() => {
     return (
@@ -602,7 +584,5 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     toSwapQuantityDollarValue: toSwapQuantityDollarValue,
     fromSwapMaximumQuantity: fromSwapMaximumQuantity,
     toSwapMaximumQuantity: toSwapMaximumQuantity,
-    fromSwapQuantity: fromSwapQuantity,
-    toSwapQuantity: toSwapQuantity,
   };
 };
