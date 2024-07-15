@@ -37,6 +37,8 @@ pub fn is_testnet(chain_id: u64) -> bool {
 
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.
+/// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L31-37
+/// License: GNU Lesser General Public License v3.0
 pub fn get_revert_bytes<M: Middleware>(error: ContractError<M>) -> Result<Bytes, ContractError<M>> {
     if let ContractError::Revert(bytes) = error {
         Ok(bytes)
@@ -46,6 +48,8 @@ pub fn get_revert_bytes<M: Middleware>(error: ContractError<M>) -> Result<Bytes,
 }
 
 /// The abi for what happens when you just `revert("message")` in a contract
+/// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L39-45
+/// License: GNU Lesser General Public License v3.0
 #[derive(Clone, Debug, Default, Eq, PartialEq, ethers::contract::EthError)]
 #[etherror(name = "Error", abi = "Error(string)")]
 pub struct ContractRevertError {
@@ -53,6 +57,9 @@ pub struct ContractRevertError {
     pub reason: String,
 }
 
+/// Decode the revert data into an `ExecutionResult` or a `FailedOp`.
+/// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/provider/src/ethers/entry_point.rs#L141-155
+/// License: GNU Lesser General Public License v3.0
 pub fn decode_simulate_handle_ops_revert(revert_data: Bytes) -> Result<ExecutionResult, String> {
     if let Ok(result) = ExecutionResult::decode(&revert_data) {
         Ok(result)
