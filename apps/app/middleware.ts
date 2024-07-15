@@ -53,10 +53,10 @@ export async function middleware(req: NextRequest) {
     const appGroup = app_group_cookie?.value;
     // If the user has a path group cookie, redirect to the appropriate path
     switch (appGroup) {
+      case "action":
+        return NextResponse.redirect(new URL("/swap", req.url));
       case "home":
         return NextResponse.redirect(new URL("/home", req.url));
-      case "swap":
-        return NextResponse.redirect(new URL("/swap", req.url));
       default:
         break;
     }

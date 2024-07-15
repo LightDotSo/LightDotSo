@@ -15,8 +15,12 @@
 use crate::config::NodeArgs;
 use backon::{ExponentialBuilder, Retryable};
 use ethers::types::{Address, H256};
-use eyre::Result;
-use lightdotso_contracts::types::UserOperation;
+use eyre::{eyre, ContextCompat, Result};
+use lightdotso_contracts::{
+    entrypoint::get_entrypoint,
+    types::UserOperation,
+    utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
+};
 use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
@@ -37,6 +41,31 @@ impl Node {
 
     pub async fn run(&self) {
         info!("Node run, starting");
+    }
+
+    pub async fn simulate_user_operation(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<bool> {
+        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+
+        let res = entrypoint
+            .simulate_handle_op(user_operation.clone().into(), Address::zero(), vec![].into())
+            .call_raw()
+            .await
+            .err()
+            .context("simulate_handle_op should fail")?;
+        info!("res: {:?}", res);
+
+        let error_data = get_revert_bytes(res)?;
+        info!("error_data: {:?}", error_data);
+
+        let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
+        info!("execution_result: {:?}", reason);
+
+        Ok(reason.target_success)
     }
 
     /// Send a user operation to the node

@@ -14,6 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
+use crate::entrypoint::entry_point::UserOperation as EntryPointUserOperation;
 use ethers::{
     types::{Address, Bytes, Log, Transaction, TransactionReceipt, H256, U256},
     utils::hex,
@@ -118,6 +119,24 @@ impl UserOperation {
     pub fn op_hash(&self, entry_point: Address, chain_id: u64) -> H256 {
         let r_uop = RundlerUserOperation::from(self.clone());
         r_uop.op_hash(entry_point, chain_id)
+    }
+}
+
+impl From<UserOperation> for EntryPointUserOperation {
+    fn from(user_operation: UserOperation) -> Self {
+        Self {
+            sender: user_operation.sender,
+            nonce: user_operation.nonce,
+            init_code: user_operation.init_code,
+            call_data: user_operation.call_data,
+            call_gas_limit: user_operation.call_gas_limit,
+            verification_gas_limit: user_operation.verification_gas_limit,
+            pre_verification_gas: user_operation.pre_verification_gas,
+            max_fee_per_gas: user_operation.max_fee_per_gas,
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+            paymaster_and_data: user_operation.paymaster_and_data,
+            signature: user_operation.signature,
+        }
     }
 }
 

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::expect_used)]
+
 use ethers::{types::Address, utils::to_checksum};
 use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
@@ -86,6 +88,12 @@ pub async fn node_consumer(
 
         // Set the signature
         uop.signature = signature.into();
+
+        // Simulate the user operation
+        let res = node.simulate_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
+
+        // Log the simulation
+        info!("simulation res: {:?}", res);
 
         // Attempt to submit the user operation to the node
         let res = node.send_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
