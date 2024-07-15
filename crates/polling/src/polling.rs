@@ -443,7 +443,11 @@ impl Polling {
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        let block = self.get_block(chain_id, uow.transaction.block_number.unwrap()).await?.unwrap();
+        let block = self.get_block(chain_id, uow.transaction.block_number.unwrap()).await?;
+
+        if block.is_none() {
+            return Err(eyre!("block not found"));
+        }
 
         Ok({
             || {
@@ -454,7 +458,7 @@ impl Polling {
                     uow.clone().transaction_logs,
                     uow.clone().receipt,
                     chain_id as i64,
-                    block.timestamp,
+                    block.clone().unwrap().timestamp,
                     None,
                 )
             }
