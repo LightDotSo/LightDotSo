@@ -55,7 +55,7 @@ export async function middleware(req: NextRequest) {
     switch (appGroup) {
       case "home":
         return NextResponse.redirect(new URL("/home", req.url));
-      case "swap":
+      case "action":
         return NextResponse.redirect(new URL("/swap", req.url));
       default:
         break;
