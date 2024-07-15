@@ -130,7 +130,7 @@ export const TokenModal: FC = () => {
     return chains.slice(0, availableChains);
   }, [dimensions, chainState]);
 
-  const renderedTokens: TokenData[] = useMemo(() => {
+  const light_tokens: TokenData[] = useMemo(() => {
     const filtered_tokens =
       tokens && tokens?.length > 0 && chainState
         ? tokens.filter(token => token.chain_id === chainState.id)
@@ -144,10 +144,10 @@ export const TokenModal: FC = () => {
           }))
         : [];
 
-    if (type === "light") {
-      return light_indexed_tokens;
-    }
+    return light_indexed_tokens;
+  }, [tokens, chainState]);
 
+  const lifi_tokens = useMemo(() => {
     // Lifi tokens
     const filtered_lifi_tokens =
       // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
@@ -175,8 +175,12 @@ export const TokenModal: FC = () => {
       symbol: token.symbol ?? "",
     }));
 
+    return lifi_tokens;
+  }, [lifiTokens, chainState]);
+
+  const overlay_tokens = useMemo(() => {
     // Overlay light tokens amounts and balances on lifi tokens
-    const overlayed_tokens = light_indexed_tokens.map(light_token => {
+    const overlayed_tokens = light_tokens.map(light_token => {
       const lifi_token = lifi_tokens.find(
         token => token.address === light_token.address,
       );
@@ -198,13 +202,12 @@ export const TokenModal: FC = () => {
     );
 
     // Combine the overlayed tokens and the lifi tokens to the front
-    const lifi_overlay_tokens = [...overlayed_tokens_filtered, ...lifi_tokens];
+    const overlay_tokens = [...overlayed_tokens_filtered, ...lifi_tokens];
 
-    // Also, return the overlayed tokens early if the type is swap
-    if (type === "swap") {
-      return lifi_overlay_tokens;
-    }
+    return overlay_tokens;
+  }, [light_tokens, lifi_tokens]);
 
+  const socket_tokens = useMemo(() => {
     // Socket balances
     const filtered_balances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
@@ -220,7 +223,7 @@ export const TokenModal: FC = () => {
         : [];
 
     // Map the balances to tokens
-    return filtered_balances.map(balance => ({
+    const socket_tokens = filtered_balances.map(balance => ({
       id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
       chain_id: balance.chainId,
       balance_usd: 0,
@@ -231,7 +234,22 @@ export const TokenModal: FC = () => {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [socketBalances, chainState, tokens, type, chains]);
+
+    return socket_tokens;
+  }, [socketBalances, chainState]);
+
+  const renderedTokens: TokenData[] = useMemo(() => {
+    if (type === "light") {
+      return light_tokens;
+    }
+
+    // Also, return the overlayed tokens early if the type is swap
+    if (type === "swap") {
+      return overlay_tokens;
+    }
+
+    return socket_tokens;
+  }, [light_tokens, overlay_tokens, socket_tokens, type]);
 
   // ---------------------------------------------------------------------------
   // Render
