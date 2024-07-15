@@ -17,11 +17,9 @@ use crate::{
     types::{InterpretationRequest, InterpretationResponse},
 };
 use clap::Parser;
-use eyre::{eyre, Result};
-use futures::executor::block_on;
+use eyre::Result;
 use lightdotso_simulator::types::SimulationRequest;
 use lightdotso_tracing::tracing::info;
-use std::panic::{self, AssertUnwindSafe};
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct InterpreterArgs {
@@ -47,23 +45,14 @@ impl InterpreterArgs {
 
         info!("InterpreterArgs run, starting simulate...");
 
-        // Interpret the user operation
-        let result = panic::catch_unwind(AssertUnwindSafe(|| {
-            block_on(async { interpreter.run_with_simulate_bundle(requests).await })
-        }));
+        // Simulate the user operation
+        let res = interpreter.run_with_simulate_bundle(requests).await?;
 
-        // Handle the result of the panic catch
-        match result {
-            Ok(Ok(res)) => {
-                // Log the result
-                info!("res: {:?}", res);
-                // Log the end of the operation
-                info!("InterpreterArgs run, finished");
-                Ok(res)
-            }
-            Ok(Err(e)) => Err(e),
-            Err(_) => Err(eyre!("Panic occurred")),
-        }
+        info!("res: {:?}", res);
+
+        info!("InterpreterArgs run, finished");
+
+        Ok(res)
     }
 
     pub async fn run_interpretation(
@@ -82,21 +71,12 @@ impl InterpreterArgs {
         info!("InterpreterArgs run, starting interpret...");
 
         // Interpret the user operation
-        let result = panic::catch_unwind(AssertUnwindSafe(|| {
-            block_on(async { interpreter.run_with_interpret(request).await })
-        }));
+        let res = interpreter.run_with_interpret(request).await?;
 
-        // Handle the result of the panic catch
-        match result {
-            Ok(Ok(res)) => {
-                // Log the result
-                info!("res: {:?}", res);
-                // Log the end of the operation
-                info!("InterpreterArgs run, finished");
-                Ok(res)
-            }
-            Ok(Err(e)) => Err(e),
-            Err(_) => Err(eyre!("Panic occurred")),
-        }
+        info!("res: {:?}", res);
+
+        info!("InterpreterArgs run, finished");
+
+        Ok(res)
     }
 }

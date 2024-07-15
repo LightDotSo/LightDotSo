@@ -6,6 +6,809 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// EntryPoint
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const entryPointAbi = [
+  { type: 'receive', stateMutability: 'payable' },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'SIG_VALIDATION_FAILED',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: '_validateSenderAndPaymaster',
+    outputs: [],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
+    ],
+    name: 'addStake',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'depositTo',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'deposits',
+    outputs: [
+      { name: 'deposit', internalType: 'uint112', type: 'uint112' },
+      { name: 'staked', internalType: 'bool', type: 'bool' },
+      { name: 'stake', internalType: 'uint112', type: 'uint112' },
+      { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
+      { name: 'withdrawTime', internalType: 'uint48', type: 'uint48' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'getDepositInfo',
+    outputs: [
+      {
+        name: 'info',
+        internalType: 'struct IStakeManager.DepositInfo',
+        type: 'tuple',
+        components: [
+          { name: 'deposit', internalType: 'uint112', type: 'uint112' },
+          { name: 'staked', internalType: 'bool', type: 'bool' },
+          { name: 'stake', internalType: 'uint112', type: 'uint112' },
+          { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
+          { name: 'withdrawTime', internalType: 'uint48', type: 'uint48' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'key', internalType: 'uint192', type: 'uint192' },
+    ],
+    name: 'getNonce',
+    outputs: [{ name: 'nonce', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'initCode', internalType: 'bytes', type: 'bytes' }],
+    name: 'getSenderAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'getUserOpHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'opsPerAggregator',
+        internalType: 'struct IEntryPoint.UserOpsPerAggregator[]',
+        type: 'tuple[]',
+        components: [
+          {
+            name: 'userOps',
+            internalType: 'struct UserOperation[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'sender', internalType: 'address', type: 'address' },
+              { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+              { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+              { name: 'callData', internalType: 'bytes', type: 'bytes' },
+              {
+                name: 'callGasLimit',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'verificationGasLimit',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'preVerificationGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'maxFeePerGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'maxPriorityFeePerGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'paymasterAndData',
+                internalType: 'bytes',
+                type: 'bytes',
+              },
+              { name: 'signature', internalType: 'bytes', type: 'bytes' },
+            ],
+          },
+          {
+            name: 'aggregator',
+            internalType: 'contract IAggregator',
+            type: 'address',
+          },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'beneficiary', internalType: 'address payable', type: 'address' },
+    ],
+    name: 'handleAggregatedOps',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'ops',
+        internalType: 'struct UserOperation[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'beneficiary', internalType: 'address payable', type: 'address' },
+    ],
+    name: 'handleOps',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'key', internalType: 'uint192', type: 'uint192' }],
+    name: 'incrementNonce',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'callData', internalType: 'bytes', type: 'bytes' },
+      {
+        name: 'opInfo',
+        internalType: 'struct EntryPoint.UserOpInfo',
+        type: 'tuple',
+        components: [
+          {
+            name: 'mUserOp',
+            internalType: 'struct EntryPoint.MemoryUserOp',
+            type: 'tuple',
+            components: [
+              { name: 'sender', internalType: 'address', type: 'address' },
+              { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+              {
+                name: 'callGasLimit',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'verificationGasLimit',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'preVerificationGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              { name: 'paymaster', internalType: 'address', type: 'address' },
+              {
+                name: 'maxFeePerGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+              {
+                name: 'maxPriorityFeePerGas',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+            ],
+          },
+          { name: 'userOpHash', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'prefund', internalType: 'uint256', type: 'uint256' },
+          { name: 'contextOffset', internalType: 'uint256', type: 'uint256' },
+          { name: 'preOpGas', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      { name: 'context', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'innerHandleOp',
+    outputs: [
+      { name: 'actualGasCost', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint192', type: 'uint192' },
+    ],
+    name: 'nonceSequenceNumber',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'op',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'target', internalType: 'address', type: 'address' },
+      { name: 'targetCallData', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'simulateHandleOp',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'simulateValidation',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'unlockStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+    ],
+    name: 'withdrawStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+      { name: 'withdrawAmount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'withdrawTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'userOpHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'factory',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymaster',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'AccountDeployed',
+  },
+  { type: 'event', anonymous: false, inputs: [], name: 'BeforeExecution' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'totalDeposit',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Deposited',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'aggregator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'SignatureAggregatorChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'totalStaked',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'unstakeDelaySec',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'StakeLocked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'withdrawTime',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'StakeUnlocked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'withdrawAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'StakeWithdrawn',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'userOpHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'paymaster',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'nonce',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      { name: 'success', internalType: 'bool', type: 'bool', indexed: false },
+      {
+        name: 'actualGasCost',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'actualGasUsed',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'UserOperationEvent',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'userOpHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'nonce',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'revertReason',
+        internalType: 'bytes',
+        type: 'bytes',
+        indexed: false,
+      },
+    ],
+    name: 'UserOperationRevertReason',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'withdrawAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Withdrawn',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'preOpGas', internalType: 'uint256', type: 'uint256' },
+      { name: 'paid', internalType: 'uint256', type: 'uint256' },
+      { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+      { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+      { name: 'targetSuccess', internalType: 'bool', type: 'bool' },
+      { name: 'targetResult', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'ExecutionResult',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'opIndex', internalType: 'uint256', type: 'uint256' },
+      { name: 'reason', internalType: 'string', type: 'string' },
+    ],
+    name: 'FailedOp',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'SenderAddressResult',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'aggregator', internalType: 'address', type: 'address' }],
+    name: 'SignatureValidationFailed',
+  },
+  {
+    type: 'error',
+    inputs: [
+      {
+        name: 'returnInfo',
+        internalType: 'struct IEntryPoint.ReturnInfo',
+        type: 'tuple',
+        components: [
+          { name: 'preOpGas', internalType: 'uint256', type: 'uint256' },
+          { name: 'prefund', internalType: 'uint256', type: 'uint256' },
+          { name: 'sigFailed', internalType: 'bool', type: 'bool' },
+          { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+          { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+          { name: 'paymasterContext', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      {
+        name: 'senderInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'factoryInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'paymasterInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+    ],
+    name: 'ValidationResult',
+  },
+  {
+    type: 'error',
+    inputs: [
+      {
+        name: 'returnInfo',
+        internalType: 'struct IEntryPoint.ReturnInfo',
+        type: 'tuple',
+        components: [
+          { name: 'preOpGas', internalType: 'uint256', type: 'uint256' },
+          { name: 'prefund', internalType: 'uint256', type: 'uint256' },
+          { name: 'sigFailed', internalType: 'bool', type: 'bool' },
+          { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+          { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+          { name: 'paymasterContext', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      {
+        name: 'senderInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'factoryInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'paymasterInfo',
+        internalType: 'struct IStakeManager.StakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'stake', internalType: 'uint256', type: 'uint256' },
+          { name: 'unstakeDelaySec', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+      {
+        name: 'aggregatorInfo',
+        internalType: 'struct IEntryPoint.AggregatorStakeInfo',
+        type: 'tuple',
+        components: [
+          { name: 'aggregator', internalType: 'address', type: 'address' },
+          {
+            name: 'stakeInfo',
+            internalType: 'struct IStakeManager.StakeInfo',
+            type: 'tuple',
+            components: [
+              { name: 'stake', internalType: 'uint256', type: 'uint256' },
+              {
+                name: 'unstakeDelaySec',
+                internalType: 'uint256',
+                type: 'uint256',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'ValidationResultWithAggregation',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LightPaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1003,6 +1806,403 @@ export const lightWalletFactoryAbi = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__
+ */
+export const useReadEntryPoint = /*#__PURE__*/ createUseReadContract({
+  abi: entryPointAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"SIG_VALIDATION_FAILED"`
+ */
+export const useReadEntryPointSigValidationFailed =
+  /*#__PURE__*/ createUseReadContract({
+    abi: entryPointAbi,
+    functionName: 'SIG_VALIDATION_FAILED',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"_validateSenderAndPaymaster"`
+ */
+export const useReadEntryPointValidateSenderAndPaymaster =
+  /*#__PURE__*/ createUseReadContract({
+    abi: entryPointAbi,
+    functionName: '_validateSenderAndPaymaster',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadEntryPointBalanceOf = /*#__PURE__*/ createUseReadContract({
+  abi: entryPointAbi,
+  functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"deposits"`
+ */
+export const useReadEntryPointDeposits = /*#__PURE__*/ createUseReadContract({
+  abi: entryPointAbi,
+  functionName: 'deposits',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"getDepositInfo"`
+ */
+export const useReadEntryPointGetDepositInfo =
+  /*#__PURE__*/ createUseReadContract({
+    abi: entryPointAbi,
+    functionName: 'getDepositInfo',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"getNonce"`
+ */
+export const useReadEntryPointGetNonce = /*#__PURE__*/ createUseReadContract({
+  abi: entryPointAbi,
+  functionName: 'getNonce',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"getUserOpHash"`
+ */
+export const useReadEntryPointGetUserOpHash =
+  /*#__PURE__*/ createUseReadContract({
+    abi: entryPointAbi,
+    functionName: 'getUserOpHash',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"nonceSequenceNumber"`
+ */
+export const useReadEntryPointNonceSequenceNumber =
+  /*#__PURE__*/ createUseReadContract({
+    abi: entryPointAbi,
+    functionName: 'nonceSequenceNumber',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__
+ */
+export const useWriteEntryPoint = /*#__PURE__*/ createUseWriteContract({
+  abi: entryPointAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useWriteEntryPointAddStake = /*#__PURE__*/ createUseWriteContract({
+  abi: entryPointAbi,
+  functionName: 'addStake',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"depositTo"`
+ */
+export const useWriteEntryPointDepositTo = /*#__PURE__*/ createUseWriteContract(
+  { abi: entryPointAbi, functionName: 'depositTo' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"getSenderAddress"`
+ */
+export const useWriteEntryPointGetSenderAddress =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'getSenderAddress',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"handleAggregatedOps"`
+ */
+export const useWriteEntryPointHandleAggregatedOps =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'handleAggregatedOps',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"handleOps"`
+ */
+export const useWriteEntryPointHandleOps = /*#__PURE__*/ createUseWriteContract(
+  { abi: entryPointAbi, functionName: 'handleOps' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"incrementNonce"`
+ */
+export const useWriteEntryPointIncrementNonce =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'incrementNonce',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"innerHandleOp"`
+ */
+export const useWriteEntryPointInnerHandleOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'innerHandleOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"simulateHandleOp"`
+ */
+export const useWriteEntryPointSimulateHandleOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'simulateHandleOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"simulateValidation"`
+ */
+export const useWriteEntryPointSimulateValidation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'simulateValidation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useWriteEntryPointUnlockStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useWriteEntryPointWithdrawStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useWriteEntryPointWithdrawTo =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: entryPointAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__
+ */
+export const useSimulateEntryPoint = /*#__PURE__*/ createUseSimulateContract({
+  abi: entryPointAbi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useSimulateEntryPointAddStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'addStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"depositTo"`
+ */
+export const useSimulateEntryPointDepositTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'depositTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"getSenderAddress"`
+ */
+export const useSimulateEntryPointGetSenderAddress =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'getSenderAddress',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"handleAggregatedOps"`
+ */
+export const useSimulateEntryPointHandleAggregatedOps =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'handleAggregatedOps',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"handleOps"`
+ */
+export const useSimulateEntryPointHandleOps =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'handleOps',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"incrementNonce"`
+ */
+export const useSimulateEntryPointIncrementNonce =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'incrementNonce',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"innerHandleOp"`
+ */
+export const useSimulateEntryPointInnerHandleOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'innerHandleOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"simulateHandleOp"`
+ */
+export const useSimulateEntryPointSimulateHandleOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'simulateHandleOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"simulateValidation"`
+ */
+export const useSimulateEntryPointSimulateValidation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'simulateValidation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useSimulateEntryPointUnlockStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useSimulateEntryPointWithdrawStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link entryPointAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useSimulateEntryPointWithdrawTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: entryPointAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__
+ */
+export const useWatchEntryPointEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: entryPointAbi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"AccountDeployed"`
+ */
+export const useWatchEntryPointAccountDeployedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'AccountDeployed',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"BeforeExecution"`
+ */
+export const useWatchEntryPointBeforeExecutionEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'BeforeExecution',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"Deposited"`
+ */
+export const useWatchEntryPointDepositedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'Deposited',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"SignatureAggregatorChanged"`
+ */
+export const useWatchEntryPointSignatureAggregatorChangedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'SignatureAggregatorChanged',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"StakeLocked"`
+ */
+export const useWatchEntryPointStakeLockedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'StakeLocked',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"StakeUnlocked"`
+ */
+export const useWatchEntryPointStakeUnlockedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'StakeUnlocked',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"StakeWithdrawn"`
+ */
+export const useWatchEntryPointStakeWithdrawnEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'StakeWithdrawn',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"UserOperationEvent"`
+ */
+export const useWatchEntryPointUserOperationEventEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'UserOperationEvent',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"UserOperationRevertReason"`
+ */
+export const useWatchEntryPointUserOperationRevertReasonEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'UserOperationRevertReason',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link entryPointAbi}__ and `eventName` set to `"Withdrawn"`
+ */
+export const useWatchEntryPointWithdrawnEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: entryPointAbi,
+    eventName: 'Withdrawn',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__

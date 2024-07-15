@@ -47,6 +47,7 @@ export { projectId, wagmiConfig } from "./config";
 export {
   lightWalletAbi,
   lightWalletFactoryAbi,
+  useReadEntryPointGetNonce,
   useReadLightWalletImageHash,
   useReadLightPaymaster,
   useReadLightPaymasterEntryPoint,
