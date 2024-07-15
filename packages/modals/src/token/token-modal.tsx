@@ -19,7 +19,11 @@ import type { TokenData } from "@lightdotso/data";
 import { EmptyState, TokenImage } from "@lightdotso/elements";
 import { useContainerDimensions, useMediaQuery } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
-import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
+import {
+  useQueryLifiTokens,
+  useQuerySocketBalances,
+  useQueryTokens,
+} from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
@@ -76,6 +80,8 @@ export const TokenModal: FC = () => {
     chain_ids: null,
   });
 
+  const { lifiTokens } = useQueryLifiTokens();
+
   const { socketBalances } = useQuerySocketBalances({
     address: address as Address,
   });
@@ -125,19 +131,78 @@ export const TokenModal: FC = () => {
   }, [dimensions, chainState]);
 
   const renderedTokens: TokenData[] = useMemo(() => {
-    // Light index tokens
-    if (type === "native") {
-      const filtered_tokens =
-        tokens && tokens?.length > 0 && chainState
-          ? tokens.filter(token => token.chain_id === chainState.id)
-          : tokens;
+    const filtered_tokens =
+      tokens && tokens?.length > 0 && chainState
+        ? tokens.filter(token => token.chain_id === chainState.id)
+        : tokens;
 
-      return filtered_tokens && filtered_tokens?.length > 0
+    const light_indexed_tokens =
+      filtered_tokens && filtered_tokens?.length > 0
         ? filtered_tokens.map(token => ({
             ...token,
             amount: token.amount / Math.pow(10, token.decimals),
           }))
         : [];
+
+    if (type === "light") {
+      return light_indexed_tokens;
+    }
+
+    // Lifi tokens
+    const filtered_lifi_tokens =
+      // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
+      lifiTokens && lifiTokens?.length > 0
+        ? lifiTokens
+            .filter(token => {
+              const chain = chains.find(chain => chain.id === token.chainId);
+              return chain !== undefined;
+            })
+            .filter(token => {
+              return chainState === null || token.chainId === chainState.id;
+            })
+        : [];
+
+    // Map the tokens to tokens
+    const lifi_tokens = filtered_lifi_tokens.map(token => ({
+      id: `${token.chainId}-${token.address}-${token.decimals}`,
+      chain_id: token.chainId ?? 0,
+      balance_usd: 0,
+      address: token.address ?? "0x",
+      amount: 0,
+      chainId: token.chainId ?? 0,
+      decimals: token.decimals ?? 0,
+      name: token.name ?? "",
+      symbol: token.symbol ?? "",
+    }));
+
+    // Overlay light tokens amounts and balances on lifi tokens
+    const overlayed_tokens = light_indexed_tokens.map(light_token => {
+      const lifi_token = lifi_tokens.find(
+        token => token.address === light_token.address,
+      );
+
+      if (lifi_token) {
+        return {
+          ...lifi_token,
+          amount: light_token.amount,
+        };
+      }
+
+      return light_token;
+    });
+
+    // Bring the overlayed tokens to the front
+    const lifi_tokens_map = lifi_tokens.map(token => token.address);
+    const overlayed_tokens_filtered = overlayed_tokens.filter(
+      token => !lifi_tokens_map.includes(token.address),
+    );
+
+    // Combine the overlayed tokens and the lifi tokens to the front
+    const lifi_overlay_tokens = [...overlayed_tokens_filtered, ...lifi_tokens];
+
+    // Also, return the overlayed tokens early if the type is swap
+    if (type === "swap") {
+      return lifi_overlay_tokens;
     }
 
     // Socket balances

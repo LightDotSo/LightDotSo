@@ -72,7 +72,7 @@ export type TokenModalProps = {
   isTestnet?: boolean;
   onClose?: () => void;
   onTokenSelect: (token: TokenData) => void;
-  type: "native" | "socket";
+  type: "light" | "socket" | "swap";
 };
 
 // -----------------------------------------------------------------------------
@@ -212,7 +212,7 @@ export const useModals = create(
         address: "",
         isTokenModalVisible: false,
         onTokenSelect: () => {},
-        type: "native",
+        type: "light",
       },
       setTokenModalProps: (props: TokenModalProps) =>
         set({ tokenModalProps: props }),

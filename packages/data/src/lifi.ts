@@ -18,6 +18,16 @@ import type { Address } from "viem";
 // Data
 // -----------------------------------------------------------------------------
 
+export type LifiToken = {
+  address?: string;
+  decimals?: number;
+  symbol?: string;
+  chainId?: number;
+  coinKey?: string;
+  name?: string;
+  logoURI?: string;
+};
+
 export type LifiTransactionRequest = {
   from: Address;
   to: Address;
@@ -140,4 +150,10 @@ export type LifiQuotePageData = {
     }[];
   };
   transactionRequest?: LifiTransactionRequest;
+};
+
+export type LifiTokensPageData = {
+  tokens: {
+    [key: string]: LifiToken[];
+  };
 };
