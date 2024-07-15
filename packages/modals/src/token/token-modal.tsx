@@ -16,8 +16,8 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { EmptyState, TokenImage } from "@lightdotso/elements";
-import { useContainerDimensions, useMediaQuery } from "@lightdotso/hooks";
+import { TokenImage } from "@lightdotso/elements";
+import { useContainerDimensions } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
 import {
   useQueryLifiTokens,
@@ -37,7 +37,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { type FC, useCallback, useMemo, useRef, useState } from "react";
+import { type FC, useCallback, useMemo, useRef } from "react";
 import type { Address } from "viem";
 
 export const TokenModal: FC = () => {
@@ -61,7 +61,6 @@ export const TokenModal: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const isDesktop = useMediaQuery("md");
   const dimensions = useContainerDimensions(containerRef);
 
   // ---------------------------------------------------------------------------
@@ -338,7 +337,6 @@ export const TokenModal: FC = () => {
           height: `1200px`,
           overflow: "auto",
         }}
-        className=""
       >
         <div
           style={{

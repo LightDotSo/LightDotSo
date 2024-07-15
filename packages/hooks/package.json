@@ -36,7 +36,6 @@
     "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.51.1",
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "merkletreejs": "^0.4.0",

@@ -203,9 +203,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // If the initial user operation nonce is provided, make sure it is same or greater
     // In the case that it is not, update the nonce to the minimum nonce
     const updatedNonce =
-      initialUserOperation.nonce !== undefined &&
-      updatedMinimumNonce !== undefined &&
-      initialUserOperation.nonce < updatedMinimumNonce
+      initialUserOperation.nonce === undefined ||
+      (initialUserOperation.nonce !== undefined &&
+        updatedMinimumNonce !== undefined &&
+        initialUserOperation.nonce < updatedMinimumNonce)
         ? updatedMinimumNonce
         : initialUserOperation.nonce;
 
