@@ -179,7 +179,9 @@ export const TokenModal: FC = () => {
     // Overlay light tokens amounts and balances on lifi tokens
     const overlayed_tokens = light_tokens.map(light_token => {
       const lifi_token = lifi_tokens.find(
-        token => token.address === light_token.address,
+        token =>
+          token.address === light_token.address &&
+          token.chainId === light_token.chain_id,
       );
 
       if (lifi_token) {
@@ -192,14 +194,8 @@ export const TokenModal: FC = () => {
       return light_token;
     });
 
-    // Bring the overlayed tokens to the front
-    const lifi_tokens_map = lifi_tokens.map(token => token.address);
-    const overlayed_tokens_filtered = overlayed_tokens.filter(
-      token => !lifi_tokens_map.includes(token.address),
-    );
-
     // Combine the overlayed tokens and the lifi tokens to the front
-    const overlay_tokens = [...overlayed_tokens_filtered, ...lifi_tokens];
+    const overlay_tokens = [...overlayed_tokens, ...lifi_tokens];
 
     return overlay_tokens;
   }, [light_tokens, lifi_tokens]);
