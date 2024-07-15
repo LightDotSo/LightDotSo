@@ -100,14 +100,16 @@ export const BaseTokenImage: FC<TokenImageProps> = ({
     return (
       <div className={cn("relative inline-block shrink-0", className)}>
         <TokenImageBase
-          className={cn(tokenImageBaseVariants({ size: size }), className)}
+          className="flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak"
           isLoading={isLoading}
           token={token}
           size={size}
         />
-        <span className="absolute -bottom-1 -right-1">
-          <ChainLogo chainId={token.chain_id} size="sm" />
-        </span>
+        {withChainLogo && (
+          <span className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4">
+            <ChainLogo chainId={token.chain_id} size="sm" />
+          </span>
+        )}
       </div>
     );
   }
@@ -189,20 +191,28 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
 
   if (isImageLoaded && !isImageError) {
     return (
-      <img
-        className={cn(tokenImageBaseVariants({ size: size }), className)}
-        src={currentUrl}
-        alt={token.name ?? token.symbol}
-        onLoad={() => setIsImageLoaded(true)}
-        onErrorCapture={() => setIsImageError(true)}
-      />
+      <span
+        className={cn(
+          "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+          tokenImageBaseVariants({ size: size }),
+          className,
+        )}
+      >
+        <img
+          className="h-full w-full object-cover"
+          src={currentUrl}
+          alt={token.name ?? token.symbol}
+          onLoad={() => setIsImageLoaded(true)}
+          onErrorCapture={() => setIsImageError(true)}
+        />
+      </span>
     );
   }
 
   return (
     <span
       className={cn(
-        "items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+        "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
         tokenImageBaseVariants({ size: size }),
         className,
       )}
