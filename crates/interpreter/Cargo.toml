@@ -15,6 +15,7 @@
   eyre = { workspace = true }
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }
+  futures = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-simulator = { workspace = true }
