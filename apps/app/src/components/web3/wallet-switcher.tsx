@@ -290,7 +290,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                       setSelectedWallet(wallet);
 
                       // If the app group is swap, set the address query state
-                      if (appGroup === "swap") {
+                      if (appGroup === "action") {
                         setAddressQueryState(wallet.address);
                         setOpen(false);
                         return;
@@ -324,7 +324,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         <CommandSeparator />
         <CommandList>
           <CommandGroup>
-            {appGroup === "swap" && (
+            {appGroup === "action" && (
               <CommandItem
                 className="text-sm"
                 onSelect={() => {

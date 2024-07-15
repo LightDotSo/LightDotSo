@@ -95,8 +95,8 @@ export async function middleware(req: NextRequest) {
   // Get the app group of the path, and set the app group cookie accordingly
   const appGroup = getAppGroup(req.nextUrl.pathname);
   switch (appGroup) {
-    case "swap":
-      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "swap" as AppGroup);
+    case "action":
+      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "action" as AppGroup);
       break;
     case "demo":
       response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);

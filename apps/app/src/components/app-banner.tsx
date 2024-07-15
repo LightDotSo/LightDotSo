@@ -39,7 +39,7 @@ export const AppBanner: FC = () => {
         appGroup === "authenticated" ||
         appGroup === "unauthenticated" ||
         appGroup === "interception" ||
-        appGroup === "swap") && <Banner kind="beta" />}
+        appGroup === "action") && <Banner kind="beta" />}
       {appGroup === "demo" && <Banner kind="demo" />}
     </>
   );

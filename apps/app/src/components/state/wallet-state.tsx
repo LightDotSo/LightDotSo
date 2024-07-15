@@ -65,7 +65,7 @@ export const WalletState: FC = () => {
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
   useEffect(() => {
-    if (appGroup === "swap") {
+    if (appGroup === "action") {
       if (addressQueryState) {
         if (isAddress(addressQueryState)) {
           setWallet(addressQueryState);

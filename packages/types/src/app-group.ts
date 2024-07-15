@@ -20,10 +20,10 @@ export type AppGroup =
   // App group for `home` page
   | "home"
   // App group for `app` pages
+  | "action"
   | "authenticated"
   | "demo"
   | "unauthenticated"
   | "wallet"
-  | "swap"
   // Interception app group
   | "interception";

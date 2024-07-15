@@ -55,7 +55,7 @@ export const RootLogo: FC = () => {
           ? "/"
           : appGroup === "unauthenticated" || appGroup === "demo"
             ? "/"
-            : appGroup === "swap"
+            : appGroup === "action"
               ? "/swap"
               : // Get the wallet address from the path
                 // Address is the first part of the path
