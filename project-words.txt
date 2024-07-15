@@ -479,6 +479,7 @@ estraverse
 estree
 esutils
 etag
+etherror
 etherevent
 etherspot
 Etherspot

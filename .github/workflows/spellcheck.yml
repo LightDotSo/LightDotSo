@@ -21,3 +21,4 @@ jobs:
           config: "./cspell.json"
           root: "."
           use_cspell_files: true
+          incremental_files_only: false

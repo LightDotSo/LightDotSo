@@ -68,6 +68,7 @@
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  // Cspell settings
   "cSpell.files": ["**"],
   "cSpell.enabled": true
 }
