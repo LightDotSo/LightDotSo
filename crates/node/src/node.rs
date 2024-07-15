@@ -48,7 +48,7 @@ impl Node {
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
-    ) -> Result<()> {
+    ) -> Result<bool> {
         let entrypoint = get_entrypoint(chain_id, entry_point).await?;
 
         let res = entrypoint
@@ -65,7 +65,7 @@ impl Node {
         let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
         info!("execution_result: {:?}", reason);
 
-        Ok(())
+        Ok(reason.target_success)
     }
 
     /// Send a user operation to the node
