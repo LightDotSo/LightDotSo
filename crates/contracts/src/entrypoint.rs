@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::provider::get_provider;
 use ethers::{
     contract::abigen,
     providers::{Http, Provider},
     types::Address,
 };
 use eyre::Result;
-
-use crate::provider::get_provider;
 
 abigen!(EntryPoint, "abi/EntryPoint.json",);
 

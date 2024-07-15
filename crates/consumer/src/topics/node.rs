@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::expect_used)]
+
 use ethers::{types::Address, utils::to_checksum};
 use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
