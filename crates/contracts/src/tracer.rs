@@ -12,15 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Copyright 2023-2024 Silius Contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 use ethers::types::GethTrace;
 use eyre::format_err;
 use serde::Deserialize;
+
+// From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L5-L8
+// License: Apache-2.0
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
 pub struct LogInfo {
     pub topics: Vec<String>,
     pub data: String,
 }
+
+// From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L10-L25
+// License: Apache-2.0
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
 pub struct ExecutorTracerResult {
@@ -48,6 +68,9 @@ impl TryFrom<GethTrace> for ExecutorTracerResult {
         }
     }
 }
+
+// From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L36-185
+// License: Apache-2.0
 
 pub const EXECUTOR_TRACER: &str = r#"
 {
