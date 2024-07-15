@@ -294,7 +294,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
                                         setTokenModalProps({
                                           address: address as Address,
-                                          type: "native",
+                                          type: "light",
                                           isTestnet: false,
                                           onClose: () => {
                                             hideTokenModal();

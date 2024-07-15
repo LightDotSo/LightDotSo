@@ -21,7 +21,6 @@ import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
 import { ExecutionWithChainId } from "@lightdotso/types";
-import type { QueryKey } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -80,7 +79,6 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   const {
     data: fromSwapNativeBalance,
     isLoading: isFromSwapNativeBalanceLoading,
-    queryKey: fromSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: fromSwap?.chainId,
@@ -92,58 +90,50 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     },
   });
 
-  const {
-    data: toSwapNativeBalance,
-    isLoading: isToSwapNativeBalanceLoading,
-    queryKey: toSwapNativeBalanceQueryKey,
-  } = useBalance({
-    address: wallet as Address,
-    chainId: toSwap?.chainId,
-    query: {
-      enabled: Boolean(
-        toSwap &&
-          toSwap?.address === "0x0000000000000000000000000000000000000000",
-      ),
-    },
-  });
+  const { data: toSwapNativeBalance, isLoading: isToSwapNativeBalanceLoading } =
+    useBalance({
+      address: wallet as Address,
+      chainId: toSwap?.chainId,
+      query: {
+        enabled: Boolean(
+          toSwap &&
+            toSwap?.address === "0x0000000000000000000000000000000000000000",
+        ),
+      },
+    });
 
-  const {
-    data: fromSwapBalance,
-    isLoading: isFromSwapBalanceLoading,
-    queryKey: fromSwapBalanceQueryKey,
-  } = useReadContract({
-    address: fromSwap?.address as Address,
-    chainId: fromSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "balanceOf",
-    args: [wallet as Address],
-    query: {
-      enabled: Boolean(
-        fromSwap?.address &&
-          fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          fromSwap?.chainId,
-      ),
-    },
-  });
+  const { data: fromSwapBalance, isLoading: isFromSwapBalanceLoading } =
+    useReadContract({
+      address: fromSwap?.address as Address,
+      chainId: fromSwap?.chainId,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [wallet as Address],
+      query: {
+        enabled: Boolean(
+          fromSwap?.address &&
+            fromSwap?.address !==
+              "0x0000000000000000000000000000000000000000" &&
+            fromSwap?.chainId,
+        ),
+      },
+    });
 
-  const {
-    data: toSwapBalance,
-    isLoading: isToSwapBalanceLoading,
-    queryKey: toSwapBalanceQueryKey,
-  } = useReadContract({
-    address: toSwap?.address as Address,
-    chainId: toSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "balanceOf",
-    args: [wallet as Address],
-    query: {
-      enabled: Boolean(
-        toSwap?.address &&
-          toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          toSwap?.chainId,
-      ),
-    },
-  });
+  const { data: toSwapBalance, isLoading: isToSwapBalanceLoading } =
+    useReadContract({
+      address: toSwap?.address as Address,
+      chainId: toSwap?.chainId,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [wallet as Address],
+      query: {
+        enabled: Boolean(
+          toSwap?.address &&
+            toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
+            toSwap?.chainId,
+        ),
+      },
+    });
 
   const { data: fromSwapDecimalsNumber } = useReadContract({
     address: fromSwap?.address as Address,
@@ -207,44 +197,30 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   function getSwapToken(
     swap: Swap | undefined,
-    queryToken: TokenData,
-    swapNativeBalanceQueryKey: QueryKey,
+    queryToken: TokenData | null | undefined,
     swapNativeBalance: NativeBalance | undefined,
-    swapBalanceQueryKey: QueryKey,
     swapBalance: bigint | undefined,
     swapDecimals: number | undefined,
     swapSymbol: string | undefined,
   ) {
     let fromSwapToken: SwapTokenData = {
       amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
-      original_amount: queryToken?.amount,
-      balance_usd: queryToken?.balance_usd,
-      id: queryToken?.id ?? `${queryToken?.address}-${queryToken?.chain_id}`,
-      chain_id: swap?.chainId ?? queryToken?.chain_id,
-      address: swap?.address ?? queryToken?.address,
-      decimals: queryToken?.decimals,
-      symbol: queryToken?.symbol,
+      original_amount: queryToken?.amount ?? 0,
+      balance_usd: queryToken?.balance_usd ?? 0,
+      id: queryToken?.id ?? `${swap?.address}-${swap?.chainId}`,
+      chain_id: swap?.chainId ?? queryToken?.chain_id ?? 0,
+      address: swap?.address ?? queryToken?.address ?? "",
+      decimals: queryToken?.decimals ?? 0,
+      symbol: queryToken?.symbol ?? "",
     };
 
     if (swapNativeBalance) {
-      if (
-        swapNativeBalanceQueryKey &&
-        swapNativeBalanceQueryKey.length > 1 &&
-        (swapNativeBalanceQueryKey as any)[1].chainId === fromSwapToken.chain_id
-      ) {
-        fromSwapToken.amount = swapNativeBalance.value;
-        fromSwapToken.symbol = swapNativeBalance.symbol;
-      }
+      fromSwapToken.amount = swapNativeBalance.value;
+      fromSwapToken.symbol = swapNativeBalance.symbol;
     }
 
     if (swapBalance) {
-      if (
-        swapBalanceQueryKey &&
-        swapBalanceQueryKey.length > 1 &&
-        (swapBalanceQueryKey as any)[1].chainId === fromSwapToken.chain_id
-      ) {
-        fromSwapToken.amount = swapBalance;
-      }
+      fromSwapToken.amount = swapBalance;
     }
 
     if (swapDecimals) {
@@ -263,16 +239,10 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const fromSwapToken: SwapTokenData | null = useMemo(() => {
-    if (!fromQueryToken) {
-      return null;
-    }
-
     return getSwapToken(
       fromSwap,
       fromQueryToken,
-      fromSwapNativeBalanceQueryKey,
       fromSwapNativeBalance,
-      fromSwapBalanceQueryKey,
       fromSwapBalance,
       fromSwapDecimalsNumber,
       fromSwapSymbol,
@@ -280,25 +250,17 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [
     fromSwap,
     fromQueryToken,
-    fromSwapNativeBalanceQueryKey,
     fromSwapNativeBalance,
-    fromSwapBalanceQueryKey,
     fromSwapBalance,
     fromSwapDecimalsNumber,
     fromSwapSymbol,
   ]);
 
   const toSwapToken: SwapTokenData | null = useMemo(() => {
-    if (!toQueryToken) {
-      return null;
-    }
-
     return getSwapToken(
       toSwap,
       toQueryToken,
-      toSwapNativeBalanceQueryKey,
       toSwapNativeBalance,
-      toSwapBalanceQueryKey,
       toSwapBalance,
       toSwapDecimalsNumber,
       toSwapSymbol,
@@ -307,9 +269,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     toSwap,
     toQueryToken,
     toSwapNativeBalance,
-    toSwapNativeBalanceQueryKey,
     toSwapBalance,
-    toSwapBalanceQueryKey,
     toSwapDecimalsNumber,
     toSwapSymbol,
   ]);
@@ -548,12 +508,12 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const isFromSwapValueValid = useMemo(() => {
     return (
-      fromSwapAmount &&
-      fromSwapMaximumAmount &&
-      fromSwapAmount > 0n &&
-      fromSwapAmount <= fromSwapMaximumAmount
+      fromSwap?.quantity &&
+      fromSwapMaximumQuantity &&
+      fromSwap?.quantity > 0 &&
+      fromSwap?.quantity <= fromSwapMaximumQuantity
     );
-  }, [fromSwapAmount, fromSwapMaximumAmount]);
+  }, [fromSwap?.quantity, fromSwapMaximumQuantity]);
 
   const isFromSwapLoading = useMemo(() => {
     return (

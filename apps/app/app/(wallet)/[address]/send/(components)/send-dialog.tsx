@@ -1413,7 +1413,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             onClick={() => {
                                               setTokenModalProps({
                                                 address: address as Address,
-                                                type: "native",
+                                                type: "light",
                                                 isTestnet:
                                                   walletSettings?.is_enabled_testnet ??
                                                   false,

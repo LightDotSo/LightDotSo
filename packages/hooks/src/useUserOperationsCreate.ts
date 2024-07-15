@@ -20,7 +20,7 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import {
   useSignMessage,
   // lightWalletAbi,
@@ -59,7 +59,6 @@ export const useUserOperationsCreate = ({
     userOperations,
     resetUserOperations,
   } = useUserOperations();
-  const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -415,15 +414,6 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
   ]);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Set the form disabled state
-  useEffect(() => {
-    setIsFormDisabled(isUserOperationsDisabled);
-  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Return

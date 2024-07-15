@@ -50,7 +50,7 @@ const tokenModalProps: TokenModalProps = {
   isTestnet: false,
   onClose: () => {},
   onTokenSelect: () => {},
-  type: "native",
+  type: "light",
 };
 
 // -----------------------------------------------------------------------------

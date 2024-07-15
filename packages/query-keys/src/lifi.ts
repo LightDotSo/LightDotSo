@@ -24,6 +24,9 @@ export const lifi = createQueryKeys("lifi", {
   quote: (params: LifiQuoteParams) => ({
     queryKey: [{ params: params }],
   }),
+  tokens: () => ({
+    queryKey: ["tokens"],
+  }),
 });
 
 // -----------------------------------------------------------------------------

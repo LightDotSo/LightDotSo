@@ -25,7 +25,7 @@ export type { NotificationData, NotificationCountData } from "./notification";
 export type { NotificationSettingsData } from "./notificationSettings";
 export type { NftData, NftDataPage } from "./nft";
 export type { EstimateUserOperationGasData, PaymasterAndData } from "./rpc";
-export type { LifiQuotePageData } from "./lifi";
+export type { LifiQuotePageData, LifiTokensPageData } from "./lifi";
 export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";
 export type { SimulationData } from "./simulation";

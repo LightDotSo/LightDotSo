@@ -16,10 +16,14 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { EmptyState, TokenImage } from "@lightdotso/elements";
-import { useContainerDimensions, useMediaQuery } from "@lightdotso/hooks";
+import { TokenImage } from "@lightdotso/elements";
+import { useContainerDimensions } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
-import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
+import {
+  useQueryLifiTokens,
+  useQuerySocketBalances,
+  useQueryTokens,
+} from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
@@ -32,12 +36,9 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { type FC, useMemo, useRef, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { type FC, useCallback, useMemo, useRef } from "react";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
 
 export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
@@ -60,7 +61,6 @@ export const TokenModal: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const isDesktop = useMediaQuery("md");
   const dimensions = useContainerDimensions(containerRef);
 
   // ---------------------------------------------------------------------------
@@ -75,6 +75,8 @@ export const TokenModal: FC = () => {
     group: false,
     chain_ids: null,
   });
+
+  const { lifiTokens } = useQueryLifiTokens();
 
   const { socketBalances } = useQuerySocketBalances({
     address: address as Address,
@@ -124,22 +126,75 @@ export const TokenModal: FC = () => {
     return chains.slice(0, availableChains);
   }, [dimensions, chainState]);
 
-  const renderedTokens: TokenData[] = useMemo(() => {
-    // Light index tokens
-    if (type === "native") {
-      const filtered_tokens =
-        tokens && tokens?.length > 0 && chainState
-          ? tokens.filter(token => token.chain_id === chainState.id)
-          : tokens;
+  const light_tokens: TokenData[] = useMemo(() => {
+    const filtered_tokens =
+      tokens && tokens?.length > 0 && chainState
+        ? tokens.filter(token => token.chain_id === chainState.id)
+        : tokens;
 
-      return filtered_tokens && filtered_tokens?.length > 0
+    const light_indexed_tokens =
+      filtered_tokens && filtered_tokens?.length > 0
         ? filtered_tokens.map(token => ({
             ...token,
             amount: token.amount / Math.pow(10, token.decimals),
           }))
         : [];
-    }
 
+    return light_indexed_tokens;
+  }, [tokens, chainState]);
+
+  const lifi_tokens: TokenData[] = useMemo(() => {
+    // Lifi tokens
+    const filtered_lifi_tokens =
+      // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
+      lifiTokens && lifiTokens?.length > 0
+        ? lifiTokens.filter(token => {
+            return chainState === null || token.chainId === chainState.id;
+          })
+        : [];
+
+    // Map the tokens to tokens
+    const lifi_tokens = filtered_lifi_tokens.map(token => ({
+      id: `${token.chainId}-${token.address}-${token.decimals}`,
+      chain_id: token.chainId ?? 0,
+      balance_usd: 0,
+      address: token.address ?? "0x",
+      amount: 0,
+      decimals: token.decimals ?? 0,
+      name: token.name ?? "",
+      symbol: token.symbol ?? "",
+    }));
+
+    return lifi_tokens;
+  }, [lifiTokens, chainState]);
+
+  const overlay_tokens = useMemo(() => {
+    // Overlay light tokens amounts and balances on lifi tokens
+    const overlayed_tokens = light_tokens.map(light_token => {
+      const lifi_token = lifi_tokens.find(
+        token =>
+          token.address === light_token.address &&
+          token.chain_id === light_token.chain_id,
+      );
+
+      if (lifi_token) {
+        return {
+          ...lifi_token,
+          ...light_token,
+          name: lifi_token.name,
+        };
+      }
+
+      return light_token;
+    });
+
+    // Combine the overlayed tokens and the lifi tokens to the front
+    const overlay_tokens = [...overlayed_tokens, ...lifi_tokens];
+
+    return overlay_tokens;
+  }, [light_tokens, lifi_tokens]);
+
+  const socket_tokens = useMemo(() => {
     // Socket balances
     const filtered_balances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
@@ -155,18 +210,71 @@ export const TokenModal: FC = () => {
         : [];
 
     // Map the balances to tokens
-    return filtered_balances.map(balance => ({
+    const socket_tokens = filtered_balances.map(balance => ({
       id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
       chain_id: balance.chainId,
       balance_usd: 0,
       address: balance.address,
       amount: balance.amount,
-      chainId: balance.chainId,
       decimals: balance.decimals,
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [socketBalances, chainState, tokens, type, chains]);
+
+    return socket_tokens;
+  }, [socketBalances, chainState]);
+
+  const renderedTokens: TokenData[] = useMemo(() => {
+    if (type === "light") {
+      return light_tokens;
+    }
+
+    // Also, return the overlayed tokens early if the type is swap
+    if (type === "swap") {
+      return overlay_tokens;
+    }
+
+    return socket_tokens;
+  }, [light_tokens, overlay_tokens, socket_tokens, type]);
+
+  // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
+  const parentRef = useRef(null);
+
+  // ---------------------------------------------------------------------------
+  // Virtualizer
+  // ---------------------------------------------------------------------------
+
+  const virtualizer = useVirtualizer({
+    count: renderedTokens.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 64,
+    overscan: 30,
+  });
+
+  const virtualTokens = virtualizer.getVirtualItems();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  // const handleSearch = (search: string) =>
+  //   useCallback(() => {
+  //     setFilteredTokens(
+  //       renderedTokens.filter(token =>
+  //         token.symbol.toLowerCase().includes(search.toLowerCase() ?? []),
+  //       ),
+  //     );
+  //   }, [renderedTokens]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) =>
+    useCallback(() => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+      }
+    }, []);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -223,34 +331,59 @@ export const TokenModal: FC = () => {
       }
       onClose={onClose}
     >
-      {renderedTokens && renderedTokens.length > 0 ? (
-        <div className="">
-          {renderedTokens.map(token => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div
-              key={`${token.address}-${token.chain_id}`}
-              className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
-              onClick={() => onTokenSelect(token)}
-            >
-              <TokenImage withChainLogo token={token} />
-              <div className="flex grow flex-col pl-4">
-                <div className="text-text">{token.name}</div>
-                <div className="text-sm font-light text-text-weak">
-                  {token.symbol}
+      <div
+        ref={parentRef}
+        style={{
+          height: `1200px`,
+          overflow: "auto",
+        }}
+      >
+        <div
+          style={{
+            height: `${virtualizer.getTotalSize()}px`,
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          {virtualTokens.map(virtualToken => {
+            const token = renderedTokens[virtualToken.index];
+
+            if (!token) {
+              return null;
+            }
+
+            return (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+              <div
+                key={virtualToken.key}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: `${virtualToken.size}px`,
+                  transform: `translateY(${virtualToken.start}px)`,
+                  padding: 8,
+                }}
+                className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
+                onClick={() => onTokenSelect(token)}
+              >
+                <TokenImage withChainLogo token={token} />
+                <div className="flex grow flex-col pl-4">
+                  <div className="text-text">{token?.name}</div>
+                  <div className="text-sm font-light text-text-weak">
+                    {token?.symbol}
+                  </div>
+                </div>
+                <div className="flex-none text-sm text-text-weak">
+                  {token?.amount && refineNumberFormat(token?.amount)}
+                  {` ${token?.symbol}`}
                 </div>
               </div>
-              <div className="flex-none text-sm text-text-weak">
-                {refineNumberFormat(token.amount)}
-                {` ${token.symbol}`}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      ) : (
-        <div className="flex size-full items-center justify-center text-center">
-          <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
-        </div>
-      )}
+      </div>
     </Modal>
   );
 };

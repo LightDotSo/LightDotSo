@@ -223,7 +223,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             onClick={() => {
               setTokenModalProps({
                 address: wallet as Address,
-                type: "native",
+                type: "swap",
                 isTestnet: walletSettings?.is_enabled_testnet ?? false,
                 onClose: () => {
                   hideTokenModal();
@@ -240,7 +240,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full p-1"
+            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
             {fromSwapToken && fromSwapToken.address && fromSwapToken.symbol ? (
@@ -254,7 +254,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 />
                 <span
                   className={cn(
-                    "max-w-24 text-2xl tracking-wide text-text",
+                    "ml-1 max-w-24 text-2xl tracking-wide text-text",
                     fromSwapToken.symbol.length > 6 && "truncate",
                   )}
                 >
@@ -354,7 +354,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             onClick={() => {
               setTokenModalProps({
                 address: wallet as Address,
-                type: "native",
+                type: "swap",
                 isTestnet: walletSettings?.is_enabled_testnet ?? false,
                 onClose: () => {
                   hideTokenModal();
@@ -372,7 +372,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="gap-2 rounded-full p-1"
+            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1"
+            size="unsized"
           >
             {toSwapToken && toSwapToken.address && toSwapToken.symbol ? (
               <>
@@ -385,7 +386,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 />
                 <span
                   className={cn(
-                    "max-w-24 text-2xl tracking-wide text-text",
+                    "min-w-10 max-w-24 text-2xl tracking-wide text-text",
                     toSwapToken.symbol.length > 6 && "truncate",
                   )}
                 >
