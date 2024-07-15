@@ -194,9 +194,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
-      entryPointNonce ?? userOperationNonce?.nonce
-        ? BigInt(userOperationNonce?.nonce!)
-        : initialUserOperation.nonce;
+      entryPointNonce !== undefined
+        ? BigInt(entryPointNonce)
+        : userOperationNonce?.nonce !== undefined
+          ? BigInt(userOperationNonce.nonce)
+          : initialUserOperation.nonce !== undefined
+            ? BigInt(initialUserOperation.nonce)
+            : undefined;
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
