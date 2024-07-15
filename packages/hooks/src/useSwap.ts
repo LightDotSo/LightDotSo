@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { UserOperation, type Swap } from "@lightdotso/schemas";
+import type { Swap } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useMemo } from "react";
 import { useBalance, useReadContract } from "@lightdotso/wagmi";
@@ -20,7 +20,6 @@ import { useDebouncedValue } from "./useDebouncedValue";
 import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
-import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { ExecutionWithChainId } from "@lightdotso/types";
 import type { QueryKey } from "@tanstack/react-query";
 
@@ -37,6 +36,7 @@ type NativeBalance = {
 
 type SwapTokenData = Omit<TokenData, "amount"> & {
   amount: bigint;
+  original_amount: number;
 };
 
 export type SwapProps = {
@@ -186,6 +186,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   ) {
     let fromSwapToken: SwapTokenData = {
       amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
+      original_amount: queryToken?.amount,
       balance_usd: queryToken?.balance_usd,
       id: queryToken?.id ?? `${queryToken?.address}-${queryToken?.chain_id}`,
       chain_id: queryToken?.chain_id,
@@ -345,16 +346,21 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       fromSwapToken?.amount &&
       fromSwapDecimals
       ? fromSwapToken?.balance_usd /
-          (Number(fromSwapToken?.amount) / Math.pow(10, fromSwapDecimals))
+          (Number(fromSwapToken?.original_amount) /
+            Math.pow(10, fromSwapDecimals))
       : null;
-  }, [fromSwapToken?.balance_usd, fromSwapToken?.amount, fromSwapDecimals]);
+  }, [
+    fromSwapToken?.balance_usd,
+    fromSwapToken?.original_amount,
+    fromSwapDecimals,
+  ]);
 
   const toSwapTokenDollarRatio = useMemo(() => {
     return toSwapToken?.balance_usd && toSwapToken?.amount && toSwapDecimals
       ? toSwapToken?.balance_usd /
-          (Number(toSwapToken?.amount) / Math.pow(10, toSwapDecimals))
+          (Number(toSwapToken?.original_amount) / Math.pow(10, toSwapDecimals))
       : null;
-  }, [toSwapToken?.balance_usd, toSwapToken?.amount, toSwapDecimals]);
+  }, [toSwapToken?.balance_usd, toSwapToken?.original_amount, toSwapDecimals]);
 
   const fromSwapQuantityDollarValue = useMemo(() => {
     return fromSwap?.quantity && fromSwapTokenDollarRatio

@@ -12,56 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BaseLayerWrapper,
-  MinimalPageWrapper,
-  HStackFull,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { TITLES } from "@/const";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Swap.title} | %s`,
-    default: TITLES.Swap.title,
-  },
-  description: TITLES.Swap.description,
-};
+import { ModalInterception } from "@lightdotso/templates";
+import type { Address } from "viem";
+import { ModalInterceptionFooter } from "@/app/@create/create/(components)/modal-interception-footer";
+import OriginalPage from "@/app/(action)/create/page";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+type PageProps = {
+  searchParams: {
+    address: string;
+    userOperations?: string;
+  };
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <HStackFull>
-      <BaseLayerWrapper size="xs">
-        <MinimalPageWrapper isScreen>{children}</MinimalPageWrapper>
-      </BaseLayerWrapper>
-    </HStackFull>
+    <ModalInterception
+      isOverflowHidden
+      isHeightFixed
+      footerContent={
+        <ModalInterceptionFooter address={searchParams.address as Address} />
+      }
+      type="create"
+    >
+      <OriginalPage searchParams={searchParams} />
+    </ModalInterception>
   );
 }
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const experimental_ppr = true;
-export const revalidate = 300;

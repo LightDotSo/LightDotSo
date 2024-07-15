@@ -12,20 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SwapDialog } from "@lightdotso/dialogs";
+import { preloader as rootPreloader } from "@/preloaders/preloader";
 
 // -----------------------------------------------------------------------------
-// Page
+// Preloader
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div className="flex w-full justify-center p-4">
-      <SwapDialog className="max-w-lg" />
-    </div>
-  );
-}
+export const preloader = (searchParams: {
+  address?: string;
+  userOperations?: string;
+}) => {
+  rootPreloader(searchParams);
+};

@@ -192,7 +192,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const handleSwap = useCallback(() => {
     if (wallet && userOperationsParams) {
       router.push(
-        `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
+        `/create?address=${wallet}&userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
       );
     }
   }, [wallet, userOperationsParams]);
