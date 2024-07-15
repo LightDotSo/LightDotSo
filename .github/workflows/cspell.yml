@@ -1,4 +1,4 @@
-name: Spellcheck
+name: Cspell
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
   cancel-in-progress: true
 jobs:
-  spellcheck:
+  cspell:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -21,3 +21,4 @@ jobs:
           config: "./cspell.json"
           root: "."
           use_cspell_files: true
+          incremental_files_only: false
