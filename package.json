@@ -15,6 +15,7 @@
   "scripts": {
     "cargo:fmt:cmd": "make cargo-fmt",
     "cargo:watch:api": "nodemon --watch crates/axum -e rs --exec cargo run --bin api",
+    "cargo:watch:consumer": "nodemon --watch crates/consumer -e rs --exec cargo run --bin consumer",
     "cargo:watch:paymaster": "nodemon --watch crates/paymaster -e rs --exec cargo run --bin paymaster",
     "cargo:watch:rpc": "nodemon --watch crates/rpc -e rs --exec cargo run --bin rpc",
     "changeset": "changeset",
