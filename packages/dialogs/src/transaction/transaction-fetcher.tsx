@@ -198,9 +198,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ? BigInt(entryPointNonce)
         : userOperationNonce?.nonce !== undefined
           ? BigInt(userOperationNonce.nonce)
-          : initialUserOperation.nonce !== undefined
-            ? BigInt(initialUserOperation.nonce)
-            : undefined;
+          : undefined;
+
+    // If the initial user operation nonce is provided, make sure it is same or greater
+    // In the case that it is not, update the nonce to the minimum nonce
+    const updatedNonce =
+      initialUserOperation.nonce !== undefined &&
+      updatedMinimumNonce !== undefined &&
+      initialUserOperation.nonce < updatedMinimumNonce
+        ? updatedMinimumNonce
+        : initialUserOperation.nonce;
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
@@ -222,7 +229,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: initialUserOperation?.sender ?? address,
       chainId: initialUserOperation?.chainId ?? BigInt(0),
       initCode: updatedInitCode ?? "0x",
-      nonce: updatedMinimumNonce ? updatedMinimumNonce + 1n : BigInt(0),
+      nonce: updatedNonce ?? BigInt(0),
       callData: initialUserOperation?.callData ?? "0x",
       callGasLimit: initialUserOperation?.callGasLimit ?? BigInt(0),
       verificationGasLimit:
