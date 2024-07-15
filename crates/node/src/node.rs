@@ -14,11 +14,20 @@
 
 use crate::config::NodeArgs;
 use backon::{ExponentialBuilder, Retryable};
-use ethers::types::{Address, H256};
+use ethers::{
+    providers::Middleware,
+    types::{
+        transaction::eip2718::TypedTransaction, Address, GethDebugTracerType,
+        GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
+    },
+};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    entrypoint::get_entrypoint,
+    entrypoint::{get_entrypoint, UserOperationEventFilter, UserOperationRevertReasonFilter},
+    provider::get_provider,
+    tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::UserOperation,
+    user_operation::parse_user_op_event,
     utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
 };
 use lightdotso_jsonrpsee::{
@@ -51,6 +60,7 @@ impl Node {
     ) -> Result<bool> {
         let entrypoint = get_entrypoint(chain_id, entry_point).await?;
 
+        // Simulate the user operation w/ `eth_call`
         let res = entrypoint
             .simulate_handle_op(user_operation.clone().into(), Address::zero(), vec![].into())
             .call_raw()
@@ -59,13 +69,67 @@ impl Node {
             .context("simulate_handle_op should fail")?;
         info!("res: {:?}", res);
 
+        // Decode the revert reason
         let error_data = get_revert_bytes(res)?;
         info!("error_data: {:?}", error_data);
 
+        // Decode the execution result
         let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
         info!("execution_result: {:?}", reason);
 
-        Ok(reason.target_success)
+        // Debug trace call
+
+        let call = entrypoint.simulate_handle_op(
+            user_operation.clone().into(),
+            Address::zero(),
+            vec![].into(),
+        );
+        let mut tx: TypedTransaction = call.tx;
+        tx.set_from(Address::zero());
+        tx.set_gas_price(user_operation.clone().max_fee_per_gas);
+        tx.set_gas(u64::MAX);
+
+        // Get provider
+        let provider = get_provider(chain_id).await?;
+
+        // Get the geth trace
+        let trace = provider
+            .debug_trace_call(
+                tx,
+                None,
+                GethDebugTracingCallOptions {
+                    tracing_options: GethDebugTracingOptions {
+                        disable_storage: None,
+                        disable_stack: None,
+                        enable_memory: None,
+                        enable_return_data: None,
+                        tracer: Some(GethDebugTracerType::JsTracer(EXECUTOR_TRACER.into())),
+                        tracer_config: None,
+                        timeout: None,
+                    },
+                    state_overrides: None,
+                },
+            )
+            .await
+            .map_err(|e| eyre!("Failed to debug trace call: {:?}", e))?;
+
+        let tracer_result: ExecutorTracerResult =
+            ExecutorTracerResult::try_from(trace).map_err(|e| eyre!(e))?;
+
+        let user_op_event = tracer_result
+            .user_op_event
+            .as_ref()
+            .ok_or(eyre!("Estimate trace simulate handle op user op event not found"))?;
+        let user_op_event = parse_user_op_event::<UserOperationEventFilter>(user_op_event)?;
+        let user_op_revert_event = tracer_result
+            .user_op_revert_event
+            .as_ref()
+            .and_then(|e| parse_user_op_event::<UserOperationRevertReasonFilter>(e).ok());
+
+        info!("user_op_event: {:?}", user_op_event);
+        info!("user_op_revert_event: {:?}", user_op_revert_event);
+
+        Ok(user_op_event.success)
     }
 
     /// Send a user operation to the node

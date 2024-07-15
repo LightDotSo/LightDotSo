@@ -6141,6 +6141,7 @@ dependencies = [
 name = "lightdotso-contracts"
 version = "0.1.0"
 dependencies = [
+ "const-hex",
  "ethers 2.0.8",
  "eyre",
  "lazy_static",

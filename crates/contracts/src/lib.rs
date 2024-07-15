@@ -18,5 +18,7 @@ pub mod erc1271;
 pub mod light_wallet;
 pub mod paymaster;
 pub mod provider;
+pub mod tracer;
 pub mod types;
+pub mod user_operation;
 pub mod utils;
