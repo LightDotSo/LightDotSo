@@ -14,80 +14,80 @@
 
 "use client";
 
-import { useAppGroup } from "@/hooks";
-import { useAddressQueryState } from "@lightdotso/nuqs";
-import { useAuth } from "@lightdotso/stores";
-import { useAccount } from "@lightdotso/wagmi";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import type { FC } from "react";
-import { isAddress } from "viem";
+import { useUserOperationsCreate } from "@lightdotso/hooks";
+import { useFormRef, useModals, useUserOperations } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
+import { useRouter } from "next/navigation";
+import { type FC, useCallback } from "react";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type ModalInterceptionFooterProps = {
+  address: Address;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const WalletState: FC = () => {
+export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
+  address,
+}) => {
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const appGroup = useAppGroup();
-
-  // ---------------------------------------------------------------------------
-  // Wagmi
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAccount();
-
-  // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [addressQueryState] = useAddressQueryState();
+  const { hideCreateModal, setSendBackgroundModal } = useModals();
+  const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const pathname = usePathname();
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    setSendBackgroundModal(false);
+    hideCreateModal();
+    resetAll();
+    router.back();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { signUserOperations } = useUserOperationsCreate({
+    address: address as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setWallet } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Check if the first segment of the pathname is a valid address w/ isAddress
-  // If it is, set the auth state's wallet to that address
-  useEffect(() => {
-    if (appGroup === "action") {
-      if (addressQueryState) {
-        if (isAddress(addressQueryState)) {
-          setWallet(addressQueryState);
-        }
-      }
-    }
-
-    if (appGroup === "wallet") {
-      const segments = pathname.split("/");
-      if (segments.length > 1) {
-        const maybeAddress = segments[1];
-        if (isAddress(maybeAddress)) {
-          setWallet(maybeAddress);
-        }
-      }
-    }
-  }, [pathname, address, appGroup, addressQueryState, setWallet]);
+  const { isFormDisabled, isFormLoading, customFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // or return children if there are children to render
-  return null;
+  return (
+    <FooterButton
+      isModal
+      className="pt-0"
+      customSuccessText={customFormSuccessText}
+      disabled={isFormLoading || isFormDisabled}
+      isLoading={isFormLoading}
+      cancelClick={onDismiss}
+      onClick={signUserOperations}
+    />
+  );
 };

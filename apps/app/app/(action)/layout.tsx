@@ -12,35 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { Banner } from "@lightdotso/templates";
-import type { FC } from "react";
-import { useAppGroup } from "@/hooks";
+import {
+  BaseLayerWrapper,
+  MinimalPageWrapper,
+  HStackFull,
+} from "@lightdotso/ui";
+import { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Component
+// Props
 // -----------------------------------------------------------------------------
 
-export const AppBanner: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
+interface RootLayoutProps {
+  children: ReactNode;
+}
 
-  const appGroup = useAppGroup();
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
+export default function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {(appGroup === "wallet" ||
-        appGroup === "authenticated" ||
-        appGroup === "unauthenticated" ||
-        appGroup === "interception" ||
-        appGroup === "action") && <Banner kind="beta" />}
-      {appGroup === "demo" && <Banner kind="demo" />}
-    </>
+    <HStackFull>
+      <BaseLayerWrapper size="xs">
+        <MinimalPageWrapper isScreen>{children}</MinimalPageWrapper>
+      </BaseLayerWrapper>
+    </HStackFull>
   );
-};
+}
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const experimental_ppr = true;
+export const revalidate = 300;

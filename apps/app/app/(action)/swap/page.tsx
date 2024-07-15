@@ -12,35 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { Banner } from "@lightdotso/templates";
-import type { FC } from "react";
-import { useAppGroup } from "@/hooks";
+import { SwapDialog } from "@lightdotso/dialogs";
+import type { Metadata } from "next";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Component
+// Metadata
 // -----------------------------------------------------------------------------
 
-export const AppBanner: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
+export const metadata: Metadata = {
+  title: {
+    template: `${TITLES.Swap.title} | %s`,
+    default: TITLES.Swap.title,
+  },
+  description: TITLES.Swap.description,
+};
 
-  const appGroup = useAppGroup();
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
+export default async function Page() {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {(appGroup === "wallet" ||
-        appGroup === "authenticated" ||
-        appGroup === "unauthenticated" ||
-        appGroup === "interception" ||
-        appGroup === "action") && <Banner kind="beta" />}
-      {appGroup === "demo" && <Banner kind="demo" />}
-    </>
+    <div className="flex w-full justify-center p-4">
+      <SwapDialog className="max-w-lg" />
+    </div>
   );
-};
+}

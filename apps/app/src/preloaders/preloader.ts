@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {
+  preloadGetConfiguration,
+  preloadGetWallet,
+  preloadGetWalletSettings,
+} from "@lightdotso/services";
+import type { Address } from "viem";
+
 // -----------------------------------------------------------------------------
-// Types
+// Preloader
 // -----------------------------------------------------------------------------
 
-export type AppGroup =
-  // App group for `home` page
-  | "home"
-  // App group for `app` pages
-  | "action"
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  // Interception app group
-  | "interception";
+export const preloader = async (searchParams: { address?: string }) => {
+  if (!searchParams.address) {
+    return;
+  }
+
+  preloadGetConfiguration({ address: searchParams.address as Address });
+  preloadGetWallet({ address: searchParams.address as Address });
+  preloadGetWalletSettings({ address: searchParams.address as Address });
+};

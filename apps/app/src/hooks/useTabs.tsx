@@ -70,9 +70,9 @@ export function useTabs() {
 
   const isTabsNavigationVisible = useMemo(() => {
     if (
-      appGroup === "unauthenticated" ||
+      appGroup === "action" ||
       appGroup === "authenticated" ||
-      appGroup === "swap"
+      appGroup === "unauthenticated"
     ) {
       return false;
     }

@@ -12,11 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod constants;
-pub mod entrypoint;
-pub mod erc1271;
-pub mod light_wallet;
-pub mod paymaster;
-pub mod provider;
-pub mod types;
-pub mod utils;
+use ethers::{
+    contract::abigen,
+    providers::{Http, Provider},
+    types::Address,
+};
+use eyre::Result;
+
+use crate::provider::get_provider;
+
+abigen!(EntryPoint, "abi/EntryPoint.json",);
+
+pub async fn get_entrypoint(
+    chain_id: u64,
+    entry_point_address: Address,
+) -> Result<EntryPoint<Provider<Http>>> {
+    // Get the provider.
+    let provider = get_provider(chain_id).await?;
+
+    // Get the contract.
+    let contract = EntryPoint::new(entry_point_address, provider.into());
+
+    // Return the contract.
+    Ok(contract)
+}
