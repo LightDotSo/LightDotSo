@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { TransactionDialog } from "@lightdotso/dialogs";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { unstable_noStore } from "next/cache";
-import type { Address } from "viem";
-import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
-import { handler } from "@/handlers/create/handler";
-import { preloader } from "@/preloaders/create/preloader";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
+import { unstable_noStore } from "next/cache";
+import type { Address } from "viem";
 import { TITLES } from "@/const";
+import { handler } from "@/handlers/create/handler";
+import { preloader } from "@/preloaders/create/preloader";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -91,7 +91,9 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CreateDialog address={searchParams.address as Address} />
+      <div className="mt-4 flex flex-col items-center justify-center">
+        <TransactionDialog address={searchParams.address as Address} />
+      </div>
     </HydrationBoundary>
   );
 }

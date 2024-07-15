@@ -14,7 +14,7 @@
 
 import { ModalInterception } from "@lightdotso/templates";
 import type { Address } from "viem";
-import { ModalInterceptionFooter } from "@/app/@create/create/(components)/modal-interception-footer";
+import { ModalInterceptionFooter } from "@/app/@create/(.)create/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(action)/create/page";
 
 // -----------------------------------------------------------------------------
