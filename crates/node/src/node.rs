@@ -12,13 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Copyright 2023-2024 Silius Contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 use crate::config::NodeArgs;
 use backon::{ExponentialBuilder, Retryable};
-use ethers::types::{Address, H256};
+use ethers::{
+    providers::Middleware,
+    types::{
+        transaction::eip2718::TypedTransaction, Address, GethDebugTracerType,
+        GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
+    },
+};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    entrypoint::get_entrypoint,
+    entrypoint::{get_entrypoint, UserOperationEventFilter, UserOperationRevertReasonFilter},
+    provider::get_provider,
+    tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::UserOperation,
+    user_operation::parse_user_op_event,
     utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
 };
 use lightdotso_jsonrpsee::{
@@ -43,14 +66,18 @@ impl Node {
         info!("Node run, starting");
     }
 
+    /// Simulate a user operation on the node w/ `eth_call`
+    /// Note that this function will always return an error because the call will revert on-chain
+    /// Only for EntryPoint v0.6.0
     pub async fn simulate_user_operation(
         &self,
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
-    ) -> Result<bool> {
+    ) -> Result<()> {
         let entrypoint = get_entrypoint(chain_id, entry_point).await?;
 
+        // Simulate the user operation w/ `eth_call`
         let res = entrypoint
             .simulate_handle_op(user_operation.clone().into(), Address::zero(), vec![].into())
             .call_raw()
@@ -59,13 +86,84 @@ impl Node {
             .context("simulate_handle_op should fail")?;
         info!("res: {:?}", res);
 
+        // Decode the revert reason
         let error_data = get_revert_bytes(res)?;
         info!("error_data: {:?}", error_data);
 
+        // Decode the execution result
         let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
         info!("execution_result: {:?}", reason);
 
-        Ok(reason.target_success)
+        Ok(())
+    }
+
+    // From: https://github.com/silius-rs/silius/blob/62cff148f386283bc44114ec9d545eae427489f2/crates/mempool/src/estimate.rs#L116-129
+    // License: Apache-2.0
+
+    /// Simulate a user operation on the node w/ `debug_traceCall`
+    /// Only for EntryPoint v0.6.0
+    /// Parses the user operation event and the user operation revert event from the trace for next.
+    pub async fn simulate_user_operation_with_tracer(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<bool> {
+        // Get the entrypoint
+        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+
+        // Debug trace call
+        let call = entrypoint.simulate_handle_op(
+            user_operation.clone().into(),
+            Address::zero(),
+            vec![].into(),
+        );
+        let mut tx: TypedTransaction = call.tx;
+        tx.set_from(Address::zero());
+        tx.set_gas_price(user_operation.clone().max_fee_per_gas);
+        tx.set_gas(u64::MAX);
+
+        // Get provider
+        let provider = get_provider(chain_id).await?;
+
+        // Get the geth trace
+        let trace = provider
+            .debug_trace_call(
+                tx,
+                None,
+                GethDebugTracingCallOptions {
+                    tracing_options: GethDebugTracingOptions {
+                        disable_storage: None,
+                        disable_stack: None,
+                        enable_memory: None,
+                        enable_return_data: None,
+                        tracer: Some(GethDebugTracerType::JsTracer(EXECUTOR_TRACER.into())),
+                        tracer_config: None,
+                        timeout: None,
+                    },
+                    state_overrides: None,
+                },
+            )
+            .await
+            .map_err(|e| eyre!("Failed to debug trace call: {:?}", e))?;
+
+        let tracer_result: ExecutorTracerResult =
+            ExecutorTracerResult::try_from(trace).map_err(|e| eyre!(e))?;
+
+        let user_op_event = tracer_result
+            .user_op_event
+            .as_ref()
+            .ok_or(eyre!("Estimate trace simulate handle op user op event not found"))?;
+        let user_op_event = parse_user_op_event::<UserOperationEventFilter>(user_op_event)?;
+        let user_op_revert_event = tracer_result
+            .user_op_revert_event
+            .as_ref()
+            .and_then(|e| parse_user_op_event::<UserOperationRevertReasonFilter>(e).ok());
+
+        info!("user_op_event: {:?}", user_op_event);
+        info!("user_op_revert_event: {:?}", user_op_revert_event);
+
+        Ok(user_op_event.success)
     }
 
     /// Send a user operation to the node
