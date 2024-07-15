@@ -144,19 +144,14 @@ export const TokenModal: FC = () => {
     return light_indexed_tokens;
   }, [tokens, chainState]);
 
-  const lifi_tokens = useMemo(() => {
+  const lifi_tokens: TokenData[] = useMemo(() => {
     // Lifi tokens
     const filtered_lifi_tokens =
       // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
       lifiTokens && lifiTokens?.length > 0
-        ? lifiTokens
-            .filter(token => {
-              const chain = chains.find(chain => chain.id === token.chainId);
-              return chain !== undefined;
-            })
-            .filter(token => {
-              return chainState === null || token.chainId === chainState.id;
-            })
+        ? lifiTokens.filter(token => {
+            return chainState === null || token.chainId === chainState.id;
+          })
         : [];
 
     // Map the tokens to tokens
@@ -166,7 +161,6 @@ export const TokenModal: FC = () => {
       balance_usd: 0,
       address: token.address ?? "0x",
       amount: 0,
-      chainId: token.chainId ?? 0,
       decimals: token.decimals ?? 0,
       name: token.name ?? "",
       symbol: token.symbol ?? "",
@@ -181,13 +175,14 @@ export const TokenModal: FC = () => {
       const lifi_token = lifi_tokens.find(
         token =>
           token.address === light_token.address &&
-          token.chainId === light_token.chain_id,
+          token.chain_id === light_token.chain_id,
       );
 
       if (lifi_token) {
         return {
           ...lifi_token,
-          amount: light_token.amount,
+          ...light_token,
+          name: lifi_token.name,
         };
       }
 
@@ -222,7 +217,6 @@ export const TokenModal: FC = () => {
       balance_usd: 0,
       address: balance.address,
       amount: balance.amount,
-      chainId: balance.chainId,
       decimals: balance.decimals,
       name: balance.name,
       symbol: balance.symbol,
