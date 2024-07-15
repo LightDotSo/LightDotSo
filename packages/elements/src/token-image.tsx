@@ -199,7 +199,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
         )}
       >
         <img
-          className="h-full w-full object-cover"
+          className="size-full object-cover"
           src={currentUrl}
           alt={token.name ?? token.symbol}
           onLoad={() => setIsImageLoaded(true)}
