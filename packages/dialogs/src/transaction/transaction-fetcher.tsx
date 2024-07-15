@@ -30,7 +30,10 @@ import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
-import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import {
+  useReadEntryPointGetNonce,
+  useReadLightWalletImageHash,
+} from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
 import type {
@@ -92,12 +95,38 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration: genesisConfiguration } = useQueryConfiguration({
+    address: address as Address,
+    checkpoint: 0,
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { configuration: currentConfiguration } = useQueryConfiguration({
+    address: address as Address,
+  });
+
+  const { wallet } = useQueryWallet({
+    address: address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
   // Get the image hash for the light wallet
   const { data: imageHash } = useReadLightWalletImageHash({
     address: address as Address,
+    chainId: Number(initialUserOperation.chainId),
+  });
+
+  // Get the nonce for the entry point
+  const { data: entryPointNonce } = useReadEntryPointGetNonce({
+    address: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      findContractAddressByAddress(wallet?.factory_address as Address)!
+    ] as typeof ENTRYPOINT_ADDRESS_V06,
     chainId: Number(initialUserOperation.chainId),
   });
 
@@ -151,24 +180,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formValues = form.watch();
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration: genesisConfiguration } = useQueryConfiguration({
-    address: address as Address,
-    checkpoint: 0,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { configuration: currentConfiguration } = useQueryConfiguration({
-    address: address as Address,
-  });
-
-  const { wallet } = useQueryWallet({
-    address: address as Address,
-  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

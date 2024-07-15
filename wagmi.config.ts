@@ -6,7 +6,17 @@ export default defineConfig({
   out: "packages/wagmi/src/generated.ts",
   plugins: [
     foundry({
-      artifacts: "out-wagmi/",
+      forge: {
+        build: true,
+      },
+      include: [
+        "EntryPoint.sol/**",
+        "LightPaymaster.sol/**",
+        "LightVerifyingPaymaster.sol/**",
+        "LightWallet.sol/**",
+        "LightWalletFactory.sol/**",
+      ],
+      // artifacts: "out-wagmi/",
     }),
     react(),
   ],
