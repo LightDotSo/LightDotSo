@@ -21,7 +21,6 @@ import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
 import { ExecutionWithChainId } from "@lightdotso/types";
-import type { QueryKey } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Hook Props
