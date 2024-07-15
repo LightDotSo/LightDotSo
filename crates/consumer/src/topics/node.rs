@@ -90,10 +90,15 @@ pub async fn node_consumer(
         uop.signature = signature.into();
 
         // Simulate the user operation
-        let res = node.simulate_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
+        node.simulate_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
 
-        // Log the simulation
-        info!("simulation res: {:?}", res);
+        // Simulate the user operation with the tracer
+        let res = node
+            .simulate_user_operation_with_tracer(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop)
+            .await?;
+
+        // Log the response
+        info!("res: {:?}", res);
 
         // Attempt to submit the user operation to the node
         let res = node.send_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;

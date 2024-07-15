@@ -52,12 +52,15 @@ impl Node {
         info!("Node run, starting");
     }
 
+    /// Simulate a user operation on the node w/ `eth_call`
+    /// Note that this function will always return an error because the call will revert on-chain
+    /// Only for EntryPoint v0.6.0
     pub async fn simulate_user_operation(
         &self,
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
-    ) -> Result<bool> {
+    ) -> Result<()> {
         let entrypoint = get_entrypoint(chain_id, entry_point).await?;
 
         // Simulate the user operation w/ `eth_call`
@@ -77,8 +80,22 @@ impl Node {
         let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
         info!("execution_result: {:?}", reason);
 
-        // Debug trace call
+        Ok(())
+    }
 
+    /// Simulate a user operation on the node w/ `debug_traceCall`
+    /// Only for EntryPoint v0.6.0
+    /// Parses the user operation event and the user operation revert event from the trace for next.
+    pub async fn simulate_user_operation_with_tracer(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<bool> {
+        // Get the entrypoint
+        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+
+        // Debug trace call
         let call = entrypoint.simulate_handle_op(
             user_operation.clone().into(),
             Address::zero(),
