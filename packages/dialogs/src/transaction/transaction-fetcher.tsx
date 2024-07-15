@@ -128,6 +128,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       findContractAddressByAddress(wallet?.factory_address as Address)!
     ] as typeof ENTRYPOINT_ADDRESS_V06,
     chainId: Number(initialUserOperation.chainId),
+    args: [address as Address, 0n],
   });
 
   // ---------------------------------------------------------------------------
@@ -193,15 +194,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
-      userOperationNonce && !isUserOperationNonceLoading
-        ? // If the initial user operation is empty,
-          // Or the initial user operation nonce is smaller than the user operation nonce for the chain
-          // Then, use the user operation nonce
-          !initialUserOperation.nonce ||
-          (initialUserOperation.nonce &&
-            userOperationNonce?.nonce > initialUserOperation?.nonce)
-          ? BigInt(userOperationNonce?.nonce)
-          : initialUserOperation.nonce
+      entryPointNonce ?? userOperationNonce?.nonce
+        ? BigInt(userOperationNonce?.nonce!)
         : initialUserOperation.nonce;
 
     // Get the init code from the executed user operations or the partial user operation
@@ -224,7 +218,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: initialUserOperation?.sender ?? address,
       chainId: initialUserOperation?.chainId ?? BigInt(0),
       initCode: updatedInitCode ?? "0x",
-      nonce: updatedMinimumNonce ?? BigInt(0),
+      nonce: updatedMinimumNonce ? updatedMinimumNonce + 1n : BigInt(0),
       callData: initialUserOperation?.callData ?? "0x",
       callGasLimit: initialUserOperation?.callGasLimit ?? BigInt(0),
       verificationGasLimit:
@@ -242,6 +236,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     genesisConfiguration,
     // Should recompute if the executed user operations change, for init code
     executedUserOperations,
+    // Should recompute if the entry point nonce changes
+    entryPointNonce,
     // Should recompute if the user operation nonce changes
     userOperationNonce,
   ]);
