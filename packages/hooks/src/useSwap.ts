@@ -80,7 +80,6 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   const {
     data: fromSwapNativeBalance,
     isLoading: isFromSwapNativeBalanceLoading,
-    queryKey: fromSwapNativeBalanceQueryKey,
   } = useBalance({
     address: wallet as Address,
     chainId: fromSwap?.chainId,
@@ -92,20 +91,17 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     },
   });
 
-  const {
-    data: toSwapNativeBalance,
-    isLoading: isToSwapNativeBalanceLoading,
-    queryKey: toSwapNativeBalanceQueryKey,
-  } = useBalance({
-    address: wallet as Address,
-    chainId: toSwap?.chainId,
-    query: {
-      enabled: Boolean(
-        toSwap &&
-          toSwap?.address === "0x0000000000000000000000000000000000000000",
-      ),
-    },
-  });
+  const { data: toSwapNativeBalance, isLoading: isToSwapNativeBalanceLoading } =
+    useBalance({
+      address: wallet as Address,
+      chainId: toSwap?.chainId,
+      query: {
+        enabled: Boolean(
+          toSwap &&
+            toSwap?.address === "0x0000000000000000000000000000000000000000",
+        ),
+      },
+    });
 
   const { data: fromSwapBalance, isLoading: isFromSwapBalanceLoading } =
     useReadContract({
@@ -513,12 +509,12 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const isFromSwapValueValid = useMemo(() => {
     return (
-      fromSwapAmount &&
-      fromSwapMaximumAmount &&
-      fromSwapAmount > 0n &&
-      fromSwapAmount <= fromSwapMaximumAmount
+      fromSwap?.quantity &&
+      fromSwapMaximumQuantity &&
+      fromSwap?.quantity > 0 &&
+      fromSwap?.quantity <= fromSwapMaximumQuantity
     );
-  }, [fromSwapAmount, fromSwapMaximumAmount]);
+  }, [fromSwap?.quantity, fromSwapMaximumQuantity]);
 
   const isFromSwapLoading = useMemo(() => {
     return (
