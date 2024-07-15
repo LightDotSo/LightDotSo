@@ -36,12 +36,9 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { type FC, useMemo, useRef, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { type FC, useCallback, useMemo, useRef, useState } from "react";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
 
 export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
@@ -252,6 +249,45 @@ export const TokenModal: FC = () => {
   }, [light_tokens, overlay_tokens, socket_tokens, type]);
 
   // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
+  const parentRef = useRef(null);
+
+  // ---------------------------------------------------------------------------
+  // Virtualizer
+  // ---------------------------------------------------------------------------
+
+  const virtualizer = useVirtualizer({
+    count: renderedTokens.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 64,
+    overscan: 30,
+  });
+
+  const virtualTokens = virtualizer.getVirtualItems();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  // const handleSearch = (search: string) =>
+  //   useCallback(() => {
+  //     setFilteredTokens(
+  //       renderedTokens.filter(token =>
+  //         token.symbol.toLowerCase().includes(search.toLowerCase() ?? []),
+  //       ),
+  //     );
+  //   }, [renderedTokens]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) =>
+    useCallback(() => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+      }
+    }, []);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -306,34 +342,60 @@ export const TokenModal: FC = () => {
       }
       onClose={onClose}
     >
-      {renderedTokens && renderedTokens.length > 0 ? (
-        <div className="">
-          {renderedTokens.map(token => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div
-              key={`${token.address}-${token.chain_id}`}
-              className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
-              onClick={() => onTokenSelect(token)}
-            >
-              <TokenImage withChainLogo token={token} />
-              <div className="flex grow flex-col pl-4">
-                <div className="text-text">{token.name}</div>
-                <div className="text-sm font-light text-text-weak">
-                  {token.symbol}
+      <div
+        ref={parentRef}
+        style={{
+          height: `1200px`,
+          overflow: "auto",
+        }}
+        className=""
+      >
+        <div
+          style={{
+            height: `${virtualizer.getTotalSize()}px`,
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          {virtualTokens.map(virtualToken => {
+            const token = renderedTokens[virtualToken.index];
+
+            if (!token) {
+              return null;
+            }
+
+            return (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+              <div
+                key={virtualToken.key}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: `${virtualToken.size}px`,
+                  transform: `translateY(${virtualToken.start}px)`,
+                  padding: 8,
+                }}
+                className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
+                onClick={() => onTokenSelect(token)}
+              >
+                <TokenImage withChainLogo token={token} />
+                <div className="flex grow flex-col pl-4">
+                  <div className="text-text">{token?.name}</div>
+                  <div className="text-sm font-light text-text-weak">
+                    {token?.symbol}
+                  </div>
+                </div>
+                <div className="flex-none text-sm text-text-weak">
+                  {token?.amount && refineNumberFormat(token?.amount)}
+                  {` ${token?.symbol}`}
                 </div>
               </div>
-              <div className="flex-none text-sm text-text-weak">
-                {refineNumberFormat(token.amount)}
-                {` ${token.symbol}`}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      ) : (
-        <div className="flex size-full items-center justify-center text-center">
-          <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
-        </div>
-      )}
+      </div>
     </Modal>
   );
 };
