@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Swap } from "@lightdotso/schemas";
-import { useAuth } from "@lightdotso/stores";
-import { useMemo } from "react";
-import { useBalance, useReadContract } from "@lightdotso/wagmi";
-import { useDebouncedValue } from "./useDebouncedValue";
-import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { TokenData } from "@lightdotso/data";
 import { useQueryLifiQuote, useQueryToken } from "@lightdotso/query";
+import type { Swap } from "@lightdotso/schemas";
+import { useAuth } from "@lightdotso/stores";
 import { ExecutionWithChainId } from "@lightdotso/types";
+import { useMemo } from "react";
+import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
+import { useDebouncedValue } from "./useDebouncedValue";
+import { useWagmiToken, WagmiToken } from "./useWagmiToken";
 
 // -----------------------------------------------------------------------------
 // Hook Props
 // -----------------------------------------------------------------------------
-
-type NativeBalance = {
-  decimals: number;
-  formatted: string;
-  symbol: string;
-  value: bigint;
-};
 
 type SwapTokenData = Omit<TokenData, "amount"> & {
   amount: bigint;
@@ -73,122 +66,25 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     });
 
   // ---------------------------------------------------------------------------
-  // Wagmi
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const {
-    data: fromSwapNativeBalance,
-    isLoading: isFromSwapNativeBalanceLoading,
-  } = useBalance({
+    wagmiToken: fromWagmiToken,
+    isWagmiTokenLoading: isFromWagmiTokenLoading,
+  } = useWagmiToken({
     address: wallet as Address,
     chainId: fromSwap?.chainId,
-    query: {
-      enabled: Boolean(
-        fromSwap &&
-          fromSwap?.address === "0x0000000000000000000000000000000000000000",
-      ),
-    },
+    tokenAddress: fromSwap?.address as Address,
   });
 
-  const { data: toSwapNativeBalance, isLoading: isToSwapNativeBalanceLoading } =
-    useBalance({
-      address: wallet as Address,
-      chainId: toSwap?.chainId,
-      query: {
-        enabled: Boolean(
-          toSwap &&
-            toSwap?.address === "0x0000000000000000000000000000000000000000",
-        ),
-      },
-    });
-
-  const { data: fromSwapBalance, isLoading: isFromSwapBalanceLoading } =
-    useReadContract({
-      address: fromSwap?.address as Address,
-      chainId: fromSwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          fromSwap?.address &&
-            fromSwap?.address !==
-              "0x0000000000000000000000000000000000000000" &&
-            fromSwap?.chainId,
-        ),
-      },
-    });
-
-  const { data: toSwapBalance, isLoading: isToSwapBalanceLoading } =
-    useReadContract({
-      address: toSwap?.address as Address,
-      chainId: toSwap?.chainId,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [wallet as Address],
-      query: {
-        enabled: Boolean(
-          toSwap?.address &&
-            toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-            toSwap?.chainId,
-        ),
-      },
-    });
-
-  const { data: fromSwapDecimalsNumber } = useReadContract({
-    address: fromSwap?.address as Address,
-    chainId: fromSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "decimals",
-    query: {
-      enabled: Boolean(
-        fromSwap?.address &&
-          fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          fromSwap?.chainId,
-      ),
-    },
-  });
-
-  const { data: toSwapDecimalsNumber } = useReadContract({
-    address: toSwap?.address as Address,
+  const {
+    wagmiToken: toWagmiToken,
+    isWagmiTokenLoading: isToWagmiTokenLoading,
+  } = useWagmiToken({
+    address: wallet as Address,
     chainId: toSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "decimals",
-    query: {
-      enabled: Boolean(
-        toSwap?.address &&
-          toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          toSwap?.chainId,
-      ),
-    },
-  });
-
-  const { data: fromSwapSymbol } = useReadContract({
-    address: fromSwap?.address as Address,
-    chainId: fromSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "symbol",
-    query: {
-      enabled: Boolean(
-        fromSwap?.address &&
-          fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          fromSwap?.chainId,
-      ),
-    },
-  });
-
-  const { data: toSwapSymbol } = useReadContract({
-    address: toSwap?.address as Address,
-    chainId: toSwap?.chainId,
-    abi: erc20Abi,
-    functionName: "symbol",
-    query: {
-      enabled: Boolean(
-        toSwap?.address &&
-          toSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-          toSwap?.chainId,
-      ),
-    },
+    tokenAddress: toSwap?.address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -198,10 +94,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   function getSwapToken(
     swap: Swap | undefined,
     queryToken: TokenData | null | undefined,
-    swapNativeBalance: NativeBalance | undefined,
-    swapBalance: bigint | undefined,
-    swapDecimals: number | undefined,
-    swapSymbol: string | undefined,
+    wagmiToken: WagmiToken | null | undefined,
   ) {
     let fromSwapToken: SwapTokenData = {
       amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
@@ -214,21 +107,16 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       symbol: queryToken?.symbol ?? "",
     };
 
-    if (swapNativeBalance) {
-      fromSwapToken.amount = swapNativeBalance.value;
-      fromSwapToken.symbol = swapNativeBalance.symbol;
+    if (wagmiToken?.balance) {
+      fromSwapToken.amount = wagmiToken?.balance;
     }
 
-    if (swapBalance) {
-      fromSwapToken.amount = swapBalance;
+    if (wagmiToken?.decimals) {
+      fromSwapToken.decimals = wagmiToken?.decimals;
     }
 
-    if (swapDecimals) {
-      fromSwapToken.decimals = swapDecimals;
-    }
-
-    if (swapSymbol) {
-      fromSwapToken.symbol = swapSymbol;
+    if (wagmiToken?.symbol) {
+      fromSwapToken.symbol = wagmiToken?.symbol;
     }
 
     return fromSwapToken;
@@ -239,70 +127,28 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const fromSwapToken: SwapTokenData | null = useMemo(() => {
-    return getSwapToken(
-      fromSwap,
-      fromQueryToken,
-      fromSwapNativeBalance,
-      fromSwapBalance,
-      fromSwapDecimalsNumber,
-      fromSwapSymbol,
-    );
-  }, [
-    fromSwap,
-    fromQueryToken,
-    fromSwapNativeBalance,
-    fromSwapBalance,
-    fromSwapDecimalsNumber,
-    fromSwapSymbol,
-  ]);
+    return getSwapToken(fromSwap, fromQueryToken, fromWagmiToken);
+  }, [fromSwap, fromQueryToken, fromWagmiToken]);
 
   const toSwapToken: SwapTokenData | null = useMemo(() => {
-    return getSwapToken(
-      toSwap,
-      toQueryToken,
-      toSwapNativeBalance,
-      toSwapBalance,
-      toSwapDecimalsNumber,
-      toSwapSymbol,
-    );
-  }, [
-    toSwap,
-    toQueryToken,
-    toSwapNativeBalance,
-    toSwapBalance,
-    toSwapDecimalsNumber,
-    toSwapSymbol,
-  ]);
+    return getSwapToken(toSwap, toQueryToken, toWagmiToken);
+  }, [toSwap, toQueryToken, toWagmiToken]);
 
   const fromSwapDecimals = useMemo(() => {
-    return fromSwapDecimalsNumber ?? fromQueryToken?.decimals;
-  }, [fromSwapDecimalsNumber]);
+    return fromWagmiToken?.decimals ?? fromQueryToken?.decimals;
+  }, [fromWagmiToken?.decimals, fromQueryToken?.decimals]);
 
   const toSwapDecimals = useMemo(() => {
-    return toSwapDecimalsNumber ?? toQueryToken?.decimals;
-  }, [toSwapDecimalsNumber]);
+    return toWagmiToken?.decimals ?? toQueryToken?.decimals;
+  }, [toWagmiToken?.decimals, toQueryToken?.decimals]);
 
   const fromSwapMaximumAmount = useMemo(() => {
-    return fromSwap?.address &&
-      fromSwap?.address === "0x0000000000000000000000000000000000000000"
-      ? fromSwapNativeBalance?.value
-      : fromSwapBalance
-        ? (fromSwapToken?.amount as bigint)
-        : fromSwapToken?.amount
-          ? fromSwapToken?.amount
-          : null;
-  }, [fromSwap, fromSwapNativeBalance, fromSwapBalance, fromSwapToken]);
+    return fromSwapToken?.amount;
+  }, [fromSwapToken?.amount]);
 
   const toSwapMaximumAmount = useMemo(() => {
-    return toSwap?.address &&
-      toSwap?.address === "0x0000000000000000000000000000000000000000"
-      ? toSwapNativeBalance?.value
-      : toSwapBalance
-        ? (toSwapToken?.amount as bigint)
-        : toSwapToken?.amount
-          ? toSwapToken?.amount
-          : null;
-  }, [toSwap, toSwapNativeBalance, toSwapBalance, toSwapToken]);
+    return toSwapToken?.amount;
+  }, [toSwapToken?.amount]);
 
   const fromSwapMaximumQuantity = useMemo(() => {
     if (fromSwapMaximumAmount && fromSwapDecimals) {
@@ -516,34 +362,22 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [fromSwap?.quantity, fromSwapMaximumQuantity]);
 
   const isFromSwapLoading = useMemo(() => {
-    return (
-      isFromQueryTokenLoading ||
-      isFromSwapNativeBalanceLoading ||
-      isFromSwapBalanceLoading
-    );
-  }, [
-    isFromQueryTokenLoading,
-    isFromSwapNativeBalanceLoading,
-    isFromSwapBalanceLoading,
-  ]);
+    return isFromQueryTokenLoading || isFromWagmiTokenLoading;
+  }, [isFromQueryTokenLoading, isFromWagmiTokenLoading]);
 
   const isToSwapLoading = useMemo(() => {
     return (
       isFromQueryTokenLoading ||
       isToQueryTokenLoading ||
-      isFromSwapNativeBalanceLoading ||
-      isFromSwapBalanceLoading ||
-      isToSwapNativeBalanceLoading ||
-      isToSwapBalanceLoading ||
+      isFromWagmiTokenLoading ||
+      isToWagmiTokenLoading ||
       isLifiQuoteLoading
     );
   }, [
     isFromQueryTokenLoading,
     isToQueryTokenLoading,
-    isFromSwapNativeBalanceLoading,
-    isToSwapNativeBalanceLoading,
-    isFromSwapBalanceLoading,
-    isToSwapBalanceLoading,
+    isFromWagmiTokenLoading,
+    isToWagmiTokenLoading,
     isLifiQuoteLoading,
   ]);
 
@@ -555,19 +389,15 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     return (
       isFromQueryTokenLoading ||
       isToQueryTokenLoading ||
-      isFromSwapNativeBalanceLoading ||
-      isFromSwapBalanceLoading ||
-      isToSwapNativeBalanceLoading ||
-      isToSwapBalanceLoading ||
+      isFromWagmiTokenLoading ||
+      isToWagmiTokenLoading ||
       isLifiQuoteLoading
     );
   }, [
     isFromQueryTokenLoading,
     isToQueryTokenLoading,
-    isFromSwapNativeBalanceLoading,
-    isToSwapNativeBalanceLoading,
-    isFromSwapBalanceLoading,
-    isToSwapBalanceLoading,
+    isFromWagmiTokenLoading,
+    isToWagmiTokenLoading,
     isLifiQuoteLoading,
   ]);
 
