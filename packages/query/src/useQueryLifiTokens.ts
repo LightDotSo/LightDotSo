@@ -69,7 +69,9 @@ export const useQueryLifiTokens = () => {
 
   return {
     lifiTokens:
-      lifiTokensPage !== null && lifiTokensPage !== undefined
+      lifiTokensPage !== null &&
+      lifiTokensPage !== undefined &&
+      lifiTokensPage.tokens
         ? Object.values(lifiTokensPage.tokens).flatMap(tokens => tokens)
         : [],
     isLifiTokensLoading: isLifiTokensLoading,

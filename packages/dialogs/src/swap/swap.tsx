@@ -252,12 +252,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(fromSwapToken.amount),
                   }}
                 />
-                <span
-                  className={cn(
-                    "ml-1 max-w-24 text-2xl tracking-wide text-text",
-                    fromSwapToken.symbol.length > 6 && "truncate",
-                  )}
-                >
+                <span className="ml-1 max-w-24 text-2xl tracking-wide text-text truncate">
                   {fromSwapToken.symbol}
                 </span>
               </>
@@ -384,12 +379,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(toSwapToken.amount),
                   }}
                 />
-                <span
-                  className={cn(
-                    "min-w-10 max-w-24 text-2xl tracking-wide text-text",
-                    toSwapToken.symbol.length > 6 && "truncate",
-                  )}
-                >
+                <span className="min-w-10 max-w-24 text-2xl tracking-wide text-text truncate">
                   {toSwapToken.symbol}
                 </span>
               </>
