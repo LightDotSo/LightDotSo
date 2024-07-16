@@ -22,7 +22,7 @@ import { Skeleton } from "@lightdotso/ui";
 import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useState, type FC, useEffect, memo } from "react";
+import { useState, type FC, useEffect, memo, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -143,13 +143,26 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
-  const urls = [
-    `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
-    `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
-    `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
-    `https://raw.githubusercontent.com/0xa3k5/token-icons/main/packages/core/src/raw-svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`,
-  ];
-  const currentUrl = urls[currentUrlIndex];
+  const urls = useMemo(
+    () =>
+      [
+        `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
+        `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
+        `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
+        typeof token.symbol === "string" && token.symbol
+          ? `https://raw.githubusercontent.com/0xa3k5/token-icons/main/packages/core/src/raw-svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`
+          : null,
+      ].filter(url => url !== null) as string[],
+    [tokenChainId, tokenAddress, token.symbol],
+  );
+
+  const currentUrl = useMemo(() => {
+    if (!urls) {
+      return "";
+    }
+
+    return urls[currentUrlIndex];
+  }, [currentUrlIndex, urls]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

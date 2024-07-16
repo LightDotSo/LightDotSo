@@ -17,7 +17,7 @@
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"
   },
   "dependencies": {
-    "@metamask/eth-sig-util": "^7.0.2",
+    "@metamask/eth-sig-util": "^7.0.3",
     "@types/firefox-webext-browser": "^120.0.4",
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",

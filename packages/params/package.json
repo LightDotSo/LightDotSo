@@ -28,7 +28,7 @@
   "dependencies": {
     "@lightdotso/data": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
-    "viem": "^2.17.3"
+    "viem": "^2.17.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
