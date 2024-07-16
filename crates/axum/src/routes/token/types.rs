@@ -14,6 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
+use lightdotso_contracts::utils::is_testnet;
 use lightdotso_prisma::{token, wallet_balance};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -46,6 +47,10 @@ pub(crate) struct Token {
     pub token_type: Option<String>,
     /// The group of the token.
     pub group: Option<TokenGroup>,
+    /// The flag to indicate if the token is a spam token.
+    pub is_spam: bool,
+    /// The flag to indicate if the token is on a testnet.
+    pub is_testnet: bool,
 }
 
 /// Token group root type.
@@ -78,6 +83,8 @@ impl From<token::Data> for Token {
             group: token.group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
+            is_spam: false,
+            is_testnet: is_testnet(token.chain_id as u64),
         }
     }
 }
@@ -103,6 +110,8 @@ impl From<wallet_balance::Data> for Token {
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
+            is_spam: balance.is_spam,
+            is_testnet: balance.is_testnet,
         }
     }
 }

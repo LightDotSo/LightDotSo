@@ -73,8 +73,13 @@ pub(crate) async fn v1_token_group_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the token groups from the database.
-    let token_group =
-        state.client.token_group().find_unique(token_group::id::equals(query.id)).exec().await?;
+    let token_group = state
+        .client
+        .token_group()
+        .find_unique(token_group::id::equals(query.id))
+        .with(token_group::tokens::fetch(vec![]))
+        .exec()
+        .await?;
 
     // If the tokengroup is not found, return a 404.
     let token_group = token_group.ok_or(RouteError::TokenGroupError(TokenGroupError::NotFound(

@@ -94,7 +94,11 @@ pub async fn node_consumer(
 
         // Simulate the user operation with the tracer
         let res = node
-            .simulate_user_operation_with_tracer(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop)
+            .simulate_user_operation_with_tracer_with_backon(
+                chain_id,
+                *ENTRYPOINT_V060_ADDRESS,
+                &uop,
+            )
             .await?;
 
         // Log the response

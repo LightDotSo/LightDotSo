@@ -3141,6 +3141,10 @@ export interface components {
             group?: components["schemas"]["TokenGroup"] | null;
             /** @description The id of the token. */
             id: string;
+            /** @description The flag to indicate if the token is a spam token. */
+            is_spam: boolean;
+            /** @description The flag to indicate if the token is on a testnet. */
+            is_testnet: boolean;
             /** @description The name of the token. */
             name?: string | null;
             /** @description The symbol of the token. */
@@ -3163,6 +3167,8 @@ export interface components {
         TokenGroup: {
             /** @description The id of the token group. */
             id: string;
+            /** @description The array of tokens in the token group. */
+            tokens: components["schemas"]["Token"][];
         };
         /** @description TokenGroup errors */
         TokenGroupError: {
@@ -6474,6 +6480,8 @@ export interface operations {
                 is_spam?: boolean | null;
                 /** @description The flag to indicate if the token is a testnet token. */
                 is_testnet?: boolean | null;
+                /** @description The flag to indicate to retrieve those by the token group. */
+                is_group_only?: boolean | null;
                 /** @description The flag to group the tokens by the token group. */
                 group?: boolean | null;
                 /** @description The optional chain ids of the tokens to query for. */
@@ -6518,6 +6526,8 @@ export interface operations {
                 is_spam?: boolean | null;
                 /** @description The flag to indicate if the token is a testnet token. */
                 is_testnet?: boolean | null;
+                /** @description The flag to indicate to retrieve those by the token group. */
+                is_group_only?: boolean | null;
                 /** @description The flag to group the tokens by the token group. */
                 group?: boolean | null;
                 /** @description The optional chain ids of the tokens to query for. */

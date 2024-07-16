@@ -97,6 +97,22 @@ impl Node {
         Ok(())
     }
 
+    pub async fn simulate_user_operation_with_tracer_with_backon(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<bool> {
+        let simulate_user_operation_with_tracer = || async {
+            self.simulate_user_operation_with_tracer(chain_id, entry_point, user_operation).await
+        };
+
+        let res = simulate_user_operation_with_tracer.retry(&ExponentialBuilder::default()).await;
+        info!("res: {:?}", res);
+
+        res
+    }
+
     // From: https://github.com/silius-rs/silius/blob/62cff148f386283bc44114ec9d545eae427489f2/crates/mempool/src/estimate.rs#L116-129
     // License: Apache-2.0
 
@@ -149,19 +165,20 @@ impl Node {
 
         let tracer_result: ExecutorTracerResult =
             ExecutorTracerResult::try_from(trace).map_err(|e| eyre!(e))?;
+        info!("tracer_result: {:?}", tracer_result);
+
+        let user_op_revert_event = tracer_result
+            .user_op_revert_event
+            .as_ref()
+            .and_then(|e| parse_user_op_event::<UserOperationRevertReasonFilter>(e).ok());
+        info!("user_op_revert_event: {:?}", user_op_revert_event);
 
         let user_op_event = tracer_result
             .user_op_event
             .as_ref()
             .ok_or(eyre!("Estimate trace simulate handle op user op event not found"))?;
         let user_op_event = parse_user_op_event::<UserOperationEventFilter>(user_op_event)?;
-        let user_op_revert_event = tracer_result
-            .user_op_revert_event
-            .as_ref()
-            .and_then(|e| parse_user_op_event::<UserOperationRevertReasonFilter>(e).ok());
-
         info!("user_op_event: {:?}", user_op_event);
-        info!("user_op_revert_event: {:?}", user_op_revert_event);
 
         Ok(user_op_event.success)
     }
