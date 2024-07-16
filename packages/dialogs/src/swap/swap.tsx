@@ -140,8 +140,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    fromSwapToken,
-    toSwapToken,
+    fromTokenAmount,
+    toTokenAmount,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
     isFromSwapValueValid,
@@ -156,8 +156,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapMaximumAmount,
     fromSwapMaximumQuantity,
     toSwapMaximumQuantity,
-    fromSwapTokenDollarRatio,
-    toSwapTokenDollarRatio,
+    fromTokenAmountDollarRatio,
+    toTokenAmountDollarRatio,
     toSwapQuantityDollarValue,
     toSwapDecimals,
   } = useSwap({
@@ -252,24 +252,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
+            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {fromSwapToken && fromSwapToken.address && fromSwapToken.symbol ? (
+            {fromTokenAmount &&
+            fromTokenAmount.address &&
+            fromTokenAmount.symbol ? (
               <>
                 <TokenImage
                   withChainLogo
                   token={{
-                    ...fromSwapToken,
-                    amount: Number(fromSwapToken.amount),
+                    ...fromTokenAmount,
+                    amount: Number(fromTokenAmount.amount),
                   }}
                 />
-                <span className="ml-1 max-w-24 text-2xl tracking-wide text-text truncate">
-                  {fromSwapToken.symbol}
+                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
+                  {fromTokenAmount.symbol}
                 </span>
               </>
             ) : (
-              <span className="w-full whitespace-nowrap text-lg text-text">
+              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
@@ -280,9 +282,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
-            {fromSwapTokenDollarRatio && (
+            {fromTokenAmountDollarRatio && (
               <span className="truncate text-xs text-text-weak">
-                {`(1 ${fromSwapToken?.symbol} = $${refineNumberFormat(fromSwapTokenDollarRatio)})`}
+                {`(1 ${fromTokenAmount?.symbol} = $${refineNumberFormat(fromTokenAmountDollarRatio)})`}
               </span>
             )}
           </span>
@@ -317,27 +319,28 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </div>
       <div className="z-10 -my-4 flex items-center justify-center">
         <ButtonIcon
+          className="ring-4 ring-background-body"
           onClick={() => {
             // Swap buy and sell values
             if (fromSwap?.quantity && toSwap?.quantity) {
               // Make a copy of the values
-              const fromSwapTokenValue = fromSwap?.quantity;
-              const toSwapTokenValue = toSwap?.quantity;
+              const fromTokenAmountValue = fromSwap?.quantity;
+              const toTokenAmountValue = toSwap?.quantity;
 
-              form.setValue("from.quantity", toSwapTokenValue);
-              form.setValue("to.quantity", fromSwapTokenValue);
+              form.setValue("from.quantity", toTokenAmountValue);
+              form.setValue("to.quantity", fromTokenAmountValue);
             }
 
             // Set buy values to sell
-            if (fromSwapToken) {
-              form.setValue("to.address", fromSwapToken.address);
-              form.setValue("to.chainId", fromSwapToken.chain_id);
+            if (fromTokenAmount) {
+              form.setValue("to.address", fromTokenAmount.address);
+              form.setValue("to.chainId", fromTokenAmount.chain_id);
             }
 
             // Set sell values to buy
-            if (toSwapToken) {
-              form.setValue("from.address", toSwapToken.address);
-              form.setValue("from.chainId", toSwapToken.chain_id);
+            if (toTokenAmount) {
+              form.setValue("from.address", toTokenAmount.address);
+              form.setValue("from.chainId", toTokenAmount.chain_id);
             }
           }}
           variant="shadow"
@@ -394,24 +397,24 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
+            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {toSwapToken && toSwapToken.address && toSwapToken.symbol ? (
+            {toTokenAmount && toTokenAmount.address && toTokenAmount.symbol ? (
               <>
                 <TokenImage
                   withChainLogo
                   token={{
-                    ...toSwapToken,
-                    amount: Number(toSwapToken.amount),
+                    ...toTokenAmount,
+                    amount: Number(toTokenAmount.amount),
                   }}
                 />
-                <span className="min-w-10 max-w-24 text-2xl tracking-wide text-text truncate">
-                  {toSwapToken.symbol}
+                <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
+                  {toTokenAmount.symbol}
                 </span>
               </>
             ) : (
-              <span className="w-full whitespace-nowrap text-lg text-text">
+              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
@@ -422,9 +425,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
-            {toSwapTokenDollarRatio && (
+            {toTokenAmountDollarRatio && (
               <span className="truncate text-xs text-text-weak">
-                {`(1 ${toSwapToken?.symbol} = $${refineNumberFormat(toSwapTokenDollarRatio)})`}
+                {`(1 ${toTokenAmount?.symbol} = $${refineNumberFormat(toTokenAmountDollarRatio)})`}
               </span>
             )}
           </span>
@@ -474,7 +477,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   (fromSwap?.quantity && fromSwap?.quantity === 0)
                 ? "Enter Quantity"
                 : !isFromSwapValueValid
-                  ? `Insufficient ${fromSwapToken?.symbol}`
+                  ? `Insufficient ${fromTokenAmount?.symbol}`
                   : "Invalid Swap"}
       </Button>
     </div>

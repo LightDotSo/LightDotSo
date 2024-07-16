@@ -20,16 +20,11 @@ import { ExecutionWithChainId } from "@lightdotso/types";
 import { useMemo } from "react";
 import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { useDebouncedValue } from "./useDebouncedValue";
-import { useWagmiToken, WagmiToken } from "./useWagmiToken";
+import { useTokenAmount } from "./useTokenAmount";
 
 // -----------------------------------------------------------------------------
 // Hook Props
 // -----------------------------------------------------------------------------
-
-type SwapTokenData = Omit<TokenData, "amount"> & {
-  amount: bigint;
-  original_amount: number;
-};
 
 export type SwapProps = {
   fromSwap: Swap | undefined;
@@ -48,107 +43,46 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { token: fromQueryToken, isTokenLoading: isFromQueryTokenLoading } =
-    useQueryToken({
-      address: (fromSwap?.address as Address) ?? undefined,
-      chain_id: fromSwap?.chainId,
-      wallet: wallet as Address,
-    });
-
-  const { token: toQueryToken, isTokenLoading: isToQueryTokenLoading } =
-    useQueryToken({
-      address: (toSwap?.address as Address) ?? undefined,
-      chain_id: toSwap?.chainId,
-      wallet: wallet as Address,
-    });
-
-  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const {
-    wagmiToken: fromWagmiToken,
-    isWagmiTokenLoading: isFromWagmiTokenLoading,
-  } = useWagmiToken({
+    tokenAmount: fromTokenAmount,
+    isTokenAmountLoading: isFromTokenAmountLoading,
+  } = useTokenAmount({
     address: wallet as Address,
     chainId: fromSwap?.chainId,
     tokenAddress: fromSwap?.address as Address,
   });
 
   const {
-    wagmiToken: toWagmiToken,
-    isWagmiTokenLoading: isToWagmiTokenLoading,
-  } = useWagmiToken({
+    tokenAmount: toTokenAmount,
+    isTokenAmountLoading: isToTokenAmountLoading,
+  } = useTokenAmount({
     address: wallet as Address,
     chainId: toSwap?.chainId,
     tokenAddress: toSwap?.address as Address,
   });
 
   // ---------------------------------------------------------------------------
-  // Utils
-  // ---------------------------------------------------------------------------
-
-  function getSwapToken(
-    swap: Swap | undefined,
-    queryToken: TokenData | null | undefined,
-    wagmiToken: WagmiToken | null | undefined,
-  ) {
-    let fromSwapToken: SwapTokenData = {
-      amount: queryToken?.amount ? BigInt(queryToken?.amount) : 0n,
-      original_amount: queryToken?.amount ?? 0,
-      balance_usd: queryToken?.balance_usd ?? 0,
-      id: queryToken?.id ?? `${swap?.address}-${swap?.chainId}`,
-      chain_id: swap?.chainId ?? queryToken?.chain_id ?? 0,
-      address: swap?.address ?? queryToken?.address ?? "",
-      decimals: queryToken?.decimals ?? 0,
-      symbol: queryToken?.symbol ?? "",
-    };
-
-    if (wagmiToken?.balance) {
-      fromSwapToken.amount = wagmiToken?.balance;
-    }
-
-    if (wagmiToken?.decimals) {
-      fromSwapToken.decimals = wagmiToken?.decimals;
-    }
-
-    if (wagmiToken?.symbol) {
-      fromSwapToken.symbol = wagmiToken?.symbol;
-    }
-
-    return fromSwapToken;
-  }
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const fromSwapToken: SwapTokenData | null = useMemo(() => {
-    return getSwapToken(fromSwap, fromQueryToken, fromWagmiToken);
-  }, [fromSwap, fromQueryToken, fromWagmiToken]);
-
-  const toSwapToken: SwapTokenData | null = useMemo(() => {
-    return getSwapToken(toSwap, toQueryToken, toWagmiToken);
-  }, [toSwap, toQueryToken, toWagmiToken]);
-
   const fromSwapDecimals = useMemo(() => {
-    return fromWagmiToken?.decimals ?? fromQueryToken?.decimals;
-  }, [fromWagmiToken?.decimals, fromQueryToken?.decimals]);
+    return fromTokenAmount?.decimals;
+  }, [fromTokenAmount?.decimals]);
 
   const toSwapDecimals = useMemo(() => {
-    return toWagmiToken?.decimals ?? toQueryToken?.decimals;
-  }, [toWagmiToken?.decimals, toQueryToken?.decimals]);
+    return toTokenAmount?.decimals;
+  }, [toTokenAmount?.decimals]);
 
   const fromSwapMaximumAmount = useMemo(() => {
-    return fromSwapToken?.amount;
-  }, [fromSwapToken?.amount]);
+    return fromTokenAmount?.amount;
+  }, [fromTokenAmount?.amount]);
 
   const toSwapMaximumAmount = useMemo(() => {
-    return toSwapToken?.amount;
-  }, [toSwapToken?.amount]);
+    return toTokenAmount?.amount;
+  }, [toTokenAmount?.amount]);
 
   const fromSwapMaximumQuantity = useMemo(() => {
     if (fromSwapMaximumAmount && fromSwapDecimals) {
@@ -198,38 +132,43 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     fromSwapMaximumQuantity,
   ]);
 
-  const fromSwapTokenDollarRatio = useMemo(() => {
-    return fromSwapToken?.balance_usd &&
-      fromSwapToken?.amount &&
+  const fromTokenAmountDollarRatio = useMemo(() => {
+    return fromTokenAmount?.balance_usd &&
+      fromTokenAmount?.amount &&
       fromSwapDecimals
-      ? fromSwapToken?.balance_usd /
-          (Number(fromSwapToken?.original_amount) /
+      ? fromTokenAmount?.balance_usd /
+          (Number(fromTokenAmount?.original_amount) /
             Math.pow(10, fromSwapDecimals))
       : null;
   }, [
-    fromSwapToken?.balance_usd,
-    fromSwapToken?.original_amount,
+    fromTokenAmount?.balance_usd,
+    fromTokenAmount?.original_amount,
     fromSwapDecimals,
   ]);
 
-  const toSwapTokenDollarRatio = useMemo(() => {
-    return toSwapToken?.balance_usd && toSwapToken?.amount && toSwapDecimals
-      ? toSwapToken?.balance_usd /
-          (Number(toSwapToken?.original_amount) / Math.pow(10, toSwapDecimals))
+  const toTokenAmountDollarRatio = useMemo(() => {
+    return toTokenAmount?.balance_usd && toTokenAmount?.amount && toSwapDecimals
+      ? toTokenAmount?.balance_usd /
+          (Number(toTokenAmount?.original_amount) /
+            Math.pow(10, toSwapDecimals))
       : null;
-  }, [toSwapToken?.balance_usd, toSwapToken?.original_amount, toSwapDecimals]);
+  }, [
+    toTokenAmount?.balance_usd,
+    toTokenAmount?.original_amount,
+    toSwapDecimals,
+  ]);
 
   const fromSwapQuantityDollarValue = useMemo(() => {
-    return fromSwap?.quantity && fromSwapTokenDollarRatio
-      ? fromSwap?.quantity * fromSwapTokenDollarRatio
+    return fromSwap?.quantity && fromTokenAmountDollarRatio
+      ? fromSwap?.quantity * fromTokenAmountDollarRatio
       : null;
-  }, [fromSwap?.quantity, fromSwapTokenDollarRatio]);
+  }, [fromSwap?.quantity, fromTokenAmountDollarRatio]);
 
   const toSwapQuantityDollarValue = useMemo(() => {
-    return toSwap?.quantity && toSwapTokenDollarRatio
-      ? toSwap?.quantity * toSwapTokenDollarRatio
+    return toSwap?.quantity && toTokenAmountDollarRatio
+      ? toSwap?.quantity * toTokenAmountDollarRatio
       : null;
-  }, [toSwap?.quantity, toSwapTokenDollarRatio]);
+  }, [toSwap?.quantity, toTokenAmountDollarRatio]);
 
   // ---------------------------------------------------------------------------
   // Debounced
@@ -362,24 +301,14 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [fromSwap?.quantity, fromSwapMaximumQuantity]);
 
   const isFromSwapLoading = useMemo(() => {
-    return isFromQueryTokenLoading || isFromWagmiTokenLoading;
-  }, [isFromQueryTokenLoading, isFromWagmiTokenLoading]);
+    return isFromTokenAmountLoading;
+  }, [isFromTokenAmountLoading]);
 
   const isToSwapLoading = useMemo(() => {
     return (
-      isFromQueryTokenLoading ||
-      isToQueryTokenLoading ||
-      isFromWagmiTokenLoading ||
-      isToWagmiTokenLoading ||
-      isLifiQuoteLoading
+      isFromTokenAmountLoading || isToTokenAmountLoading || isLifiQuoteLoading
     );
-  }, [
-    isFromQueryTokenLoading,
-    isToQueryTokenLoading,
-    isFromWagmiTokenLoading,
-    isToWagmiTokenLoading,
-    isLifiQuoteLoading,
-  ]);
+  }, [isFromTokenAmountLoading, isToTokenAmountLoading, isLifiQuoteLoading]);
 
   const isSwapNotEmpty = useMemo(() => {
     return fromSwap?.quantity && toSwap?.quantity;
@@ -387,19 +316,9 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const isSwapLoading = useMemo(() => {
     return (
-      isFromQueryTokenLoading ||
-      isToQueryTokenLoading ||
-      isFromWagmiTokenLoading ||
-      isToWagmiTokenLoading ||
-      isLifiQuoteLoading
+      isFromTokenAmountLoading || isToTokenAmountLoading || isLifiQuoteLoading
     );
-  }, [
-    isFromQueryTokenLoading,
-    isToQueryTokenLoading,
-    isFromWagmiTokenLoading,
-    isToWagmiTokenLoading,
-    isLifiQuoteLoading,
-  ]);
+  }, [isFromTokenAmountLoading, isToTokenAmountLoading, isLifiQuoteLoading]);
 
   const isSwapValid = useMemo(() => {
     return isFromSwapValueValid && isSwapNotEmpty;
@@ -410,8 +329,8 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   return {
-    fromSwapToken: fromSwapToken,
-    toSwapToken: toSwapToken,
+    fromTokenAmount: fromTokenAmount,
+    toTokenAmount: toTokenAmount,
     fromSwapAmount: debouncedFromSwapAmount,
     toSwapQuotedAmount: toSwapQuotedAmount,
     toSwapQuotedQuantity: toSwapQuotedQuantity,
@@ -425,8 +344,8 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     executionsParams: executionsParams,
     fromSwapDecimals: fromSwapDecimals,
     toSwapDecimals: toSwapDecimals,
-    fromSwapTokenDollarRatio: fromSwapTokenDollarRatio,
-    toSwapTokenDollarRatio: toSwapTokenDollarRatio,
+    fromTokenAmountDollarRatio: fromTokenAmountDollarRatio,
+    toTokenAmountDollarRatio: toTokenAmountDollarRatio,
     fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
     toSwapQuantityDollarValue: toSwapQuantityDollarValue,
     fromSwapMaximumQuantity: fromSwapMaximumQuantity,

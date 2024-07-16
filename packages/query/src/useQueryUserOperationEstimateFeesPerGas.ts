@@ -129,7 +129,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
       ? // Get the `maxFeePerGas` and apply the speed bump
         (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
-        baseMaxPriorityFeePerGas ?? null;
+        (baseMaxPriorityFeePerGas ?? null);
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {

@@ -31,6 +31,7 @@ export { useSignInWithSiwe } from "./useSignInWithSiwe";
 export { useSignMessageState } from "./useSignMessageState";
 export { useSwap } from "./useSwap";
 export { useSwaps } from "./useSwaps";
+export { useTokenAmount } from "./useTokenAmount";
 export { useUserOperationsCreate } from "./useUserOperationsCreate";
 export { useUserOperationsCreateState } from "./useUserOperationsCreateState";
 export { useUserOperationSend } from "./useUserOperationSend";

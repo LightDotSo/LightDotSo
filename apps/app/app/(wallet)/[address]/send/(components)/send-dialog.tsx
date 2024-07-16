@@ -1586,11 +1586,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     nft.contract?.type?.toLowerCase() ===
                                                     "erc1155"
                                                       ? // Get the quantity from the owner array
-                                                        nft.owners?.find(
+                                                        (nft.owners?.find(
                                                           owner =>
                                                             owner.owner_address ===
                                                             address,
-                                                        )?.quantity ?? 1
+                                                        )?.quantity ?? 1)
                                                       : 1;
 
                                                   form.setValue(
