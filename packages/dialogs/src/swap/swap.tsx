@@ -275,6 +275,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             )}
           </span>
           <Button
+            disabled={!fromSwapMaximumQuantity || fromSwapMaximumQuantity === 0}
             onClick={() => {
               if (
                 fromSwapMaximumAmount &&
@@ -402,6 +403,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             )}
           </span>
           <Button
+            disabled={!toSwapMaximumQuantity || toSwapMaximumQuantity === 0}
             onClick={() => {
               if (
                 toSwapMaximumAmount &&
