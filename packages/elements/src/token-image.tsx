@@ -157,10 +157,6 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   );
 
   const currentUrl = useMemo(() => {
-    if (!urls) {
-      return "";
-    }
-
     return urls[currentUrlIndex];
   }, [currentUrlIndex, urls]);
 
