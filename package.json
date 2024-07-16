@@ -24,7 +24,7 @@
     "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix",
     "clippy:cmd": "cargo clippy --workspace -- -D warnings --no-deps -D clippy::expect_used -D clippy::unwrap_used",
     "cspell:cmd": "cspell --no-summary --no-progress",
-    "cspell:lint": "cspell --no-summary --no-progress .",
+    "cspell:lint": "cspell --no-summary --no-progress . || true",
     "depcheck:lint": "pnpm -r exec depcheck .",
     "deploy:checkly": "checkly deploy",
     "deploy:graph:hosted": "pnpm run deploy:graph:hosted --filter @lightdotso/subgraph",

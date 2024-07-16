@@ -174,7 +174,12 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isImageLoaded || isLoading) {
+  if (
+    !isImageLoaded ||
+    isLoading ||
+    typeof token.symbol === "undefined" ||
+    token.symbol === null
+  ) {
     return (
       <Skeleton
         as="span"

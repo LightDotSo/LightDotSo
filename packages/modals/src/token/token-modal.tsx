@@ -17,7 +17,7 @@
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useContainerDimensions } from "@lightdotso/hooks";
+import { useContainerDimensions, useDebouncedValue } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
 import {
   useQueryLifiTokens,
@@ -67,7 +67,7 @@ export const TokenModal: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { tokens } = useQueryTokens({
+  const { tokens, isTokensLoading } = useQueryTokens({
     address: address as Address,
     is_testnet: isTestnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
@@ -76,9 +76,9 @@ export const TokenModal: FC = () => {
     chain_ids: null,
   });
 
-  const { lifiTokens } = useQueryLifiTokens();
+  const { lifiTokens, isLifiTokensLoading } = useQueryLifiTokens();
 
-  const { socketBalances } = useQuerySocketBalances({
+  const { socketBalances, isSocketBalancesLoading } = useQuerySocketBalances({
     address: address as Address,
   });
 
@@ -188,8 +188,18 @@ export const TokenModal: FC = () => {
       return light_token;
     });
 
+    // Remove the overlayed tokens from the lifi tokens
+    const duplicated_lifi_tokens = lifi_tokens.filter(
+      token =>
+        !overlayed_tokens.find(
+          overlayed_token =>
+            overlayed_token.address === token.address &&
+            overlayed_token.chain_id === token.chain_id,
+        ),
+    );
+
     // Combine the overlayed tokens and the lifi tokens to the front
-    const overlay_tokens = [...overlayed_tokens, ...lifi_tokens];
+    const overlay_tokens = [...overlayed_tokens, ...duplicated_lifi_tokens];
 
     return overlay_tokens;
   }, [light_tokens, lifi_tokens]);
@@ -235,7 +245,25 @@ export const TokenModal: FC = () => {
     }
 
     return socket_tokens;
-  }, [light_tokens, overlay_tokens, socket_tokens, type]);
+  }, [light_tokens, overlay_tokens, lifi_tokens, socket_tokens, type]);
+
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const debouncedIsTokenModalVisible = useDebouncedValue(
+    isTokenModalVisible,
+    300,
+  );
+
+  const isTokenModalLoading = useMemo(() => {
+    return (
+      isTokensLoading ||
+      isLifiTokensLoading ||
+      isSocketBalancesLoading ||
+      !debouncedIsTokenModalVisible
+    );
+  }, [isTokensLoading, isLifiTokensLoading, isSocketBalancesLoading]);
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -250,7 +278,14 @@ export const TokenModal: FC = () => {
   const virtualizer = useVirtualizer({
     count: renderedTokens.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 64,
+    estimateSize: useCallback(
+      () => 60,
+      [
+        renderedTokens.length,
+        isTokenModalVisible,
+        debouncedIsTokenModalVisible,
+      ],
+    ),
     overscan: 30,
   });
 

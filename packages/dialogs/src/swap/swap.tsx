@@ -14,6 +14,7 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useSwap } from "@lightdotso/hooks";
 import {
@@ -23,8 +24,9 @@ import {
 } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
+import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -32,7 +34,6 @@ import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type Address } from "viem";
-import { generatePartialUserOperations } from "@lightdotso/sdk";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -229,6 +230,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   hideTokenModal();
                 },
                 onTokenSelect: token => {
+                  // Check if the from and to swap tokens are the same
+                  if (
+                    toSwap?.address === token?.address &&
+                    toSwap?.chainId === token?.chain_id
+                  ) {
+                    // Set the to swap token to null
+                    form.setValue("to.address", undefined);
+                    form.setValue("to.chainId", undefined);
+                  }
+
+                  // Set the from swap token
                   form.setValue("from.address", token.address);
                   form.setValue("from.chainId", token.chain_id);
 
@@ -240,7 +252,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1"
+            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
             size="unsized"
           >
             {fromSwapToken && fromSwapToken.address && fromSwapToken.symbol ? (
@@ -252,12 +264,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(fromSwapToken.amount),
                   }}
                 />
-                <span
-                  className={cn(
-                    "ml-1 max-w-24 text-2xl tracking-wide text-text",
-                    fromSwapToken.symbol.length > 6 && "truncate",
-                  )}
-                >
+                <span className="ml-1 max-w-24 text-2xl tracking-wide text-text truncate">
                   {fromSwapToken.symbol}
                 </span>
               </>
@@ -280,6 +287,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             )}
           </span>
           <Button
+            disabled={
+              !fromSwapMaximumQuantity ||
+              fromSwapMaximumQuantity === 0 ||
+              fromSwap?.quantity === fromSwapMaximumQuantity
+            }
             onClick={() => {
               if (
                 fromSwapMaximumAmount &&
@@ -359,20 +371,30 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 onClose: () => {
                   hideTokenModal();
                 },
-                onTokenSelect: token => {
+                onTokenSelect: (token: TokenData) => {
+                  // Check if the from and to swap tokens are the same
+                  if (
+                    fromSwap?.address === token?.address &&
+                    fromSwap?.chainId === token?.chain_id
+                  ) {
+                    // Set the from swap token to null
+                    form.setValue("from.address", undefined);
+                    form.setValue("from.chainId", undefined);
+                  }
+
+                  // Set the to swap token
                   form.setValue("to.address", token.address);
                   form.setValue("to.chainId", token.chain_id);
 
                   form.trigger();
 
                   hideTokenModal();
-                  toSwapToken;
                 },
               });
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1"
+            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
             size="unsized"
           >
             {toSwapToken && toSwapToken.address && toSwapToken.symbol ? (
@@ -384,12 +406,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(toSwapToken.amount),
                   }}
                 />
-                <span
-                  className={cn(
-                    "min-w-10 max-w-24 text-2xl tracking-wide text-text",
-                    toSwapToken.symbol.length > 6 && "truncate",
-                  )}
-                >
+                <span className="min-w-10 max-w-24 text-2xl tracking-wide text-text truncate">
                   {toSwapToken.symbol}
                 </span>
               </>
@@ -412,6 +429,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             )}
           </span>
           <Button
+            disabled={
+              !toSwapMaximumQuantity ||
+              toSwapMaximumQuantity === 0 ||
+              toSwap?.quantity === toSwapMaximumQuantity
+            }
             onClick={() => {
               if (
                 toSwapMaximumAmount &&
@@ -446,9 +468,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           ? "Loading..."
           : isSwapValid
             ? "Swap"
-            : !isFromSwapValueValid
-              ? `Insufficient ${fromSwapToken?.symbol}`
-              : "Invalid Swap"}
+            : fromSwap?.address === undefined || fromSwap?.chainId === undefined
+              ? "Select Token"
+              : fromSwap?.quantity === undefined ||
+                  (fromSwap?.quantity && fromSwap?.quantity === 0)
+                ? "Enter Quantity"
+                : !isFromSwapValueValid
+                  ? `Insufficient ${fromSwapToken?.symbol}`
+                  : "Invalid Swap"}
       </Button>
     </div>
   );
