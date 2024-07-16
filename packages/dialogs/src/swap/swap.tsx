@@ -269,7 +269,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 </span>
               </>
             ) : (
-              <span className="w-full whitespace-nowrap text-lg text-text">
+              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
@@ -412,7 +412,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 </span>
               </>
             ) : (
-              <span className="w-full whitespace-nowrap text-lg text-text">
+              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
                 Select Token
               </span>
             )}
