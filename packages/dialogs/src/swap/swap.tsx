@@ -252,7 +252,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
+            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
             {fromSwapToken && fromSwapToken.address && fromSwapToken.symbol ? (
@@ -264,7 +264,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(fromSwapToken.amount),
                   }}
                 />
-                <span className="ml-1 max-w-24 text-2xl tracking-wide text-text truncate">
+                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
                   {fromSwapToken.symbol}
                 </span>
               </>
@@ -317,6 +317,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </div>
       <div className="z-10 -my-4 flex items-center justify-center">
         <ButtonIcon
+          className="ring-4 ring-background-body"
           onClick={() => {
             // Swap buy and sell values
             if (fromSwap?.quantity && toSwap?.quantity) {
@@ -394,7 +395,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               showTokenModal();
             }}
             variant="shadow"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full p-1 ml-1"
+            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
             {toSwapToken && toSwapToken.address && toSwapToken.symbol ? (
@@ -406,7 +407,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     amount: Number(toSwapToken.amount),
                   }}
                 />
-                <span className="min-w-10 max-w-24 text-2xl tracking-wide text-text truncate">
+                <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
                   {toSwapToken.symbol}
                 </span>
               </>
