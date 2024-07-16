@@ -48,6 +48,8 @@ pub struct ListQuery {
     pub is_spam: Option<bool>,
     /// The flag to indicate if the token is a testnet token.
     pub is_testnet: Option<bool>,
+    /// The flag to indicate to retrieve those by the token group.
+    pub is_group_only: Option<bool>,
     /// The flag to group the tokens by the token group.
     pub group: Option<bool>,
     /// The optional chain ids of the tokens to query for.
@@ -294,6 +296,11 @@ pub(crate) async fn v1_token_list_handler(
             token.balance_usd = total_balance;
             token.amount = total_amount;
         }
+    }
+
+    // If the is_group_only flag is set, return only the tokens that have a group.
+    if query.is_group_only.unwrap_or(false) {
+        tokens.retain(|token| token.group.is_some());
     }
 
     Ok(Json::from(tokens))
