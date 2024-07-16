@@ -14,6 +14,7 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useSwap } from "@lightdotso/hooks";
 import {
@@ -23,8 +24,9 @@ import {
 } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
+import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -32,7 +34,6 @@ import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type Address } from "viem";
-import { generatePartialUserOperations } from "@lightdotso/sdk";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -229,6 +230,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   hideTokenModal();
                 },
                 onTokenSelect: token => {
+                  // Check if the from and to swap tokens are the same
+                  if (
+                    toSwap?.address === token?.address &&
+                    toSwap?.chainId === token?.chain_id
+                  ) {
+                    // Set the to swap token to null
+                    form.setValue("to.address", undefined);
+                    form.setValue("to.chainId", undefined);
+                  }
+
+                  // Set the from swap token
                   form.setValue("from.address", token.address);
                   form.setValue("from.chainId", token.chain_id);
 
@@ -355,14 +367,24 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 onClose: () => {
                   hideTokenModal();
                 },
-                onTokenSelect: token => {
+                onTokenSelect: (token: TokenData) => {
+                  // Check if the from and to swap tokens are the same
+                  if (
+                    fromSwap?.address === token?.address &&
+                    fromSwap?.chainId === token?.chain_id
+                  ) {
+                    // Set the from swap token to null
+                    form.setValue("from.address", undefined);
+                    form.setValue("from.chainId", undefined);
+                  }
+
+                  // Set the to swap token
                   form.setValue("to.address", token.address);
                   form.setValue("to.chainId", token.chain_id);
 
                   form.trigger();
 
                   hideTokenModal();
-                  toSwapToken;
                 },
               });
               showTokenModal();
