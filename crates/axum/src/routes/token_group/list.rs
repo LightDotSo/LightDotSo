@@ -19,6 +19,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_prisma::token_group;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -73,6 +74,7 @@ pub(crate) async fn v1_token_group_list_handler(
         .client
         .token_group()
         .find_many(vec![])
+        .with(token_group::tokens::fetch(vec![]))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

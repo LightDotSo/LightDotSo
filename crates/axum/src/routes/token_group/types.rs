@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::routes::token::types::Token;
 use lightdotso_prisma::token_group;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -26,6 +27,8 @@ use utoipa::ToSchema;
 pub(crate) struct TokenGroup {
     /// The id of the token group.
     id: String,
+    /// The array of tokens in the token group.
+    tokens: Vec<Token>,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +38,11 @@ pub(crate) struct TokenGroup {
 /// Implement From<token_group::Data> for TokenGroup.
 impl From<token_group::Data> for TokenGroup {
     fn from(token_group: token_group::Data) -> Self {
-        Self { id: token_group.id }
+        Self {
+            id: token_group.id,
+            tokens: token_group
+                .tokens
+                .map_or(Vec::new(), |tokens| tokens.into_iter().map(Token::from).collect()),
+        }
     }
 }
