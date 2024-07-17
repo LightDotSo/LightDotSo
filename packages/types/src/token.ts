@@ -18,7 +18,13 @@ import { TokenData } from "@lightdotso/data";
 // Types
 // -----------------------------------------------------------------------------
 
-export type TokenAmount = Omit<TokenData, "amount"> & {
+export type TokenAmount = Omit<TokenData, "amount" | "group"> & {
   amount: bigint;
   original_amount: number;
+  group:
+    | {
+        id: string;
+        tokens: TokenAmount[];
+      }
+    | undefined;
 };

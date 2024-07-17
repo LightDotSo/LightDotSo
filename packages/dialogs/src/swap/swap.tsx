@@ -26,8 +26,16 @@ import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { useAuth, useModals, useUserOperations } from "@lightdotso/stores";
-import { refineNumberFormat } from "@lightdotso/utils";
-import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import {
+  Button,
+  ButtonIcon,
+  FormField,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Input,
+} from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
@@ -228,70 +236,117 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               />
             )}
           />
-          <Button
-            onClick={() => {
-              setTokenModalProps({
-                address: wallet as Address,
-                type: "swap",
-                isGroup: true,
-                isTestnet: walletSettings?.is_enabled_testnet ?? false,
-                onClose: () => {
-                  hideTokenModal();
-                },
-                onTokenSelect: token => {
-                  // Check if the from and to swap tokens are the same
-                  if (
-                    toSwap?.address === token?.address &&
-                    toSwap?.chainId === token?.chain_id
-                  ) {
-                    // Set the to swap token to null
-                    form.setValue("to.address", undefined);
-                    form.setValue("to.chainId", undefined);
-                  }
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button
+                onClick={() => {
+                  setTokenModalProps({
+                    address: wallet as Address,
+                    type: "swap",
+                    isGroup: true,
+                    isTestnet: walletSettings?.is_enabled_testnet ?? false,
+                    onClose: () => {
+                      hideTokenModal();
+                    },
+                    onTokenSelect: token => {
+                      // Check if the from and to swap tokens are the same
+                      if (
+                        toSwap?.address === token?.address &&
+                        toSwap?.chainId === token?.chain_id
+                      ) {
+                        // Set the to swap token to null
+                        form.setValue("to.address", undefined);
+                        form.setValue("to.chainId", undefined);
+                      }
 
-                  // Set the from swap token
-                  form.setValue("from.address", token.address);
-                  form.setValue("from.chainId", token.chain_id);
+                      // Set the from swap token
+                      form.setValue("from.address", token.address);
+                      form.setValue("from.chainId", token.chain_id);
 
-                  // Set the group id
-                  if (token.group) {
-                    form.setValue("from.groupId", token.group.id);
-                  }
+                      // Set the group id
+                      if (token.group) {
+                        form.setValue("from.groupId", token.group.id);
+                      }
 
-                  form.trigger();
+                      form.trigger();
 
-                  hideTokenModal();
-                },
-              });
-              showTokenModal();
-            }}
-            variant="shadow"
-            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
-            size="unsized"
-          >
-            {fromSwap && fromSwap?.groupId && (
-              <TokenGroup groupId={fromSwap?.groupId} />
-            )}
-            {fromToken && fromToken.address && fromToken.symbol ? (
-              <>
-                <TokenImage
-                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
-                  token={{
-                    ...fromToken,
-                    amount: Number(fromToken.amount),
-                  }}
-                />
-                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
-                  {fromToken.symbol}
-                </span>
-              </>
-            ) : (
-              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
-                Select Token
-              </span>
-            )}
-            <ChevronDown className="mr-1 size-4 shrink-0" />
-          </Button>
+                      hideTokenModal();
+                    },
+                  });
+                  showTokenModal();
+                }}
+                variant="shadow"
+                className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
+                size="unsized"
+              >
+                {fromSwap && fromSwap?.groupId && (
+                  <TokenGroup groupId={fromSwap?.groupId} />
+                )}
+                {fromToken && fromToken.address && fromToken.symbol ? (
+                  <>
+                    <TokenImage
+                      withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                      token={{
+                        ...fromToken,
+                        amount: Number(fromToken.amount),
+                        group: undefined,
+                      }}
+                    />
+                    <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
+                      {fromToken.symbol}
+                    </span>
+                  </>
+                ) : (
+                  <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
+                    Select Token
+                  </span>
+                )}
+                <ChevronDown className="mr-1 size-4 shrink-0" />
+              </Button>
+            </HoverCardTrigger>
+            {fromToken.chain_id === 0 &&
+              fromToken?.group &&
+              fromToken?.group?.tokens &&
+              fromToken?.group?.tokens.length > 0 && (
+                <HoverCardContent align="start" side="top" className="w-60 p-2">
+                  <div className="flex justify-between">
+                    <div className="w-full">
+                      {fromToken?.group &&
+                        fromToken?.group?.tokens &&
+                        fromToken?.group?.tokens.length > 0 &&
+                        fromToken?.group?.tokens.map((token, index) => (
+                          <div
+                            key={index}
+                            className="flex w-full items-center justify-between"
+                          >
+                            <div className="flex items-center gap-3 truncate py-2 text-xs font-medium text-text">
+                              <TokenImage
+                                size="xs"
+                                withChainLogo
+                                token={{
+                                  ...token,
+                                  amount: Number(token.amount),
+                                  group: undefined,
+                                }}
+                              />
+                              {getChainNameWithChainId(token.chain_id)}
+                            </div>
+                            <div className="truncate text-xs text-text">
+                              {token.original_amount &&
+                                token.decimals &&
+                                refineNumberFormat(
+                                  token.original_amount /
+                                    Math.pow(10, token.decimals),
+                                )}{" "}
+                              {token.symbol}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </HoverCardContent>
+              )}
+          </HoverCard>
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="truncate text-sm text-text-weak">
@@ -434,10 +489,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {toToken && toToken.address && toToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                  withChainLogo={toToken.chain_id !== 0 ? true : false}
                   token={{
                     ...toToken,
                     amount: Number(toToken.amount),
+                    group: undefined,
                   }}
                 />
                 <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
