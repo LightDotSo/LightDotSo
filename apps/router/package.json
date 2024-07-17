@@ -22,14 +22,14 @@
     "@hono-rate-limiter/cloudflare": "^0.1.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
-    "hono": "^4.4.13",
+    "hono": "^4.5.0",
     "hono-rate-limiter": "^0.4.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "typescript": "^5.5.3",
-    "wrangler": "^3.64.0"
+    "wrangler": "^3.65.0"
   },
   "publishConfig": {
     "access": "public"

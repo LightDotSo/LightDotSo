@@ -28,11 +28,11 @@
   "dependencies": {
     "@lightdotso/params": "workspace:*",
     "@lukemorales/query-key-factory": "^1.3.4",
-    "@tanstack/react-query": "^5.51.1"
+    "@tanstack/react-query": "^5.51.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "typescript": "^5.5.3"
   },
   "publishConfig": {
