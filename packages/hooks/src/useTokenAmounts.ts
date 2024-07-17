@@ -28,7 +28,15 @@ type TokenAmountsProps = {
 // -----------------------------------------------------------------------------
 
 export const useTokenAmounts = ({ group_id }: TokenAmountsProps) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { tokenGroups } = useTokenGroups();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
   const tokenAmounts = useMemo(() => {
     if (!group_id) {
@@ -44,9 +52,10 @@ export const useTokenAmounts = ({ group_id }: TokenAmountsProps) => {
 
     return tokenAmounts;
   }, [group_id, tokenGroups]);
-  console.log(JSON.stringify(tokenGroups));
-  console.log(group_id);
-  console.log(tokenAmounts);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return {
     tokenAmounts: tokenAmounts,

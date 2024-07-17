@@ -38,7 +38,6 @@ export const useToken = ({
   tokenAddress,
   groupId,
 }: TokenProps) => {
-  console.log(address, chainId, tokenAddress, groupId);
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -52,7 +51,6 @@ export const useToken = ({
   const { tokenAmounts } = useTokenAmounts({
     group_id: groupId ?? tokenAmount?.group?.id,
   });
-  console.log(tokenAmounts);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

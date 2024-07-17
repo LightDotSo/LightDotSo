@@ -19,6 +19,10 @@ import { useAuth, useTokenGroups } from "@lightdotso/stores";
 import { memo, useEffect } from "react";
 import { Address } from "viem";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export type TokenGroupProps = {
   groupId?: string | undefined;
 };
@@ -28,7 +32,15 @@ export type TokenGroupTokenProps = TokenGroupProps & {
   wallet: Address;
 };
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
@@ -38,6 +50,10 @@ export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
   const { tokenGroup } = useQueryTokenGroup({
     id: groupId,
   });
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   if (!wallet) {
     return;
@@ -60,24 +76,43 @@ export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
   );
 };
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const BaseTokenGroupToken = ({
   token,
   wallet,
 }: TokenGroupTokenProps) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const { tokenAmount } = useTokenAmount({
     address: wallet,
     chainId: token.chain_id,
     tokenAddress: token.address as Address,
   });
-  console.log(tokenAmount);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
 
   const { setTokenGroupByGroupId } = useTokenGroups();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     if (tokenAmount && tokenAmount?.group && tokenAmount?.group?.id) {
       setTokenGroupByGroupId(tokenAmount.group.id, tokenAmount);
     }
   }, [tokenAmount?.group?.id, tokenAmount]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return null;
 };
