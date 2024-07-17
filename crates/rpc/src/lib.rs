@@ -104,7 +104,9 @@ pub async fn get_client_result(
                         // Block range wide
                         code.as_i64() == Some(-32600) ||
                         // Method not found
-                        code.as_i64() == Some(-32601)
+                        code.as_i64() == Some(-32601) ||
+                        // Invalid params
+                        code.as_i64() == Some(-32602)
                         {
                             return None;
                         }
@@ -335,6 +337,7 @@ pub async fn rpc_proxy_handler(
                     (&*CHAINNODES_RPC_URLS, Some(std::env::var("CHAINNODES_API_KEY").unwrap())),
                     (&*BLASTAPI_RPC_URLS, Some(std::env::var("BLAST_API_KEY").unwrap())),
                     (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
+                    (&*NODEREAL_RPC_URLS, Some(std::env::var("NODEREAL_API_KEY").unwrap())),
                 ];
 
                 shuffle_requests(&mut requests);
