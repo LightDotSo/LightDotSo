@@ -12,25 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
-
 // -----------------------------------------------------------------------------
-// Schema
+// Params
 // -----------------------------------------------------------------------------
 
-export const swap = z.object({
-  /// The address of the token.
-  address: z.string().optional(),
-  /// The chain ID of the token.
-  chainId: z.number().optional(),
-  /// The quantity of the token to swap in number format. (user input)
-  quantity: z.number().optional(),
-  /// The group ID of the token group.
-  groupId: z.string().optional(),
-});
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type Swap = z.infer<typeof swap>;
+export type TokenGroupGetParams = {
+  id: string | undefined;
+};

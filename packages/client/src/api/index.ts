@@ -24,6 +24,7 @@ export * from "./portfolio";
 export * from "./queue";
 export * from "./signature";
 export * from "./simulation";
+export * from "./token_group";
 export * from "./token_price";
 export * from "./token";
 export * from "./transaction";

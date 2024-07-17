@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getToken } from "@lightdotso/client";
-import type { TokenData } from "@lightdotso/data";
-import type { TokenGetParams } from "@lightdotso/params";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getTokenGroup } from "@lightdotso/client";
+import type { TokenGroupData } from "@lightdotso/data";
+import type { TokenGroupGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryToken = (params: TokenGetParams) => {
+export const useQueryTokenGroup = (params: TokenGroupGetParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,37 +36,30 @@ export const useQueryToken = (params: TokenGetParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: TokenData | undefined = queryClient.getQueryData(
-    queryKeys.token.get({
-      address: params.address,
-      chain_id: params.chain_id,
-      wallet: params.wallet,
+  const currentGroupData: TokenGroupData | undefined = queryClient.getQueryData(
+    queryKeys.token_group.get({
+      id: params.id,
     }).queryKey,
   );
 
   const {
-    data: token,
-    isLoading: isTokenLoading,
+    data: tokenGroup,
+    isLoading: isTokenGroupLoading,
     failureCount,
-  } = useQuery<TokenData | null>({
-    enabled: Boolean(params.chain_id && params.chain_id > 0),
-    queryKey: queryKeys.token.get({
-      address: params.address,
-      chain_id: params.chain_id,
-      wallet: params.wallet,
+  } = useQuery<TokenGroupData | null>({
+    queryKey: queryKeys.token_group.get({
+      id: params.id,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address || !params.chain_id) {
+      if (!params.id) {
         return null;
       }
 
-      const res = await getToken(
+      const res = await getTokenGroup(
         {
           params: {
             query: {
-              address: params.address,
-              chain_id: params.chain_id,
-              wallet: params.wallet,
+              id: params.id,
             },
           },
         },
@@ -75,20 +68,20 @@ export const useQueryToken = (params: TokenGetParams) => {
 
       return res.match(
         data => {
-          return data as TokenData;
+          return data as TokenGroupData;
         },
         err => {
           if (failureCount % 3 !== 2) {
             throw err;
           }
-          return currentData ?? null;
+          return currentGroupData ?? null;
         },
       );
     },
   });
 
   return {
-    token: token,
-    isTokenLoading: isTokenLoading,
+    tokenGroup: tokenGroup,
+    isTokenGroupLoading: isTokenGroupLoading,
   };
 };

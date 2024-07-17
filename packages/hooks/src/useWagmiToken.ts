@@ -61,7 +61,9 @@ export const useWagmiToken = ({
     query: {
       enabled: Boolean(
         tokenAddress &&
-          tokenAddress === "0x0000000000000000000000000000000000000000",
+          tokenAddress === "0x0000000000000000000000000000000000000000" &&
+          chainId &&
+          chainId > 0,
       ),
     },
   });
@@ -77,7 +79,8 @@ export const useWagmiToken = ({
         enabled: Boolean(
           tokenAddress &&
             tokenAddress !== "0x0000000000000000000000000000000000000000" &&
-            chainId,
+            chainId &&
+            chainId > 0,
         ),
       },
     });
@@ -92,7 +95,8 @@ export const useWagmiToken = ({
         enabled: Boolean(
           tokenAddress &&
             tokenAddress !== "0x0000000000000000000000000000000000000000" &&
-            chainId,
+            chainId &&
+            chainId > 0,
         ),
       },
     });
@@ -107,7 +111,8 @@ export const useWagmiToken = ({
         enabled: Boolean(
           tokenAddress &&
             tokenAddress !== "0x0000000000000000000000000000000000000000" &&
-            chainId,
+            chainId &&
+            chainId > 0,
         ),
       },
     });

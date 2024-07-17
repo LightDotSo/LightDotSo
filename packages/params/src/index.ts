@@ -53,6 +53,7 @@ export type {
   TokenListParams,
   TokenListCountParams,
 } from "./token";
+export type { TokenGroupGetParams } from "./tokenGroup";
 export type { TokenPriceParams } from "./tokenPrice";
 export type {
   TransactionListParams,

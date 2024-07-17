@@ -12,25 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
+import type { TokenGroupGetParams } from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// Schema
+// Keys
 // -----------------------------------------------------------------------------
 
-export const swap = z.object({
-  /// The address of the token.
-  address: z.string().optional(),
-  /// The chain ID of the token.
-  chainId: z.number().optional(),
-  /// The quantity of the token to swap in number format. (user input)
-  quantity: z.number().optional(),
-  /// The group ID of the token group.
-  groupId: z.string().optional(),
+export const token_group = createQueryKeys("token_group", {
+  get: (params: TokenGroupGetParams) => ({
+    queryKey: [{ params: params }],
+  }),
 });
 
 // -----------------------------------------------------------------------------
-// Types
+// Infer
 // -----------------------------------------------------------------------------
 
-export type Swap = z.infer<typeof swap>;
+export type TokenGroupKeys = inferQueryKeys<typeof token_group>;

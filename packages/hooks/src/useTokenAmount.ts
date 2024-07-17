@@ -22,7 +22,7 @@ import { useMemo } from "react";
 // Types
 // -----------------------------------------------------------------------------
 
-type TokenAmountData = Omit<TokenData, "amount"> & {
+export type TokenAmountData = Omit<TokenData, "amount"> & {
   amount: bigint;
   original_amount: number;
 };
@@ -31,7 +31,7 @@ type TokenAmountData = Omit<TokenData, "amount"> & {
 // Hook Props
 // -----------------------------------------------------------------------------
 
-type TokenAmountProps = {
+export type TokenAmountProps = {
   address: Address | null | undefined;
   chainId: number | undefined;
   tokenAddress: Address | undefined;

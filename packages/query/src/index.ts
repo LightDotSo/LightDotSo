@@ -57,6 +57,7 @@ export { useQuerySocketBalances } from "./useQuerySocketBalances";
 export { useQueryToken } from "./useQueryToken";
 export { useQueryTokens } from "./useQueryTokens";
 export { useQueryTokensCount } from "./useQueryTokensCount";
+export { useQueryTokenGroup } from "./useQueryTokenGroup";
 export { useQueryTokenPrice } from "./useQueryTokenPrice";
 export { useQueryTransactions } from "./useQueryTransactions";
 export { useQueryTransactionsCount } from "./useQueryTransactionsCount";

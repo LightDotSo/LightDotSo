@@ -140,8 +140,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    fromTokenAmount,
-    toTokenAmount,
+    fromToken,
+    toToken,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
     isFromSwapValueValid,
@@ -156,8 +156,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapMaximumAmount,
     fromSwapMaximumQuantity,
     toSwapMaximumQuantity,
-    fromTokenAmountDollarRatio,
-    toTokenAmountDollarRatio,
+    fromTokenDollarRatio,
+    toTokenDollarRatio,
     toSwapQuantityDollarValue,
     toSwapDecimals,
   } = useSwap({
@@ -245,6 +245,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   form.setValue("from.address", token.address);
                   form.setValue("from.chainId", token.chain_id);
 
+                  // Set the group id
+                  if (token.group) {
+                    form.setValue("from.groupId", token.group.id);
+                  }
+
                   form.trigger();
 
                   hideTokenModal();
@@ -256,19 +261,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {fromTokenAmount &&
-            fromTokenAmount.address &&
-            fromTokenAmount.symbol ? (
+            {fromToken && fromToken.address && fromToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo
+                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
                   token={{
-                    ...fromTokenAmount,
-                    amount: Number(fromTokenAmount.amount),
+                    ...fromToken,
+                    amount: Number(fromToken.amount),
                   }}
                 />
                 <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
-                  {fromTokenAmount.symbol}
+                  {fromToken.symbol}
                 </span>
               </>
             ) : (
@@ -283,9 +286,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
-            {fromTokenAmountDollarRatio && (
+            {fromTokenDollarRatio && (
               <span className="truncate text-xs text-text-weak">
-                {`(1 ${fromTokenAmount?.symbol} = $${refineNumberFormat(fromTokenAmountDollarRatio)})`}
+                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
               </span>
             )}
           </span>
@@ -325,23 +328,33 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             // Swap buy and sell values
             if (fromSwap?.quantity && toSwap?.quantity) {
               // Make a copy of the values
-              const fromTokenAmountValue = fromSwap?.quantity;
-              const toTokenAmountValue = toSwap?.quantity;
+              const fromTokenValue = fromSwap?.quantity;
+              const toTokenValue = toSwap?.quantity;
 
-              form.setValue("from.quantity", toTokenAmountValue);
-              form.setValue("to.quantity", fromTokenAmountValue);
+              form.setValue("from.quantity", toTokenValue);
+              form.setValue("to.quantity", fromTokenValue);
             }
 
             // Set buy values to sell
-            if (fromTokenAmount) {
-              form.setValue("to.address", fromTokenAmount.address);
-              form.setValue("to.chainId", fromTokenAmount.chain_id);
+            if (fromToken) {
+              form.setValue("to.address", fromToken.address);
+              form.setValue("to.chainId", fromToken.chain_id);
+
+              // Set the group id
+              if (fromToken.group) {
+                form.setValue("to.groupId", fromToken.group.id);
+              }
             }
 
             // Set sell values to buy
-            if (toTokenAmount) {
-              form.setValue("from.address", toTokenAmount.address);
-              form.setValue("from.chainId", toTokenAmount.chain_id);
+            if (toToken) {
+              form.setValue("from.address", toToken.address);
+              form.setValue("from.chainId", toToken.chain_id);
+
+              // Set the group id
+              if (toToken.group) {
+                form.setValue("from.groupId", toToken.group.id);
+              }
             }
           }}
           variant="shadow"
@@ -391,6 +404,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   form.setValue("to.address", token.address);
                   form.setValue("to.chainId", token.chain_id);
 
+                  // Set the group id
+                  if (token.group) {
+                    form.setValue("to.groupId", token.group.id);
+                  }
+
                   form.trigger();
 
                   hideTokenModal();
@@ -402,17 +420,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {toTokenAmount && toTokenAmount.address && toTokenAmount.symbol ? (
+            {toToken && toToken.address && toToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo
+                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
                   token={{
-                    ...toTokenAmount,
-                    amount: Number(toTokenAmount.amount),
+                    ...toToken,
+                    amount: Number(toToken.amount),
                   }}
                 />
                 <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
-                  {toTokenAmount.symbol}
+                  {toToken.symbol}
                 </span>
               </>
             ) : (
@@ -427,9 +445,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
-            {toTokenAmountDollarRatio && (
+            {toTokenDollarRatio && (
               <span className="truncate text-xs text-text-weak">
-                {`(1 ${toTokenAmount?.symbol} = $${refineNumberFormat(toTokenAmountDollarRatio)})`}
+                {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenDollarRatio)})`}
               </span>
             )}
           </span>
@@ -479,7 +497,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   (fromSwap?.quantity && fromSwap?.quantity === 0)
                 ? "Enter Quantity"
                 : !isFromSwapValueValid
-                  ? `Insufficient ${fromTokenAmount?.symbol}`
+                  ? `Insufficient ${fromToken?.symbol}`
                   : "Invalid Swap"}
       </Button>
     </div>

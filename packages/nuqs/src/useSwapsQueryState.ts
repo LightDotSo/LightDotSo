@@ -32,21 +32,24 @@ export const swapsParser = createParser({
 
     const swapPairs = value.split(";").map(pair => {
       const [from, to] = pair.split("->").map(swapStr => {
-        const [address, chainId, quantity] = swapStr.split("|");
+        const [address, chainId, quantity, groupId] = swapStr.split("|");
         const parsedAddress = address === "_" ? undefined : address;
         const parsedChainId = parseInt(chainId);
         const parsedQuantity = parseFloat(quantity);
+        const parsedGroupId = groupId === "_" ? undefined : groupId;
 
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
           !isNaN(parsedChainId) &&
-          !isNaN(parsedQuantity)
+          !isNaN(parsedQuantity) &&
+          parsedGroupId
         ) {
           return {
             address: parsedAddress,
             chainId: parsedChainId,
             quantity: parsedQuantity,
+            groupId: parsedGroupId,
           };
         }
         return null;
@@ -71,7 +74,7 @@ export const swapsParser = createParser({
     const swapPairsString = value
       .map(({ from, to }) => {
         const serializeSwap = (swap: Swap) => {
-          return `${swap?.address ?? "_"}|${swap?.chainId ?? 0}|${swap?.quantity ?? 0}`;
+          return `${swap?.address ?? "_"}|${swap?.chainId ?? 0}|${swap?.quantity ?? 0}${swap?.groupId ?? "_"}`;
         };
 
         return `${serializeSwap(from)}->${serializeSwap(to)}`;

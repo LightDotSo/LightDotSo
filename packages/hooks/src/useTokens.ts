@@ -12,25 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
+import { TokenProps, useToken } from "./useToken";
 
 // -----------------------------------------------------------------------------
-// Schema
+// Hook Props
 // -----------------------------------------------------------------------------
 
-export const swap = z.object({
-  /// The address of the token.
-  address: z.string().optional(),
-  /// The chain ID of the token.
-  chainId: z.number().optional(),
-  /// The quantity of the token to swap in number format. (user input)
-  quantity: z.number().optional(),
-  /// The group ID of the token group.
-  groupId: z.string().optional(),
-});
+type TokensProps = {
+  tokens: TokenProps[];
+};
 
 // -----------------------------------------------------------------------------
-// Types
+// Hook
 // -----------------------------------------------------------------------------
 
-export type Swap = z.infer<typeof swap>;
+export const useTokens = ({ tokens }: TokensProps) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+  const tokensData = tokens.map(token => {
+    return useToken(token);
+  });
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+  return {
+    tokens: tokensData,
+  };
+};
