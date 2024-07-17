@@ -107,7 +107,7 @@ pub(crate) async fn v1_token_get_handler(
                 wallet_balance::wallet_address::equals(wallet_address),
                 wallet_balance::is_latest::equals(true),
             ])
-            .with(wallet_balance::token::fetch())
+            .with(wallet_balance::token::fetch().with(token::group::fetch()))
             .exec()
             .await?;
 

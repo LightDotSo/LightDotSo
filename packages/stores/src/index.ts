@@ -29,6 +29,7 @@ export { useNewForm } from "./useNewForm";
 export { useQueues } from "./useQueues";
 export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";
+export { useTokenGroups } from "./useTokenGroups";
 export type { PendingTransaction } from "./useTransactions";
 export { useTransactions } from "./useTransactions";
 export { useUserOperations } from "./useUserOperations";

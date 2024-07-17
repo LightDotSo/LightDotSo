@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { AppGroup } from "./app-group";
-export type { Banner } from "./banner";
-export type { Execution, ExecutionWithChainId } from "./execution";
-export type { SubCategory, CategoryObject } from "./category";
-export type { Tab } from "./tab";
-export type { TokenAmount } from "./token";
+import { TokenData } from "@lightdotso/data";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type TokenAmount = Omit<TokenData, "amount"> & {
+  amount: bigint;
+  original_amount: number;
+};

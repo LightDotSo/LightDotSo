@@ -32,6 +32,7 @@ import { signature } from "./signature";
 import { simulation } from "./simulation";
 import { socket } from "./socket";
 import { token } from "./token";
+import { token_group } from "./token_group";
 import { token_price } from "./token_price";
 import { transaction } from "./transaction";
 import { user } from "./user";
@@ -58,6 +59,8 @@ export const queryKeys = mergeQueryKeys(
   signature,
   simulation,
   socket,
+  token_group,
+  token_price,
   transaction,
   user_operation,
   user_operation_merkle,

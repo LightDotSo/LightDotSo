@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { TokenAmount } from "@lightdotso/types";
 import { useQueryToken } from "@lightdotso/query";
 import { Address } from "viem";
 import { useWagmiToken, WagmiToken } from "./useWagmiToken";
@@ -19,22 +20,14 @@ import { TokenData } from "@lightdotso/data";
 import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-type TokenAmountData = Omit<TokenData, "amount"> & {
-  amount: bigint;
-  original_amount: number;
-};
-
-// -----------------------------------------------------------------------------
 // Hook Props
 // -----------------------------------------------------------------------------
 
-type TokenAmountProps = {
+export type TokenAmountProps = {
   address: Address | null | undefined;
   chainId: number | undefined;
   tokenAddress: Address | undefined;
+  groupId?: string | undefined;
 };
 
 export const useTokenAmount = ({
@@ -74,7 +67,7 @@ export const useTokenAmount = ({
     queryToken: TokenData | null | undefined,
     wagmiToken: WagmiToken | null | undefined,
   ) {
-    let fromSwapToken: TokenAmountData = {
+    let fromSwapToken: TokenAmount = {
       amount: queryToken?.amount ? BigInt(queryToken.amount) : BigInt(0),
       original_amount: queryToken?.amount ?? 0,
       balance_usd: queryToken?.balance_usd ?? 0,
@@ -83,6 +76,7 @@ export const useTokenAmount = ({
       address: tokenAddress ?? queryToken?.address ?? "",
       decimals: queryToken?.decimals ?? 0,
       symbol: queryToken?.symbol ?? "",
+      group: queryToken?.group ?? undefined,
     };
 
     if (wagmiToken?.balance) {
@@ -104,7 +98,7 @@ export const useTokenAmount = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const tokenAmount: TokenAmountData | null = useMemo(() => {
+  const tokenAmount: TokenAmount | null = useMemo(() => {
     return getSwapToken(queryToken, fromWagmiToken);
   }, [queryToken, fromWagmiToken]);
 
