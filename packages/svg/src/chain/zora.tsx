@@ -85,7 +85,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
           <path
             d="M14.4527 28.2226C25.2627 28.2226 34.026 19.4594 34.026 8.64933C34.026 -2.16069 25.2627 -10.924 14.4527 -10.924C3.64265 -10.924 -5.12061 -2.16069 -5.12061 8.64933C-5.12061 19.4594 3.64265 28.2226 14.4527 28.2226Z"
             fill="url(#paint1_radial_10113_10246)"
-            fill-opacity="0.9"
+            fillOpacity="0.9"
           />
         </g>
       </g>
@@ -100,7 +100,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -121,7 +121,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -142,7 +142,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -163,7 +163,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -184,7 +184,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -205,7 +205,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -226,7 +226,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
         gradientTransform="translate(15.9339 6.15031) rotate(128.228) scale(20.4489 20.4473)"
       >
         <stop offset="0.286458" stop-color="#387AFA" />
-        <stop offset="0.647782" stop-color="#387AFA" stop-opacity="0" />
+        <stop offset="0.647782" stop-color="#387AFA" stopOpacity="0" />
       </radialGradient>
       <radialGradient
         id="paint1_radial_10113_10246"
@@ -236,9 +236,9 @@ export const ZoraLogo: ForwardRefExoticComponent<
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(14.4527 8.64933) rotate(90) scale(19.5733)"
       >
-        <stop offset="0.598958" stop-opacity="0" />
+        <stop offset="0.598958" stopOpacity="0" />
         <stop offset="0.671875" />
-        <stop offset="0.734375" stop-opacity="0" />
+        <stop offset="0.734375" stopOpacity="0" />
       </radialGradient>
       <clipPath id="clip0_10113_10246">
         <rect width="24" height="24" fill="white" />
