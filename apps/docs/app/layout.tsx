@@ -1,3 +1,5 @@
+"use client";
+
 import "@lightdotso/styles/global.css";
 import { Root } from "@lightdotso/templates";
 import { DocsLayout } from "fumadocs-ui/layout";
