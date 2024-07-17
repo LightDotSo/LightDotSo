@@ -3100,6 +3100,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
       '@tanstack/react-table':
         specifier: ^8.19.3
         version: 8.19.3(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3386,6 +3389,9 @@ importers:
 
   packages/types:
     dependencies:
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607

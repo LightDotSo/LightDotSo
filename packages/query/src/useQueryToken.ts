@@ -49,7 +49,6 @@ export const useQueryToken = (params: TokenGetParams) => {
     isLoading: isTokenLoading,
     failureCount,
   } = useQuery<TokenData | null>({
-    enabled: Boolean(params.chain_id && params.chain_id > 0),
     queryKey: queryKeys.token.get({
       address: params.address,
       chain_id: params.chain_id,

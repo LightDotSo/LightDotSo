@@ -25,7 +25,7 @@ import {
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useAuth, useModals, useUserOperations } from "@lightdotso/stores";
 import { refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
@@ -61,6 +61,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
+  const { setExecutionParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -171,6 +172,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
+    for (const execution of executionsParams) {
+      setExecutionParamsByChainId(execution.chainId, execution);
+    }
+  }, [executionsParams]);
+
+  useEffect(() => {
     if (toSwapQuotedAmount && toSwapQuotedQuantity) {
       form.setValue("to.quantity", toSwapQuotedQuantity);
     }
@@ -262,6 +269,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
+            {fromToken && fromToken.group_id && (
+              <TokenGroup groupId={fromToken.group_id} />
+            )}
             {fromToken && fromToken.address && fromToken.symbol ? (
               <>
                 <TokenImage
@@ -501,9 +511,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   ? `Insufficient ${fromToken?.symbol}`
                   : "Invalid Swap"}
       </Button>
-      {fromSwap?.groupId && (
-        <TokenGroup wallet={wallet as Address} groupId={fromSwap?.groupId} />
-      )}
     </div>
   );
 };

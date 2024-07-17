@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useQueryTokenGroup } from "@lightdotso/query";
 import { useMemo } from "react";
 import { Address } from "viem";
-import { TokenAmountData, useTokenAmount } from "./useTokenAmount";
+import { useTokenAmount } from "./useTokenAmount";
 import { useTokenAmounts } from "./useTokenAmounts";
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-type TokenBaseData = TokenAmountData & {
-  group_id: string;
-};
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -57,6 +48,11 @@ export const useToken = ({
     tokenAddress: tokenAddress,
   });
 
+  const { tokenAmounts } = useTokenAmounts({
+    group_id: groupId ?? tokenAmount?.group?.id,
+  });
+  console.log(tokenAmounts);
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -73,7 +69,7 @@ export const useToken = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const token: TokenBaseData = useMemo(() => {
+  const token = useMemo(() => {
     // if (tokenGroupTokens && tokenGroupTokens.length > 0) {
     //   // Return the aggregated token amount
     //   const tokenAggregatedAmount = tokenAmounts.reduce((prev, current) => {

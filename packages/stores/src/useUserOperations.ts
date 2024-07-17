@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import type { UserOperation } from "@lightdotso/schemas";
+import { ExecutionWithChainId } from "@lightdotso/types";
 import type { Hex } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
@@ -22,6 +23,12 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 type UserOperationsStore = {
+  executionParams: ExecutionWithChainId[];
+  setExecutionParamsByChainId: (
+    chainId: bigint,
+    executionParams: ExecutionWithChainId,
+  ) => void;
+  resetExecutionParams: () => void;
   userOperations: UserOperation[];
   resetUserOperations: () => void;
   setUserOperationByChainIdAndNonce: (
@@ -46,6 +53,30 @@ export const useUserOperations = create(
   devtools(
     persist<UserOperationsStore>(
       set => ({
+        executionParams: [],
+        setExecutionParamsByChainId: (chainId, execution) =>
+          set(state => {
+            // Gets the current executionParams
+            const executionParams = [...state.executionParams];
+
+            // Finds the index of the operation matching the chainId
+            const executionParamsIndex = executionParams.findIndex(
+              params => params.chainId === chainId,
+            );
+
+            // If the operation is found, it updates it, otherwise it adds it to the array
+            if (executionParamsIndex !== -1) {
+              executionParams[executionParamsIndex] = execution;
+            } else {
+              executionParams.push(execution);
+            }
+
+            return { executionParams: executionParams };
+          }),
+        resetExecutionParams: () =>
+          set(() => {
+            return { executionParams: [] };
+          }),
         userOperations: [],
         resetUserOperations: () =>
           set(() => {

@@ -14,73 +14,76 @@
 
 import { TokenData } from "@lightdotso/data";
 import { useTokenAmount } from "@lightdotso/hooks";
-import { useTokenAmounts } from "@lightdotso/hooks/src/useTokenAmounts";
 import { useQueryTokenGroup } from "@lightdotso/query";
-import { useMemo } from "react";
+import { useAuth, useTokenGroups } from "@lightdotso/stores";
+import { memo, useEffect } from "react";
 import { Address } from "viem";
 
 export type TokenGroupProps = {
-  groupId: string;
-  wallet: Address;
+  groupId?: string | undefined;
 };
 
-export type TokenGroupTokenProps = {
+export type TokenGroupTokenProps = TokenGroupProps & {
   token: TokenData;
   wallet: Address;
 };
 
-export const TokenGroup = ({ groupId, wallet }: TokenGroupProps) => {
+export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
+  const { wallet } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { tokenGroup, isTokenGroupLoading } = useQueryTokenGroup({
+  const { tokenGroup } = useQueryTokenGroup({
     id: groupId,
   });
 
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const tokenGroupTokens = useMemo(() => {
-    return tokenGroup?.tokens;
-  }, [tokenGroup]);
-
-  const isTokenLoading = useMemo(() => {
-    return isTokenGroupLoading;
-  }, [isTokenGroupLoading]);
-
-  useTokenAmounts({
-    tokenAmounts:
-      (tokenGroupTokens &&
-        tokenGroupTokens?.map(token => {
-          return {
-            address: wallet,
-            chainId: token.chain_id,
-            tokenAddress: token.address as Address,
-          };
-        })) ??
-      [],
-  });
+  if (!wallet) {
+    return;
+  }
 
   return (
     <>
-      {tokenGroupTokens &&
-        tokenGroupTokens.map(token => {
+      {tokenGroup?.tokens &&
+        tokenGroup?.tokens.map(token => {
           return (
-            <TokenGroupToken key={token.id} token={token} wallet={wallet} />
+            <TokenGroupToken
+              key={token.id}
+              token={token}
+              groupId={groupId}
+              wallet={wallet}
+            />
           );
         })}
     </>
   );
 };
 
-export const TokenGroupToken = ({ token, wallet }: TokenGroupTokenProps) => {
-  useTokenAmount({
+export const BaseTokenGroupToken = ({
+  token,
+  wallet,
+}: TokenGroupTokenProps) => {
+  const { tokenAmount } = useTokenAmount({
     address: wallet,
     chainId: token.chain_id,
     tokenAddress: token.address as Address,
   });
 
+  const { setTokenGroupByGroupId } = useTokenGroups();
+
+  useEffect(() => {
+    if (tokenAmount && tokenAmount?.group && tokenAmount?.group?.id) {
+      setTokenGroupByGroupId(tokenAmount.group.id, tokenAmount);
+    }
+  }, [tokenAmount?.group?.id, tokenAmount]);
+
   return null;
 };
+
+// -----------------------------------------------------------------------------
+// Memo
+// -----------------------------------------------------------------------------
+
+export const TokenGroup = memo(BaseTokenGroup);
+export const TokenGroupToken = memo(BaseTokenGroupToken);

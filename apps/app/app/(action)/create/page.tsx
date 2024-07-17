@@ -91,9 +91,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mt-4 flex flex-col items-center justify-center">
-        <TransactionDialog address={searchParams.address as Address} />
-      </div>
+      <TransactionDialog address={searchParams.address as Address} />
     </HydrationBoundary>
   );
 }
