@@ -16,6 +16,7 @@ import { useMemo } from "react";
 import { Address } from "viem";
 import { useTokenAmount } from "./useTokenAmount";
 import { useTokenAmounts } from "./useTokenAmounts";
+import { TokenAmount } from "@lightdotso/types";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -68,7 +69,7 @@ export const useToken = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const token = useMemo(() => {
+  const token: TokenAmount = useMemo(() => {
     if (tokenAmounts && tokenAmounts.length > 0 && chainId === 0 && groupId) {
       // Return the aggregated token amount
       const tokenAggregatedAmount = tokenAmounts.reduce((prev, current) => {
@@ -93,6 +94,10 @@ export const useToken = ({
         balance_usd: tokenAggregatedBalanceUsd,
         id: `${address}-${chainId}`,
         chain_id: 0,
+        group: {
+          id: groupId,
+          tokens: tokenAmounts,
+        },
         group_id: groupId ?? "",
         address: tokenAddress ?? "",
         decimals: tokenGroupFirstToken.decimals,

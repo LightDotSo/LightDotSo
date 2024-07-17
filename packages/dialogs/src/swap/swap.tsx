@@ -26,9 +26,23 @@ import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { useAuth, useModals, useUserOperations } from "@lightdotso/stores";
-import { refineNumberFormat } from "@lightdotso/utils";
-import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
-import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import {
+  Button,
+  ButtonIcon,
+  FormField,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Input,
+} from "@lightdotso/ui";
+import {
+  ArrowDown,
+  ChevronDown,
+  InfoIcon,
+  SparkleIcon,
+  WalletIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
@@ -279,6 +293,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   token={{
                     ...fromToken,
                     amount: Number(fromToken.amount),
+                    group: undefined,
                   }}
                 />
                 <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
@@ -303,76 +318,122 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               </span>
             )}
           </span>
-          <Button
-            disabled={
-              !fromSwapMaximumQuantity ||
-              fromSwapMaximumQuantity === 0 ||
-              fromSwap?.quantity === fromSwapMaximumQuantity
-            }
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button
+                disabled={
+                  !fromSwapMaximumQuantity ||
+                  fromSwapMaximumQuantity === 0 ||
+                  fromSwap?.quantity === fromSwapMaximumQuantity
+                }
+                onClick={() => {
+                  if (
+                    fromSwapMaximumAmount &&
+                    fromSwapMaximumQuantity &&
+                    fromSwapDecimals
+                  ) {
+                    form.setValue("from.quantity", fromSwapMaximumQuantity);
+                  }
+                }}
+                variant="shadow"
+                size="xs"
+                className="gap-1 px-1 py-0"
+              >
+                <WalletIcon className="size-4 text-text-weak" />
+                <span className="text-sm text-text-weak">Balance</span>
+                <span className="text-sm text-text">
+                  {fromSwapMaximumQuantity
+                    ? refineNumberFormat(fromSwapMaximumQuantity)
+                    : 0}
+                </span>
+              </Button>
+            </HoverCardTrigger>
+            {fromToken.chain_id === 0 &&
+              fromToken?.group &&
+              fromToken?.group?.tokens &&
+              fromToken?.group?.tokens.length > 0 && (
+                <HoverCardContent align="start" className="w-60 p-2">
+                  <div className="flex justify-between">
+                    <div className="w-full">
+                      {fromToken?.group &&
+                        fromToken?.group?.tokens &&
+                        fromToken?.group?.tokens.length > 0 &&
+                        fromToken?.group?.tokens.map((token, index) => (
+                          <div
+                            key={index}
+                            className="flex w-full items-center justify-between"
+                          >
+                            <div className="flex items-center gap-3 truncate py-2 text-xs font-medium text-text">
+                              <TokenImage
+                                size="xs"
+                                withChainLogo
+                                token={{
+                                  ...token,
+                                  amount: Number(token.amount),
+                                  group: undefined,
+                                }}
+                              />
+                              {getChainNameWithChainId(token.chain_id)}
+                            </div>
+                            <div className="truncate text-xs text-text">
+                              {token.original_amount &&
+                                token.decimals &&
+                                refineNumberFormat(
+                                  token.original_amount /
+                                    Math.pow(10, token.decimals),
+                                )}{" "}
+                              {token.symbol}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </HoverCardContent>
+              )}
+          </HoverCard>
+        </div>
+        <div className="z-10 -my-4 flex items-center justify-center">
+          <ButtonIcon
+            className="ring-4 ring-background-body"
             onClick={() => {
-              if (
-                fromSwapMaximumAmount &&
-                fromSwapMaximumQuantity &&
-                fromSwapDecimals
-              ) {
-                form.setValue("from.quantity", fromSwapMaximumQuantity);
+              // Swap buy and sell values
+              if (fromSwap?.quantity && toSwap?.quantity) {
+                // Make a copy of the values
+                const fromTokenValue = fromSwap?.quantity;
+                const toTokenValue = toSwap?.quantity;
+
+                form.setValue("from.quantity", toTokenValue);
+                form.setValue("to.quantity", fromTokenValue);
+              }
+
+              // Set buy values to sell
+              if (fromToken) {
+                form.setValue("to.address", fromToken.address);
+                form.setValue("to.chainId", fromToken.chain_id);
+
+                // Set the group id
+                if (fromToken.group) {
+                  form.setValue("to.groupId", fromToken.group.id);
+                }
+              }
+
+              // Set sell values to buy
+              if (toToken) {
+                form.setValue("from.address", toToken.address);
+                form.setValue("from.chainId", toToken.chain_id);
+
+                // Set the group id
+                if (toToken.group) {
+                  form.setValue("from.groupId", toToken.group.id);
+                }
               }
             }}
             variant="shadow"
-            size="xs"
-            className="gap-1 px-1 py-0"
+            size="sm"
           >
-            <WalletIcon className="size-4 text-text-weak" />
-            <span className="text-sm text-text-weak">Balance</span>
-            <span className="text-sm text-text">
-              {fromSwapMaximumQuantity
-                ? refineNumberFormat(fromSwapMaximumQuantity)
-                : 0}
-            </span>
-          </Button>
+            <ArrowDown />
+          </ButtonIcon>
         </div>
-      </div>
-      <div className="z-10 -my-4 flex items-center justify-center">
-        <ButtonIcon
-          className="ring-4 ring-background-body"
-          onClick={() => {
-            // Swap buy and sell values
-            if (fromSwap?.quantity && toSwap?.quantity) {
-              // Make a copy of the values
-              const fromTokenValue = fromSwap?.quantity;
-              const toTokenValue = toSwap?.quantity;
-
-              form.setValue("from.quantity", toTokenValue);
-              form.setValue("to.quantity", fromTokenValue);
-            }
-
-            // Set buy values to sell
-            if (fromToken) {
-              form.setValue("to.address", fromToken.address);
-              form.setValue("to.chainId", fromToken.chain_id);
-
-              // Set the group id
-              if (fromToken.group) {
-                form.setValue("to.groupId", fromToken.group.id);
-              }
-            }
-
-            // Set sell values to buy
-            if (toToken) {
-              form.setValue("from.address", toToken.address);
-              form.setValue("from.chainId", toToken.chain_id);
-
-              // Set the group id
-              if (toToken.group) {
-                form.setValue("from.groupId", toToken.group.id);
-              }
-            }
-          }}
-          variant="shadow"
-          size="sm"
-        >
-          <ArrowDown />
-        </ButtonIcon>
       </div>
       <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Sell</span>
@@ -434,10 +495,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {toToken && toToken.address && toToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                  withChainLogo={toToken.chain_id !== 0 ? true : false}
                   token={{
                     ...toToken,
                     amount: Number(toToken.amount),
+                    group: undefined,
                   }}
                 />
                 <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
