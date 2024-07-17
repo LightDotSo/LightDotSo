@@ -448,7 +448,10 @@ export const TokenModal: FC = () => {
                   className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
                   onClick={() => onTokenSelect(token)}
                 >
-                  <TokenImage withChainLogo token={token} />
+                  <TokenImage
+                    withChainLogo={token.chain_id !== 0}
+                    token={token}
+                  />
                   <div className="flex grow flex-col pl-4">
                     <div className="text-text">{token?.name}</div>
                     <div className="text-sm font-light text-text-weak">

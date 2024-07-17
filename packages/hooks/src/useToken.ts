@@ -58,41 +58,16 @@ export const useToken = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { tokenGroup, isTokenGroupLoading } = useQueryTokenGroup({
-    id: groupId,
-  });
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const tokenGroupTokens = useMemo(() => {
-    return tokenGroup?.tokens;
-  }, [tokenGroup]);
-
   const isTokenLoading = useMemo(() => {
-    return isTokenAmountLoading || isTokenGroupLoading;
-  }, [isTokenAmountLoading, isTokenGroupLoading]);
+    return isTokenAmountLoading;
+  }, [isTokenAmountLoading]);
 
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
-
-  const { tokenAmounts } = useTokenAmounts({
-    tokenAmounts:
-      (tokenGroupTokens &&
-        tokenGroupTokens?.map(token => {
-          return {
-            address: address,
-            chainId: chainId,
-            tokenAddress: token.address as Address,
-          };
-        })) ??
-      [],
-  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -140,7 +115,6 @@ export const useToken = ({
   return {
     token: token,
     tokenAmount: tokenAmount,
-    tokenAmounts: tokenAmounts,
     isTokenLoading: isTokenLoading,
   };
 };

@@ -44,7 +44,7 @@
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "graphql-request": "^6.1.0",
-    "neverthrow": "^6.2.2",
+    "neverthrow": "^7.0.0",
     "openapi-fetch": "^0.9.7",
     "type-fest": "^4.22.0",
     "zod": "^3.23.8"
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.11",
-    "openapi-typescript": "^7.0.3",
+    "openapi-typescript": "^7.0.4",
     "typescript": "^5.5.3"
   },
   "publishConfig": {

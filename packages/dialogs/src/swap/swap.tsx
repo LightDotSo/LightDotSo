@@ -34,6 +34,7 @@ import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type Address } from "viem";
+import { TokenGroup } from "../token/token-group";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -500,6 +501,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   ? `Insufficient ${fromToken?.symbol}`
                   : "Invalid Swap"}
       </Button>
+      {fromSwap?.groupId && (
+        <TokenGroup wallet={wallet as Address} groupId={fromSwap?.groupId} />
+      )}
     </div>
   );
 };
