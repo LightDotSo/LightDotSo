@@ -164,14 +164,14 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
             <Button
               key={item.id}
               asChild
+              variant="ghost"
               className={cn(
-                "text-sm",
+                "text-sm text-text-weak data-[variant=ghost]:text-text-weak",
                 // If the item is the selected, add bg-selected
                 item.id === id
-                  ? "hover:bg-background-weaker bg-background-body font-semibold text-text"
-                  : "text-text-weak hover:text-text",
+                  ? "bg-background-body font-semibold hover:bg-background-strong data-[variant=ghost]:text-text"
+                  : "font-medium text-text-weak hover:text-text-weaker",
               )}
-              variant="unstyled"
               size="sm"
             >
               <Link href={`${address ? `/${address}` : ""}${item.href}`}>
