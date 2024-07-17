@@ -31,18 +31,18 @@
     "dotenv": "^16.4.5",
     "events": "^3.3.0",
     "isutf8": "^4.0.0",
-    "next": "15.0.0-canary.49",
+    "next": "15.0.0-canary.69",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.5",
+    "tailwindcss": "^3.4.6",
     "typescript": "^5.5.3"
   },
   "publishConfig": {
