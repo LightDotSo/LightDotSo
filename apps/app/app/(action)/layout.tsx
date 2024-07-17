@@ -40,8 +40,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <HStackFull>
-      <BaseLayerWrapper size="xs">
-        <MinimalPageWrapper className="max-w-lg" isScreen>
+      <BaseLayerWrapper size="xxs">
+        <MinimalPageWrapper className="p-2" isScreen>
           <LinkButtonGroup items={ACTION_NAV_ITEMS} />
           <div className="flex w-full justify-center">{children}</div>
         </MinimalPageWrapper>
