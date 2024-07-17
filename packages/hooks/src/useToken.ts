@@ -69,38 +69,37 @@ export const useToken = ({
   // ---------------------------------------------------------------------------
 
   const token = useMemo(() => {
-    // if (tokenGroupTokens && tokenGroupTokens.length > 0) {
-    //   // Return the aggregated token amount
-    //   const tokenAggregatedAmount = tokenAmounts.reduce((prev, current) => {
-    //     return prev + current.tokenAmount.amount;
-    //   }, BigInt(0));
-    //   const tokensAggregatedOriginalAmount = tokenAmounts.reduce(
-    //     (prev, current) => {
-    //       return prev + current.tokenAmount.original_amount;
-    //     },
-    //     0,
-    //   );
-    //   const tokenAggregatedBalanceUsd = tokenAmounts.reduce((prev, current) => {
-    //     return prev + current.tokenAmount.balance_usd;
-    //   }, 0);
+    if (tokenAmounts && tokenAmounts.length > 0 && chainId === 0 && groupId) {
+      // Return the aggregated token amount
+      const tokenAggregatedAmount = tokenAmounts.reduce((prev, current) => {
+        return prev + current.amount;
+      }, BigInt(0));
+      const tokensAggregatedOriginalAmount = tokenAmounts.reduce(
+        (prev, current) => {
+          return prev + current.original_amount;
+        },
+        0,
+      );
+      const tokenAggregatedBalanceUsd = tokenAmounts.reduce((prev, current) => {
+        return prev + current.balance_usd;
+      }, 0);
 
-    //   // Get the first token in the group
-    //   const tokenGroupFirstToken = tokenGroupTokens[0];
+      // Get the first token in the group
+      const tokenGroupFirstToken = tokenAmounts[0];
 
-    //   return {
-    //     amount: tokenAggregatedAmount,
-    //     original_amount: tokensAggregatedOriginalAmount,
-    //     balance_usd: tokenAggregatedBalanceUsd,
-    //     id: `${address}-${chainId}`,
-    //     chain_id: 0,
-    //     group_id: groupId ?? "",
-    //     address: tokenAddress ?? "",
-    //     decimals: tokenGroupFirstToken.decimals,
-    //     symbol: tokenGroupFirstToken.symbol,
-    //   };
-    // }
+      return {
+        amount: tokenAggregatedAmount,
+        original_amount: tokensAggregatedOriginalAmount,
+        balance_usd: tokenAggregatedBalanceUsd,
+        id: `${address}-${chainId}`,
+        chain_id: 0,
+        group_id: groupId ?? "",
+        address: tokenAddress ?? "",
+        decimals: tokenGroupFirstToken.decimals,
+        symbol: tokenGroupFirstToken.symbol,
+      };
+    }
     return { group_id: "", ...tokenAmount };
-    // }, [tokenAmount, tokenAmounts]);
   }, [tokenAmount]);
 
   // ---------------------------------------------------------------------------
@@ -110,6 +109,7 @@ export const useToken = ({
   return {
     token: token,
     tokenAmount: tokenAmount,
+    tokenAmounts: tokenAmounts,
     isTokenLoading: isTokenLoading,
   };
 };

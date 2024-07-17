@@ -83,6 +83,7 @@ export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
 export const BaseTokenGroupToken = ({
   token,
   wallet,
+  groupId,
 }: TokenGroupTokenProps) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -105,10 +106,10 @@ export const BaseTokenGroupToken = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (tokenAmount && tokenAmount?.group && tokenAmount?.group?.id) {
-      setTokenGroupByGroupId(tokenAmount.group.id, tokenAmount);
+    if (groupId && tokenAmount) {
+      setTokenGroupByGroupId(groupId, tokenAmount);
     }
-  }, [tokenAmount?.group?.id, tokenAmount]);
+  }, [groupId, tokenAmount]);
 
   // ---------------------------------------------------------------------------
   // Render

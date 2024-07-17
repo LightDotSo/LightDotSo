@@ -35,13 +35,34 @@ export const useTokenGroups = create(
       set => ({
         tokenGroups: {},
         setTokenGroupByGroupId: (groupId, tokenAmount) =>
-          // Add tokenAmount to tokenGroups for groupId
-          set(state => ({
-            tokenGroups: {
-              ...state.tokenGroups,
-              [groupId]: [...(state.tokenGroups[groupId] ?? []), tokenAmount],
-            },
-          })),
+          // Add tokenAmount to tokenGroups for groupId and chainId
+          // The chainId has to be unique for each group
+          set(state => {
+            // Get tokenAmounts for groupId
+            const groupTokenAmounts = state.tokenGroups[groupId] ?? [];
+
+            // Check if tokenAmount is already in tokenAmounts
+            const index = groupTokenAmounts.findIndex(
+              groupTokenAmount =>
+                groupTokenAmount.chain_id === tokenAmount.chain_id,
+            );
+
+            // If tokenAmount is in tokenAmounts, update it
+            if (index !== -1) {
+              groupTokenAmounts[index] = tokenAmount;
+            } else {
+              // If tokenAmount is not in tokenAmounts, add it
+              groupTokenAmounts.push(tokenAmount);
+            }
+
+            // Update tokenGroups with new groupTokenAmounts
+            return {
+              tokenGroups: {
+                ...state.tokenGroups,
+                [groupId]: groupTokenAmounts,
+              },
+            };
+          }),
       }),
       {
         name: "token-groups-state-v1",

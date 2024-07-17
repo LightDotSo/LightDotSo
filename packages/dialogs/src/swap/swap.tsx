@@ -255,7 +255,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
                   // Set the group id
                   if (token.group) {
-                    console.log("here", token.group.id);
                     form.setValue("from.groupId", token.group.id);
                   }
 
