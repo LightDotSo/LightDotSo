@@ -31,8 +31,8 @@ use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     providers::Middleware,
     types::{
-        spoof, transaction::eip2718::TypedTransaction, Address, GethDebugTracerType,
-        GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
+        spoof, transaction::eip2718::TypedTransaction, Address, BlockNumber, Bytes,
+        GethDebugTracerType, GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
     },
 };
 use eyre::{eyre, ContextCompat, Result};
@@ -107,7 +107,9 @@ impl Node {
             self.simulate_user_operation_with_tracer(chain_id, entry_point, user_operation).await
         };
 
-        let res = simulate_user_operation_with_tracer.retry(&ExponentialBuilder::default()).await;
+        let res = simulate_user_operation_with_tracer
+            .retry(&ExponentialBuilder::default().with_max_times(5))
+            .await;
         info!("res: {:?}", res);
 
         res
@@ -135,7 +137,7 @@ impl Node {
         let call = entrypoint.simulate_handle_op(
             user_operation.clone().into(),
             Address::zero(),
-            vec![].into(),
+            Bytes::default(),
         );
         let mut tx: TypedTransaction = call.tx;
         tx.set_from(Address::zero());
@@ -149,7 +151,7 @@ impl Node {
         let trace = provider
             .debug_trace_call(
                 tx,
-                None,
+                Some(BlockNumber::Latest.into()),
                 GethDebugTracingCallOptions {
                     tracing_options: GethDebugTracingOptions {
                         disable_storage: None,
@@ -234,7 +236,7 @@ impl Node {
 
         // Retry the user operation if it fails
         let res =
-            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(3)).await;
+            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(10)).await;
         info!("res: {:?}", res);
 
         res

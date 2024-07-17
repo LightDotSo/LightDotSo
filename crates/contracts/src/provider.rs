@@ -35,6 +35,14 @@ pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
         }
     }
 
+    // Fallback Internal RPC URL
+    let rpc_url_2 = format!("http://lightdotso-rpc.internal:3000/internal/{}", chain_id);
+    if let Ok(provider) = Provider::<Http>::try_from(rpc_url_2.as_str()) {
+        if provider.get_block_number().await.is_ok() {
+            return Ok(provider);
+        }
+    }
+
     // If `PROTECTED_RPC_URL` is set, concatenate the chain ID and try to connect
     // to that RPC URL.
     if let Ok(protected_rpc_url) = std::env::var("PROTECTED_RPC_URL") {
