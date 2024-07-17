@@ -1869,6 +1869,7 @@ model Token {
   chainId  BigInt
   decimals Int?
   tokenId  BigInt?
+  logoUrl  String?
 
   // ---------------------------------------------------------------------------
   // One-to-many

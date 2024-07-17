@@ -157,8 +157,12 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   );
 
   const currentUrl = useMemo(() => {
+    if (token && token.logo_url) {
+      return token.logo_url;
+    }
+
     return urls[currentUrlIndex];
-  }, [currentUrlIndex, urls]);
+  }, [token, currentUrlIndex, urls]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CHAINS } from "@lightdotso/const";
+import { CHAINS, LIGHT_CHAIN } from "@lightdotso/const";
 import { createParser, useQueryState } from "nuqs";
 import { Chain } from "viem";
 
@@ -23,7 +23,7 @@ import { Chain } from "viem";
 export const chainParser = createParser({
   parse: function (value: string) {
     // Find the chain by lowercase name of value w/ matching `chain.name` in `CHAINS`
-    const chain = CHAINS.find(
+    const chain = [LIGHT_CHAIN, ...CHAINS].find(
       chain => chain.name.toLowerCase() === value.toLowerCase(),
     );
     return chain ?? null;

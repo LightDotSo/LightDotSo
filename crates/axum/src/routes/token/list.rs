@@ -293,6 +293,7 @@ pub(crate) async fn v1_token_list_handler(
             let total_amount = group.tokens.iter().fold(0, |acc, token| acc + token.amount);
 
             // Modify the root token to be the culmative sum of the token group.
+            token.chain_id = 0;
             token.balance_usd = total_balance;
             token.amount = total_amount;
         }

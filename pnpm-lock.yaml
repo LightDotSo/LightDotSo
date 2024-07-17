@@ -2582,6 +2582,9 @@ importers:
       '@tanstack/react-virtual':
         specifier: ^3.8.3
         version: 3.8.3(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      lucide-react:
+        specifier: ^0.408.0
+        version: 0.408.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
