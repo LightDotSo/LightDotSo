@@ -165,12 +165,7 @@ export const TokenModal: FC = () => {
         : tokens;
 
     const light_indexed_tokens =
-      filtered_tokens && filtered_tokens?.length > 0
-        ? filtered_tokens.map(token => ({
-            ...token,
-            amount: token.amount / Math.pow(10, token.decimals),
-          }))
-        : [];
+      filtered_tokens && filtered_tokens?.length > 0 ? filtered_tokens : [];
 
     return light_indexed_tokens;
   }, [tokens, groupTokens, chainState]);
@@ -257,7 +252,7 @@ export const TokenModal: FC = () => {
       chain_id: balance.chainId,
       balance_usd: 0,
       address: balance.address,
-      amount: balance.amount,
+      amount: balance.amount * 10 ** balance.decimals,
       decimals: balance.decimals,
       name: balance.name,
       symbol: balance.symbol,
@@ -459,7 +454,11 @@ export const TokenModal: FC = () => {
                     </div>
                   </div>
                   <div className="flex-none text-sm text-text-weak">
-                    {token?.amount && refineNumberFormat(token?.amount)}
+                    {token?.amount &&
+                      token.decimals &&
+                      refineNumberFormat(
+                        token?.amount / Math.pow(10, token?.decimals),
+                      )}
                     {` ${token?.symbol}`}
                   </div>
                 </div>
