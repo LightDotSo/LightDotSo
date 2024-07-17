@@ -40,4 +40,4 @@ export const DEMO_PATHS = [
   "/demo/overview",
   "/demo/transactions",
 ];
-export const ACTION_PATHS = ["/swap", "/create"];
+export const ACTION_PATHS = ["/swap", "/create", "/deposit", "/send"];

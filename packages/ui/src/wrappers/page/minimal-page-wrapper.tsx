@@ -21,6 +21,7 @@ import { baseHeightWrapper } from "../base";
 // -----------------------------------------------------------------------------
 
 interface MinimalPageWrapperProps {
+  className?: string;
   children: ReactNode;
   isScreen?: boolean;
 }
@@ -30,6 +31,7 @@ interface MinimalPageWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function MinimalPageWrapper({
+  className,
   children,
   isScreen,
 }: MinimalPageWrapperProps) {
@@ -38,6 +40,7 @@ export function MinimalPageWrapper({
       className={cn(
         "relative flex flex-col space-y-6 overflow-y-hidden",
         isScreen && "h-screen",
+        className,
         baseHeightWrapper,
       )}
     >

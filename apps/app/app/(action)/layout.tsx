@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { LinkButtonGroup } from "@/components/section/link-button-group";
 import {
   BaseLayerWrapper,
   MinimalPageWrapper,
   HStackFull,
 } from "@lightdotso/ui";
 import { ReactNode } from "react";
+import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,7 +41,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <HStackFull>
       <BaseLayerWrapper size="xs">
-        <MinimalPageWrapper isScreen>{children}</MinimalPageWrapper>
+        <MinimalPageWrapper className="max-w-lg" isScreen>
+          <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+          <div className="flex w-full justify-center">{children}</div>
+        </MinimalPageWrapper>
       </BaseLayerWrapper>
     </HStackFull>
   );

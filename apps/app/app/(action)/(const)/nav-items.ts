@@ -12,30 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SwapDialog } from "@lightdotso/dialogs";
-import type { Metadata } from "next";
-import { TITLES } from "@/const";
-
 // -----------------------------------------------------------------------------
-// Metadata
+// Const
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Swap.title} | %s`,
-    default: TITLES.Swap.title,
+export const ACTION_NAV_ITEMS = [
+  {
+    title: "Swap",
+    href: "/swap",
+    id: "swap",
   },
-  description: TITLES.Swap.description,
-};
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <SwapDialog />;
-}
+  {
+    title: "Send",
+    href: "/send",
+    id: "send",
+  },
+  {
+    title: "Deposit",
+    href: "/deposit",
+    id: "deposit",
+  },
+];

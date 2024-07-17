@@ -28,8 +28,9 @@ import {
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
+import { isAddress, type Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -90,9 +91,22 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
       ? pathname.split("/").slice(-2, -1)[0]
       : pathname.split("/").pop();
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   // Get the wallet address from the path
   // Address is the first part of the path
-  const address = pathname.split("/")[1];
+  const address = useMemo(() => {
+    const maybeAddress = pathname.split("/")[1];
+    if (!maybeAddress) {
+      return undefined;
+    }
+    if (!isAddress(maybeAddress)) {
+      return undefined;
+    }
+    return maybeAddress as Address;
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -101,7 +115,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   useEffect(() => {
     // Prefetch all the pages
     items.forEach(item => {
-      router.prefetch(`/${address}${item.href}`);
+      router.prefetch(`${address ? `/${address}` : ""}${item.href}`);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -126,7 +140,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
               return;
             }
             // Navigate to the item
-            router.push(`/${address}${item.href}`);
+            router.push(`${address ? `/${address}` : ""}${item.href}`);
           }}
         >
           <SelectTrigger className="w-full">
@@ -160,7 +174,9 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
               variant="unstyled"
               size="sm"
             >
-              <Link href={`/${address}${item.href}`}>{item.title}</Link>
+              <Link href={`${address ? `/${address}` : ""}${item.href}`}>
+                {item.title}
+              </Link>
             </Button>
           ))}
         </ButtonGroup>

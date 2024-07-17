@@ -127,7 +127,6 @@ export const TokenModal: FC = () => {
 
     return MAINNET_CHAINS;
   }, [isTestnet, isGroup]);
-  console.log(chains);
 
   const renderedChains = useMemo(() => {
     // Get the available width for the chains, adjusting for the two buttons `px-20` and the padding `px-4`
