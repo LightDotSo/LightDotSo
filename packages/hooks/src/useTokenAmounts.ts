@@ -44,6 +44,9 @@ export const useTokenAmounts = ({ group_id }: TokenAmountsProps) => {
 
     return tokenAmounts;
   }, [group_id, tokenGroups]);
+  console.log(JSON.stringify(tokenGroups));
+  console.log(group_id);
+  console.log(tokenAmounts);
 
   return {
     tokenAmounts: tokenAmounts,

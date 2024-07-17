@@ -76,6 +76,7 @@ export const useTokenAmount = ({
       address: tokenAddress ?? queryToken?.address ?? "",
       decimals: queryToken?.decimals ?? 0,
       symbol: queryToken?.symbol ?? "",
+      group: queryToken?.group ?? undefined,
     };
 
     if (wagmiToken?.balance) {

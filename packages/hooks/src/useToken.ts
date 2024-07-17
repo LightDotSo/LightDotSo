@@ -38,6 +38,7 @@ export const useToken = ({
   tokenAddress,
   groupId,
 }: TokenProps) => {
+  console.log(address, chainId, tokenAddress, groupId);
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------

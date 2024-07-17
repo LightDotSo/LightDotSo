@@ -69,6 +69,7 @@ export const BaseTokenGroupToken = ({
     chainId: token.chain_id,
     tokenAddress: token.address as Address,
   });
+  console.log(tokenAmount);
 
   const { setTokenGroupByGroupId } = useTokenGroups();
 
