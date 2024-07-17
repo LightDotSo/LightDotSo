@@ -36,7 +36,13 @@ import {
   HoverCardTrigger,
   Input,
 } from "@lightdotso/ui";
-import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
+import {
+  ArrowDown,
+  ChevronDown,
+  InfoIcon,
+  SparkleIcon,
+  WalletIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
@@ -236,79 +242,117 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               />
             )}
           />
+          <Button
+            onClick={() => {
+              setTokenModalProps({
+                address: wallet as Address,
+                type: "swap",
+                isGroup: true,
+                isTestnet: walletSettings?.is_enabled_testnet ?? false,
+                onClose: () => {
+                  hideTokenModal();
+                },
+                onTokenSelect: token => {
+                  // Check if the from and to swap tokens are the same
+                  if (
+                    toSwap?.address === token?.address &&
+                    toSwap?.chainId === token?.chain_id
+                  ) {
+                    // Set the to swap token to null
+                    form.setValue("to.address", undefined);
+                    form.setValue("to.chainId", undefined);
+                  }
+
+                  // Set the from swap token
+                  form.setValue("from.address", token.address);
+                  form.setValue("from.chainId", token.chain_id);
+
+                  // Set the group id
+                  if (token.group) {
+                    form.setValue("from.groupId", token.group.id);
+                  }
+
+                  form.trigger();
+
+                  hideTokenModal();
+                },
+              });
+              showTokenModal();
+            }}
+            variant="shadow"
+            className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
+            size="unsized"
+          >
+            {fromSwap && fromSwap?.groupId && (
+              <TokenGroup groupId={fromSwap?.groupId} />
+            )}
+            {fromToken && fromToken.address && fromToken.symbol ? (
+              <>
+                <TokenImage
+                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                  token={{
+                    ...fromToken,
+                    amount: Number(fromToken.amount),
+                    group: undefined,
+                  }}
+                />
+                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
+                  {fromToken.symbol}
+                </span>
+              </>
+            ) : (
+              <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
+                Select Token
+              </span>
+            )}
+            <ChevronDown className="mr-1 size-4 shrink-0" />
+          </Button>
+        </div>
+        <div className="flex w-full items-center justify-between">
+          <span className="truncate text-sm text-text-weak">
+            {fromSwapQuantityDollarValue &&
+              `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
+            {fromTokenDollarRatio && (
+              <span className="truncate text-xs text-text-weak">
+                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
+              </span>
+            )}
+          </span>
           <HoverCard>
             <HoverCardTrigger asChild>
               <Button
+                disabled={
+                  !fromSwapMaximumQuantity ||
+                  fromSwapMaximumQuantity === 0 ||
+                  fromSwap?.quantity === fromSwapMaximumQuantity
+                }
                 onClick={() => {
-                  setTokenModalProps({
-                    address: wallet as Address,
-                    type: "swap",
-                    isGroup: true,
-                    isTestnet: walletSettings?.is_enabled_testnet ?? false,
-                    onClose: () => {
-                      hideTokenModal();
-                    },
-                    onTokenSelect: token => {
-                      // Check if the from and to swap tokens are the same
-                      if (
-                        toSwap?.address === token?.address &&
-                        toSwap?.chainId === token?.chain_id
-                      ) {
-                        // Set the to swap token to null
-                        form.setValue("to.address", undefined);
-                        form.setValue("to.chainId", undefined);
-                      }
-
-                      // Set the from swap token
-                      form.setValue("from.address", token.address);
-                      form.setValue("from.chainId", token.chain_id);
-
-                      // Set the group id
-                      if (token.group) {
-                        form.setValue("from.groupId", token.group.id);
-                      }
-
-                      form.trigger();
-
-                      hideTokenModal();
-                    },
-                  });
-                  showTokenModal();
+                  if (
+                    fromSwapMaximumAmount &&
+                    fromSwapMaximumQuantity &&
+                    fromSwapDecimals
+                  ) {
+                    form.setValue("from.quantity", fromSwapMaximumQuantity);
+                  }
                 }}
                 variant="shadow"
-                className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
-                size="unsized"
+                size="xs"
+                className="gap-1 px-1 py-0"
               >
-                {fromSwap && fromSwap?.groupId && (
-                  <TokenGroup groupId={fromSwap?.groupId} />
-                )}
-                {fromToken && fromToken.address && fromToken.symbol ? (
-                  <>
-                    <TokenImage
-                      withChainLogo={fromToken.chain_id !== 0 ? true : false}
-                      token={{
-                        ...fromToken,
-                        amount: Number(fromToken.amount),
-                        group: undefined,
-                      }}
-                    />
-                    <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
-                      {fromToken.symbol}
-                    </span>
-                  </>
-                ) : (
-                  <span className="ml-1 w-full whitespace-nowrap text-lg text-text">
-                    Select Token
-                  </span>
-                )}
-                <ChevronDown className="mr-1 size-4 shrink-0" />
+                <WalletIcon className="size-4 text-text-weak" />
+                <span className="text-sm text-text-weak">Balance</span>
+                <span className="text-sm text-text">
+                  {fromSwapMaximumQuantity
+                    ? refineNumberFormat(fromSwapMaximumQuantity)
+                    : 0}
+                </span>
               </Button>
             </HoverCardTrigger>
             {fromToken.chain_id === 0 &&
               fromToken?.group &&
               fromToken?.group?.tokens &&
               fromToken?.group?.tokens.length > 0 && (
-                <HoverCardContent align="start" side="top" className="w-60 p-2">
+                <HoverCardContent align="start" className="w-60 p-2">
                   <div className="flex justify-between">
                     <div className="w-full">
                       {fromToken?.group &&
@@ -348,86 +392,48 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               )}
           </HoverCard>
         </div>
-        <div className="flex w-full items-center justify-between">
-          <span className="truncate text-sm text-text-weak">
-            {fromSwapQuantityDollarValue &&
-              `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
-            {fromTokenDollarRatio && (
-              <span className="truncate text-xs text-text-weak">
-                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
-              </span>
-            )}
-          </span>
-          <Button
-            disabled={
-              !fromSwapMaximumQuantity ||
-              fromSwapMaximumQuantity === 0 ||
-              fromSwap?.quantity === fromSwapMaximumQuantity
-            }
+        <div className="z-10 -my-4 flex items-center justify-center">
+          <ButtonIcon
+            className="ring-4 ring-background-body"
             onClick={() => {
-              if (
-                fromSwapMaximumAmount &&
-                fromSwapMaximumQuantity &&
-                fromSwapDecimals
-              ) {
-                form.setValue("from.quantity", fromSwapMaximumQuantity);
+              // Swap buy and sell values
+              if (fromSwap?.quantity && toSwap?.quantity) {
+                // Make a copy of the values
+                const fromTokenValue = fromSwap?.quantity;
+                const toTokenValue = toSwap?.quantity;
+
+                form.setValue("from.quantity", toTokenValue);
+                form.setValue("to.quantity", fromTokenValue);
+              }
+
+              // Set buy values to sell
+              if (fromToken) {
+                form.setValue("to.address", fromToken.address);
+                form.setValue("to.chainId", fromToken.chain_id);
+
+                // Set the group id
+                if (fromToken.group) {
+                  form.setValue("to.groupId", fromToken.group.id);
+                }
+              }
+
+              // Set sell values to buy
+              if (toToken) {
+                form.setValue("from.address", toToken.address);
+                form.setValue("from.chainId", toToken.chain_id);
+
+                // Set the group id
+                if (toToken.group) {
+                  form.setValue("from.groupId", toToken.group.id);
+                }
               }
             }}
             variant="shadow"
-            size="xs"
-            className="gap-1 px-1 py-0"
+            size="sm"
           >
-            <WalletIcon className="size-4 text-text-weak" />
-            <span className="text-sm text-text-weak">Balance</span>
-            <span className="text-sm text-text">
-              {fromSwapMaximumQuantity
-                ? refineNumberFormat(fromSwapMaximumQuantity)
-                : 0}
-            </span>
-          </Button>
+            <ArrowDown />
+          </ButtonIcon>
         </div>
-      </div>
-      <div className="z-10 -my-4 flex items-center justify-center">
-        <ButtonIcon
-          className="ring-4 ring-background-body"
-          onClick={() => {
-            // Swap buy and sell values
-            if (fromSwap?.quantity && toSwap?.quantity) {
-              // Make a copy of the values
-              const fromTokenValue = fromSwap?.quantity;
-              const toTokenValue = toSwap?.quantity;
-
-              form.setValue("from.quantity", toTokenValue);
-              form.setValue("to.quantity", fromTokenValue);
-            }
-
-            // Set buy values to sell
-            if (fromToken) {
-              form.setValue("to.address", fromToken.address);
-              form.setValue("to.chainId", fromToken.chain_id);
-
-              // Set the group id
-              if (fromToken.group) {
-                form.setValue("to.groupId", fromToken.group.id);
-              }
-            }
-
-            // Set sell values to buy
-            if (toToken) {
-              form.setValue("from.address", toToken.address);
-              form.setValue("from.chainId", toToken.chain_id);
-
-              // Set the group id
-              if (toToken.group) {
-                form.setValue("from.groupId", toToken.group.id);
-              }
-            }
-          }}
-          variant="shadow"
-          size="sm"
-        >
-          <ArrowDown />
-        </ButtonIcon>
       </div>
       <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span>Sell</span>
