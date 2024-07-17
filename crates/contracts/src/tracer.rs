@@ -58,6 +58,7 @@ pub struct ExecutorTracerResult {
     pub output: String,
     pub error: String,
 }
+
 impl TryFrom<GethTrace> for ExecutorTracerResult {
     type Error = eyre::Error;
     fn try_from(val: GethTrace) -> Result<Self, Self::Error> {

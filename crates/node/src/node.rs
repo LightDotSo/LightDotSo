@@ -31,7 +31,7 @@ use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     providers::Middleware,
     types::{
-        transaction::eip2718::TypedTransaction, Address, GethDebugTracerType,
+        spoof, transaction::eip2718::TypedTransaction, Address, GethDebugTracerType,
         GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
     },
 };
@@ -128,6 +128,9 @@ impl Node {
         // Get the entrypoint
         let entrypoint = get_entrypoint(chain_id, entry_point).await?;
 
+        // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/contracts/src/entry_point.rs#L139-L175
+        // License: Apache-2.0
+
         // Debug trace call
         let call = entrypoint.simulate_handle_op(
             user_operation.clone().into(),
@@ -157,7 +160,13 @@ impl Node {
                         tracer_config: None,
                         timeout: None,
                     },
-                    state_overrides: None,
+                    state_overrides: Some(spoof::balance(
+                        Address::zero(),
+                        // Maximum uint96 value
+                        // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/contracts/src/entry_point.rs#L29C26-L29C60
+                        // License: Apache-2.0
+                        5192296858534827628530496329220095_u128.into(),
+                    )),
                 },
             )
             .await

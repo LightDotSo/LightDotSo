@@ -334,6 +334,7 @@ pub async fn rpc_proxy_handler(
                 let mut requests = vec![
                     (&*CHAINNODES_RPC_URLS, Some(std::env::var("CHAINNODES_API_KEY").unwrap())),
                     (&*BLASTAPI_RPC_URLS, Some(std::env::var("BLAST_API_KEY").unwrap())),
+                    (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
                 ];
 
                 shuffle_requests(&mut requests);
