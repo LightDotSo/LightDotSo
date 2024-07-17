@@ -30,6 +30,8 @@ import { Modal } from "@lightdotso/templates";
 import {
   Button,
   ButtonIcon,
+  Command,
+  CommandGroup,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -366,59 +368,63 @@ export const TokenModal: FC = () => {
       }
       onClose={onClose}
     >
-      <div
-        ref={parentRef}
-        style={{
-          height: `1200px`,
-          overflow: "auto",
-        }}
-      >
-        <div
+      <Command className="bg-transparent">
+        <CommandGroup
+          heading="My Tokens"
+          ref={parentRef}
           style={{
-            height: `${virtualizer.getTotalSize()}px`,
+            height: "1000px",
             width: "100%",
-            position: "relative",
+            overflow: "auto",
           }}
         >
-          {virtualTokens.map(virtualToken => {
-            const token = renderedTokens[virtualToken.index];
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            {virtualTokens.map(virtualToken => {
+              const token = renderedTokens[virtualToken.index];
 
-            if (!token) {
-              return null;
-            }
+              if (!token) {
+                return null;
+              }
 
-            return (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-              <div
-                key={virtualToken.key}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: `${virtualToken.size}px`,
-                  transform: `translateY(${virtualToken.start}px)`,
-                  padding: 8,
-                }}
-                className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
-                onClick={() => onTokenSelect(token)}
-              >
-                <TokenImage withChainLogo token={token} />
-                <div className="flex grow flex-col pl-4">
-                  <div className="text-text">{token?.name}</div>
-                  <div className="text-sm font-light text-text-weak">
-                    {token?.symbol}
+              return (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                <div
+                  key={virtualToken.key}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: `${virtualToken.size}px`,
+                    transform: `translateY(${virtualToken.start}px)`,
+                    padding: 8,
+                  }}
+                  className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
+                  onClick={() => onTokenSelect(token)}
+                >
+                  <TokenImage withChainLogo token={token} />
+                  <div className="flex grow flex-col pl-4">
+                    <div className="text-text">{token?.name}</div>
+                    <div className="text-sm font-light text-text-weak">
+                      {token?.symbol}
+                    </div>
+                  </div>
+                  <div className="flex-none text-sm text-text-weak">
+                    {token?.amount && refineNumberFormat(token?.amount)}
+                    {` ${token?.symbol}`}
                   </div>
                 </div>
-                <div className="flex-none text-sm text-text-weak">
-                  {token?.amount && refineNumberFormat(token?.amount)}
-                  {` ${token?.symbol}`}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+              );
+            })}
+          </div>
+        </CommandGroup>
+      </Command>
     </Modal>
   );
 };
