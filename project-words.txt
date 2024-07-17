@@ -479,8 +479,8 @@ estraverse
 estree
 esutils
 etag
-etherror
 etherevent
+etherror
 etherspot
 Etherspot
 ETHERSPOT
@@ -1142,6 +1142,7 @@ Possiblities
 postgres
 postmessage
 postpack
+powi
 pprof
 Pprof
 pprofrs

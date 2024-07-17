@@ -87,14 +87,9 @@ export const useToken = ({
       // Get the first token in the group
       const tokenGroupFirstToken = tokenAmounts[0];
 
-      // Divide the aggregated token amount by the number of decimals
-      const tokenAggregatedOriginalAmount =
-        tokensAggregatedOriginalAmount /
-        Math.pow(10, tokenGroupFirstToken.decimals);
-
       return {
         amount: tokenAggregatedAmount,
-        original_amount: tokenAggregatedOriginalAmount,
+        original_amount: tokensAggregatedOriginalAmount,
         balance_usd: tokenAggregatedBalanceUsd,
         id: `${address}-${chainId}`,
         chain_id: 0,
