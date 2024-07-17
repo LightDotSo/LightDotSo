@@ -3145,6 +3145,8 @@ export interface components {
             is_spam: boolean;
             /** @description The flag to indicate if the token is on a testnet. */
             is_testnet: boolean;
+            /** @description The logo url of the token. */
+            logo_url?: string | null;
             /** @description The name of the token. */
             name?: string | null;
             /** @description The symbol of the token. */

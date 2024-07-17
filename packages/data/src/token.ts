@@ -27,6 +27,7 @@ export type TokenData = {
   decimals: number;
   name?: string | null | undefined;
   symbol: string;
+  logo_url?: string | null | undefined;
   token_type?: string | null | undefined;
   group?: TokenGroupData | null | undefined;
 };
