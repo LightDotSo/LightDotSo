@@ -26,6 +26,7 @@ export type TokenGetParams = {
 
 export type TokenListParams = {
   address: Address | null | undefined;
+  is_group_only?: boolean;
   is_testnet: boolean;
   limit: number;
   offset: number;

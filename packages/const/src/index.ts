@@ -17,6 +17,7 @@ export { API_URLS, BASE_API_URLS } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export {
   CHAINS,
+  LIGHT_CHAIN,
   MAINNET_CHAINS,
   TESTNET_CHAINS,
   DEPRECATED_CHAINS,

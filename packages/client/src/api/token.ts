@@ -51,6 +51,7 @@ export const getTokens = async (
         offset?: number | null | undefined;
         limit?: number | null | undefined;
         address: string;
+        is_group_only?: boolean | null | undefined;
         is_testnet?: boolean | null | undefined;
         group?: boolean | null | undefined;
         chain_ids?: string | null | undefined;

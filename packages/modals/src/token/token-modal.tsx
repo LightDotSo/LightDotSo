@@ -14,7 +14,7 @@
 
 "use client";
 
-import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
+import { CHAINS, LIGHT_CHAIN, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useContainerDimensions, useDebouncedValue } from "@lightdotso/hooks";
@@ -39,6 +39,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { SparklesIcon } from "lucide-react";
 import { type FC, useCallback, useMemo, useRef } from "react";
 import type { Address } from "viem";
 
@@ -49,7 +50,14 @@ export const TokenModal: FC = () => {
 
   const {
     showChainModal,
-    tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
+    tokenModalProps: {
+      address,
+      isGroup,
+      isTestnet,
+      onClose,
+      onTokenSelect,
+      type,
+    },
     isTokenModalVisible,
   } = useModals();
 
@@ -78,6 +86,17 @@ export const TokenModal: FC = () => {
     chain_ids: null,
   });
 
+  const { tokens: groupTokens, isTokensLoading: isGroupTokensLoading } =
+    useQueryTokens({
+      address: address as Address,
+      is_group_only: true,
+      is_testnet: isTestnet ?? false,
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      group: true,
+      chain_ids: null,
+    });
+
   const { lifiTokens, isLifiTokensLoading } = useQueryLifiTokens();
 
   const { socketBalances, isSocketBalancesLoading } = useQuerySocketBalances({
@@ -96,11 +115,19 @@ export const TokenModal: FC = () => {
 
   const chains = useMemo(() => {
     if (isTestnet) {
+      if (isGroup) {
+        return [LIGHT_CHAIN, ...CHAINS];
+      }
       return CHAINS;
     }
 
+    if (isGroup) {
+      return [LIGHT_CHAIN, ...MAINNET_CHAINS];
+    }
+
     return MAINNET_CHAINS;
-  }, [isTestnet]);
+  }, [isTestnet, isGroup]);
+  console.log(chains);
 
   const renderedChains = useMemo(() => {
     // Get the available width for the chains, adjusting for the two buttons `px-20` and the padding `px-4`
@@ -129,6 +156,10 @@ export const TokenModal: FC = () => {
   }, [dimensions, chainState]);
 
   const light_tokens: TokenData[] = useMemo(() => {
+    if (chainState && chainState.id === 0 && groupTokens) {
+      return groupTokens;
+    }
+
     const filtered_tokens =
       tokens && tokens?.length > 0 && chainState
         ? tokens.filter(token => token.chain_id === chainState.id)
@@ -143,7 +174,7 @@ export const TokenModal: FC = () => {
         : [];
 
     return light_indexed_tokens;
-  }, [tokens, chainState]);
+  }, [tokens, groupTokens, chainState]);
 
   const lifi_tokens: TokenData[] = useMemo(() => {
     // Lifi tokens
@@ -352,7 +383,11 @@ export const TokenModal: FC = () => {
                     variant="shadow"
                     onClick={() => setChainState(chain)}
                   >
-                    <ChainLogo chainId={chain.id} />
+                    {chain.id === 0 ? (
+                      <SparklesIcon className="size-4" />
+                    ) : (
+                      <ChainLogo chainId={chain.id} />
+                    )}
                   </ButtonIcon>
                 </TooltipTrigger>
                 <TooltipContent>

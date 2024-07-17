@@ -39,6 +39,7 @@ export const useQueryTokens = (params: TokenListParams) => {
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queryKeys.token.list({
       address: params.address,
+      is_group_only: params.is_group_only,
       is_testnet: params.is_testnet,
       limit: params.limit,
       offset: params.offset,
@@ -54,6 +55,7 @@ export const useQueryTokens = (params: TokenListParams) => {
   } = useQuery<TokenData[] | null>({
     queryKey: queryKeys.token.list({
       address: params.address,
+      is_group_only: params.is_group_only,
       is_testnet: params.is_testnet,
       limit: params.limit,
       offset: params.offset,
@@ -70,6 +72,7 @@ export const useQueryTokens = (params: TokenListParams) => {
           params: {
             query: {
               address: params.address,
+              is_group_only: params.is_group_only,
               is_testnet: params.is_testnet,
               limit: params.limit,
               offset: params.offset,

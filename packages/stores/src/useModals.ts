@@ -69,6 +69,7 @@ export type NftModalProps = {
 
 export type TokenModalProps = {
   address: Address;
+  isGroup?: boolean;
   isTestnet?: boolean;
   onClose?: () => void;
   onTokenSelect: (token: TokenData) => void;
