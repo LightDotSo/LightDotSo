@@ -292,11 +292,17 @@ export const TokenModal: FC = () => {
   const isTokenModalLoading = useMemo(() => {
     return (
       isTokensLoading ||
+      isGroupTokensLoading ||
       isLifiTokensLoading ||
       isSocketBalancesLoading ||
       !debouncedIsTokenModalVisible
     );
-  }, [isTokensLoading, isLifiTokensLoading, isSocketBalancesLoading]);
+  }, [
+    isTokensLoading,
+    isGroupTokensLoading,
+    isLifiTokensLoading,
+    isSocketBalancesLoading,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Ref Hooks

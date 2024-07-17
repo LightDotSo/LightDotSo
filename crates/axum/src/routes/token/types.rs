@@ -43,6 +43,8 @@ pub(crate) struct Token {
     pub amount: i64,
     /// The balance of the token in USD.
     pub balance_usd: f64,
+    /// The logo url of the token.
+    pub logo_url: Option<String>,
     /// The type of the token.
     pub token_type: Option<String>,
     /// The group of the token.
@@ -79,6 +81,7 @@ impl From<token::Data> for Token {
             decimals: token.decimals.unwrap_or(0),
             amount: 0,
             balance_usd: 0.0,
+            logo_url: token.logo_url,
             token_type: Some(token.r#type.to_string()),
             group: token.group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
@@ -106,6 +109,7 @@ impl From<wallet_balance::Data> for Token {
                 .and_then(|amount_str| amount_str.parse::<i64>().ok())
                 .unwrap_or_default(),
             balance_usd: balance.balance_usd,
+            logo_url: balance.token.clone().unwrap().unwrap().logo_url,
             token_type: None,
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })

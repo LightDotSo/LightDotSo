@@ -70,7 +70,7 @@ export const officialSocketClient: ReturnType<
 
 export const localSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "http://localhost:3000/socket",
+    baseUrl: "http://localhost:8000/socket",
   });
 
 export const publicSocketClient: ReturnType<typeof createClient<SocketPaths>> =
