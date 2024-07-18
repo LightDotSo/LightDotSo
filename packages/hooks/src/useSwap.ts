@@ -42,7 +42,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
-  const { setExecutionParamsByChainId } = useUserOperations();
+  const { setExecutionsParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -206,9 +206,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    for (const execution of executionsParams) {
-      setExecutionParamsByChainId(execution.chainId, execution);
-    }
+    setExecutionsParamsByChainId(executionsParams);
   }, [executionsParams]);
 
   // ---------------------------------------------------------------------------

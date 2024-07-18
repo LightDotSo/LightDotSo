@@ -80,7 +80,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
 
   const { setQuote } = useQuotes();
-  const { setExecutionParamsByChainId } = useUserOperations();
+  const { setExecutionsParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -109,14 +109,9 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
 
   useEffect(() => {
     if (executionsParams) {
-      console.info("Execution Fetcher Params", executionsParams);
-
-      // For each execution, set the execution params by chain id
-      for (const execution of executionsParams) {
-        setExecutionParamsByChainId(execution.chainId, execution);
-      }
+      setExecutionsParamsByChainId(executionsParams);
     }
-  }, [executionsParams, setExecutionParamsByChainId]);
+  }, [executionsParams, setExecutionsParamsByChainId]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -145,14 +140,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { wallet, isAddressPath } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const {
-    executionParams,
-    resetExecutionParams,
+    executionsParams,
+    resetExecutionsParams,
     setPartialUserOperationByChainIdAndNonce,
   } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
-
-  console.info("Execution Params", executionParams);
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -243,7 +236,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isFromSwapLoading,
     isToSwapLoading,
     isSwapLoading,
-    executionsParams,
     fromSwapDecimals,
     fromSwapQuantityDollarValue,
     fromSwapMaximumAmount,
@@ -265,7 +257,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   // Reset the execution params when the from swap quantity, address, or chain id changes
   useEffect(() => {
-    resetExecutionParams();
+    resetExecutionsParams();
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
@@ -375,7 +367,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     if (!wallet) {
       return [];
     }
-    return generatePartialUserOperations(wallet, executionsParams);
+
+    // Flatten the executionsParams
+    const params = Array.from(executionsParams.values()).flat();
+
+    return generatePartialUserOperations(wallet, params);
   }, [wallet, executionsParams]);
 
   // ---------------------------------------------------------------------------
