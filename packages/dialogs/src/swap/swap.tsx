@@ -70,7 +70,9 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { executionsParams } = useQuote(params);
+  const { executionsParams, toQuotedAmount } = useQuote(params);
+  console.info("executionsParams", executionsParams);
+  console.info("toQuotedAmount", toQuotedAmount);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
