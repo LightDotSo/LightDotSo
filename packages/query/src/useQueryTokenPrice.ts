@@ -54,7 +54,7 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
         return null;
       }
 
-      if (isTestnet(params.chain_id)) {
+      if (params.chain_id === 0 || isTestnet(params.chain_id)) {
         return null;
       }
 

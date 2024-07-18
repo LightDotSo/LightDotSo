@@ -12,28 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { TokenGroupData } from "./tokenGroup";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useIsFetching } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
-// Data
+// Lifi Quote Query State
 // -----------------------------------------------------------------------------
 
-export type TokenData = {
-  id: string;
-  address: string;
-  amount: number;
-  balance_usd: number;
-  chain_id: number;
-  decimals: number;
-  name?: string | null | undefined;
-  symbol: string;
-  logo_url?: string | null | undefined;
-  token_type?: string | null | undefined;
-  group?: TokenGroupData | null | undefined;
-  is_spam?: boolean | null | undefined;
-  is_testnet?: boolean | null | undefined;
-};
+export const useIsFetchingLifiQuote = () => {
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
 
-export type TokenCountData = {
-  count: number;
+  const isFetchingLifiQuoteNumber = useIsFetching({
+    queryKey: queryKeys.lifi.quote._def,
+    exact: true,
+  });
+
+  return isFetchingLifiQuoteNumber;
 };

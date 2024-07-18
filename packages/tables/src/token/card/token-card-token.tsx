@@ -61,7 +61,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
         </ButtonIcon>
       )}
       <div className="flex items-center space-x-3">
-        <TokenImage token={token} />
+        <TokenImage withChainLogo={token.chain_id !== 0} token={token} />
         <div className="flex flex-col space-y-0.5">
           <span className="text-xs text-text md:text-sm">
             {token.name ?? token.symbol}

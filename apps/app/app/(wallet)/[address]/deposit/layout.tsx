@@ -56,13 +56,13 @@ export default function DepositsLayout({ children }: DepositLayoutProps) {
       <BannerSection
         title={TITLES.Deposit.title}
         description={TITLES.Deposit.description}
-        size="xs"
+        size="xxs"
       >
-        <MiddleLayerWrapper size="xs">
+        <MiddleLayerWrapper size="xxs">
           <LinkButtonGroup items={ACTION_NAV_ITEMS} />
         </MiddleLayerWrapper>
       </BannerSection>
-      <BaseLayerWrapper size="xs">
+      <BaseLayerWrapper size="xxs">
         <BasicPageWrapper>
           <DialogSectionWrapper>{children}</DialogSectionWrapper>
         </BasicPageWrapper>

@@ -16,7 +16,6 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { Number } from "@lightdotso/ui";
-import { isTestnet } from "@lightdotso/utils";
 import type { FC } from "react";
 import { NotAvailableTestnetCard } from "../../(components)/card";
 
@@ -31,13 +30,13 @@ type TokenCardBalanceProps = { token: TokenData };
 // -----------------------------------------------------------------------------
 
 export const TokenCardBalance: FC<TokenCardBalanceProps> = ({
-  token: { balance_usd, chain_id },
+  token: { balance_usd, chain_id, is_testnet },
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isTestnet(chain_id)) {
+  if (is_testnet) {
     return <NotAvailableTestnetCard entityName="Balance" />;
   }
 

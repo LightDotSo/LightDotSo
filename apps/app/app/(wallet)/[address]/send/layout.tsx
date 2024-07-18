@@ -56,13 +56,13 @@ export default function SendLayout({ children }: SendLayoutProps) {
       <BannerSection
         title={TITLES.Send.title}
         description={TITLES.Send.description}
-        size="xs"
+        size="xxs"
       >
-        <MiddleLayerWrapper size="xs">
+        <MiddleLayerWrapper size="xxs">
           <LinkButtonGroup items={ACTION_NAV_ITEMS} />
         </MiddleLayerWrapper>
       </BannerSection>
-      <BaseLayerWrapper size="xs">
+      <BaseLayerWrapper size="xxs">
         <BasicPageWrapper>
           <DialogSectionWrapper>{children}</DialogSectionWrapper>
         </BasicPageWrapper>

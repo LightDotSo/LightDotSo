@@ -17,6 +17,7 @@ import { Address } from "viem";
 import { useTokenAmount } from "./useTokenAmount";
 import { useTokenAmounts } from "./useTokenAmounts";
 import { TokenAmount } from "@lightdotso/types";
+import { useQueryTokenGroup } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -40,6 +41,14 @@ export const useToken = ({
   groupId,
 }: TokenProps) => {
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { tokenGroup } = useQueryTokenGroup({
+    id: groupId,
+  });
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
@@ -60,10 +69,6 @@ export const useToken = ({
   const isTokenLoading = useMemo(() => {
     return isTokenAmountLoading;
   }, [isTokenAmountLoading]);
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -104,8 +109,30 @@ export const useToken = ({
         symbol: tokenGroupFirstToken.symbol,
       };
     }
-    return { group_id: "", ...tokenAmount };
-  }, [tokenAmount]);
+
+    if (
+      tokenGroup &&
+      tokenGroup.tokens &&
+      tokenGroup.tokens.length > 0 &&
+      chainId === 0 &&
+      groupId
+    ) {
+      return {
+        amount: BigInt(0),
+        original_amount: 0,
+        balance_usd: 0,
+        id: `${address}-${chainId}`,
+        chain_id: 0,
+        group: undefined,
+        group_id: groupId,
+        address: tokenAddress ?? "",
+        decimals: tokenGroup.tokens[0].decimals,
+        symbol: tokenGroup.tokens[0].symbol,
+      };
+    }
+
+    return { group_id: tokenGroup?.id, ...tokenAmount };
+  }, [tokenAmount, tokenGroup, tokenAmounts]);
 
   // ---------------------------------------------------------------------------
   // Return

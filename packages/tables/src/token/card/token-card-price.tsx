@@ -16,7 +16,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { useQueryTokenPrice } from "@lightdotso/query";
-import { cn, isTestnet, refineNumberFormat } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { NotAvailableTestnetCard } from "../../(components)/card";
@@ -27,7 +27,6 @@ import { NotAvailableTestnetCard } from "../../(components)/card";
 
 type TokenCardPriceProps = {
   token: TokenData;
-  isExpanded?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,8 +34,7 @@ type TokenCardPriceProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenCardPrice: FC<TokenCardPriceProps> = ({
-  token: { address, chain_id },
-  isExpanded,
+  token: { address, chain_id, is_testnet },
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -51,11 +49,11 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isTestnet(chain_id)) {
+  if (is_testnet) {
     return <NotAvailableTestnetCard entityName="Token price" />;
   }
 
-  if (!token_price || chain_id === 0 || isExpanded) {
+  if (!token_price || chain_id === 0) {
     return null;
   }
 
