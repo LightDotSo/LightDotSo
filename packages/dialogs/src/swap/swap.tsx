@@ -364,7 +364,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
-    if (!wallet) {
+    if (!wallet || !executionsParams || executionsParams.size === 0) {
       return [];
     }
 
