@@ -279,13 +279,19 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const genericExecutionQuotes = useMemo(() => {
     // If the chainId is zero, compute the required tokenAmounts to satisfy the swap
     if (
-      fromSwap.chainId === 0 &&
-      fromToken &&
-      fromSwapAmount &&
-      fromTokenAmounts
+      fromSwap?.chainId === 0 &&
+      fromSwap?.quantity &&
+      fromTokenAmounts &&
+      fromTokenAmounts.length > 0
     ) {
+      // Get the first tokenAmount
+      const fromTokenAmount = fromTokenAmounts[0];
+
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
-      let requiredSwapAmount = fromSwapAmount;
+      let requiredSwapAmount = BigInt(
+        fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals),
+      );
+
       const tokenSwaps: SwapFetcherProps[] = [];
 
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
@@ -324,7 +330,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       return tokenSwaps;
     }
-  }, [fromToken, fromTokenAmounts]);
+  }, [fromSwap?.chainId, fromSwap?.quantity, fromTokenAmounts]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     if (!wallet) {
