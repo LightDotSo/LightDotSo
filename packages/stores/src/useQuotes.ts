@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenAmount } from "@lightdotso/types";
+import type { Address } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
@@ -20,57 +20,35 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // State
 // -----------------------------------------------------------------------------
 
-type TokenGroupsStore = {
-  tokenGroups: { [key: string]: TokenAmount[] };
-  setTokenGroupByGroupId: (groupId: string, tokenAmount: TokenAmount) => void;
+type QuoteParams = {
+  fromChain: number | undefined;
+  toChain: number | undefined;
+  fromTokenAddress: Address | undefined;
+  toTokenAddress: Address | undefined;
+  fromAddress: Address | undefined;
+  toAddress: Address | undefined;
+  fromAmount: bigint | undefined;
+  toAmount: bigint | undefined;
+};
+
+type QuotesStore = {
+  quotes: QuoteParams[];
+  setQuote: (quote: QuoteParams) => void;
 };
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useTokenGroups = create(
+export const useQuotes = create(
   devtools(
-    persist<TokenGroupsStore>(
+    persist<QuotesStore>(
       set => ({
-        tokenGroups: {},
-        setTokenGroupByGroupId: (groupId, tokenAmount) =>
-          // Add tokenAmount to tokenGroups for groupId and chainId
-          // The chainId has to be unique for each group
-          set(state => {
-            // Get tokenAmounts for groupId
-            const groupTokenAmounts = state.tokenGroups[groupId] ?? [];
-
-            // Check if tokenAmount is already in tokenAmounts
-            const index = groupTokenAmounts.findIndex(
-              groupTokenAmount =>
-                groupTokenAmount.chain_id === tokenAmount.chain_id,
-            );
-
-            // If tokenAmount is in tokenAmounts, update it
-            if (index !== -1) {
-              groupTokenAmounts[index] = tokenAmount;
-            } else {
-              // If tokenAmount is not in tokenAmounts, add it
-              groupTokenAmounts.push(tokenAmount);
-            }
-
-            // Order tokenAmounts by amount
-            groupTokenAmounts.sort((a, b) =>
-              a.amount.toString() > b.amount.toString() ? 1 : -1,
-            );
-
-            // Update tokenGroups with new groupTokenAmounts
-            return {
-              tokenGroups: {
-                ...state.tokenGroups,
-                [groupId]: groupTokenAmounts,
-              },
-            };
-          }),
+        quotes: [],
+        setQuote: quote => set(state => ({ quotes: [...state.quotes, quote] })),
       }),
       {
-        name: "token-groups-state-v1",
+        name: "quotes-state-v1",
         storage: createJSONStorage(() => sessionStorage, {
           reviver: (_key: string, value: any): any => {
             // Ignore functions during serialization
@@ -94,8 +72,8 @@ export const useTokenGroups = create(
       },
     ),
     {
-      anonymousActionType: "useTokenGroups",
-      name: "TokenGroupsStore",
+      anonymousActionType: "useQuotes",
+      name: "QuotesStore",
       serialize: {
         replacer: (_key: any, value: any) =>
           typeof value === "bigint" ? value.toString() : value,

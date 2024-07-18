@@ -69,7 +69,9 @@ export const useQueryLifiQuote = (params: LifiQuoteParams) => {
         !params.fromChain ||
         !params.fromToken ||
         !params.toChain ||
-        !params.toToken
+        !params.toToken ||
+        params.fromChain === 0 ||
+        params.toChain === 0
       ) {
         return null;
       }

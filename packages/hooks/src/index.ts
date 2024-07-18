@@ -24,6 +24,8 @@ export { useIsDemoPathname } from "./useIsDemoPathname";
 export { useIsHorizontalOverflow } from "./useIsHorizontalOverflow";
 export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
+export type { QuoteParams } from "./useQuote";
+export { useQuote } from "./useQuote";
 export { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 export { useRefinement } from "./useRefinement";
 export type { RefinementCallback, Refinement } from "./useRefinement";
