@@ -128,7 +128,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const { executionParams, resetExecutionParams } = useUserOperations();
+  const {
+    executionParams,
+    resetExecutionParams,
+    setPartialUserOperationByChainIdAndNonce,
+  } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
 
@@ -299,17 +303,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
       // Use the tokenAmount's `amount` to fill the swap
       for (const fromTokenAmount of fromTokenAmounts) {
-        const swapAmount = fromTokenAmount.amount;
+        const currentMaxSwapAmount = fromTokenAmount.amount;
 
         // Get the required swap amount to satisfy the current swap
         // const currentSwapAmount = requiredSwapAmount - swapAmount;
         const currentSwapAmount =
-          requiredSwapAmount > swapAmount
-            ? requiredSwapAmount - swapAmount
-            : requiredSwapAmount;
+          requiredSwapAmount > currentMaxSwapAmount
+            ? requiredSwapAmount - currentMaxSwapAmount
+            : currentMaxSwapAmount;
 
         // Deduct the required swap amount from the current swap
-        requiredSwapAmount -= swapAmount;
+        requiredSwapAmount -= currentMaxSwapAmount;
 
         const swap: SwapFetcherProps = {
           fromAddress: wallet as Address,
@@ -322,7 +326,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         };
 
         // If the swap is satisfied, break the loop
-        if (currentSwapAmount === 0n) {
+        if (requiredSwapAmount <= 0n) {
           break;
         }
 
@@ -354,8 +358,28 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const handleSwap = useCallback(() => {
     if (wallet && userOperationsParams) {
+      const userOperationsQueryState =
+        userOperationsParser.serialize(userOperationsParams);
+      if (userOperationsQueryState.length > 2_000) {
+        // Set the user operations by chain id and nonce
+        for (const userOperationsParam of userOperationsParams) {
+          if (!userOperationsParam.chainId || !userOperationsParam.nonce) {
+            continue;
+          }
+          setPartialUserOperationByChainIdAndNonce(
+            userOperationsParam.chainId,
+            userOperationsParam.nonce,
+            userOperationsParam,
+          );
+        }
+
+        // Push without query state params
+        router.push(`/create?address=${wallet}`);
+        return;
+      }
+
       router.push(
-        `/create?address=${wallet}&userOperations=${userOperationsParser.serialize(userOperationsParams)}`,
+        `/create?address=${wallet}&userOperations=${userOperationsQueryState}`,
       );
     }
   }, [wallet, userOperationsParams]);
