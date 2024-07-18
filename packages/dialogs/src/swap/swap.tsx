@@ -719,34 +719,34 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   : "Invalid Swap"}
       </Button>
       {isDev && (
-        <div className="mt-4">
-          <pre className="text-xs text-text-weak">
+        <div className="mt-4 overflow-auto">
+          <pre className="text-xs text-text-weak break-all">
             {serialize({
-              fromSwapQueryState,
-              toSwapQueryState,
-              fromSwap,
-              toSwap,
-              fromToken,
-              toToken,
-              fromTokenAmounts,
-              toSwapQuotedAmount,
-              toSwapQuotedQuantity,
-              isFromSwapValueValid,
-              isSwapValid,
-              isFromSwapLoading,
-              isToSwapLoading,
-              isSwapLoading,
-              executionsParams,
-              fromSwapDecimals,
-              fromSwapQuantityDollarValue,
-              fromSwapMaximumAmount,
-              toSwapMaximumAmount,
-              fromSwapMaximumQuantity,
-              toSwapMaximumQuantity,
-              fromTokenDollarRatio,
-              toTokenDollarRatio,
-              toSwapQuantityDollarValue,
-              toSwapDecimals,
+              fromSwapQueryState: fromSwapQueryState,
+              toSwapQueryState: toSwapQueryState,
+              fromSwap: fromSwap,
+              toSwap: toSwap,
+              fromToken: fromToken,
+              toToken: toToken,
+              fromTokenAmounts: fromTokenAmounts,
+              toSwapQuotedAmount: toSwapQuotedAmount,
+              toSwapQuotedQuantity: toSwapQuotedQuantity,
+              isFromSwapValueValid: isFromSwapValueValid,
+              isSwapValid: isSwapValid,
+              isFromSwapLoading: isFromSwapLoading,
+              isToSwapLoading: isToSwapLoading,
+              isSwapLoading: isSwapLoading,
+              executionsParams: executionsParams,
+              fromSwapDecimals: fromSwapDecimals,
+              fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
+              fromSwapMaximumAmount: fromSwapMaximumAmount,
+              toSwapMaximumAmount: toSwapMaximumAmount,
+              fromSwapMaximumQuantity: fromSwapMaximumQuantity,
+              toSwapMaximumQuantity: toSwapMaximumQuantity,
+              fromTokenDollarRatio: fromTokenDollarRatio,
+              toTokenDollarRatio: toTokenDollarRatio,
+              toSwapQuantityDollarValue: toSwapQuantityDollarValue,
+              toSwapDecimals: toSwapDecimals,
             })}
           </pre>
         </div>
