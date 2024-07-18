@@ -32,23 +32,17 @@ export const swapParser = createParser({
     // Parse the address as a string (if possible)
     const parsedAddress = address === "_" ? undefined : address;
     // Parse the decimals as a integer (if possible)
-    const parsedChainId = parseInt(chainId);
+    const parsedChainId = chainId !== "0" ? parseInt(chainId) : undefined;
     // Parse the value as a float (if possible)
-    const parsedQuantity = parseFloat(quantity);
+    const parsedQuantity = quantity !== "0" ? parseFloat(quantity) : undefined;
     // Parse the group ID as a string (if possible)
     const parsedGroupId = groupId === "_" ? undefined : groupId;
 
     // Check if the address is valid, the decimals is a integer, and the value is a float
-    if (
-      parsedAddress &&
-      isAddress(parsedAddress) &&
-      !isNaN(parsedQuantity) &&
-      !isNaN(parsedChainId) &&
-      parsedGroupId
-    ) {
+    if (parsedAddress && isAddress(parsedAddress) && parsedGroupId) {
       return {
         address: parsedAddress,
-        chainId: parseInt(chainId),
+        chainId: parsedChainId,
         quantity: parsedQuantity,
         groupId: parsedGroupId,
       };
@@ -65,8 +59,10 @@ export const swapParser = createParser({
 
     // Serialize the token as a string w/ "|" delimiter
     return `${value?.address ?? "_"}|${
-      value && "chainId" in value ? value.chainId : 0
-    }||${value && "quantity" in value ? value.quantity : 0}${value && "groupId" in value ? `|${value.groupId}` : ""}`;
+      value && "chainId" in value && typeof value.chainId !== "undefined"
+        ? value.chainId
+        : 0
+    }|${value && "quantity" in value && typeof value.quantity !== "undefined" ? value.quantity : 0}|${value && "groupId" in value && typeof value.groupId !== "undefined" ? value.groupId : "_"}`;
   },
 });
 

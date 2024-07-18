@@ -28,6 +28,7 @@ type UserOperationsStore = {
     chainId: bigint,
     executionParams: ExecutionWithChainId,
   ) => void;
+  addExecutionParamsByChainId: (executionParams: ExecutionWithChainId) => void;
   resetExecutionParams: () => void;
   userOperations: UserOperation[];
   resetUserOperations: () => void;
@@ -64,12 +65,22 @@ export const useUserOperations = create(
               params => params.chainId === chainId,
             );
 
-            // If the operation is found, it updates it, otherwise it adds it to the array
+            // If the operation is found, replaces it, otherwise it adds it to the array
             if (executionParamsIndex !== -1) {
               executionParams[executionParamsIndex] = execution;
             } else {
               executionParams.push(execution);
             }
+
+            return { executionParams: executionParams };
+          }),
+        addExecutionParamsByChainId: execution =>
+          set(state => {
+            // Gets the current executionParams
+            const executionParams = [...state.executionParams];
+
+            // Add the execution to the array
+            executionParams.push(execution);
 
             return { executionParams: executionParams };
           }),

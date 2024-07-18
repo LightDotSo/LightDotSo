@@ -55,6 +55,11 @@ export const useTokenGroups = create(
               groupTokenAmounts.push(tokenAmount);
             }
 
+            // Order tokenAmounts by amount
+            groupTokenAmounts.sort((a, b) =>
+              a.amount.toString() > b.amount.toString() ? 1 : -1,
+            );
+
             // Update tokenGroups with new groupTokenAmounts
             return {
               tokenGroups: {

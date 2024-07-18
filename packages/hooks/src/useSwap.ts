@@ -14,12 +14,13 @@
 
 import { useQueryLifiQuote } from "@lightdotso/query";
 import type { Swap } from "@lightdotso/schemas";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { ExecutionWithChainId } from "@lightdotso/types";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
 import { useDebouncedValue } from "./useDebouncedValue";
 import { useToken } from "./useToken";
+import { useQuote } from "./useQuote";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -40,12 +41,17 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
+  const { setExecutionParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { token: fromToken, isTokenLoading: isFromTokenLoading } = useToken({
+  const {
+    token: fromToken,
+    tokenAmounts: fromTokenAmounts,
+    isTokenLoading: isFromTokenLoading,
+  } = useToken({
     address: wallet as Address,
     chainId: fromSwap?.chainId,
     tokenAddress: fromSwap?.address as Address,
@@ -160,29 +166,26 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   const debouncedFromSwapAmount = useDebouncedValue(fromSwapAmount, 800);
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { lifiQuote, isLifiQuoteLoading } = useQueryLifiQuote({
-    fromAddress: wallet,
-    fromChain: fromSwap?.chainId,
-    fromToken: fromSwap?.address as Address,
+  const {
+    toQuotedAmount: toSwapQuotedAmount,
+    executionsParams,
+    isQuoteLoading,
+  } = useQuote({
+    fromAddress: wallet as Address,
+    fromChainId: fromSwap?.chainId,
+    fromTokenAddress: fromSwap?.address as Address,
     fromAmount: debouncedFromSwapAmount ?? undefined,
-    toAddress: wallet,
-    toChain: toSwap?.chainId,
-    toToken: toSwap?.address as Address,
+    toAddress: wallet as Address,
+    toChainId: toSwap?.chainId,
+    toTokenAddress: toSwap?.address as Address,
   });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const toSwapQuotedAmount = useMemo(() => {
-    if (lifiQuote?.estimate?.toAmount) {
-      return BigInt(lifiQuote?.estimate?.toAmount);
-    }
-    return null;
-  }, [lifiQuote?.estimate?.toAmount]);
 
   const toSwapQuotedQuantity = useMemo(() => {
     if (toSwapQuotedAmount && toSwapDecimals) {
@@ -191,84 +194,15 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     return null;
   }, [toSwapQuotedAmount, toSwapDecimals]);
 
-  const executionsParams: ExecutionWithChainId[] = useMemo(() => {
-    let executionIndex = 0;
-    let executions: ExecutionWithChainId[] = [];
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
-    // If wallet is not available, return userOperations
-    if (!wallet) {
-      return [];
+  useEffect(() => {
+    for (const execution of executionsParams) {
+      setExecutionParamsByChainId(execution.chainId, execution);
     }
-
-    if (lifiQuote && lifiQuote?.transactionRequest) {
-      // Get the approval address
-      const approvalAddress =
-        lifiQuote?.estimate?.approvalAddress ??
-        lifiQuote?.transactionRequest?.to;
-
-      // Get the approval amount
-      const approvalAmount = lifiQuote?.estimate?.fromAmount
-        ? fromHex(lifiQuote?.estimate?.fromAmount as Hex, "bigint")
-        : fromSwapAmount;
-
-      // If the buy token is not native, need to approve the token
-      if (
-        approvalAddress &&
-        fromSwapAmount &&
-        fromSwap &&
-        fromSwap?.address &&
-        fromSwap?.address !== "0x0000000000000000000000000000000000000000" &&
-        fromSwap?.chainId
-      ) {
-        const approveExecution: ExecutionWithChainId = {
-          address: fromSwap?.address as Hex,
-          value: 0n,
-          callData: encodeFunctionData({
-            abi: erc20Abi,
-            functionName: "approve",
-            args: [approvalAddress as Address, approvalAmount] as [
-              Address,
-              bigint,
-            ],
-          }),
-          chainId: BigInt(fromSwap?.chainId),
-        };
-
-        const revokeExecution: ExecutionWithChainId = {
-          address: fromSwap?.address as Hex,
-          value: 0n,
-          callData: encodeFunctionData({
-            abi: erc20Abi,
-            functionName: "approve",
-            args: [approvalAddress as Address, 0n] as [Address, bigint],
-          }),
-          chainId: BigInt(fromSwap?.chainId),
-        };
-
-        executions.push(approveExecution);
-        executions.push(revokeExecution);
-
-        // Set the execution index and increment, since we have two executions
-        // for approval and revoke, the execution index should be sandwiched
-        executionIndex += 1;
-      }
-
-      // Set the lifi execution
-      const lifiExecution: ExecutionWithChainId = {
-        address: lifiQuote?.transactionRequest?.to,
-        value: lifiQuote?.transactionRequest?.value
-          ? fromHex(lifiQuote?.transactionRequest?.value as Hex, "bigint")
-          : 0n,
-        callData: lifiQuote?.transactionRequest?.data as Hex,
-        chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
-      };
-
-      // Add the lifi execution to the corresponding index
-      executions.splice(executionIndex, 0, lifiExecution);
-    }
-
-    return executions;
-  }, [wallet, fromSwapAmount, fromSwap, lifiQuote]);
+  }, [executionsParams]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -288,16 +222,16 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [isFromTokenLoading]);
 
   const isToSwapLoading = useMemo(() => {
-    return isFromTokenLoading || isToTokenLoading || isLifiQuoteLoading;
-  }, [isFromTokenLoading, isToTokenLoading, isLifiQuoteLoading]);
+    return isFromTokenLoading || isToTokenLoading || isQuoteLoading;
+  }, [isFromTokenLoading, isToTokenLoading, isQuoteLoading]);
 
   const isSwapNotEmpty = useMemo(() => {
     return fromSwap?.quantity && toSwap?.quantity;
   }, [fromSwap?.quantity, toSwap?.quantity]);
 
   const isSwapLoading = useMemo(() => {
-    return isFromTokenLoading || isToTokenLoading || isLifiQuoteLoading;
-  }, [isFromTokenLoading, isToTokenLoading, isLifiQuoteLoading]);
+    return isFromTokenLoading || isToTokenLoading || isQuoteLoading;
+  }, [isFromTokenLoading, isToTokenLoading, isQuoteLoading]);
 
   const isSwapValid = useMemo(() => {
     return isFromSwapValueValid && isSwapNotEmpty;
@@ -309,6 +243,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   return {
     fromToken: fromToken,
+    fromTokenAmounts: fromTokenAmounts,
     toToken: toToken,
     fromSwapAmount: debouncedFromSwapAmount,
     toSwapQuotedAmount: toSwapQuotedAmount,
