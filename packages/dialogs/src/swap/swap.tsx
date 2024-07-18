@@ -15,7 +15,7 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { ChainStack, TokenImage } from "@lightdotso/elements";
 import {
   useDebouncedValue,
   useQuote,
@@ -37,8 +37,17 @@ import {
   useModals,
   useUserOperations,
 } from "@lightdotso/stores";
-import { refineNumberFormat } from "@lightdotso/utils";
-import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  ButtonIcon,
+  FormField,
+  Input,
+} from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
@@ -47,6 +56,7 @@ import { z } from "zod";
 import { isAddress, type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
+import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -718,9 +728,55 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   ? `Insufficient ${fromToken?.symbol}`
                   : "Invalid Swap"}
       </Button>
+      {fromSwap?.chainId === 0 &&
+        genericExecutionQuotes &&
+        fromTokenAmounts &&
+        fromTokenAmounts.length > 0 && (
+          <div className="mt-4 overflow-auto">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <div className="inline-flex items-center">
+                    <ChainStack
+                      chainIds={genericExecutionQuotes.map(
+                        quote => quote.fromChainId ?? 0,
+                      )}
+                    />
+                    <span className="ml-2 text-sm text-text-weak">
+                      Preparing Execution...
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="flex flex-col space-y-2">
+                  {genericExecutionQuotes.map((quote, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="inline-flex items-center gap-3 truncate text-text">
+                        {quote.fromChainId && (
+                          <ChainLogo chainId={quote.fromChainId} />
+                        )}
+                        {quote.fromChainId &&
+                          getChainNameWithChainId(quote.fromChainId)}
+                      </span>
+                      <span>
+                        {refineNumberFormat(
+                          Number(quote.fromAmount) /
+                            Math.pow(10, fromToken.decimals),
+                        )}{" "}
+                        <span className="text-text">{fromToken.symbol}</span>
+                      </span>
+                    </div>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        )}
       {isDev && (
         <div className="mt-4 overflow-auto">
-          <pre className="text-xs text-text-weak break-all">
+          <pre className="break-all text-xs text-text-weak">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
               toSwapQueryState: toSwapQueryState,
