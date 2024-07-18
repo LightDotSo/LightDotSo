@@ -73,8 +73,6 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
 
   const { executionsParams, toQuotedAmount } = useQuote(params);
-  console.info("executionsParams", executionsParams);
-  console.info("toQuotedAmount", toQuotedAmount);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -102,7 +100,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
         setExecutionParamsByChainId(execution.chainId, execution);
       }
     }
-  }, [executionsParams, setExecutionParamsByChainId, params.fromChainId]);
+  }, [executionsParams, setExecutionParamsByChainId]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -288,8 +286,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
       let requiredSwapAmount = BigInt(
-        fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals),
+        Math.floor(fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals)),
       );
+      console.info("requiredSwapAmount", requiredSwapAmount);
 
       const tokenSwaps: SwapFetcherProps[] = [];
 

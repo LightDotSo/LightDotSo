@@ -96,12 +96,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
         title="Last 7 Days"
       />
     ),
-    cell: ({ row }) => (
-      <TokenCardSparkline
-        token={row.original}
-        isExpanded={typeof row.getParentRow() !== "undefined"}
-      />
-    ),
+    cell: ({ row }) => <TokenCardSparkline token={row.original} />,
     enableSorting: false,
     enableHiding: true,
   },
@@ -111,12 +106,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader className="w-10" column={column} title="Price" />
     ),
-    cell: ({ row }) => (
-      <TokenCardPrice
-        token={row.original}
-        isExpanded={typeof row.getParentRow() !== "undefined"}
-      />
-    ),
+    cell: ({ row }) => <TokenCardPrice token={row.original} />,
     enableSorting: false,
     enableHiding: true,
   },

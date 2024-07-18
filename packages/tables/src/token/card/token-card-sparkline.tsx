@@ -25,7 +25,7 @@ import { NotAvailableTestnetCard } from "../../(components)/card";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardSparklineProps = { token: TokenData; isExpanded?: boolean };
+type TokenCardSparklineProps = { token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -33,7 +33,6 @@ type TokenCardSparklineProps = { token: TokenData; isExpanded?: boolean };
 
 export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   token: { address, chain_id, is_testnet },
-  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -52,7 +51,7 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
     return <NotAvailableTestnetCard entityName="Chart" />;
   }
 
-  if (!token_price || !token_price.prices || chain_id === 0 || isExpanded) {
+  if (!token_price || !token_price.prices || chain_id === 0) {
     return null;
   }
 

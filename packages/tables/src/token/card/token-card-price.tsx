@@ -27,7 +27,6 @@ import { NotAvailableTestnetCard } from "../../(components)/card";
 
 type TokenCardPriceProps = {
   token: TokenData;
-  isExpanded?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -36,7 +35,6 @@ type TokenCardPriceProps = {
 
 export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   token: { address, chain_id, is_testnet },
-  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -55,7 +53,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
     return <NotAvailableTestnetCard entityName="Token price" />;
   }
 
-  if (!token_price || chain_id === 0 || isExpanded) {
+  if (!token_price || chain_id === 0) {
     return null;
   }
 
