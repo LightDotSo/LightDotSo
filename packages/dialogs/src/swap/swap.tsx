@@ -99,9 +99,10 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
 
   useEffect(() => {
     if (executionsParams) {
+      console.info("Execution Fetcher Params", executionsParams);
+
       // For each execution, set the execution params by chain id
       for (const execution of executionsParams) {
-        console.log("Execution Params", execution);
         setExecutionParamsByChainId(execution.chainId, execution);
       }
     }
@@ -140,6 +141,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
+
+  console.info("Execution Params", executionParams);
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -323,7 +326,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         const currentSwapAmount =
           requiredSwapAmount >= currentMaxSwapAmount
             ? currentMaxSwapAmount
-            : requiredSwapAmount - currentMaxSwapAmount;
+            : requiredSwapAmount;
 
         // Deduct the required swap amount from the current swap
         requiredSwapAmount -= currentMaxSwapAmount;
@@ -374,9 +377,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       ? `/${wallet}/create`
       : `/create?address=${wallet}`;
 
-    if (wallet && userOperationsParams) {
+    if (wallet && userOperationsParams && userOperationsParams.length > 0) {
       const userOperationsQueryState =
         userOperationsParser.serialize(userOperationsParams);
+
+      // If the query state is too large, set the user operations by chain id and nonce
       if (userOperationsQueryState.length > 2_000) {
         // Set the user operations by chain id and nonce
         for (const userOperationsParam of userOperationsParams) {
@@ -397,7 +402,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       router.push(`${rootPath}&userOperations=${userOperationsQueryState}`);
     }
-  }, [wallet, userOperationsParams]);
+  }, [isAddressPath, wallet, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -714,18 +719,36 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   : "Invalid Swap"}
       </Button>
       {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(genericExecutionQuotes, null, 2)}
-        </div>
-      )}
-      {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(fromTokenAmounts, null, 2)}
-        </div>
-      )}
-      {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(executionParams, null, 2)}
+        <div className="mt-4">
+          <pre className="text-xs text-text-weak">
+            {serialize({
+              fromSwapQueryState,
+              toSwapQueryState,
+              fromSwap,
+              toSwap,
+              fromToken,
+              toToken,
+              fromTokenAmounts,
+              toSwapQuotedAmount,
+              toSwapQuotedQuantity,
+              isFromSwapValueValid,
+              isSwapValid,
+              isFromSwapLoading,
+              isToSwapLoading,
+              isSwapLoading,
+              executionsParams,
+              fromSwapDecimals,
+              fromSwapQuantityDollarValue,
+              fromSwapMaximumAmount,
+              toSwapMaximumAmount,
+              fromSwapMaximumQuantity,
+              toSwapMaximumQuantity,
+              fromTokenDollarRatio,
+              toTokenDollarRatio,
+              toSwapQuantityDollarValue,
+              toSwapDecimals,
+            })}
+          </pre>
         </div>
       )}
     </div>
