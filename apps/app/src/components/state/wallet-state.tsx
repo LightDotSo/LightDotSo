@@ -56,7 +56,7 @@ export const WalletState: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setWallet } = useAuth();
+  const { setWallet, setIsAddressPath } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -78,10 +78,14 @@ export const WalletState: FC = () => {
       if (segments.length > 1) {
         const maybeAddress = segments[1];
         if (isAddress(maybeAddress)) {
+          setIsAddressPath(true);
           setWallet(maybeAddress);
+          return;
         }
       }
     }
+
+    setIsAddressPath(false);
   }, [pathname, address, appGroup, addressQueryState, setWallet]);
 
   // ---------------------------------------------------------------------------

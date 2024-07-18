@@ -87,7 +87,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { pageIndex, setPageIndex } = useModalSwiper();
-  const { resetAll, partialUserOperations } = useUserOperations();
+  const { resetUserOperations, partialUserOperations } = useUserOperations();
   const {
     customFormSuccessText,
     isFormLoading,
@@ -210,10 +210,10 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // On pathname change, reset all user operations
   useEffect(() => {
-    resetAll();
+    resetUserOperations();
     setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetAll, setPageIndex]);
+  }, [pathname, resetUserOperations, setPageIndex]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

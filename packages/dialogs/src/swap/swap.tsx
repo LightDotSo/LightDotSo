@@ -16,7 +16,11 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useQuote, type QuoteParams } from "@lightdotso/hooks";
+import {
+  useDebouncedValue,
+  useQuote,
+  type QuoteParams,
+} from "@lightdotso/hooks";
 import { useSwap } from "@lightdotso/hooks";
 import {
   userOperationsParser,
@@ -40,7 +44,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { type Address } from "viem";
+import { isAddress, type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
 
@@ -95,6 +99,8 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
 
   useEffect(() => {
     if (executionsParams) {
+      console.info("Execution Fetcher Params", executionsParams);
+
       // For each execution, set the execution params by chain id
       for (const execution of executionsParams) {
         setExecutionParamsByChainId(execution.chainId, execution);
@@ -126,7 +132,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
+  const { wallet, isAddressPath } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const {
     executionParams,
@@ -135,6 +141,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
+
+  console.info("Execution Params", executionParams);
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -279,6 +287,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const debouncedFromSwapQuantity = useDebouncedValue(fromSwap?.quantity, 500);
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -286,7 +300,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     // If the chainId is zero, compute the required tokenAmounts to satisfy the swap
     if (
       fromSwap?.chainId === 0 &&
-      fromSwap?.quantity &&
+      debouncedFromSwapQuantity &&
       fromTokenAmounts &&
       fromTokenAmounts.length > 0
     ) {
@@ -295,7 +309,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
       let requiredSwapAmount = BigInt(
-        Math.floor(fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals)),
+        Math.floor(
+          debouncedFromSwapQuantity * Math.pow(10, fromTokenAmount.decimals),
+        ),
       );
 
       const tokenSwaps: SwapFetcherProps[] = [];
@@ -308,9 +324,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         // Get the required swap amount to satisfy the current swap
         // const currentSwapAmount = requiredSwapAmount - swapAmount;
         const currentSwapAmount =
-          requiredSwapAmount > currentMaxSwapAmount
-            ? requiredSwapAmount - currentMaxSwapAmount
-            : currentMaxSwapAmount;
+          requiredSwapAmount >= currentMaxSwapAmount
+            ? currentMaxSwapAmount
+            : requiredSwapAmount;
 
         // Deduct the required swap amount from the current swap
         requiredSwapAmount -= currentMaxSwapAmount;
@@ -339,7 +355,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [
     wallet,
     fromSwap?.chainId,
-    fromSwap?.quantity,
+    debouncedFromSwapQuantity,
     fromTokenAmounts,
     toSwap?.address,
     toSwap?.chainId,
@@ -357,9 +373,15 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const handleSwap = useCallback(() => {
-    if (wallet && userOperationsParams) {
+    const rootPath = isAddressPath
+      ? `/${wallet}/create`
+      : `/create?address=${wallet}`;
+
+    if (wallet && userOperationsParams && userOperationsParams.length > 0) {
       const userOperationsQueryState =
         userOperationsParser.serialize(userOperationsParams);
+
+      // If the query state is too large, set the user operations by chain id and nonce
       if (userOperationsQueryState.length > 2_000) {
         // Set the user operations by chain id and nonce
         for (const userOperationsParam of userOperationsParams) {
@@ -374,15 +396,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         }
 
         // Push without query state params
-        router.push(`/create?address=${wallet}`);
+        router.push(rootPath);
         return;
       }
 
-      router.push(
-        `/create?address=${wallet}&userOperations=${userOperationsQueryState}`,
-      );
+      router.push(`${rootPath}&userOperations=${userOperationsQueryState}`);
     }
-  }, [wallet, userOperationsParams]);
+  }, [isAddressPath, wallet, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -699,18 +719,36 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   : "Invalid Swap"}
       </Button>
       {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(genericExecutionQuotes, null, 2)}
-        </div>
-      )}
-      {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(fromTokenAmounts, null, 2)}
-        </div>
-      )}
-      {isDev && (
-        <div className="h-80 overflow-auto break-all">
-          {serialize(executionParams, null, 2)}
+        <div className="mt-4">
+          <pre className="text-xs text-text-weak">
+            {serialize({
+              fromSwapQueryState,
+              toSwapQueryState,
+              fromSwap,
+              toSwap,
+              fromToken,
+              toToken,
+              fromTokenAmounts,
+              toSwapQuotedAmount,
+              toSwapQuotedQuantity,
+              isFromSwapValueValid,
+              isSwapValid,
+              isFromSwapLoading,
+              isToSwapLoading,
+              isSwapLoading,
+              executionsParams,
+              fromSwapDecimals,
+              fromSwapQuantityDollarValue,
+              fromSwapMaximumAmount,
+              toSwapMaximumAmount,
+              fromSwapMaximumQuantity,
+              toSwapMaximumQuantity,
+              fromTokenDollarRatio,
+              toTokenDollarRatio,
+              toSwapQuantityDollarValue,
+              toSwapDecimals,
+            })}
+          </pre>
         </div>
       )}
     </div>
