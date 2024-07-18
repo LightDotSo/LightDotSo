@@ -20,7 +20,7 @@ import {
   useQueryUserOperationsCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 
@@ -68,6 +68,12 @@ export const UserOperationState: FC = () => {
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!useUserOperations.persist.hasHydrated()) {
+      useUserOperations.persist.rehydrate();
+    }
+  }, []);
 
   useEffect(() => {
     refetchPendingUserOperations();
