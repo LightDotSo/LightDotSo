@@ -24,11 +24,12 @@ import {
   useSwapToQueryState,
 } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
-import { Swap, swapFormSchema, UserOperation } from "@lightdotso/schemas";
+import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import {
   useAuth,
   useDev,
+  useQuotes,
   useModals,
   useUserOperations,
 } from "@lightdotso/stores";
@@ -64,6 +65,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { setQuote } = useQuotes();
   const { setExecutionParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
@@ -77,6 +79,21 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (toQuotedAmount) {
+      setQuote({
+        fromChain: params.fromChainId,
+        toChain: params.toChainId,
+        fromTokenAddress: params.fromTokenAddress,
+        toTokenAddress: params.toTokenAddress,
+        fromAddress: params.fromAddress,
+        toAddress: params.toAddress,
+        fromAmount: params.fromAmount,
+        toAmount: toQuotedAmount,
+      });
+    }
+  }, [toQuotedAmount, setQuote]);
 
   useEffect(() => {
     if (executionsParams) {
@@ -115,6 +132,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const { executionParams } = useUserOperations();
   const { isDev } = useDev();
+  const { quotes } = useQuotes();
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -227,10 +245,32 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (toSwapQuotedAmount && toSwapQuotedQuantity) {
+    if (toSwapQuotedAmount && toSwapQuotedQuantity && fromToken.decimals) {
+      if (fromSwap.chainId === 0) {
+        // Get the aggregated amount of quotes
+        const aggregatedAmount = quotes.reduce((acc, quote) => {
+          return acc + (quote.toAmount || 0n);
+        }, 0n);
+
+        // Divide the aggregated amount by the decimal places
+        const aggregatedQuantity =
+          aggregatedAmount / BigInt(Math.pow(10, fromToken.decimals));
+
+        // Set the to swap quoted amount
+        form.setValue("to.quantity", Number(aggregatedQuantity));
+
+        return;
+      }
+
       form.setValue("to.quantity", toSwapQuotedQuantity);
     }
-  }, [toSwapQuotedAmount, toSwapQuotedQuantity]);
+  }, [
+    toSwapQuotedAmount,
+    toSwapQuotedQuantity,
+    quotes,
+    fromSwap.chainId,
+    fromToken.decimals,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
