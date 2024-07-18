@@ -56,13 +56,13 @@ export default function SwapLayout({ children }: SwapLayoutProps) {
       <BannerSection
         title={TITLES.Swap.title}
         description={TITLES.Swap.description}
-        size="xs"
+        size="xxs"
       >
-        <MiddleLayerWrapper size="xs">
+        <MiddleLayerWrapper size="xxs">
           <LinkButtonGroup items={ACTION_NAV_ITEMS} />
         </MiddleLayerWrapper>
       </BannerSection>
-      <BaseLayerWrapper size="xs">
+      <BaseLayerWrapper size="xxs">
         <BasicPageWrapper>
           <DialogSectionWrapper>{children}</DialogSectionWrapper>
         </BasicPageWrapper>

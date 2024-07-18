@@ -30,6 +30,8 @@ export type TokenData = {
   logo_url?: string | null | undefined;
   token_type?: string | null | undefined;
   group?: TokenGroupData | null | undefined;
+  is_spam?: boolean | null | undefined;
+  is_testnet?: boolean | null | undefined;
 };
 
 export type TokenCountData = {
