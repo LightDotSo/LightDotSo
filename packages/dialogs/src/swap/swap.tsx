@@ -108,7 +108,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   }, [toQuotedAmount, setQuote]);
 
   useEffect(() => {
-    if (executionsParams) {
+    if (executionsParams && executionsParams.length > 0) {
       setExecutionsParamsByChainId(executionsParams);
     }
   }, [executionsParams, setExecutionsParamsByChainId]);

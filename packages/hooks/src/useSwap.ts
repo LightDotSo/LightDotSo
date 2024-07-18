@@ -206,7 +206,9 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    setExecutionsParamsByChainId(executionsParams);
+    if (executionsParams && executionsParams.length > 0) {
+      setExecutionsParamsByChainId(executionsParams);
+    }
   }, [executionsParams]);
 
   // ---------------------------------------------------------------------------
