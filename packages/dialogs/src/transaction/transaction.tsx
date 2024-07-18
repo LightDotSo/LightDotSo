@@ -87,7 +87,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { pageIndex, setPageIndex } = useModalSwiper();
-  const { resetAll } = useUserOperations();
+  const { resetAll, partialUserOperations } = useUserOperations();
   const {
     customFormSuccessText,
     isFormLoading,
@@ -179,6 +179,14 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   });
 
   const watchIsDirectSubmit = form.watch("isDirectSubmit");
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const initialUserOperations = useMemo(() => {
+    return [...userOperationsQueryState, ...partialUserOperations];
+  }, [userOperationsQueryState, partialUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -456,14 +464,14 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
         </ModalSwiper>
       </div>
       {pageIndex === 0 &&
-        userOperationsQueryState &&
-        userOperationsQueryState.length > 0 &&
-        userOperationsQueryState.map(userOperationQueryState => {
+        initialUserOperations &&
+        initialUserOperations.length > 0 &&
+        initialUserOperations.map((initialUserOperation, index) => {
           return (
             <TransactionFetcher
-              key={userOperationQueryState.hash}
+              key={`${index}-${initialUserOperation.chainId}-${initialUserOperation.nonce}`}
               address={address}
-              initialUserOperation={userOperationQueryState}
+              initialUserOperation={initialUserOperation}
             />
           );
         })}
