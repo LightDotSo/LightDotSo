@@ -16,7 +16,11 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useQuote, type QuoteParams } from "@lightdotso/hooks";
+import {
+  useDebouncedValue,
+  useQuote,
+  type QuoteParams,
+} from "@lightdotso/hooks";
 import { useSwap } from "@lightdotso/hooks";
 import {
   userOperationsParser,
@@ -97,6 +101,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
     if (executionsParams) {
       // For each execution, set the execution params by chain id
       for (const execution of executionsParams) {
+        console.log("Execution Params", execution);
         setExecutionParamsByChainId(execution.chainId, execution);
       }
     }
@@ -279,6 +284,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const debouncedFromSwapQuantity = useDebouncedValue(fromSwap?.quantity, 500);
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -286,7 +297,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     // If the chainId is zero, compute the required tokenAmounts to satisfy the swap
     if (
       fromSwap?.chainId === 0 &&
-      fromSwap?.quantity &&
+      debouncedFromSwapQuantity &&
       fromTokenAmounts &&
       fromTokenAmounts.length > 0
     ) {
@@ -295,7 +306,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
       let requiredSwapAmount = BigInt(
-        Math.floor(fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals)),
+        Math.floor(
+          debouncedFromSwapQuantity * Math.pow(10, fromTokenAmount.decimals),
+        ),
       );
 
       const tokenSwaps: SwapFetcherProps[] = [];
@@ -339,7 +352,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [
     wallet,
     fromSwap?.chainId,
-    fromSwap?.quantity,
+    debouncedFromSwapQuantity,
     fromTokenAmounts,
     toSwap?.address,
     toSwap?.chainId,
