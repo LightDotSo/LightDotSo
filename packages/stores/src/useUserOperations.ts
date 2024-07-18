@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
+import { generatePartialUserOperations } from "@lightdotso/sdk";
 import { ExecutionWithChainId } from "@lightdotso/types";
-import type { Hex } from "viem";
+import type { Address, Hex } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
@@ -30,6 +32,16 @@ type UserOperationsStore = {
   ) => void;
   addExecutionParamsByChainId: (executionParams: ExecutionWithChainId) => void;
   resetExecutionParams: () => void;
+  partialUserOperationsQueryState: string;
+  isPartialUserOperationsQueryStateTooLarge: boolean;
+  setPartialUserOperationsQueryState: () => void;
+  partialUserOperations: Partial<UserOperation>[];
+  resetPartialUserOperations: () => void;
+  setPartialUserOperationByChainIdAndNonce: (
+    chainId: bigint,
+    nonce: bigint,
+    operation: Partial<UserOperation>,
+  ) => void;
   userOperations: UserOperation[];
   resetUserOperations: () => void;
   setUserOperationByChainIdAndNonce: (
@@ -87,6 +99,47 @@ export const useUserOperations = create(
         resetExecutionParams: () =>
           set(() => {
             return { executionParams: [] };
+          }),
+        partialUserOperationsQueryState: "",
+        isPartialUserOperationsQueryStateTooLarge: false,
+        setPartialUserOperationsQueryState: () =>
+          set(state => {
+            const queryState = userOperationsParser.serialize(
+              generatePartialUserOperations(
+                "0x0000000000000000000000000000000000000000" as Address,
+                state.executionParams,
+              ),
+            );
+
+            return {
+              partialUserOperationsQueryState: queryState,
+              isPartialUserOperationsQueryStateTooLarge:
+                queryState.length > 2_000,
+            };
+          }),
+        partialUserOperations: [],
+        resetPartialUserOperations: () =>
+          set(() => {
+            return { partialUserOperations: [] };
+          }),
+        setPartialUserOperationByChainIdAndNonce: (chainId, nonce, operation) =>
+          set(state => {
+            // Gets the current partialUserOperations
+            const partialUserOperations = [...state.partialUserOperations];
+
+            // Finds the index of the operation matching the chainId
+            const operationIndex = partialUserOperations.findIndex(
+              op => op.chainId === chainId && op.nonce === nonce,
+            );
+
+            // If the operation is found, it updates it, otherwise it adds it to the array
+            if (operationIndex !== -1) {
+              partialUserOperations[operationIndex] = operation;
+            } else {
+              partialUserOperations.push(operation);
+            }
+
+            return { partialUserOperations: partialUserOperations };
           }),
         userOperations: [],
         resetUserOperations: () =>
