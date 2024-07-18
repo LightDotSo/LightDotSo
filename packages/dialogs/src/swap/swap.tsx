@@ -215,7 +215,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const {
     fromToken,
     fromTokenAmounts,
-    fromSwapAmount,
     toToken,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
@@ -330,7 +329,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       return tokenSwaps;
     }
-  }, [fromSwap?.chainId, fromSwap?.quantity, fromTokenAmounts]);
+  }, [
+    fromSwap?.chainId,
+    fromSwap?.quantity,
+    fromTokenAmounts,
+    toSwap.address,
+    toSwap.chainId,
+  ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     if (!wallet) {
