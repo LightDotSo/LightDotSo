@@ -619,6 +619,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </Button>
       {isDev && (
         <div className="break-all overflow-auto h-80">
+          {serialize(genericExecutionQuotes, null, 2)}
+        </div>
+      )}
+      {isDev && (
+        <div className="break-all overflow-auto h-80">
           {serialize(fromTokenAmounts, null, 2)}
         </div>
       )}
