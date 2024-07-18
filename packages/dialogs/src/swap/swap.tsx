@@ -128,7 +128,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const { executionParams } = useUserOperations();
+  const { executionParams, resetExecutionParams } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
 
@@ -241,6 +241,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Reset the execution params when the from swap quantity, address, or chain id changes
+  useEffect(() => {
+    resetExecutionParams();
+  }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
+
   useEffect(() => {
     if (toSwapQuotedAmount && toSwapQuotedQuantity && fromToken.decimals) {
       if (fromSwap.chainId === 0) {
@@ -288,7 +293,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       let requiredSwapAmount = BigInt(
         Math.floor(fromSwap?.quantity * Math.pow(10, fromTokenAmount.decimals)),
       );
-      console.info("requiredSwapAmount", requiredSwapAmount);
 
       const tokenSwaps: SwapFetcherProps[] = [];
 
