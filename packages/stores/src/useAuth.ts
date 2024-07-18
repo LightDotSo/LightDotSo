@@ -34,6 +34,8 @@ interface AuthState {
   setSessionId: (session: string | undefined) => void;
   wallet: Address | undefined;
   setWallet: (wallet: Address | undefined) => void;
+  isAddressPath: boolean;
+  setIsAddressPath: (isAddressPath: boolean) => void;
   logout: () => void;
 }
 
@@ -65,6 +67,9 @@ export const useAuth = create(
         },
         wallet: undefined,
         setWallet: (wallet: Address | undefined) => set({ wallet: wallet }),
+        isAddressPath: false,
+        setIsAddressPath: (isAddressPath: boolean) =>
+          set({ isAddressPath: isAddressPath }),
         logout: () =>
           set({ address: undefined, wallet: undefined, userId: undefined }),
       }),

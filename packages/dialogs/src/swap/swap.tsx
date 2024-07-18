@@ -44,7 +44,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { type Address } from "viem";
+import { isAddress, type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
 
@@ -131,7 +131,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
+  const { wallet, isAddressPath } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const {
     executionParams,
@@ -321,7 +321,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         // Get the required swap amount to satisfy the current swap
         // const currentSwapAmount = requiredSwapAmount - swapAmount;
         const currentSwapAmount =
-          requiredSwapAmount > currentMaxSwapAmount
+          requiredSwapAmount >= currentMaxSwapAmount
             ? currentMaxSwapAmount
             : requiredSwapAmount - currentMaxSwapAmount;
 
@@ -370,6 +370,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const handleSwap = useCallback(() => {
+    const rootPath = isAddressPath
+      ? `/${wallet}/create`
+      : `/create?address=${wallet}`;
+
     if (wallet && userOperationsParams) {
       const userOperationsQueryState =
         userOperationsParser.serialize(userOperationsParams);
@@ -387,13 +391,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         }
 
         // Push without query state params
-        router.push(`/create?address=${wallet}`);
+        router.push(rootPath);
         return;
       }
 
-      router.push(
-        `/create?address=${wallet}&userOperations=${userOperationsQueryState}`,
-      );
+      router.push(`${rootPath}&userOperations=${userOperationsQueryState}`);
     }
   }, [wallet, userOperationsParams]);
 
