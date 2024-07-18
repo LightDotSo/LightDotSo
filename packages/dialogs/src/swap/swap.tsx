@@ -369,14 +369,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {fromSwap && fromSwap?.groupId && (
               <TokenGroup groupId={fromSwap?.groupId} />
             )}
-            {/* {fromSwap &&
-              fromSwap?.chainId &&
+            {fromSwap &&
               fromSwap?.chainId === 0 &&
               genericExecutionQuotes &&
               genericExecutionQuotes.length > 0 &&
               genericExecutionQuotes.map((quote, index) => (
                 <SwapFetcher key={index} {...quote} />
-              ))} */}
+              ))}
             {fromToken && fromToken.address && fromToken.symbol ? (
               <>
                 <TokenImage
