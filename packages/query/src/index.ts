@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { useIsFetchingLifiQuote } from "./useIsFetchingLifiQuote";
 export { useMutationAuthLogout } from "./useMutationAuthLogout";
 export { useMutationAuthVerify } from "./useMutationAuthVerify";
 export { useMutationConfigurationOperationCreate } from "./useMutationConfigurationOperationCreate";

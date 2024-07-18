@@ -14,6 +14,7 @@
 
 "use client";
 
+import { useIsFetchingLifiQuote } from "@lightdotso/query";
 import type { Swap } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { useEffect, useMemo } from "react";
@@ -195,6 +196,12 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [toSwapQuotedAmount, toSwapDecimals]);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const isFetchingLifiQuoteNumber = useIsFetchingLifiQuote();
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -230,8 +237,20 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   }, [fromSwap?.quantity, toSwap?.quantity]);
 
   const isSwapLoading = useMemo(() => {
-    return isFromTokenLoading || isToTokenLoading || isQuoteLoading;
-  }, [isFromTokenLoading, isToTokenLoading, isQuoteLoading]);
+    return (
+      isFromTokenLoading ||
+      isToTokenLoading ||
+      isQuoteLoading ||
+      // For grouped tokens with chainId 0, we need to check if we are fetching lifi quote
+      (fromSwap?.chainId === 0 && isFetchingLifiQuoteNumber > 0)
+    );
+  }, [
+    isFromTokenLoading,
+    isToTokenLoading,
+    isQuoteLoading,
+    fromSwap?.chainId,
+    isFetchingLifiQuoteNumber,
+  ]);
 
   const isSwapValid = useMemo(() => {
     return isFromSwapValueValid && isSwapNotEmpty;
