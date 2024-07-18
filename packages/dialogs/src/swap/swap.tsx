@@ -309,8 +309,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         // const currentSwapAmount = requiredSwapAmount - swapAmount;
         const currentSwapAmount =
           requiredSwapAmount > currentMaxSwapAmount
-            ? requiredSwapAmount - currentMaxSwapAmount
-            : currentMaxSwapAmount;
+            ? currentMaxSwapAmount
+            : requiredSwapAmount - currentMaxSwapAmount;
 
         // Deduct the required swap amount from the current swap
         requiredSwapAmount -= currentMaxSwapAmount;
