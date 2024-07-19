@@ -66,6 +66,22 @@ impl Node {
         info!("Node run, starting");
     }
 
+    pub async fn simulate_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<()> {
+        let simulate_user_operation =
+            || async { self.simulate_user_operation(chain_id, entry_point, user_operation).await };
+
+        let res =
+            simulate_user_operation.retry(&ExponentialBuilder::default().with_max_times(1)).await;
+        info!("res: {:?}", res);
+
+        Ok(())
+    }
+
     /// Simulate a user operation on the node w/ `eth_call`
     /// Note that this function will always return an error because the call will revert on-chain
     /// Only for EntryPoint v0.6.0
@@ -108,7 +124,7 @@ impl Node {
         };
 
         let res = simulate_user_operation_with_tracer
-            .retry(&ExponentialBuilder::default().with_max_times(5))
+            .retry(&ExponentialBuilder::default().with_max_times(1))
             .await;
         info!("res: {:?}", res);
 
@@ -194,6 +210,21 @@ impl Node {
         Ok(user_op_event.success)
     }
 
+    pub async fn send_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<Response<H256>> {
+        let send_user_operation =
+            || async { self.send_user_operation(chain_id, entry_point, user_operation).await };
+
+        let res = send_user_operation.retry(&ExponentialBuilder::default().with_max_times(5)).await;
+        info!("res: {:?}", res);
+
+        res
+    }
+
     /// Send a user operation to the node
     /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L128
     /// License: MIT
@@ -213,32 +244,25 @@ impl Node {
             id: 1,
         };
 
-        let node_send_operation = || async {
-            // Log the time before sending the user operation to the node
-            info!(
-                "Sending user operation {:?} to the node at {}",
-                user_operation.clone(),
-                chrono::Utc::now()
-            );
+        // Log the time before sending the user operation to the node
+        info!(
+            "Sending user operation {:?} to the node at {}",
+            user_operation.clone(),
+            chrono::Utc::now()
+        );
 
-            // Send the user operation to the node
-            let client = reqwest::Client::new();
+        // Send the user operation to the node
+        let client = reqwest::Client::new();
 
-            let response = client
-                .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
-                .json(&req_body)
-                .send()
-                .await?;
+        let response = client
+            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
+            .json(&req_body)
+            .send()
+            .await?;
 
-            // Handle the response for the JSON-RPC API.
-            handle_response(response).await
-        };
+        // Handle the response for the JSON-RPC API.
+        let res = handle_response(response).await?;
 
-        // Retry the user operation if it fails
-        let res =
-            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(10)).await;
-        info!("res: {:?}", res);
-
-        res
+        Ok(res)
     }
 }
