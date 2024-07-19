@@ -92,6 +92,8 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
     resetUserOperations,
     partialUserOperations,
     resetPartialUserOperations,
+    resetPendingUserOperationHashes,
+    resetPendingUserOperationMerkleRoot,
   } = useUserOperations();
   const {
     customFormSuccessText,
@@ -255,6 +257,8 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // On pathname change, reset all user operations
   useEffect(() => {
     resetUserOperations();
+    resetPendingUserOperationHashes();
+    resetPendingUserOperationMerkleRoot();
     setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
