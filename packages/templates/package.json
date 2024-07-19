@@ -30,6 +30,7 @@
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
     "@lightdotso/const": "workspace:*",
+    "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
