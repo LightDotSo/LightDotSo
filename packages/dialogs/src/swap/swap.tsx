@@ -49,9 +49,9 @@ import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type Address } from "viem";
-import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
 import { ChainLogo } from "@lightdotso/svg";
+import { TokenGroup } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types

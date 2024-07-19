@@ -26,7 +26,7 @@ import {
 } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Modal } from "@lightdotso/templates";
+import { Modal, TokenGroup } from "@lightdotso/templates";
 import {
   Button,
   ButtonIcon,
@@ -43,7 +43,6 @@ import { SparklesIcon } from "lucide-react";
 import { type FC, useCallback, useMemo, useRef } from "react";
 import type { Address } from "viem";
 import { TokenModalGroupHoverCard } from "./token-modal-group-hover-card";
-
 export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -430,6 +429,7 @@ export const TokenModal: FC = () => {
 
               return (
                 <TokenModalGroupHoverCard
+                  key={virtualToken.key}
                   groupId={
                     chainState && chainState.id === 0
                       ? token?.group?.id
@@ -437,7 +437,6 @@ export const TokenModal: FC = () => {
                   }
                 >
                   <div
-                    key={virtualToken.key}
                     style={{
                       position: "absolute",
                       top: 0,
@@ -450,11 +449,13 @@ export const TokenModal: FC = () => {
                     className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
                     onClick={() => onTokenSelect(token)}
                   >
+                    {token?.group?.id && (
+                      <TokenGroup groupId={token?.group?.id} />
+                    )}
                     <TokenImage
                       withChainLogo={token.chain_id !== 0}
                       token={token}
                     />
-
                     <div className="flex grow flex-col pl-4">
                       <div className="text-text">{token?.name}</div>
                       <div className="text-sm font-light text-text-weak">
@@ -464,6 +465,7 @@ export const TokenModal: FC = () => {
                     <div className="flex-none text-sm text-text-weak">
                       {token?.amount &&
                         token.decimals &&
+                        token?.decimals !== 0 &&
                         refineNumberFormat(
                           token?.amount / Math.pow(10, token?.decimals),
                         )}
