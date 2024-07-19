@@ -247,7 +247,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
-    if (toSwapQuotedAmount && toSwapQuotedQuantity && fromToken.decimals) {
+    if (toSwapQuotedAmount && toSwapQuotedQuantity && toToken.decimals) {
       if (fromSwap.chainId === 0) {
         // Get the aggregated amount of quotes
         const aggregatedAmount = quotes.reduce((acc, quote) => {
@@ -256,7 +256,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
         // Divide the aggregated amount by the decimal places
         const aggregatedQuantity =
-          aggregatedAmount / BigInt(Math.pow(10, fromToken.decimals));
+          aggregatedAmount / BigInt(Math.pow(10, toToken.decimals));
 
         // Set the to swap quoted amount
         form.setValue("to.quantity", Number(aggregatedQuantity));
@@ -271,7 +271,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapQuotedQuantity,
     quotes,
     fromSwap.chainId,
-    fromToken.decimals,
+    toToken.decimals,
   ]);
 
   // ---------------------------------------------------------------------------
