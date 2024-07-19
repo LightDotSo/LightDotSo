@@ -44,7 +44,8 @@ export const useTokenGroups = create(
             // Check if tokenAmount is already in tokenAmounts
             const index = groupTokenAmounts.findIndex(
               groupTokenAmount =>
-                groupTokenAmount.chain_id === tokenAmount.chain_id,
+                groupTokenAmount.chain_id === tokenAmount.chain_id &&
+                groupTokenAmount.address === tokenAmount.address,
             );
 
             // If tokenAmount is in tokenAmounts, update it
