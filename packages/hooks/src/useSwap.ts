@@ -50,7 +50,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const {
     token: fromToken,
-    tokenAmounts: fromTokenAmounts,
+    tokens: fromTokens,
     isTokenLoading: isFromTokenLoading,
   } = useToken({
     address: wallet as Address,
@@ -262,7 +262,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   return {
     fromToken: fromToken,
-    fromTokenAmounts: fromTokenAmounts,
+    fromTokens: fromTokens,
     toToken: toToken,
     fromSwapAmount: debouncedFromSwapAmount,
     toSwapQuotedAmount: toSwapQuotedAmount,

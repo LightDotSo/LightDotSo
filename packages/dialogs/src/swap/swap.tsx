@@ -213,7 +213,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const {
     fromToken,
-    fromTokenAmounts,
+    fromTokens,
     toToken,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
@@ -285,28 +285,27 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const genericExecutionQuotes = useMemo(() => {
+    // Initialize the token swaps
+    const tokenSwaps: SwapFetcherProps[] = [];
+
     // If the chainId is zero, compute the required tokenAmounts to satisfy the swap
     if (
       fromSwap?.chainId === 0 &&
       debouncedFromSwapQuantity &&
-      fromTokenAmounts &&
-      fromTokenAmounts.length > 0
+      fromToken &&
+      fromTokens &&
+      fromTokens.length > 0
     ) {
-      // Get the first tokenAmount
-      const fromTokenAmount = fromTokenAmounts[0];
-
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
       let requiredSwapAmount = BigInt(
         Math.floor(
-          debouncedFromSwapQuantity * Math.pow(10, fromTokenAmount.decimals),
+          debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
         ),
       );
 
-      const tokenSwaps: SwapFetcherProps[] = [];
-
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
       // Use the tokenAmount's `amount` to fill the swap
-      for (const fromTokenAmount of fromTokenAmounts) {
+      for (const fromTokenAmount of fromTokens) {
         const currentMaxSwapAmount = fromTokenAmount.amount;
 
         // Get the required swap amount to satisfy the current swap
@@ -337,14 +336,13 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         // If the swap is not satisfied, add the swap to the list
         tokenSwaps.push(swap);
       }
-
-      return tokenSwaps;
     }
+    return tokenSwaps;
   }, [
     wallet,
     fromSwap?.chainId,
     debouncedFromSwapQuantity,
-    fromTokenAmounts,
+    fromTokens,
     toSwap?.address,
     toSwap?.chainId,
   ]);
@@ -679,8 +677,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </Button>
       {fromSwap?.chainId === 0 &&
         genericExecutionQuotes &&
-        fromTokenAmounts &&
-        fromTokenAmounts.length > 0 && (
+        fromTokens &&
+        fromTokens.length > 0 && (
           <div className="mt-4 overflow-auto">
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
@@ -724,7 +722,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </div>
         )}
       {isDev && (
-        <div className="mt-4 overflow-auto max-w-md">
+        <div className="mt-4 overflow-auto max-w-md max-h-96">
           <pre className="break-all text-xs text-text-weak">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
@@ -733,7 +731,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               toSwap: toSwap,
               fromToken: fromToken,
               toToken: toToken,
-              fromTokenAmounts: fromTokenAmounts,
+              fromTokens: fromTokens,
               toSwapQuotedAmount: toSwapQuotedAmount,
               toSwapQuotedQuantity: toSwapQuotedQuantity,
               isFromSwapValueValid: isFromSwapValueValid,
