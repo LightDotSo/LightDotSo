@@ -48,7 +48,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, getChainWithChainId } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { usePathname } from "next/navigation";
 import type { Address } from "viem";
@@ -112,6 +112,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isTransactionProcessing, setIsTransactionProcessing] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -228,6 +234,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // Change the page index depending on the sign loading state
   useEffect(() => {
     if (isUserOperationsCreateLoading) {
+      setIsTransactionProcessing(true);
       setPageIndex(1);
     } else {
       setPageIndex(0);
@@ -236,7 +243,11 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isTransactionSuccess && watchIsDirectSubmit) {
+    if (
+      isTransactionSuccess &&
+      isTransactionProcessing &&
+      watchIsDirectSubmit
+    ) {
       setPageIndex(2);
     }
   }, [isTransactionSuccess, watchIsDirectSubmit, setPageIndex]);
