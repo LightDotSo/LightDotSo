@@ -298,12 +298,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       fromTokens.length > 0
     ) {
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
-      let requiredSwapAmount = BigInt(
-        Math.floor(
-          debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
-        ),
-      );
-      console.info("requiredSwapAmount:", requiredSwapAmount);
+      let requiredSwapAmount =
+        debouncedFromSwapQuantity === fromSwapMaximumQuantity
+          ? fromSwapMaximumAmount
+          : BigInt(
+              Math.floor(
+                debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
+              ),
+            );
 
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
       // Use the tokenAmount's `amount` to fill the swap
@@ -316,11 +318,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           requiredSwapAmount >= currentMaxSwapAmount
             ? currentMaxSwapAmount
             : requiredSwapAmount;
-        console.info("currentSwapAmount:", currentSwapAmount);
 
         // Deduct the required swap amount from the current swap
         requiredSwapAmount -= currentMaxSwapAmount;
-        console.info("requiredSwapAmount:", requiredSwapAmount);
 
         const swap: SwapFetcherProps = {
           fromAddress: wallet as Address,
@@ -331,15 +331,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           toTokenAddress: toSwap?.address as Address,
           fromAmount: currentSwapAmount,
         };
-        console.info("swap:", swap);
+
+        // If the swap is not satisfied, add the swap to the list
+        tokenSwaps.push(swap);
 
         // If the swap is satisfied, break the loop
         if (requiredSwapAmount <= 0n) {
           break;
         }
-
-        // If the swap is not satisfied, add the swap to the list
-        tokenSwaps.push(swap);
       }
     }
     console.info("tokenSwaps:", tokenSwaps);
@@ -349,12 +348,16 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     wallet,
     fromSwap?.chainId,
     debouncedFromSwapQuantity,
+    fromSwapMaximumQuantity,
+    fromSwapMaximumAmount,
     fromTokens,
     toSwap?.address,
     toSwap?.chainId,
   ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    console.info("executionParams:", executionParams);
+
     if (!wallet || !executionParams || executionParams.length === 0) {
       return [];
     }
