@@ -722,7 +722,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </div>
         )}
       {isDev && (
-        <div className="mt-4 overflow-auto max-w-md max-h-96">
+        <div className="mt-4 max-h-96 max-w-md overflow-auto">
           <pre className="break-all text-xs text-text-weak">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,

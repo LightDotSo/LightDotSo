@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { useRouter } from "next/navigation";
