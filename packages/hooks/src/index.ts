@@ -37,6 +37,7 @@ export { useTokenAmount } from "./useTokenAmount";
 export { useUserOperationsCreate } from "./useUserOperationsCreate";
 export { useUserOperationsCreateState } from "./useUserOperationsCreateState";
 export { useUserOperationSend } from "./useUserOperationSend";
+export { useUserOperationsProgress } from "./useUserOperationsProgress";
 export { useUserOperationSign } from "./useUserOperationSign";
 export { useUserOperationsSendState } from "./useUserOperationsSendState";
 export { useWagmiToken } from "./useWagmiToken";
