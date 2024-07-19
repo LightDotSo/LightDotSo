@@ -171,6 +171,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const {
+    quote,
     toQuotedAmount: toSwapQuotedAmount,
     executionParams,
     isQuoteLoading,
@@ -261,9 +262,12 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   return {
+    quote: quote,
     fromToken: fromToken,
+    isFromTokenLoading: isFromTokenLoading,
     fromTokens: fromTokens,
     toToken: toToken,
+    isToTokenLoading: isToTokenLoading,
     fromSwapAmount: debouncedFromSwapAmount,
     toSwapQuotedAmount: toSwapQuotedAmount,
     toSwapQuotedQuantity: toSwapQuotedQuantity,

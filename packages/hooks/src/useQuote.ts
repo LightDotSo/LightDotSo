@@ -62,6 +62,10 @@ export const useQuote = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const quote = useMemo(() => {
+    return lifiQuote;
+  }, [lifiQuote]);
+
   const toQuotedAmount = useMemo(() => {
     if (lifiQuote?.estimate?.toAmount) {
       return BigInt(lifiQuote?.estimate?.toAmount);
@@ -172,6 +176,7 @@ export const useQuote = ({
   // ---------------------------------------------------------------------------
 
   return {
+    quote: quote,
     toQuotedAmount: toQuotedAmount,
     executionParams: executionParams,
     isQuoteLoading: isQuoteLoading,
