@@ -1,3 +1,17 @@
+// Copyright 2023-2024 LightDotSo.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import { TokenImage } from "@lightdotso/elements";
 import { useTokenAmounts } from "@lightdotso/hooks/src/useTokenAmounts";
 import { useQueryTokenGroup } from "@lightdotso/query";
@@ -54,7 +68,10 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
         tokenGroup?.tokens.length > 0 &&
         tokenAmounts &&
         tokenAmounts.length > 0 && (
-          <HoverCardContent align="end" className="w-80 p-2 z-[2147483647]">
+          <HoverCardContent
+            align="end"
+            className="z-[2147483647] w-80 bg-opacity-0 p-2"
+          >
             <div className="flex justify-between">
               <div className="w-full">
                 {tokenAmounts.map((token, index) => (
@@ -72,7 +89,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                           group: undefined,
                         }}
                       />
-                      {getChainNameWithChainId(token.chain_id)}
+                      {token.name}
                     </div>
                     <div className="truncate text-xs text-text">
                       {token.amount &&
