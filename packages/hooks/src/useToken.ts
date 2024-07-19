@@ -110,13 +110,7 @@ export const useToken = ({
       };
     }
 
-    if (
-      tokenGroup &&
-      tokenGroup.tokens &&
-      tokenGroup.tokens.length > 0 &&
-      chainId === 0 &&
-      groupId
-    ) {
+    if (tokenGroup && chainId === 0 && groupId) {
       return {
         amount: BigInt(0),
         original_amount: 0,

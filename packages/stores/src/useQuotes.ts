@@ -33,6 +33,7 @@ type QuoteParams = {
 
 type QuotesStore = {
   quotes: QuoteParams[];
+  resetQuotes: () => void;
   setQuote: (quote: QuoteParams) => void;
 };
 
@@ -45,7 +46,25 @@ export const useQuotes = create(
     persist<QuotesStore>(
       set => ({
         quotes: [],
-        setQuote: quote => set(state => ({ quotes: [...state.quotes, quote] })),
+        resetQuotes: () => set({ quotes: [] }),
+        setQuote: quote =>
+          set(state => {
+            // Filter out the quote if it already exists
+            const newQuotes = state.quotes.filter(
+              oldQuote =>
+                oldQuote.fromChain !== quote.fromChain ||
+                oldQuote.toChain !== quote.toChain ||
+                oldQuote.fromTokenAddress !== quote.fromTokenAddress ||
+                oldQuote.toTokenAddress !== quote.toTokenAddress ||
+                oldQuote.fromAddress !== quote.fromAddress ||
+                oldQuote.toAddress !== quote.toAddress,
+            );
+
+            return {
+              ...state,
+              quotes: [...newQuotes, quote],
+            };
+          }),
       }),
       {
         name: "quotes-state-v1",
