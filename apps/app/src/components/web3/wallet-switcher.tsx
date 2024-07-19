@@ -322,23 +322,25 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
           </CommandGroup>
         </CommandList>
         <CommandSeparator />
-        <CommandList>
-          <CommandGroup>
-            {appGroup === "action" && (
-              <CommandItem
-                className="text-sm"
-                onSelect={() => {
-                  setOpen(false);
-                  router.push(`/${wallet}/overview`);
-                }}
-              >
-                <WalletIcon className="mr-2 size-5" />
-                My Wallet
-              </CommandItem>
-            )}
-          </CommandGroup>
-        </CommandList>
-        <CommandSeparator />
+        {appGroup === "action" && (
+          <>
+            <CommandList>
+              <CommandGroup>
+                <CommandItem
+                  className="text-sm"
+                  onSelect={() => {
+                    setOpen(false);
+                    router.push(`/${wallet}/overview`);
+                  }}
+                >
+                  <WalletIcon className="mr-2 size-5" />
+                  My Wallet
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+            <CommandSeparator />
+          </>
+        )}
         <CommandList>
           <CommandGroup>
             <CommandItem
