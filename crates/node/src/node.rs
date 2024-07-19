@@ -252,7 +252,7 @@ impl Node {
 
         // Retry the user operation if it fails
         let res =
-            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(1)).await;
+            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(5)).await;
         info!("res: {:?}", res);
 
         res

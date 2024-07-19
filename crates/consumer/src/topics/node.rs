@@ -90,8 +90,9 @@ pub async fn node_consumer(
         uop.signature = signature.into();
 
         // Simulate the user operation
-        let res_catch =
-            node.simulate_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await;
+        let res_catch = node
+            .simulate_user_operation_with_backon(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop)
+            .await;
 
         // Log the response
         info!("res_catch: {:?}", res_catch);
