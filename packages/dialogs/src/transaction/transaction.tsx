@@ -16,6 +16,7 @@
 
 import { TokenImage } from "@lightdotso/elements";
 import {
+  useIsMounted,
   useUserOperationsCreate,
   useUserOperationsCreateState,
 } from "@lightdotso/hooks";
@@ -87,7 +88,11 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { pageIndex, setPageIndex } = useModalSwiper();
-  const { resetUserOperations, partialUserOperations } = useUserOperations();
+  const {
+    resetUserOperations,
+    partialUserOperations,
+    resetPartialUserOperations,
+  } = useUserOperations();
   const {
     customFormSuccessText,
     isFormLoading,
@@ -101,6 +106,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
     hideTokenModal,
     setCreateBackgroundModal,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -159,6 +170,18 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isTransactionLoading = useMemo(() => {
+    return isMounted && isUserOperationsCreateLoading;
+  }, [isMounted, isUserOperationsCreateLoading]);
+
+  const isTransactionSuccess = useMemo(() => {
+    return isMounted && isUserOperationsCreateSuccess;
+  }, [isMounted, isUserOperationsCreateSuccess]);
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -204,26 +227,35 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isUserOperationsCreateLoading) {
+    if (isTransactionLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationsCreateLoading, setPageIndex]);
+  }, [isTransactionLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isUserOperationsCreateSuccess && watchIsDirectSubmit) {
+    if (isTransactionLoading && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
+  }, [isTransactionLoading, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
     resetUserOperations();
     setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetUserOperations, setPageIndex]);
+  }, [pathname]);
+
+  // If create is successful, reset the form
+  useEffect(() => {
+    if (isTransactionLoading) {
+      form.reset(defaultValues);
+      resetPartialUserOperations();
+      resetUserOperations();
+    }
+  }, [isTransactionLoading]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

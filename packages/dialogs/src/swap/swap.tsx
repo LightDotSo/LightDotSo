@@ -702,7 +702,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                       )}
                     />
                     <span className="ml-2 text-sm text-text-weak">
-                      Preparing Execution...
+                      Preparing execution across {genericExecutionQuotes.length}{" "}
+                      chains...
                     </span>
                   </div>
                 </AccordionTrigger>

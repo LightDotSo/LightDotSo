@@ -78,6 +78,23 @@ export const useQuote = ({
       return [];
     }
 
+    if (fromTokenAddress === toTokenAddress && fromChainId === toChainId) {
+      // Encode the transfer function
+      const transferExecution: ExecutionWithChainId = {
+        address: fromTokenAddress as Hex,
+        value: 0n,
+        callData: encodeFunctionData({
+          abi: erc20Abi,
+          functionName: "transfer",
+          args: [toAddress as Address, fromAmount] as [Address, bigint],
+        }),
+        chainId: BigInt(fromChainId),
+      };
+
+      // Add the transfer execution
+      executions.push(transferExecution);
+    }
+
     if (lifiQuote && lifiQuote?.transactionRequest) {
       // Get the approval address
       const approvalAddress =
