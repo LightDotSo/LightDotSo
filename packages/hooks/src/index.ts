@@ -17,6 +17,7 @@ export { useBaseSlug } from "./useBaseSlug";
 export { useCopy } from "./useCopy";
 export { useConfigurationOperationCreate } from "./useConfigurationOperationCreate";
 export { useContainerDimensions } from "./useContainerDimensions";
+export { useCreate } from "./useCreate";
 export { useDelayedValue } from "./useDelayedValue";
 export { useDebounced } from "./useDebounced";
 export { useDebouncedValue } from "./useDebouncedValue";

@@ -21,12 +21,8 @@ import {
   useQuote,
   type QuoteParams,
 } from "@lightdotso/hooks";
-import { useSwap } from "@lightdotso/hooks";
-import {
-  userOperationsParser,
-  useSwapFromQueryState,
-  useSwapToQueryState,
-} from "@lightdotso/nuqs";
+import { useCreate, useSwap } from "@lightdotso/hooks";
+import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
@@ -49,14 +45,14 @@ import {
   Input,
 } from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { isAddress, type Address } from "viem";
+import { type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
 import { ChainLogo } from "@lightdotso/svg";
+import { user } from "../../../query-keys/src/user";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -137,10 +133,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet, isAddressPath } = useAuth();
+  const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const { executionParams, resetExecutionParams, setPartialUserOperations } =
-    useUserOperations();
+  const { executionParams, resetExecutionParams } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
 
@@ -211,12 +206,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { walletSettings } = useQueryWalletSettings({
     address: wallet as Address,
   });
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -369,31 +358,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [wallet, executionParams]);
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSwap = useCallback(() => {
-    const rootPath = isAddressPath
-      ? `/${wallet}/create`
-      : `/create?address=${wallet}`;
-
-    if (wallet && userOperationsParams && userOperationsParams.length > 0) {
-      const userOperationsQueryState =
-        userOperationsParser.serialize(userOperationsParams);
-
-      // If the query state is too large, set the user operations and push without query state params
-      if (userOperationsQueryState.length > 2_000) {
-        // Set the user operations
-        setPartialUserOperations(userOperationsParams);
-
-        // Push without query state params
-        router.push(rootPath);
-        return;
-      }
-
-      router.push(`${rootPath}&userOperations=${userOperationsQueryState}`);
-    }
-  }, [isAddressPath, wallet, userOperationsParams]);
+  const { handleCreate } = useCreate({ userOperations: userOperationsParams });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -690,7 +658,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <Button
-        onClick={handleSwap}
+        onClick={handleCreate}
         isLoading={isSwapLoading}
         disabled={isSwapLoading || !isSwapValid}
         size="xl"
