@@ -14,6 +14,7 @@
 
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
+import { UserOperation } from "@lightdotso/schemas";
 import { getConfiguration, getWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -30,6 +31,7 @@ export const handler = async (searchParams: {
   userOperations?: string;
 }): Promise<{
   configuration: ConfigurationData | null;
+  userOperations: Partial<UserOperation>[] | null;
 }> => {
   // ---------------------------------------------------------------------------
   // Handlers
@@ -44,6 +46,7 @@ export const handler = async (searchParams: {
   if (searchParams.address && !validateAddress(searchParams.address)) {
     return {
       configuration: null,
+      userOperations: null,
     };
   }
 
@@ -51,15 +54,9 @@ export const handler = async (searchParams: {
   // Parsers
   // ---------------------------------------------------------------------------
 
-  const userOperationsQuery = userOperationsParser.parseServerSide(
+  const parsedUserOperations = userOperationsParser.parseServerSide(
     searchParams.userOperations,
   );
-
-  if (!userOperationsQuery) {
-    return {
-      configuration: null,
-    };
-  }
 
   // ---------------------------------------------------------------------------
   // Fetch Wallet and Configuration
@@ -102,5 +99,6 @@ export const handler = async (searchParams: {
   // Return an object containing an array of userOperations
   return {
     configuration: configuration,
+    userOperations: parsedUserOperations,
   };
 };

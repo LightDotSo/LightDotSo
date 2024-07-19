@@ -54,7 +54,7 @@
     "oxlint:fix": "oxlint --ignore-path .gitignore --fix",
     "oxlint:lint": "oxlint --ignore-path .gitignore",
     "pnpm:upgrade": "pnpm update --latest --recursive \"!solc\"",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prettier:cmd": "prettier",
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",

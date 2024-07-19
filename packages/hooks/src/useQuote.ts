@@ -97,7 +97,7 @@ export const useQuote = ({
         fromTokenAddress !== "0x0000000000000000000000000000000000000000"
       ) {
         const approveExecution: ExecutionWithChainId = {
-          address: fromAddress as Hex,
+          address: fromTokenAddress as Hex,
           value: 0n,
           callData: encodeFunctionData({
             abi: erc20Abi,

@@ -52,7 +52,6 @@ import { type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
 import { ChainLogo } from "@lightdotso/svg";
-import { user } from "../../../query-keys/src/user";
 
 // -----------------------------------------------------------------------------
 // Types

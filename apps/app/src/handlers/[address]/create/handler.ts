@@ -12,18 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
-// import type { UserOperation } from "@lightdotso/schemas";
-// import { calculateInitCode } from "@lightdotso/sequence";
-import {
-  getConfiguration,
-  // getUserOperationNonce,
-  // getUserOperations,
-  getWallet,
-} from "@lightdotso/services";
-// import { findContractAddressByAddress } from "@lightdotso/utils";
+import { getConfiguration, getWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -32,6 +23,7 @@ import type {
   // Hex
 } from "viem";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
+import { UserOperation } from "@lightdotso/schemas";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -44,16 +36,7 @@ export const handler = async (
   },
 ): Promise<{
   configuration: ConfigurationData;
-  // userOperations: Omit<
-  //   UserOperation,
-  //   | "hash"
-  //   | "signature"
-  //   | "maxFeePerGas"
-  //   | "maxPriorityFeePerGas"
-  //   | "callGasLimit"
-  //   | "verificationGasLimit"
-  //   | "preVerificationGas"
-  // >[];
+  userOperations: Partial<UserOperation>[] | null;
 }> => {
   // ---------------------------------------------------------------------------
   // Handlers
@@ -73,32 +56,9 @@ export const handler = async (
   // Parsers
   // ---------------------------------------------------------------------------
 
-  const userOperationsQuery = userOperationsParser.parseServerSide(
+  const parsedUserOperations = userOperationsParser.parseServerSide(
     searchParams.userOperations,
   );
-
-  if (!userOperationsQuery) {
-    notFound();
-  }
-
-  // ---------------------------------------------------------------------------
-  // Fetch Nonce
-  // ---------------------------------------------------------------------------
-
-  // const noncePromises = userOperationsQuery.map(operation => {
-  //   return getUserOperationNonce({
-  //     address: params.address as Address,
-  //     chain_id: Number(operation.chainId) as number,
-  //   });
-  // });
-
-  // // Resolve all promises
-  // const nonces = await Promise.all(noncePromises);
-
-  // // If there are any errors among responses
-  // if (nonces.some(n => n.isErr())) {
-  //   notFound();
-  // }
 
   // ---------------------------------------------------------------------------
   // Fetch Wallet and Configuration
@@ -135,91 +95,12 @@ export const handler = async (
   );
 
   // ---------------------------------------------------------------------------
-  // Defaults
-  // ---------------------------------------------------------------------------
-
-  // let ops: Omit<
-  //   UserOperation,
-  //   | "hash"
-  //   | "signature"
-  //   | "maxFeePerGas"
-  //   | "maxPriorityFeePerGas"
-  //   | "callGasLimit"
-  //   | "verificationGasLimit"
-  //   | "preVerificationGas"
-  // >[] =
-  //   userOperationsQuery &&
-  //   userOperationsQuery.map(operation => {
-  //     const nonce =
-  //       nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce;
-  //     return {
-  //       chainId: operation.chainId as bigint,
-  //       sender: params.address as Address,
-  //       paymasterAndData: "0x",
-  //       nonce: BigInt(nonce),
-  //       initCode: (operation.initCode as Hex) ?? "0x",
-  //       callData: (operation.callData as Hex) ?? "0x",
-  //     };
-  //   });
-
-  // ---------------------------------------------------------------------------
-  // Fetch
-  // ---------------------------------------------------------------------------
-
-  // const resPromises = ops.map(op => {
-  //   return getUserOperations({
-  //     address: params.address as Address,
-  //     status: "executed",
-  //     offset: 0,
-  //     limit: 1,
-  //     order: "asc",
-  //     is_testnet: true,
-  //     chain_id: Number(op.chainId) as number,
-  //   });
-  // });
-
-  // // Resolve all promises
-  // const res = await Promise.all(resPromises);
-
-  // // If there are any errors among responses, return the lightly parsed userOperations
-  // if (res.some(r => r.isErr())) {
-  //   return {
-  //     configuration: configuration,
-  //     userOperations: ops,
-  //   };
-  // }
-
-  // Add the initCode to the response if there are no operations
-  // const parsedUserOperations = ops.map((op, index) => {
-  //   // Parse
-  //   const parsedRes = res[index]._unsafeUnwrap();
-
-  //   // If there are no operations, add the initCode to the response
-  //   if (parsedRes.length === 0) {
-  //     return {
-  //       ...op,
-  //       initCode: calculateInitCode(
-  //         WALLET_FACTORY_ENTRYPOINT_MAPPING[
-  //           findContractAddressByAddress(wallet.factory_address as Address)!
-  //         ],
-  //         configuration.image_hash as Hex,
-  //         wallet.salt as Hex,
-  //       ),
-  //     };
-  //   } else {
-  //     return {
-  //       ...op,
-  //     };
-  //   }
-  // });
-
-  // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
   // Return an object containing an array of userOperations
   return {
     configuration: configuration,
-    // userOperations: parsedUserOperations,
+    userOperations: parsedUserOperations,
   };
 };
