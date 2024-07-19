@@ -247,23 +247,25 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
+    // For multi-chain swaps, set the to swap quoted amount
+    if (fromSwap.chainId === 0 && quotes.length > 0) {
+      // Get the aggregated amount of quotes
+      const aggregatedAmount = quotes.reduce((acc, quote) => {
+        return acc + (quote.toAmount || 0n);
+      }, 0n);
+
+      // Divide the aggregated amount by the decimal places
+      const aggregatedQuantity =
+        aggregatedAmount / BigInt(Math.pow(10, toToken.decimals));
+
+      // Set the to swap quoted amount
+      form.setValue("to.quantity", Number(aggregatedQuantity));
+
+      return;
+    }
+
+    // For single chain swaps, set the to swap quoted amount
     if (toSwapQuotedAmount && toSwapQuotedQuantity && toToken.decimals) {
-      if (fromSwap.chainId === 0) {
-        // Get the aggregated amount of quotes
-        const aggregatedAmount = quotes.reduce((acc, quote) => {
-          return acc + (quote.toAmount || 0n);
-        }, 0n);
-
-        // Divide the aggregated amount by the decimal places
-        const aggregatedQuantity =
-          aggregatedAmount / BigInt(Math.pow(10, toToken.decimals));
-
-        // Set the to swap quoted amount
-        form.setValue("to.quantity", Number(aggregatedQuantity));
-
-        return;
-      }
-
       form.setValue("to.quantity", toSwapQuotedQuantity);
     }
   }, [
@@ -639,7 +641,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             disabled={
               !toSwapMaximumQuantity ||
               toSwapMaximumQuantity === 0 ||
-              toSwap?.quantity === toSwapMaximumQuantity
+              toSwap?.quantity === toSwapMaximumQuantity ||
+              fromSwap?.chainId === 0
             }
             onClick={() => {
               if (

@@ -21,4 +21,8 @@ import type { TokenData } from "./token";
 export type TokenGroupData = {
   id: string;
   tokens?: TokenData[];
+  address: string;
+  decimals: number;
+  name?: string | null | undefined;
+  symbol: string;
 };

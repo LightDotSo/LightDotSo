@@ -29,6 +29,14 @@ pub(crate) struct TokenGroup {
     id: String,
     /// The array of tokens in the token group.
     tokens: Vec<Token>,
+    /// The address of the token (may differ between chains but okay for now)
+    pub address: String,
+    /// The name of the token group.
+    pub name: Option<String>,
+    /// The symbol of the token group.
+    pub symbol: String,
+    /// The decimals of the token group.
+    pub decimals: i32,
 }
 
 // -----------------------------------------------------------------------------
@@ -42,7 +50,24 @@ impl From<token_group::Data> for TokenGroup {
             id: token_group.id,
             tokens: token_group
                 .tokens
+                .clone()
                 .map_or(Vec::new(), |tokens| tokens.into_iter().map(Token::from).collect()),
+            // Fetch the first token to get the below fields
+            address: token_group
+                .tokens
+                .clone()
+                .map_or(String::new(), |tokens| tokens.first().unwrap().address.clone()),
+            name: token_group
+                .tokens
+                .clone()
+                .and_then(|tokens| tokens.first().unwrap().name.clone()),
+            decimals: token_group
+                .tokens
+                .clone()
+                .map_or(0, |tokens| tokens.first().unwrap().decimals.unwrap_or(0)),
+            symbol: token_group.tokens.map_or(String::new(), |tokens| {
+                tokens.first().unwrap().symbol.clone().unwrap_or_default()
+            }),
         }
     }
 }
