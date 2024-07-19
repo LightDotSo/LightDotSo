@@ -80,13 +80,13 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
 
   const { setQuote } = useQuotes();
-  const { setExecutionsParamsByChainId } = useUserOperations();
+  const { setExecutionParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { executionsParams, toQuotedAmount } = useQuote(params);
+  const { executionParams, toQuotedAmount } = useQuote(params);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -108,10 +108,10 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   }, [toQuotedAmount, setQuote]);
 
   useEffect(() => {
-    if (executionsParams && executionsParams.length > 0) {
-      setExecutionsParamsByChainId(executionsParams);
+    if (executionParams && executionParams.length > 0) {
+      setExecutionParamsByChainId(executionParams[0].chainId, executionParams);
     }
-  }, [executionsParams, setExecutionsParamsByChainId]);
+  }, [executionParams, setExecutionParamsByChainId]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -140,8 +140,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { wallet, isAddressPath } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const {
-    executionsParams,
-    resetExecutionsParams,
+    executionParams,
+    resetExecutionParams,
     setPartialUserOperationByChainIdAndNonce,
   } = useUserOperations();
   const { isDev } = useDev();
@@ -257,7 +257,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   // Reset the execution params when the from swap quantity, address, or chain id changes
   useEffect(() => {
-    resetExecutionsParams();
+    resetExecutionParams();
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
@@ -364,15 +364,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
-    if (!wallet || !executionsParams || executionsParams.size === 0) {
+    if (!wallet || !executionParams || executionParams.length === 0) {
       return [];
     }
 
-    // Flatten the executionsParams
-    const params = Array.from(executionsParams.values()).flat();
-
-    return generatePartialUserOperations(wallet, params);
-  }, [wallet, executionsParams]);
+    return generatePartialUserOperations(wallet, executionParams);
+  }, [wallet, executionParams]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -788,7 +785,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               isFromSwapLoading: isFromSwapLoading,
               isToSwapLoading: isToSwapLoading,
               isSwapLoading: isSwapLoading,
-              executionsParams: executionsParams,
+              executionParams: executionParams,
               fromSwapDecimals: fromSwapDecimals,
               fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
               fromSwapMaximumAmount: fromSwapMaximumAmount,

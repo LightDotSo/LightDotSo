@@ -25,14 +25,16 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 type UserOperationsStore = {
-  executionsParams: Map<bigint, ExecutionWithChainId[]>;
-  setExecutionsParamsByChainId: (
-    executionsParams: ExecutionWithChainId[],
+  executionParams: ExecutionWithChainId[];
+  setExecutionParamsByChainId: (
+    chainId: bigint,
+    executionParams: ExecutionWithChainId[],
   ) => void;
-  addExecutionsParamsByChainId: (
-    executionsParams: ExecutionWithChainId[],
+  prependExecutionParamsByChainId: (
+    chainId: bigint,
+    executionParams: ExecutionWithChainId[],
   ) => void;
-  resetExecutionsParams: () => void;
+  resetExecutionParams: () => void;
   partialUserOperationsQueryState: string;
   isPartialUserOperationsQueryStateTooLarge: boolean;
   setPartialUserOperationsQueryState: () => void;
@@ -67,31 +69,44 @@ export const useUserOperations = create(
   devtools(
     persist<UserOperationsStore>(
       set => ({
-        executionsParams: new Map(),
-        setExecutionsParamsByChainId: executionsParams =>
+        executionParams: [],
+        setExecutionParamsByChainId: (chainId, execution) =>
           set(state => {
-            const chainId = BigInt(executionsParams[0].chainId);
-            state.executionsParams.set(chainId, executionsParams);
-            return { executionsParams: state.executionsParams };
+            // Gets the current executionParams
+            const executionParams = [...state.executionParams];
+
+            // Removes all the operations with the same chainId
+            const newExecutionParams = executionParams.filter(
+              execution => execution.chainId !== chainId,
+            );
+
+            // Adds the new operations
+            newExecutionParams.push(...execution);
+
+            return { executionParams: newExecutionParams };
           }),
-        addExecutionsParamsByChainId: executionsParams =>
+        prependExecutionParamsByChainId: (chainId, execution) =>
           set(state => {
-            const chainId = BigInt(executionsParams[0].chainId);
-            const existingExecutionsParams =
-              state.executionsParams.get(chainId);
-            if (existingExecutionsParams) {
-              state.executionsParams.set(
-                chainId,
-                existingExecutionsParams.concat(executionsParams),
-              );
+            // Gets the current executionParams
+            const executionParams = [...state.executionParams];
+
+            // Gets the first operation with the same chainId
+            const firstOperationIndex = executionParams.findIndex(
+              execution => execution.chainId === chainId,
+            );
+
+            // If the operation is found, it prepends the execution before it, otherwise it appends it
+            if (firstOperationIndex !== -1) {
+              executionParams.splice(firstOperationIndex, 0, ...execution);
             } else {
-              state.executionsParams.set(chainId, executionsParams);
+              executionParams.push(...execution);
             }
-            return { executionsParams: state.executionsParams };
+
+            return { executionParams: executionParams };
           }),
-        resetExecutionsParams: () =>
+        resetExecutionParams: () =>
           set(() => {
-            return { executionsParams: new Map() };
+            return { executionParams: [] };
           }),
         partialUserOperationsQueryState: "",
         isPartialUserOperationsQueryStateTooLarge: false,
@@ -100,8 +115,7 @@ export const useUserOperations = create(
             const queryState = userOperationsParser.serialize(
               generatePartialUserOperations(
                 "0x0000000000000000000000000000000000000000" as Address,
-                // Flat map the executionsParams
-                Array.from(state.executionsParams.values()).flat(),
+                state.executionParams,
               ),
             );
 

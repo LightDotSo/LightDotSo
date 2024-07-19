@@ -42,7 +42,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
-  const { setExecutionsParamsByChainId } = useUserOperations();
+  const { setExecutionParamsByChainId } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -172,7 +172,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const {
     toQuotedAmount: toSwapQuotedAmount,
-    executionsParams,
+    executionParams,
     isQuoteLoading,
   } = useQuote({
     fromAddress: wallet as Address,
@@ -206,10 +206,10 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (executionsParams && executionsParams.length > 0) {
-      setExecutionsParamsByChainId(executionsParams);
+    if (executionParams && executionParams.length > 0) {
+      setExecutionParamsByChainId(executionParams[0].chainId, executionParams);
     }
-  }, [executionsParams]);
+  }, [executionParams]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -274,7 +274,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     isSwapValid: isSwapValid,
     fromSwapMaximumAmount: fromSwapMaximumAmount,
     toSwapMaximumAmount: toSwapMaximumAmount,
-    executionsParams: executionsParams,
+    executionParams: executionParams,
     fromSwapDecimals: fromSwapDecimals,
     toSwapDecimals: toSwapDecimals,
     fromTokenDollarRatio: fromTokenDollarRatio,
