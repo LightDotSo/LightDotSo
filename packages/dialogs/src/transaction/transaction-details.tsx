@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { UserOperation } from "@lightdotso/schemas";
 import { useUserOperations } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import {
@@ -26,7 +27,7 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { ArrowUpRight } from "lucide-react";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -88,7 +89,37 @@ export const TransactionDetails: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = useUserOperations();
+  const { partialUserOperations, userOperations } = useUserOperations();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const detailUserOperations: Partial<UserOperation>[] = useMemo(() => {
+    // Return the concatenated partial user operations and user operations
+    // to display the transaction details.
+    // However, filter out the operations that are the same chainId and nonce
+
+    const duplicatePartialUserOperations = partialUserOperations.filter(
+      partialUserOperation =>
+        userOperations.some(
+          userOperation =>
+            (userOperation.chainId === partialUserOperation.chainId &&
+              userOperation.nonce === partialUserOperation.nonce) ||
+            (userOperation.chainId === partialUserOperation.chainId &&
+              partialUserOperation.nonce === undefined),
+        ),
+    );
+
+    // Remove the duplicate partial user operations from the partial user operations
+    // to prevent duplicate transaction details.
+    const filteredPartialUserOperations = partialUserOperations.filter(
+      partialUserOperation =>
+        !duplicatePartialUserOperations.includes(partialUserOperation),
+    );
+
+    return [...filteredPartialUserOperations, ...userOperations];
+  }, [partialUserOperations, userOperations]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -96,7 +127,7 @@ export const TransactionDetails: FC = () => {
 
   return (
     <>
-      {userOperations.map((userOperation, index) => {
+      {detailUserOperations.map((userOperation, index) => {
         const chain = getChainWithChainId(Number(userOperation.chainId));
         return (
           <Accordion

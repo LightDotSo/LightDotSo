@@ -10,6 +10,9 @@
 configurations/prisma/src/zod/**
 configurations/kysely/src/db/**
 
+# random
+random.txt
+
 # secrets
 key.json
 
