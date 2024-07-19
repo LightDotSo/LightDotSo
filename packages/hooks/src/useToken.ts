@@ -132,7 +132,15 @@ export const useToken = ({
     }
 
     return { group_id: tokenGroup?.id, ...tokenAmount };
-  }, [tokenAmount, tokenGroup, tokenAmounts]);
+  }, [tokenAmount, tokenGroup, tokenAmounts, chainId, groupId]);
+
+  const tokens = useMemo(() => {
+    if (tokenAmounts && tokenAmounts.length > 0) {
+      return tokenAmounts;
+    }
+
+    return [];
+  }, [tokenAmounts, tokenGroup]);
 
   // ---------------------------------------------------------------------------
   // Return
@@ -140,6 +148,7 @@ export const useToken = ({
 
   return {
     token: token,
+    tokens: tokens,
     tokenAmount: tokenAmount,
     tokenAmounts: tokenAmounts,
     isTokenLoading: isTokenLoading,

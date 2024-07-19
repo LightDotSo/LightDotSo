@@ -15,18 +15,14 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { ChainStack, TokenImage } from "@lightdotso/elements";
 import {
   useDebouncedValue,
   useQuote,
   type QuoteParams,
 } from "@lightdotso/hooks";
-import { useSwap } from "@lightdotso/hooks";
-import {
-  userOperationsParser,
-  useSwapFromQueryState,
-  useSwapToQueryState,
-} from "@lightdotso/nuqs";
+import { useCreate, useSwap } from "@lightdotso/hooks";
+import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
@@ -37,16 +33,26 @@ import {
   useModals,
   useUserOperations,
 } from "@lightdotso/stores";
-import { refineNumberFormat } from "@lightdotso/utils";
-import { Button, ButtonIcon, FormField, Input } from "@lightdotso/ui";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  ButtonIcon,
+  FormField,
+  Input,
+} from "@lightdotso/ui";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { isAddress, type Address } from "viem";
+import { type Address } from "viem";
 import { TokenGroup } from "../token/token-group";
 import { serialize } from "@lightdotso/wagmi";
+import { ChainLogo } from "@lightdotso/svg";
+import { user } from "../../../query-keys/src/user";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -76,7 +82,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { executionsParams, toQuotedAmount } = useQuote(params);
+  const { executionParams, toQuotedAmount } = useQuote(params);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -98,15 +104,10 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   }, [toQuotedAmount, setQuote]);
 
   useEffect(() => {
-    if (executionsParams) {
-      console.info("Execution Fetcher Params", executionsParams);
-
-      // For each execution, set the execution params by chain id
-      for (const execution of executionsParams) {
-        setExecutionParamsByChainId(execution.chainId, execution);
-      }
+    if (executionParams && executionParams.length > 0) {
+      setExecutionParamsByChainId(executionParams[0].chainId, executionParams);
     }
-  }, [executionsParams, setExecutionParamsByChainId]);
+  }, [executionParams, setExecutionParamsByChainId]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -132,17 +133,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet, isAddressPath } = useAuth();
+  const { wallet } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const {
-    executionParams,
-    resetExecutionParams,
-    setPartialUserOperationByChainIdAndNonce,
-  } = useUserOperations();
+  const { executionParams, resetExecutionParams } = useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
-
-  console.info("Execution Params", executionParams);
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -213,18 +208,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const {
     fromToken,
-    fromTokenAmounts,
+    fromTokens,
     toToken,
     toSwapQuotedAmount,
     toSwapQuotedQuantity,
@@ -233,7 +222,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     isFromSwapLoading,
     isToSwapLoading,
     isSwapLoading,
-    executionsParams,
     fromSwapDecimals,
     fromSwapQuantityDollarValue,
     fromSwapMaximumAmount,
@@ -259,7 +247,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
-    if (toSwapQuotedAmount && toSwapQuotedQuantity && fromToken.decimals) {
+    if (toSwapQuotedAmount && toSwapQuotedQuantity && toToken.decimals) {
       if (fromSwap.chainId === 0) {
         // Get the aggregated amount of quotes
         const aggregatedAmount = quotes.reduce((acc, quote) => {
@@ -268,7 +256,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
         // Divide the aggregated amount by the decimal places
         const aggregatedQuantity =
-          aggregatedAmount / BigInt(Math.pow(10, fromToken.decimals));
+          aggregatedAmount / BigInt(Math.pow(10, toToken.decimals));
 
         // Set the to swap quoted amount
         form.setValue("to.quantity", Number(aggregatedQuantity));
@@ -283,7 +271,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
     toSwapQuotedQuantity,
     quotes,
     fromSwap.chainId,
-    fromToken.decimals,
+    toToken.decimals,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -297,28 +285,27 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   const genericExecutionQuotes = useMemo(() => {
+    // Initialize the token swaps
+    const tokenSwaps: SwapFetcherProps[] = [];
+
     // If the chainId is zero, compute the required tokenAmounts to satisfy the swap
     if (
       fromSwap?.chainId === 0 &&
       debouncedFromSwapQuantity &&
-      fromTokenAmounts &&
-      fromTokenAmounts.length > 0
+      fromToken &&
+      fromTokens &&
+      fromTokens.length > 0
     ) {
-      // Get the first tokenAmount
-      const fromTokenAmount = fromTokenAmounts[0];
-
       // Get the tokenAmounts, and fill the amount in order to fill the current swap
       let requiredSwapAmount = BigInt(
         Math.floor(
-          debouncedFromSwapQuantity * Math.pow(10, fromTokenAmount.decimals),
+          debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
         ),
       );
 
-      const tokenSwaps: SwapFetcherProps[] = [];
-
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
       // Use the tokenAmount's `amount` to fill the swap
-      for (const fromTokenAmount of fromTokenAmounts) {
+      for (const fromTokenAmount of fromTokens) {
         const currentMaxSwapAmount = fromTokenAmount.amount;
 
         // Get the required swap amount to satisfy the current swap
@@ -349,60 +336,30 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         // If the swap is not satisfied, add the swap to the list
         tokenSwaps.push(swap);
       }
-
-      return tokenSwaps;
     }
+    return tokenSwaps;
   }, [
     wallet,
     fromSwap?.chainId,
     debouncedFromSwapQuantity,
-    fromTokenAmounts,
+    fromTokens,
     toSwap?.address,
     toSwap?.chainId,
   ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
-    if (!wallet) {
+    if (!wallet || !executionParams || executionParams.length === 0) {
       return [];
     }
-    return generatePartialUserOperations(wallet, executionsParams);
-  }, [wallet, executionsParams]);
+
+    return generatePartialUserOperations(wallet, executionParams);
+  }, [wallet, executionParams]);
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSwap = useCallback(() => {
-    const rootPath = isAddressPath
-      ? `/${wallet}/create`
-      : `/create?address=${wallet}`;
-
-    if (wallet && userOperationsParams && userOperationsParams.length > 0) {
-      const userOperationsQueryState =
-        userOperationsParser.serialize(userOperationsParams);
-
-      // If the query state is too large, set the user operations by chain id and nonce
-      if (userOperationsQueryState.length > 2_000) {
-        // Set the user operations by chain id and nonce
-        for (const userOperationsParam of userOperationsParams) {
-          if (!userOperationsParam.chainId || !userOperationsParam.nonce) {
-            continue;
-          }
-          setPartialUserOperationByChainIdAndNonce(
-            userOperationsParam.chainId,
-            userOperationsParam.nonce,
-            userOperationsParam,
-          );
-        }
-
-        // Push without query state params
-        router.push(rootPath);
-        return;
-      }
-
-      router.push(`${rootPath}&userOperations=${userOperationsQueryState}`);
-    }
-  }, [isAddressPath, wallet, userOperationsParams]);
+  const { handleCreate } = useCreate({ userOperations: userOperationsParams });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -699,7 +656,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </div>
       </div>
       <Button
-        onClick={handleSwap}
+        onClick={handleCreate}
         isLoading={isSwapLoading}
         disabled={isSwapLoading || !isSwapValid}
         size="xl"
@@ -718,9 +675,55 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   ? `Insufficient ${fromToken?.symbol}`
                   : "Invalid Swap"}
       </Button>
+      {fromSwap?.chainId === 0 &&
+        genericExecutionQuotes &&
+        fromTokens &&
+        fromTokens.length > 0 && (
+          <div className="mt-4 overflow-auto">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <div className="inline-flex items-center">
+                    <ChainStack
+                      chainIds={genericExecutionQuotes.map(
+                        quote => quote.fromChainId ?? 0,
+                      )}
+                    />
+                    <span className="ml-2 text-sm text-text-weak">
+                      Preparing Execution...
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="flex flex-col space-y-2">
+                  {genericExecutionQuotes.map((quote, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="inline-flex items-center gap-3 truncate text-text">
+                        {quote.fromChainId && (
+                          <ChainLogo chainId={quote.fromChainId} />
+                        )}
+                        {quote.fromChainId &&
+                          getChainNameWithChainId(quote.fromChainId)}
+                      </span>
+                      <span>
+                        {refineNumberFormat(
+                          Number(quote.fromAmount) /
+                            Math.pow(10, fromToken.decimals),
+                        )}{" "}
+                        <span className="text-text">{fromToken.symbol}</span>
+                      </span>
+                    </div>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        )}
       {isDev && (
-        <div className="mt-4 overflow-auto">
-          <pre className="text-xs text-text-weak break-all">
+        <div className="mt-4 overflow-auto max-w-md max-h-96">
+          <pre className="break-all text-xs text-text-weak">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
               toSwapQueryState: toSwapQueryState,
@@ -728,7 +731,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               toSwap: toSwap,
               fromToken: fromToken,
               toToken: toToken,
-              fromTokenAmounts: fromTokenAmounts,
+              fromTokens: fromTokens,
               toSwapQuotedAmount: toSwapQuotedAmount,
               toSwapQuotedQuantity: toSwapQuotedQuantity,
               isFromSwapValueValid: isFromSwapValueValid,
@@ -736,7 +739,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               isFromSwapLoading: isFromSwapLoading,
               isToSwapLoading: isToSwapLoading,
               isSwapLoading: isSwapLoading,
-              executionsParams: executionsParams,
+              executionParams: executionParams,
               fromSwapDecimals: fromSwapDecimals,
               fromSwapQuantityDollarValue: fromSwapQuantityDollarValue,
               fromSwapMaximumAmount: fromSwapMaximumAmount,

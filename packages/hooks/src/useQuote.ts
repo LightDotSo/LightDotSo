@@ -69,12 +69,12 @@ export const useQuote = ({
     return null;
   }, [lifiQuote?.estimate?.toAmount]);
 
-  const executionsParams: ExecutionWithChainId[] = useMemo(() => {
+  const executionParams: ExecutionWithChainId[] = useMemo(() => {
     let executionIndex = 0;
     let executions: ExecutionWithChainId[] = [];
 
     // If wallet is not available, return userOperations
-    if (!fromAddress) {
+    if (!fromAddress || !fromChainId) {
       return [];
     }
 
@@ -94,8 +94,7 @@ export const useQuote = ({
         approvalAddress &&
         fromAmount &&
         fromAddress &&
-        fromAddress !== "0x0000000000000000000000000000000000000000" &&
-        fromChainId
+        fromAddress !== "0x0000000000000000000000000000000000000000"
       ) {
         const approveExecution: ExecutionWithChainId = {
           address: fromAddress as Hex,
@@ -137,7 +136,7 @@ export const useQuote = ({
           ? fromHex(lifiQuote?.transactionRequest?.value as Hex, "bigint")
           : 0n,
         callData: lifiQuote?.transactionRequest?.data as Hex,
-        chainId: BigInt(lifiQuote?.transactionRequest?.chainId),
+        chainId: BigInt(fromChainId),
       };
 
       // Add the lifi execution to the corresponding index
@@ -157,7 +156,7 @@ export const useQuote = ({
 
   return {
     toQuotedAmount: toQuotedAmount,
-    executionsParams: executionsParams,
+    executionParams: executionParams,
     isQuoteLoading: isQuoteLoading,
   };
 };

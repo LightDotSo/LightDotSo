@@ -28,15 +28,19 @@ type UserOperationsStore = {
   executionParams: ExecutionWithChainId[];
   setExecutionParamsByChainId: (
     chainId: bigint,
-    executionParams: ExecutionWithChainId,
+    executionParams: ExecutionWithChainId[],
   ) => void;
-  addExecutionParamsByChainId: (executionParams: ExecutionWithChainId) => void;
+  prependExecutionParamsByChainId: (
+    chainId: bigint,
+    executionParams: ExecutionWithChainId[],
+  ) => void;
   resetExecutionParams: () => void;
   partialUserOperationsQueryState: string;
   isPartialUserOperationsQueryStateTooLarge: boolean;
   setPartialUserOperationsQueryState: () => void;
   partialUserOperations: Partial<UserOperation>[];
   resetPartialUserOperations: () => void;
+  setPartialUserOperations: (operations: Partial<UserOperation>[]) => void;
   setPartialUserOperationByChainIdAndNonce: (
     chainId: bigint,
     nonce: bigint,
@@ -72,27 +76,32 @@ export const useUserOperations = create(
             // Gets the current executionParams
             const executionParams = [...state.executionParams];
 
-            // Finds the index of the operation matching the chainId
-            const executionParamsIndex = executionParams.findIndex(
-              params => params.chainId === chainId,
+            // Removes all the operations with the same chainId
+            const newExecutionParams = executionParams.filter(
+              execution => execution.chainId !== chainId,
             );
 
-            // If the operation is found, replaces it, otherwise it adds it to the array
-            if (executionParamsIndex !== -1) {
-              executionParams[executionParamsIndex] = execution;
-            } else {
-              executionParams.push(execution);
-            }
+            // Adds the new operations
+            newExecutionParams.push(...execution);
 
-            return { executionParams: executionParams };
+            return { executionParams: newExecutionParams };
           }),
-        addExecutionParamsByChainId: execution =>
+        prependExecutionParamsByChainId: (chainId, execution) =>
           set(state => {
             // Gets the current executionParams
             const executionParams = [...state.executionParams];
 
-            // Add the execution to the array
-            executionParams.push(execution);
+            // Gets the first operation with the same chainId
+            const firstOperationIndex = executionParams.findIndex(
+              execution => execution.chainId === chainId,
+            );
+
+            // If the operation is found, it prepends the execution before it, otherwise it appends it
+            if (firstOperationIndex !== -1) {
+              executionParams.splice(firstOperationIndex, 0, ...execution);
+            } else {
+              executionParams.push(...execution);
+            }
 
             return { executionParams: executionParams };
           }),
@@ -121,6 +130,10 @@ export const useUserOperations = create(
         resetPartialUserOperations: () =>
           set(() => {
             return { partialUserOperations: [] };
+          }),
+        setPartialUserOperations: (operations: Partial<UserOperation>[]) =>
+          set(() => {
+            return { partialUserOperations: operations };
           }),
         setPartialUserOperationByChainIdAndNonce: (chainId, nonce, operation) =>
           set(state => {
