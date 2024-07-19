@@ -66,6 +66,22 @@ impl Node {
         info!("Node run, starting");
     }
 
+    pub async fn simulate_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        user_operation: &UserOperation,
+    ) -> Result<()> {
+        let simulate_user_operation =
+            || async { self.simulate_user_operation(chain_id, entry_point, user_operation).await };
+
+        let res =
+            simulate_user_operation.retry(&ExponentialBuilder::default().with_max_times(1)).await;
+        info!("res: {:?}", res);
+
+        Ok(())
+    }
+
     /// Simulate a user operation on the node w/ `eth_call`
     /// Note that this function will always return an error because the call will revert on-chain
     /// Only for EntryPoint v0.6.0
@@ -108,7 +124,7 @@ impl Node {
         };
 
         let res = simulate_user_operation_with_tracer
-            .retry(&ExponentialBuilder::default().with_max_times(5))
+            .retry(&ExponentialBuilder::default().with_max_times(1))
             .await;
         info!("res: {:?}", res);
 
@@ -236,7 +252,7 @@ impl Node {
 
         // Retry the user operation if it fails
         let res =
-            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(10)).await;
+            { node_send_operation }.retry(&ExponentialBuilder::default().with_max_times(1)).await;
         info!("res: {:?}", res);
 
         res
