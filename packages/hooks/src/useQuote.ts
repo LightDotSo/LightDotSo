@@ -83,20 +83,33 @@ export const useQuote = ({
     }
 
     if (fromTokenAddress === toTokenAddress && fromChainId === toChainId) {
-      // Encode the transfer function
-      const transferExecution: ExecutionWithChainId = {
-        address: fromTokenAddress as Hex,
-        value: 0n,
-        callData: encodeFunctionData({
-          abi: erc20Abi,
-          functionName: "transfer",
-          args: [toAddress as Address, fromAmount] as [Address, bigint],
-        }),
-        chainId: BigInt(fromChainId),
-      };
+      if (fromTokenAddress === "0x0000000000000000000000000000000000000000") {
+        // Encode the native execution
+        const nativeExecution: ExecutionWithChainId = {
+          address: toAddress as Hex,
+          value: fromAmount as bigint,
+          callData: "0x",
+          chainId: BigInt(toChainId),
+        };
 
-      // Add the transfer execution
-      executions.push(transferExecution);
+        // Add the native execution
+        executions.push(nativeExecution);
+      } else {
+        // Encode the transfer function
+        const transferExecution: ExecutionWithChainId = {
+          address: fromTokenAddress as Hex,
+          value: 0n,
+          callData: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "transfer",
+            args: [toAddress as Address, fromAmount] as [Address, bigint],
+          }),
+          chainId: BigInt(fromChainId),
+        };
+
+        // Add the transfer execution
+        executions.push(transferExecution);
+      }
     }
 
     if (lifiQuote && lifiQuote?.transactionRequest) {
