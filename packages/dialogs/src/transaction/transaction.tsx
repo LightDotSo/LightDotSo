@@ -173,9 +173,9 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isTransactionLoading = useMemo(() => {
-    return isMounted && isUserOperationsCreateLoading;
-  }, [isMounted, isUserOperationsCreateLoading]);
+  // const isTransactionLoading = useMemo(() => {
+  //   return isMounted && isUserOperationsCreateLoading;
+  // }, [isMounted, isUserOperationsCreateLoading]);
 
   const isTransactionSuccess = useMemo(() => {
     return isMounted && isUserOperationsCreateSuccess;
@@ -227,19 +227,19 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isTransactionLoading) {
+    if (isUserOperationsCreateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isTransactionLoading, setPageIndex]);
+  }, [isUserOperationsCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isTransactionLoading && watchIsDirectSubmit) {
+    if (isTransactionSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [isTransactionLoading, watchIsDirectSubmit, setPageIndex]);
+  }, [isTransactionSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
@@ -250,12 +250,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // If create is successful, reset the form
   useEffect(() => {
-    if (isTransactionLoading) {
-      form.reset(defaultValues);
+    if (isTransactionSuccess) {
       resetPartialUserOperations();
       resetUserOperations();
+      form.reset(defaultValues);
     }
-  }, [isTransactionLoading]);
+  }, [isTransactionSuccess]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
