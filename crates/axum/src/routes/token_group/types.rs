@@ -52,21 +52,22 @@ impl From<token_group::Data> for TokenGroup {
                 .tokens
                 .clone()
                 .map_or(Vec::new(), |tokens| tokens.into_iter().map(Token::from).collect()),
-            // Fetch the first token to get the below fields
+            // Fetch the first token to get the below fields, using safe defaults if none exist
             address: token_group
                 .tokens
                 .clone()
-                .map_or(String::new(), |tokens| tokens.first().unwrap().address.clone()),
+                .and_then(|tokens| tokens.first().map(|t| t.address.clone()))
+                .unwrap_or_default(),
             name: token_group
                 .tokens
                 .clone()
-                .and_then(|tokens| tokens.first().unwrap().name.clone()),
+                .and_then(|tokens| tokens.first().and_then(|t| t.name.clone())),
             decimals: token_group
                 .tokens
                 .clone()
-                .map_or(0, |tokens| tokens.first().unwrap().decimals.unwrap_or(0)),
+                .map_or(0, |tokens| tokens.first().and_then(|t| t.decimals).unwrap_or(0)),
             symbol: token_group.tokens.map_or(String::new(), |tokens| {
-                tokens.first().unwrap().symbol.clone().unwrap_or_default()
+                tokens.first().and_then(|t| t.symbol.clone()).unwrap_or_default()
             }),
         }
     }
