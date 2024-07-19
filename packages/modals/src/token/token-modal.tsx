@@ -42,6 +42,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { SparklesIcon } from "lucide-react";
 import { type FC, useCallback, useMemo, useRef } from "react";
 import type { Address } from "viem";
+import { TokenModalGroupHoverCard } from "./token-modal-group-hover-card";
 
 export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
@@ -428,40 +429,48 @@ export const TokenModal: FC = () => {
               }
 
               return (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                <div
-                  key={virtualToken.key}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: `${virtualToken.size}px`,
-                    transform: `translateY(${virtualToken.start}px)`,
-                    padding: 8,
-                  }}
-                  className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
-                  onClick={() => onTokenSelect(token)}
+                <TokenModalGroupHoverCard
+                  groupId={
+                    chainState && chainState.id === 0
+                      ? token?.group?.id
+                      : undefined
+                  }
                 >
-                  <TokenImage
-                    withChainLogo={token.chain_id !== 0}
-                    token={token}
-                  />
-                  <div className="flex grow flex-col pl-4">
-                    <div className="text-text">{token?.name}</div>
-                    <div className="text-sm font-light text-text-weak">
-                      {token?.symbol}
+                  <div
+                    key={virtualToken.key}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: `${virtualToken.size}px`,
+                      transform: `translateY(${virtualToken.start}px)`,
+                      padding: 8,
+                    }}
+                    className="flex cursor-pointer flex-row items-center rounded-md hover:bg-background-stronger"
+                    onClick={() => onTokenSelect(token)}
+                  >
+                    <TokenImage
+                      withChainLogo={token.chain_id !== 0}
+                      token={token}
+                    />
+
+                    <div className="flex grow flex-col pl-4">
+                      <div className="text-text">{token?.name}</div>
+                      <div className="text-sm font-light text-text-weak">
+                        {token?.symbol}
+                      </div>
+                    </div>
+                    <div className="flex-none text-sm text-text-weak">
+                      {token?.amount &&
+                        token.decimals &&
+                        refineNumberFormat(
+                          token?.amount / Math.pow(10, token?.decimals),
+                        )}
+                      {` ${token?.symbol}`}
                     </div>
                   </div>
-                  <div className="flex-none text-sm text-text-weak">
-                    {token?.amount &&
-                      token.decimals &&
-                      refineNumberFormat(
-                        token?.amount / Math.pow(10, token?.decimals),
-                      )}
-                    {` ${token?.symbol}`}
-                  </div>
-                </div>
+                </TokenModalGroupHoverCard>
               );
             })}
           </div>
