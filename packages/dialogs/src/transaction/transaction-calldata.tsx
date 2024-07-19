@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useUserOperations } from "@lightdotso/stores";
+import { useUserOperationsProgress } from "@lightdotso/hooks";
 import {
   Accordion,
   AccordionItem,
@@ -28,10 +28,10 @@ import type { FC } from "react";
 
 export const TransactionCalldata: FC = () => {
   // ---------------------------------------------------------------------------
-  // Stores
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = useUserOperations();
+  const { progressUserOperations } = useUserOperationsProgress();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -39,9 +39,9 @@ export const TransactionCalldata: FC = () => {
 
   return (
     <>
-      {userOperations &&
-        userOperations.length > 0 &&
-        userOperations.map((userOperation, index) => {
+      {progressUserOperations &&
+        progressUserOperations.length > 0 &&
+        progressUserOperations.map((progressUserOperation, index) => {
           return (
             <Accordion
               key={index}
@@ -59,7 +59,7 @@ export const TransactionCalldata: FC = () => {
                     <Textarea
                       readOnly
                       className="h-auto w-full"
-                      value={userOperation.callData}
+                      value={progressUserOperation.callData}
                     />
                   </pre>
                 </AccordionContent>

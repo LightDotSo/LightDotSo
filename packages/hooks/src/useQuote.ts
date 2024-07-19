@@ -74,7 +74,7 @@ export const useQuote = ({
     let executions: ExecutionWithChainId[] = [];
 
     // If wallet is not available, return userOperations
-    if (!fromAddress || !fromChainId) {
+    if (!fromTokenAddress || !fromChainId) {
       return [];
     }
 
@@ -93,8 +93,8 @@ export const useQuote = ({
       if (
         approvalAddress &&
         fromAmount &&
-        fromAddress &&
-        fromAddress !== "0x0000000000000000000000000000000000000000"
+        fromTokenAddress &&
+        fromTokenAddress !== "0x0000000000000000000000000000000000000000"
       ) {
         const approveExecution: ExecutionWithChainId = {
           address: fromAddress as Hex,
@@ -111,7 +111,7 @@ export const useQuote = ({
         };
 
         const revokeExecution: ExecutionWithChainId = {
-          address: fromAddress as Hex,
+          address: fromTokenAddress as Hex,
           value: 0n,
           callData: encodeFunctionData({
             abi: erc20Abi,
@@ -144,7 +144,7 @@ export const useQuote = ({
     }
 
     return executions;
-  }, [fromAddress, fromAmount, lifiQuote]);
+  }, [fromTokenAddress, fromAmount, lifiQuote]);
 
   const isQuoteLoading = useMemo(() => {
     return isLifiQuoteLoading;
