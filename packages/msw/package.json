@@ -28,7 +28,7 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/demo": "workspace:*",
-    "msw": "^2.3.1"
+    "msw": "^2.3.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

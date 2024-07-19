@@ -83,6 +83,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
 
   const { executionParams, toQuotedAmount } = useQuote(params);
+  console.info("SwapFetcher executionParams:", executionParams);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -302,6 +303,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
         ),
       );
+      console.info("requiredSwapAmount:", requiredSwapAmount);
 
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
       // Use the tokenAmount's `amount` to fill the swap
@@ -314,9 +316,11 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           requiredSwapAmount >= currentMaxSwapAmount
             ? currentMaxSwapAmount
             : requiredSwapAmount;
+        console.info("currentSwapAmount:", currentSwapAmount);
 
         // Deduct the required swap amount from the current swap
         requiredSwapAmount -= currentMaxSwapAmount;
+        console.info("requiredSwapAmount:", requiredSwapAmount);
 
         const swap: SwapFetcherProps = {
           fromAddress: wallet as Address,
@@ -327,6 +331,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           toTokenAddress: toSwap?.address as Address,
           fromAmount: currentSwapAmount,
         };
+        console.info("swap:", swap);
 
         // If the swap is satisfied, break the loop
         if (requiredSwapAmount <= 0n) {
@@ -337,6 +342,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         tokenSwaps.push(swap);
       }
     }
+    console.info("tokenSwaps:", tokenSwaps);
+
     return tokenSwaps;
   }, [
     wallet,
