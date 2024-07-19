@@ -137,7 +137,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
   const { executionParams, resetExecutionParams } = useUserOperations();
   const { isDev } = useDev();
-  const { quotes } = useQuotes();
+  const { quotes, resetQuotes } = useQuotes();
 
   // ---------------------------------------------------------------------------
   // Query State
@@ -243,7 +243,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   // Reset the execution params when the from swap quantity, address, or chain id changes
   useEffect(() => {
+    resetQuotes();
     resetExecutionParams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
@@ -381,7 +383,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   return (
     <div className={className}>
       <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
-        <span>Buy</span>
+        <span className="text-sm">Sell</span>
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}
@@ -551,7 +553,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         </ButtonIcon>
       </div>
       <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
-        <span>Sell</span>
+        <span className="text-sm">Buy</span>
         <div className="flex items-center justify-between">
           <FormField
             control={form.control}

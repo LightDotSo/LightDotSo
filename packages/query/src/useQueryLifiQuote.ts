@@ -17,6 +17,7 @@ import type { LifiQuotePageData } from "@lightdotso/data";
 import type { LifiQuoteParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
+import { isTestnet } from "@lightdotso/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
@@ -71,7 +72,11 @@ export const useQueryLifiQuote = (params: LifiQuoteParams) => {
         !params.toChain ||
         !params.toToken ||
         params.fromChain === 0 ||
-        params.toChain === 0
+        params.toChain === 0 ||
+        isTestnet(params.fromChain) ||
+        isTestnet(params.toChain) ||
+        (params.fromChain === params.toChain &&
+          params.fromToken === params.toToken)
       ) {
         return null;
       }
