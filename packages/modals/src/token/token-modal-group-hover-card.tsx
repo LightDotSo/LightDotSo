@@ -70,7 +70,8 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
         tokenAmounts.length > 0 && (
           <HoverCardContent
             align="end"
-            className="z-[2147483647] w-80 bg-opacity-0 p-2"
+            side="bottom"
+            className="z-[2147483647] w-60 bg-background p-2"
           >
             <div className="flex justify-between">
               <div className="w-full">
@@ -79,7 +80,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                     key={index}
                     className="flex w-full items-center justify-between"
                   >
-                    <div className="flex items-center gap-3 truncate py-2 text-xs font-medium text-text">
+                    <div className="flex items-center gap-3 truncate p-2 text-xs font-medium text-text">
                       <TokenImage
                         size="xs"
                         withChainLogo
@@ -89,7 +90,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                           group: undefined,
                         }}
                       />
-                      {token.name}
+                      {getChainNameWithChainId(token.chain_id)}
                     </div>
                     <div className="truncate text-xs text-text">
                       {token.amount &&
