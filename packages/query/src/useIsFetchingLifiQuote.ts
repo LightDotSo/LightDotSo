@@ -26,7 +26,6 @@ export const useIsFetchingLifiQuote = () => {
 
   const isFetchingLifiQuoteNumber = useIsFetching({
     queryKey: queryKeys.lifi.quote._def,
-    exact: true,
   });
 
   return isFetchingLifiQuoteNumber;

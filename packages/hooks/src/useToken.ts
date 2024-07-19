@@ -125,9 +125,9 @@ export const useToken = ({
         chain_id: 0,
         group: undefined,
         group_id: groupId,
-        address: tokenAddress ?? "",
-        decimals: tokenGroup.tokens[0].decimals,
-        symbol: tokenGroup.tokens[0].symbol,
+        address: tokenGroup.address ?? "",
+        decimals: tokenGroup.decimals,
+        symbol: tokenGroup.symbol,
       };
     }
 

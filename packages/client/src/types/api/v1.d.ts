@@ -3167,8 +3167,19 @@ export interface components {
         };
         /** @description TokenGroup root type. */
         TokenGroup: {
+            /** @description The address of the token (may differ between chains but okay for now) */
+            address: string;
+            /**
+             * Format: int32
+             * @description The decimals of the token group.
+             */
+            decimals: number;
             /** @description The id of the token group. */
             id: string;
+            /** @description The name of the token group. */
+            name?: string | null;
+            /** @description The symbol of the token group. */
+            symbol: string;
             /** @description The array of tokens in the token group. */
             tokens: components["schemas"]["Token"][];
         };
