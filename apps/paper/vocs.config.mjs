@@ -312,6 +312,10 @@ export default defineConfig({
           text: "USDC Example",
           link: "/use-cases/usdc-selection",
         },
+        {
+          text: "Transaction Graph",
+          link: "/use-cases/transaction-graph",
+        },
       ],
     },
   ],

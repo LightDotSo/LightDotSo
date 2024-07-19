@@ -725,12 +725,12 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                         {quote.fromChainId &&
                           getChainNameWithChainId(quote.fromChainId)}
                       </span>
-                      <span>
+                      <span className="text-text">
                         {refineNumberFormat(
                           Number(quote.fromAmount) /
                             Math.pow(10, fromToken.decimals),
                         )}{" "}
-                        <span className="text-text">{fromToken.symbol}</span>
+                        <span>{fromToken.symbol}</span>
                       </span>
                     </div>
                   ))}
