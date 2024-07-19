@@ -40,6 +40,7 @@ type UserOperationsStore = {
   setPartialUserOperationsQueryState: () => void;
   partialUserOperations: Partial<UserOperation>[];
   resetPartialUserOperations: () => void;
+  setPartialUserOperations: (operations: Partial<UserOperation>[]) => void;
   setPartialUserOperationByChainIdAndNonce: (
     chainId: bigint,
     nonce: bigint,
@@ -129,6 +130,10 @@ export const useUserOperations = create(
         resetPartialUserOperations: () =>
           set(() => {
             return { partialUserOperations: [] };
+          }),
+        setPartialUserOperations: (operations: Partial<UserOperation>[]) =>
+          set(() => {
+            return { partialUserOperations: operations };
           }),
         setPartialUserOperationByChainIdAndNonce: (chainId, nonce, operation) =>
           set(state => {

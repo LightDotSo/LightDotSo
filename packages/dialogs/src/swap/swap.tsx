@@ -139,11 +139,8 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   const { wallet, isAddressPath } = useAuth();
   const { showTokenModal, setTokenModalProps, hideTokenModal } = useModals();
-  const {
-    executionParams,
-    resetExecutionParams,
-    setPartialUserOperationByChainIdAndNonce,
-  } = useUserOperations();
+  const { executionParams, resetExecutionParams, setPartialUserOperations } =
+    useUserOperations();
   const { isDev } = useDev();
   const { quotes } = useQuotes();
 
@@ -384,19 +381,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       const userOperationsQueryState =
         userOperationsParser.serialize(userOperationsParams);
 
-      // If the query state is too large, set the user operations by chain id and nonce
+      // If the query state is too large, set the user operations and push without query state params
       if (userOperationsQueryState.length > 2_000) {
-        // Set the user operations by chain id and nonce
-        for (const userOperationsParam of userOperationsParams) {
-          if (!userOperationsParam.chainId || !userOperationsParam.nonce) {
-            continue;
-          }
-          setPartialUserOperationByChainIdAndNonce(
-            userOperationsParam.chainId,
-            userOperationsParam.nonce,
-            userOperationsParam,
-          );
-        }
+        // Set the user operations
+        setPartialUserOperations(userOperationsParams);
 
         // Push without query state params
         router.push(rootPath);
@@ -768,7 +756,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </div>
         )}
       {isDev && (
-        <div className="mt-4 overflow-auto">
+        <div className="mt-4 overflow-auto max-w-md">
           <pre className="break-all text-xs text-text-weak">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
