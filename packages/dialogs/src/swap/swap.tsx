@@ -247,8 +247,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   useEffect(() => {
+    console.info("quotes:", quotes);
+
     // For multi-chain swaps, set the to swap quoted amount
-    if (fromSwap.chainId === 0 && quotes.length > 0) {
+    if (fromSwap.chainId === 0 && quotes.length > 0 && toToken.decimals) {
       // Get the aggregated amount of quotes
       const aggregatedAmount = quotes.reduce((acc, quote) => {
         return acc + (quote.toAmount || 0n);
@@ -256,7 +258,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Divide the aggregated amount by the decimal places
       const aggregatedQuantity =
-        aggregatedAmount / BigInt(Math.pow(10, toToken.decimals));
+        Number(aggregatedAmount) / Math.pow(10, toToken.decimals);
 
       // Set the to swap quoted amount
       form.setValue("to.quantity", Number(aggregatedQuantity));
@@ -689,6 +691,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </Button>
       {fromSwap?.chainId === 0 &&
         genericExecutionQuotes &&
+        genericExecutionQuotes.length > 0 &&
         fromTokens &&
         fromTokens.length > 0 && (
           <div className="mt-4 overflow-auto">
