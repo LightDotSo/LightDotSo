@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { TokenData } from "@lightdotso/data";
 import { useTokenAmount } from "@lightdotso/hooks";
 import { useQueryTokenGroup } from "@lightdotso/query";
