@@ -110,7 +110,8 @@ pub async fn node_consumer(
         info!("res_catch: {:?}", res_catch);
 
         // Attempt to submit the user operation to the node
-        let res = node.send_user_operation(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
+        let res =
+            node.send_user_operation_with_backon(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
 
         // Log the response
         info!("res: {:?}", res);
