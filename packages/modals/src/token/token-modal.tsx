@@ -152,7 +152,7 @@ export const TokenModal: FC = () => {
 
     // Return the available chains
     return chains.slice(0, availableChains);
-  }, [dimensions, chainState]);
+  }, [dimensions?.width, chains, chainState]);
 
   const light_tokens: TokenData[] = useMemo(() => {
     if (chainState && chainState.id === 0 && groupTokens) {

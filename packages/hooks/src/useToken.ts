@@ -130,7 +130,10 @@ export const useToken = ({
 
   const tokens = useMemo(() => {
     if (tokenAmounts && tokenAmounts.length > 0) {
-      return tokenAmounts;
+      return tokenAmounts.filter(token => {
+        // Filter amounts that are not zero
+        return token.amount > BigInt(0);
+      });
     }
 
     return [];
