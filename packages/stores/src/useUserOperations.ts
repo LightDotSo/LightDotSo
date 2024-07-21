@@ -106,23 +106,6 @@ export const useUserOperations = create(
           set(() => {
             return { executionParams: [] };
           }),
-        partialUserOperationsQueryState: "",
-        isPartialUserOperationsQueryStateTooLarge: false,
-        setPartialUserOperationsQueryState: () =>
-          set(state => {
-            const queryState = userOperationsParser.serialize(
-              generatePartialUserOperations(
-                "0x0000000000000000000000000000000000000000" as Address,
-                state.executionParams,
-              ),
-            );
-
-            return {
-              partialUserOperationsQueryState: queryState,
-              isPartialUserOperationsQueryStateTooLarge:
-                queryState.length > 2_000,
-            };
-          }),
         partialUserOperations: [],
         resetPartialUserOperations: () =>
           set(() => {
