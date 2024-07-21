@@ -195,7 +195,8 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
-    setIsFormDisabled(isUserOperationsDisabled);
+    console.info("isUserOperationsDisabled", isUserOperationsDisabled);
+    // setIsFormDisabled(isUserOperationsDisabled);
   }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
@@ -512,7 +513,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                 <TabsContent
                   className={cn(isInsideModal && "h-72 overflow-y-auto")}
                   value="dev"
-                />
+                ></TabsContent>
               </Tabs>
             </>
           )}

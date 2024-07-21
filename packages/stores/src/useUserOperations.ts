@@ -35,9 +35,6 @@ type UserOperationsStore = {
     executionParams: ExecutionWithChainId[],
   ) => void;
   resetExecutionParams: () => void;
-  partialUserOperationsQueryState: string;
-  isPartialUserOperationsQueryStateTooLarge: boolean;
-  setPartialUserOperationsQueryState: () => void;
   partialUserOperations: Partial<UserOperation>[];
   resetPartialUserOperations: () => void;
   setPartialUserOperations: (operations: Partial<UserOperation>[]) => void;
@@ -108,23 +105,6 @@ export const useUserOperations = create(
         resetExecutionParams: () =>
           set(() => {
             return { executionParams: [] };
-          }),
-        partialUserOperationsQueryState: "",
-        isPartialUserOperationsQueryStateTooLarge: false,
-        setPartialUserOperationsQueryState: () =>
-          set(state => {
-            const queryState = userOperationsParser.serialize(
-              generatePartialUserOperations(
-                "0x0000000000000000000000000000000000000000" as Address,
-                state.executionParams,
-              ),
-            );
-
-            return {
-              partialUserOperationsQueryState: queryState,
-              isPartialUserOperationsQueryStateTooLarge:
-                queryState.length > 2_000,
-            };
           }),
         partialUserOperations: [],
         resetPartialUserOperations: () =>
@@ -204,6 +184,8 @@ export const useUserOperations = create(
         resetAll: () =>
           set(() => {
             return {
+              executionParams: [],
+              partialUserOperations: [],
               userOperations: [],
               pendingUserOperationMerkleRoot: null,
               pendingUserOperationHashes: [],

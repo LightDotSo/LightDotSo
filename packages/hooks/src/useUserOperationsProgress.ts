@@ -37,6 +37,8 @@ export const useUserOperationsProgress = () => {
         userOperations.some(
           userOperation =>
             (userOperation.chainId === partialUserOperation.chainId &&
+              userOperation.callData === partialUserOperation.callData) ||
+            (userOperation.chainId === partialUserOperation.chainId &&
               userOperation.nonce === partialUserOperation.nonce) ||
             (userOperation.chainId === partialUserOperation.chainId &&
               partialUserOperation.nonce === undefined),
