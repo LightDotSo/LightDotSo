@@ -398,6 +398,10 @@ export const useUserOperationsCreate = ({
 
   // Set the transaction disabled state
   const isUserOperationsDisabled = useMemo(() => {
+    console.info("isValidUserOperations", isValidUserOperations);
+    console.info("isUserOperationsCreateable", isUserOperationsCreateable);
+    console.info("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
+
     // A combination of conditions that would disable the transaction
     return (
       // Nor if the user operations are not valid
