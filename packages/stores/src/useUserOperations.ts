@@ -35,9 +35,6 @@ type UserOperationsStore = {
     executionParams: ExecutionWithChainId[],
   ) => void;
   resetExecutionParams: () => void;
-  partialUserOperationsQueryState: string;
-  isPartialUserOperationsQueryStateTooLarge: boolean;
-  setPartialUserOperationsQueryState: () => void;
   partialUserOperations: Partial<UserOperation>[];
   resetPartialUserOperations: () => void;
   setPartialUserOperations: (operations: Partial<UserOperation>[]) => void;
@@ -204,6 +201,8 @@ export const useUserOperations = create(
         resetAll: () =>
           set(() => {
             return {
+              executionParams: [],
+              partialUserOperations: [],
               userOperations: [],
               pendingUserOperationMerkleRoot: null,
               pendingUserOperationHashes: [],
