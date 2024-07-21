@@ -81,7 +81,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { setIsFormLoading } = useFormRef();
-  const { setUserOperationByChainIdAndNonce } = useUserOperations();
+  const {
+    setPartialUserOperationByChainIdAndNonce,
+    setUserOperationByChainIdAndNonce,
+  } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -466,6 +469,19 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Sync `targetUserOperation` to the store
+  useEffect(() => {
+    setPartialUserOperationByChainIdAndNonce(
+      targetUserOperation.chainId,
+      targetUserOperation.nonce,
+      targetUserOperation,
+    );
+  }, [
+    targetUserOperation.chainId,
+    setUserOperationByChainIdAndNonce,
+    targetUserOperation,
+  ]);
 
   // Sync `userOperationWithHash` to the store
   useEffect(() => {
