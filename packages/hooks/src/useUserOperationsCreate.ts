@@ -400,7 +400,6 @@ export const useUserOperationsCreate = ({
   const isUserOperationsDisabled = useMemo(() => {
     // A combination of conditions that would disable the transaction
     return (
-      typeof subdigest === "undefined" ||
       // Nor if the user operations are not valid
       !isValidUserOperations ||
       // Nor if the user operations are not createable

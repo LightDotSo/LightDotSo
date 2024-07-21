@@ -141,17 +141,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // });
 
   // Gets the configuration for the chain w/ the image hash
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { configuration } = useQueryConfiguration({
     address: address as Address,
     image_hash: imageHash,
   });
 
   // Gets the user operation nonce
-  const { userOperationNonce, isUserOperationNonceLoading } =
-    useQueryUserOperationNonce({
-      address: address as Address,
-      chain_id: Number(initialUserOperation.chainId),
-    });
+  const { userOperationNonce } = useQueryUserOperationNonce({
+    address: address as Address,
+    chain_id: Number(initialUserOperation.chainId),
+  });
 
   // Gets the history of user operations
   const {
