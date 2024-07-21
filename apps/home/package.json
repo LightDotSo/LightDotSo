@@ -27,7 +27,7 @@
     "@lightdotso/utils": "workspace:*",
     "@next/bundle-analyzer": "15.0.0-canary.69",
     "@sentry/integrations": "^7.114.0",
-    "@sentry/nextjs": "^8.18.0",
+    "@sentry/nextjs": "^8.19.0",
     "critters": "^0.0.24",
     "next": "15.0.0-canary.69",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
