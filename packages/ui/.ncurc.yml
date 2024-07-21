@@ -5,3 +5,4 @@ reject:
   - "@radix-ui/react-dialog"
   - embla-carousel-react
   - cmdk
+  - react-day-picker
