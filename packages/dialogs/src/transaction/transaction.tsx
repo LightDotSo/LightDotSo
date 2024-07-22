@@ -195,8 +195,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
-    console.info("isUserOperationsDisabled", isUserOperationsDisabled);
-    // setIsFormDisabled(isUserOperationsDisabled);
+    setIsFormDisabled(isUserOperationsDisabled);
   }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------

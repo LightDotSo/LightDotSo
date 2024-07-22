@@ -463,8 +463,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    console.info("isTransactionFetcherLoading", isTransactionFetcherLoading);
-    // setIsFormLoading(isTransactionFetcherLoading);
+    setIsFormLoading(isTransactionFetcherLoading);
   }, [isTransactionFetcherLoading]);
 
   // ---------------------------------------------------------------------------
