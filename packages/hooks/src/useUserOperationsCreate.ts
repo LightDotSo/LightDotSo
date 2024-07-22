@@ -350,7 +350,7 @@ export const useUserOperationsCreate = ({
           userOperation &&
           userOperation.chainId &&
           userOperation.hash &&
-          userOperation.nonce &&
+          typeof userOperation.nonce !== "undefined" &&
           userOperation.initCode &&
           userOperation.sender &&
           userOperation.callData &&
