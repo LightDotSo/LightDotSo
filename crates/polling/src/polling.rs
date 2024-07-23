@@ -354,7 +354,12 @@ impl Polling {
             if self.live && self.kafka_client.is_some() {
                 if let Ok(res) = res {
                     let _ = self.send_activity_queue(res.0.clone()).await;
-                    let _ = self.send_interpretation_queue(res.0.clone()).await;
+                    let _ = self
+                        .send_interpretation_queue(
+                            res.0.clone().hash.parse()?,
+                            res.0.clone().transaction_hash.map(|h| h.parse().unwrap()),
+                        )
+                        .await;
                 }
             }
 
@@ -387,6 +392,12 @@ impl Polling {
                 receipt.tx_receipt.clone(),
             )
             .await;
+        if res.is_err() {
+            error!(
+                "db_upsert_transaction_with_transaction_receipt error: {:?} at chain_id: {}",
+                res, chain_id
+            );
+        }
 
         Ok(())
     }
@@ -738,9 +749,12 @@ impl Polling {
 
     /// Add a new interpretion in the queue
     #[autometrics]
-    pub async fn send_interpretation_queue(&self, op: user_operation::Data) -> Result<()> {
+    pub async fn send_interpretation_queue(
+        &self,
+        uop_hash: H256,
+        transaction_hash: Option<H256>,
+    ) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
-        let uop_hash: H256 = op.clone().hash.parse()?;
 
         let uop_msg =
             &InterpretationMessage { user_operation_hash: Some(uop_hash), transaction_hash: None };
@@ -749,9 +763,7 @@ impl Polling {
             .retry(&ExponentialBuilder::default())
             .await;
 
-        if let Some(tx_hash) = &op.transaction_hash {
-            let tx_hash: H256 = tx_hash.parse()?;
-
+        if let Some(tx_hash) = transaction_hash {
             let tx_msg = &InterpretationMessage {
                 user_operation_hash: None,
                 transaction_hash: Some(tx_hash),
