@@ -22,7 +22,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Bytes, Log, TransactionReceipt, H256, U256},
+    types::{Bytes, Log, H256, U256},
     utils::to_checksum,
 };
 use eyre::Result;
@@ -57,9 +57,9 @@ pub async fn update_user_operation_with_receipt(
             user_operation::hash::equals(format!("{:?}", user_operation_hash)),
             vec![
                 user_operation::status::set(if user_operation_receipt.success {
-                    UserOperationStatus::Reverted
-                } else {
                     UserOperationStatus::Executed
+                } else {
+                    UserOperationStatus::Reverted
                 }),
                 user_operation::transaction_hash::set(Some(format!(
                     "{:?}",
