@@ -3094,15 +3094,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
-      '@lightdotso/nuqs':
-        specifier: workspace:*
-        version: link:../nuqs
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
-      '@lightdotso/sdk':
-        specifier: workspace:*
-        version: link:../sdk
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../types

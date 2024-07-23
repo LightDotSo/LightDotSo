@@ -15,7 +15,10 @@
 "use client";
 
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
-import { useProxyImplementationAddress } from "@lightdotso/hooks";
+import {
+  useDebouncedValue,
+  useProxyImplementationAddress,
+} from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
@@ -294,6 +297,52 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // Construct the updated user operation
+  // This is the final layer of computation until getting the hash for paymaster and data
+  const updatedUserOperation: Omit<
+    UserOperation,
+    "hash" | "signature" | "paymasterAndData"
+  > = useMemo(() => {
+    // Bump the verification gas limit depending on the configuration threshold
+    const updatedVerificationGasLimit = currentConfiguration?.threshold
+      ? targetUserOperation.verificationGasLimit *
+        BigInt(currentConfiguration?.threshold)
+      : targetUserOperation.verificationGasLimit;
+
+    return {
+      sender: targetUserOperation.sender,
+      chainId: targetUserOperation.chainId,
+      initCode: targetUserOperation.initCode,
+      nonce: targetUserOperation.nonce,
+      callData: targetUserOperation.callData,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      callGasLimit: callGasLimit,
+      preVerificationGas: preVerificationGas,
+      verificationGasLimit: updatedVerificationGasLimit,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // Only gas limits and fees are required to compute the gas limits
+    // The rest of the values are dependencies of the gas limits
+    // As it is the final layer of computation
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    callGasLimit,
+    preVerificationGas,
+    verificationGasLimit,
+  ]);
+
+  // ---------------------------------------------------------------------------
+  // Debounce
+  // ---------------------------------------------------------------------------
+
+  const debouncedUserOperation = useDebouncedValue(updatedUserOperation, 300);
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -301,15 +350,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const { gasAndPaymasterAndData, isGasAndPaymasterAndDataLoading } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
-      chainId: targetUserOperation.chainId,
-      nonce: targetUserOperation.nonce,
-      initCode: targetUserOperation.initCode,
-      callData: targetUserOperation.callData,
-      callGasLimit: callGasLimit,
-      preVerificationGas: preVerificationGas,
-      verificationGasLimit: verificationGasLimit,
-      maxFeePerGas: maxFeePerGas,
-      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      chainId: debouncedUserOperation.chainId,
+      nonce: debouncedUserOperation.nonce,
+      initCode: debouncedUserOperation.initCode,
+      callData: debouncedUserOperation.callData,
+      callGasLimit: debouncedUserOperation.callGasLimit,
+      preVerificationGas: debouncedUserOperation.preVerificationGas,
+      verificationGasLimit: debouncedUserOperation.verificationGasLimit,
+      maxFeePerGas: debouncedUserOperation.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation.maxPriorityFeePerGas,
     });
 
   // ---------------------------------------------------------------------------
@@ -317,7 +366,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Construct the updated user operation
-  const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
+  const finalizedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
       return {
         sender: targetUserOperation.sender,
@@ -329,7 +378,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         maxPriorityFeePerGas: maxPriorityFeePerGas,
         callGasLimit: callGasLimit,
         preVerificationGas: preVerificationGas,
-        verificationGasLimit: verificationGasLimit,
+        verificationGasLimit: updatedUserOperation.verificationGasLimit,
         paymasterAndData: gasAndPaymasterAndData?.paymasterAndData ?? "0x",
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -369,12 +418,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     const fetchHashAndUpdateOperation = async () => {
       // Don't update the user operation if the below required fields are empty
       if (
-        updatedUserOperation.callGasLimit === 0n ||
-        updatedUserOperation.verificationGasLimit === 0n ||
-        updatedUserOperation.preVerificationGas === 0n ||
-        updatedUserOperation.maxFeePerGas === 0n ||
-        updatedUserOperation.maxPriorityFeePerGas === 0n ||
-        updatedUserOperation.paymasterAndData === "0x"
+        finalizedUserOperation.callGasLimit === 0n ||
+        finalizedUserOperation.verificationGasLimit === 0n ||
+        finalizedUserOperation.preVerificationGas === 0n ||
+        finalizedUserOperation.maxFeePerGas === 0n ||
+        finalizedUserOperation.maxPriorityFeePerGas === 0n ||
+        finalizedUserOperation.paymasterAndData === "0x"
       ) {
         return;
       }
@@ -382,20 +431,20 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // IF the fields differ, update the user operation
       // if (
       //   targetUserOperation.callGasLimit !==
-      //     updatedUserOperation.callGasLimit ||
+      //     finalizedUserOperation.callGasLimit ||
       //   targetUserOperation.verificationGasLimit !==
-      //     updatedUserOperation.verificationGasLimit ||
+      //     finalizedUserOperation.verificationGasLimit ||
       //   targetUserOperation.preVerificationGas !==
-      //     updatedUserOperation.preVerificationGas ||
+      //     finalizedUserOperation.preVerificationGas ||
       //   targetUserOperation.maxFeePerGas !==
-      //     updatedUserOperation.maxFeePerGas ||
+      //     finalizedUserOperation.maxFeePerGas ||
       //   targetUserOperation.maxPriorityFeePerGas !==
-      //     updatedUserOperation.maxPriorityFeePerGas
+      //     finalizedUserOperation.maxPriorityFeePerGas
       // ) {
       //   setUserOperations(prev => {
       //     const next = [...prev];
       //     if (next[userOperationIndex]) {
-      //       next[userOperationIndex] = updatedUserOperation;
+      //       next[userOperationIndex] = finalizedUserOperation;
       //     }
       //     return next;
       //   });
@@ -403,14 +452,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
       // Add the dummy signature to get the hash for the user operation
       const userOperation = {
-        ...updatedUserOperation,
+        ...finalizedUserOperation,
         signature: "0x",
       };
 
       // Get the hash for the user operation w/ the corresponding entry point
       const hash = await getUserOperationHash({
         userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
-        chainId: Number(updatedUserOperation.chainId) as number,
+        chainId: Number(finalizedUserOperation.chainId) as number,
         entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
           findContractAddressByAddress(wallet?.factory_address as Address)!
         ] as typeof ENTRYPOINT_ADDRESS_V06,
@@ -427,7 +476,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       //     const next = [...prev];
       //     if (next[userOperationIndex]) {
       //       next[userOperationIndex] = {
-      //         ...updatedUserOperation,
+      //         ...finalizedUserOperation,
       //         hash,
       //       };
       //     }
@@ -447,7 +496,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Sole dependency is the updated user operation w/ paymaster and data values
-    updatedUserOperation,
+    finalizedUserOperation,
   ]);
 
   // ---------------------------------------------------------------------------

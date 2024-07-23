@@ -199,18 +199,18 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     }
 
     // If gas estimation is available, return the gas estimation
-    if (gasEstimation) {
-      // Get the estimated max fee per gas
-      const estimatedGas = gasEstimation[gasSpeed];
+    // if (gasEstimation) {
+    //   // Get the estimated max fee per gas
+    //   const estimatedGas = gasEstimation[gasSpeed];
 
-      // Parse the Hex to BigInt
-      return [
-        fromHex(estimatedGas.maxFeePerGas as Hex, {
-          to: "bigint",
-        }),
-        fromHex(estimatedGas.maxPriorityFeePerGas as Hex, { to: "bigint" }),
-      ];
-    }
+    //   // Parse the Hex to BigInt
+    //   return [
+    //     fromHex(estimatedGas.maxFeePerGas as Hex, {
+    //       to: "bigint",
+    //     }),
+    //     fromHex(estimatedGas.maxPriorityFeePerGas as Hex, { to: "bigint" }),
+    //   ];
+    // }
 
     // Return null if no gas estimation is available
     return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
