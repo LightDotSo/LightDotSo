@@ -66,12 +66,13 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   // Get the max fee per gas, fallbacks to mainnet
-  const { data: feesPerGas } = useEstimateFeesPerGas({
-    chainId: Number(chainId),
-    query: {
-      ...USER_OPERATION_CONFIG,
-    },
-  });
+  const { data: feesPerGas, isLoading: isEstimateFeesPerGasLoading } =
+    useEstimateFeesPerGas({
+      chainId: Number(chainId),
+      query: {
+        ...USER_OPERATION_CONFIG,
+      },
+    });
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -99,7 +100,11 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
   // Get the gas estimate for the user operation
   // @eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: estimateGas, error: estimateGasError } = useEstimateGas({
+  const {
+    data: estimateGas,
+    error: estimateGasError,
+    isLoading: isEstimateGasLoading,
+  } = useEstimateGas({
     chainId: Number(chainId),
     account: address as Address,
     data: callData as Hex,
@@ -119,6 +124,10 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const isUserOperationEstimateFeesPerGasLoading = useMemo(() => {
+    return isEstimateFeesPerGasLoading;
+  }, [isEstimateFeesPerGasLoading]);
+
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
     const baseMaxPriorityFeePerGas = feesPerGas?.maxPriorityFeePerGas
       ? // Get the `maxPriorityFeePerGas` and apply the speed bump
@@ -130,6 +139,9 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
         (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
         (baseMaxPriorityFeePerGas ?? null);
+
+    console.info("baseMaxFeePerGas", baseMaxFeePerGas);
+    console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {
@@ -232,6 +244,8 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   return {
+    isUserOperationEstimateFeesPerGasLoading:
+      isUserOperationEstimateFeesPerGasLoading,
     maxFeePerGas: maxFeePerGas ?? undefined,
     maxPriorityFeePerGas: maxPriorityFeePerGas ?? undefined,
   };

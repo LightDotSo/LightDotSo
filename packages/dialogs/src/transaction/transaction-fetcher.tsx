@@ -223,7 +223,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // If the initial user operation nonce is provided, make sure it is same or greater
     // In the case that it is not, update the nonce to the minimum nonce
     const updatedNonce =
-      initialUserOperation.nonce === undefined ||
+      typeof initialUserOperation.nonce === "undefined" ||
       (initialUserOperation.nonce !== undefined &&
         updatedMinimumNonce !== undefined &&
         initialUserOperation.nonce < updatedMinimumNonce)
@@ -235,7 +235,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Allow the callData to be empty if the init code is provided
     // This is to allow for the creation of a new contract
     const updatedCallData =
-      initialUserOperation.callData === undefined &&
+      typeof initialUserOperation.callData === "undefined" &&
       updatedInitCode !== undefined
         ? "0x"
         : initialUserOperation.callData;
@@ -275,12 +275,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  const { maxFeePerGas, maxPriorityFeePerGas } =
-    useQueryUserOperationEstimateFeesPerGas({
-      address: address as Address,
-      chainId: Number(targetUserOperation.chainId),
-      callData: targetUserOperation.callData as Hex,
-    });
+  const {
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    isUserOperationEstimateFeesPerGasLoading,
+  } = useQueryUserOperationEstimateFeesPerGas({
+    address: address as Address,
+    chainId: Number(targetUserOperation.chainId),
+    callData: targetUserOperation.callData as Hex,
+  });
 
   // Gets the gas estimate for the user operation
   const {
@@ -551,8 +554,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const isTransactionFetcherLoading = useMemo(() => {
-    return isUserOperationEstimateGasLoading || isGasAndPaymasterAndDataLoading;
-  }, [isUserOperationEstimateGasLoading, isGasAndPaymasterAndDataLoading]);
+    return (
+      isUserOperationEstimateFeesPerGasLoading ||
+      isUserOperationEstimateGasLoading ||
+      isGasAndPaymasterAndDataLoading
+    );
+  }, [
+    isUserOperationEstimateFeesPerGasLoading,
+    isUserOperationEstimateGasLoading,
+    isGasAndPaymasterAndDataLoading,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
