@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
+import { useModals, useUserOperations } from "@lightdotso/stores";
 import { useRouter, usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
@@ -81,6 +81,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideSwapModal,
     hideAllModalsBackground,
   } = useModals();
+  const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -157,6 +158,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         setSendBackgroundModal(false);
         hideCreateModal();
+        resetAll();
         router.back();
         break;
       case "deposit":
