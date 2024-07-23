@@ -21,6 +21,7 @@ import {
   AccordionTrigger,
 } from "@lightdotso/ui";
 import {
+  camelCaseToCapitalizedWords,
   getChainWithChainId,
   shortenAddress,
   shortenBytes32,
@@ -118,12 +119,15 @@ export const TransactionDetails: FC = () => {
               <AccordionContent className="px-1 pt-4">
                 {Object.entries(progressUserOperation)
                   .filter(
-                    ([key]) => key !== "callData" && key !== "paymasterAndData",
+                    ([key, value]) =>
+                      typeof value !== "undefined" &&
+                      key !== "callData" &&
+                      key !== "paymasterAndData",
                   )
                   .map(([key, value], itemIndex) => (
                     <TransactionDetailInfo
                       key={`${index}-${itemIndex}`}
-                      title={key}
+                      title={camelCaseToCapitalizedWords(key)}
                       value={
                         typeof value === "bigint"
                           ? value.toLocaleString()

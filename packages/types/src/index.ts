@@ -16,5 +16,6 @@ export type { AppGroup } from "./app-group";
 export type { Banner } from "./banner";
 export type { Execution, ExecutionWithChainId } from "./execution";
 export type { SubCategory, CategoryObject } from "./category";
+export type { GasSpeed } from "./gas";
 export type { Tab } from "./tab";
 export type { TokenAmount } from "./token";

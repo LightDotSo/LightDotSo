@@ -12,28 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { getGasSpeedBumpAmount } from "@lightdotso/utils";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-// Get the gas speed bumpAmount from the gas speed
-export const getGasSpeedBumpAmount = (
-  gasSpeed: "low" | "medium" | "high" | "instant",
-) => {
-  switch (gasSpeed) {
-    case "low":
-      return 110;
-    case "medium":
-      return 115;
-    case "high":
-      return 120;
-    case "instant":
-      return 125;
-  }
-};
 
 // -----------------------------------------------------------------------------
 // State

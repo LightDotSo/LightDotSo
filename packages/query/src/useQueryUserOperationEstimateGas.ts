@@ -98,16 +98,16 @@ export const useQueryUserOperationEstimateGas = (
       ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : BigInt(0),
+      : undefined,
     preVerificationGas: estimateUserOperationGasData?.preVerificationGas
       ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
           to: "bigint",
         })
-      : BigInt(0),
+      : undefined,
     verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
       ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
           to: "bigint",
         })
-      : BigInt(0),
+      : undefined,
   };
 };

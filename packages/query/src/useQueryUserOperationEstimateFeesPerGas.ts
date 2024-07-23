@@ -232,7 +232,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   return {
-    maxFeePerGas: maxFeePerGas ?? BigInt(0),
-    maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
+    maxFeePerGas: maxFeePerGas ?? undefined,
+    maxPriorityFeePerGas: maxPriorityFeePerGas ?? undefined,
   };
 };
