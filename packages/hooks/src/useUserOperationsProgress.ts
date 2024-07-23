@@ -32,6 +32,13 @@ export const useUserOperationsProgress = () => {
     // to display the transaction details.
     // However, filter out the operations that are the same chainId and nonce
 
+    const incompletePartialUserOperations = partialUserOperations.filter(
+      partialUserOperation =>
+        typeof partialUserOperation.chainId === "undefined" ||
+        typeof partialUserOperation.callData === "undefined" ||
+        typeof partialUserOperation.nonce === "undefined",
+    );
+
     const duplicatePartialUserOperations = partialUserOperations.filter(
       partialUserOperation =>
         userOperations.some(
@@ -50,6 +57,7 @@ export const useUserOperationsProgress = () => {
     // to prevent duplicate transaction details.
     const filteredPartialUserOperations = partialUserOperations.filter(
       partialUserOperation =>
+        !incompletePartialUserOperations.includes(partialUserOperation) ||
         !duplicatePartialUserOperations.includes(partialUserOperation),
     );
 
