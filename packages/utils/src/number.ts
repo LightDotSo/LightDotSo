@@ -18,7 +18,7 @@
 
 export const refineNumberFormat = (number: number) => {
   if (
-    number === undefined ||
+    typeof number === "undefined" ||
     number === null ||
     isNaN(number) ||
     typeof number !== "number"

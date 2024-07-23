@@ -59,7 +59,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
       if (
         !body.userOperation.chainId ||
         !body.userOperation.hash ||
-        body.userOperation.nonce === undefined ||
+        typeof body.userOperation.nonce === "undefined" ||
         body.userOperation.nonce === null ||
         !body.userOperation.initCode ||
         !body.userOperation.sender ||

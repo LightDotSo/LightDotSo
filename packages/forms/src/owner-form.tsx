@@ -216,7 +216,7 @@ export const OwnerForm: FC = () => {
       }
 
       if (name === "threshold") {
-        if (value.threshold === undefined) {
+        if (typeof value.threshold === "undefined") {
           setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
@@ -227,7 +227,7 @@ export const OwnerForm: FC = () => {
       }
 
       if (Array.isArray(value.owners)) {
-        if (value.owners === undefined) {
+        if (typeof value.owners === "undefined") {
           setOwners(null);
         } else {
           // Iterate over each owner which has a weight

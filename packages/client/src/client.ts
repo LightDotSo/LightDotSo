@@ -104,7 +104,7 @@ export const getSocketClient: (
   process.env.NEXT_PUBLIC_LOCAL_ENV === "dev" ||
   process.env.STORYBOOK_ENV === "dev"
     ? localSocketClient
-    : clientType === undefined
+    : typeof clientType === "undefined"
       ? publicSocketClient
       : clientType === "authenticated"
         ? authenticatedSocketClient
@@ -173,7 +173,7 @@ export const getClient: (
       : process.env.LOCAL_ENV === "dev" ||
           process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
         ? localApiClient
-        : clientType === undefined
+        : typeof clientType === "undefined"
           ? publicApiClient
           : clientType === "authenticated"
             ? authenticatedApiClient
@@ -185,7 +185,7 @@ export const getClient: (
 
 export const rpcClient = (chainId: number, clientType?: ClientType) => {
   if (
-    clientType === undefined ||
+    typeof clientType === "undefined" ||
     clientType === "public" ||
     clientType === "authenticated"
   ) {

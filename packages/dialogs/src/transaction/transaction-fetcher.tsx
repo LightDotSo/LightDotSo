@@ -279,7 +279,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !targetUserOperation.sender ||
       !targetUserOperation.chainId ||
       !targetUserOperation.initCode ||
-      !targetUserOperation.nonce ||
+      typeof targetUserOperation.nonce === "undefined" ||
+      targetUserOperation.nonce === null ||
       !targetUserOperation.callData ||
       !maxFeePerGas ||
       !maxPriorityFeePerGas ||
@@ -363,7 +364,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !debouncedUserOperation?.sender ||
       !debouncedUserOperation?.chainId ||
       !debouncedUserOperation?.initCode ||
-      !debouncedUserOperation?.nonce ||
+      typeof debouncedUserOperation?.nonce === "undefined" ||
+      debouncedUserOperation?.nonce === null ||
       !debouncedUserOperation?.callData ||
       !debouncedUserOperation?.maxFeePerGas ||
       !debouncedUserOperation?.maxPriorityFeePerGas ||

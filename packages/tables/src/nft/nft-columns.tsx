@@ -38,7 +38,7 @@ export const nftColumns: ColumnDef<NftData>[] = [
       return row.collection?.spam_score;
     },
     filterFn: (row, id, value) => {
-      if (row.getValue(id) === undefined) {
+      if (typeof row.getValue(id) === "undefined") {
         return true;
       }
       return Number(value) === 0

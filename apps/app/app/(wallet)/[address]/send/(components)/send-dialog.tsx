@@ -379,7 +379,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.transfers)) {
-        if (value.transfers === undefined) {
+        if (typeof value.transfers === "undefined") {
           setTransfers(null);
         } else {
           // @ts-expect-error
@@ -800,7 +800,9 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
 
           // Check if all transfers are valid and not undefined
-          if (encodedTransfers.some(transfer => transfer === undefined)) {
+          if (
+            encodedTransfers.some(transfer => typeof transfer === "undefined")
+          ) {
             return [];
           }
 

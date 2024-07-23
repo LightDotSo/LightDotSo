@@ -65,7 +65,7 @@ export const useMutationUserOperationCreateBatch = (
         return (
           !userOperation.chainId ||
           !userOperation.hash ||
-          userOperation.nonce === undefined ||
+          typeof userOperation.nonce === "undefined" ||
           userOperation.nonce === null ||
           !userOperation.initCode ||
           !userOperation.sender ||
