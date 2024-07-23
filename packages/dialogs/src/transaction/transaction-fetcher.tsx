@@ -30,6 +30,7 @@ import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
+  useBytecode,
   useReadEntryPointGetNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
@@ -112,6 +113,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     args: [address as Address, 0n],
   });
 
+  // Get the bytecode for the light wallet
+  const { data: walletBytecode } = useBytecode({
+    address: address as Address,
+    chainId: Number(initialUserOperation.chainId),
+  });
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -135,12 +142,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // Gets the history of user operations
-  const {
-    userOperations: executedUserOperations,
-    // isUserOperationsLoading: isExecutedUserOperationsLoading,
-  } = useQueryUserOperations({
+  const { userOperations: historyUserOperations } = useQueryUserOperations({
     address: address as Address,
-    status: "executed",
+    status: "history",
     offset: 0,
     limit: 1,
     order: "asc",
@@ -167,8 +171,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
-      executedUserOperations &&
-      executedUserOperations?.length < 1 &&
+      ((historyUserOperations && historyUserOperations?.length < 1) ||
+        typeof walletBytecode === "undefined") &&
       wallet?.factory_address &&
       genesisConfiguration?.image_hash &&
       wallet?.salt
@@ -223,7 +227,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // The genesis configuration is static
     genesisConfiguration,
     // Should recompute if the executed user operations change, for init code
-    executedUserOperations,
+    historyUserOperations,
     // Should recompute if the entry point nonce changes
     entryPointNonce,
     // Should recompute if the user operation nonce changes

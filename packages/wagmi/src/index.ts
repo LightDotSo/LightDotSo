@@ -18,6 +18,7 @@ export type { State } from "wagmi";
 export {
   WagmiProvider,
   useBalance,
+  useBytecode,
   useDisconnect,
   useEnsAddress,
   useEnsName,
