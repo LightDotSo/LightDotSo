@@ -18,6 +18,7 @@ export { ChainStack } from "./chain-stack";
 export { EmptyState } from "./empty-state";
 export { EnsAddress } from "./ens-address";
 export { InvokeButton } from "./invoke-button";
+export { NextImage } from "./next-image";
 export { NftImage } from "./nft-image";
 export { PlaceholderOrb } from "./placeholder-orb";
 export { TokenImage } from "./token-image";

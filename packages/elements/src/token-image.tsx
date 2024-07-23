@@ -23,6 +23,7 @@ import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useState, type FC, useEffect, memo, useMemo } from "react";
+import { NextImage } from "./next-image";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -216,7 +217,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
           className,
         )}
       >
-        <img
+        <NextImage
           className="size-full object-cover"
           src={currentUrl}
           alt={token.name ?? token.symbol}
