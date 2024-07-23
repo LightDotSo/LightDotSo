@@ -14,8 +14,8 @@
 
 import { estimateUserOperationGas } from "@lightdotso/client";
 import type { EstimateUserOperationGasData } from "@lightdotso/data";
+import { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { fromHex, Hex, toHex } from "viem";
@@ -26,17 +26,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationEstimateGas = (
-  params: Omit<
-    UserOperation,
-    | "hash"
-    | "signature"
-    | "paymasterAndData"
-    | "callGasLimit"
-    | "verificationGasLimit"
-    | "preVerificationGas"
-    | "maxFeePerGas"
-    | "maxPriorityFeePerGas"
-  >,
+  params: RpcEstimateUserOperationGasParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -56,13 +46,23 @@ export const useQueryUserOperationEstimateGas = (
     ...USER_OPERATION_CONFIG,
     retry: 10,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
-      chainId: params.nonce,
+      chainId: params.chainId,
       nonce: params.nonce,
       initCode: params.initCode,
       sender: params.sender,
       callData: params.callData,
     }).queryKey,
     queryFn: async () => {
+      if (
+        !params.chainId ||
+        !params.nonce ||
+        !params.initCode ||
+        !params.sender ||
+        !params.callData
+      ) {
+        return null;
+      }
+
       const res = await estimateUserOperationGas(
         Number(params.chainId) as number,
         [

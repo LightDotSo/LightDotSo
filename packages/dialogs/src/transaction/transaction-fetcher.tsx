@@ -194,9 +194,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Turns the partial userOperation into an userOperation w/ default values
   // Should not change from the initial user operation
-  const targetUserOperation: Omit<
-    UserOperation,
-    "hash" | "paymasterAndData" | "signature"
+  const targetUserOperation: Partial<
+    Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
@@ -234,17 +233,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Return the user operation
     return {
       sender: initialUserOperation?.sender ?? address,
-      chainId: initialUserOperation?.chainId ?? BigInt(0),
+      chainId: initialUserOperation?.chainId ?? undefined,
       initCode: updatedInitCode ?? "0x",
-      nonce: updatedNonce ?? BigInt(0),
+      nonce: updatedNonce ?? undefined,
       callData: initialUserOperation?.callData ?? "0x",
-      callGasLimit: initialUserOperation?.callGasLimit ?? BigInt(0),
+      callGasLimit: initialUserOperation?.callGasLimit ?? undefined,
       verificationGasLimit:
-        initialUserOperation?.verificationGasLimit ?? BigInt(0),
-      preVerificationGas: initialUserOperation?.preVerificationGas ?? BigInt(0),
-      maxFeePerGas: initialUserOperation?.maxFeePerGas ?? BigInt(0),
+        initialUserOperation?.verificationGasLimit ?? undefined,
+      preVerificationGas: initialUserOperation?.preVerificationGas ?? undefined,
+      maxFeePerGas: initialUserOperation?.maxFeePerGas ?? undefined,
       maxPriorityFeePerGas:
-        initialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+        initialUserOperation?.maxPriorityFeePerGas ?? undefined,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -305,12 +304,27 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const updatedUserOperation: Omit<
     UserOperation,
     "hash" | "signature" | "paymasterAndData"
-  > = useMemo(() => {
+  > | null = useMemo(() => {
+    if (
+      !targetUserOperation.sender ||
+      !targetUserOperation.chainId ||
+      !targetUserOperation.initCode ||
+      !targetUserOperation.nonce ||
+      !targetUserOperation.callData ||
+      !maxFeePerGas ||
+      !maxPriorityFeePerGas ||
+      !callGasLimit ||
+      !preVerificationGas ||
+      !verificationGasLimit
+    ) {
+      return null;
+    }
+
     // Bump the verification gas limit depending on the configuration threshold
-    const updatedVerificationGasLimit = currentConfiguration?.threshold
-      ? targetUserOperation.verificationGasLimit *
-        BigInt(currentConfiguration?.threshold)
-      : targetUserOperation.verificationGasLimit;
+    const updatedVerificationGasLimit =
+      currentConfiguration?.threshold && verificationGasLimit
+        ? verificationGasLimit * BigInt(currentConfiguration?.threshold)
+        : verificationGasLimit;
 
     return {
       sender: targetUserOperation.sender,
@@ -350,15 +364,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const { gasAndPaymasterAndData, isGasAndPaymasterAndDataLoading } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
-      chainId: debouncedUserOperation.chainId,
-      nonce: debouncedUserOperation.nonce,
-      initCode: debouncedUserOperation.initCode,
-      callData: debouncedUserOperation.callData,
-      callGasLimit: debouncedUserOperation.callGasLimit,
-      preVerificationGas: debouncedUserOperation.preVerificationGas,
-      verificationGasLimit: debouncedUserOperation.verificationGasLimit,
-      maxFeePerGas: debouncedUserOperation.maxFeePerGas,
-      maxPriorityFeePerGas: debouncedUserOperation.maxPriorityFeePerGas,
+      chainId: debouncedUserOperation?.chainId,
+      nonce: debouncedUserOperation?.nonce,
+      initCode: debouncedUserOperation?.initCode,
+      callData: debouncedUserOperation?.callData,
+      callGasLimit: debouncedUserOperation?.callGasLimit,
+      preVerificationGas: debouncedUserOperation?.preVerificationGas,
+      verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
     });
 
   // ---------------------------------------------------------------------------
@@ -366,28 +380,46 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Construct the updated user operation
-  const finalizedUserOperation: Omit<UserOperation, "hash" | "signature"> =
-    useMemo(() => {
-      return {
-        sender: targetUserOperation.sender,
-        chainId: targetUserOperation.chainId,
-        initCode: targetUserOperation.initCode,
-        nonce: targetUserOperation.nonce,
-        callData: targetUserOperation.callData,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas,
-        callGasLimit: callGasLimit,
-        preVerificationGas: preVerificationGas,
-        verificationGasLimit: updatedUserOperation.verificationGasLimit,
-        paymasterAndData: gasAndPaymasterAndData?.paymasterAndData ?? "0x",
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-      // Only paymaster and data is required to compute the gas limits and paymaster
-      // The rest of the values are dependencies of the paymaster and data
-      // As it is the final layer of computation
-      gasAndPaymasterAndData,
-    ]);
+  const finalizedUserOperation: Omit<
+    UserOperation,
+    "hash" | "signature"
+  > | null = useMemo(() => {
+    if (
+      !debouncedUserOperation?.sender ||
+      !debouncedUserOperation?.chainId ||
+      !debouncedUserOperation?.initCode ||
+      !debouncedUserOperation?.nonce ||
+      !debouncedUserOperation?.callData ||
+      !debouncedUserOperation?.maxFeePerGas ||
+      !debouncedUserOperation?.maxPriorityFeePerGas ||
+      !debouncedUserOperation?.callGasLimit ||
+      !debouncedUserOperation?.preVerificationGas ||
+      !debouncedUserOperation?.verificationGasLimit ||
+      !gasAndPaymasterAndData
+    ) {
+      return null;
+    }
+
+    return {
+      sender: debouncedUserOperation?.sender,
+      chainId: debouncedUserOperation?.chainId,
+      initCode: debouncedUserOperation?.initCode,
+      nonce: debouncedUserOperation?.nonce,
+      callData: debouncedUserOperation?.callData,
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+      callGasLimit: debouncedUserOperation?.callGasLimit,
+      preVerificationGas: debouncedUserOperation?.preVerificationGas,
+      verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
+      paymasterAndData: gasAndPaymasterAndData?.paymasterAndData ?? "0x",
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // Only paymaster and data is required to compute the gas limits and paymaster
+    // The rest of the values are dependencies of the paymaster and data
+    // As it is the final layer of computation
+    gasAndPaymasterAndData,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -416,6 +448,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
+      if (!finalizedUserOperation) {
+        return;
+      }
+
       // Don't update the user operation if the below required fields are empty
       if (
         finalizedUserOperation.callGasLimit === 0n ||
@@ -521,6 +557,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync `targetUserOperation` to the store
   useEffect(() => {
+    if (!targetUserOperation.chainId || !targetUserOperation.nonce) {
+      return;
+    }
     setPartialUserOperationByChainIdAndNonce(
       targetUserOperation.chainId,
       targetUserOperation.nonce,
@@ -532,18 +571,35 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     targetUserOperation,
   ]);
 
+  // Sync `debouncedUserOperation` to the store
+  useEffect(() => {
+    if (!debouncedUserOperation?.chainId || !debouncedUserOperation?.nonce) {
+      return;
+    }
+
+    setPartialUserOperationByChainIdAndNonce(
+      debouncedUserOperation?.chainId,
+      debouncedUserOperation?.nonce,
+      debouncedUserOperation,
+    );
+  }, [
+    debouncedUserOperation?.chainId,
+    setUserOperationByChainIdAndNonce,
+    debouncedUserOperation,
+  ]);
+
   // Sync `userOperationWithHash` to the store
   useEffect(() => {
     if (!userOperationWithHash) {
       return;
     }
     setUserOperationByChainIdAndNonce(
-      targetUserOperation.chainId,
-      targetUserOperation.nonce,
+      userOperationWithHash?.chainId,
+      userOperationWithHash?.nonce,
       userOperationWithHash,
     );
   }, [
-    targetUserOperation.chainId,
+    userOperationWithHash?.chainId,
     setUserOperationByChainIdAndNonce,
     userOperationWithHash,
   ]);

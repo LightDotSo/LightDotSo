@@ -14,8 +14,8 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { PaymasterAndData } from "@lightdotso/data";
+import { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
@@ -26,7 +26,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryPaymasterGasAndPaymasterAndData = (
-  params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+  params: RpcPaymasterGasAndPaymasterAndDataParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -46,47 +46,49 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     ...USER_OPERATION_CONFIG,
     retry: 10,
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
-      chainId: params.chainId,
-      nonce: params.nonce,
-      initCode: params.initCode,
-      sender: params.sender,
-      callData: params.callData,
-      callGasLimit: params.callGasLimit,
-      verificationGasLimit: params.verificationGasLimit,
-      preVerificationGas: params.preVerificationGas,
-      maxFeePerGas: params.maxFeePerGas,
-      maxPriorityFeePerGas: params.maxPriorityFeePerGas,
+      chainId: params?.chainId,
+      nonce: params?.nonce,
+      initCode: params?.initCode,
+      sender: params?.sender,
+      callData: params?.callData,
+      callGasLimit: params?.callGasLimit,
+      verificationGasLimit: params?.verificationGasLimit,
+      preVerificationGas: params?.preVerificationGas,
+      maxFeePerGas: params?.maxFeePerGas,
+      maxPriorityFeePerGas: params?.maxPriorityFeePerGas,
     }).queryKey,
     queryFn: async () => {
       if (
-        // Both can be BigInt(0) if the operation is computing the maxFeePerGas
-        // Note that `maxPriorityFeePerGas` can be 0 so we only check `maxFeePerGas`
-        params.maxFeePerGas === BigInt(0) ||
-        params.maxPriorityFeePerGas === BigInt(0) ||
-        // Both can be BigInt(0) if `estimateUserOperationGasData` is pending
-        params.callGasLimit === BigInt(0) ||
-        params.verificationGasLimit === BigInt(0) ||
-        params.preVerificationGas === BigInt(0)
+        !params?.chainId ||
+        !params?.sender ||
+        !params?.nonce ||
+        !params?.initCode ||
+        !params?.callData ||
+        !params?.callGasLimit ||
+        !params?.verificationGasLimit ||
+        !params?.preVerificationGas ||
+        !params?.maxFeePerGas ||
+        !params?.maxPriorityFeePerGas
       ) {
         return null;
       }
 
       const res = await getPaymasterGasAndPaymasterAndData(
-        Number(params.chainId) as number,
+        Number(params?.chainId) as number,
         [
           {
-            sender: params.sender,
+            sender: params?.sender,
             paymasterAndData: "0x",
-            nonce: toHex(params.nonce),
-            initCode: params.initCode,
-            callData: params.callData,
+            nonce: toHex(params?.nonce),
+            initCode: params?.initCode,
+            callData: params?.callData,
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
-            callGasLimit: toHex(params.callGasLimit),
-            verificationGasLimit: toHex(params.verificationGasLimit),
-            preVerificationGas: toHex(params.preVerificationGas),
-            maxFeePerGas: toHex(params.maxFeePerGas),
-            maxPriorityFeePerGas: toHex(params.maxPriorityFeePerGas),
+            callGasLimit: toHex(params?.callGasLimit),
+            verificationGasLimit: toHex(params?.verificationGasLimit),
+            preVerificationGas: toHex(params?.preVerificationGas),
+            maxFeePerGas: toHex(params?.maxFeePerGas),
+            maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas),
           },
         ],
         clientType,

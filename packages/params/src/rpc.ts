@@ -19,21 +19,22 @@ import { Hex } from "viem";
 // Params
 // -----------------------------------------------------------------------------
 
-export type RpcEstimateUserOperationGasParams = Omit<
-  UserOperation,
-  | "hash"
-  | "signature"
-  | "paymasterAndData"
-  | "callGasLimit"
-  | "verificationGasLimit"
-  | "preVerificationGas"
-  | "maxFeePerGas"
-  | "maxPriorityFeePerGas"
+export type RpcEstimateUserOperationGasParams = Partial<
+  Omit<
+    UserOperation,
+    | "hash"
+    | "signature"
+    | "paymasterAndData"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+  >
 >;
 
-export type RpcPaymasterGasAndPaymasterAndDataParams = Omit<
-  UserOperation,
-  "hash" | "paymasterAndData" | "signature"
+export type RpcPaymasterGasAndPaymasterAndDataParams = Partial<
+  Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
 >;
 
 export type RpcGasEstimationParams = {
