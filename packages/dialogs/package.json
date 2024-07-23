@@ -45,14 +45,14 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.412.0",
+    "lucide-react": "^0.414.0",
     "next": "15.0.0-canary.69",
     "permissionless": "^0.1.41",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.1",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.17.8",
+    "viem": "^2.17.10",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -61,7 +61,7 @@
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   },
   "publishConfig": {
     "access": "public"

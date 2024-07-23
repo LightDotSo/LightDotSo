@@ -28,8 +28,8 @@
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.11",
-    "typescript": "^5.5.3",
-    "viem": "^2.17.8"
+    "typescript": "^5.5.4",
+    "viem": "^2.17.10"
   },
   "publishConfig": {
     "access": "public"

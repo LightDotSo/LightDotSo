@@ -29,9 +29,9 @@
     "@next/bundle-analyzer": "15.0.0-canary.69",
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.19.0",
-    "fumadocs-core": "^12.5.4",
+    "fumadocs-core": "^12.5.5",
     "fumadocs-openapi": "^3.3.0",
-    "fumadocs-ui": "^12.5.4",
+    "fumadocs-ui": "^12.5.5",
     "next": "15.0.0-canary.69",
     "next-themes": "^0.3.0",
     "nextra": "^2.13.4",
@@ -50,7 +50,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   },
   "publishConfig": {
     "access": "public"

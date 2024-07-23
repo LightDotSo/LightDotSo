@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.9",
-    "@keystatic/core": "^0.5.27",
+    "@keystatic/core": "^0.5.28",
     "@keystatic/next": "^5.0.1",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/templates": "workspace:*",
@@ -36,7 +36,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
-    "lucide-react": "^0.412.0",
+    "lucide-react": "^0.414.0",
     "motion": "^10.18.0",
     "next": "15.0.0-canary.69",
     "next-themes": "^0.3.0",
@@ -44,7 +44,7 @@
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-error-boundary": "^4.0.13",
     "tailwindcss": "^3.4.6",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
@@ -56,6 +56,6 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
