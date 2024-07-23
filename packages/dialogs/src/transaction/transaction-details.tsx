@@ -121,8 +121,10 @@ export const TransactionDetails: FC = () => {
                   .filter(
                     ([key, value]) =>
                       typeof value !== "undefined" &&
+                      key !== "initCode" &&
                       key !== "callData" &&
-                      key !== "paymasterAndData",
+                      key !== "paymasterAndData" &&
+                      key !== "signature",
                   )
                   .map(([key, value], itemIndex) => (
                     <TransactionDetailInfo
