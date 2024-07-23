@@ -43,6 +43,16 @@ const nextConfig = {
       ],
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**',
+      },
+    ],
+  },
   logging: {
     fetches: {
       fullUrl: true,
