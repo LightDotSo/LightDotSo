@@ -2277,6 +2277,9 @@ importers:
       lucide-react:
         specifier: ^0.414.0
         version: 0.414.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+      next:
+        specifier: 15.0.0-canary.69
+        version: 15.0.0-canary.69(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
@@ -26745,7 +26748,7 @@ snapshots:
       '@ethereumjs/tx': 4.2.0
       '@types/debug': 4.1.12
       debug: 4.3.5(supports-color@5.5.0)
-      semver: 7.6.2
+      semver: 7.6.3
       superstruct: 1.0.4
     transitivePeerDependencies:
       - supports-color
@@ -29569,7 +29572,7 @@ snapshots:
 
   '@react-aria/ssr@3.9.4(react@19.0.0-rc-cc1ec60d0d-20240607)':
     dependencies:
-      '@swc/helpers': 0.5.11
+      '@swc/helpers': 0.5.12
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
   '@react-aria/switch@3.6.4(react@19.0.0-rc-cc1ec60d0d-20240607)':
@@ -29729,7 +29732,7 @@ snapshots:
       hermes-profile-transformer: 0.0.6
       node-stream-zip: 1.15.0
       ora: 5.4.1
-      semver: 7.6.2
+      semver: 7.6.3
       strip-ansi: 5.2.0
       wcwidth: 1.0.1
       yaml: 2.4.5
@@ -29800,7 +29803,7 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
       open: 6.4.0
       ora: 5.4.1
-      semver: 7.6.2
+      semver: 7.6.3
       shell-quote: 1.8.1
       sudo-prompt: 9.2.1
     transitivePeerDependencies:
@@ -29828,7 +29831,7 @@ snapshots:
       fs-extra: 8.1.0
       graceful-fs: 4.2.11
       prompts: 2.4.2
-      semver: 7.6.2
+      semver: 7.6.3
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -45905,7 +45908,7 @@ snapshots:
       pify: 4.0.1
       recursive-readdir: 2.2.3
       sc-istanbul: 0.4.6
-      semver: 7.6.2
+      semver: 7.6.3
       shelljs: 0.8.5
       web3-utils: 1.10.4
 
