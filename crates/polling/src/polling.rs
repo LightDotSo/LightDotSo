@@ -30,7 +30,8 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::{
-    provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
+    provider::get_provider,
+    types::{UserOperationReceipt, UserOperationWithTransactionAndReceiptLogs},
 };
 use lightdotso_db::{
     db::create_client,
@@ -52,6 +53,10 @@ use lightdotso_graphql::{
     },
     traits::UserOperationConstruct,
 };
+use lightdotso_jsonrpsee::{
+    handle_response,
+    types::{Request, Response},
+};
 use lightdotso_kafka::{
     get_producer,
     rdkafka::producer::FutureProducer,
@@ -66,6 +71,7 @@ use lightdotso_prisma::{user_operation, ActivityEntity, ActivityOperation, Prism
 use lightdotso_redis::{get_redis_client, query::wallet::add_to_wallets, redis::Client};
 use lightdotso_sequence::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
+use serde_json::json;
 use std::{collections::HashMap, sync::Arc, time::Duration};
 
 #[allow(dead_code)]
@@ -210,7 +216,49 @@ impl Polling {
             warn!("No url found for chain_id: {}", chain_id);
         }
 
+        // Get the user operation by the given hash.
+        let user_operation = self.get_user_operation(chain_id, hash).await?;
+
+        // Lot the user operation.
+        info!("User Operation found, chain_id: {} user_operation: {:?}", chain_id, user_operation);
+
         Ok(())
+    }
+
+    /// Get a user operation
+    /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L128
+    /// License: MIT
+    pub async fn get_user_operation(
+        &self,
+        chain_id: u64,
+        hash: H256,
+    ) -> Result<Response<UserOperationReceipt>> {
+        let params = vec![json!(format!("{:?}", hash))];
+        info!("params: {:?}", params);
+
+        let req_body = Request {
+            jsonrpc: "2.0".to_string(),
+            method: "eth_getUserOperationReceipt".to_string(),
+            params: params.clone(),
+            id: 1,
+        };
+
+        // Log the time before sending the user operation to the node
+        info!("Getting user operation hash {:?} to the node at {}", hash, chrono::Utc::now());
+
+        // Send the user operation to the node
+        let client = reqwest::Client::new();
+
+        let response = client
+            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
+            .json(&req_body)
+            .send()
+            .await?;
+
+        // Handle the response for the JSON-RPC API.
+        let res = handle_response(response).await?;
+
+        Ok(res)
     }
 
     /// Get the min block
@@ -235,6 +283,19 @@ impl Polling {
         }
 
         Ok(0)
+    }
+
+    pub async fn get_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        hash: H256,
+    ) -> Result<Response<UserOperationReceipt>> {
+        let get_user_operation = || async { self.get_user_operation(chain_id, hash).await };
+
+        let res = get_user_operation.retry(&ExponentialBuilder::default().with_max_times(10)).await;
+        info!("res: {:?}", res);
+
+        res
     }
 
     /// Index the event

@@ -254,6 +254,28 @@ impl fmt::Debug for UserOperationConstruct {
     }
 }
 
+// From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/primitives/src/user_operation/mod.rs#L423-L441
+// License: Apache-2.0
+
+/// Receipt of the user operation (returned from the RPC endpoint eth_getUserOperationReceipt)
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UserOperationReceipt {
+    #[serde(rename = "userOpHash")]
+    pub user_operation_hash: H256,
+    pub sender: Address,
+    pub nonce: U256,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paymaster: Option<Address>,
+    pub actual_gas_cost: U256,
+    pub actual_gas_used: U256,
+    pub success: bool,
+    pub reason: String,
+    pub logs: Vec<Log>,
+    #[serde(rename = "receipt")]
+    pub tx_receipt: TransactionReceipt,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
