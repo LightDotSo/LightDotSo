@@ -20,6 +20,7 @@ import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
 import { useState, type FC } from "react";
 import { Blurhash } from "react-blurhash";
+import { NextImage } from "./next-image";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -60,7 +61,7 @@ export const NftImage: FC<NftImageProps> = ({
           <Blurhash width="100%" height="100%" hash={previews.blurhash} />
         </div>
       )}
-      <img
+      <NextImage
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
           !isImageLoaded && "bg-emphasis-medium animate-pulse",
