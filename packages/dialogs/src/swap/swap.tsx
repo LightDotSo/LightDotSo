@@ -685,9 +685,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           ? "Loading..."
           : isSwapValid
             ? "Swap"
-            : fromSwap?.address === undefined || fromSwap?.chainId === undefined
+            : typeof fromSwap?.address === "undefined" ||
+                typeof fromSwap?.chainId === "undefined"
               ? "Select Token"
-              : fromSwap?.quantity === undefined ||
+              : typeof fromSwap?.quantity === "undefined" ||
                   (fromSwap?.quantity && fromSwap?.quantity === 0)
                 ? "Enter Quantity"
                 : !isFromSwapValueValid

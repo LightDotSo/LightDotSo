@@ -108,7 +108,11 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     });
 
     let displayWhole = useTransform(spring, current => {
-      if (current === undefined || current === null || isNaN(current)) {
+      if (
+        typeof current === "undefined" ||
+        current === null ||
+        isNaN(current)
+      ) {
         return "0";
       }
       return Math.max(0, Math.floor(current)).toLocaleString();

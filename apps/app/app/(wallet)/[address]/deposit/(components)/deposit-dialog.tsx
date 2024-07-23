@@ -178,7 +178,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
-      if (value === undefined) {
+      if (typeof value === "undefined") {
         setTransfer(null);
       } else {
         setTransfer(value);

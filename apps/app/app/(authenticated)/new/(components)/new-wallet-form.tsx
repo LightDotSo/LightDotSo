@@ -114,21 +114,24 @@ export const NewWalletForm: FC = () => {
     const subscription = form.watch((value, { name }) => {
       setFormValues(value);
       if (name === "name") {
-        if (value.name === undefined || value.name === "") {
+        if (typeof value.name === "undefined" || value.name === "") {
           setName(null);
         } else {
           setName(value.name);
         }
       }
       if (name === "inviteCode") {
-        if (value.inviteCode === undefined || value.inviteCode === "") {
+        if (
+          typeof value.inviteCode === "undefined" ||
+          value.inviteCode === ""
+        ) {
           setInviteCode(null);
         } else {
           setInviteCode(value.inviteCode);
         }
       }
       if (name === "type") {
-        if (value.type === "multi" || value.type === undefined) {
+        if (value.type === "multi" || typeof value.type === "undefined") {
           setType(null);
         } else {
           setType(value.type as WalletType);

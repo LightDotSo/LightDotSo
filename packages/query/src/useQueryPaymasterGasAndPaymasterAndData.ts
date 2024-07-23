@@ -61,7 +61,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
       if (
         !params?.chainId ||
         !params?.sender ||
-        !params?.nonce ||
+        typeof params?.nonce === "undefined" ||
         !params?.initCode ||
         !params?.callData ||
         !params?.callGasLimit ||
