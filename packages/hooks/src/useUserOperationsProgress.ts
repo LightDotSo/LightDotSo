@@ -41,7 +41,8 @@ export const useUserOperationsProgress = () => {
             (userOperation.chainId === partialUserOperation.chainId &&
               userOperation.nonce === partialUserOperation.nonce) ||
             (userOperation.chainId === partialUserOperation.chainId &&
-              typeof partialUserOperation.nonce === "undefined"),
+              (typeof partialUserOperation.nonce === "undefined" ||
+                partialUserOperation.nonce === null)),
         ),
     );
 
