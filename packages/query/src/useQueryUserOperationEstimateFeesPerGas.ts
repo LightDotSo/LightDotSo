@@ -129,16 +129,17 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   }, [isEstimateFeesPerGasLoading]);
 
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
+    const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
+      ? // Get the `maxFeePerGas` and apply the speed bump
+        (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
+      : null;
+
     const baseMaxPriorityFeePerGas = feesPerGas?.maxPriorityFeePerGas
       ? // Get the `maxPriorityFeePerGas` and apply the speed bump
         (feesPerGas?.maxPriorityFeePerGas * BigInt(gasSpeedBumpAmount)) /
         BigInt(100)
-      : null;
-    const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
-      ? // Get the `maxFeePerGas` and apply the speed bump
-        (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
-        (baseMaxPriorityFeePerGas ?? null);
+        baseMaxFeePerGas;
 
     console.info("baseMaxFeePerGas", baseMaxFeePerGas);
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);

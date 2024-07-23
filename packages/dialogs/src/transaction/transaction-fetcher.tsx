@@ -15,21 +15,17 @@
 "use client";
 
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
-import {
-  useDebouncedValue,
-  useProxyImplementationAddress,
-} from "@lightdotso/hooks";
+import { useDebouncedValue } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
-  useQuerySimulation,
   useQueryUserOperationNonce,
   useQueryUserOperations,
   useQueryWallet,
   useQueryUserOperationEstimateGas,
   useQueryUserOperationEstimateFeesPerGas,
 } from "@lightdotso/query";
-import { userOperation, type UserOperation } from "@lightdotso/schemas";
+import { type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -37,23 +33,13 @@ import {
   useReadEntryPointGetNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
 import type {
   UserOperation as PermissionlessUserOperation,
   ENTRYPOINT_ADDRESS_V06,
 } from "permissionless";
 import { type FC, useMemo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { type Hex, type Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Schema
-// -----------------------------------------------------------------------------
-
-const userOperationFormSchema = userOperation;
-
-type UserOperationFormValues = UserOperation;
 
 // -----------------------------------------------------------------------------
 // Props
@@ -88,17 +74,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     setPartialUserOperationByChainIdAndNonce,
     setUserOperationByChainIdAndNonce,
   } = useUserOperations();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  // Get the implementation address
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const implAddress = useProxyImplementationAddress({
-    address: address as Address,
-    chainId: Number(initialUserOperation.chainId),
-  });
 
   // ---------------------------------------------------------------------------
   // Query
@@ -174,21 +149,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Form
-  // ---------------------------------------------------------------------------
-
-  // Create the form
-  const form = useForm<UserOperationFormValues>({
-    mode: "all",
-    reValidateMode: "onBlur",
-    resolver: zodResolver(userOperationFormSchema),
-    defaultValues: initialUserOperation,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const formValues = form.watch();
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -228,7 +188,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         updatedMinimumNonce !== undefined &&
         initialUserOperation.nonce < updatedMinimumNonce)
         ? updatedMinimumNonce
-        : updatedInitCode !== undefined
+        : updatedInitCode !== "0x"
           ? BigInt(0)
           : initialUserOperation.nonce;
 
@@ -269,6 +229,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the user operation nonce changes
     userOperationNonce,
   ]);
+  console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -284,6 +245,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     chainId: Number(targetUserOperation.chainId),
     callData: targetUserOperation.callData as Hex,
   });
+  console.info("maxFeePerGas", maxFeePerGas);
+  console.info("maxPriorityFeePerGas", maxPriorityFeePerGas);
 
   // Gets the gas estimate for the user operation
   const {
@@ -298,16 +261,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     initCode: targetUserOperation.initCode,
     callData: targetUserOperation.callData,
   });
-
-  // Gets the simulation for the user operation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { simulation } = useQuerySimulation({
-    sender: address as Address,
-    nonce: Number(targetUserOperation.nonce),
-    chain_id: Number(targetUserOperation.chainId),
-    call_data: targetUserOperation.callData as Hex,
-    init_code: targetUserOperation.initCode as Hex,
-  });
+  console.info("callGasLimit", callGasLimit);
+  console.info("preVerificationGas", preVerificationGas);
+  console.info("verificationGasLimit", verificationGasLimit);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -363,12 +319,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas,
     verificationGasLimit,
   ]);
+  console.info("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Debounce
   // ---------------------------------------------------------------------------
 
-  const debouncedUserOperation = useDebouncedValue(updatedUserOperation, 300);
+  const [debouncedUserOperation, isDebouncingUserOperation] = useDebouncedValue(
+    updatedUserOperation,
+    300,
+  );
+  console.info("debouncedUserOperation", debouncedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -434,31 +395,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // As it is the final layer of computation
     gasAndPaymasterAndData,
   ]);
+  console.info("finalizedUserOperation", finalizedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // If the implementation address is available and is the version 0.1.0 and is after index 0
-  // Remove the user operation itself
-  // useEffect(() => {
-  //   if (
-  //     userOperationIndex > 0 &&
-  //     implAddress &&
-  //     implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
-  //   ) {
-  //     // Remove the user operation from the list
-  //     // setUserOperations(prev => {
-  //     //   const next = [...prev];
-  //     //   next.splice(userOperationIndex, 1);
-  //     //   return next;
-  //     // });
-
-  //     // Set the disabled state
-  //     setIsDisabled(true);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [implAddress, userOperationIndex]);
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
@@ -477,28 +418,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ) {
         return;
       }
-
-      // IF the fields differ, update the user operation
-      // if (
-      //   targetUserOperation.callGasLimit !==
-      //     finalizedUserOperation.callGasLimit ||
-      //   targetUserOperation.verificationGasLimit !==
-      //     finalizedUserOperation.verificationGasLimit ||
-      //   targetUserOperation.preVerificationGas !==
-      //     finalizedUserOperation.preVerificationGas ||
-      //   targetUserOperation.maxFeePerGas !==
-      //     finalizedUserOperation.maxFeePerGas ||
-      //   targetUserOperation.maxPriorityFeePerGas !==
-      //     finalizedUserOperation.maxPriorityFeePerGas
-      // ) {
-      //   setUserOperations(prev => {
-      //     const next = [...prev];
-      //     if (next[userOperationIndex]) {
-      //       next[userOperationIndex] = finalizedUserOperation;
-      //     }
-      //     return next;
-      //   });
-      // }
 
       // Add the dummy signature to get the hash for the user operation
       const userOperation = {
@@ -519,20 +438,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       if (hash === userOperationWithHash?.hash) {
         return;
       }
-
-      // If the hash field differs, update the user operation
-      // if (userOperationWithHash?.hash !== hash) {
-      //   setUserOperations(prev => {
-      //     const next = [...prev];
-      //     if (next[userOperationIndex]) {
-      //       next[userOperationIndex] = {
-      //         ...finalizedUserOperation,
-      //         hash,
-      //       };
-      //     }
-      //     return next;
-      //   });
-      // }
 
       // Update the user operation hash state for computation
       setUserOperationWithHash({
@@ -555,11 +460,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const isTransactionFetcherLoading = useMemo(() => {
     return (
+      isDebouncingUserOperation ||
       isUserOperationEstimateFeesPerGasLoading ||
       isUserOperationEstimateGasLoading ||
       isGasAndPaymasterAndDataLoading
     );
   }, [
+    isDebouncingUserOperation,
     isUserOperationEstimateFeesPerGasLoading,
     isUserOperationEstimateGasLoading,
     isGasAndPaymasterAndDataLoading,
