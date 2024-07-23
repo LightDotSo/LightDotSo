@@ -22,7 +22,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Bytes, TransactionReceipt, H256, U256},
+    types::{Bytes, Log, TransactionReceipt, H256, U256},
     utils::to_checksum,
 };
 use eyre::Result;
@@ -192,14 +192,17 @@ pub async fn upsert_paymaster_and_data(
 #[autometrics]
 pub async fn upsert_user_operation_logs(
     db: Database,
-    uow: UserOperationWithTransactionAndReceiptLogs,
+    chain_id: i64,
+    transaction_hash: H256,
+    user_operation_hash: H256,
+    user_operation_logs: Vec<Log>,
 ) -> AppJsonResult<()> {
     info!("Creating user operation");
 
     // Get the logs for the user operation
     let logs = db
         .log()
-        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", uow.transaction.hash)))])
+        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", transaction_hash)))])
         .exec()
         .await?;
 
@@ -207,7 +210,7 @@ pub async fn upsert_user_operation_logs(
     let logs = logs
         .into_iter()
         .filter(|log| {
-            uow.logs.iter().any(|l| {
+            user_operation_logs.iter().any(|l| {
                 l.log_index == log.log_index.map(U256::from) &&
                     l.log_index.is_some() &&
                     log.log_index.is_some()
@@ -219,10 +222,10 @@ pub async fn upsert_user_operation_logs(
     for log in logs.iter() {
         db.user_operation()
             .update(
-                user_operation::hash::equals(format!("{:?}", uow.hash)),
+                user_operation::hash::equals(format!("{:?}", user_operation_hash)),
                 vec![
                     user_operation::logs::connect(vec![log::id::equals(log.id.clone())]),
-                    user_operation::is_testnet::set(is_testnet(uow.chain_id as u64)),
+                    user_operation::is_testnet::set(is_testnet(chain_id as u64)),
                 ],
             )
             .exec()
