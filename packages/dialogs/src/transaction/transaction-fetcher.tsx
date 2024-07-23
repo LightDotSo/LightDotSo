@@ -205,16 +205,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           ? BigInt(userOperationNonce.nonce)
           : undefined;
 
-    // If the initial user operation nonce is provided, make sure it is same or greater
-    // In the case that it is not, update the nonce to the minimum nonce
-    const updatedNonce =
-      initialUserOperation.nonce === undefined ||
-      (initialUserOperation.nonce !== undefined &&
-        updatedMinimumNonce !== undefined &&
-        initialUserOperation.nonce < updatedMinimumNonce)
-        ? updatedMinimumNonce
-        : initialUserOperation.nonce;
-
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
       executedUserOperations &&
@@ -228,15 +218,36 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             genesisConfiguration?.image_hash as Hex,
             wallet?.salt as Hex,
           )
-        : initialUserOperation.initCode;
+        : (initialUserOperation.initCode ?? "0x");
+
+    // If the initial user operation nonce is provided, make sure it is same or greater
+    // In the case that it is not, update the nonce to the minimum nonce
+    const updatedNonce =
+      initialUserOperation.nonce === undefined ||
+      (initialUserOperation.nonce !== undefined &&
+        updatedMinimumNonce !== undefined &&
+        initialUserOperation.nonce < updatedMinimumNonce)
+        ? updatedMinimumNonce
+        : updatedInitCode !== undefined
+          ? BigInt(0)
+          : initialUserOperation.nonce;
+
+    // Allow the callData to be empty if the init code is provided
+    // This is to allow for the creation of a new contract
+    const updatedCallData =
+      initialUserOperation.callData === undefined &&
+      updatedInitCode !== undefined
+        ? "0x"
+        : initialUserOperation.callData;
 
     // Return the user operation
     return {
       sender: initialUserOperation?.sender ?? address,
       chainId: initialUserOperation?.chainId ?? undefined,
+      // Init code should be computed automatically
       initCode: updatedInitCode ?? "0x",
       nonce: updatedNonce ?? undefined,
-      callData: initialUserOperation?.callData ?? "0x",
+      callData: updatedCallData ?? undefined,
       callGasLimit: initialUserOperation?.callGasLimit ?? undefined,
       verificationGasLimit:
         initialUserOperation?.verificationGasLimit ?? undefined,
