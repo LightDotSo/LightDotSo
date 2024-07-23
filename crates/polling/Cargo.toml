@@ -22,11 +22,13 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-graphql = { workspace = true }
+  lightdotso-jsonrpsee = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-opentelemetry = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-sequence = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  reqwest = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true }
