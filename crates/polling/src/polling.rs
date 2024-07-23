@@ -25,7 +25,7 @@ use chrono::Timelike;
 use ethers::{
     prelude::Provider,
     providers::{Http, Middleware},
-    types::{Block, H256},
+    types::{Address, Block, Log, Transaction, TransactionReceipt, H256},
     utils::to_checksum,
 };
 use eyre::{eyre, Result};
@@ -377,6 +377,17 @@ impl Polling {
         // Log the operation along with the chain id.
         info!("User Operation found, chain_id: {} receipt: {:?}", chain_id, receipt);
 
+        // Upsert the transaction with the log receipt in the db.
+        info!("db_upsert_transaction_with_transaction_receipt");
+        let res = self
+            .db_upsert_transaction_with_transaction_receipt(
+                chain_id,
+                receipt.sender,
+                receipt.logs.clone(),
+                receipt.tx_receipt.clone(),
+            )
+            .await;
+
         Ok(())
     }
 
@@ -507,7 +518,7 @@ impl Polling {
             .await?)
     }
 
-    /// Create a new transaction w/ the
+    /// Create a new transaction w/ the log receipt
     #[autometrics]
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
@@ -533,6 +544,42 @@ impl Polling {
                     uow.clone().transaction,
                     uow.clone().transaction_logs,
                     uow.clone().receipt,
+                    chain_id as i64,
+                    block.clone().unwrap().timestamp,
+                    None,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?)
+    }
+
+    /// Create a new transaction w/ the transaction receipt
+    #[autometrics]
+    pub async fn db_upsert_transaction_with_transaction_receipt(
+        &self,
+        chain_id: u64,
+        wallet: Address,
+        logs: Vec<Log>,
+        receipt: TransactionReceipt,
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>> {
+        let db_client = self.db_client.clone();
+
+        let block = self.get_block(chain_id, receipt.block_number.unwrap()).await?;
+        let transaction = self.get_transaction(chain_id, receipt.transaction_hash).await?;
+
+        if block.is_none() {
+            return Err(eyre!("block not found"));
+        }
+
+        Ok({
+            || {
+                upsert_transaction_with_log_receipt(
+                    db_client.clone(),
+                    wallet,
+                    transaction.clone(),
+                    logs.clone(),
+                    receipt.clone(),
                     chain_id as i64,
                     block.clone().unwrap().timestamp,
                     None,
@@ -593,6 +640,21 @@ impl Polling {
         Ok(())
     }
 
+    /// Add a new wallet in the cache w/ address
+    #[autometrics]
+    pub fn add_to_wallets_with_address(&self, address: &Address) -> Result<()> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            let _ = { || add_to_wallets(&mut con, to_checksum(address, None).as_str()) }
+                .retry(&ExponentialBuilder::default())
+                .call();
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+        }
+        Ok(())
+    }
+
     /// Get the provider
     pub async fn get_provider(&self, chain_id: u64) -> Result<Option<Arc<Provider<Http>>>> {
         // Create the provider
@@ -621,6 +683,32 @@ impl Polling {
         }
 
         Ok(None)
+    }
+
+    /// Get the transaction for the given transaction hash
+    #[autometrics]
+    pub async fn get_transaction(
+        &self,
+        chain_id: u64,
+        transaction_hash: H256,
+    ) -> Result<Transaction> {
+        let client = self.get_provider(chain_id).await?;
+
+        info!("get_transaction, chain_id: {} transaction_hash: {}", chain_id, transaction_hash);
+
+        if let Some(client) = client {
+            // Get the transaction
+            let res = { || client.get_transaction(transaction_hash) }
+                .retry(&ExponentialBuilder::default())
+                .await?;
+
+            // Ensure the transaction is found
+            if let Some(res) = res {
+                return Ok(res);
+            }
+        }
+
+        Err(eyre!("client not found"))
     }
 
     /// Add a new activity in the queue
