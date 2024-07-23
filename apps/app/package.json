@@ -81,11 +81,11 @@
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
     "exponential-backoff": "^3.1.1",
-    "framer-motion": "^11.3.8",
+    "framer-motion": "^11.3.9",
     "immer": "^10.1.1",
     "kysely-postgres-js": "^2.0.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.412.0",
+    "lucide-react": "^0.414.0",
     "msw": "^2.3.2",
     "neverthrow": "^7.0.0",
     "next": "15.0.0-canary.69",
@@ -105,7 +105,7 @@
     "siwe": "^2.3.2",
     "sonner": "^1.5.0",
     "superjson": "^2.2.1",
-    "viem": "^2.17.8",
+    "viem": "^2.17.10",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
@@ -119,7 +119,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   },
   "publishConfig": {
     "access": "public"

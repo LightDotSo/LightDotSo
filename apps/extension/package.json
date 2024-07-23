@@ -31,7 +31,7 @@
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "crx": "^5.0.1",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "web-ext": "^8.2.0"
   },
   "publishConfig": {

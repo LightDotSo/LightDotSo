@@ -18,8 +18,8 @@
   ],
   "dependencies": {
     "@eslint/compat": "^1.1.1",
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
-    "@typescript-eslint/parser": "^7.16.1",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
     "eslint": "^9.7.0",
     "eslint-config-next": "15.0.0-canary.69",
     "eslint-config-turbo": "^2.0.9",
