@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
+    "@lightdotso/types": "workspace:*",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",

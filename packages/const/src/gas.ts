@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { AppGroup } from "./app-group";
-export type { Banner } from "./banner";
-export type { Execution, ExecutionWithChainId } from "./execution";
-export type { SubCategory, CategoryObject } from "./category";
-export type { GasSpeed } from "./gas";
-export type { Tab } from "./tab";
-export type { TokenAmount } from "./token";
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+// Define an enum for gas speed
+export enum GAS_SPEED_BUMP {
+  Low = 110,
+  Medium = 115,
+  High = 120,
+  Instant = 125,
+}

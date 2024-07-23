@@ -12,10 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { AppGroup } from "./app-group";
-export type { Banner } from "./banner";
-export type { Execution, ExecutionWithChainId } from "./execution";
-export type { SubCategory, CategoryObject } from "./category";
-export type { GasSpeed } from "./gas";
-export type { Tab } from "./tab";
-export type { TokenAmount } from "./token";
+import { GAS_SPEED_BUMP } from "@lightdotso/const";
+import type { GasSpeed } from "@lightdotso/types";
+
+export function getGasSpeedBumpAmount(gasSpeed: GasSpeed): number {
+  switch (gasSpeed) {
+    case "low":
+      return GAS_SPEED_BUMP.Low;
+    case "medium":
+      return GAS_SPEED_BUMP.Medium;
+    case "high":
+      return GAS_SPEED_BUMP.High;
+    case "instant":
+      return GAS_SPEED_BUMP.Instant;
+    default:
+      return GAS_SPEED_BUMP.Medium;
+  }
+}

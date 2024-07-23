@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { AppGroup } from "./app-group";
-export type { Banner } from "./banner";
-export type { Execution, ExecutionWithChainId } from "./execution";
-export type { SubCategory, CategoryObject } from "./category";
-export type { GasSpeed } from "./gas";
-export type { Tab } from "./tab";
-export type { TokenAmount } from "./token";
+export const camelCaseToCapitalizedWords = (input: string): string => {
+  // Split the string at each point where a lowercase letter is followed by an uppercase letter
+  const words = input.split(/(?=[A-Z])/);
+
+  // Capitalize the first letter of each word and make sure the rest of the letters are lowercase
+  const capitalizedWords = words.map(
+    word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+  );
+
+  // Join the words back into a single string with spaces
+  return capitalizedWords.join(" ");
+};

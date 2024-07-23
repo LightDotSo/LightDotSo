@@ -2811,9 +2811,6 @@ importers:
       '@lightdotso/query-keys':
         specifier: workspace:*
         version: link:../query-keys
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -3094,18 +3091,15 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
-      '@lightdotso/nuqs':
-        specifier: workspace:*
-        version: link:../nuqs
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
-      '@lightdotso/sdk':
-        specifier: workspace:*
-        version: link:../sdk
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../types
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@tanstack/react-table':
         specifier: ^8.19.3
         version: 8.19.3(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3691,6 +3685,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

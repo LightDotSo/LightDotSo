@@ -35,6 +35,7 @@ export {
   LATEST_IMPLEMENTATION_ADDRESS,
 } from "./contract_addresses";
 export { COOKIES } from "./cookies";
+export { GAS_SPEED_BUMP } from "./gas";
 export { GITHUB_LINKS } from "./github_links";
 export { INTERNAL_LINKS } from "./internal_links";
 export { REDIRECT_PREFIXES } from "./redirect_prefixes";

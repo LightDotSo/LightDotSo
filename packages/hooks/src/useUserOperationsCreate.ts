@@ -417,6 +417,7 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
   ]);
+  console.info("isUserOperationsDisabled", isUserOperationsDisabled);
 
   // ---------------------------------------------------------------------------
   // Return
