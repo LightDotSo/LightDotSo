@@ -166,7 +166,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       entryPointNonce !== undefined
         ? BigInt(entryPointNonce)
         : userOperationNonce?.nonce !== undefined
-          ? BigInt(userOperationNonce.nonce)
+          ? BigInt(userOperationNonce?.nonce)
           : undefined;
 
     // Get the init code from the executed user operations or the partial user operation
@@ -233,7 +233,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the entry point nonce changes
     entryPointNonce,
     // Should recompute if the user operation nonce changes
-    userOperationNonce,
+    userOperationNonce?.nonce,
   ]);
   console.info("targetUserOperation", targetUserOperation);
 

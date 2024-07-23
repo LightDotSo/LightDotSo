@@ -56,6 +56,7 @@ export const useQueryUserOperationEstimateGas = (
       if (
         !params.chainId ||
         typeof params.nonce === "undefined" ||
+        params.nonce !== null ||
         !params.initCode ||
         !params.sender ||
         !params.callData
