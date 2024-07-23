@@ -278,7 +278,7 @@ export const TokenModal: FC = () => {
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
-  const debouncedIsTokenModalVisible = useDebouncedValue(
+  const [debouncedIsTokenModalVisible] = useDebouncedValue(
     isTokenModalVisible,
     300,
   );

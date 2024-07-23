@@ -318,7 +318,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Debounce
   // ---------------------------------------------------------------------------
 
-  const debouncedUserOperation = useDebouncedValue(updatedUserOperation, 300);
+  const [debouncedUserOperation, isDebouncingUserOperation] = useDebouncedValue(
+    updatedUserOperation,
+    300,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -448,11 +451,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const isTransactionFetcherLoading = useMemo(() => {
     return (
+      isDebouncingUserOperation ||
       isUserOperationEstimateFeesPerGasLoading ||
       isUserOperationEstimateGasLoading ||
       isGasAndPaymasterAndDataLoading
     );
   }, [
+    isDebouncingUserOperation,
     isUserOperationEstimateFeesPerGasLoading,
     isUserOperationEstimateGasLoading,
     isGasAndPaymasterAndDataLoading,

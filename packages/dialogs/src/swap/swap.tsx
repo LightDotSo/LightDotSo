@@ -284,7 +284,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
-  const debouncedFromSwapQuantity = useDebouncedValue(fromSwap?.quantity, 500);
+  const [debouncedFromSwapQuantity] = useDebouncedValue(
+    fromSwap?.quantity,
+    500,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

@@ -15,32 +15,45 @@
 "use client";
 
 import { debounce } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useDebouncedValue<T>(value: T, delay: number): T {
+export function useDebouncedValue<T>(value: T, delay: number): [T, boolean] {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+  const valueRef = useRef<T>(value);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const handler = debounce(() => setDebouncedValue(value), delay);
-    handler();
-    return handler.cancel;
+    // Check if the current value is different from the last debounced value
+    if (valueRef.current !== value) {
+      setIsDebouncing(true);
+      const handler = debounce(() => {
+        setDebouncedValue(value);
+        setIsDebouncing(false);
+        valueRef.current = value;
+      }, delay);
+      handler();
+      return () => {
+        handler.cancel();
+        setIsDebouncing(false);
+      };
+    }
   }, [value, delay]);
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  return debouncedValue;
+  return [debouncedValue, isDebouncing];
 }

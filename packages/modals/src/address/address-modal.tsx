@@ -124,7 +124,7 @@ export function AddressModal() {
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
-  const delayedName = useDebouncedValue(watchName, 300);
+  const [delayedName] = useDebouncedValue(watchName, 300);
 
   // ---------------------------------------------------------------------------
   // Wagmi

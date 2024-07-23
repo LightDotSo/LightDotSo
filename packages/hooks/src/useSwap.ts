@@ -164,7 +164,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // Debounced
   // ---------------------------------------------------------------------------
 
-  const debouncedFromSwapAmount = useDebouncedValue(fromSwapAmount, 800);
+  const [debouncedFromSwapAmount] = useDebouncedValue(fromSwapAmount, 800);
 
   // ---------------------------------------------------------------------------
   // Hooks
