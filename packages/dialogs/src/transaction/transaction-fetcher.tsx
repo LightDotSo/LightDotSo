@@ -226,6 +226,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     wallet,
     // The genesis configuration is static
     genesisConfiguration,
+    // Should recompute if the bytecode changes
+    walletBytecode,
     // Should recompute if the executed user operations change, for init code
     historyUserOperations,
     // Should recompute if the entry point nonce changes
