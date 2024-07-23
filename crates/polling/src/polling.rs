@@ -25,7 +25,7 @@ use chrono::Timelike;
 use ethers::{
     prelude::Provider,
     providers::{Http, Middleware},
-    types::{Block, H256},
+    types::{Address, Block, Log, Transaction, TransactionReceipt, H256},
     utils::to_checksum,
 };
 use eyre::{eyre, Result};
@@ -38,7 +38,10 @@ use lightdotso_db::{
     models::{
         activity::CustomParams,
         transaction::upsert_transaction_with_log_receipt,
-        user_operation::{upsert_user_operation, upsert_user_operation_logs},
+        user_operation::{
+            get_user_operation_with_logs, update_user_operation_with_receipt,
+            upsert_user_operation, upsert_user_operation_logs, DbUserOperationLogs,
+        },
         wallet::upsert_wallet_with_configuration,
     },
 };
@@ -353,8 +356,19 @@ impl Polling {
             info!("send_activity_queue & send_interpretation_queue");
             if self.live && self.kafka_client.is_some() {
                 if let Ok(res) = res {
-                    let _ = self.send_activity_queue(res.0.clone()).await;
-                    let _ = self.send_interpretation_queue(res.0.clone()).await;
+                    let _ = self
+                        .send_activity_queue(
+                            res.0.clone().hash.parse()?,
+                            res.0.clone().sender.parse()?,
+                            res.0.clone(),
+                        )
+                        .await;
+                    let _ = self
+                        .send_interpretation_queue(
+                            res.0.clone().hash.parse()?,
+                            res.0.clone().transaction_hash.map(|h| h.parse().unwrap()),
+                        )
+                        .await;
                 }
             }
 
@@ -376,6 +390,75 @@ impl Polling {
     ) -> Result<()> {
         // Log the operation along with the chain id.
         info!("User Operation found, chain_id: {} receipt: {:?}", chain_id, receipt);
+
+        // Upsert the transaction with the log receipt in the db.
+        info!("db_upsert_transaction_with_transaction_receipt");
+        let res = self
+            .db_upsert_transaction_with_transaction_receipt(
+                chain_id,
+                receipt.sender,
+                receipt.logs.clone(),
+                receipt.tx_receipt.clone(),
+            )
+            .await;
+        if res.is_err() {
+            error!(
+                "db_upsert_transaction_with_transaction_receipt error: {:?} at chain_id: {}",
+                res, chain_id
+            );
+        }
+
+        // Update the user operation in the db.
+        info!("db_update_user_operation_with_receipt");
+        let res = self.db_update_user_operation_with_receipt(receipt.clone()).await;
+        if res.is_err() {
+            error!(
+                "db_update_user_operation_with_receipt error: {:?} at chain_id: {}",
+                res, chain_id
+            );
+        }
+
+        // Upsert the user operation logs in the db.
+        info!("db_upsert_user_operation_with_receipt");
+        let log_res = self.db_upsert_user_operation_with_receipt(chain_id, receipt.clone()).await;
+        if log_res.is_err() {
+            error!(
+                "db_upsert_user_operation_with_receipt error: {:?} at chain_id: {}",
+                res, chain_id
+            );
+        }
+
+        // Send the activity queue & interpretation ququjej on all modes.
+        info!("send_activity_queue & send_interpretation_queue");
+        if self.live && self.kafka_client.is_some() {
+            let db_user_operation =
+                self.db_get_user_operation(chain_id, receipt.clone().user_operation_hash).await?;
+
+            let _ = self
+                .send_activity_queue(
+                    receipt.clone().user_operation_hash,
+                    receipt.clone().sender,
+                    db_user_operation.user_operation,
+                )
+                .await;
+            let _ = self
+                .send_interpretation_queue(
+                    receipt.clone().user_operation_hash,
+                    Some(receipt.clone().tx_receipt.transaction_hash),
+                )
+                .await;
+        }
+
+        // Send the tx queue on all modes.
+        info!("send_tx_queue");
+        if self.kafka_client.is_some() {
+            let _ = self
+                .send_tx_queue(
+                    chain_id,
+                    receipt.clone().tx_receipt.block_number.unwrap().as_u32() as i32,
+                )
+                .await;
+        }
 
         Ok(())
     }
@@ -502,12 +585,81 @@ impl Polling {
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        Ok({ || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
+        Ok({
+            || {
+                upsert_user_operation_logs(
+                    db_client.clone(),
+                    uow.clone().chain_id,
+                    uow.clone().transaction.hash,
+                    uow.clone().hash,
+                    uow.clone().logs,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?)
+    }
+
+    /// Upserts user operation in the db from the receipt
+    pub async fn db_upsert_user_operation_with_receipt(
+        &self,
+        chain_id: u64,
+        receipt: UserOperationReceipt,
+    ) -> Result<Json<()>> {
+        let db_client = self.db_client.clone();
+
+        Ok({
+            || {
+                upsert_user_operation_logs(
+                    db_client.clone(),
+                    chain_id as i64,
+                    receipt.clone().tx_receipt.transaction_hash,
+                    receipt.clone().user_operation_hash,
+                    receipt.clone().logs,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?)
+    }
+
+    /// Update the user operation in the db
+    pub async fn db_update_user_operation_with_receipt(
+        &self,
+        op: UserOperationReceipt,
+    ) -> Result<()> {
+        let db_client = self.db_client.clone();
+
+        let _ = {
+            || {
+                update_user_operation_with_receipt(
+                    db_client.clone(),
+                    op.clone().user_operation_hash,
+                    op.clone(),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?;
+
+        Ok(())
+    }
+
+    /// Get the user operation by the given hash
+    #[autometrics]
+    pub async fn db_get_user_operation(
+        &self,
+        chain_id: u64,
+        hash: H256,
+    ) -> Result<DbUserOperationLogs> {
+        let db_client = self.db_client.clone();
+
+        Ok({ || get_user_operation_with_logs(db_client.clone(), hash) }
             .retry(&ExponentialBuilder::default())
             .await?)
     }
 
-    /// Create a new transaction w/ the
+    /// Create a new transaction w/ the log receipt
     #[autometrics]
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
@@ -533,6 +685,42 @@ impl Polling {
                     uow.clone().transaction,
                     uow.clone().transaction_logs,
                     uow.clone().receipt,
+                    chain_id as i64,
+                    block.clone().unwrap().timestamp,
+                    None,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?)
+    }
+
+    /// Create a new transaction w/ the transaction receipt
+    #[autometrics]
+    pub async fn db_upsert_transaction_with_transaction_receipt(
+        &self,
+        chain_id: u64,
+        wallet: Address,
+        logs: Vec<Log>,
+        receipt: TransactionReceipt,
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>> {
+        let db_client = self.db_client.clone();
+
+        let block = self.get_block(chain_id, receipt.block_number.unwrap()).await?;
+        let transaction = self.get_transaction(chain_id, receipt.transaction_hash).await?;
+
+        if block.is_none() {
+            return Err(eyre!("block not found"));
+        }
+
+        Ok({
+            || {
+                upsert_transaction_with_log_receipt(
+                    db_client.clone(),
+                    wallet,
+                    transaction.clone(),
+                    logs.clone(),
+                    receipt.clone(),
                     chain_id as i64,
                     block.clone().unwrap().timestamp,
                     None,
@@ -593,6 +781,21 @@ impl Polling {
         Ok(())
     }
 
+    /// Add a new wallet in the cache w/ address
+    #[autometrics]
+    pub fn add_to_wallets_with_address(&self, address: &Address) -> Result<()> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            let _ = { || add_to_wallets(&mut con, to_checksum(address, None).as_str()) }
+                .retry(&ExponentialBuilder::default())
+                .call();
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+        }
+        Ok(())
+    }
+
     /// Get the provider
     pub async fn get_provider(&self, chain_id: u64) -> Result<Option<Arc<Provider<Http>>>> {
         // Create the provider
@@ -623,20 +826,48 @@ impl Polling {
         Ok(None)
     }
 
+    /// Get the transaction for the given transaction hash
+    #[autometrics]
+    pub async fn get_transaction(
+        &self,
+        chain_id: u64,
+        transaction_hash: H256,
+    ) -> Result<Transaction> {
+        let client = self.get_provider(chain_id).await?;
+
+        info!("get_transaction, chain_id: {} transaction_hash: {}", chain_id, transaction_hash);
+
+        if let Some(client) = client {
+            // Get the transaction
+            let res = { || client.get_transaction(transaction_hash) }
+                .retry(&ExponentialBuilder::default())
+                .await?;
+
+            // Ensure the transaction is found
+            if let Some(res) = res {
+                return Ok(res);
+            }
+        }
+
+        Err(eyre!("client not found"))
+    }
+
     /// Add a new activity in the queue
     #[autometrics]
-    pub async fn send_activity_queue(&self, op: user_operation::Data) -> Result<()> {
+    pub async fn send_activity_queue(
+        &self,
+        user_operation_hash: H256,
+        sender: Address,
+        op: user_operation::Data,
+    ) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
         let payload = serde_json::to_value(&op).unwrap_or_else(|_| serde_json::Value::Null);
-        let uop_hash = op.clone().hash;
-        let uop_sender = op.clone().sender;
-
         let msg = &ActivityMessage {
             operation: ActivityOperation::Update,
             log: payload.clone().to_owned(),
             params: CustomParams {
-                user_operation_hash: Some(uop_hash.clone()),
-                wallet_address: Some(uop_sender.clone()),
+                user_operation_hash: Some(format!("{:?}", user_operation_hash.clone())),
+                wallet_address: Some(to_checksum(&sender.clone(), None)),
                 ..Default::default()
             },
         };
@@ -650,9 +881,12 @@ impl Polling {
 
     /// Add a new interpretion in the queue
     #[autometrics]
-    pub async fn send_interpretation_queue(&self, op: user_operation::Data) -> Result<()> {
+    pub async fn send_interpretation_queue(
+        &self,
+        uop_hash: H256,
+        transaction_hash: Option<H256>,
+    ) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
-        let uop_hash: H256 = op.clone().hash.parse()?;
 
         let uop_msg =
             &InterpretationMessage { user_operation_hash: Some(uop_hash), transaction_hash: None };
@@ -661,9 +895,7 @@ impl Polling {
             .retry(&ExponentialBuilder::default())
             .await;
 
-        if let Some(tx_hash) = &op.transaction_hash {
-            let tx_hash: H256 = tx_hash.parse()?;
-
+        if let Some(tx_hash) = transaction_hash {
             let tx_msg = &InterpretationMessage {
                 user_operation_hash: None,
                 transaction_hash: Some(tx_hash),

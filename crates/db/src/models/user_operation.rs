@@ -21,12 +21,14 @@ use crate::{
 };
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::{types::U256, utils::to_checksum};
+use ethers::{
+    types::{Bytes, Log, TransactionReceipt, H256, U256},
+    utils::to_checksum,
+};
 use eyre::Result;
 use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESSES,
     paymaster::decode_paymaster_and_data,
-    types::{UserOperation, UserOperationWithTransactionAndReceiptLogs},
+    types::{UserOperation, UserOperationReceipt, UserOperationWithTransactionAndReceiptLogs},
     utils::is_testnet,
 };
 use lightdotso_prisma::{
@@ -40,6 +42,36 @@ use serde::{Deserialize, Serialize};
 // -----------------------------------------------------------------------------
 // Upsert
 // -----------------------------------------------------------------------------
+
+#[autometrics]
+pub async fn update_user_operation_with_receipt(
+    db: Database,
+    user_operation_hash: H256,
+    user_operation_receipt: UserOperationReceipt,
+) -> AppJsonResult<()> {
+    info!("Updating user operation status");
+
+    // Update the user operation status
+    db.user_operation()
+        .update(
+            user_operation::hash::equals(format!("{:?}", user_operation_hash)),
+            vec![
+                user_operation::status::set(if user_operation_receipt.success {
+                    UserOperationStatus::Reverted
+                } else {
+                    UserOperationStatus::Executed
+                }),
+                user_operation::transaction_hash::set(Some(format!(
+                    "{:?}",
+                    user_operation_receipt.tx_receipt.transaction_hash
+                ))),
+            ],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(()))
+}
 
 #[autometrics]
 pub async fn upsert_user_operation(
@@ -88,70 +120,89 @@ pub async fn upsert_user_operation(
         info!("Upserting paymaster operation");
 
         // Parse the paymaster and data, and upsert the paymaster if decoded successfully
-        if let Ok((paymaster_address, valid_until, valid_after, _sig)) =
-            decode_paymaster_and_data(paymaster_and_data.to_vec())
-        {
-            // Upsert the paymaster if matches one of ours
-            info!("Upserting paymaster {:?}", paymaster_address);
-
-            let pm = db
-                .paymaster()
-                .upsert(
-                    paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
-                    paymaster::create(
-                        to_checksum(&paymaster_address, None),
-                        chain::id::equals(chain_id),
-                        vec![paymaster::user_operations::connect(vec![
-                            user_operation::hash::equals(format!("{:?}", uow.hash)),
-                        ])],
-                    ),
-                    vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
-                        format!("{:?}", uow.hash),
-                    )])],
-                )
-                .exec()
-                .await?;
-
-            // Update the paymaster operation
-            let _ = db
-                .paymaster_operation()
-                .update(
-                    paymaster_operation::valid_until_valid_after_paymaster_id(
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        pm.clone().id.clone(),
-                    ),
-                    vec![paymaster_operation::user_operation::connect(
-                        user_operation::hash::equals(format!("{:?}", uow.hash)),
-                    )],
-                )
-                .exec()
-                .await?;
-        }
+        let _ =
+            upsert_paymaster_and_data(db.clone(), chain_id, paymaster_and_data, uow.hash).await?;
     }
 
     Ok(Json::from(user_operation))
 }
 
 #[autometrics]
+pub async fn upsert_paymaster_and_data(
+    db: Database,
+    chain_id: i64,
+    paymaster_and_data: Bytes,
+    user_operation_hash: H256,
+) -> AppJsonResult<()> {
+    info!("Upserting paymaster and data");
+
+    // Parse the paymaster and data, and upsert the paymaster if decoded successfully
+    if let Ok((paymaster_address, valid_until, valid_after, _sig)) =
+        decode_paymaster_and_data(paymaster_and_data.to_vec())
+    {
+        // Upsert the paymaster if matches one of ours
+        info!("Upserting paymaster {:?}", paymaster_address);
+
+        let pm = db
+            .paymaster()
+            .upsert(
+                paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+                paymaster::create(
+                    to_checksum(&paymaster_address, None),
+                    chain::id::equals(chain_id),
+                    vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
+                        format!("{:?}", user_operation_hash),
+                    )])],
+                ),
+                vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
+                    format!("{:?}", user_operation_hash),
+                )])],
+            )
+            .exec()
+            .await?;
+
+        // Update the paymaster operation
+        let _ = db
+            .paymaster_operation()
+            .update(
+                paymaster_operation::valid_until_valid_after_paymaster_id(
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    pm.clone().id.clone(),
+                ),
+                vec![paymaster_operation::user_operation::connect(user_operation::hash::equals(
+                    format!("{:?}", user_operation_hash),
+                ))],
+            )
+            .exec()
+            .await?;
+    }
+
+    Ok(Json::from(()))
+}
+
+#[autometrics]
 pub async fn upsert_user_operation_logs(
     db: Database,
-    uow: UserOperationWithTransactionAndReceiptLogs,
+    chain_id: i64,
+    transaction_hash: H256,
+    user_operation_hash: H256,
+    user_operation_logs: Vec<Log>,
 ) -> AppJsonResult<()> {
     info!("Creating user operation");
 
     // Get the logs for the user operation
     let logs = db
         .log()
-        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", uow.transaction.hash)))])
+        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", transaction_hash)))])
         .exec()
         .await?;
 
@@ -159,7 +210,7 @@ pub async fn upsert_user_operation_logs(
     let logs = logs
         .into_iter()
         .filter(|log| {
-            uow.logs.iter().any(|l| {
+            user_operation_logs.iter().any(|l| {
                 l.log_index == log.log_index.map(U256::from) &&
                     l.log_index.is_some() &&
                     log.log_index.is_some()
@@ -171,10 +222,10 @@ pub async fn upsert_user_operation_logs(
     for log in logs.iter() {
         db.user_operation()
             .update(
-                user_operation::hash::equals(format!("{:?}", uow.hash)),
+                user_operation::hash::equals(format!("{:?}", user_operation_hash)),
                 vec![
                     user_operation::logs::connect(vec![log::id::equals(log.id.clone())]),
-                    user_operation::is_testnet::set(is_testnet(uow.chain_id as u64)),
+                    user_operation::is_testnet::set(is_testnet(chain_id as u64)),
                 ],
             )
             .exec()
