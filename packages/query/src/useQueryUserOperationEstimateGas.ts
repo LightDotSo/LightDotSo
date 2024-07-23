@@ -72,8 +72,7 @@ export const useQueryUserOperationEstimateGas = (
             nonce: toHex(params.nonce),
             initCode: params.initCode,
             callData: params.callData,
-            paymasterAndData:
-              "0x000000000003193facb32d1c120719892b7ae97700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065185b1ce67f0444c9d1f99cf4bbb8b44846479ec40b7d28acae4c76abd904808cfe12c0590e10e989801251d867f222cb8c6d9af4cec7189eac7295c624c4216227871e1c",
+            paymasterAndData: "0x",
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },
