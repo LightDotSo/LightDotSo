@@ -229,6 +229,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the user operation nonce changes
     userOperationNonce,
   ]);
+  console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -244,6 +245,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     chainId: Number(targetUserOperation.chainId),
     callData: targetUserOperation.callData as Hex,
   });
+  console.info("maxFeePerGas", maxFeePerGas);
+  console.info("maxPriorityFeePerGas", maxPriorityFeePerGas);
 
   // Gets the gas estimate for the user operation
   const {
@@ -258,6 +261,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     initCode: targetUserOperation.initCode,
     callData: targetUserOperation.callData,
   });
+  console.info("callGasLimit", callGasLimit);
+  console.info("preVerificationGas", preVerificationGas);
+  console.info("verificationGasLimit", verificationGasLimit);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -313,6 +319,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas,
     verificationGasLimit,
   ]);
+  console.info("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Debounce
@@ -322,6 +329,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     updatedUserOperation,
     300,
   );
+  console.info("debouncedUserOperation", debouncedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -387,6 +395,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // As it is the final layer of computation
     gasAndPaymasterAndData,
   ]);
+  console.info("finalizedUserOperation", finalizedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
