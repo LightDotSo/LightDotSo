@@ -217,10 +217,13 @@ impl Polling {
         }
 
         // Get the user operation by the given hash.
-        let user_operation = self.get_user_operation(chain_id, hash).await?;
+        let user_operation = self.get_user_operation_with_backon(chain_id, hash).await?;
 
         // Lot the user operation.
         info!("User Operation found, chain_id: {} user_operation: {:?}", chain_id, user_operation);
+
+        // If the user operation is found, index the event.
+        let _ = self.index_uop_with_receipt(chain_id, user_operation.result).await;
 
         Ok(())
     }
@@ -361,6 +364,18 @@ impl Polling {
                 let _ = self.send_tx_queue(chain_id, op.block_number.0.parse().unwrap()).await;
             }
         }
+
+        Ok(())
+    }
+
+    /// Index the uop with receipt
+    async fn index_uop_with_receipt(
+        &self,
+        chain_id: u64,
+        receipt: UserOperationReceipt,
+    ) -> Result<()> {
+        // Log the operation along with the chain id.
+        info!("User Operation found, chain_id: {} receipt: {:?}", chain_id, receipt);
 
         Ok(())
     }
