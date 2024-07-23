@@ -38,7 +38,9 @@ use lightdotso_db::{
     models::{
         activity::CustomParams,
         transaction::upsert_transaction_with_log_receipt,
-        user_operation::{upsert_user_operation, upsert_user_operation_logs},
+        user_operation::{
+            update_user_operation_with_receipt, upsert_user_operation, upsert_user_operation_logs,
+        },
         wallet::upsert_wallet_with_configuration,
     },
 };
@@ -399,6 +401,16 @@ impl Polling {
             );
         }
 
+        // Update the user operation in the db.
+        info!("db_update_user_operation_with_receipt");
+        let res = self.db_update_user_operation_with_receipt(receipt.clone()).await;
+        if res.is_err() {
+            error!(
+                "db_update_user_operation_with_receipt error: {:?} at chain_id: {}",
+                res, chain_id
+            );
+        }
+
         Ok(())
     }
 
@@ -527,6 +539,28 @@ impl Polling {
         Ok({ || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
             .retry(&ExponentialBuilder::default())
             .await?)
+    }
+
+    /// Update the user operation in the db
+    pub async fn db_update_user_operation_with_receipt(
+        &self,
+        op: UserOperationReceipt,
+    ) -> Result<()> {
+        let db_client = self.db_client.clone();
+
+        let _ = {
+            || {
+                update_user_operation_with_receipt(
+                    db_client.clone(),
+                    op.clone().user_operation_hash,
+                    op.clone(),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await?;
+
+        Ok(())
     }
 
     /// Create a new transaction w/ the log receipt
