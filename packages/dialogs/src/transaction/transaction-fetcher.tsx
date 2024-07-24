@@ -166,7 +166,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       entryPointNonce !== undefined
         ? BigInt(entryPointNonce)
         : userOperationNonce?.nonce !== undefined
-          ? BigInt(userOperationNonce.nonce)
+          ? BigInt(userOperationNonce?.nonce)
           : undefined;
 
     // Get the init code from the executed user operations or the partial user operation
@@ -233,7 +233,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the entry point nonce changes
     entryPointNonce,
     // Should recompute if the user operation nonce changes
-    userOperationNonce,
+    userOperationNonce?.nonce,
   ]);
   console.info("targetUserOperation", targetUserOperation);
 
@@ -248,8 +248,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isUserOperationEstimateFeesPerGasLoading,
   } = useQueryUserOperationEstimateFeesPerGas({
     address: address as Address,
-    chainId: Number(targetUserOperation.chainId),
-    callData: targetUserOperation.callData as Hex,
+    chainId: Number(targetUserOperation?.chainId),
+    callData: targetUserOperation?.callData as Hex,
   });
   console.info("maxFeePerGas", maxFeePerGas);
   console.info("maxPriorityFeePerGas", maxPriorityFeePerGas);
@@ -262,10 +262,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isUserOperationEstimateGasLoading,
   } = useQueryUserOperationEstimateGas({
     sender: address as Address,
-    chainId: targetUserOperation.chainId,
-    nonce: targetUserOperation.nonce,
-    initCode: targetUserOperation.initCode,
-    callData: targetUserOperation.callData,
+    chainId: targetUserOperation?.chainId,
+    nonce: targetUserOperation?.nonce,
+    initCode: targetUserOperation?.initCode,
+    callData: targetUserOperation?.callData,
   });
   console.info("callGasLimit", callGasLimit);
   console.info("preVerificationGas", preVerificationGas);
@@ -282,12 +282,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     "hash" | "signature" | "paymasterAndData"
   > | null = useMemo(() => {
     if (
-      !targetUserOperation.sender ||
-      !targetUserOperation.chainId ||
-      !targetUserOperation.initCode ||
-      typeof targetUserOperation.nonce === "undefined" ||
-      targetUserOperation.nonce === null ||
-      !targetUserOperation.callData ||
+      !targetUserOperation?.sender ||
+      !targetUserOperation?.chainId ||
+      !targetUserOperation?.initCode ||
+      typeof targetUserOperation?.nonce === "undefined" ||
+      targetUserOperation?.nonce === null ||
+      !targetUserOperation?.callData ||
       !maxFeePerGas ||
       !maxPriorityFeePerGas ||
       !callGasLimit ||
@@ -304,11 +304,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         : verificationGasLimit;
 
     return {
-      sender: targetUserOperation.sender,
-      chainId: targetUserOperation.chainId,
-      initCode: targetUserOperation.initCode,
-      nonce: targetUserOperation.nonce,
-      callData: targetUserOperation.callData,
+      sender: targetUserOperation?.sender,
+      chainId: targetUserOperation?.chainId,
+      initCode: targetUserOperation?.initCode,
+      nonce: targetUserOperation?.nonce,
+      callData: targetUserOperation?.callData,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
       callGasLimit: callGasLimit,
@@ -494,23 +494,31 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync `targetUserOperation` to the store
   useEffect(() => {
-    if (!targetUserOperation.chainId || !targetUserOperation.nonce) {
+    if (
+      !targetUserOperation?.chainId ||
+      typeof targetUserOperation?.nonce === "undefined" ||
+      targetUserOperation?.nonce === null
+    ) {
       return;
     }
     setPartialUserOperationByChainIdAndNonce(
-      targetUserOperation.chainId,
-      targetUserOperation.nonce,
+      targetUserOperation?.chainId,
+      targetUserOperation?.nonce,
       targetUserOperation,
     );
   }, [
-    targetUserOperation.chainId,
+    targetUserOperation?.chainId,
     setUserOperationByChainIdAndNonce,
     targetUserOperation,
   ]);
 
   // Sync `debouncedUserOperation` to the store
   useEffect(() => {
-    if (!debouncedUserOperation?.chainId || !debouncedUserOperation?.nonce) {
+    if (
+      !debouncedUserOperation?.chainId ||
+      typeof debouncedUserOperation?.nonce === "undefined" ||
+      debouncedUserOperation?.nonce === null
+    ) {
       return;
     }
 

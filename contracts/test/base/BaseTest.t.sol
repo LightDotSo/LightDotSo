@@ -66,7 +66,7 @@ abstract contract BaseTest is Test {
     address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
     // LightWalletFactory address
-    // v0.01: address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+    address internal constant LIGHT_FACTORY_ADDRESS_V0_1_0 = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
 
     // LightPaymaster address

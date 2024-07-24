@@ -341,6 +341,7 @@ lazy_static! {
         m.insert(42170, "https://bundler.biconomy.io/api/v2/42170/".to_string());
         m.insert(43114, "https://bundler.biconomy.io/api/v2/43114/".to_string());
         m.insert(59144, "https://bundler.biconomy.io/api/v2/59144/".to_string());
+        m.insert(81457, "https://bundler.biconomy.io/api/v2/81457/".to_string());
 
         // Testnet
         m.insert(10200, "https://bundler.biconomy.io/api/v2/10200/".to_string());
@@ -373,6 +374,7 @@ lazy_static! {
         m.insert(42220, "https://api.pimlico.io/v2/celo/rpc".to_string());
         m.insert(43114, "https://api.pimlico.io/v2/avalanche/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v2/linea/rpc".to_string());
+        m.insert(81457, "https://api.pimlico.io/v2/blast/rpc".to_string());
         m.insert(534352, "https://api.pimlico.io/v2/scroll/rpc".to_string());
         m.insert(7777777, "https://api.pimlico.io/v2/zora/rpc".to_string());
 
@@ -443,12 +445,12 @@ lazy_static! {
         m.insert(34443, "https://bundler.particle.network?chainId=34443".to_string());
         m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
         m.insert(42170, "https://bundler.particle.network?chainId=42170".to_string());
-        // m.insert(42220, "https://bundler.particle.network?chainId=42220".to_string());
+        m.insert(42220, "https://bundler.particle.network?chainId=42220".to_string());
         m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
         m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
         m.insert(81457, "https://bundler.particle.network?chainId=81457".to_string());
         m.insert(534352, "https://bundler.particle.network?chainId=534352".to_string());
-        // m.insert(7777777, "https://bundler.particle.network?chainId=7777777".to_string());
+        m.insert(7777777, "https://bundler.particle.network?chainId=7777777".to_string());
 
         // Testnet
         m.insert(59141, "https://bundler.particle.network?chainId=59141".to_string());
