@@ -46,32 +46,32 @@ export const useQueryUserOperationEstimateGas = (
     ...USER_OPERATION_CONFIG,
     retry: 10,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
-      chainId: params.chainId,
-      nonce: params.nonce,
-      initCode: params.initCode,
-      sender: params.sender,
-      callData: params.callData,
+      chainId: params?.chainId,
+      nonce: params?.nonce,
+      initCode: params?.initCode,
+      sender: params?.sender,
+      callData: params?.callData,
     }).queryKey,
     queryFn: async () => {
       if (
-        !params.chainId ||
-        typeof params.nonce === "undefined" ||
-        params.nonce !== null ||
-        !params.initCode ||
-        !params.sender ||
-        !params.callData
+        !params?.chainId ||
+        typeof params?.nonce === "undefined" ||
+        params?.nonce === null ||
+        !params?.initCode ||
+        !params?.sender ||
+        !params?.callData
       ) {
         return null;
       }
 
       const res = await estimateUserOperationGas(
-        Number(params.chainId) as number,
+        Number(params?.chainId) as number,
         [
           {
-            sender: params.sender,
-            nonce: toHex(params.nonce),
-            initCode: params.initCode,
-            callData: params.callData,
+            sender: params?.sender,
+            nonce: toHex(params?.nonce),
+            initCode: params?.initCode,
+            callData: params?.callData,
             paymasterAndData: "0x",
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
