@@ -189,6 +189,7 @@ lazy_static! {
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
         m.insert(59140, "https://rpc.linea.build ".to_string());
         m.insert(81457, "https://rpc.blast.io".to_string());
+        m.insert(534352, "https://rpc.scroll.io".to_string());
 
         // Testnet
         m.insert(84532, "https://sepolia.base.org".to_string());
@@ -334,6 +335,7 @@ lazy_static! {
         m.insert(592, "https://bundler.biconomy.io/api/v2/592/".to_string());
         m.insert(1101, "https://bundler.biconomy.io/api/v2/1101/".to_string());
         m.insert(1116, "https://bundler.biconomy.io/api/v2/1116/".to_string());
+        m.insert(1329, "https://bundler.biconomy.io/api/v2/1329/".to_string());
         m.insert(5000, "https://bundler.biconomy.io/api/v2/5000/".to_string());
         m.insert(8453, "https://bundler.biconomy.io/api/v2/8453/".to_string());
         m.insert(9980, "https://bundler.biconomy.io/api/v2/9980/".to_string());
@@ -356,7 +358,7 @@ lazy_static! {
 }
 
 // The pimlico rpc urls
-// From: https://docs.pimlico.io/bundler/reference/supported-chains
+// From: https://docs.pimlico.io/infra/platform/supported-chains
 // Thank you to the Pimlico team for providing the service!
 lazy_static! {
     pub static ref PIMLICO_RPC_URLS: HashMap<u64, String> = {

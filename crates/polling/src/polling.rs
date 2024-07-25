@@ -432,7 +432,7 @@ impl Polling {
         info!("send_activity_queue & send_interpretation_queue");
         if self.live && self.kafka_client.is_some() {
             let db_user_operation =
-                self.db_get_user_operation(chain_id, receipt.clone().user_operation_hash).await?;
+                self.db_get_user_operation(receipt.clone().user_operation_hash).await?;
 
             let _ = self
                 .send_activity_queue(
@@ -647,16 +647,12 @@ impl Polling {
 
     /// Get the user operation by the given hash
     #[autometrics]
-    pub async fn db_get_user_operation(
-        &self,
-        chain_id: u64,
-        hash: H256,
-    ) -> Result<DbUserOperationLogs> {
+    pub async fn db_get_user_operation(&self, hash: H256) -> Result<DbUserOperationLogs> {
         let db_client = self.db_client.clone();
 
-        Ok({ || get_user_operation_with_logs(db_client.clone(), hash) }
+        { || get_user_operation_with_logs(db_client.clone(), hash) }
             .retry(&ExponentialBuilder::default())
-            .await?)
+            .await
     }
 
     /// Create a new transaction w/ the log receipt
