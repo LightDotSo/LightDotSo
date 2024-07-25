@@ -240,7 +240,7 @@ impl Polling {
         hash: H256,
     ) -> Result<Response<UserOperationReceipt>> {
         let params = vec![json!(format!("{:?}", hash))];
-        info!("params: {:?}", params);
+        println!("params: {:?}", params);
 
         let req_body = Request {
             jsonrpc: "2.0".to_string(),
@@ -432,7 +432,7 @@ impl Polling {
         info!("send_activity_queue & send_interpretation_queue");
         if self.live && self.kafka_client.is_some() {
             let db_user_operation =
-                self.db_get_user_operation(chain_id, receipt.clone().user_operation_hash).await?;
+                self.db_get_user_operation(receipt.clone().user_operation_hash).await?;
 
             let _ = self
                 .send_activity_queue(
@@ -647,16 +647,12 @@ impl Polling {
 
     /// Get the user operation by the given hash
     #[autometrics]
-    pub async fn db_get_user_operation(
-        &self,
-        chain_id: u64,
-        hash: H256,
-    ) -> Result<DbUserOperationLogs> {
+    pub async fn db_get_user_operation(&self, hash: H256) -> Result<DbUserOperationLogs> {
         let db_client = self.db_client.clone();
 
-        Ok({ || get_user_operation_with_logs(db_client.clone(), hash) }
+        { || get_user_operation_with_logs(db_client.clone(), hash) }
             .retry(&ExponentialBuilder::default())
-            .await?)
+            .await
     }
 
     /// Create a new transaction w/ the log receipt
@@ -929,5 +925,32 @@ impl Polling {
         }
 
         Ok(())
+    }
+}
+
+// Test the polling (just the get_user_operation part)
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lightdotso_tracing::init_test_tracing;
+    use std::collections::HashMap;
+
+    #[ignore]
+    #[tokio::test]
+    async fn test_polling() {
+        init_test_tracing();
+
+        let args = PollingArgs::default();
+        let chain_mapping = HashMap::new();
+
+        let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
+
+        let hash: H256 =
+            "0x5c9ac218426e13b18f7260d73ce0ea2d86dd44e88886ef0265803829874ff140".parse().unwrap();
+        let res = polling.get_user_operation(10, hash).await;
+
+        println!("{:?}", res);
+
+        assert!(res.is_ok());
     }
 }
