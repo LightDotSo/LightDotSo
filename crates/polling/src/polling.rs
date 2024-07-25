@@ -240,7 +240,7 @@ impl Polling {
         hash: H256,
     ) -> Result<Response<UserOperationReceipt>> {
         let params = vec![json!(format!("{:?}", hash))];
-        info!("params: {:?}", params);
+        println!("params: {:?}", params);
 
         let req_body = Request {
             jsonrpc: "2.0".to_string(),
@@ -256,7 +256,7 @@ impl Polling {
         let client = reqwest::Client::new();
 
         let response = client
-            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
+            .post(format!("https://rpc.light.so/{}", chain_id))
             .json(&req_body)
             .send()
             .await?;
@@ -925,5 +925,32 @@ impl Polling {
         }
 
         Ok(())
+    }
+}
+
+// Test the polling (just the get_user_operation part)
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lightdotso_tracing::init_test_tracing;
+    use std::collections::HashMap;
+
+    #[ignore]
+    #[tokio::test]
+    async fn test_polling() {
+        init_test_tracing();
+
+        let args = PollingArgs::default();
+        let chain_mapping = HashMap::new();
+
+        let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
+
+        let hash: H256 =
+            "0x5c9ac218426e13b18f7260d73ce0ea2d86dd44e88886ef0265803829874ff140".parse().unwrap();
+        let res = polling.get_user_operation(10, hash).await;
+
+        println!("{:?}", res);
+
+        assert!(res.is_ok());
     }
 }

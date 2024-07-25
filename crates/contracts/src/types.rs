@@ -270,7 +270,8 @@ pub struct UserOperationReceipt {
     pub actual_gas_cost: U256,
     pub actual_gas_used: U256,
     pub success: bool,
-    pub reason: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
     pub logs: Vec<Log>,
     #[serde(rename = "receipt")]
     pub tx_receipt: TransactionReceipt,
