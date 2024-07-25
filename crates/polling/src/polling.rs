@@ -256,7 +256,7 @@ impl Polling {
         let client = reqwest::Client::new();
 
         let response = client
-            .post(format!("https://rpc.light.so/{}", chain_id))
+            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
             .json(&req_body)
             .send()
             .await?;
