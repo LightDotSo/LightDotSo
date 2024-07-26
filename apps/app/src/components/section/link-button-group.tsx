@@ -112,8 +112,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Prefetch all the pages
+    // biome-ignore lint/complexity/noForEach: <explanation>
     items.forEach((item) => {
       router.prefetch(`${address ? `/${address}` : ""}${item.href}`);
     });

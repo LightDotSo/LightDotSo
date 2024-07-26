@@ -53,6 +53,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onDismiss = useCallback(() => {
     setSendBackgroundModal(false);
     hideCreateModal();

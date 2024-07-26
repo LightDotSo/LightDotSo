@@ -136,7 +136,7 @@ export const ConfigurationForm: FC = () => {
 
   // The default values for the form
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    const defaultValues: Partial<NewFormValues> = useMemo(() => {
+  const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
       threshold:
@@ -288,7 +288,7 @@ export const ConfigurationForm: FC = () => {
 
   // Set the form values from the URL on mount
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
+  useEffect(() => {
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,

@@ -34,6 +34,7 @@ export const NotificationsDataTablePagination: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

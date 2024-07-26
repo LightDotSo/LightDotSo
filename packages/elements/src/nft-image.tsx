@@ -74,7 +74,7 @@ export const NftImage: FC<NftImageProps> = ({
           previews?.image_large_url ??
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                    extra_metadata?.image_original_url!
+          extra_metadata?.image_original_url!
         }
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
         alt={collection?.description ?? contract_address!}

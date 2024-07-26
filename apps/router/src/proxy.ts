@@ -73,6 +73,7 @@ export const basicProxy = (proxy_url = "", options?: ProxyOptions): Handler => {
         break;
       case API_URLS.SOCKET_API_URL:
         headers.set("API-KEY", c.env.SOCKET_API_KEY);
+        break;
       default:
         break;
     }

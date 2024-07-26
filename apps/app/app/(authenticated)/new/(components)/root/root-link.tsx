@@ -113,7 +113,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // ---------------------------------------------------------------------------
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-        const navigateToStep = useCallback(
+  const navigateToStep = useCallback(
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
       // Forward the search params to the next step

@@ -256,6 +256,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-info-strong" type="multiple">
               {formInfos.map((info, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-info-weaker"
@@ -284,6 +285,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-warning-strong" type="multiple">
               {formWarnings.map((warning, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-warning-weaker"
@@ -312,6 +314,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-error-strong" type="multiple">
               {formIssues.map((error, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-error-weaker"

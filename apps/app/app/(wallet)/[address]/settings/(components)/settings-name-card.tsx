@@ -112,6 +112,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<WalletNameFormValues> = useMemo(() => {
     return {
       name: wallet?.name,

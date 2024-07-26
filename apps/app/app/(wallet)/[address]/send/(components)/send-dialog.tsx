@@ -190,6 +190,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   // create default transfer object
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultTransfer: Array<Transfer> = useMemo(() => {
     // For each token, create a transfer object
     const transfers: Array<Transfer> =
@@ -214,6 +215,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, []);
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<SendFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -376,6 +378,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.transfers)) {
@@ -394,6 +397,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [form.watch]);
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Recursively iterate the transfers and validate the addresses on mount
     transfers?.forEach((transfer, index) => {
@@ -417,6 +421,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (
       transfer: Transfer,
@@ -437,6 +442,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           tokens?.find(
             (token) =>
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               token.address === transfer.asset?.address! &&
               token.chain_id === transfer.chainId,
           );
@@ -448,6 +454,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         // Get the amount
         const amount =
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           transfer.asset?.quantity! * 10 ** token.decimals!;
 
         // If the amount is a float, convert to a integer
@@ -508,8 +515,10 @@ export const SendDialog: FC<SendDialogProps> = ({
           nftPage.nfts?.find(
             (nft) =>
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               nft.contract_address === transfer.asset?.address! &&
               SIMPLEHASH_CHAIN_ID_MAPPING[
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 nft.chain! as SimplehashMainnetChain | SimplehashTestnetChain
               ] === transfer.chainId,
           );
@@ -563,8 +572,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                       address,
                       transfer.address as Address,
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset.quantity!),
                       "0x",
                     ],
@@ -663,6 +674,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                       address,
                       transfer.address as Address,
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
                     ],
                   ),
@@ -706,6 +718,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     if (transfers?.length > 1) {
       // Create a map w/ transfer grouped by chainId
       const transfersByChainId: Map<number, Transfer[]> = new Map();
+      // biome-ignore lint/complexity/noForEach: <explanation>
       transfers.forEach((transfer) => {
         if (!transfer.chainId) {
           return;
@@ -742,19 +755,22 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
           const erc1155TransfersByAssetAddress: Map<string, Transfer[]> =
             new Map();
+          // biome-ignore lint/complexity/noForEach: <explanation>
           erc1155Transfers.forEach((transfer) => {
             const transfers =
               erc1155TransfersByAssetAddress.get(
                 // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                `${transfer.asset?.address!}-${transfer.chainId}-${
-                  transfer.address
-                }`,
+                `${
+                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                  transfer.asset?.address!
+                }-${transfer.chainId}-${transfer.address}`,
               ) || [];
             erc1155TransfersByAssetAddress.set(
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-              `${transfer.asset?.address!}-${transfer.chainId}-${
-                transfer.address
-              }`,
+              `${
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                transfer.asset?.address!
+              }-${transfer.chainId}-${transfer.address}`,
               [...transfers, transfer],
             );
           });
@@ -779,11 +795,13 @@ export const SendDialog: FC<SendDialogProps> = ({
                   quantities: transfers.map(
                     // @ts-expect-error
                     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
                     (transfer) => transfer.asset?.quantity!,
                   ),
-                  // @ts-expect-error
                   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                   tokenIds: transfers.map(
+                    // @ts-expect-error
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
                     (transfer) => transfer.asset?.tokenId!,
                   ),
                 },
@@ -836,6 +854,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     setIsFormDisabled(!isFormValid);
   }, [isFormValid, setIsFormDisabled]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isFormValid && userOperationsParams) {
       setUserOperations(userOperationsParams);
@@ -852,7 +871,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}&transfers=${transfersParser.serialize(transfers)}`;
+    return `/${address}/create?userOperations=${
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      userOperationsParser.serialize(userOperationsParams!)
+    }&transfers=${transfersParser.serialize(transfers)}`;
   }, [address, userOperationsParams, transfers]);
 
   // ---------------------------------------------------------------------------
@@ -1061,6 +1083,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   collapsible
                   defaultValue="value-0"
@@ -1558,6 +1581,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     ?.address &&
                                                   "tokenId" in
                                                     // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+                                                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                     transfers[index]?.asset! &&
                                                   nftPage.nfts?.find(
                                                     (nft) =>
@@ -1566,12 +1590,12 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                           ?.asset?.address ||
                                                           "") &&
                                                       Number.parseInt(
+                                                        // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                         nft.token_id!,
                                                       ) ===
-                                                        // prettier-ignore
+                                                        // biome-ignore format: reason
                                                         // @ts-expect-error
-                                                        transfers?.[index]
-                                                          ?.asset?.tokenId,
+                                                        transfers?.[index]?.asset?.tokenId,
                                                   );
 
                                                 if (nft) {
@@ -1631,6 +1655,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             nft.contract_address ===
                                               tokenAddress &&
                                             SIMPLEHASH_CHAIN_ID_MAPPING[
+                                              // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                               nft.chain! as
                                                 | SimplehashMainnetChain
                                                 | SimplehashTestnetChain
@@ -1672,6 +1697,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     form.setValue(
                                                       `transfers.${index}.chainId`,
                                                       SIMPLEHASH_CHAIN_ID_MAPPING[
+                                                        // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                         nft.chain! as
                                                           | SimplehashMainnetChain
                                                           | SimplehashTestnetChain

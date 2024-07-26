@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { assert, describe, test } from "matchstick-as/assembly/index";
 

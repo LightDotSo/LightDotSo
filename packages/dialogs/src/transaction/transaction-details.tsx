@@ -129,7 +129,7 @@ export const TransactionDetails: FC = () => {
                   )
                   .map(([key, value], itemIndex) => (
                     <TransactionDetailInfo
-                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={`${index}-${itemIndex}`}
                       title={camelCaseToCapitalizedWords(key)}
                       value={

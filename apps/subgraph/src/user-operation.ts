@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { type BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 

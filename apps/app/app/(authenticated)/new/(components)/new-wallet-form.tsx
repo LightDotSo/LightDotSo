@@ -110,6 +110,7 @@ export const NewWalletForm: FC = () => {
     defaultValues: defaultValues,
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       setFormValues(value);
@@ -154,6 +155,7 @@ export const NewWalletForm: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);
     url.searchParams.set("name", name);
@@ -175,6 +177,7 @@ export const NewWalletForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Set the form values from the default values
     setFormValues(defaultValues);

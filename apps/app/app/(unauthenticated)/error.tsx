@@ -29,6 +29,7 @@ interface ErrorProps {
 // Error
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
@@ -42,6 +43,7 @@ export default function Error({ error, reset }: ErrorProps) {
   return (
     <div>
       <h2>Something went wrong!</h2>
+      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment

@@ -40,6 +40,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onDismiss = useCallback(() => {
     hideNotificationsModal();
     router.back();

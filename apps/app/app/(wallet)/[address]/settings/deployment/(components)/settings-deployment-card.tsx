@@ -137,6 +137,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     // Get the initCode from the initial configuration
     return calculateInitCode(
       WALLET_FACTORY_ENTRYPOINT_MAPPING[
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         findContractAddressByAddress(wallet.factory_address as Address)!
       ],
       image_hash,

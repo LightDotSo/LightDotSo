@@ -70,7 +70,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<string>();
+    // biome-ignore lint/complexity/noForEach: <explanation>
     nftPage?.nfts?.forEach((nft) => {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       uniqueChainValues.add(nft.chain!);
     });
     return uniqueChainValues;

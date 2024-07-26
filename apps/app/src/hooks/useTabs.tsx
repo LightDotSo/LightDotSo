@@ -105,6 +105,7 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
 
   // Set the initialTabId to the matching slug in tabIds array
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter((slug) => slug);
@@ -203,6 +204,7 @@ export function useTabs() {
   ]);
 
   // Refetch the queries when the wallet address changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchWalletFeatures();
     refetchConfiguration();

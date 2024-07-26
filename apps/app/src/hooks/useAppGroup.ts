@@ -40,6 +40,7 @@ export const useAppGroup = (): AppGroup => {
   // Return
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const appGroup = useMemo(() => {
     if (
       INTERCEPTION_PATHS.some((path) => pathname.startsWith(path)) &&

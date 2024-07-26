@@ -45,14 +45,23 @@ export enum Category {
 // -----------------------------------------------------------------------------
 
 export enum DemoSubCategory {
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Overview = Category.Overview,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   UserOperation = Category.UserOperation,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Transactions = Category.Transactions,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Activity = Category.Activity,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Create = Category.Create,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Owners = Category.Owners,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Deposit = Category.Deposit,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Send = Category.Send,
+  // biome-ignore lint/style/useLiteralEnumMembers: <explanation>
   Swap = Category.Swap,
 }
 

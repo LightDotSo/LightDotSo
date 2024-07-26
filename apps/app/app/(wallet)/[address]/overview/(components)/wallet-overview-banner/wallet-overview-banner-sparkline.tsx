@@ -15,6 +15,7 @@
 "use client";
 
 import { useQueryPortfolio } from "@lightdotso/query";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { SparkAreaChart } from "@tremor/react";

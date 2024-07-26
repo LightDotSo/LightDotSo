@@ -15,6 +15,7 @@
 "use client";
 
 import { useQueryNftPortfolio } from "@lightdotso/query";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";

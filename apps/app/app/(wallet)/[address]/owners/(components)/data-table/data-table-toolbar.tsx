@@ -62,6 +62,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueWeightValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueWeightValues = new Set<number>();
+    // biome-ignore lint/complexity/noForEach: <explanation>
     configuration?.owners.forEach((owner) => {
       uniqueWeightValues.add(owner.weight);
     });

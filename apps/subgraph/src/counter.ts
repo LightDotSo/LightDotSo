@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Counter } from "../generated/schema";
 

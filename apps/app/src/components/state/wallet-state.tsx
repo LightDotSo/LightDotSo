@@ -64,6 +64,7 @@ export const WalletState: FC = () => {
 
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (appGroup === "action") {
       if (addressQueryState) {

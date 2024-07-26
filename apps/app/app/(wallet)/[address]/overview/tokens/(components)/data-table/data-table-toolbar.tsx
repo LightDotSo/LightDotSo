@@ -87,9 +87,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainIdValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainIdValues = new Set<number>();
+    // biome-ignore lint/complexity/noForEach: <explanation>
     tokens?.forEach((token) => {
       uniqueChainIdValues.add(token.chain_id);
       if (token.group?.tokens) {
+        // biome-ignore lint/complexity/noForEach: <explanation>
         token.group.tokens.forEach((token) => {
           uniqueChainIdValues.add(token.chain_id);
         });
