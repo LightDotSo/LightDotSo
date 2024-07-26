@@ -12,3 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
+import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import { InvokeButton } from "@lightdotso/elements";
+import { useMutationQueueToken } from "@lightdotso/query";
+import type { FC } from "react";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface OverviewInvokeButtonProps {
+  address: Address;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
+  address,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { queueToken, isQueueTokenPending } = useMutationQueueToken({
+    address: address as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <InvokeButton
+      isLoading={isQueueTokenPending}
+      onClick={async () => {
+        invokePortfolioAction(address as Address);
+
+        await queueToken();
+      }}
+    />
+  );
+};
