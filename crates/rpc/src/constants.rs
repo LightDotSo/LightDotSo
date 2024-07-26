@@ -496,10 +496,15 @@ lazy_static! {
         m.insert(100, "https://bundler.particle.network?chainId=100".to_string());
         m.insert(122, "https://bundler.particle.network?chainId=122".to_string());
         m.insert(137, "https://bundler.particle.network?chainId=137".to_string());
+        m.insert(204, "https://bundler.particle.network?chainId=204".to_string());
         m.insert(250, "https://bundler.particle.network?chainId=250".to_string());
+        m.insert(424, "https://bundler.particle.network?chainId=424".to_string());
         m.insert(1101, "https://bundler.particle.network?chainId=1101".to_string());
         m.insert(1329, "https://bundler.particle.network?chainId=1329".to_string());
+        m.insert(3776, "https://bundler.particle.network?chainId=3776".to_string());
+        m.insert(5000, "https://bundler.particle.network?chainId=5000".to_string());
         m.insert(8453, "https://bundler.particle.network?chainId=8453".to_string());
+        m.insert(9980, "https://bundler.particle.network?chainId=9980".to_string());
         m.insert(34443, "https://bundler.particle.network?chainId=34443".to_string());
         m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
         m.insert(42170, "https://bundler.particle.network?chainId=42170".to_string());
@@ -507,13 +512,18 @@ lazy_static! {
         m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
         m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
         m.insert(81457, "https://bundler.particle.network?chainId=81457".to_string());
+        m.insert(167000, "https://bundler.particle.network?chainId=167000".to_string());
         m.insert(534352, "https://bundler.particle.network?chainId=534352".to_string());
         m.insert(7777777, "https://bundler.particle.network?chainId=7777777".to_string());
 
         // Testnet
+        m.insert(5003, "https://bundler.particle.network?chainId=5003".to_string());
+        m.insert(10200, "https://bundler.particle.network?chainId=10200".to_string());
         m.insert(59141, "https://bundler.particle.network?chainId=59141".to_string());
+        m.insert(58008, "https://bundler.particle.network?chainId=58008".to_string());
         m.insert(80002, "https://bundler.particle.network?chainId=80002".to_string());
         m.insert(84532, "https://bundler.particle.network?chainId=84532".to_string());
+        m.insert(91715, "https://bundler.particle.network?chainId=91715".to_string());
         m.insert(421614, "https://bundler.particle.network?chainId=421614".to_string());
         m.insert(713715, "https://bundler.particle.network?chainId=713715".to_string());
         m.insert(11155111, "https://bundler.particle.network?chainId=11155111".to_string());
