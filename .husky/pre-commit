@@ -3,3 +3,5 @@
 [ -n "$CI" ] && exit 0
 
 pnpm lint-staged
+
+pnpm changeset
