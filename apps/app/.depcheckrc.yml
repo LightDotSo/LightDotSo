@@ -11,8 +11,6 @@ ignores:
   - server-only
   - superjson
   - "@types/node"
-  - eslint-config-prettier
-  - eslint-import-resolver-typescript
   - "@playwright/test"
   - checkly
   - "@lightdotso/tsconfig"
@@ -20,9 +18,6 @@ ignores:
   - autoprefixer
   - postcss
   - tailwindcss
-  - jsonc-eslint-parser
-  - "@next/eslint-plugin-next"
-  - eslint-plugin-turbo
   - immer
   - "@lightdotso/wagmi"
   - blurhash

@@ -8,7 +8,6 @@ ignores:
   - "@evmts/webpack-plugin"
   - "@lightdotso/sequence"
   - "@lightdotso/tsconfig"
-  - "@next/eslint-plugin-next"
   - "@openzeppelin/contracts"
   - "@release-it/keep-a-changelog"
   - "@swc/core"
@@ -16,8 +15,6 @@ ignores:
   - "@types/jest"
   - "@types/react"
   - "@types/react-dom"
-  - "@typescript-eslint/eslint-plugin"
-  - "@typescript-eslint/parser"
   - "@viem/anvil"
   - "@vitest/coverage-v8"
   - abitype
@@ -29,7 +26,6 @@ ignores:
   - esbuild
   - git-cz
   - inngest-cli
-  - jsonc-eslint-parser
   - lint-staged
   - npm-package-json-lint-config-default
   - postcss

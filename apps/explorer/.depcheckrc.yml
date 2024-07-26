@@ -12,8 +12,6 @@ ignores:
   - server-only
   - superjson
   - "@types/node"
-  - eslint-config-prettier
-  - eslint-import-resolver-typescript
   - "@playwright/test"
   - checkly
   - "@lightdotso/styles"
@@ -28,9 +26,6 @@ ignores:
   - postcss
   - tailwindcss
   - typescript
-  - jsonc-eslint-parser
-  - "@next/eslint-plugin-next"
-  - eslint-plugin-turbo
   - "@lightdotso/client"
   - "@lightdotso/params"
   - "@next/bundle-analyzer"
