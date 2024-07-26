@@ -20,7 +20,6 @@ use ethers::{
     utils::hex,
 };
 use lightdotso_prisma::user_operation;
-use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -115,13 +114,6 @@ pub struct UserOperation {
     pub signature: Bytes,
 }
 
-impl UserOperation {
-    pub fn op_hash(&self, entry_point: Address, chain_id: u64) -> H256 {
-        let r_uop = RundlerUserOperation::from(self.clone());
-        r_uop.op_hash(entry_point, chain_id)
-    }
-}
-
 impl From<UserOperation> for EntryPointUserOperation {
     fn from(user_operation: UserOperation) -> Self {
         Self {
@@ -136,24 +128,6 @@ impl From<UserOperation> for EntryPointUserOperation {
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: user_operation.paymaster_and_data,
             signature: user_operation.signature,
-        }
-    }
-}
-
-impl From<UserOperation> for RundlerUserOperation {
-    fn from(user_operation: UserOperation) -> Self {
-        Self {
-            sender: user_operation.sender,
-            nonce: user_operation.nonce,
-            init_code: user_operation.init_code.to_vec().into(),
-            call_data: user_operation.call_data.to_vec().into(),
-            call_gas_limit: user_operation.call_gas_limit,
-            verification_gas_limit: user_operation.verification_gas_limit,
-            pre_verification_gas: user_operation.pre_verification_gas,
-            max_fee_per_gas: user_operation.max_fee_per_gas,
-            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-            paymaster_and_data: user_operation.paymaster_and_data.to_vec().into(),
-            signature: user_operation.signature.to_vec().into(),
         }
     }
 }

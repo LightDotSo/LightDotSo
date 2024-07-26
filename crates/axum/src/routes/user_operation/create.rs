@@ -32,7 +32,8 @@ use ethers_main::{
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
-    constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data, utils::is_testnet,
+    constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data,
+    types::UserOperation as BaseUserOperation, utils::is_testnet,
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -50,7 +51,6 @@ use prisma_client_rust::{
     Direction,
 };
 use rs_merkle::{Hasher as MerkleHasher, MerkleTree};
-use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -158,11 +158,11 @@ pub(crate) struct UserOperationCreateParams {
     paymaster_and_data: String,
 }
 
-impl TryFrom<UserOperationCreateParams> for RundlerUserOperation {
+impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
     type Error = Report;
 
     fn try_from(op: UserOperationCreateParams) -> Result<Self> {
-        Ok(RundlerUserOperation {
+        Ok(BaseUserOperation {
             sender: op.sender.parse()?,
             nonce: op.nonce.into(),
             init_code: hex_to_bytes(&op.init_code)?.into(),
@@ -221,19 +221,19 @@ pub(crate) async fn v1_user_operation_create_handler(
     let user_operation_hash = params.user_operation.clone().hash;
     let sig = params.signature;
 
-    let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
-    let rundler_hash = rundler_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+    let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
+    let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
-    // Assert that the hex hash of rundler_hash is the same as the user_operation_hash (prefix 0x)
-    if (format!("0x{}", hex::encode(rundler_hash)) != user_operation_hash) {
+    // Assert that the hex hash of base_hash is the same as the user_operation_hash (prefix 0x)
+    if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
         error!(
-            "rundler_hash: {}, user_operation_hash: {}",
-            hex::encode(rundler_hash),
+            "base_hash: {}, user_operation_hash: {}",
+            hex::encode(base_hash),
             user_operation_hash
         );
         return Err(AppError::BadRequest);
     }
-    info!("rundler_hash: 0x{}", hex::encode(rundler_hash));
+    info!("base_hash: 0x{}", hex::encode(base_hash));
 
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
@@ -481,9 +481,8 @@ pub(crate) async fn v1_user_operation_create_handler(
         // the user operation to the node.
         if owner.weight >= configuration.threshold {
             // Send the user operation to the node.
-            let _ =
-                produce_node_message(state.producer.clone(), &NodeMessage { hash: rundler_hash })
-                    .await;
+            let _ = produce_node_message(state.producer.clone(), &NodeMessage { hash: base_hash })
+                .await;
         }
     }
 
@@ -582,20 +581,19 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let chain_id = user_operation.chain_id;
         let user_operation_hash = user_operation.clone().hash;
 
-        let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
-        let rundler_hash =
-            rundler_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+        let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
+        let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
-        // Assert that the hex hash of rundler_hash is the same as the user_operation_hash
-        if (format!("0x{}", hex::encode(rundler_hash)) != user_operation_hash) {
+        // Assert that the hex hash of base_hash is the same as the user_operation_hash
+        if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
             error!(
-                "rundler_hash: {}, user_operation_hash: {}",
-                hex::encode(rundler_hash),
+                "base_hash: {}, user_operation_hash: {}",
+                hex::encode(base_hash),
                 user_operation_hash
             );
             return Err(AppError::BadRequest);
         }
-        info!("rundler_hash: 0x{}", hex::encode(rundler_hash));
+        info!("base_hash: 0x{}", hex::encode(base_hash));
 
         // Check that the user operation address is parsable.
         let _: H160 = user_operation.sender.parse()?;
@@ -628,11 +626,10 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let mut leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
         .iter()
         .map(|user_operation| {
-            let rundler_user_operation =
-                RundlerUserOperation::try_from(user_operation.clone()).unwrap();
-            let rundler_hash = rundler_user_operation
+            let base_user_operation = BaseUserOperation::try_from(user_operation.clone()).unwrap();
+            let base_hash = base_user_operation
                 .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64);
-            rundler_hash.0
+            base_hash.0
         })
         .collect();
 
@@ -854,13 +851,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let chained_sig = sig.clone();
 
         // Get the rundler hash for the user operation.
-        let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
-        let rundler_hash =
-            rundler_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+        let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
+        let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
         // Get the merkle proof for the user operation.
         let merkle_proof = merkle_tree
-            .proof(&[leaf_hashes.iter().position(|x| x == &rundler_hash.0).unwrap()])
+            .proof(&[leaf_hashes.iter().position(|x| x == &base_hash.0).unwrap()])
             .proof_hashes_hex()
             // Prepend 0x to each hash
             .iter()
@@ -965,7 +961,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                     let _ = produce_node_message(
                         state.producer.clone(),
                         &NodeMessage {
-                            hash: RundlerUserOperation::try_from(user_operation.clone())
+                            hash: BaseUserOperation::try_from(user_operation.clone())
                                 .unwrap()
                                 .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64),
                         },
@@ -1043,7 +1039,7 @@ mod tests {
             paymaster_and_data: "0x1234".to_string(),
         };
 
-        let result = RundlerUserOperation::try_from(user_op);
+        let result = BaseUserOperation::try_from(user_op);
 
         assert!(result.is_ok());
     }
