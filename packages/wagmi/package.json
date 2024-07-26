@@ -28,14 +28,14 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
-    "@wagmi/core": "^2.13.0",
+    "@wagmi/core": "^2.13.1",
     "connectkit": "^1.8.2",
-    "viem": "^2.17.10",
-    "wagmi": "^2.12.0"
+    "viem": "^2.18.2",
+    "wagmi": "^2.12.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.14.12",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

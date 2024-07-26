@@ -18,7 +18,7 @@
     "dev": "wrangler dev --port 8000"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240722.0",
+    "@cloudflare/workers-types": "^4.20240725.0",
     "@hono-rate-limiter/cloudflare": "^0.1.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
@@ -27,9 +27,9 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.14.12",
     "typescript": "^5.5.4",
-    "wrangler": "^3.65.1"
+    "wrangler": "^3.67.0"
   },
   "publishConfig": {
     "access": "public"
