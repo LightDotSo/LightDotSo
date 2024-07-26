@@ -24,7 +24,7 @@ use crate::{
         ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BICONOMY_RPC_URLS, BLASTAPI_RPC_URLS, CANDIDE_RPC_URLS,
         CHAINNODES_RPC_URLS, ETHERSPOT_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS,
         NODEREAL_RPC_URLS, OFFICIAL_PUBLIC_RPC_URLS, PARTICLE_RPC_URLS, PAYMASTER_RPC_URL,
-        PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS, SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
+        PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS, SILIUS_RPC_URLS, THIRDWEB_RPC_URL,
     },
     utils::shuffle_requests,
 };
@@ -510,7 +510,6 @@ pub async fn rpc_proxy_handler(
     let mut requests = vec![
         (&*ANKR_RPC_URLS, None),
         (&*LLAMANODES_RPC_URLS, None),
-        (&*THIRDWEB_RPC_URLS, None),
         (&*PUBLIC_NODE_RPC_URLS, None),
         (&*OFFICIAL_PUBLIC_RPC_URLS, None),
         (&*NODEREAL_RPC_URLS, Some(std::env::var("NODEREAL_API_KEY").unwrap())),
@@ -532,6 +531,24 @@ pub async fn rpc_proxy_handler(
         if let Some(resp) = result {
             return resp;
         }
+    }
+
+    // Create a temporary rpc hash map for the thirdweb rpc url
+    let mut thirdweb_rpc_urls = HashMap::new();
+    thirdweb_rpc_urls.insert(chain_id, format!("https://{}.{}", chain_id, *THIRDWEB_RPC_URL,));
+
+    // Fallback to thirdweb rpc url
+    let result = try_rpc_with_url(
+        &thirdweb_rpc_urls,
+        None,
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+
+    if let Some(resp) = result {
+        return resp;
     }
 
     // Return an error if the chain_id is not supported or not found

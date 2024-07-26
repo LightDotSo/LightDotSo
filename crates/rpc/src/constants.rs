@@ -26,6 +26,11 @@ lazy_static! {
         "http://lightdotso-paymaster.internal:3000".to_string();
 }
 
+// The thirdweb rpc url
+lazy_static! {
+    pub static ref THIRDWEB_RPC_URL: String = "rpc.thirdweb.com".to_string();
+}
+
 // The infura rpc urls
 // Thank you to the Infura team for providing the service!
 lazy_static! {
@@ -183,8 +188,10 @@ lazy_static! {
         m.insert(100, "https://rpc.gnosischain.com".to_string());
         m.insert(122, "https://rpc.fuse.io".to_string());
         m.insert(169, "https://pacific-rpc.manta.network/http".to_string());
+        m.insert(690, "https://rpc.redstonechain.com".to_string());
         m.insert(1329, "https://evm-rpc.sei-apis.com".to_string());
         m.insert(5000, "https://rpc.mantle.xyz".to_string());
+        m.insert(7560, "https://rpc.cyber.co".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
         m.insert(34443, "https://mainnet.mode.network".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
@@ -238,52 +245,6 @@ lazy_static! {
     };
 }
 
-// The thirdweb rpc urls
-// Thank you to the Thirdweb team for providing the service!
-lazy_static! {
-    pub static ref THIRDWEB_RPC_URLS: HashMap<u64, String> = {
-        let mut m = HashMap::new();
-
-        // Mainnet
-        m.insert(1, "https://1.rpc.thirdweb.com".to_string());
-        m.insert(10, "https://10.rpc.thirdweb.com".to_string());
-        m.insert(56, "https://56.rpc.thirdweb.com".to_string());
-        m.insert(100, "https://100.rpc.thirdweb.com".to_string());
-        m.insert(122, "https://122.rpc.thirdweb.com".to_string());
-        m.insert(137, "https://137.rpc.thirdweb.com".to_string());
-        m.insert(169, "https://169.rpc.thirdweb.com".to_string());
-        m.insert(250, "https://250.rpc.thirdweb.com".to_string());
-        m.insert(592, "https://592.rpc.thirdweb.com".to_string());
-        m.insert(1101, "https://1101.rpc.thirdweb.com".to_string());
-        m.insert(1329, "https://1329.rpc.thirdweb.com".to_string());
-        m.insert(5000, "https://5000.rpc.thirdweb.com".to_string());
-        m.insert(8453, "https://8453.rpc.thirdweb.com".to_string());
-        m.insert(9980, "https://9980.rpc.thirdweb.com".to_string());
-        m.insert(34443, "https://34443.rpc.thirdweb.com".to_string());
-        m.insert(42161, "https://42161.rpc.thirdweb.com".to_string());
-        m.insert(42170, "https://42170.rpc.thirdweb.com".to_string());
-        m.insert(42220, "https://42220.rpc.thirdweb.com".to_string());
-        m.insert(43114, "https://43114.rpc.thirdweb.com".to_string());
-        m.insert(534352, "https://534352.rpc.thirdweb.com".to_string());
-        m.insert(7777777, "https://7777777.rpc.thirdweb.com".to_string());
-        m.insert(1666600000, "https://1666600000.rpc.thirdweb.com".to_string());
-
-        // Testnet
-        m.insert(80001, "https://80001.rpc.thirdweb.com".to_string());
-        m.insert(80002, "https://80002.rpc.thirdweb.com".to_string());
-        m.insert(84532, "https://84532.rpc.thirdweb.com".to_string());
-        m.insert(421614, "https://421614.rpc.thirdweb.com".to_string());
-        m.insert(534351, "https://534351.rpc.thirdweb.com".to_string());
-        m.insert(713715, "https://713715.rpc.thirdweb.com".to_string());
-        m.insert(11155111, "https://11155111.rpc.thirdweb.com".to_string());
-        m.insert(11155420, "https://11155420.rpc.thirdweb.com".to_string());
-        m.insert(168587773, "https://168587773.rpc.thirdweb.com".to_string());
-        m.insert(999999999, "https://999999999.rpc.thirdweb.com".to_string());
-
-        m
-    };
-}
-
 // The nodereal rpc urls
 // Thank you to the Node RPC team for providing the service!
 lazy_static! {
@@ -304,7 +265,7 @@ lazy_static! {
     };
 }
 
-// The nodereal rpc urls
+// The llama rpc urls
 // Thank you to the Llama team for providing the service!
 lazy_static! {
     pub static ref LLAMANODES_RPC_URLS: HashMap<u64, String> = {
