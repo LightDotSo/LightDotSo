@@ -69,7 +69,7 @@
     "taplo:fix": "taplo format *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "taplo:lint": "taplo lint *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "tsc": "tsc --noEmit",
-    "vitest": "vitest --coverage --run",
+    "vitest": "vitest --run",
     "vitest:coverage": "vitest --coverage",
     "vitest:typecheck": "vitest typecheck",
     "vitest:ui": "vitest dev --ui",

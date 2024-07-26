@@ -77,7 +77,6 @@ jobs:
       - name: Node Test
         run: |
           pnpm turbo run test
-          pnpm turbo run vitest
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
