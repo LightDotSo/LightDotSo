@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { Bytes } from "@graphprotocol/graph-ts";
-import type {
+// biome-ignore lint/style/useImportType: <explanation>
+import {
   AccountDeployed as AccountDeployedEvent,
   UserOperationEvent as UserOperationEventEvent,
   UserOperationRevertReason as UserOperationRevertReasonEvent,
@@ -110,7 +111,8 @@ export function handleLightWalletUserOperationEvent(
 
     // If the function is `handleOps`, deconstruct the calldata
     if (
-      event.transaction.input.toHexString().substring(0, 10) === "0x1fad948c"
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+      event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
     ) {
       const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),
@@ -211,7 +213,8 @@ export function handleLightWalletUserOperationRevertReason(
 
     // If the function is `handleOps`, deconstruct the calldata
     if (
-      event.transaction.input.toHexString().substring(0, 10) === "0x1fad948c"
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+      event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
     ) {
       const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),

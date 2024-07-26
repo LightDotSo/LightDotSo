@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt,
+  BigInt
 } from "@graphprotocol/graph-ts";
 
 export class AccountDeployed extends ethereum.Event {
@@ -278,7 +278,7 @@ export class EntryPoint__depositsResult {
     value1: boolean,
     value2: BigInt,
     value3: BigInt,
-    value4: BigInt,
+    value4: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -389,7 +389,7 @@ export class EntryPoint__getUserOpHashInputUserOpStruct extends ethereum.Tuple {
 export class EntryPoint__innerHandleOpInputOpInfoStruct extends ethereum.Tuple {
   get mUserOp(): EntryPoint__innerHandleOpInputOpInfoMUserOpStruct {
     return changetype<EntryPoint__innerHandleOpInputOpInfoMUserOpStruct>(
-      this[0].toTuple(),
+      this[0].toTuple()
     );
   }
 
@@ -453,7 +453,7 @@ export class EntryPoint extends ethereum.SmartContract {
     let result = super.call(
       "SIG_VALIDATION_FAILED",
       "SIG_VALIDATION_FAILED():(uint256)",
-      [],
+      []
     );
 
     return result[0].toBigInt();
@@ -463,7 +463,7 @@ export class EntryPoint extends ethereum.SmartContract {
     let result = super.tryCall(
       "SIG_VALIDATION_FAILED",
       "SIG_VALIDATION_FAILED():(uint256)",
-      [],
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -474,7 +474,7 @@ export class EntryPoint extends ethereum.SmartContract {
 
   balanceOf(account: Address): BigInt {
     let result = super.call("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(account),
+      ethereum.Value.fromAddress(account)
     ]);
 
     return result[0].toBigInt();
@@ -482,7 +482,7 @@ export class EntryPoint extends ethereum.SmartContract {
 
   try_balanceOf(account: Address): ethereum.CallResult<BigInt> {
     let result = super.tryCall("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(account),
+      ethereum.Value.fromAddress(account)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -495,7 +495,7 @@ export class EntryPoint extends ethereum.SmartContract {
     let result = super.call(
       "deposits",
       "deposits(address):(uint112,bool,uint112,uint32,uint48)",
-      [ethereum.Value.fromAddress(param0)],
+      [ethereum.Value.fromAddress(param0)]
     );
 
     return new EntryPoint__depositsResult(
@@ -503,17 +503,17 @@ export class EntryPoint extends ethereum.SmartContract {
       result[1].toBoolean(),
       result[2].toBigInt(),
       result[3].toBigInt(),
-      result[4].toBigInt(),
+      result[4].toBigInt()
     );
   }
 
   try_deposits(
-    param0: Address,
+    param0: Address
   ): ethereum.CallResult<EntryPoint__depositsResult> {
     let result = super.tryCall(
       "deposits",
       "deposits(address):(uint112,bool,uint112,uint32,uint48)",
-      [ethereum.Value.fromAddress(param0)],
+      [ethereum.Value.fromAddress(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -525,8 +525,8 @@ export class EntryPoint extends ethereum.SmartContract {
         value[1].toBoolean(),
         value[2].toBigInt(),
         value[3].toBigInt(),
-        value[4].toBigInt(),
-      ),
+        value[4].toBigInt()
+      )
     );
   }
 
@@ -534,37 +534,35 @@ export class EntryPoint extends ethereum.SmartContract {
     let result = super.call(
       "getDepositInfo",
       "getDepositInfo(address):((uint112,bool,uint112,uint32,uint48))",
-      [ethereum.Value.fromAddress(account)],
+      [ethereum.Value.fromAddress(account)]
     );
 
     return changetype<EntryPoint__getDepositInfoResultInfoStruct>(
-      result[0].toTuple(),
+      result[0].toTuple()
     );
   }
 
   try_getDepositInfo(
-    account: Address,
+    account: Address
   ): ethereum.CallResult<EntryPoint__getDepositInfoResultInfoStruct> {
     let result = super.tryCall(
       "getDepositInfo",
       "getDepositInfo(address):((uint112,bool,uint112,uint32,uint48))",
-      [ethereum.Value.fromAddress(account)],
+      [ethereum.Value.fromAddress(account)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      changetype<EntryPoint__getDepositInfoResultInfoStruct>(
-        value[0].toTuple(),
-      ),
+      changetype<EntryPoint__getDepositInfoResultInfoStruct>(value[0].toTuple())
     );
   }
 
   getNonce(sender: Address, key: BigInt): BigInt {
     let result = super.call("getNonce", "getNonce(address,uint192):(uint256)", [
       ethereum.Value.fromAddress(sender),
-      ethereum.Value.fromUnsignedBigInt(key),
+      ethereum.Value.fromUnsignedBigInt(key)
     ]);
 
     return result[0].toBigInt();
@@ -576,8 +574,8 @@ export class EntryPoint extends ethereum.SmartContract {
       "getNonce(address,uint192):(uint256)",
       [
         ethereum.Value.fromAddress(sender),
-        ethereum.Value.fromUnsignedBigInt(key),
-      ],
+        ethereum.Value.fromUnsignedBigInt(key)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -590,19 +588,19 @@ export class EntryPoint extends ethereum.SmartContract {
     let result = super.call(
       "getUserOpHash",
       "getUserOpHash((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)):(bytes32)",
-      [ethereum.Value.fromTuple(userOp)],
+      [ethereum.Value.fromTuple(userOp)]
     );
 
     return result[0].toBytes();
   }
 
   try_getUserOpHash(
-    userOp: EntryPoint__getUserOpHashInputUserOpStruct,
+    userOp: EntryPoint__getUserOpHashInputUserOpStruct
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "getUserOpHash",
       "getUserOpHash((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)):(bytes32)",
-      [ethereum.Value.fromTuple(userOp)],
+      [ethereum.Value.fromTuple(userOp)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -614,7 +612,7 @@ export class EntryPoint extends ethereum.SmartContract {
   innerHandleOp(
     callData: Bytes,
     opInfo: EntryPoint__innerHandleOpInputOpInfoStruct,
-    context: Bytes,
+    context: Bytes
   ): BigInt {
     let result = super.call(
       "innerHandleOp",
@@ -622,8 +620,8 @@ export class EntryPoint extends ethereum.SmartContract {
       [
         ethereum.Value.fromBytes(callData),
         ethereum.Value.fromTuple(opInfo),
-        ethereum.Value.fromBytes(context),
-      ],
+        ethereum.Value.fromBytes(context)
+      ]
     );
 
     return result[0].toBigInt();
@@ -632,7 +630,7 @@ export class EntryPoint extends ethereum.SmartContract {
   try_innerHandleOp(
     callData: Bytes,
     opInfo: EntryPoint__innerHandleOpInputOpInfoStruct,
-    context: Bytes,
+    context: Bytes
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "innerHandleOp",
@@ -640,8 +638,8 @@ export class EntryPoint extends ethereum.SmartContract {
       [
         ethereum.Value.fromBytes(callData),
         ethereum.Value.fromTuple(opInfo),
-        ethereum.Value.fromBytes(context),
-      ],
+        ethereum.Value.fromBytes(context)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -656,8 +654,8 @@ export class EntryPoint extends ethereum.SmartContract {
       "nonceSequenceNumber(address,uint192):(uint256)",
       [
         ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1),
-      ],
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
 
     return result[0].toBigInt();
@@ -665,15 +663,15 @@ export class EntryPoint extends ethereum.SmartContract {
 
   try_nonceSequenceNumber(
     param0: Address,
-    param1: BigInt,
+    param1: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "nonceSequenceNumber",
       "nonceSequenceNumber(address,uint192):(uint256)",
       [
         ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1),
-      ],
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -791,7 +789,9 @@ export class HandleAggregatedOpsCall__Inputs {
   }
 
   get opsPerAggregator(): Array<HandleAggregatedOpsCallOpsPerAggregatorStruct> {
-    return this._call.inputValues[0].value.toTupleArray<HandleAggregatedOpsCallOpsPerAggregatorStruct>();
+    return this._call.inputValues[0].value.toTupleArray<
+      HandleAggregatedOpsCallOpsPerAggregatorStruct
+    >();
   }
 
   get beneficiary(): Address {
@@ -809,7 +809,9 @@ export class HandleAggregatedOpsCall__Outputs {
 
 export class HandleAggregatedOpsCallOpsPerAggregatorStruct extends ethereum.Tuple {
   get userOps(): Array<HandleAggregatedOpsCallOpsPerAggregatorUserOpsStruct> {
-    return this[0].toTupleArray<HandleAggregatedOpsCallOpsPerAggregatorUserOpsStruct>();
+    return this[0].toTupleArray<
+      HandleAggregatedOpsCallOpsPerAggregatorUserOpsStruct
+    >();
   }
 
   get aggregator(): Address {
@@ -885,7 +887,9 @@ export class HandleOpsCall__Inputs {
   }
 
   get ops(): Array<HandleOpsCallOpsStruct> {
-    return this._call.inputValues[0].value.toTupleArray<HandleOpsCallOpsStruct>();
+    return this._call.inputValues[0].value.toTupleArray<
+      HandleOpsCallOpsStruct
+    >();
   }
 
   get beneficiary(): Address {
@@ -1000,7 +1004,7 @@ export class InnerHandleOpCall__Inputs {
 
   get opInfo(): InnerHandleOpCallOpInfoStruct {
     return changetype<InnerHandleOpCallOpInfoStruct>(
-      this._call.inputValues[1].value.toTuple(),
+      this._call.inputValues[1].value.toTuple()
     );
   }
 
@@ -1096,7 +1100,7 @@ export class SimulateHandleOpCall__Inputs {
 
   get op(): SimulateHandleOpCallOpStruct {
     return changetype<SimulateHandleOpCallOpStruct>(
-      this._call.inputValues[0].value.toTuple(),
+      this._call.inputValues[0].value.toTuple()
     );
   }
 
@@ -1182,7 +1186,7 @@ export class SimulateValidationCall__Inputs {
 
   get userOp(): SimulateValidationCallUserOpStruct {
     return changetype<SimulateValidationCallUserOpStruct>(
-      this._call.inputValues[0].value.toTuple(),
+      this._call.inputValues[0].value.toTuple()
     );
   }
 }

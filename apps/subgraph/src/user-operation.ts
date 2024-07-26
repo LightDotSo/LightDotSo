@@ -13,7 +13,8 @@
 // limitations under the License.
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import { type BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+// biome-ignore lint/style/useImportType: <explanation>
+import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 
 export function handleUserOperationFromCalldata(
@@ -58,7 +59,8 @@ export function handleUserOperationFromCalldata(
 
   // Return the decoded user operation params w/ the matching nonce
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
-    if (userOpStructTupletArray[i].nonce === nonce) {
+    // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+    if (userOpStructTupletArray[i].nonce == nonce) {
       userOperationStructTuple = userOpStructTupletArray[i];
     }
   }

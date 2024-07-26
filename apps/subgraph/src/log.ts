@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Bytes, ethereum } from "@graphprotocol/graph-ts";
+// biome-ignore lint/style/useImportType: <explanation>
+import { Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Log } from "../generated/schema";
 import {
   BEFORE_EXECUTION_EVENT_HASH,
@@ -47,11 +48,13 @@ export function handleUserOperationLogs(
       const topic = eventReceipt.logs[i].topics[0];
 
       // If the topic is an `UserOperationEvent` topic, get the user operation hash
-      if (topic.toHexString() === USER_OPERATION_EVENT_HASH) {
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+      if (topic.toHexString() == USER_OPERATION_EVENT_HASH) {
         // Get the log user operation hash from the log (the first topic is the event hash)
         const logUserOpHash = eventReceipt.logs[i].topics[1];
         // If the log user operation hash is equal to the event user operation hash, set the flag to true
-        if (logUserOpHash === userOpHash) {
+        // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+        if (logUserOpHash == userOpHash) {
           flag = true;
         } else {
           // If the log user operation hash is not equal to the event user operation hash, set the flag to false
@@ -61,7 +64,8 @@ export function handleUserOperationLogs(
       }
 
       // If the topic is an `BeforeExecution` topic, break
-      if (topic.toHexString() === BEFORE_EXECUTION_EVENT_HASH) {
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+      if (topic.toHexString() == BEFORE_EXECUTION_EVENT_HASH) {
         flag = false;
         break;
       }

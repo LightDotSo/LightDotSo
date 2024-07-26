@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt,
+  BigInt
 } from "@graphprotocol/graph-ts";
 
 export class AdminChanged extends ethereum.Event {
@@ -138,7 +138,7 @@ export class LightWallet__signatureRecoveryResult {
     value1: BigInt,
     value2: Bytes,
     value3: Bytes,
-    value4: BigInt,
+    value4: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -248,7 +248,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.call(
       "SET_IMAGE_HASH_TYPE_HASH",
       "SET_IMAGE_HASH_TYPE_HASH():(bytes32)",
-      [],
+      []
     );
 
     return result[0].toBytes();
@@ -258,7 +258,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.tryCall(
       "SET_IMAGE_HASH_TYPE_HASH",
       "SET_IMAGE_HASH_TYPE_HASH():(bytes32)",
-      [],
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -333,8 +333,8 @@ export class LightWallet extends ethereum.SmartContract {
       "isValidSignature(bytes32,bytes):(bytes4)",
       [
         ethereum.Value.fromFixedBytes(hash),
-        ethereum.Value.fromBytes(signatures),
-      ],
+        ethereum.Value.fromBytes(signatures)
+      ]
     );
 
     return result[0].toBytes();
@@ -342,15 +342,15 @@ export class LightWallet extends ethereum.SmartContract {
 
   try_isValidSignature(
     hash: Bytes,
-    signatures: Bytes,
+    signatures: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "isValidSignature",
       "isValidSignature(bytes32,bytes):(bytes4)",
       [
         ethereum.Value.fromFixedBytes(hash),
-        ethereum.Value.fromBytes(signatures),
-      ],
+        ethereum.Value.fromBytes(signatures)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -363,7 +363,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.call(
       "isValidSignature",
       "isValidSignature(bytes,bytes):(bytes4)",
-      [ethereum.Value.fromBytes(_data), ethereum.Value.fromBytes(_signatures)],
+      [ethereum.Value.fromBytes(_data), ethereum.Value.fromBytes(_signatures)]
     );
 
     return result[0].toBytes();
@@ -371,12 +371,12 @@ export class LightWallet extends ethereum.SmartContract {
 
   try_isValidSignature1(
     _data: Bytes,
-    _signatures: Bytes,
+    _signatures: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "isValidSignature",
       "isValidSignature(bytes,bytes):(bytes4)",
-      [ethereum.Value.fromBytes(_data), ethereum.Value.fromBytes(_signatures)],
+      [ethereum.Value.fromBytes(_data), ethereum.Value.fromBytes(_signatures)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -390,7 +390,7 @@ export class LightWallet extends ethereum.SmartContract {
     param1: Address,
     param2: Array<BigInt>,
     param3: Array<BigInt>,
-    param4: Bytes,
+    param4: Bytes
   ): Bytes {
     let result = super.call(
       "onERC1155BatchReceived",
@@ -400,8 +400,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigIntArray(param2),
         ethereum.Value.fromUnsignedBigIntArray(param3),
-        ethereum.Value.fromBytes(param4),
-      ],
+        ethereum.Value.fromBytes(param4)
+      ]
     );
 
     return result[0].toBytes();
@@ -412,7 +412,7 @@ export class LightWallet extends ethereum.SmartContract {
     param1: Address,
     param2: Array<BigInt>,
     param3: Array<BigInt>,
-    param4: Bytes,
+    param4: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155BatchReceived",
@@ -422,8 +422,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigIntArray(param2),
         ethereum.Value.fromUnsignedBigIntArray(param3),
-        ethereum.Value.fromBytes(param4),
-      ],
+        ethereum.Value.fromBytes(param4)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -437,7 +437,7 @@ export class LightWallet extends ethereum.SmartContract {
     param1: Address,
     param2: BigInt,
     param3: BigInt,
-    param4: Bytes,
+    param4: Bytes
   ): Bytes {
     let result = super.call(
       "onERC1155Received",
@@ -447,8 +447,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromUnsignedBigInt(param3),
-        ethereum.Value.fromBytes(param4),
-      ],
+        ethereum.Value.fromBytes(param4)
+      ]
     );
 
     return result[0].toBytes();
@@ -459,7 +459,7 @@ export class LightWallet extends ethereum.SmartContract {
     param1: Address,
     param2: BigInt,
     param3: BigInt,
-    param4: Bytes,
+    param4: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155Received",
@@ -469,8 +469,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromUnsignedBigInt(param3),
-        ethereum.Value.fromBytes(param4),
-      ],
+        ethereum.Value.fromBytes(param4)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -483,7 +483,7 @@ export class LightWallet extends ethereum.SmartContract {
     param0: Address,
     param1: Address,
     param2: BigInt,
-    param3: Bytes,
+    param3: Bytes
   ): Bytes {
     let result = super.call(
       "onERC721Received",
@@ -492,8 +492,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
-        ethereum.Value.fromBytes(param3),
-      ],
+        ethereum.Value.fromBytes(param3)
+      ]
     );
 
     return result[0].toBytes();
@@ -503,7 +503,7 @@ export class LightWallet extends ethereum.SmartContract {
     param0: Address,
     param1: Address,
     param2: BigInt,
-    param3: Bytes,
+    param3: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC721Received",
@@ -512,8 +512,8 @@ export class LightWallet extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromAddress(param1),
         ethereum.Value.fromUnsignedBigInt(param2),
-        ethereum.Value.fromBytes(param3),
-      ],
+        ethereum.Value.fromBytes(param3)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -532,7 +532,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.tryCall(
       "proxiableUUID",
       "proxiableUUID():(bytes32)",
-      [],
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -543,15 +543,15 @@ export class LightWallet extends ethereum.SmartContract {
 
   signatureRecovery(
     _digest: Bytes,
-    _signature: Bytes,
+    _signature: Bytes
   ): LightWallet__signatureRecoveryResult {
     let result = super.call(
       "signatureRecovery",
       "signatureRecovery(bytes32,bytes):(uint256,uint256,bytes32,bytes32,uint256)",
       [
         ethereum.Value.fromFixedBytes(_digest),
-        ethereum.Value.fromBytes(_signature),
-      ],
+        ethereum.Value.fromBytes(_signature)
+      ]
     );
 
     return new LightWallet__signatureRecoveryResult(
@@ -559,21 +559,21 @@ export class LightWallet extends ethereum.SmartContract {
       result[1].toBigInt(),
       result[2].toBytes(),
       result[3].toBytes(),
-      result[4].toBigInt(),
+      result[4].toBigInt()
     );
   }
 
   try_signatureRecovery(
     _digest: Bytes,
-    _signature: Bytes,
+    _signature: Bytes
   ): ethereum.CallResult<LightWallet__signatureRecoveryResult> {
     let result = super.tryCall(
       "signatureRecovery",
       "signatureRecovery(bytes32,bytes):(uint256,uint256,bytes32,bytes32,uint256)",
       [
         ethereum.Value.fromFixedBytes(_digest),
-        ethereum.Value.fromBytes(_signature),
-      ],
+        ethereum.Value.fromBytes(_signature)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -585,8 +585,8 @@ export class LightWallet extends ethereum.SmartContract {
         value[1].toBigInt(),
         value[2].toBytes(),
         value[3].toBytes(),
-        value[4].toBigInt(),
-      ),
+        value[4].toBigInt()
+      )
     );
   }
 
@@ -594,7 +594,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.call(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)],
+      [ethereum.Value.fromFixedBytes(interfaceId)]
     );
 
     return result[0].toBoolean();
@@ -604,7 +604,7 @@ export class LightWallet extends ethereum.SmartContract {
     let result = super.tryCall(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)],
+      [ethereum.Value.fromFixedBytes(interfaceId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -616,7 +616,7 @@ export class LightWallet extends ethereum.SmartContract {
   validateUserOp(
     userOp: LightWallet__validateUserOpInputUserOpStruct,
     userOpHash: Bytes,
-    missingAccountFunds: BigInt,
+    missingAccountFunds: BigInt
   ): BigInt {
     let result = super.call(
       "validateUserOp",
@@ -624,8 +624,8 @@ export class LightWallet extends ethereum.SmartContract {
       [
         ethereum.Value.fromTuple(userOp),
         ethereum.Value.fromFixedBytes(userOpHash),
-        ethereum.Value.fromUnsignedBigInt(missingAccountFunds),
-      ],
+        ethereum.Value.fromUnsignedBigInt(missingAccountFunds)
+      ]
     );
 
     return result[0].toBigInt();
@@ -634,7 +634,7 @@ export class LightWallet extends ethereum.SmartContract {
   try_validateUserOp(
     userOp: LightWallet__validateUserOpInputUserOpStruct,
     userOpHash: Bytes,
-    missingAccountFunds: BigInt,
+    missingAccountFunds: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "validateUserOp",
@@ -642,8 +642,8 @@ export class LightWallet extends ethereum.SmartContract {
       [
         ethereum.Value.fromTuple(userOp),
         ethereum.Value.fromFixedBytes(userOpHash),
-        ethereum.Value.fromUnsignedBigInt(missingAccountFunds),
-      ],
+        ethereum.Value.fromUnsignedBigInt(missingAccountFunds)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -902,7 +902,7 @@ export class ValidateUserOpCall__Inputs {
 
   get userOp(): ValidateUserOpCallUserOpStruct {
     return changetype<ValidateUserOpCallUserOpStruct>(
-      this._call.inputValues[0].value.toTuple(),
+      this._call.inputValues[0].value.toTuple()
     );
   }
 
