@@ -185,6 +185,7 @@ lazy_static! {
         m.insert(1329, "https://evm-rpc.sei-apis.com".to_string());
         m.insert(5000, "https://rpc.mantle.xyz".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
+        m.insert(34443, "https://mainnet.mode.network".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
         m.insert(42170, "https://nova.arbitrum.io/rpc".to_string());
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
@@ -216,6 +217,7 @@ lazy_static! {
         m.insert(137, "https://rpc.ankr.com/polygon".to_string());
         m.insert(250, "https://rpc.ankr.com/fantom".to_string());
         m.insert(1101, "https://rpc.ankr.com/polygon_zkevm".to_string());
+        m.insert(1329, "https://rpc.ankr.com/sei".to_string());
         m.insert(8453, "https://rpc.ankr.com/base".to_string());
         m.insert(42161, "https://rpc.ankr.com/arbitrum".to_string());
         m.insert(42170, "https://rpc.ankr.com/arbitrumnova".to_string());
@@ -256,6 +258,7 @@ lazy_static! {
         m.insert(5000, "https://5000.rpc.thirdweb.com".to_string());
         m.insert(8453, "https://8453.rpc.thirdweb.com".to_string());
         m.insert(9980, "https://9980.rpc.thirdweb.com".to_string());
+        m.insert(34443, "https://34443.rpc.thirdweb.com".to_string());
         m.insert(42161, "https://42161.rpc.thirdweb.com".to_string());
         m.insert(42170, "https://42170.rpc.thirdweb.com".to_string());
         m.insert(42220, "https://42220.rpc.thirdweb.com".to_string());
