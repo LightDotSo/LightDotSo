@@ -4,4 +4,4 @@
 
 pnpm lint-staged
 
-pnpm changeset
+pnpm changeset add
