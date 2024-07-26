@@ -50,7 +50,7 @@ export const swapsParser = createParser({
             chainId: parsedChainId,
             quantity: parsedQuantity,
             groupId: parsedGroupId,
-          };
+          } as Swap;
         }
         return null;
       });

@@ -55,7 +55,7 @@ export const transferParser = createParser({
             quantity: parsedQuantity,
           },
           assetType: assetType,
-        };
+        } as Transfer;
       }
     }
 

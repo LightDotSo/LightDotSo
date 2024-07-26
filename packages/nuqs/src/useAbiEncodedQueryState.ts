@@ -40,7 +40,7 @@ export const abiEncodedParser = createParser({
             ? undefined
             : encodedFunctionSelector,
         callData: encodedCallData === "0x" ? undefined : encodedCallData,
-      };
+      } as AbiEncoded;
     }
 
     return null;
