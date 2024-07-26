@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { redirect } from "next/navigation";
 import { handler } from "@/handlers/[address]/handler";
 import { preloader } from "@/preloaders/[address]/preloader";
+import { redirect } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -46,7 +46,7 @@ export const OverviewCard = ({
     <div className="space-y-3 rounded-md border border-border bg-background p-4">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
-          <div className="ml-2 text-lg font-semibold text-text-primary">
+          <div className="ml-2 font-semibold text-lg text-text-primary">
             {title}
           </div>
         </div>

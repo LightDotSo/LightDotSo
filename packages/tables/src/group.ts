@@ -30,6 +30,7 @@ export const groupByDate = <T extends { created_at: string }>(
         year: "numeric",
       });
 
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
       (acc[key] = acc[key] || []).push(item);
       return acc;
     },

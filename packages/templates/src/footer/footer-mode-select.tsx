@@ -23,7 +23,7 @@ import {
 } from "@lightdotso/ui";
 import { useTheme } from "next-themes";
 import type { FC, SVGProps } from "react";
-import { FaMoon, FaSun, FaRegLightbulb } from "react-icons/fa";
+import { FaMoon, FaRegLightbulb, FaSun } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -77,10 +77,10 @@ export const FooterModeSelect: FC = () => {
         />
       </SelectTrigger>
       <SelectContent>
-        {themes.map(item => (
+        {themes.map((item) => (
           <SelectItem key={item.name} value={item.value}>
             {/* NOTICE: A dirty hack to center the child `SelectPrimitive.ItemText` in parent `<span />` container */}
-            <span className="mr-2 mt-0.5 inline-flex items-center">
+            <span className="mt-0.5 mr-2 inline-flex items-center">
               <item.icon
                 className="mr-2 size-4 fill-text-weak"
                 aria-hidden="true"

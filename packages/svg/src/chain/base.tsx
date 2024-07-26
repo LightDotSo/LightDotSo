@@ -32,6 +32,7 @@ export const BaseLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Base</title>
     <rect x="1" y="1" width="22" height="22" rx="6" fill="#427FFF" />
     <path
       d="M11.9896 18C15.3091 18 18 15.3137 18 12C18 8.68628 15.3091 6 11.9896 6C8.84021 6 6.2566 8.41794 6 11.4956H13.9445V12.5043H6C6.2566 15.582 8.84021 18 11.9896 18Z"

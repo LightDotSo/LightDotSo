@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { testClient } from "@/contracts/test/spec/utils";
 import { fetchLogs } from "@viem/anvil";
 import { setAutomine, setIntervalMining } from "viem/actions";
 import { afterAll, afterEach, vi } from "vitest";
-import { testClient } from "@/contracts/test/spec/utils";
 
 afterAll(async () => {
   vi.restoreAllMocks();
@@ -29,9 +29,9 @@ afterAll(async () => {
 });
 
 // From: https://github.com/wagmi-dev/viem/blob/41bafa3d8db3d9dd58c0179d15c9e7d00b00871c/src/_test/setup.ts#L41-L65
-afterEach(context => {
+afterEach((context) => {
   // Print the last log entries from anvil after each test.
-  context.onTestFailed(async result => {
+  context.onTestFailed(async (result) => {
     try {
       const poolId = Number(process.env.VITEST_POOL_ID ?? 1);
       const response = await fetchLogs("http://127.0.0.1:8585", poolId);

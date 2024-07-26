@@ -19,7 +19,7 @@ import { useQueryAuthSession, useQueryUser } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useAccount, useEnsName } from "@lightdotso/wagmi";
-import { useQueryClient, QueryObserver } from "@tanstack/react-query";
+import { QueryObserver, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -111,7 +111,7 @@ export const AuthState: FC = () => {
       queryKey: queryKeys.user.get({ address: address }).queryKey,
     });
 
-    const unsubscribe = observer.subscribe(result => {
+    const unsubscribe = observer.subscribe((result) => {
       setUserId(result.data?.id);
     });
 
@@ -124,7 +124,7 @@ export const AuthState: FC = () => {
       queryKey: queryKeys.auth.session({ address: address }).queryKey,
     });
 
-    const unsubscribe = observer.subscribe(result => {
+    const unsubscribe = observer.subscribe((result) => {
       if (result.data?.is_authenticated) {
         setSessionId(result.data?.id);
       }

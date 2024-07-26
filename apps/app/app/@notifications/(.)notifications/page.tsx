@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(authenticated)/notifications/page";
 import { ModalInterceptionFooter } from "@/app/@notifications/(.)notifications/(components)/modal-interception-footer";
+import { ModalInterception } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Props

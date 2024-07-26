@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { FC, ReactNode } from "react";
 import { RootContext } from "@/app/(authenticated)/new/(components)/root/root-context";
 import { RootLink } from "@/app/(authenticated)/new/(components)/root/root-link";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -95,9 +95,10 @@ export const NewRoot: FC<NewRootProps> = async ({
                 />
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute right-0 top-0 hidden h-full w-5 md:block"
+                    className="absolute top-0 right-0 hidden h-full w-5 md:block"
                     aria-hidden="true"
                   >
+                    {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
                     <svg
                       className="size-full text-border"
                       viewBox="0 0 22 80"

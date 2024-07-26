@@ -48,7 +48,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
     <div className="relative z-10">
       {canExpand && (
         <ButtonIcon
-          className="absolute -left-6 top-1/2 -translate-y-1/2 md:-left-8"
+          className="-left-6 -translate-y-1/2 md:-left-8 absolute top-1/2"
           variant="ghost"
           size="xs"
         >
@@ -63,10 +63,10 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
       <div className="flex items-center space-x-3">
         <TokenImage withChainLogo={token.chain_id !== 0} token={token} />
         <div className="flex flex-col space-y-0.5">
-          <span className="text-xs text-text md:text-sm">
+          <span className="text-text text-xs md:text-sm">
             {token.name ?? token.symbol}
           </span>
-          <span className="text-xs text-text-weak">
+          <span className="text-text-weak text-xs">
             {refineNumberFormat(token.amount / 10 ** token.decimals)}{" "}
             {token.symbol}
           </span>

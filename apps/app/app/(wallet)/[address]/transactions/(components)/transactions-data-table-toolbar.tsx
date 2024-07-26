@@ -14,10 +14,10 @@
 
 "use client";
 
-import { useTables } from "@lightdotso/stores";
-import { useEffect, type FC } from "react";
 import type { DataTableToolbarProps } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
+import { useTables } from "@lightdotso/stores";
+import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

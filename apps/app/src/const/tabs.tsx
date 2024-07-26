@@ -15,13 +15,13 @@
 import type { Tab } from "@lightdotso/types";
 import {
   ActivityLogIcon,
-  DashboardIcon,
-  WidthIcon,
-  PersonIcon,
-  MixerVerticalIcon,
   ChatBubbleIcon,
-  RadiobuttonIcon,
+  DashboardIcon,
   DesktopIcon,
+  MixerVerticalIcon,
+  PersonIcon,
+  RadiobuttonIcon,
+  WidthIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { PlayCircleIcon } from "lucide-react";

@@ -5,6 +5,7 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "lib": ["ESNext"],
+    "outDir": "./dist",
     "types": ["@cloudflare/workers-types"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"

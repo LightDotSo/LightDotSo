@@ -15,6 +15,7 @@
 "use client";
 
 import { useQueryNftPortfolio } from "@lightdotso/query";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -55,8 +56,7 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   }
 
   return (
-    nftPortfolio &&
-    nftPortfolio.wallets &&
+    nftPortfolio?.wallets &&
     nftPortfolio.wallets.length > 0 && (
       <Number
         value={nftPortfolio.wallets[0].usd_value ?? 0.0}

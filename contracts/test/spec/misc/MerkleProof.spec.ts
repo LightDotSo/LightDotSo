@@ -15,8 +15,8 @@
 // eslint-disable no-console
 
 import {
-  StandardMerkleTree,
   SimpleMerkleTree,
+  StandardMerkleTree,
 } from "@openzeppelin/merkle-tree";
 import { MerkleTree } from "merkletreejs";
 import type { Hex } from "viem";
@@ -31,7 +31,7 @@ test("Should return correct merkle root", () => {
     "0x0000000000000000000000000000000000000000000000000000000000000000",
   ];
 
-  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
 
   // // Add an empty leaf if the number of leaves is odd
   // if (leaves.length % 2 !== 0) {
@@ -47,7 +47,7 @@ test("Should return correct merkle root", () => {
   });
 
   // eslint-disable-next-line no-console
-  console.log(tree.getLeaves().map(x => x.toString("hex")));
+  console.log(tree.getLeaves().map((x) => x.toString("hex")));
 
   // expect(tree.getHexRoot()).to.equal(merkleRoot);
   // eslint-disable-next-line no-console
@@ -73,7 +73,7 @@ test("simple merkle tree", () => {
     "0x0000000000000000000000000000000000000000000000000000000000000002",
   ];
 
-  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
 
   const tree = new MerkleTree(leaves, keccak256, {
     sort: true,
@@ -114,7 +114,7 @@ test("simple nested merkle tree", () => {
     "0x0000000000000000000000000000000000000000000000000000000000000003",
   ];
 
-  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
 
   const tree = new MerkleTree(leaves, keccak256, {
     sort: true,
@@ -179,7 +179,7 @@ test("simple deep nested merkle tree", () => {
     // "0x0000000000000000000000000000000000000000000000000000000000000024",
   ];
 
-  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
 
   const tree = new MerkleTree(leaves, keccak256, {
     sort: true,

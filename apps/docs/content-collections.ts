@@ -1,7 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import {
-  createMetaSchema,
   createDocSchema,
+  createMetaSchema,
   transformMDX,
 } from "@fumadocs/content-collections/configuration";
 

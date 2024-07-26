@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { Bytes } from "@graphprotocol/graph-ts";
+// biome-ignore lint/style/useImportType: <explanation>
 import {
   AccountDeployed as AccountDeployedEvent,
   UserOperationEvent as UserOperationEventEvent,
@@ -49,7 +50,7 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     incrementWalletCount();
 
     // Create a new LightWallet entity
-    let lightWallet = new LightWallet(event.params.sender);
+    const lightWallet = new LightWallet(event.params.sender);
     lightWallet.index = getWalletCount();
     lightWallet.address = event.params.sender;
 
@@ -64,8 +65,8 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.userOperations = [];
 
     // Get the image hash of the LightWallet
-    let wallet = LightWaletInterface.bind(event.params.sender);
-    let try_imageHash = wallet.try_imageHash();
+    const wallet = LightWaletInterface.bind(event.params.sender);
+    const try_imageHash = wallet.try_imageHash();
     lightWallet.imageHash = try_imageHash.reverted
       ? new Bytes(0)
       : try_imageHash.value;
@@ -78,7 +79,7 @@ export function handleLightWalletUserOperationEvent(
   event: UserOperationEventEvent,
 ): void {
   // Get the LightWallet entity
-  let lightWallet = LightWallet.load(event.params.sender);
+  const lightWallet = LightWallet.load(event.params.sender);
 
   // Handle if the account exists
   if (lightWallet != null) {
@@ -105,14 +106,15 @@ export function handleLightWalletUserOperationEvent(
     );
 
     // Create a new UserOperation entity
-    let op = new UserOperation(event.params.userOpHash);
+    const op = new UserOperation(event.params.userOpHash);
     op.index = getUserOpCount();
 
     // If the function is `handleOps`, deconstruct the calldata
     if (
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
       event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
     ) {
-      let struct = handleUserOperationFromCalldata(
+      const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),
         event.params.nonce,
       );
@@ -154,7 +156,7 @@ export function handleLightWalletUserOperationEvent(
       incrementUserOpSuccessCount();
     }
 
-    let entity = new UserOperationEvent(event.params.userOpHash);
+    const entity = new UserOperationEvent(event.params.userOpHash);
     entity.index = getUserOpSuccessCount();
     entity.userOpHash = event.params.userOpHash;
     entity.sender = event.params.sender;
@@ -179,7 +181,7 @@ export function handleLightWalletUserOperationRevertReason(
   event: UserOperationRevertReasonEvent,
 ): void {
   // Get the LightWallet entity
-  let lightWallet = LightWallet.load(event.params.sender);
+  const lightWallet = LightWallet.load(event.params.sender);
 
   // Handle if the account exists
   if (lightWallet != null) {
@@ -206,14 +208,15 @@ export function handleLightWalletUserOperationRevertReason(
     );
 
     // Create a new UserOperation entity
-    let op = new UserOperation(event.params.userOpHash);
+    const op = new UserOperation(event.params.userOpHash);
     op.index = getUserOpCount();
 
     // If the function is `handleOps`, deconstruct the calldata
     if (
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
       event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
     ) {
-      let struct = handleUserOperationFromCalldata(
+      const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),
         event.params.nonce,
       );
@@ -251,7 +254,7 @@ export function handleLightWalletUserOperationRevertReason(
     // END OF BOILERPLATE
     // -------------------------------------------------------------------------
 
-    let entity = new UserOperationRevertReason(
+    const entity = new UserOperationRevertReason(
       event.transaction.hash.concatI32(event.logIndex.toI32()),
     );
     entity.index = getUserOpRevertCount();

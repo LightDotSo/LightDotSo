@@ -14,6 +14,7 @@
 
 "use client";
 
+import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import {
   useQueryTokens,
@@ -22,9 +23,8 @@ import {
 } from "@lightdotso/query";
 import { tokenColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 import type { Address } from "viem";
-import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Props

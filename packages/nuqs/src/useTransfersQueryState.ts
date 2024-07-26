@@ -21,7 +21,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const transfersParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     if (value === "") {
       return null;
     }
@@ -38,20 +38,20 @@ export const transfersParser = createParser({
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
         // Parse the decimals as a number (if possible)
-        const parsedDecimals = parseInt(decimals);
+        const parsedDecimals = Number.parseInt(decimals);
         // Parse the quantity as a number (if possible)
-        const parsedQuantity = parseFloat(quantity);
+        const parsedQuantity = Number.parseFloat(quantity);
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          !isNaN(parsedDecimals) &&
-          !isNaN(parsedQuantity)
+          !Number.isNaN(parsedDecimals) &&
+          !Number.isNaN(parsedQuantity)
         ) {
-          acc[parseInt(id)] = {
+          acc[Number.parseInt(id)] = {
             address: transferAddress === "_" ? undefined : transferAddress,
             addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-            chainId: parseInt(chainId),
+            chainId: Number.parseInt(chainId),
             asset: {
               address: parsedAddress,
               decimals: parsedDecimals,
@@ -69,20 +69,20 @@ export const transfersParser = createParser({
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
         // Parse the tokenId as a number (if possible)
-        const parsedTokenId = parseInt(tokenId);
+        const parsedTokenId = Number.parseInt(tokenId);
         // Parse the quantity as a number (if possible)
-        const parsedQuantity = parseInt(quantity);
+        const parsedQuantity = Number.parseInt(quantity);
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          !isNaN(parsedTokenId) &&
-          !isNaN(parsedQuantity)
+          !Number.isNaN(parsedTokenId) &&
+          !Number.isNaN(parsedQuantity)
         ) {
-          acc[parseInt(id)] = {
+          acc[Number.parseInt(id)] = {
             address: transferAddress === "_" ? undefined : transferAddress,
             addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-            chainId: parseInt(chainId),
+            chainId: Number.parseInt(chainId),
             asset: {
               address: parsedAddress,
               tokenId: parsedTokenId,
@@ -96,7 +96,7 @@ export const transfersParser = createParser({
       return acc;
     }, []);
   },
-  serialize: function (value: Array<Transfer>) {
+  serialize: (value: Array<Transfer>) => {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
       ?.map(([id, transfer]) => {

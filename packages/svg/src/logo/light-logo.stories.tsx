@@ -38,6 +38,6 @@ type Story = StoryObj<typeof LightLogo>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <LightLogo {...args} />,
+  render: (args) => <LightLogo {...args} />,
   args: {},
 };

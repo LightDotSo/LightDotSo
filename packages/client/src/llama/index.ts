@@ -27,7 +27,7 @@ export const getLlama = async (address: string) => {
       llamaGetSchema,
       "GET",
     ),
-    err => {
+    (err) => {
       if (err instanceof Error) {
         return err;
       }
@@ -42,7 +42,7 @@ export const postLlama = async (address: string) => {
       llamaPostSchema,
       "POST",
     ),
-    err => {
+    (err) => {
       if (err instanceof Error) {
         return err;
       }

@@ -64,10 +64,10 @@ export const useMutationSignatureCreate = (params: SignatureParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully submitted transaction!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

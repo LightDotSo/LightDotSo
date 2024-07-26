@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { MSWState } from "@/components/msw/msw-state";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { MSWState } from "@/components/msw/msw-state";
 
 // -----------------------------------------------------------------------------
 // Metadata

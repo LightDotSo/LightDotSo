@@ -15,8 +15,8 @@
 import { useUserOperationsProgress } from "@lightdotso/hooks";
 import {
   Accordion,
-  AccordionItem,
   AccordionContent,
+  AccordionItem,
   AccordionTrigger,
   Textarea,
 } from "@lightdotso/ui";
@@ -44,6 +44,7 @@ export const TransactionCalldata: FC = () => {
         progressUserOperations.map((progressUserOperation, index) => {
           return (
             <Accordion
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={index}
               collapsible
               defaultValue="value-0"
@@ -51,7 +52,7 @@ export const TransactionCalldata: FC = () => {
               type="single"
             >
               <AccordionItem className="border-0" value={`value-${index}`}>
-                <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                   Calldata #{index + 1}
                 </AccordionTrigger>
                 <AccordionContent className="px-1 pt-4">

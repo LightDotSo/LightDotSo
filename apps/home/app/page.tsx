@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Spiral } from "@/components/spiral";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
-import { Spiral } from "@/components/spiral";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -27,7 +27,7 @@ export default async function Page() {
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
         <div className="p-4">
           <LightHorizontalLogo className="size-32" />
-          <h1 className="max-w-2xl text-4xl font-extrabold lg:text-6xl">
+          <h1 className="max-w-2xl font-extrabold text-4xl lg:text-6xl">
             EVM chain abstraction
             <br />
             protocol unifying all
@@ -43,7 +43,7 @@ export default async function Page() {
         </div>
       </div>
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
-        <div className="m-auto max-w-2xl text-2xl font-bold">
+        <div className="m-auto max-w-2xl font-bold text-2xl">
           Light enables using Ethereum, and EVM chains as seamless as possible.
           Designed from the ground up for the rollup/multi-chain world that we
           live in, Light enables you to use Ethereum like it is one. Say goodbye

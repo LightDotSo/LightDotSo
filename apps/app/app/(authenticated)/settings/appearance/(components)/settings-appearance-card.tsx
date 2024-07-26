@@ -14,6 +14,9 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormRef } from "@lightdotso/stores";
 import {
   Form,
@@ -26,13 +29,10 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -115,7 +115,7 @@ export const SettingsAppearanceCard: FC = () => {
 
   const LightModeCard: FC = () => {
     return (
-      <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
+      <div className="items-center rounded-md border-2 border-border p-1 hover:border-accent">
         <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
           <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
             <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
@@ -140,8 +140,8 @@ export const SettingsAppearanceCard: FC = () => {
 
   return (
     <SettingsCard
-      title={TITLES.Settings.subcategories["Appearance"].title}
-      subtitle={TITLES.Settings.subcategories["Appearance"].description}
+      title={TITLES.Settings.subcategories.Appearance.title}
+      subtitle={TITLES.Settings.subcategories.Appearance.description}
     >
       <Form {...form}>
         <form className="space-y-8">

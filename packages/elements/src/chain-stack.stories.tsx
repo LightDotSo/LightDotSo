@@ -39,7 +39,7 @@ type Story = StoryObj<typeof ChainStack>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <ChainStack {...args} />,
+  render: (args) => <ChainStack {...args} />,
   args: {
     chainIds: [mainnet.id, optimism.id, sepolia.id],
   },

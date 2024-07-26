@@ -19,9 +19,9 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
 import { TransactionTableRowActions } from "./actions";
 import {
-  TransactionCardInterpretationAction,
   TransactionCardChain,
   TransactionCardInterpretation,
+  TransactionCardInterpretationAction,
   TransactionCardTimestamp,
 } from "./card";
 
@@ -33,7 +33,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
   {
     id: "actions",
     accessorKey: "actions",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row?.interpretation?.actions;
     },
     header: ({ column }) => (

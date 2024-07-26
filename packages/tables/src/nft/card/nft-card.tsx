@@ -26,7 +26,7 @@ import {
   getChainIdBySimplehashChainName,
 } from "@lightdotso/utils";
 import Link from "next/link";
-import { type FC } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -73,22 +73,25 @@ export const NftCard: FC<NftCardProps> = ({
       {(showChain || showName || showDescription || showSpamScore) && (
         <div className="flex flex-col space-y-3 px-3 py-4">
           {showChain && (
-            <div className="flex items-center text-xs text-text-weak">
+            <div className="flex items-center text-text-weak text-xs">
+              {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
               {getChainIdBySimplehashChainName(nft.chain!) && (
                 <ChainLogo
                   className="mr-1.5 size-4"
+                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
                   chainId={getChainIdBySimplehashChainName(nft.chain!)}
                 />
               )}
+              {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
               {getChainBySimplehashChainName(nft.chain!)?.name}
             </div>
           )}
           {showName && <div className="text-sm text-text">{nft.name}</div>}
           {showDescription && (
-            <div className="text-xs text-text-weak"># {nft.token_id}</div>
+            <div className="text-text-weak text-xs"># {nft.token_id}</div>
           )}
           {showSpamScore && (
-            <div className="text-xs text-text-weak">
+            <div className="text-text-weak text-xs">
               Spam Score: {nft.collection?.spam_score}
             </div>
           )}
@@ -101,6 +104,7 @@ export const NftCard: FC<NftCardProps> = ({
         >
           <Link
             href={`/${!isDemo ? wallet : "demo"}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               nft.chain!,
             )}:${nft.contract?.type?.toLowerCase()}:${nft.contract_address}|${
               nft.token_id

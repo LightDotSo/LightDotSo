@@ -16,8 +16,8 @@ import { useUserOperationsProgress } from "@lightdotso/hooks";
 import { ChainLogo } from "@lightdotso/svg";
 import {
   Accordion,
-  AccordionItem,
   AccordionContent,
+  AccordionItem,
   AccordionTrigger,
 } from "@lightdotso/ui";
 import {
@@ -27,7 +27,7 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { ArrowUpRight } from "lucide-react";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -103,6 +103,7 @@ export const TransactionDetails: FC = () => {
         );
         return (
           <Accordion
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
             collapsible
             defaultValue="value-0"
@@ -110,7 +111,7 @@ export const TransactionDetails: FC = () => {
             type="single"
           >
             <AccordionItem className="border-0" value={`value-${index}`}>
-              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+              <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                 <div className="flex items-center">
                   <span className="mr-2.5">Transaction on {chain.name}</span>
                   <ChainLogo chainId={chain.id} />
@@ -128,6 +129,7 @@ export const TransactionDetails: FC = () => {
                   )
                   .map(([key, value], itemIndex) => (
                     <TransactionDetailInfo
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={`${index}-${itemIndex}`}
                       title={camelCaseToCapitalizedWords(key)}
                       value={

@@ -143,7 +143,7 @@ export const TokenModal: FC = () => {
     // Check if the chainState is in the available chains
     const availableChainState = chains
       .slice(0, availableChains)
-      .find(chain => chain.id === chainState.id);
+      .find((chain) => chain.id === chainState.id);
 
     // If the chainState is not in the available chains, add the chainState chain to the front and remove the last chain
     if (!availableChainState) {
@@ -161,7 +161,7 @@ export const TokenModal: FC = () => {
 
     const filtered_tokens =
       tokens && tokens?.length > 0 && chainState
-        ? tokens.filter(token => token.chain_id === chainState.id)
+        ? tokens.filter((token) => token.chain_id === chainState.id)
         : tokens;
 
     const light_indexed_tokens =
@@ -175,13 +175,13 @@ export const TokenModal: FC = () => {
     const filtered_lifi_tokens =
       // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
       lifiTokens && lifiTokens?.length > 0
-        ? lifiTokens.filter(token => {
+        ? lifiTokens.filter((token) => {
             return chainState === null || token.chainId === chainState.id;
           })
         : [];
 
     // Map the tokens to tokens
-    const lifi_tokens = filtered_lifi_tokens.map(token => ({
+    const lifi_tokens = filtered_lifi_tokens.map((token) => ({
       id: `${token.chainId}-${token.address}-${token.decimals}`,
       chain_id: token.chainId ?? 0,
       balance_usd: 0,
@@ -197,9 +197,9 @@ export const TokenModal: FC = () => {
 
   const overlay_tokens = useMemo(() => {
     // Overlay light tokens amounts and balances on lifi tokens
-    const overlayed_tokens = light_tokens.map(light_token => {
+    const overlayed_tokens = light_tokens.map((light_token) => {
       const lifi_token = lifi_tokens.find(
-        token =>
+        (token) =>
           token.address === light_token.address &&
           token.chain_id === light_token.chain_id,
       );
@@ -217,9 +217,9 @@ export const TokenModal: FC = () => {
 
     // Remove the overlayed tokens from the lifi tokens
     const duplicated_lifi_tokens = lifi_tokens.filter(
-      token =>
+      (token) =>
         !overlayed_tokens.find(
-          overlayed_token =>
+          (overlayed_token) =>
             overlayed_token.address === token.address &&
             overlayed_token.chain_id === token.chain_id,
         ),
@@ -231,23 +231,26 @@ export const TokenModal: FC = () => {
     return overlay_tokens;
   }, [light_tokens, lifi_tokens]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const socket_tokens = useMemo(() => {
     // Socket balances
     const filtered_balances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
       socketBalances && socketBalances?.length > 0
         ? socketBalances
-            .filter(balance => {
-              const chain = chains.find(chain => chain.id === balance.chainId);
+            .filter((balance) => {
+              const chain = chains.find(
+                (chain) => chain.id === balance.chainId,
+              );
               return chain !== undefined;
             })
-            .filter(balance => {
+            .filter((balance) => {
               return chainState === null || balance.chainId === chainState.id;
             })
         : [];
 
     // Map the balances to tokens
-    const socket_tokens = filtered_balances.map(balance => ({
+    const socket_tokens = filtered_balances.map((balance) => ({
       id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
       chain_id: balance.chainId,
       balance_usd: 0,
@@ -261,6 +264,7 @@ export const TokenModal: FC = () => {
     return socket_tokens;
   }, [socketBalances, chainState]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const renderedTokens: TokenData[] = useMemo(() => {
     if (type === "light") {
       return light_tokens;
@@ -283,6 +287,7 @@ export const TokenModal: FC = () => {
     300,
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isTokenModalLoading = useMemo(() => {
     return (
       isTokensLoading ||
@@ -311,6 +316,7 @@ export const TokenModal: FC = () => {
   const virtualizer = useVirtualizer({
     count: renderedTokens.length,
     getScrollElement: () => parentRef.current,
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     estimateSize: useCallback(
       () => 60,
       [
@@ -338,6 +344,7 @@ export const TokenModal: FC = () => {
   //   }, [renderedTokens]);
 
   const handleKeyDown = (event: React.KeyboardEvent) =>
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useCallback(() => {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();
@@ -369,7 +376,7 @@ export const TokenModal: FC = () => {
             >
               All Chains
             </Button>
-            {renderedChains.map(chain => (
+            {renderedChains.map((chain) => (
               <Tooltip key={chain.id}>
                 <TooltipTrigger asChild>
                   <ButtonIcon
@@ -420,7 +427,7 @@ export const TokenModal: FC = () => {
               position: "relative",
             }}
           >
-            {virtualTokens.map(virtualToken => {
+            {virtualTokens.map((virtualToken) => {
               const token = renderedTokens[virtualToken.index];
 
               if (!token) {
@@ -436,6 +443,7 @@ export const TokenModal: FC = () => {
                       : undefined
                   }
                 >
+                  {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                   <div
                     style={{
                       position: "absolute",
@@ -458,7 +466,7 @@ export const TokenModal: FC = () => {
                     />
                     <div className="flex grow flex-col pl-4">
                       <div className="text-text">{token?.name}</div>
-                      <div className="text-sm font-light text-text-weak">
+                      <div className="font-light text-sm text-text-weak">
                         {token?.symbol}
                       </div>
                     </div>
@@ -467,7 +475,7 @@ export const TokenModal: FC = () => {
                         token.decimals &&
                         token?.decimals !== 0 &&
                         refineNumberFormat(
-                          token?.amount / Math.pow(10, token?.decimals),
+                          token?.amount / 10 ** token?.decimals,
                         )}
                       {` ${token?.symbol}`}
                     </div>

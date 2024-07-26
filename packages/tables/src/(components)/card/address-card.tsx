@@ -60,7 +60,7 @@ export const AddressCard: FC<ChainCardProps> = ({ address, className }) => {
           {ens && (
             <>
               <TooltipTrigger asChild>
-                <span className="text-xs text-text-weak">
+                <span className="text-text-weak text-xs">
                   {shortenAddress(address)}
                 </span>
               </TooltipTrigger>

@@ -47,6 +47,7 @@ export const Base: Story = {
     const { setAddress } = useAuth();
     const { showOwnerModal } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setAddress("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
       showOwnerModal();

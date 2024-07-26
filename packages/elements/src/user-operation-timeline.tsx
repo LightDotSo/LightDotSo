@@ -51,7 +51,7 @@ export const AddressPinPointer: FC<AddressPinPointerProps> = ({
         <PlaceholderOrb address={address} />
       </Avatar>
     </span>
-    <span className="absolute left-3 top-2 size-3">{children}</span>
+    <span className="absolute top-2 left-3 size-3">{children}</span>
   </span>
 );
 

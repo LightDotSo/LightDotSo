@@ -26,8 +26,8 @@ import {
 } from "@lightdotso/ui";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { walletColumns } from "./wallet-columns";
 
 // -----------------------------------------------------------------------------
@@ -86,7 +86,7 @@ export const WalletTable: FC<WalletTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "actions");
+    return columns.filter((column) => column.id !== "actions");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -114,6 +114,7 @@ export const WalletTable: FC<WalletTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setWalletTable) {
       setWalletTable(table);
@@ -123,15 +124,23 @@ export const WalletTable: FC<WalletTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("address")?.getFilterValue(),
+    table
+      ?.getColumn("address")
+      ?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("name"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("name")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getCanHide(),
+    table
+      ?.getColumn("name")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getIsVisible(),
+    table
+      ?.getColumn("name")
+      ?.getIsVisible(),
     setWalletTable,
   ]);
 
@@ -148,9 +157,9 @@ export const WalletTable: FC<WalletTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -167,13 +176,13 @@ export const WalletTable: FC<WalletTableProps> = ({
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
+          table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
               className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
             >
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   <Link href={`/${row.original.address}`}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -186,8 +195,13 @@ export const WalletTable: FC<WalletTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

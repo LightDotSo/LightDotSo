@@ -21,7 +21,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const transferParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     if (value === "") {
       return null;
     }
@@ -35,27 +35,27 @@ export const transferParser = createParser({
       // Parse the address as a string (if possible)
       const parsedAddress = address === "_" ? undefined : address;
       // Parse the decimals as a number (if possible)
-      const parsedDecimals = parseInt(decimals);
+      const parsedDecimals = Number.parseInt(decimals);
       // Parse the quantity as a number (if possible)
-      const parsedQuantity = parseFloat(quantity);
+      const parsedQuantity = Number.parseFloat(quantity);
 
       if (
         parsedAddress &&
         isAddress(parsedAddress) &&
-        !isNaN(parsedDecimals) &&
-        !isNaN(parsedQuantity)
+        !Number.isNaN(parsedDecimals) &&
+        !Number.isNaN(parsedQuantity)
       ) {
         return {
           address: transferAddress === "_" ? undefined : transferAddress,
           addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-          chainId: parseInt(chainId),
+          chainId: Number.parseInt(chainId),
           asset: {
             address: parsedAddress,
             decimals: parsedDecimals,
             quantity: parsedQuantity,
           },
           assetType: assetType,
-        };
+        } as Transfer;
       }
     }
 
@@ -66,20 +66,20 @@ export const transferParser = createParser({
       // Parse the address as a string (if possible)
       const parsedAddress = address === "_" ? undefined : address;
       // Parse the tokenId as a number (if possible)
-      const parsedTokenId = parseInt(tokenId);
+      const parsedTokenId = Number.parseInt(tokenId);
       // Parse the quantity as a number (if possible)
-      const parsedQuantity = parseInt(quantity);
+      const parsedQuantity = Number.parseInt(quantity);
 
       if (
         parsedAddress &&
         isAddress(parsedAddress) &&
-        !isNaN(parsedTokenId) &&
-        !isNaN(parsedQuantity)
+        !Number.isNaN(parsedTokenId) &&
+        !Number.isNaN(parsedQuantity)
       ) {
         return {
           address: transferAddress === "_" ? undefined : transferAddress,
           addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-          chainId: parseInt(chainId),
+          chainId: Number.parseInt(chainId),
           asset: {
             address: parsedAddress,
             tokenId: parsedTokenId,
@@ -93,7 +93,7 @@ export const transferParser = createParser({
     return null;
   },
 
-  serialize: function (value: Transfer) {
+  serialize: (value: Transfer) => {
     if (!value) {
       return "";
     }

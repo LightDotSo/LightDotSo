@@ -39,7 +39,7 @@ type Story = StoryObj<typeof OwnerTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <OwnerTable
       isLoading={false}
       pageSize={10}

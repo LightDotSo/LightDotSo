@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { serve } from "inngest/next";
 import { prismaSchemaChore, walletRedisCron } from "@/inngest";
 import { inngest } from "@/inngest/client";
+import { serve } from "inngest/next";
 
 // -----------------------------------------------------------------------------
 // Route

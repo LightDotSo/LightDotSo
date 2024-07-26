@@ -66,13 +66,13 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           if (params.isMinimal) {
             return;
           }
           toast.success("Successfully queued user operation!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

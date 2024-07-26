@@ -16,7 +16,7 @@
 
 import { useAuth, useTables } from "@lightdotso/stores";
 import { DataTablePagination } from "@lightdotso/templates";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -34,6 +34,7 @@ export const NotificationsDataTablePagination: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

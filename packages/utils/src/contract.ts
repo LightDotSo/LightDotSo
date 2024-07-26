@@ -24,6 +24,6 @@ export const findContractAddressByAddress = (
   value: Address,
 ): ContractAddress | undefined => {
   return Object.keys(CONTRACT_ADDRESSES).find(
-    key => CONTRACT_ADDRESSES[key as ContractAddress] === value,
+    (key) => CONTRACT_ADDRESSES[key as ContractAddress] === value,
   ) as ContractAddress | undefined;
 };

@@ -34,7 +34,6 @@
     "viem": "^2.13.7"
   },
   "devDependencies": {
-    "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",

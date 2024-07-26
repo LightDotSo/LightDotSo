@@ -3,7 +3,6 @@ ignores:
   - "@storybook/addon-styling"
   - zod
   - "@babel/core"
-  - "@lightdotso/eslint-config"
   - "@lightdotso/tailwindcss"
   - "@storybook/addon-actions"
   - "@storybook/addon-backgrounds"

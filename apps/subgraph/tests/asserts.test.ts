@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { describe, test, assert } from "matchstick-as/assembly/index";
+import { assert, describe, test } from "matchstick-as/assembly/index";
 
 // From: https://github.com/LimeChain/demo-subgraph/blob/f43cb41a6bae431ac7f014eab8dbad1a4f13f041/tests/asserts.test.ts
 // License: MIT

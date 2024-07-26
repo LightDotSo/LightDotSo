@@ -20,9 +20,9 @@ import { createParser, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export const userOperationsParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     const operations = value.split(";");
-    return operations?.map<Partial<UserOperation>>(operation => {
+    return operations?.map<Partial<UserOperation>>((operation) => {
       const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _index,
@@ -98,8 +98,8 @@ export const userOperationsParser = createParser({
       return parsedOp;
     });
   },
-  serialize: function (value: Array<Partial<UserOperation>>) {
-    return value
+  serialize: (value: Array<Partial<UserOperation>>) =>
+    value
       ?.map(
         (operation, i) =>
           `${i}:${operation.chainId?.toString() ?? "_"}:${
@@ -114,8 +114,7 @@ export const userOperationsParser = createParser({
             operation.maxPriorityFeePerGas?.toString() ?? "_"
           }:${operation.paymasterAndData ?? "_"}:${operation.signature ?? "_"}`,
       )
-      .join(";");
-  },
+      .join(";"),
 });
 
 // -----------------------------------------------------------------------------

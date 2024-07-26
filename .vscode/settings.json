@@ -16,10 +16,10 @@
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   // Exclude generated files
   "files.exclude": {
@@ -27,7 +27,6 @@
     "**/crates/prisma/src/lib.rs": true
   },
   // Formatter settings on save
-  "editor.formatOnSave": true,
   "editor.rulers": [80, 100],
   // Toml settings
   "evenBetterToml.taplo.configFile.path": ".taplo.toml",
@@ -70,5 +69,10 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   // Cspell settings
   "cSpell.files": ["**"],
-  "cSpell.enabled": true
+  "cSpell.enabled": true,
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "cSpell.autoFormatConfigFile": true
 }

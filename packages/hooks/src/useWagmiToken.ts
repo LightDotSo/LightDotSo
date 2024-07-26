@@ -14,7 +14,7 @@
 
 import { useBalance, useReadContract } from "@lightdotso/wagmi";
 import { useMemo } from "react";
-import { erc20Abi, type Address } from "viem";
+import { type Address, erc20Abi } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types

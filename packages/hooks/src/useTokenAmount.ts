@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenAmount } from "@lightdotso/types";
+import type { TokenData } from "@lightdotso/data";
 import { useQueryToken } from "@lightdotso/query";
-import { Address } from "viem";
-import { useWagmiToken, WagmiToken } from "./useWagmiToken";
-import { TokenData } from "@lightdotso/data";
+import type { TokenAmount } from "@lightdotso/types";
 import { useMemo } from "react";
+import type { Address } from "viem";
+import { type WagmiToken, useWagmiToken } from "./useWagmiToken";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -67,7 +67,7 @@ export const useTokenAmount = ({
     queryToken: TokenData | null | undefined,
     wagmiToken: WagmiToken | null | undefined,
   ) {
-    let fromSwapToken: TokenAmount = {
+    const fromSwapToken: TokenAmount = {
       amount: queryToken?.amount ? BigInt(queryToken.amount) : BigInt(0),
       original_amount: queryToken?.amount ?? 0,
       balance_usd: queryToken?.balance_usd ?? 0,
@@ -100,6 +100,7 @@ export const useTokenAmount = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const tokenAmount: TokenAmount | null = useMemo(() => {
     return getSwapToken(queryToken, fromWagmiToken);
   }, [queryToken, fromWagmiToken]);

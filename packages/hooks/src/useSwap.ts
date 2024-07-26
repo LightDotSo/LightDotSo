@@ -18,10 +18,10 @@ import { useIsFetchingLifiQuote } from "@lightdotso/query";
 import type { Swap } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { useEffect, useMemo } from "react";
-import { type Address } from "viem";
+import type { Address } from "viem";
 import { useDebouncedValue } from "./useDebouncedValue";
-import { useToken } from "./useToken";
 import { useQuote } from "./useQuote";
+import { useToken } from "./useToken";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -88,21 +88,20 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const fromSwapMaximumQuantity = useMemo(() => {
     if (fromSwapMaximumAmount && fromSwapDecimals) {
-      return Number(fromSwapMaximumAmount) / Math.pow(10, fromSwapDecimals);
+      return Number(fromSwapMaximumAmount) / 10 ** fromSwapDecimals;
     }
     return null;
   }, [fromSwapMaximumAmount, fromSwapDecimals]);
 
   const toSwapMaximumQuantity = useMemo(() => {
     if (toSwapMaximumAmount && toSwapDecimals) {
-      return Number(toSwapMaximumAmount) / Math.pow(10, toSwapDecimals);
+      return Number(toSwapMaximumAmount) / 10 ** toSwapDecimals;
     }
     return null;
   }, [toSwapMaximumAmount, toSwapDecimals]);
 
   const fromSwapAmount = useMemo(() => {
     if (
-      fromSwap &&
       fromSwap?.quantity &&
       fromSwapDecimals &&
       fromSwapMaximumAmount &&
@@ -115,15 +114,14 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
       // If amount ends in floating point, return the amount without floating point
       const swapAmount = BigInt(
-        Math.floor(fromSwap?.quantity * Math.pow(10, fromSwapDecimals)),
+        Math.floor(fromSwap?.quantity * 10 ** fromSwapDecimals),
       );
 
       // If swap amount is less than or equal to the buy token amount, return the swap amount
       if (swapAmount <= fromSwapMaximumAmount) {
         return swapAmount;
-      } else {
-        return fromSwapMaximumAmount;
       }
+      return fromSwapMaximumAmount;
     }
     return null;
   }, [
@@ -134,17 +132,19 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     fromSwapMaximumQuantity,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const fromTokenDollarRatio = useMemo(() => {
     return fromToken?.balance_usd && fromToken?.amount && fromSwapDecimals
       ? fromToken?.balance_usd /
-          (Number(fromToken?.original_amount) / Math.pow(10, fromSwapDecimals))
+          (Number(fromToken?.original_amount) / 10 ** fromSwapDecimals)
       : null;
   }, [fromToken?.balance_usd, fromToken?.original_amount, fromSwapDecimals]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const toTokenDollarRatio = useMemo(() => {
     return toToken?.balance_usd && toToken?.amount && toSwapDecimals
       ? toToken?.balance_usd /
-          (Number(toToken?.original_amount) / Math.pow(10, toSwapDecimals))
+          (Number(toToken?.original_amount) / 10 ** toSwapDecimals)
       : null;
   }, [toToken?.balance_usd, toToken?.original_amount, toSwapDecimals]);
 
@@ -191,7 +191,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const toSwapQuotedQuantity = useMemo(() => {
     if (toSwapQuotedAmount && toSwapDecimals) {
-      return Number(toSwapQuotedAmount) / Math.pow(10, toSwapDecimals);
+      return Number(toSwapQuotedAmount) / 10 ** toSwapDecimals;
     }
     return null;
   }, [toSwapQuotedAmount, toSwapDecimals]);
@@ -206,6 +206,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (executionParams && executionParams.length > 0) {
       setExecutionParamsByChainId(executionParams[0].chainId, executionParams);

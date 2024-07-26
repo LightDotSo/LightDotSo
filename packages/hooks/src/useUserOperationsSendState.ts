@@ -40,22 +40,22 @@ export const useUserOperationsSendState = () => {
 
   // Check if the userOperations are all loading
   const isUserOperationsSendLoading = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "pending");
+    return userOperationSendStatus?.some((status) => status === "pending");
   }, [userOperationSendStatus]);
 
   // Check if the userOperations are all successful
   const isUserOperationsSendSuccess = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "success");
+    return userOperationSendStatus?.some((status) => status === "success");
   }, [userOperationSendStatus]);
 
   // Check if the userOperations are all failed
   const isUserOperationsSendError = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "error");
+    return userOperationSendStatus?.some((status) => status === "error");
   }, [userOperationSendStatus]);
 
   // Check if the userOperations are all idle
   const isUserOperationsSendIdle = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "idle");
+    return userOperationSendStatus?.some((status) => status === "idle");
   }, [userOperationSendStatus]);
 
   // ---------------------------------------------------------------------------

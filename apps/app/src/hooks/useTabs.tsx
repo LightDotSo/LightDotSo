@@ -15,19 +15,19 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
+import { AI_TAB, DEFAULT_TABS, DEV_TAB, HOME_TABS } from "@/const";
+import { useAppGroup } from "@/hooks";
 import {
-  useQueryUserOperationsCount,
   useQueryConfiguration,
+  useQueryUserOperationsCount,
   useQueryWalletFeatures,
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { useAuth, useBanners } from "@lightdotso/stores";
 import type { Tab } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Address } from "viem";
-import { AI_TAB, DEV_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
-import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -58,7 +58,7 @@ export function useTabs() {
 
   const tabs = useMemo(() => {
     if (appGroup === "demo") {
-      return DEFAULT_TABS.filter(tab => {
+      return DEFAULT_TABS.filter((tab) => {
         // Don't return `settings` and `support` and `activity` tabs
         return (
           tab.id !== "settings" && tab.id !== "support" && tab.id !== "activity"
@@ -89,7 +89,7 @@ export function useTabs() {
   // Local Variables
   // ---------------------------------------------------------------------------
 
-  const tabIds = tabs.map(tab => tab.id);
+  const tabIds = tabs.map((tab) => tab.id);
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -105,10 +105,11 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
 
   // Set the initialTabId to the matching slug in tabIds array
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Split the path using '/' as delimiter and remove empty strings
-    const slugs = pathname.split("/").filter(slug => slug);
-    const replacedSlugs = slugs.map(slug =>
+    const slugs = pathname.split("/").filter((slug) => slug);
+    const replacedSlugs = slugs.map((slug) =>
       slug
         // Replace occurences of 'op' with 'transactions'
         .replace("op", "transactions")
@@ -116,12 +117,12 @@ export function useTabs() {
         .replace("send", "transactions"),
     );
     // Get the matching slug in tabIds array
-    const matchingId = tabIds.find(slug => replacedSlugs.includes(slug));
+    const matchingId = tabIds.find((slug) => replacedSlugs.includes(slug));
 
     // Set the mount id
     const mountId = matchingId || "overview";
     // Set the initialTabId to the mount id
-    const indexOfInitialTab = tabs.findIndex(tab => tab.id === mountId);
+    const indexOfInitialTab = tabs.findIndex((tab) => tab.id === mountId);
     // Set the initial tab
     setSelectedTabIndex(indexOfInitialTab === -1 ? 0 : indexOfInitialTab);
 
@@ -159,7 +160,7 @@ export function useTabs() {
 
   // Get the owners addresses
   const ownersAddresses = useMemo(() => {
-    return configuration?.owners?.map(owner => owner.address) || [];
+    return configuration?.owners?.map((owner) => owner.address) || [];
   }, [configuration?.owners]);
 
   // ---------------------------------------------------------------------------
@@ -203,6 +204,7 @@ export function useTabs() {
   ]);
 
   // Refetch the queries when the wallet address changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchWalletFeatures();
     refetchConfiguration();
@@ -222,24 +224,24 @@ export function useTabs() {
   const transformedTabs: Tab[] = useMemo(() => {
     if (walletSettings?.is_enabled_dev) {
       // If dev not yet in tabs, add it
-      if (!tabs.find(tab => tab.id === DEV_TAB.id)) {
+      if (!tabs.find((tab) => tab.id === DEV_TAB.id)) {
         // Add it after the id `owners`
-        const indexOfOwners = tabs.findIndex(tab => tab.id === "owners");
+        const indexOfOwners = tabs.findIndex((tab) => tab.id === "owners");
         tabs.splice(indexOfOwners + 1, 0, DEV_TAB);
       }
     }
     if (walletFeatures?.is_enabled_ai) {
       // If AI not yet in tabs, add it
-      if (!tabs.find(tab => tab.id === AI_TAB.id)) {
+      if (!tabs.find((tab) => tab.id === AI_TAB.id)) {
         // Add it after the id `activity`
         const indexOfTransactions = tabs.findIndex(
-          tab => tab.id === "activity",
+          (tab) => tab.id === "activity",
         );
         tabs.splice(indexOfTransactions + 1, 0, AI_TAB);
       }
     }
 
-    return tabs.map(tab => {
+    return tabs.map((tab) => {
       if (tab.id === "owners") {
         if (configuration?.owners) {
           tab.number = configuration.owners.length;

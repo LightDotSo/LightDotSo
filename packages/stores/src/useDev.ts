@@ -30,9 +30,9 @@ type DevStore = {
 
 export const useDev = create(
   devtools<DevStore>(
-    set => ({
+    (set) => ({
       isDev: false,
-      toggleDev: () => set(state => ({ isDev: !state.isDev })),
+      toggleDev: () => set((state) => ({ isDev: !state.isDev })),
     }),
     {
       anonymousActionType: "useDev",

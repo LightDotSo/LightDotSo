@@ -75,7 +75,8 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueEntityValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueEntityValues = new Set<string>();
-    activities?.forEach(activity => {
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    activities?.forEach((activity) => {
       uniqueEntityValues.add(activity.entity);
     });
     return uniqueEntityValues;
@@ -92,12 +93,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           <DataTableFacetedFilter
             column={table?.getColumn("entity")}
             title="Entity"
-            options={Array.from(uniqueEntityValues).map(entity => ({
+            options={Array.from(uniqueEntityValues).map((entity) => ({
               value: entity,
               label: `${entity
                 .split("_")
                 .map(
-                  word =>
+                  (word) =>
                     word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
                 )
                 .join(" ")}`,

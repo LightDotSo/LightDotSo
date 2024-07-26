@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import { useAuth } from "@lightdotso/stores";
+import { useGasSpeed } from "@lightdotso/stores";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
-import { fromHex, type Address, type Hex } from "viem";
 import { useMemo } from "react";
-import { findContractAddressByAddress } from "@lightdotso/utils";
-import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
-import { useGasSpeed } from "@lightdotso/stores";
+import { type Address, type Hex, fromHex } from "viem";
 import {
   avalanche,
   avalancheFuji,
@@ -111,6 +111,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     account: address as Address,
     data: callData as Hex,
     to: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       findContractAddressByAddress(wallet?.factory_address as Address)!
     ],
   });

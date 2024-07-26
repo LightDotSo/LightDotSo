@@ -121,10 +121,10 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully created transaction!");
         },
-        err => {
+        (err) => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);

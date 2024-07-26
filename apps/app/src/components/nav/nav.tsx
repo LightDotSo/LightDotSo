@@ -17,16 +17,16 @@
 
 "use client";
 
-import { ConnectButton } from "@lightdotso/templates";
-import { baseWidthWrapper } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
-import { useMemo } from "react";
-import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavApp } from "@/components/nav/nav-app";
 import { NavTabs } from "@/components/nav/nav-tabs";
 import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
+import { ConnectButton } from "@lightdotso/templates";
+import { baseWidthWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { useMemo } from "react";
+import type { FC, HTMLAttributes, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -66,7 +66,7 @@ export const Nav: FC<NavProps> = ({ children }) => {
           <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
             <div className="flex items-center">
               <RootLogo />
-              <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
+              <span className="mr-1 ml-2 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
             <NavApp mobile={<ConnectButton />} tabs={tabProps.tabs} />

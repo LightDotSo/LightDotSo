@@ -14,7 +14,7 @@
 
 import { BASE_API_URLS } from "@lightdotso/const";
 import { socketBalancesListData } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 export const getSocketBalances = (url: string) =>
   http.post(`${url}/socket/v2/balances`, () => {

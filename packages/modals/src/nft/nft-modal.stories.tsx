@@ -59,6 +59,7 @@ export const Base: Story = {
   render: () => {
     const { showNftModal, setNftModalProps } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setNftModalProps(nftModalProps);
       showNftModal();
@@ -73,6 +74,7 @@ export const Empty: Story = {
   render: () => {
     const { showTokenModal, setNftModalProps } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setNftModalProps({
         ...nftModalProps,

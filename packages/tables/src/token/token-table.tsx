@@ -27,8 +27,8 @@ import {
 import { cn } from "@lightdotso/utils";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { tokenColumns } from "./token-columns";
 
 // -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ export const TokenTable: FC<TokenTableProps> = ({
       return columns;
     }
     return columns.filter(
-      column => column.id !== "sparkline" && column.id !== "price",
+      (column) => column.id !== "sparkline" && column.id !== "price",
     );
   }, [columns, isDesktop]);
 
@@ -105,7 +105,7 @@ export const TokenTable: FC<TokenTableProps> = ({
     enableRowSelection: false,
     manualPagination: true,
     paginateExpandedRows: true,
-    getSubRows: row => row.group?.tokens,
+    getSubRows: (row) => row.group?.tokens,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -119,6 +119,7 @@ export const TokenTable: FC<TokenTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setTokenTable) {
       setTokenTable(table);
@@ -128,26 +129,39 @@ export const TokenTable: FC<TokenTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain_id"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getCanHide(),
+    table
+      ?.getColumn("chain_id")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("chain_id")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getIsVisible(),
+    table
+      ?.getColumn("chain_id")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("sparkline"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("sparkline")?.getIsVisible(),
+    table
+      ?.getColumn("sparkline")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("price"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("price")?.getIsVisible(),
+    table
+      ?.getColumn("price")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("actions"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("actions")?.getIsVisible(),
+    table
+      ?.getColumn("actions")
+      ?.getIsVisible(),
     setTokenTable,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!table.getIsAllRowsExpanded()) {
       table.toggleAllRowsExpanded();
@@ -168,9 +182,9 @@ export const TokenTable: FC<TokenTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -190,7 +204,7 @@ export const TokenTable: FC<TokenTableProps> = ({
           table
             .getRowModel()
             .rows.slice(0, limit || table.getRowModel().rows?.length)
-            .map(row => {
+            .map((row) => {
               let isLastExpanded = false;
 
               // Add a flag for handling the last expanded row
@@ -227,7 +241,7 @@ export const TokenTable: FC<TokenTableProps> = ({
                     }
                   }}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -242,8 +256,13 @@ export const TokenTable: FC<TokenTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

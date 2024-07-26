@@ -38,6 +38,6 @@ type Story = StoryObj<typeof NotificationComboDialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <NotificationComboDialog />,
+  render: (args) => <NotificationComboDialog />,
   args: {},
 };

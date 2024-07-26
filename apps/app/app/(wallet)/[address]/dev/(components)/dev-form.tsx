@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AbiForm } from "@lightdotso/forms";
 import {
   useAbiEncodedQueryState,
@@ -41,7 +42,6 @@ import {
 } from "@lightdotso/ui";
 import { getChainWithChainId } from "@lightdotso/utils";
 import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -135,9 +135,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
       return;
     }
 
-    const value = formValue
-      ? formValue * Math.pow(10, balance.data?.decimals)
-      : 0;
+    const value = formValue ? formValue * 10 ** balance.data?.decimals : 0;
 
     return [
       {
@@ -156,6 +154,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
       return;
     }
 
+    // biome-ignore lint/style/noNonNullAssertion:
     return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
   }, [address, userOperationsParams]);
   // ---------------------------------------------------------------------------
@@ -200,7 +199,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
       } else if (quantity === 0) {
         form.setValue("value", 0);
       } else if (
-        quantity * Math.pow(10, balance?.data?.decimals) >
+        quantity * 10 ** balance?.data?.decimals >
         balance?.data?.value
       ) {
         // Show an error on the message
@@ -256,7 +255,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                                 hideChainModal();
                                 setSendBackgroundModal(false);
                               },
-                              onChainSelect: chainId => {
+                              onChainSelect: (chainId) => {
                                 field.onChange(chainId);
                                 form.trigger();
 
@@ -301,20 +300,20 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                         type="text"
                         placeholder="Your value in native token"
-                        onBlur={e => {
+                        onBlur={(e) => {
                           // Validate the address
                           if (!e.target.value) {
                             // Clear the value of key address
                             form.setValue("value", 0);
                           }
 
-                          const quantity = parseFloat(e.target.value);
+                          const quantity = Number.parseFloat(e.target.value);
 
-                          if (!isNaN(quantity)) {
+                          if (!Number.isNaN(quantity)) {
                             validateBalanceQuantity(quantity);
                           }
                         }}
-                        onChange={e => {
+                        onChange={(e) => {
                           // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
                           if (
                             e.target.value.endsWith(".") ||
@@ -324,27 +323,27 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                             field.onChange(e.target.value);
                           } else {
                             // Only parse to float if the value doesn't end with "."
-                            field.onChange(parseFloat(e.target.value) || 0);
+                            field.onChange(
+                              Number.parseFloat(e.target.value) || 0,
+                            );
                           }
 
                           // Validate the number
-                          const quantity = parseFloat(e.target.value);
+                          const quantity = Number.parseFloat(e.target.value);
 
-                          if (!isNaN(quantity)) {
+                          if (!Number.isNaN(quantity)) {
                             validateBalanceQuantity(quantity);
                           }
                         }}
                       />
                       <FormMessage />
-                      <div className="mt-2 flex items-center justify-between text-xs text-text-weak">
+                      <div className="mt-2 flex items-center justify-between text-text-weak text-xs">
                         <div>{/* tokenPrice could come here */}</div>
                         <div>
                           &nbsp;
-                          {balance &&
-                          balance.data &&
-                          balance.data?.decimals &&
+                          {balance?.data?.decimals &&
                           typeof balance.data?.decimals === "number"
-                            ? `${balance.data?.value / BigInt(Math.pow(10, balance.data?.decimals))} ${balance.data?.symbol} available`
+                            ? `${balance.data?.value / BigInt(10 ** balance.data?.decimals)} ${balance.data?.symbol} available`
                             : ""}
                         </div>
                       </div>

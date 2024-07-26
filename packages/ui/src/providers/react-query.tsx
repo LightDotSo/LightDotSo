@@ -26,7 +26,7 @@ import {
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import dynamic from "next/dynamic";
 import type { FC, ReactNode } from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 // import superjson from "superjson";
 
 // -----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ import { useState, useEffect } from "react";
 
 const ReactQueryDevtoolsProduction = dynamic(() =>
   // @ts-ignore
-  import("@tanstack/react-query-devtools/production").then(d => ({
+  import("@tanstack/react-query-devtools/production").then((d) => ({
     default: d.ReactQueryDevtools,
   })),
 );
@@ -70,6 +70,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   // Only set once on initial render
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
       setIsQueryDevToolsOpen(true);
@@ -81,11 +82,11 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
     const client = new QueryClient({
       defaultOptions: {
         queries: {
-          gcTime: Infinity,
+          gcTime: Number.POSITIVE_INFINITY,
           queryKeyHashFn: hashFn,
         },
         dehydrate: {
-          shouldDehydrateQuery: query =>
+          shouldDehydrateQuery: (query) =>
             defaultShouldDehydrateQuery(query) ||
             query.state.status === "pending",
         },

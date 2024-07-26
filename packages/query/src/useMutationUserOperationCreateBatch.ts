@@ -61,7 +61,7 @@ export const useMutationUserOperationCreateBatch = (
   const { mutate: userOperationCreateBatch, failureCount } = useMutation({
     mutationKey: queryKeys.user_operation.create_batch._def,
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
-      let hasInvalidData = body.userOperations.some(userOperation => {
+      const hasInvalidData = body.userOperations.some((userOperation) => {
         return (
           !userOperation.chainId ||
           !userOperation.hash ||
@@ -103,13 +103,17 @@ export const useMutationUserOperationCreateBatch = (
               ),
               signature_type: 2,
             },
-            user_operations: body.userOperations.map(userOperation => {
+            user_operations: body.userOperations.map((userOperation) => {
               return {
                 chain_id: Number(userOperation.chainId),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 hash: userOperation.hash!,
                 nonce: Number(userOperation.nonce),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 init_code: userOperation.initCode!,
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 sender: userOperation.sender!,
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 call_data: userOperation.callData!,
                 call_gas_limit: Number(userOperation.callGasLimit),
                 verification_gas_limit: Number(
@@ -120,6 +124,7 @@ export const useMutationUserOperationCreateBatch = (
                 max_priority_fee_per_gas: Number(
                   userOperation.maxPriorityFeePerGas,
                 ),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 paymaster_and_data: userOperation.paymasterAndData!,
               };
             }),
@@ -131,10 +136,10 @@ export const useMutationUserOperationCreateBatch = (
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully created transactions!");
         },
-        err => {
+        (err) => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);

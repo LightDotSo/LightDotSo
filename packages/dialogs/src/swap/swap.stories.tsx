@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { SwapDialog } from "./swap";
-import { useAuth } from "@lightdotso/stores";
-import { useEffect } from "react";
 import { TokenModal } from "@lightdotso/modals/src/token/token-modal";
+import { useAuth } from "@lightdotso/stores";
+import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import { SwapDialog } from "./swap";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -44,6 +44,7 @@ export const Base: Story = {
   render: () => {
     const { setAddress } = useAuth();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setAddress("0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F");
       // eslint-disable-next-line react-hooks/exhaustive-deps

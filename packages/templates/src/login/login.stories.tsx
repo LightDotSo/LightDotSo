@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Login>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Login />,
+  render: (args) => <Login />,
   args: {},
 };

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createTestClient, http } from "viem";
 import { anvil } from "@/contracts/test/spec/utils";
+import { http, createTestClient } from "viem";
 
 // Create a test client that uses the foundry chain and the anvil mode.
 export const testClient = createTestClient({

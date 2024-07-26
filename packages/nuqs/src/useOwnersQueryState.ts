@@ -31,7 +31,7 @@ export type Owners = Owner[];
 // -----------------------------------------------------------------------------
 
 export const ownerParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     const keys = value.split(";");
     return keys.reduce<Owners>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
@@ -41,23 +41,23 @@ export const ownerParser = createParser({
       const parsedAddressOrEns =
         addressOrEns === "_" ? undefined : addressOrEns;
       // Parse the weight as a number (if possible)
-      const parsedWeight = parseInt(weight);
+      const parsedWeight = Number.parseInt(weight);
       if (
         parsedAddress &&
         isAddress(parsedAddress) &&
         parsedAddressOrEns &&
-        !isNaN(parsedWeight)
+        !Number.isNaN(parsedWeight)
       ) {
-        acc[parseInt(id)] = {
+        acc[Number.parseInt(id)] = {
           address: address === "_" ? undefined : (address as Address),
           addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-          weight: parseInt(weight),
+          weight: Number.parseInt(weight),
         };
       }
       return acc;
     }, []);
   },
-  serialize: function (value: Owners) {
+  serialize: (value: Owners) => {
     const entry = Object.entries(value)
       // Filter out undefined values
       .filter(([, owner]) => owner !== undefined)

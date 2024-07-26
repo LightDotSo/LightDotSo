@@ -14,7 +14,7 @@
 
 import { BASE_API_URLS } from "@lightdotso/const";
 import { tokenPriceGetData } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 export const getTokenPrice = (url: string) =>
   http.get(

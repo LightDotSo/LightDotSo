@@ -15,6 +15,7 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
 import { NotAvailableTestnetCard } from "../../(components)/card";

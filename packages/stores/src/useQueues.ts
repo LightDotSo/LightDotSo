@@ -38,18 +38,18 @@ type QueuesStore = {
 export const useQueues = create(
   devtools(
     persist<QueuesStore>(
-      set => ({
+      (set) => ({
         tokenQueueTimestamp: {},
         portfolioQueueTimestamp: {},
         setTokenQueueTimestamp: (address, timestamp) =>
-          set(state => ({
+          set((state) => ({
             tokenQueueTimestamp: {
               ...state.tokenQueueTimestamp,
               [address]: timestamp,
             },
           })),
         setPortfolioQueueTimestamp: (address, timestamp) =>
-          set(state => ({
+          set((state) => ({
             portfolioQueueTimestamp: {
               ...state.tokenQueueTimestamp,
               [address]: timestamp,

@@ -66,7 +66,7 @@ export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
   return (
     <span
       className={cn(
-        "aspect-square inline-block size-full overflow-hidden rounded-full",
+        "inline-block aspect-square size-full overflow-hidden rounded-full",
         color === "gray" && s.gray,
         color === "red" && s.red,
         color === "orange" && s.orange,

@@ -24,8 +24,8 @@ import {
 } from "@lightdotso/ui";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   getCoreRowModel,
@@ -37,7 +37,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { NftCard } from "./card";
 import { nftColumns } from "./nft-columns";
 import { NftsWrapper } from "./nfts-wrapper";
@@ -86,7 +86,7 @@ export const NftTable: FC<NftTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "index");
+    return columns.filter((column) => column.id !== "index");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -114,6 +114,7 @@ export const NftTable: FC<NftTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setNftTable) {
       setNftTable(table);
@@ -123,29 +124,47 @@ export const NftTable: FC<NftTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("name"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getCanHide(),
+    table
+      ?.getColumn("name")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getIsVisible(),
+    table
+      ?.getColumn("name")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("description"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("description")?.getCanHide(),
+    table
+      ?.getColumn("description")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("description")?.getIsVisible(),
+    table
+      ?.getColumn("description")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("spam_score"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("spam_score")?.getCanHide(),
+    table
+      ?.getColumn("spam_score")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("spam_score")?.getIsVisible(),
+    table
+      ?.getColumn("spam_score")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("chain")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain")?.getCanHide(),
+    table
+      ?.getColumn("chain")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain")?.getIsVisible(),
+    table
+      ?.getColumn("chain")
+      ?.getIsVisible(),
     setNftTable,
   ]);
 
@@ -165,27 +184,28 @@ export const NftTable: FC<NftTableProps> = ({
         table
           .getRowModel()
           .rows.slice(0, limit || table.getRowModel().rows?.length)
-          .map(row => (
+          .map((row) => (
             <NftCard
               key={row.id}
               nft={row.original}
               showName={row
                 .getVisibleCells()
-                .some(cell => cell.column.id === "name")}
+                .some((cell) => cell.column.id === "name")}
               showDescription={row
                 .getVisibleCells()
-                .some(cell => cell.column.id === "description")}
+                .some((cell) => cell.column.id === "description")}
               showSpamScore={row
                 .getVisibleCells()
-                .some(cell => cell.column.id === "spam_score")}
+                .some((cell) => cell.column.id === "spam_score")}
               showChain={row
                 .getVisibleCells()
-                .some(cell => cell.column.id === "chain")}
+                .some((cell) => cell.column.id === "chain")}
             />
           ))
       ) : delayedIsLoading ? (
         Array(pageSize)
           .fill(null)
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           .map((_, index) => <Skeleton key={index} className="size-24" />)
       ) : (
         <div className="col-span-6">

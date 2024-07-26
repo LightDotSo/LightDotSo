@@ -96,7 +96,7 @@ const TimelineItem: FC<TimelineItemProps> = ({
   return (
     <li
       className={cn(
-        "border-l border-border-strong pl-6 last:border-0",
+        "border-border-strong border-l pl-6 last:border-0",
         className,
       )}
       {...props}
@@ -175,7 +175,7 @@ const TimelineTime: FC<TimelineTimeProps> = ({
 }) => {
   return (
     <time
-      className={cn("text-sm font-normal leading-none text-text", className)}
+      className={cn("font-normal text-sm text-text leading-none", className)}
       {...props}
     >
       {children}

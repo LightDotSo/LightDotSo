@@ -32,6 +32,7 @@ export const LineaLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Linea</title>
     <g clip-path="url(#clip0_10113_10105)">
       <g clip-path="url(#clip1_10113_10105)">
         <rect width="24" height="24" rx="6" fill="#121212" />

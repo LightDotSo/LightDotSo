@@ -29,5 +29,6 @@ export const preloadGetNftValuation = (params: NftValuationParams) => {
 // -----------------------------------------------------------------------------
 
 export const getNftValuation = async (params: NftValuationParams) => {
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return getClientNftValuation(params.address!, "admin");
 };

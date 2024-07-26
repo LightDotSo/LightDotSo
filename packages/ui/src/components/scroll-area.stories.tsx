@@ -40,13 +40,13 @@ type Story = StoryObj<typeof ScrollArea>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <ScrollArea className="h-72 w-48 rounded-md border border-border text-text">
       <div className="p-4">
-        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        <h4 className="mb-4 font-medium text-sm leading-none">Tags</h4>
         {Array.from({ length: 50 })
           .map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
-          .map(tag => (
+          .map((tag) => (
             <Fragment key={tag}>
               <div key={tag} className="text-sm">
                 {tag}

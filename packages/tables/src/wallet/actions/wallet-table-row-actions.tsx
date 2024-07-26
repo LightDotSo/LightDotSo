@@ -67,7 +67,7 @@ export function WalletTableRowActions({ row }: WalletTableRowActionsProps) {
           <Button
             variant="ghost"
             className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
-            onClick={event => {
+            onClick={(event) => {
               event.stopPropagation();
             }}
           >

@@ -39,7 +39,7 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
 
   return (
     <>
-      {items.map(item => {
+      {items.map((item) => {
         return (
           <li
             key={item.name}

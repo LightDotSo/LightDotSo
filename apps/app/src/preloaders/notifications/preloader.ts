@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { getUserIdCookie } from "@/auth";
 import { paginationParser } from "@lightdotso/nuqs";
 import {
   preloadGetNotifications,
   preloadGetNotificationsCount,
 } from "@lightdotso/services";
-import { getUserIdCookie } from "@/auth";
 
 // -----------------------------------------------------------------------------
 // Preloader

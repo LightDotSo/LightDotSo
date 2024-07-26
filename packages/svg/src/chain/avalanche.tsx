@@ -32,6 +32,7 @@ export const AvalancheLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Avalanche</title>
     <rect x="1" y="1" width="22" height="22" rx="6" fill="#E84242" />
     <path
       fillRule="evenodd"

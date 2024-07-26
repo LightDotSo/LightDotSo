@@ -30,7 +30,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
-import { isAddress, type Address } from "viem";
+import { type Address, isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -77,7 +77,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // part of the path
 
   // Get the last part of the href of all the items
-  const itemHrefs = items.map(item => item.href.split("/").pop());
+  const itemHrefs = items.map((item) => item.href.split("/").pop());
 
   // If all the item hrefs are the same, get the same last part of the path
   const itemSegment = itemHrefs.every((val, i, arr) => val === arr[0])
@@ -112,9 +112,11 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Prefetch all the pages
-    items.forEach(item => {
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    items.forEach((item) => {
       router.prefetch(`${address ? `/${address}` : ""}${item.href}`);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,9 +134,9 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
         </Label>
         <Select
           name="tabs"
-          onValueChange={value => {
+          onValueChange={(value) => {
             // Get the item from the items
-            const item = items.find(item => item.id === value);
+            const item = items.find((item) => item.id === value);
             // If the item is not found, return
             if (!item) {
               return;
@@ -147,7 +149,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
             <SelectValue placeholder="Select a category." />
           </SelectTrigger>
           <SelectContent className="max-h-48">
-            {items.map(item => (
+            {items.map((item) => (
               <SelectItem key={item.id} value={item.id}>
                 {item.title}
               </SelectItem>
@@ -160,7 +162,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           variant="unstyled"
           className="hidden space-x-1 rounded-md border border-border bg-background-strong p-0.5 sm:block"
         >
-          {items.map(item => (
+          {items.map((item) => (
             <Button
               key={item.id}
               asChild

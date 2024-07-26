@@ -48,7 +48,7 @@ import {
 import { HomeIcon, WalletIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
-import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, FC, UIEvent } from "react";
 import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
 
@@ -139,6 +139,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
     if (appGroup === "unauthenticated") {
@@ -150,7 +151,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
     if (wallet && wallets) {
       // Find the selected wallet from the wallets query
       const selectedWallet = wallets.find(
-        queryWallet => queryWallet.address === getAddress(wallet),
+        (queryWallet) => queryWallet.address === getAddress(wallet),
       );
 
       // If the wallet is not found, set the selected wallet to undefined
@@ -257,10 +258,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         <CommandList onScroll={handleScroll}>
           <CommandGroup>
             {/* Negative margins to widen out to full width */}
-            <div className="relative -ml-1 -mr-2">
+            <div className="-ml-1 -mr-2 relative">
               <div
                 className={cn(
-                  "from-muted pointer-events-none absolute left-0 top-1 -mt-2 h-14 w-full bg-gradient-to-b to-transparent transition-opacity duration-500",
+                  "-mt-2 pointer-events-none absolute top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
                   scrollIsAtTop ? "opacity-0" : "opacity-100",
                 )}
               />
@@ -280,8 +281,8 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
               wallets?.length > 0 &&
               // Filter out the selected wallet
               wallets
-                .filter(wallet => wallet.address !== selectedWallet?.address)
-                .map(wallet => (
+                .filter((wallet) => wallet.address !== selectedWallet?.address)
+                .map((wallet) => (
                   <CommandItem
                     key={wallet.address}
                     className="text-sm"

@@ -16,16 +16,16 @@ import { sendUserOperation } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
-  UserOperationSendParams,
   UserOperationSendBodyParams,
+  UserOperationSendParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
-import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 import { useQueryUserOperation } from "./useQueryUserOperation";
+import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -90,10 +90,10 @@ export const useMutationUserOperationSend = (
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("You submitted the transaction!");
         },
-        err => {
+        (err) => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);
@@ -131,7 +131,7 @@ export const useMutationUserOperationSend = (
           // Get the data same as the data in the list, and update the status to "pending"
           const newData =
             old && old.length > 0
-              ? old.map(d => {
+              ? old.map((d) => {
                   if (d.hash === data.userOperation.hash) {
                     return { ...d, status: "PENDING" };
                   }
@@ -143,7 +143,7 @@ export const useMutationUserOperationSend = (
       );
 
       // Add 3 second delay for buffer
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       return { previousData: previousData };
     },

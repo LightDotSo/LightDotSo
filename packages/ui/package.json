@@ -14,10 +14,7 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": [
-    "dist/**",
-    "src/**"
-  ],
+  "files": ["dist/**", "src/**"],
   "scripts": {
     "add": "shadcn-ui add",
     "build": "tsup",
@@ -95,7 +92,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
-    "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/blocks": "^8.2.6",

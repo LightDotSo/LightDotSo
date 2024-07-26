@@ -19,7 +19,7 @@ import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
 import type { ComponentProps } from "react";
 import type { ExternalToast } from "sonner";
-import { toast, Toaster as SonnerToaster } from "sonner";
+import { Toaster as SonnerToaster, toast } from "sonner";
 
 // -----------------------------------------------------------------------------
 // Types

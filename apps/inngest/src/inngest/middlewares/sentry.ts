@@ -21,7 +21,7 @@ import { InngestMiddleware } from "inngest";
 
 export const sentryMiddleware = new InngestMiddleware({
   name: "Sentry Middleware",
-  init: function ({ client }) {
+  init: ({ client }) => {
     // Initialize Sentry as soon as possible, creating a hub
     Sentry.init({ dsn: "..." });
 
@@ -29,7 +29,7 @@ export const sentryMiddleware = new InngestMiddleware({
     Sentry.setTag("inngest.client.id", client.id);
 
     return {
-      onFunctionRun: function ({ ctx, fn }) {
+      onFunctionRun: ({ ctx, fn }) => {
         // Add specific context for the given function run
         Sentry.setTags({
           "inngest.function.id": fn.id(client.id),
@@ -49,29 +49,27 @@ export const sentryMiddleware = new InngestMiddleware({
         let execSpan: Sentry.Span;
 
         return {
-          transformInput: function () {
-            return {
-              ctx: {
-                // Add the Sentry client to the input arg so our
-                // functions can use it directly too
-                sentry: Sentry.getCurrentHub(),
-              },
-            };
-          },
-          beforeMemoization: function () {
+          transformInput: () => ({
+            ctx: {
+              // Add the Sentry client to the input arg so our
+              // functions can use it directly too
+              sentry: Sentry.getCurrentHub(),
+            },
+          }),
+          beforeMemoization: () => {
             // Track different spans for memoization and execution
             // memoSpan = transaction.startChild({ op: "memoization" });
           },
-          afterMemoization: function () {
+          afterMemoization: () => {
             // memoSpan.finish();
           },
-          beforeExecution: function () {
+          beforeExecution: () => {
             // execSpan = transaction.startChild({ op: "execution" });
           },
-          afterExecution: function () {
+          afterExecution: () => {
             // execSpan.finish();
           },
-          transformOutput: function ({ result, step }) {
+          transformOutput: ({ result, step }) => {
             // Capture step output and log errors
             if (step) {
               Sentry.setTags({
@@ -84,7 +82,7 @@ export const sentryMiddleware = new InngestMiddleware({
               }
             }
           },
-          beforeResponse: async function () {
+          beforeResponse: async () => {
             // Finish the transaction and flush data to Sentry before the
             // request closes
             // transaction.finish();

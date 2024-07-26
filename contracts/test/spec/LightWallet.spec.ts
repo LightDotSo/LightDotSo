@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { subdigestOf } from "@lightdotso/sequence";
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { describe, it, expect, test } from "vitest";
 // import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 // import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error
 import { LightWallet } from "@/contracts/LightWallet.sol";
+import { subdigestOf } from "@lightdotso/sequence";
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+import { describe, expect, it, test } from "vitest";
 
 // describe("LightWallet", function () {
 //   it("Should return run correct function parameters on hardhat", async function () {

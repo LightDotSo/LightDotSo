@@ -73,10 +73,10 @@ export const useQueryUserOperation = (
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as UserOperationData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

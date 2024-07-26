@@ -32,6 +32,7 @@ export const EthereumLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Ethereum</title>
     <rect x="1" y="1" width="22" height="22" rx="6" fill="#8E90FF" />
     <path
       d="M8 12.111L11.998 6V6.003L12 6L15.998 12.11L16 12.111L12.002 14.288H12L8 12.111Z"

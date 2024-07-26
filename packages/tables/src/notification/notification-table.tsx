@@ -26,8 +26,8 @@ import {
 } from "@lightdotso/ui";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -40,7 +40,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { notificationColumns } from "./notification-columns";
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "index");
+    return columns.filter((column) => column.id !== "index");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -113,6 +113,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setNotificationTable) {
       setNotificationTable(table);
@@ -122,15 +123,23 @@ export const NotificationTable: FC<NotificationTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("address")?.getFilterValue(),
+    table
+      ?.getColumn("address")
+      ?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("name"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("name")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getCanHide(),
+    table
+      ?.getColumn("name")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("name")?.getIsVisible(),
+    table
+      ?.getColumn("name")
+      ?.getIsVisible(),
     setNotificationTable,
   ]);
 
@@ -147,9 +156,9 @@ export const NotificationTable: FC<NotificationTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -166,13 +175,13 @@ export const NotificationTable: FC<NotificationTableProps> = ({
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
+          table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
               className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
             >
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
@@ -183,8 +192,13 @@ export const NotificationTable: FC<NotificationTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

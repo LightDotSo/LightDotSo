@@ -73,10 +73,10 @@ export const useQueryToken = (params: TokenGetParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as TokenData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

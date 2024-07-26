@@ -29,7 +29,7 @@ export const useMutationStateUserOperationReceipt = () => {
       mutationKey: queryKeys.rpc.get_user_operation_receipt._def,
       exact: true,
     },
-    select: mutations => mutations.state.status,
+    select: (mutations) => mutations.state.status,
   });
 
   return userOperationReceiptStatus;

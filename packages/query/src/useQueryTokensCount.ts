@@ -73,10 +73,10 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

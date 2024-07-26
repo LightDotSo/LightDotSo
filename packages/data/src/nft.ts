@@ -103,7 +103,7 @@ export type NftData = {
       }
     | null
     | undefined;
-  extra_metadata?:
+  extra_metadata?: // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     | (Record<string, any> & {
         image_original_url?: string | null | undefined;
         animation_original_url?: string | null | undefined;
@@ -132,5 +132,6 @@ export type NftDataPage = {
   next_cursor: string | null;
   next: string | null;
   nfts: NftData[];
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   previous?: any;
 };

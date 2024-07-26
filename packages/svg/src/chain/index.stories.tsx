@@ -38,55 +38,55 @@ type Story = StoryObj<typeof ChainLogo>;
 // -----------------------------------------------------------------------------
 
 export const Ethereum: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 1,
   },
 };
 export const Arbitrum: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 42161,
   },
 };
 export const Avalanche: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 43114,
   },
 };
 export const Base: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 8453,
   },
 };
 export const Bsc: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 56,
   },
 };
 export const Gnosis: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 100,
   },
 };
 export const Optimism: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 10,
   },
 };
 export const Polygon: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 137,
   },
 };
 export const Sepolia: Story = {
-  render: args => <ChainLogo {...args} />,
+  render: (args) => <ChainLogo {...args} />,
   args: {
     chainId: 11155111,
   },

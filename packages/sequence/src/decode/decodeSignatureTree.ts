@@ -31,7 +31,7 @@
 // License: Apache 2.0
 
 import type { Address } from "viem";
-import { bytesToString, bytesToHex } from "viem";
+import { bytesToHex, bytesToString } from "viem";
 import { SignaturePartType } from "../typings";
 import type { RecoveryNode, RecoveryTopology } from "../typings";
 
@@ -72,6 +72,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
   while (bytes.length > 0) {
     const type = bytes[0];
 
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     bytes = bytes.slice(1);
 
     switch (type) {
@@ -84,6 +85,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const address = bytesToString(bytes.slice(1, 21));
 
           // Trim the address off the bytes. 21 bytes for address.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(21);
 
           // Append to the pointer.
@@ -103,6 +105,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const signature = bytes.slice(1, SignaturePartTypeLength + 1);
 
           // Trim the signature off the bytes. // 67 bytes for signature.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(SignaturePartTypeLength + 1);
 
           // Append to the pointer.
@@ -125,6 +128,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const signature = bytes.slice(24, 24 + size);
 
           // Trim the signature off the bytes. 24 + size bytes for address and signature size.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(24 + size);
 
           // Append to the pointer.
@@ -144,6 +148,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const nodeHash = bytes.slice(0, 32);
 
           // Trim the hash off the bytes. 32 bytes for hash.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(32);
 
           // Append to the pointer.
@@ -160,6 +165,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const branch = decodeSignatureTree(bytes.slice(3, 3 + size));
 
           // Trim the branch off the bytes. 3 + size bytes for branch size.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(3 + size);
 
           // Append to the pointer.
@@ -181,6 +187,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const tree = decodeSignatureTree(bytes.slice(6, 6 + size));
 
           // Trim the tree off the bytes. 6 + size bytes for tree size.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(6 + size);
 
           // Append to the pointer.
@@ -199,6 +206,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           const subdigest = bytes.slice(0, 32);
 
           // Trim the hash off the bytes. 32 bytes for subdigest.
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           bytes = bytes.slice(32);
 
           // Append to the pointer.

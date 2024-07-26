@@ -72,10 +72,10 @@ export const useQueryNfts = (params: NftListParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as NftDataPage;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -21,7 +21,7 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -75,6 +75,7 @@ export const UserOperationState: FC = () => {
     }
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchPendingUserOperations();
     refetchUserOperationsCount();

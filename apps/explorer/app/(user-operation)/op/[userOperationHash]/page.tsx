@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { OpDataTable } from "@/app/(user-operation)/op/[userOperationHash]/(components)/op-data-table";
+import { handler } from "@/handlers/op/[userOperationHash]/handler";
+import { preloader } from "@/preloaders/op/[userOperationHash]/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Hex } from "viem";
-import { OpDataTable } from "@/app/(user-operation)/op/[userOperationHash]/(components)/op-data-table";
-import { handler } from "@/handlers/op/[userOperationHash]/handler";
-import { preloader } from "@/preloaders/op/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

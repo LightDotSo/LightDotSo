@@ -14,9 +14,9 @@
 
 import { FormDevTools } from "@lightdotso/forms";
 import {
+  ReactQueryProvider,
   TailwindIndicator,
   ThemeProvider,
-  ReactQueryProvider,
   Toaster,
   VercelToolbar,
 } from "@lightdotso/ui";
@@ -60,7 +60,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-dvh bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            <>{children}</>
+            {children}
             <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>

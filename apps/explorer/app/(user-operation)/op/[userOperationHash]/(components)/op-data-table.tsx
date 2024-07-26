@@ -14,12 +14,12 @@
 
 "use client";
 
+import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
 import { useQueryUserOperation } from "@lightdotso/query";
 import { userOperationColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { type FC } from "react";
+import type { FC } from "react";
 import type { Hex } from "viem";
-import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Props

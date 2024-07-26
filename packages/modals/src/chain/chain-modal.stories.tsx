@@ -46,6 +46,7 @@ export const Base: Story = {
   render: () => {
     const { showChainModal } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       showChainModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps

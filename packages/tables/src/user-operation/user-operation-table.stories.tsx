@@ -40,7 +40,7 @@ type Story = StoryObj<typeof UserOperationTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <UserOperationTable
       isLoading={false}
       pageSize={10}
@@ -53,7 +53,7 @@ export const Base: Story = {
   args: {},
 };
 export const Null: Story = {
-  render: args => (
+  render: (args) => (
     <UserOperationTable
       isLoading={false}
       pageSize={10}

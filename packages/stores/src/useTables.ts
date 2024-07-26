@@ -13,14 +13,14 @@
 // limitations under the License.
 
 import type {
-  TokenData,
-  OwnerData,
+  ActivityData,
   NftData,
   NotificationData,
-  WalletData,
+  OwnerData,
+  TokenData,
   TransactionData,
   UserOperationData,
-  ActivityData,
+  WalletData,
 } from "@lightdotso/data";
 import type {
   ColumnFiltersState,
@@ -135,45 +135,45 @@ type TablesStore = {
 export const useTables = create(
   devtools(
     persist<TablesStore>(
-      set => ({
+      (set) => ({
         activityColumnFilters: [],
         activityColumnVisibility: {},
         activityRowSelection: {},
         activitySorting: [],
         activityTable: null,
-        setActivityColumnFilters: columnFilters =>
-          set(prevState => ({
+        setActivityColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             transactionColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.transactionColumnFilters)
                 : columnFilters,
           })),
-        setActivityColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setActivityColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             transactionColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.transactionColumnVisibility)
                 : columnVisibility,
           })),
-        setActivityRowSelection: rowSelection =>
-          set(prevState => ({
+        setActivityRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             transactionRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.transactionRowSelection)
                 : rowSelection,
           })),
-        setActivitySorting: sorting =>
-          set(prevState => ({
+        setActivitySorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             transactionSorting:
               sorting instanceof Function
                 ? sorting(prevState.transactionSorting)
                 : sorting,
           })),
-        setActivityTable: tableObject =>
+        setActivityTable: (tableObject) =>
           set({
             activityTable: tableObject,
             ownerTable: null,
@@ -190,43 +190,43 @@ export const useTables = create(
             value: "0",
           },
         ],
-        nftColumnVisibility: { ["spam_score"]: false },
+        nftColumnVisibility: { spam_score: false },
         nftRowSelection: {},
         nftSorting: [],
         nftTable: null,
-        setNftColumnFilters: columnFilters =>
-          set(prevState => ({
+        setNftColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             nftColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.nftColumnFilters)
                 : columnFilters,
           })),
-        setNftColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setNftColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             nftColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.nftColumnVisibility)
                 : columnVisibility,
           })),
-        setNftRowSelection: rowSelection =>
-          set(prevState => ({
+        setNftRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             nftRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.nftRowSelection)
                 : rowSelection,
           })),
-        setNftSorting: sorting =>
-          set(prevState => ({
+        setNftSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             nftSorting:
               sorting instanceof Function
                 ? sorting(prevState.nftSorting)
                 : sorting,
           })),
-        setNftTable: tableObject =>
+        setNftTable: (tableObject) =>
           set({
             nftTable: tableObject,
             activityTable: null,
@@ -242,39 +242,39 @@ export const useTables = create(
         notificationRowSelection: {},
         notificationSorting: [],
         notificationTable: null,
-        setNotificationColumnFilters: columnFilters =>
-          set(prevState => ({
+        setNotificationColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             notificationColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.notificationColumnFilters)
                 : columnFilters,
           })),
-        setNotificationColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setNotificationColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             notificationColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.notificationColumnVisibility)
                 : columnVisibility,
           })),
-        setNotificationRowSelection: rowSelection =>
-          set(prevState => ({
+        setNotificationRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             notificationRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.notificationRowSelection)
                 : rowSelection,
           })),
-        setNotificationSorting: sorting =>
-          set(prevState => ({
+        setNotificationSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             notificationSorting:
               sorting instanceof Function
                 ? sorting(prevState.notificationSorting)
                 : sorting,
           })),
-        setNotificationTable: tableObject =>
+        setNotificationTable: (tableObject) =>
           set({
             notificationTable: tableObject,
             activityTable: null,
@@ -290,39 +290,39 @@ export const useTables = create(
         ownerRowSelection: {},
         ownerSorting: [],
         ownerTable: null,
-        setOwnerColumnFilters: columnFilters =>
-          set(prevState => ({
+        setOwnerColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             ownerColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.ownerColumnFilters)
                 : columnFilters,
           })),
-        setOwnerColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setOwnerColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             ownerColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.ownerColumnVisibility)
                 : columnVisibility,
           })),
-        setOwnerRowSelection: rowSelection =>
-          set(prevState => ({
+        setOwnerRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             ownerRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.ownerRowSelection)
                 : rowSelection,
           })),
-        setOwnerSorting: sorting =>
-          set(prevState => ({
+        setOwnerSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             ownerSorting:
               sorting instanceof Function
                 ? sorting(prevState.ownerSorting)
                 : sorting,
           })),
-        setOwnerTable: tableObject =>
+        setOwnerTable: (tableObject) =>
           set({
             ownerTable: tableObject,
             activityTable: null,
@@ -338,39 +338,39 @@ export const useTables = create(
         userOperationRowSelection: {},
         userOperationSorting: [],
         userOperationTable: null,
-        setUserOperationColumnFilters: columnFilters =>
-          set(prevState => ({
+        setUserOperationColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             userOperationColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.userOperationColumnFilters)
                 : columnFilters,
           })),
-        setUserOperationColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setUserOperationColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             userOperationColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.userOperationColumnVisibility)
                 : columnVisibility,
           })),
-        setUserOperationRowSelection: rowSelection =>
-          set(prevState => ({
+        setUserOperationRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             userOperationRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.userOperationRowSelection)
                 : rowSelection,
           })),
-        setUserOperationSorting: sorting =>
-          set(prevState => ({
+        setUserOperationSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             userOperationSorting:
               sorting instanceof Function
                 ? sorting(prevState.userOperationSorting)
                 : sorting,
           })),
-        setUserOperationTable: tableObject =>
+        setUserOperationTable: (tableObject) =>
           set({
             userOperationTable: tableObject,
             activityTable: null,
@@ -387,39 +387,39 @@ export const useTables = create(
         tokenRowSelection: {},
         tokenSorting: [],
         tokenTable: null,
-        setTokenColumnFilters: columnFilters =>
-          set(prevState => ({
+        setTokenColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             tokenColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.tokenColumnFilters)
                 : columnFilters,
           })),
-        setTokenColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setTokenColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             tokenColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.tokenColumnVisibility)
                 : columnVisibility,
           })),
-        setTokenRowSelection: rowSelection =>
-          set(prevState => ({
+        setTokenRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             tokenRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.tokenRowSelection)
                 : rowSelection,
           })),
-        setTokenSorting: sorting =>
-          set(prevState => ({
+        setTokenSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             tokenSorting:
               sorting instanceof Function
                 ? sorting(prevState.tokenSorting)
                 : sorting,
           })),
-        setTokenTable: tableObject =>
+        setTokenTable: (tableObject) =>
           set({
             tokenTable: tableObject,
             activityTable: null,
@@ -435,47 +435,47 @@ export const useTables = create(
         transactionRowSelection: {},
         transactionSorting: [],
         transactionTable: null,
-        setTransactionColumnFilters: columnFilters =>
-          set(prevState => ({
+        setTransactionColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             transactionColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.transactionColumnFilters)
                 : columnFilters,
           })),
-        setTransactionColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setTransactionColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             transactionColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.transactionColumnVisibility)
                 : columnVisibility,
           })),
-        setTokenExpandedState: expandedState =>
-          set(prevState => ({
+        setTokenExpandedState: (expandedState) =>
+          set((prevState) => ({
             ...prevState,
             tokenExpandedState:
               expandedState instanceof Function
                 ? expandedState(prevState.tokenExpandedState)
                 : expandedState,
           })),
-        setTransactionRowSelection: rowSelection =>
-          set(prevState => ({
+        setTransactionRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             transactionRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.transactionRowSelection)
                 : rowSelection,
           })),
-        setTransactionSorting: sorting =>
-          set(prevState => ({
+        setTransactionSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             transactionSorting:
               sorting instanceof Function
                 ? sorting(prevState.transactionSorting)
                 : sorting,
           })),
-        setTransactionTable: tableObject =>
+        setTransactionTable: (tableObject) =>
           set({
             transactionTable: tableObject,
             activityTable: null,
@@ -491,39 +491,39 @@ export const useTables = create(
         walletRowSelection: {},
         walletSorting: [],
         walletTable: null,
-        setWalletColumnFilters: columnFilters =>
-          set(prevState => ({
+        setWalletColumnFilters: (columnFilters) =>
+          set((prevState) => ({
             ...prevState,
             walletColumnFilters:
               columnFilters instanceof Function
                 ? columnFilters(prevState.walletColumnFilters)
                 : columnFilters,
           })),
-        setWalletColumnVisibility: columnVisibility =>
-          set(prevState => ({
+        setWalletColumnVisibility: (columnVisibility) =>
+          set((prevState) => ({
             ...prevState,
             walletColumnVisibility:
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.walletColumnVisibility)
                 : columnVisibility,
           })),
-        setWalletRowSelection: rowSelection =>
-          set(prevState => ({
+        setWalletRowSelection: (rowSelection) =>
+          set((prevState) => ({
             ...prevState,
             walletRowSelection:
               rowSelection instanceof Function
                 ? rowSelection(prevState.walletRowSelection)
                 : rowSelection,
           })),
-        setWalletSorting: sorting =>
-          set(prevState => ({
+        setWalletSorting: (sorting) =>
+          set((prevState) => ({
             ...prevState,
             walletSorting:
               sorting instanceof Function
                 ? sorting(prevState.walletSorting)
                 : sorting,
           })),
-        setWalletTable: tableObject =>
+        setWalletTable: (tableObject) =>
           set({
             walletTable: tableObject,
             activityTable: null,

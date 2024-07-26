@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { llamaGetSchema } from "../src";
 import data from "./mocks/llama.json";
@@ -23,10 +23,10 @@ test("llamaGetSchema", async () => {
 
   // Recursively get all balances w/ the id: wallet
 
-  let balances: {
+  const balances: {
     balanceUSD: number;
     chainId: number;
-    amount: BigInt;
+    amount: bigint;
     price: number;
     symbol?: string;
     name?: string;
@@ -34,9 +34,12 @@ test("llamaGetSchema", async () => {
     decimals?: number;
   }[] = [];
 
-  parsed.protocols.forEach(protocol => {
-    protocol.groups.forEach(group => {
-      group.balances.forEach(balance => {
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  parsed.protocols.forEach((protocol) => {
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    protocol.groups.forEach((group) => {
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      group.balances.forEach((balance) => {
         // Here we add both the balance object and the protocol id to the balances array
         balances.push({
           balanceUSD: balance.balanceUSD,

@@ -16,6 +16,7 @@
 // the parent component already has it.
 // "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutationFeedbackCreate } from "@lightdotso/query";
 import { useAuth, useFormRef } from "@lightdotso/stores";
 import {
@@ -30,8 +31,7 @@ import {
   RadioGroupItem,
   Textarea,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -156,7 +156,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       🤯
                     </div>
                   </FormLabel>
@@ -169,7 +169,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       🙂
                     </div>
                   </FormLabel>
@@ -182,7 +182,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       😭
                     </div>
                   </FormLabel>

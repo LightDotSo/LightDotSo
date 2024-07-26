@@ -38,7 +38,7 @@ export default async function Page() {
 
   return (
     <ul className="text-lg hover:underline">
-      {blogs.map(blog => (
+      {blogs.map((blog) => (
         <li key={blog.slug}>
           <a href={`/blog/${blog.slug}`}>{blog.entry.title}</a>
         </li>

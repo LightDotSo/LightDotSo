@@ -20,8 +20,8 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogPortal,
   DialogOverlay,
+  DialogPortal,
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
@@ -51,7 +51,7 @@ type Story = StoryObj<typeof Dialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>

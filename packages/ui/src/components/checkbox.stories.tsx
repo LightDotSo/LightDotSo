@@ -38,13 +38,13 @@ type Story = StoryObj<typeof Checkbox>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <div className="items-top flex space-x-2">
       <Checkbox {...args} id="terms1" />
       <div className="grid gap-1.5 leading-none">
         <label
           htmlFor="terms1"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Accept terms and conditions
         </label>
@@ -57,12 +57,12 @@ export const Base: Story = {
   args: {},
 };
 export const Disabled: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Checkbox {...args} id="terms2" />
       <label
         htmlFor="terms2"
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         Accept terms and conditions
       </label>

@@ -39,7 +39,7 @@ type Story = StoryObj<typeof RadioGroup>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <RadioGroup className="text-text" defaultValue="comfortable">
       <div className="flex items-center space-x-2">
         <RadioGroupItem value="default" id="r1" />

@@ -173,7 +173,7 @@ type ModalsStore = {
 
 export const useModals = create(
   devtools<ModalsStore>(
-    set => ({
+    (set) => ({
       addressModalProps: {
         addressOrEns: "",
         isAddressModalVisible: false,

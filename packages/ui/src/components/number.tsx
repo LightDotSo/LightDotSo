@@ -15,7 +15,7 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { motion, useSpring, useTransform } from "framer-motion";
 import type { HTMLMotionProps, MotionValue } from "framer-motion";
 import { forwardRef, useEffect, useState } from "react";
@@ -86,7 +86,7 @@ const NumberValue = ({
   const [value, setValue] = useState(() => display.get().toString());
 
   useEffect(() => {
-    const unsubscribe = display.on("change", v => {
+    const unsubscribe = display.on("change", (v) => {
       setValue(v.toString());
     });
 
@@ -99,18 +99,20 @@ const NumberValue = ({
   return <>{value}</>;
 };
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
   ({ prefix, value, className, size, variant, ...props }, ref) => {
-    let spring = useSpring(0, {
+    const spring = useSpring(0, {
       mass: 0.8,
       stiffness: 80,
       damping: 10,
     });
 
-    let displayWhole = useTransform(spring, current => {
+    const displayWhole = useTransform(spring, (current) => {
       if (
         typeof current === "undefined" ||
         current === null ||
+        // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
         isNaN(current)
       ) {
         return "0";
@@ -118,13 +120,14 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
       return Math.max(0, Math.floor(current)).toLocaleString();
     });
 
-    let displayFraction = useTransform(spring, current =>
+    const displayFraction = useTransform(spring, (current) =>
       current % 1 > 0 ? (current % 1).toFixed(2).substring(2) : "00",
     );
 
     useEffect(() => {
       // Delay the spring animation to give the component time to mount
       setTimeout(() => {
+        // biome-ignore lint/style/useNumberNamespace: <explanation>
         spring.set(parseFloat(value.toFixed(2)));
       }, 300);
     }, [spring, value]);

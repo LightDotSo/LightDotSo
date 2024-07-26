@@ -16,14 +16,18 @@
 // Utils
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function debounce<T extends (...args: any[]) => any>(
   cb: T,
   wait: number,
 ) {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   let h: any;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const callable = (...args: any) => {
     clearTimeout(h);
     h = setTimeout(() => cb(...args), wait);
   };
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   return <T>(<any>callable);
 }

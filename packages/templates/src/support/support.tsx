@@ -16,7 +16,7 @@
 
 import { StateInfoSection } from "@lightdotso/ui";
 import { UserIcon } from "lucide-react";
-import { type FC } from "react";
+import type { FC } from "react";
 import { Cal } from "../cal";
 
 // -----------------------------------------------------------------------------

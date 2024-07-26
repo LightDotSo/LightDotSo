@@ -28,10 +28,10 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -114,10 +114,10 @@ export const RootContext: FC = () => {
   }, [pathname]);
 
   const formWarnings = useMemo(() => {
-    let warnings = [];
+    const warnings = [];
 
     if (pathname === "/new/configuration") {
-      if (formValues && formValues?.owners && formValues.owners.length < 2) {
+      if (formValues?.owners && formValues.owners.length < 2) {
         warnings.push({
           title: "Only one owner",
           message:
@@ -137,7 +137,7 @@ export const RootContext: FC = () => {
     if (pathname === "/new") {
       // Filter out issues that are not related to the form with `issue.path` that is either `threshold` or `salt`
       const filtereIssues = errors.issues.filter(
-        issue =>
+        (issue) =>
           !issue.path.includes("threshold") &&
           !issue.path.includes("salt") &&
           !issue.path.includes("owners") &&
@@ -150,7 +150,7 @@ export const RootContext: FC = () => {
     if (pathname === "/new/configuration") {
       // Filter out issues that are not related to the form with `issue.path` that is a `check`
       const filteredIssues = errors.issues.filter(
-        issue => !issue.path.includes("check"),
+        (issue) => !issue.path.includes("check"),
       );
 
       return filteredIssues;
@@ -203,7 +203,7 @@ export const RootContext: FC = () => {
                   </>
                 </div>
               )}
-              {formValues && formValues?.name && (
+              {formValues?.name && (
                 <div className="flex justify-between">
                   {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                   <>
@@ -219,7 +219,7 @@ export const RootContext: FC = () => {
                   </>
                 </div>
               )}
-              {formValues && formValues?.threshold && (
+              {formValues?.threshold && (
                 <div className="flex justify-between">
                   {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                   <>
@@ -256,6 +256,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-info-strong" type="multiple">
               {formInfos.map((info, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-info-weaker"
@@ -284,6 +285,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-warning-strong" type="multiple">
               {formWarnings.map((warning, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-warning-weaker"
@@ -312,6 +314,7 @@ export const RootContext: FC = () => {
             <Accordion className="text-text-error-strong" type="multiple">
               {formIssues.map((error, index) => (
                 <AccordionItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   value={`item-${index}`}
                   className="border-border-error-weaker"

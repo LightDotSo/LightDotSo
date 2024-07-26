@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { NavSidebar } from "@/components/nav/nav-sidebar";
+import { TITLES } from "@/const";
 import {
-  BaseLayerWrapper,
-  SettingsPageWrapper,
-  HStackFull,
   BannerSection,
+  BaseLayerWrapper,
+  HStackFull,
+  SettingsPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { NavSidebar } from "@/components/nav/nav-sidebar";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const

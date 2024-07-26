@@ -63,13 +63,13 @@ export const useMutationQueueToken = (params: QueueParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           if (params.isMinimal) {
             return;
           }
           toast.success("Successfully queued portfolio!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/v2/gas-price": {
     get: operations["AppController_getGasPrice"];
@@ -134,7 +133,18 @@ export interface components {
        * @description Array of bridges used in the route
        * @example [anyswap-router-v4]
        */
-      usedBridgeNames: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+      usedBridgeNames: (
+        | "polygon-bridge"
+        | "hop"
+        | "anyswap-router-v4"
+        | "hyphen"
+        | "arbitrum-bridge"
+        | "connext"
+        | "celer"
+        | "across"
+        | "optimism-bridge"
+        | "refuel-bridge"
+      )[];
       /**
        * @description Total number of transactions for the route.
        * @example 3
@@ -199,7 +209,17 @@ export interface components {
        * @example 137
        * @enum {string}
        */
-      chainId: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      chainId:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       /**
        * @description URL for icon of token.
        * @example https://maticnetwork.github.io/polygon-token-assets/assets/usdc.svg
@@ -281,7 +301,17 @@ export interface components {
        * @example 137
        * @enum {string}
        */
-      chainId: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      chainId:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       /**
        * @description Calldata for transaction.
        * @example 0xasjajfbalkfajfalalglaglagbalga
@@ -384,7 +414,17 @@ export interface components {
        * @example anyswap-router-v4
        * @enum {string}
        */
-      bridgeName: "polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge";
+      bridgeName:
+        | "polygon-bridge"
+        | "hop"
+        | "anyswap-router-v4"
+        | "hyphen"
+        | "arbitrum-bridge"
+        | "connext"
+        | "celer"
+        | "across"
+        | "optimism-bridge"
+        | "refuel-bridge";
       /**
        * @description URL for icon of bridge.
        * @example https://bridgelogos.s3.ap-south-1.amazonaws.com/anyswap.png
@@ -536,13 +576,33 @@ export interface components {
        * @example 137
        * @enum {string}
        */
-      fromChainId: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      fromChainId:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       /**
        * @description Chain id of destination chain.
        * @example 56
        * @enum {string}
        */
-      toChainId: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      toChainId:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       /**
        * @description Token address on source chain.
        * @example 0x2791bca1f2de4661ed88a30c99a7a9449aa84174
@@ -569,7 +629,17 @@ export interface components {
       userTxType?: "approve" | "fund-movr" | "claim" | "dex-swap" | "sign";
       txTarget?: string;
       /** @enum {string} */
-      chainId?: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      chainId?:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       activeRouteId: number;
       txData?: string;
       /** @enum {string} */
@@ -677,7 +747,17 @@ export interface components {
        * @example 137
        * @enum {string}
        */
-      chainId: "ETHEREUM" | "OPTIMISM" | "BSC" | "XDAI" | "POLYGON" | "FANTOM" | "BOBA" | "ARBITRUM" | "AVALANCHE" | "AURORA";
+      chainId:
+        | "ETHEREUM"
+        | "OPTIMISM"
+        | "BSC"
+        | "XDAI"
+        | "POLYGON"
+        | "FANTOM"
+        | "BOBA"
+        | "ARBITRUM"
+        | "AVALANCHE"
+        | "AURORA";
       /**
        * @description Calldata for transaction.
        * @example 0xaajlafnalfnal
@@ -749,7 +829,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   AppController_getGasPrice: {
     parameters: {
       query: {
@@ -964,12 +1043,34 @@ export interface operations {
          */
         excludeDexes?: ("oneinch" | "zerox")[];
         /** @description Specify Bridges that should be included in routes. */
-        includeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        includeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /**
          * @description Specify Bridges that should be excluded in routes.
          * This option will be ignored if includeBridges is specified.
          */
-        excludeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        excludeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /** @description Param to sort routes based on. */
         sort: "output" | "gas" | "time";
         /**
@@ -1360,12 +1461,34 @@ export interface operations {
          */
         excludeDexes?: ("oneinch" | "zerox")[];
         /** @description Specify Bridges that should be included for token support. */
-        includeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        includeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /**
          * @description Specify Bridges that should be excluded for token support.
          * This option will be ignored if includeBridges is specified.
          */
-        excludeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        excludeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /** @description To be Marked true if you want the token list that needs only a single transaction from the user to bridge. */
         singleTxOnly?: boolean;
         /** @description To be Marked true if you want the shorter and more efficient token list. */
@@ -1410,12 +1533,34 @@ export interface operations {
          */
         excludeDexes?: ("oneinch" | "zerox")[];
         /** @description Specify Bridges that should be included for token support. */
-        includeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        includeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /**
          * @description Specify Bridges that should be excluded for token support.
          * This option will be ignored if includeBridges is specified.
          */
-        excludeBridges?: ("polygon-bridge" | "hop" | "anyswap-router-v4" | "hyphen" | "arbitrum-bridge" | "connext" | "celer" | "across" | "optimism-bridge" | "refuel-bridge")[];
+        excludeBridges?: (
+          | "polygon-bridge"
+          | "hop"
+          | "anyswap-router-v4"
+          | "hyphen"
+          | "arbitrum-bridge"
+          | "connext"
+          | "celer"
+          | "across"
+          | "optimism-bridge"
+          | "refuel-bridge"
+        )[];
         /** @description To be Marked true if you want the token list that needs only a single transaction from the user to bridge. */
         singleTxOnly?: boolean;
         /** @description To be Marked true if you want the shorter and more efficient token list. */

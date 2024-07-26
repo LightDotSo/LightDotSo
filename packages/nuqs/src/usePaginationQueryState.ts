@@ -21,23 +21,22 @@ import { createParser, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export const paginationParser = createParser({
-  parse: function (value: string): PaginationState | null {
+  parse: (value: string): PaginationState | null => {
     if (!value) {
       return null;
     }
     const [pageIndex, pageSize] = value
       .split(",")
-      .map(val => Number.parseInt(val));
-    if (isNaN(pageIndex) || isNaN(pageSize)) {
+      .map((val) => Number.parseInt(val));
+    if (Number.isNaN(pageIndex) || Number.isNaN(pageSize)) {
       return null;
     }
 
     const finalPageSize = PAGINATION_SIZES.includes(pageSize) ? pageSize : 10;
     return { pageIndex: pageIndex, pageSize: finalPageSize };
   },
-  serialize: function (value: PaginationState): string {
-    return `${value.pageIndex},${value.pageSize}`;
-  },
+  serialize: (value: PaginationState): string =>
+    `${value.pageIndex},${value.pageSize}`,
 })
   .withDefault({ pageIndex: 0, pageSize: 10 })
   .withOptions({ shallow: false });

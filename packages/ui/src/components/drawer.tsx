@@ -53,7 +53,7 @@ const DrawerOverlay = forwardRef<
   <DrawerPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-background-overlay backdrop-blur-sm transition-opacity duration-300 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-background-overlay backdrop-blur-sm transition-opacity duration-300 ease-out data-[state=closed]:animate-out data-[state=open]:animate-in",
       className,
     )}
     {...props}
@@ -119,7 +119,7 @@ const DrawerTitle = forwardRef<
   <DrawerPrimitive.Title
     ref={ref}
     className={cn(
-      "py-2 text-lg font-semibold leading-none tracking-tight",
+      "py-2 font-semibold text-lg leading-none tracking-tight",
       className,
     )}
     {...props}

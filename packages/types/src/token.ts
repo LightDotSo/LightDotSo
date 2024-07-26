@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenData } from "@lightdotso/data";
+import type { TokenData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Types

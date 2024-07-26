@@ -14,6 +14,7 @@
 
 "use client";
 
+import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
 import {
   useAddressQueryState,
   usePaginationQueryState,
@@ -27,9 +28,8 @@ import { notificationColumns } from "@lightdotso/tables";
 import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 import type { Address } from "viem";
-import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Component

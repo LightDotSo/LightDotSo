@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SettingsBillingBalanceCard } from "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card";
+import { handler } from "@/handlers/[address]/settings/billing/handler";
+import { preloader } from "@/preloaders/[address]/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { SettingsBillingBalanceCard } from "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card";
-import { handler } from "@/handlers/[address]/settings/billing/handler";
-import { preloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

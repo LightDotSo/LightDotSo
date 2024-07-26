@@ -26,8 +26,8 @@ import {
 } from "@lightdotso/ui";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -40,7 +40,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { activityColumns } from "./activity-columns";
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ export const ActivityTable: FC<ActivityTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "timestamp");
+    return columns.filter((column) => column.id !== "timestamp");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -113,6 +113,7 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setActivityTable) {
       setActivityTable(table);
@@ -122,27 +123,43 @@ export const ActivityTable: FC<ActivityTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("user_address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("user_address")?.getFilterValue(),
+    table
+      ?.getColumn("user_address")
+      ?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("entity"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("entity")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("entity")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("entity")?.getCanHide(),
+    table
+      ?.getColumn("entity")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("entity")?.getIsVisible(),
+    table
+      ?.getColumn("entity")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("operation"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("operation")?.getCanHide(),
+    table
+      ?.getColumn("operation")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("operation")?.getIsVisible(),
+    table
+      ?.getColumn("operation")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("timestamp"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("timestamp")?.getCanHide(),
+    table
+      ?.getColumn("timestamp")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("timestamp")?.getIsVisible(),
+    table
+      ?.getColumn("timestamp")
+      ?.getIsVisible(),
     setActivityTable,
   ]);
 
@@ -159,9 +176,9 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -178,12 +195,12 @@ export const ActivityTable: FC<ActivityTableProps> = ({
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
+          table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
             >
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
@@ -194,8 +211,13 @@ export const ActivityTable: FC<ActivityTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

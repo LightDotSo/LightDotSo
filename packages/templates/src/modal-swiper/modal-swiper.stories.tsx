@@ -48,6 +48,7 @@ export const Base: Story = {
       <>
         <ModalSwiper>
           {Array.from({ length: 3 }).map(
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             (_, i) => pageIndex === i && <div key={i}>Page {i}</div>,
           )}
         </ModalSwiper>

@@ -19,10 +19,10 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
 import { UserOperationTableRowActions } from "./actions";
 import {
-  UserOperationCardInterpretationAction,
   UserOperationCardChain,
-  UserOperationCardStatus,
   UserOperationCardInterpretation,
+  UserOperationCardInterpretationAction,
+  UserOperationCardStatus,
   UserOperationCardToggle,
 } from "./card";
 
@@ -34,7 +34,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
   {
     id: "actions",
     accessorKey: "actions",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row?.interpretation?.actions;
     },
     header: ({ column }) => (

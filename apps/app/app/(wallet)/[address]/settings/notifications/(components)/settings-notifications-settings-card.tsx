@@ -14,13 +14,13 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
+import { TITLES } from "@/const";
 import { useQueryWalletNotificationSettings } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -68,12 +68,12 @@ export const SettingsNotificationsSettingsCard: FC<
   return (
     <SettingsCard
       title={
-        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
+        TITLES.WalletSettings.subcategories.Notifications.subcategories[
           "Notification Settings"
         ].title
       }
       subtitle={
-        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
+        TITLES.WalletSettings.subcategories.Notifications.subcategories[
           "Notification Settings"
         ].description
       }
@@ -84,9 +84,7 @@ export const SettingsNotificationsSettingsCard: FC<
       }
     >
       <div className="flex text-lg">
-        <span>
-          {walletNotificationSettings && walletNotificationSettings.id}
-        </span>
+        <span>{walletNotificationSettings?.id}</span>
       </div>
     </SettingsCard>
   );

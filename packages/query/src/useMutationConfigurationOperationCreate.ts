@@ -78,10 +78,10 @@ export const useMutationConfigurationOperationCreate = (
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully submitted upgrade proposal!");
         },
-        err => {
+        (err) => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);

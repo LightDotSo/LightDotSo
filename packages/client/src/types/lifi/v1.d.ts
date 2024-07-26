@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/tokens": {
     /**
@@ -759,26 +758,26 @@ export interface components {
     UnavailableRoutes: {
       /** @description An object containing information about routes that were intentionally filtered out. */
       filteredOut?: {
-          /**
-           * @description The complete representation of the attempted route.
-           * @example 100:USDC-hop-137:USDC-137:USDC~137:SUSHI
-           */
-          overallPath?: string;
-          /** @description Out best attempt at describing the failure. */
-          reason?: string;
-        }[];
+        /**
+         * @description The complete representation of the attempted route.
+         * @example 100:USDC-hop-137:USDC-137:USDC~137:SUSHI
+         */
+        overallPath?: string;
+        /** @description Out best attempt at describing the failure. */
+        reason?: string;
+      }[];
       /** @description An object containing information about failed routes. */
       failed?: {
-          /**
-           * @description The complete representation of the attempted route.
-           * @example 100:USDC-hop-137:USDC-137:USDC~137:SUSHI
-           */
-          overallPath?: string;
-          /** @description An object with all subpaths that generated one or more errors */
-          subpaths?: {
-            [key: string]: components["schemas"]["ToolError"];
-          };
-        }[];
+        /**
+         * @description The complete representation of the attempted route.
+         * @example 100:USDC-hop-137:USDC-137:USDC~137:SUSHI
+         */
+        overallPath?: string;
+        /** @description An object with all subpaths that generated one or more errors */
+        subpaths?: {
+          [key: string]: components["schemas"]["ToolError"];
+        };
+      }[];
     };
     /** @enum {unknown} */
     LIFuelStatusStateEnum: "NOT_FOUND" | "PENDING" | "DONE";
@@ -862,13 +861,83 @@ export interface components {
       toChainId?: string;
     };
     /** @enum {string} */
-    BridgesEnum: "hop" | "multichain" | "cbridge" | "celercircle" | "connext" | "hyphen" | "optimism" | "polygon" | "arbitrum" | "avalanche" | "across" | "stargate" | "gnosis" | "omni" | "amarok" | "lifuel" | "celerim";
+    BridgesEnum:
+      | "hop"
+      | "multichain"
+      | "cbridge"
+      | "celercircle"
+      | "connext"
+      | "hyphen"
+      | "optimism"
+      | "polygon"
+      | "arbitrum"
+      | "avalanche"
+      | "across"
+      | "stargate"
+      | "gnosis"
+      | "omni"
+      | "amarok"
+      | "lifuel"
+      | "celerim";
     /** @enum {string} */
-    ExchangesEnum: "1inch" | "paraswap" | "openocean" | "0x" | "dodo" | "uniswap" | "sushiswap" | "quickswap" | "honeyswap" | "pancakeswap" | "spookyswap" | "viperswap" | "solarbeam" | "spiritswap";
+    ExchangesEnum:
+      | "1inch"
+      | "paraswap"
+      | "openocean"
+      | "0x"
+      | "dodo"
+      | "uniswap"
+      | "sushiswap"
+      | "quickswap"
+      | "honeyswap"
+      | "pancakeswap"
+      | "spookyswap"
+      | "viperswap"
+      | "solarbeam"
+      | "spiritswap";
     /** @enum {string} */
-    QuoteBridgesEnum: "hop" | "multichain" | "cbridge" | "celercircle" | "connext" | "hyphen" | "optimism" | "polygon" | "arbitrum" | "avalanche" | "across" | "stargate" | "gnosis" | "omni" | "amarok" | "none" | "all" | "lifuel" | "celerim" | "default" | "[]";
+    QuoteBridgesEnum:
+      | "hop"
+      | "multichain"
+      | "cbridge"
+      | "celercircle"
+      | "connext"
+      | "hyphen"
+      | "optimism"
+      | "polygon"
+      | "arbitrum"
+      | "avalanche"
+      | "across"
+      | "stargate"
+      | "gnosis"
+      | "omni"
+      | "amarok"
+      | "none"
+      | "all"
+      | "lifuel"
+      | "celerim"
+      | "default"
+      | "[]";
     /** @enum {string} */
-    QuoteExchangesEnum: "1inch" | "paraswap" | "openocean" | "0x" | "dodo" | "uniswap" | "sushiswap" | "quickswap" | "honeyswap" | "pancakeswap" | "spookyswap" | "viperswap" | "solarbeam" | "spiritswap" | "none" | "all" | "default" | "[]";
+    QuoteExchangesEnum:
+      | "1inch"
+      | "paraswap"
+      | "openocean"
+      | "0x"
+      | "dodo"
+      | "uniswap"
+      | "sushiswap"
+      | "quickswap"
+      | "honeyswap"
+      | "pancakeswap"
+      | "spookyswap"
+      | "viperswap"
+      | "solarbeam"
+      | "spiritswap"
+      | "none"
+      | "all"
+      | "default"
+      | "[]";
     /**
      * Root type for ContractCallsRequest
      * @description Object defining instructions on how to perform multiple cross-chain/same-chain calls
@@ -1471,7 +1540,19 @@ export interface components {
        * @description The error code.
        * @enum {string}
        */
-      code?: "NO_POSSIBLE_ROUTE" | "INSUFFICIENT_LIQUIDITY" | "TOOL_TIMEOUT" | "UNKNOWN_ERROR" | "RPC_ERROR" | "AMOUNT_TOO_LOW" | "AMOUNT_TOO_HIGH" | "FEES_HIGHER_THAN_AMOUNT" | "DIFFERENT_RECIPIENT_NOT_SUPPORTED" | "TOOL_SPECIFIC_ERROR" | "CANNOT_GUARANTEE_MIN_AMOUNT" | "RATE_LIMIT_EXCEEDED";
+      code?:
+        | "NO_POSSIBLE_ROUTE"
+        | "INSUFFICIENT_LIQUIDITY"
+        | "TOOL_TIMEOUT"
+        | "UNKNOWN_ERROR"
+        | "RPC_ERROR"
+        | "AMOUNT_TOO_LOW"
+        | "AMOUNT_TOO_HIGH"
+        | "FEES_HIGHER_THAN_AMOUNT"
+        | "DIFFERENT_RECIPIENT_NOT_SUPPORTED"
+        | "TOOL_SPECIFIC_ERROR"
+        | "CANNOT_GUARANTEE_MIN_AMOUNT"
+        | "RATE_LIMIT_EXCEEDED";
       action?: components["schemas"]["Action"];
       /** @description The tool that emitted the error. */
       tool?: string;
@@ -2469,44 +2550,44 @@ export interface components {
         toAmountMin?: string;
         approvalAddress?: string;
         feeCosts?: {
+          name?: string;
+          description?: string;
+          percentage?: string;
+          token?: {
+            address?: string;
+            /** Format: number */
+            decimals?: number;
+            symbol?: string;
+            /** Format: number */
+            chainId?: number;
+            coinKey?: string;
             name?: string;
-            description?: string;
-            percentage?: string;
-            token?: {
-              address?: string;
-              /** Format: number */
-              decimals?: number;
-              symbol?: string;
-              /** Format: number */
-              chainId?: number;
-              coinKey?: string;
-              name?: string;
-              logoURI?: string;
-            };
-            amount?: string;
-            amountUSD?: string;
-            included?: boolean;
-          }[];
+            logoURI?: string;
+          };
+          amount?: string;
+          amountUSD?: string;
+          included?: boolean;
+        }[];
         gasCosts?: {
-            type?: string;
-            price?: string;
-            estimate?: string;
-            limit?: string;
-            amount?: string;
-            amountUSD?: string;
-            token?: {
-              address?: string;
-              symbol?: string;
-              /** Format: number */
-              decimals?: number;
-              /** Format: number */
-              chainId?: number;
-              name?: string;
-              coinKey?: string;
-              priceUSD?: string;
-              logoURI?: string;
-            };
-          }[];
+          type?: string;
+          price?: string;
+          estimate?: string;
+          limit?: string;
+          amount?: string;
+          amountUSD?: string;
+          token?: {
+            address?: string;
+            symbol?: string;
+            /** Format: number */
+            decimals?: number;
+            /** Format: number */
+            chainId?: number;
+            name?: string;
+            coinKey?: string;
+            priceUSD?: string;
+            logoURI?: string;
+          };
+        }[];
         data?: {
           bid?: {
             user?: string;
@@ -2541,16 +2622,16 @@ export interface components {
       execution?: {
         status?: string;
         process?: {
-            id?: string;
-            /** Format: number */
-            startedAt?: number;
-            message?: string;
-            status?: string;
-            txHash?: string;
-            txLink?: string;
-            /** Format: number */
-            doneAt?: number;
-          }[];
+          id?: string;
+          /** Format: number */
+          startedAt?: number;
+          message?: string;
+          status?: string;
+          txHash?: string;
+          txLink?: string;
+          /** Format: number */
+          doneAt?: number;
+        }[];
       };
     };
     /**
@@ -3373,7 +3454,17 @@ export interface components {
        * @description A more specific substatus. This is available for PENDING and DONE statuses. More information can be found here: https://docs.li.fi/more-integration-options/li.fi-api/checking-the-status-of-a-transaction
        * @enum {unknown}
        */
-      substatus?: "WAIT_SOURCE_CONFIRMATIONS" | "WAIT_DESTINATION_TRANSACTION" | "BRIDGE_NOT_AVAILABLE" | "CHAIN_NOT_AVAILABLE" | "NOT_PROCESSABLE_REFUND_NEEDED" | "REFUND_IN_PROGRESS" | "UNKNOWN_ERROR" | "COMPLETED" | "PARTIAL" | "REFUNDED";
+      substatus?:
+        | "WAIT_SOURCE_CONFIRMATIONS"
+        | "WAIT_DESTINATION_TRANSACTION"
+        | "BRIDGE_NOT_AVAILABLE"
+        | "CHAIN_NOT_AVAILABLE"
+        | "NOT_PROCESSABLE_REFUND_NEEDED"
+        | "REFUND_IN_PROGRESS"
+        | "UNKNOWN_ERROR"
+        | "COMPLETED"
+        | "PARTIAL"
+        | "REFUNDED";
       /** @description The tool used for this transfer */
       tool: string;
     };

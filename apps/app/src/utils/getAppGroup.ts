@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { AppGroup } from "@lightdotso/types";
 import {
   ACTION_PATHS,
   AUTHENTICATED_PATHS,
   DEMO_PATHS,
   UNAUTHENTICATED_PATHS,
 } from "@/const";
+import type { AppGroup } from "@lightdotso/types";
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -26,21 +26,21 @@ import {
 
 export const getAppGroup = (pathname: string): AppGroup => {
   if (
-    UNAUTHENTICATED_PATHS.some(path => pathname.startsWith(path)) ||
+    UNAUTHENTICATED_PATHS.some((path) => pathname.startsWith(path)) ||
     pathname === "/"
   ) {
     return "unauthenticated";
   }
 
-  if (AUTHENTICATED_PATHS.some(path => pathname.startsWith(path))) {
+  if (AUTHENTICATED_PATHS.some((path) => pathname.startsWith(path))) {
     return "authenticated";
   }
 
-  if (DEMO_PATHS.some(path => pathname.startsWith(path))) {
+  if (DEMO_PATHS.some((path) => pathname.startsWith(path))) {
     return "demo";
   }
 
-  if (ACTION_PATHS.some(path => pathname.startsWith(path))) {
+  if (ACTION_PATHS.some((path) => pathname.startsWith(path))) {
     return "action";
   }
 

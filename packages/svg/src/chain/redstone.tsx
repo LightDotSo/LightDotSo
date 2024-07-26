@@ -32,6 +32,7 @@ export const RedstoneLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Redstone</title>
     <g clip-path="url(#clip0_11397_17461)">
       <rect width="24" height="24" rx="6" fill="#F34242" />
       <path opacity="0.75" d="M6 9V6H9V9H6Z" fill="white" />

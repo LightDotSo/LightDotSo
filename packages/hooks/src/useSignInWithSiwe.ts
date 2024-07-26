@@ -18,7 +18,7 @@ import { getNonce } from "@lightdotso/client";
 import { useMutationAuthVerify } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
-import { useSignMessage, useAccount } from "@lightdotso/wagmi";
+import { useAccount, useSignMessage } from "@lightdotso/wagmi";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import type { Address } from "viem";
@@ -55,6 +55,7 @@ export const useSignInWithSiwe = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSignIn = useCallback(async () => {
     if (!address || !chain || sessionId) {
       return;
@@ -63,7 +64,7 @@ export const useSignInWithSiwe = () => {
     const res = await getNonce();
 
     res.match(
-      _ => {
+      (_) => {
         const message = new SiweMessage({
           domain: window.location.host,
           address: address as Address,
@@ -71,20 +72,21 @@ export const useSignInWithSiwe = () => {
           uri: window.location.origin,
           version: "1",
           chainId: chain.id,
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           nonce: res._unsafeUnwrap().nonce!,
         });
         const messageToSign = message.prepareMessage();
 
         signMessageAsync({
           message: message.prepareMessage(),
-        }).then(signature => {
+        }).then((signature) => {
           verify({
             message: messageToSign,
             signature: signature,
           });
         });
       },
-      err => {
+      (err) => {
         if (err instanceof Error) {
           toast.error(err.message);
         } else {

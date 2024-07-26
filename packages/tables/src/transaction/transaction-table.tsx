@@ -27,8 +27,8 @@ import {
 import { cn } from "@lightdotso/utils";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { transactionColumns } from "./transaction-columns";
 
 // -----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "timestamp");
+    return columns.filter((column) => column.id !== "timestamp");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -116,6 +116,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!isLoading && setTransactionTable) {
       setTransactionTable(table);
@@ -126,11 +127,17 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain_id"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getCanHide(),
+    table
+      ?.getColumn("chain_id")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("chain_id")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getIsVisible(),
+    table
+      ?.getColumn("chain_id")
+      ?.getIsVisible(),
     // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("sparkline"),
     // // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,9 +166,9 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -181,7 +188,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
           table
             .getRowModel()
             .rows.slice(0, limit || table.getRowModel().rows?.length)
-            .map(row => (
+            .map((row) => (
               <TableRow
                 key={row.id}
                 className={cn(
@@ -196,7 +203,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
                   }
                 }}
               >
-                {row.getVisibleCells().map(cell => (
+                {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
@@ -207,8 +214,13 @@ export const TransactionTable: FC<TransactionTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

@@ -14,6 +14,12 @@
 
 "use client";
 
+import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
+import {
+  StepsEnum,
+  steps,
+} from "@/app/(authenticated)/new/(components)/root/root";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import {
   ownerParser,
   useInviteCodeQueryState,
@@ -24,16 +30,10 @@ import {
   useTypeQueryState,
 } from "@lightdotso/nuqs";
 import { cn } from "@lightdotso/utils";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import type { FC } from "react";
-import {
-  steps,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root/root";
-import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -71,7 +71,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // Mapping
   // ---------------------------------------------------------------------------
 
-  const linkSteps = steps.map(step => {
+  const linkSteps = steps.map((step) => {
     // Update the status of the step based on the current step
     if (step.enum === currentStepType) {
       return { ...step, status: "current" };
@@ -106,12 +106,13 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
 
   // Get the step from the stepType
   const step =
-    linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
+    linkSteps.find((step) => step.href.includes(stepType)) ?? linkSteps[0];
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const navigateToStep = useCallback(
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
@@ -136,8 +137,8 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     params: ReadonlyURLSearchParams,
     requiredParams: string[],
   ) => {
-    let totalWeight = 0;
-    let threshold = 0;
+    const totalWeight = 0;
+    const threshold = 0;
 
     // Iterate over each key-value pair
     // for (const [key, value] of params.entries()) {
@@ -166,13 +167,14 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     return true;
   };
 
-  let requiredParams = ["inviteCode", "name", "owners", "salt", "threshold"];
+  const requiredParams = ["inviteCode", "name", "owners", "salt", "threshold"];
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
+    // biome-ignore lint/a11y/useButtonType: <explanation>
     <button
       disabled={
         // If stepType is `new`, it's always enabled
@@ -190,11 +192,11 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       <span
         className={cn(
           stepType === StepsEnum.New &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:top-auto md:w-[calc(100%-1.25rem)]",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:bottom-0 md:w-[calc(100%-1.25rem)]",
           stepType === StepsEnum.Configuration &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:w-full",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:right-5 md:bottom-0 md:left-auto md:w-full",
           stepType === StepsEnum.Confirm &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:w-[calc(100%+1.25rem)]",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:right-0 md:bottom-0 md:left-auto md:w-[calc(100%+1.25rem)]",
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
@@ -203,7 +205,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         )}
         aria-hidden="true"
       />
-      <span className="flex items-center px-4 py-2 text-sm font-medium md:px-6 md:py-4">
+      <span className="flex items-center px-4 py-2 font-medium text-sm md:px-6 md:py-4">
         <span
           className={cn(
             "flex size-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
@@ -229,7 +231,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         </span>
         <span
           className={cn(
-            "ml-4 text-sm font-medium",
+            "ml-4 font-medium text-sm",
             step.status === "current" ? "text-text" : "text-border",
           )}
         >

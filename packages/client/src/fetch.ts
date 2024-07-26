@@ -26,13 +26,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { err, ok, ResultAsync } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 
 // From: https://github.com/radixdlt/babylon-alphanet/blob/5c73dab8e04163250c7e4dcc17fc85d37b89b778/alphanet-walletextension-sdk/sandbox/core-api/utils.ts#L1C1-L17C79
 // License: Apache-2.0
 export const fromResponse = <T>(response: Response) =>
-  ResultAsync.fromPromise(response.text(), error => error as Error)
-    .andThen(text => {
+  ResultAsync.fromPromise(response.text(), (error) => error as Error)
+    .andThen((text) => {
       try {
         return ok(JSON.parse(text));
       } catch (error) {
@@ -53,6 +53,7 @@ export const fromResponse = <T>(response: Response) =>
 // From: https://github.com/radixdlt/babylon-alphanet/blob/5c73dab8e04163250c7e4dcc17fc85d37b89b778/alphanet-walletextension-sdk/sandbox/core-api/core-api.ts#L80C9-L80C16
 // License: Apache-2.0
 export const fetchWithResult = <T>(
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: any,
   ...input: Parameters<typeof fetch>
 ) =>
@@ -67,9 +68,9 @@ export const fetchWithResult = <T>(
       },
       body: JSON.stringify(data),
     }),
-    error => error as Error,
+    (error) => error as Error,
   )
-    .andThen(response => fromResponse<T>(response))
+    .andThen((response) => fromResponse<T>(response))
     .andThen(({ data, status }) =>
       status === 200
         ? ok<T, never>(data)

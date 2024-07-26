@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import OriginalPage from "@/app/(action)/create/page";
+import { ModalInterceptionFooter } from "@/app/@create/(.)create/(components)/modal-interception-footer";
 import { ModalInterception } from "@lightdotso/templates";
 import type { Address } from "viem";
-import { ModalInterceptionFooter } from "@/app/@create/(.)create/(components)/modal-interception-footer";
-import OriginalPage from "@/app/(action)/create/page";
 
 // -----------------------------------------------------------------------------
 // Props

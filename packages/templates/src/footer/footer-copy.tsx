@@ -25,12 +25,12 @@ export const FooterCopy: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <p className="text-xs text-text-weak/60 xl:text-center">
+    <p className="text-text-weak/60 text-xs xl:text-center">
       &copy; {new Date().getFullYear()}
       <span className="hidden md:inline-flex">&nbsp;LightDotSo - </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["Repo"]}
+        href={GITHUB_LINKS.Repo}
         target="_blank"
         rel="noreferrer"
       >
@@ -39,7 +39,7 @@ export const FooterCopy: FC = () => {
       <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["Audit"]}
+        href={GITHUB_LINKS.Audit}
         target="_blank"
         rel="noreferrer"
       >
@@ -48,7 +48,7 @@ export const FooterCopy: FC = () => {
       <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["Acknowledgements"]}
+        href={GITHUB_LINKS.Acknowledgements}
         target="_blank"
         rel="noreferrer"
       >

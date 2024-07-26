@@ -26,8 +26,8 @@ import {
 } from "@lightdotso/ui";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -40,7 +40,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { ownerColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "index");
+    return columns.filter((column) => column.id !== "index");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -113,6 +113,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setOwnerTable) {
       setOwnerTable(table);
@@ -120,15 +121,23 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("address")?.getFilterValue(),
+    table
+      ?.getColumn("address")
+      ?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("weight"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("weight")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("weight")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("weight")?.getCanHide(),
+    table
+      ?.getColumn("weight")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("weight")?.getIsVisible(),
+    table
+      ?.getColumn("weight")
+      ?.getIsVisible(),
     setOwnerTable,
   ]);
 
@@ -145,9 +154,9 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   return (
     <Table>
       <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
+            {headerGroup.headers.map((header) => {
               return (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -164,12 +173,12 @@ export const OwnerTable: FC<OwnerTableProps> = ({
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
+          table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
             >
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
@@ -180,8 +189,13 @@ export const OwnerTable: FC<OwnerTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
-                {table.getVisibleLeafColumns().map(column => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}
                     style={{ width: column.getSize() }}

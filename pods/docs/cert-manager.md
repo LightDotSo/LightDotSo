@@ -12,9 +12,9 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 
 4.
 
-helm install cert-manager jetstack/cert-manager --version 1.12.2 \
- --namespace cert-manager --create-namespace \
- --set global.leaderElection.namespace=cert-manager,installCRDs=true,cainjector.enabled=true
+helm install cert-manager jetstack/cert-manager --version 1.12.2\
+--namespace cert-manager --create-namespace\
+--set global.leaderElection.namespace=cert-manager,installCRDs=true,cainjector.enabled=true
 
 5.
 

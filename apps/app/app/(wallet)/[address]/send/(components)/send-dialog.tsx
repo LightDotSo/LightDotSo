@@ -14,6 +14,8 @@
 
 "use client";
 
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import {
   EnsAddress,
@@ -64,8 +66,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -74,14 +74,14 @@ import type { FC } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
-  isAddress,
-  encodeFunctionData,
-  encodeAbiParameters,
   concat,
-  toFunctionSelector,
-  toHex,
+  encodeAbiParameters,
+  encodeFunctionData,
   fromHex,
   getAddress,
+  isAddress,
+  toFunctionSelector,
+  toHex,
 } from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
@@ -190,6 +190,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   // create default transfer object
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultTransfer: Array<Transfer> = useMemo(() => {
     // For each token, create a transfer object
     const transfers: Array<Transfer> =
@@ -214,6 +215,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, []);
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<SendFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -239,7 +241,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           (transfer, index, self) =>
             index !==
             self.findIndex(
-              t =>
+              (t) =>
                 t.address === transfer.address &&
                 t?.asset?.address === transfer?.asset?.address &&
                 t?.chainId === transfer?.chainId,
@@ -247,7 +249,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         );
         if (duplicateTransfers.length > 0) {
           // Note: This is a hacky way to get the last duplicate index
-          const transfersAsStrings = value.transfers.map(transfer =>
+          const transfersAsStrings = value.transfers.map((transfer) =>
             JSON.stringify(transfer),
           );
           const duplicateTransferString = JSON.stringify(duplicateTransfers[0]);
@@ -268,7 +270,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
         value.transfers.forEach((transfer, index) => {
           // Check if asset and the quantity is not empty
-          if (transfer && transfer.asset && "quantity" in transfer.asset) {
+          if (transfer?.asset && "quantity" in transfer.asset) {
             if (!transfer.asset.quantity) {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
@@ -284,7 +286,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   transfers?.length > 0 &&
                   transfers[index]?.asset?.address &&
                   tokens?.find(
-                    token =>
+                    (token) =>
                       token.address ===
                         (transfers?.[index]?.asset?.address || "") &&
                       token.chain_id === transfers?.[index]?.chainId,
@@ -311,7 +313,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   // Check if the sum quantity is greater than the token balance
                   if (
                     totalByTokenAddress.get(tokenIndex) *
-                      Math.pow(10, token?.decimals) >
+                      10 ** token?.decimals >
                     token?.amount
                   ) {
                     // Show an error on the message
@@ -376,6 +378,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.transfers)) {
@@ -394,14 +397,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [form.watch]);
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Recursively iterate the transfers and validate the addresses on mount
-    transfers &&
-      transfers.forEach((transfer, index) => {
-        if (transfer.address) {
-          validateAddress(transfer.address, index);
-        }
-      });
+    transfers?.forEach((transfer, index) => {
+      if (transfer.address) {
+        validateAddress(transfer.address, index);
+      }
+    });
 
     if (defaultValues.transfers) {
       setTransfers(defaultValues.transfers);
@@ -418,13 +421,13 @@ export const SendDialog: FC<SendDialogProps> = ({
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (
       transfer: Transfer,
     ): [Address, bigint, Hex] | undefined => {
       if (
-        transfer &&
-        transfer.address &&
+        transfer?.address &&
         transfer.asset &&
         transfer.assetType === "erc20" &&
         "quantity" in transfer.asset
@@ -437,8 +440,9 @@ export const SendDialog: FC<SendDialogProps> = ({
           transfer.asset &&
           "address" in transfer.asset &&
           tokens?.find(
-            token =>
+            (token) =>
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               token.address === transfer.asset?.address! &&
               token.chain_id === transfer.chainId,
           );
@@ -450,7 +454,8 @@ export const SendDialog: FC<SendDialogProps> = ({
         // Get the amount
         const amount =
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          transfer.asset?.quantity! * Math.pow(10, token.decimals!);
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          transfer.asset?.quantity! * 10 ** token.decimals!;
 
         // If the amount is a float, convert to a integer
         const intAmount = Math.floor(amount);
@@ -492,8 +497,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       }
 
       if (
-        transfer &&
-        transfer.address &&
+        transfer?.address &&
         transfer.asset &&
         (transfer.assetType === "erc721" ||
           transfer.assetType === "erc1155" ||
@@ -509,10 +513,12 @@ export const SendDialog: FC<SendDialogProps> = ({
           transfer.asset &&
           "address" in transfer.asset &&
           nftPage.nfts?.find(
-            nft =>
+            (nft) =>
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               nft.contract_address === transfer.asset?.address! &&
               SIMPLEHASH_CHAIN_ID_MAPPING[
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 nft.chain! as SimplehashMainnetChain | SimplehashTestnetChain
               ] === transfer.chainId,
           );
@@ -566,8 +572,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                       address,
                       transfer.address as Address,
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset.quantity!),
                       "0x",
                     ],
@@ -623,8 +631,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                     [
                       address,
                       transfer.address as Address,
-                      transfer.asset.tokenIds!.map(BigInt),
-                      transfer.asset.quantities!.map(BigInt),
+                      transfer.asset.tokenIds?.map(BigInt),
+                      transfer.asset.quantities?.map(BigInt),
                       "0x",
                     ],
                   ),
@@ -666,6 +674,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                       address,
                       transfer.address as Address,
                       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
                     ],
                   ),
@@ -709,7 +718,8 @@ export const SendDialog: FC<SendDialogProps> = ({
     if (transfers?.length > 1) {
       // Create a map w/ transfer grouped by chainId
       const transfersByChainId: Map<number, Transfer[]> = new Map();
-      transfers.forEach(transfer => {
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      transfers.forEach((transfer) => {
         if (!transfer.chainId) {
           return;
         }
@@ -736,7 +746,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           // If there is a duplicate `erc1155` transfer, we need to encode as `erc1155Batch` instead of separate `erc1155` transfers
           // Filter for same asset address + chainId w/ assetType `erc1155`
           const erc1155Transfers = transfers.filter(
-            transfer =>
+            (transfer) =>
               transfer.assetType === "erc1155" &&
               transfer.asset &&
               transfer.asset.address &&
@@ -745,19 +755,22 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
           const erc1155TransfersByAssetAddress: Map<string, Transfer[]> =
             new Map();
-          erc1155Transfers.forEach(transfer => {
+          // biome-ignore lint/complexity/noForEach: <explanation>
+          erc1155Transfers.forEach((transfer) => {
             const transfers =
               erc1155TransfersByAssetAddress.get(
                 // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                `${transfer.asset?.address!}-${transfer.chainId}-${
-                  transfer.address
-                }`,
+                `${
+                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                  transfer.asset?.address!
+                }-${transfer.chainId}-${transfer.address}`,
               ) || [];
             erc1155TransfersByAssetAddress.set(
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-              `${transfer.asset?.address!}-${transfer.chainId}-${
-                transfer.address
-              }`,
+              `${
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                transfer.asset?.address!
+              }-${transfer.chainId}-${transfer.address}`,
               [...transfers, transfer],
             );
           });
@@ -770,7 +783,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               for (const transfer of transfers) {
                 // Remove the transfer from the array
                 transformedTransfers = transformedTransfers.filter(
-                  t => t !== transfer,
+                  (t) => t !== transfer,
                 );
               }
               // Add the batch transfer to the array
@@ -782,26 +795,30 @@ export const SendDialog: FC<SendDialogProps> = ({
                   quantities: transfers.map(
                     // @ts-expect-error
                     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                    transfer => transfer.asset?.quantity!,
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                    (transfer) => transfer.asset?.quantity!,
                   ),
-                  // @ts-expect-error
                   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                  tokenIds: transfers.map(transfer => transfer.asset?.tokenId!),
+                  tokenIds: transfers.map(
+                    // @ts-expect-error
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                    (transfer) => transfer.asset?.tokenId!,
+                  ),
                 },
                 assetType: "erc1155Batch",
-                chainId: parseInt(chainId),
+                chainId: Number.parseInt(chainId),
               });
             }
           }
 
           // Encode the transfers for each item
-          const encodedTransfers = transformedTransfers.map(transfer =>
+          const encodedTransfers = transformedTransfers.map((transfer) =>
             encodeTransfer(transfer),
           );
 
           // Check if all transfers are valid and not undefined
           if (
-            encodedTransfers.some(transfer => typeof transfer === "undefined")
+            encodedTransfers.some((transfer) => typeof transfer === "undefined")
           ) {
             return [];
           }
@@ -813,9 +830,9 @@ export const SendDialog: FC<SendDialogProps> = ({
               abi: lightWalletAbi,
               functionName: "executeBatch",
               args: [
-                encodedTransfers.map(transfer => transfer![0]),
-                encodedTransfers.map(transfer => transfer![1]),
-                encodedTransfers.map(transfer => transfer![2]),
+                encodedTransfers.map((transfer) => transfer?.[0]),
+                encodedTransfers.map((transfer) => transfer?.[1]),
+                encodedTransfers.map((transfer) => transfer?.[2]),
               ] as [Address[], bigint[], Hex[]],
             }),
           });
@@ -837,6 +854,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     setIsFormDisabled(!isFormValid);
   }, [isFormValid, setIsFormDisabled]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isFormValid && userOperationsParams) {
       setUserOperations(userOperationsParams);
@@ -853,7 +871,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}&transfers=${transfersParser.serialize(transfers)}`;
+    return `/${address}/create?userOperations=${
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      userOperationsParser.serialize(userOperationsParams!)
+    }&transfers=${transfersParser.serialize(transfers)}`;
   }, [address, userOperationsParams, transfers]);
 
   // ---------------------------------------------------------------------------
@@ -895,7 +916,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           .getEnsAddress({
             name: normalize(address),
           })
-          .then(ensNameAddress => {
+          .then((ensNameAddress) => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
               form.setValue(`transfers.${index}.address`, ensNameAddress);
@@ -959,7 +980,8 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfers?.length > 0 &&
         transfers[index]?.asset?.address &&
         tokens?.find(
-          token => token.address === (transfers?.[index]?.asset?.address || ""),
+          (token) =>
+            token.address === (transfers?.[index]?.asset?.address || ""),
         );
 
       // If the token is not found or undefined, set an error
@@ -971,7 +993,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
         // Clear the value of key address
         form.setValue(`transfers.${index}.asset.quantity`, 0);
-      } else if (quantity * Math.pow(10, token?.decimals) > token?.amount) {
+      } else if (quantity * 10 ** token?.decimals > token?.amount) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
@@ -1001,7 +1023,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfers[index]?.asset?.address &&
         nftPage &&
         nftPage?.nfts?.find(
-          nft =>
+          (nft) =>
             nft.contract_address === (transfers?.[index]?.asset?.address || ""),
         );
 
@@ -1028,8 +1050,8 @@ export const SendDialog: FC<SendDialogProps> = ({
       } else if (
         nft.contract?.type?.toLowerCase() === "erc1155" &&
         // Get the owner quantity from the owners array
-        (nft.owners?.find(owner => owner.owner_address === address)?.quantity ??
-          1) < quantity
+        (nft.owners?.find((owner) => owner.owner_address === address)
+          ?.quantity ?? 1) < quantity
       ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
@@ -1061,6 +1083,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={index}
                   collapsible
                   defaultValue="value-0"
@@ -1068,7 +1091,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   type="single"
                 >
                   <AccordionItem className="border-0" value={`value-${index}`}>
-                    <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                    <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                       Transfer #{index}
                     </AccordionTrigger>
                     <AccordionContent className="px-1 pt-4">
@@ -1138,13 +1161,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           }
                                           className={cn(
                                             // If the field is not valid, add opacity
-                                            form.formState.errors.transfers &&
-                                              form.formState.errors.transfers[
-                                                index
-                                              ] &&
-                                              form.formState.errors.transfers[
-                                                index
-                                              ]?.addressOrEns
+                                            form.formState.errors.transfers?.[
+                                              index
+                                            ]?.addressOrEns
                                               ? "opacity-50"
                                               : "opacity-100",
                                           )}
@@ -1168,7 +1187,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                         ) && (
                                           <span className="flex items-center space-x-1">
                                             <CheckBadgeIcon className="size-4 text-text-info" />
-                                            <span className="text-xs text-text-weak">
+                                            <span className="text-text-weak text-xs">
                                               <EnsAddress
                                                 name={
                                                   form.getValues(
@@ -1188,10 +1207,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   className={cn(
                                     "flex h-full flex-col",
                                     // If there is error, justify center, else end
-                                    form.formState.errors.transfers &&
-                                      form.formState.errors.transfers[index] &&
-                                      form.formState.errors.transfers[index]
-                                        ?.addressOrEns
+                                    form.formState.errors.transfers?.[index]
+                                      ?.addressOrEns
                                       ? "justify-center"
                                       : "justify-end",
                                   )}
@@ -1243,7 +1260,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                       transfers?.length > 0 &&
                                       transfers[index]?.asset?.address &&
                                       tokens?.find(
-                                        token =>
+                                        (token) =>
                                           token.address ===
                                             (transfers?.[index]?.asset
                                               ?.address || "") &&
@@ -1264,7 +1281,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               type="text"
                                               {...field}
                                               placeholder="Quantity of tokens to transfer"
-                                              onBlur={e => {
+                                              onBlur={(e) => {
                                                 // Validate the address
                                                 if (!e.target.value) {
                                                   // Clear the value of key address
@@ -1274,16 +1291,17 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   );
                                                 }
 
-                                                const quantity = parseFloat(
-                                                  e.target.value,
-                                                );
+                                                const quantity =
+                                                  Number.parseFloat(
+                                                    e.target.value,
+                                                  );
 
                                                 validateTokenQuantity(
                                                   quantity,
                                                   index,
                                                 );
                                               }}
-                                              onChange={e => {
+                                              onChange={(e) => {
                                                 // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
                                                 if (
                                                   e.target.value.endsWith(
@@ -1302,18 +1320,19 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 } else {
                                                   // Only parse to float if the value doesn't end with "."
                                                   field.onChange(
-                                                    parseFloat(
+                                                    Number.parseFloat(
                                                       e.target.value,
                                                     ) || 0,
                                                   );
                                                 }
 
                                                 // Validate the number
-                                                const quantity = parseFloat(
-                                                  e.target.value,
-                                                );
+                                                const quantity =
+                                                  Number.parseFloat(
+                                                    e.target.value,
+                                                  );
 
-                                                if (!isNaN(quantity)) {
+                                                if (!Number.isNaN(quantity)) {
                                                   validateTokenQuantity(
                                                     quantity,
                                                     index,
@@ -1332,10 +1351,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     form.setValue(
                                                       `transfers.${index}.asset.quantity`,
                                                       token?.amount /
-                                                        Math.pow(
-                                                          10,
-                                                          token?.decimals,
-                                                        ),
+                                                        10 ** token?.decimals,
                                                     );
                                                   }
 
@@ -1348,31 +1364,25 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs text-text-weak">
+                                        <div className="flex items-center justify-between text-text-weak text-xs">
                                           <div>
                                             {/* Get the current balance in USD */}
                                             {token
-                                              ? "~ $" +
-                                                // Get the current selected token balance in USD
-                                                refineNumberFormat(
+                                              ? `~ $${refineNumberFormat(
                                                   (token?.balance_usd /
                                                     (token.amount /
-                                                      Math.pow(
-                                                        10,
-                                                        token?.decimals,
-                                                      ))) *
+                                                      10 ** token?.decimals)) *
                                                     // Get the form value
                                                     (field.value ?? 0),
-                                                )
+                                                )}`
                                               : ""}
                                           </div>
                                           <div>
                                             {token
-                                              ? (
+                                              ? `${(
                                                   token?.amount /
-                                                  Math.pow(10, token?.decimals)
-                                                ).toString() +
-                                                ` ${token.symbol} available`
+                                                  10 ** token?.decimals
+                                                ).toString()} ${token.symbol} available`
                                               : ""}
                                           </div>
                                         </div>
@@ -1397,7 +1407,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                         chainId &&
                                         tokens?.length > 0 &&
                                         tokens?.find(
-                                          token =>
+                                          (token) =>
                                             token.address === tokenAddress &&
                                             token.chain_id === chainId,
                                         )) ||
@@ -1423,7 +1433,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideTokenModal();
                                                   setSendBackgroundModal(false);
                                                 },
-                                                onTokenSelect: token => {
+                                                onTokenSelect: (token) => {
                                                   form.setValue(
                                                     `transfers.${index}.asset.address`,
                                                     token.address,
@@ -1505,7 +1515,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             type="text"
                                             {...field}
                                             placeholder="Quantity of tokens to transfer"
-                                            onBlur={e => {
+                                            onBlur={(e) => {
                                               // Validate the address
                                               if (!e.target.value) {
                                                 // Clear the value of key address
@@ -1515,25 +1525,29 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 );
                                               }
 
-                                              const quantity = parseFloat(
-                                                e.target.value,
-                                              );
+                                              const quantity =
+                                                Number.parseFloat(
+                                                  e.target.value,
+                                                );
 
                                               validateNftQuantity(
                                                 quantity,
                                                 index,
                                               );
                                             }}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                               // Update the field value
                                               field.onChange(
-                                                parseFloat(e.target.value) || 0,
+                                                Number.parseFloat(
+                                                  e.target.value,
+                                                ) || 0,
                                               );
 
                                               // Validate the address
-                                              const quantity = parseFloat(
-                                                e.target.value,
-                                              );
+                                              const quantity =
+                                                Number.parseFloat(
+                                                  e.target.value,
+                                                );
 
                                               if (quantity) {
                                                 validateNftQuantity(
@@ -1567,19 +1581,21 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     ?.address &&
                                                   "tokenId" in
                                                     // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+                                                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                     transfers[index]?.asset! &&
                                                   nftPage.nfts?.find(
-                                                    nft =>
+                                                    (nft) =>
                                                       nft.contract_address ===
                                                         (transfers?.[index]
                                                           ?.asset?.address ||
                                                           "") &&
-                                                      parseInt(
+                                                      Number.parseInt(
+                                                        // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                         nft.token_id!,
                                                       ) ===
-                                                        // prettier-ignore
+                                                        // biome-ignore format: reason
                                                         // @ts-expect-error
-                                                        transfers?.[index]?.asset!.tokenId,
+                                                        transfers?.[index]?.asset?.tokenId,
                                                   );
 
                                                 if (nft) {
@@ -1588,11 +1604,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     nft.contract?.type?.toLowerCase() ===
                                                     "erc1155"
                                                       ? // Get the quantity from the owner array
-                                                        (nft.owners?.find(
-                                                          owner =>
+                                                        nft.owners?.find(
+                                                          (owner) =>
                                                             owner.owner_address ===
                                                             address,
-                                                        )?.quantity ?? 1)
+                                                        )?.quantity ?? 1
                                                       : 1;
 
                                                   form.setValue(
@@ -1635,10 +1651,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                                         tokenId &&
                                         nftPage.nfts?.length > 0 &&
                                         nftPage.nfts?.find(
-                                          nft =>
+                                          (nft) =>
                                             nft.contract_address ===
                                               tokenAddress &&
                                             SIMPLEHASH_CHAIN_ID_MAPPING[
+                                              // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                               nft.chain! as
                                                 | SimplehashMainnetChain
                                                 | SimplehashTestnetChain
@@ -1667,7 +1684,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     );
                                                   }
                                                 },
-                                                onNftSelect: nft => {
+                                                onNftSelect: (nft) => {
                                                   if (nft.contract_address) {
                                                     form.setValue(
                                                       `transfers.${index}.asset.address`,
@@ -1680,6 +1697,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     form.setValue(
                                                       `transfers.${index}.chainId`,
                                                       SIMPLEHASH_CHAIN_ID_MAPPING[
+                                                        // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                         nft.chain! as
                                                           | SimplehashMainnetChain
                                                           | SimplehashTestnetChain
@@ -1689,7 +1707,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   if (nft.token_id) {
                                                     form.setValue(
                                                       `transfers.${index}.asset.tokenId`,
-                                                      parseInt(nft.token_id),
+                                                      Number.parseInt(
+                                                        nft.token_id,
+                                                      ),
                                                     );
                                                   }
                                                   form.setValue(

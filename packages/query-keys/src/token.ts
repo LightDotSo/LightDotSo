@@ -14,8 +14,8 @@
 
 import type {
   TokenGetParams,
-  TokenListParams,
   TokenListCountParams,
+  TokenListParams,
 } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";

@@ -38,13 +38,13 @@ type Story = StoryObj<typeof Badge>;
 // -----------------------------------------------------------------------------
 
 export const Single: Story = {
-  render: args => <Badge {...args}>Default</Badge>,
+  render: (args) => <Badge {...args}>Default</Badge>,
   args: {
     variant: "default",
   },
 };
 export const Default: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Badge {...args} intent="default">
         Default
@@ -80,7 +80,7 @@ export const Default: Story = {
   },
 };
 export const Shadow: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Badge {...args} intent="default">
         Default
@@ -116,7 +116,7 @@ export const Shadow: Story = {
   },
 };
 export const Size: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Badge {...args} size="sm">
         Small
@@ -134,7 +134,7 @@ export const Size: Story = {
   },
 };
 export const Type: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Badge {...args} type="number">
         1

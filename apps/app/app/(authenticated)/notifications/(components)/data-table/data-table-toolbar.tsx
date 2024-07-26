@@ -51,7 +51,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           placeholder="Filter name..."
           value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
           className="h-8 w-[150px] lg:w-[400px]"
-          onChange={event =>
+          onChange={(event) =>
             table?.getColumn("name")?.setFilterValue(event.target.value)
           }
         />

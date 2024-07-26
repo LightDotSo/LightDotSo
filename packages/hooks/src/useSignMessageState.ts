@@ -32,7 +32,7 @@ export const useSignMessageState = () => {
 
   // Check if the userOperation is loading
   const isSignMessageLoading = useMemo(() => {
-    return userOperationSendStatus?.some(status => status === "pending");
+    return userOperationSendStatus?.some((status) => status === "pending");
   }, [userOperationSendStatus]);
 
   // ---------------------------------------------------------------------------

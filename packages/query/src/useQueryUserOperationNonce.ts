@@ -73,10 +73,10 @@ export const useQueryUserOperationNonce = (
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as UserOperationNonceData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

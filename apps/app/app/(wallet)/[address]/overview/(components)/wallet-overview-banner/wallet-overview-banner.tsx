@@ -14,20 +14,20 @@
 
 "use client";
 
+import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -84,7 +84,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
 
   return (
     <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-8">
-      <div className="col-span-2 flex w-full flex-row items-center space-x-3 lg:border-r lg:border-border">
+      <div className="col-span-2 flex w-full flex-row items-center space-x-3 lg:border-border lg:border-r">
         <WalletOverviewBannerAddress address={address} />
       </div>
       <div className="col-span-1 flex w-full">

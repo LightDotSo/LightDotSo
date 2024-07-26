@@ -27,7 +27,7 @@ import {
   PopoverTrigger,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

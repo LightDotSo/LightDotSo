@@ -19,8 +19,8 @@ import type { TokenModalProps } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import type { Address } from "viem";
-import { TokenModal } from "./token-modal";
 import ChainModal from "../chain/chain-modal";
+import { TokenModal } from "./token-modal";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -62,6 +62,7 @@ export const Base: Story = {
   render: () => {
     const { showTokenModal, setTokenModalProps } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setTokenModalProps(tokenModalProps);
       showTokenModal();
@@ -81,6 +82,7 @@ export const Socket: Story = {
   render: () => {
     const { showTokenModal, setTokenModalProps } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setTokenModalProps({ ...tokenModalProps, type: "socket" });
       showTokenModal();
@@ -100,6 +102,7 @@ export const Empty: Story = {
   render: () => {
     const { showTokenModal, setTokenModalProps } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setTokenModalProps({
         ...tokenModalProps,

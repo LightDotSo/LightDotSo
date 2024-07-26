@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/style/useImportType: <explanation>
 import { Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Log } from "../generated/schema";
 import {
@@ -24,7 +25,7 @@ export function handleUserOperationLogs(
   eventTransaction: ethereum.Transaction,
   eventReceipt: ethereum.TransactionReceipt | null,
 ): Log[] {
-  let logs = new Array<Log>();
+  const logs = new Array<Log>();
 
   if (eventReceipt) {
     // Flag to store the log in relation to the user operation
@@ -36,7 +37,7 @@ export function handleUserOperationLogs(
     for (let i = eventReceipt.logs.length - 1; i >= 0; i--) {
       // Load the Log entity
       // Get the index from the log in reverse order
-      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
+      const log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
 
       // If the Log entity doesn't exist, break;
       if (log == null) {
@@ -44,13 +45,15 @@ export function handleUserOperationLogs(
       }
 
       // Get the topic from the log
-      let topic = eventReceipt.logs[i].topics[0];
+      const topic = eventReceipt.logs[i].topics[0];
 
       // If the topic is an `UserOperationEvent` topic, get the user operation hash
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
       if (topic.toHexString() == USER_OPERATION_EVENT_HASH) {
         // Get the log user operation hash from the log (the first topic is the event hash)
-        let logUserOpHash = eventReceipt.logs[i].topics[1];
+        const logUserOpHash = eventReceipt.logs[i].topics[1];
         // If the log user operation hash is equal to the event user operation hash, set the flag to true
+        // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
         if (logUserOpHash == userOpHash) {
           flag = true;
         } else {
@@ -61,6 +64,7 @@ export function handleUserOperationLogs(
       }
 
       // If the topic is an `BeforeExecution` topic, break
+      // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
       if (topic.toHexString() == BEFORE_EXECUTION_EVENT_HASH) {
         flag = false;
         break;

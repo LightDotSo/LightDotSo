@@ -14,9 +14,7 @@
   "author": "LightDotSo",
   "main": "index.ts",
   "types": "index.d.ts",
-  "files": [
-    "src"
-  ],
+  "files": ["src"],
   "scripts": {
     "prebuild": "npm run generate",
     "build": "pnpm run generate",

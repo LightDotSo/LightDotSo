@@ -39,15 +39,15 @@ type Story = StoryObj<typeof TokenImage>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TokenImage token={tokenGetData} />,
+  render: (args) => <TokenImage token={tokenGetData} />,
   args: {},
 };
 export const isLoading: Story = {
-  render: args => <TokenImage isLoading token={tokenGetData} />,
+  render: (args) => <TokenImage isLoading token={tokenGetData} />,
   args: {},
 };
 export const NotFound: Story = {
-  render: args => (
+  render: (args) => (
     <TokenImage
       token={{
         ...tokenGetData,
@@ -58,11 +58,11 @@ export const NotFound: Story = {
   args: {},
 };
 export const WithChainLogo: Story = {
-  render: args => <TokenImage withChainLogo token={tokenGetData} />,
+  render: (args) => <TokenImage withChainLogo token={tokenGetData} />,
   args: {},
 };
 export const WithChainLogoTestnet: Story = {
-  render: args => (
+  render: (args) => (
     <TokenImage
       withChainLogo
       token={{ ...tokenGetData, chain_id: 11155111 }}
@@ -72,11 +72,11 @@ export const WithChainLogoTestnet: Story = {
   args: {},
 };
 export const WithChainLogoIsLoading: Story = {
-  render: args => <TokenImage withChainLogo isLoading token={tokenGetData} />,
+  render: (args) => <TokenImage withChainLogo isLoading token={tokenGetData} />,
   args: {},
 };
 export const WithChainLogoNotFound: Story = {
-  render: args => (
+  render: (args) => (
     <TokenImage
       withChainLogo
       token={{

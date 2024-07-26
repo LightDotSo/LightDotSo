@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
@@ -31,11 +32,11 @@ import {
   ButtonIcon,
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
-  FormDescription,
-  FormMessage,
   FormLabel,
+  FormMessage,
   Input,
   Label,
   Select,
@@ -48,7 +49,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -102,6 +102,7 @@ export const OwnerForm: FC = () => {
   }, [userAddress, userEns]);
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<OwnerFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -149,8 +150,8 @@ export const OwnerForm: FC = () => {
 
         // Check if no two owners have the same address
         const addresses = value.owners
-          .map(owner => owner?.address)
-          .filter(address => address && address.trim() !== "");
+          .map((owner) => owner?.address)
+          .filter((address) => address && address.trim() !== "");
         const uniqueAddresses = new Set(addresses);
         if (uniqueAddresses.size !== addresses.length) {
           // Add an error to the duplicate address
@@ -203,6 +204,7 @@ export const OwnerForm: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
@@ -232,7 +234,7 @@ export const OwnerForm: FC = () => {
         } else {
           // Iterate over each owner which has a weight
           const owners = value.owners.filter(
-            owner => owner?.weight && owner?.address,
+            (owner) => owner?.weight && owner?.address,
           ) as Owners;
           setOwners(owners);
         }
@@ -245,6 +247,7 @@ export const OwnerForm: FC = () => {
   }, [form.watch]);
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Recursively iterate the owners and validate the addresses on mount
     owners.forEach((owner, index) => {
@@ -289,7 +292,7 @@ export const OwnerForm: FC = () => {
       return;
     }
 
-    return configuration?.owners?.find(owner =>
+    return configuration?.owners?.find((owner) =>
       isAddressEqual(owner.address as Address, userAddress),
     );
   }, [configuration?.owners, userAddress]);
@@ -323,7 +326,8 @@ export const OwnerForm: FC = () => {
           address: owner.address as string,
           weight: owner.weight,
         })),
-        ownerId: owner!.id,
+        // @ts-expect-error
+        ownerId: owner?.id,
       },
     });
 
@@ -366,7 +370,7 @@ export const OwnerForm: FC = () => {
           .getEnsAddress({
             name: normalize(address),
           })
-          .then(ensNameAddress => {
+          .then((ensNameAddress) => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
               form.setValue(`owners.${index}.address`, ensNameAddress);
@@ -421,6 +425,7 @@ export const OwnerForm: FC = () => {
       >
         <div className="space-y-4">
           {fields.map((field, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             <div key={index}>
               {/* A hack to make a padding above the separator */}
               {index === 1 && <div className="pt-4" />}
@@ -461,7 +466,7 @@ export const OwnerForm: FC = () => {
                             className="pl-12"
                             {...field}
                             placeholder="Your address or ENS name"
-                            onBlur={e => {
+                            onBlur={(e) => {
                               // Validate the address
                               if (!e.target.value) {
                                 // Clear the value of key address
@@ -471,7 +476,7 @@ export const OwnerForm: FC = () => {
 
                               validateAddress(address, index);
                             }}
-                            onChange={e => {
+                            onChange={(e) => {
                               // Update the field value
                               field.onChange(e.target.value || "");
 
@@ -495,10 +500,8 @@ export const OwnerForm: FC = () => {
                                 }
                                 className={cn(
                                   // If the field is not valid, add opacity
-                                  form.formState.errors.owners &&
-                                    form.formState.errors.owners[index] &&
-                                    form.formState.errors.owners[index]
-                                      ?.addressOrEns
+                                  form.formState.errors.owners?.[index]
+                                    ?.addressOrEns
                                     ? "opacity-50"
                                     : "opacity-100",
                                 )}
@@ -521,8 +524,8 @@ export const OwnerForm: FC = () => {
                         <Label htmlFor="weight">Weight</Label>
                         <Select
                           defaultValue={field.value.toString()}
-                          onValueChange={value => {
-                            field.onChange(parseInt(value));
+                          onValueChange={(value) => {
+                            field.onChange(Number.parseInt(value));
                             form.trigger(`owners.${index}.weight`);
                             form.trigger("threshold");
                           }}
@@ -539,6 +542,7 @@ export const OwnerForm: FC = () => {
                           <SelectContent className="max-h-60">
                             {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
                               (_, i) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                 <SelectItem key={i} value={(i + 1).toString()}>
                                   {i + 1}
                                 </SelectItem>
@@ -555,9 +559,7 @@ export const OwnerForm: FC = () => {
                   className={cn(
                     "col-span-1 flex h-full flex-col items-center",
                     // If there is error, justify center, else end
-                    form.formState.errors.owners &&
-                      form.formState.errors.owners[index] &&
-                      form.formState.errors.owners[index]?.addressOrEns
+                    form.formState.errors.owners?.[index]?.addressOrEns
                       ? "justify-center"
                       : "justify-end",
                   )}
@@ -604,8 +606,8 @@ export const OwnerForm: FC = () => {
                     onOpenChange={() => {
                       form.trigger("threshold");
                     }}
-                    onValueChange={value => {
-                      field.onChange(parseInt(value));
+                    onValueChange={(value) => {
+                      field.onChange(Number.parseInt(value));
                       form.trigger("threshold");
                     }}
                   >
@@ -616,6 +618,7 @@ export const OwnerForm: FC = () => {
                     </FormControl>
                     <SelectContent>
                       {[...Array(CONFIGURATION_MAX_THRESHOLD)].map((_, i) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                         <SelectItem key={i} value={(i + 1).toString()}>
                           {i + 1}
                         </SelectItem>
@@ -629,7 +632,7 @@ export const OwnerForm: FC = () => {
               </FormDescription>
               <FormMessage />
               {form.formState.errors && (
-                <p className="text-sm font-medium text-text-destructive">
+                <p className="font-medium text-sm text-text-destructive">
                   {/* Print any message one line at a time */}
                   {Object.entries(form.formState.errors)
                     .filter(
@@ -637,6 +640,7 @@ export const OwnerForm: FC = () => {
                         !key.startsWith("threshold") &&
                         !key.startsWith("owners"),
                     )
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     .map(([_key, error]: [string, any]) => error.message)
                     .join("\n")}
                 </p>

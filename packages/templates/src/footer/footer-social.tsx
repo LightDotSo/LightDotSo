@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Social, SOCIAL_LINKS } from "@lightdotso/const";
+import { SOCIAL_LINKS, Social } from "@lightdotso/const";
 import { ButtonIcon } from "@lightdotso/ui";
 import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
@@ -58,7 +58,7 @@ export const FooterSocial: FC = () => {
 
   return (
     <div className="flex items-center space-x-2">
-      {navigation.social.map(item => {
+      {navigation.social.map((item) => {
         return (
           <ButtonIcon key={item.name} asChild variant="shadow" size="sm">
             <a href={item.href} target="_blank" rel="noreferrer">

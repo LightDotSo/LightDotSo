@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import type {
-  NotificationListParams,
   NotificationListCountParams,
+  NotificationListParams,
 } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";

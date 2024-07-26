@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { expect, test } from "vitest";
-import type { Signer } from "../typings";
 import { calculateImageHash } from ".";
+import type { Signer } from "../typings";
 
 test("calculateImageHash", () => {
   const signers: Signer[] = [

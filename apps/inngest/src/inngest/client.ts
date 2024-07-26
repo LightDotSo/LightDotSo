@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { prismaMiddleware, sentryMiddleware } from "@/inngest/middlewares";
 import { EventSchemas, Inngest } from "inngest";
 import { z } from "zod";
-import { prismaMiddleware, sentryMiddleware } from "@/inngest/middlewares";
 
 // -----------------------------------------------------------------------------
 // Const

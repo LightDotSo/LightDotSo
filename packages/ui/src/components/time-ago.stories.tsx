@@ -38,7 +38,7 @@ type Story = StoryObj<typeof TimeAgo>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TimeAgo value={new Date()} {...args} />,
+  render: (args) => <TimeAgo value={new Date()} {...args} />,
   args: {},
 };
 // export const Prefix: Story = {

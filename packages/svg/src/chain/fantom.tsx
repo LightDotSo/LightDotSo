@@ -32,6 +32,7 @@ export const FantomLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Fantom</title>
     <rect width="24" height="24" rx="6" fill="#1969FF" />
     <g clip-path="url(#clip0_10113_10194)">
       <path

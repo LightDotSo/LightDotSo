@@ -172,7 +172,7 @@ export const UserOperationCardTransaction: FC<
           type={undefined}
         >
           <div className="transaction group flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
-            {row.getVisibleCells().map(cell => (
+            {row.getVisibleCells().map((cell) => (
               <Fragment key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </Fragment>
@@ -194,6 +194,7 @@ export const UserOperationCardTransaction: FC<
                 <CardContent className="grow">
                   {informationItems.map((item, index) => (
                     <div
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={index}
                       className="my-1 flex items-center justify-between text-xs"
                     >
@@ -265,14 +266,17 @@ export const UserOperationCardTransaction: FC<
                         value={
                           (userOperation.signatures.length /
                             // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                            // biome-ignore lint/style/noNonNullAssertion: <explanation>
                             configuration?.threshold!) *
                           100
                         }
                       />
                       <span className="ml-2">
                         {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
+                        {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
                         {userOperation.signatures.length!}/
                         {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
+                        {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
                         {configuration?.threshold!}
                       </span>
                     </div>

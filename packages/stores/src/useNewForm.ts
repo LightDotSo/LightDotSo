@@ -54,10 +54,10 @@ export const useNewForm = create(
         inviteCode: "",
         name: "",
       },
-      setFormValues: async values => {
+      setFormValues: async (values) => {
         const currentState = get().formValues;
 
-        set(prevState => ({
+        set((prevState) => ({
           formValues: { ...prevState?.formValues, ...values },
         }));
 
@@ -82,7 +82,7 @@ export const useNewForm = create(
           errors: result.success ? null : result.error,
         });
       },
-      fetchToCreate: async function (isCreate: boolean) {
+      fetchToCreate: async (isCreate: boolean) => {
         // Run validation before fetching
         get().validate();
 
@@ -101,12 +101,19 @@ export const useNewForm = create(
             },
           },
           body: {
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             invite_code: get().formValues.inviteCode!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             name: get().formValues.name!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             salt: get().formValues.salt!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             threshold: get().formValues.threshold!,
-            owners: get().formValues.owners!.map(owner => ({
+            // @ts-expect-error
+            owners: get().formValues.owners?.map((owner) => ({
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               weight: owner.weight!,
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               address: owner.address!,
             })),
           },
@@ -114,7 +121,7 @@ export const useNewForm = create(
 
         // Parse the response and set the address
         res.match(
-          data => {
+          (data) => {
             set(() => ({
               address: data?.address,
             }));

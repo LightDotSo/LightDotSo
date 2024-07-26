@@ -21,6 +21,7 @@ import type { FC } from "react";
 
 export interface TransactionDevInfoProps {
   title: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: any;
   isNumber?: boolean;
 }

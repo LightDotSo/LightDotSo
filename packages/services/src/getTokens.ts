@@ -33,6 +33,7 @@ export const getTokens = async (params: TokenListParams) => {
     {
       params: {
         query: {
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           address: params.address!,
           is_testnet: params.is_testnet,
           group: params.group,

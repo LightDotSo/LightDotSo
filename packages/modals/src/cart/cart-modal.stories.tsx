@@ -46,6 +46,7 @@ export const Base: Story = {
   render: () => {
     const { showCartModal } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       showCartModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps

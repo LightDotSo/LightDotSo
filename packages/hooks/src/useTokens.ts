@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenProps, useToken } from "./useToken";
+import { type TokenProps, useToken } from "./useToken";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -30,7 +30,7 @@ export const useTokens = ({ tokens }: TokensProps) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
-  const tokensData = tokens.map(token => {
+  const tokensData = tokens.map((token) => {
     return useToken(token);
   });
   // ---------------------------------------------------------------------------

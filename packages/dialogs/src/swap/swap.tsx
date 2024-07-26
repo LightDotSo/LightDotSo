@@ -17,23 +17,24 @@
 import type { TokenData } from "@lightdotso/data";
 import { ChainStack, TokenImage } from "@lightdotso/elements";
 import {
+  type QuoteParams,
   useDebouncedValue,
   useQuote,
-  type QuoteParams,
 } from "@lightdotso/hooks";
 import { useCreate, useSwap } from "@lightdotso/hooks";
 import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
-import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
+import type { UserOperation, swapFormSchema } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import {
   useAuth,
   useDev,
-  useQuotes,
   useModals,
+  useQuotes,
   useUserOperations,
 } from "@lightdotso/stores";
-import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import { ChainLogo } from "@lightdotso/svg";
+import { TokenGroup } from "@lightdotso/templates";
 import {
   Accordion,
   AccordionContent,
@@ -44,14 +45,13 @@ import {
   FormField,
   Input,
 } from "@lightdotso/ui";
-import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useEffect, useMemo, type FC } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { type Address } from "viem";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { serialize } from "@lightdotso/wagmi";
-import { ChainLogo } from "@lightdotso/svg";
-import { TokenGroup } from "@lightdotso/templates";
+import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
+import { type FC, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import type { Address } from "viem";
+import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -88,6 +88,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (toQuotedAmount) {
       setQuote({
@@ -151,6 +152,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<SwapFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -177,8 +179,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const subscription = form.watch(value => {
+    const subscription = form.watch((value) => {
       // Set buy swap query state
       if (value.from) {
         setFromSwapQueryState(value.from);
@@ -242,12 +245,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // Reset the execution params when the from swap quantity, address, or chain id changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetQuotes();
     resetExecutionParams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     console.info("quotes:", quotes);
 
@@ -260,7 +265,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Divide the aggregated amount by the decimal places
       const aggregatedQuantity =
-        Number(aggregatedAmount) / Math.pow(10, toToken.decimals);
+        Number(aggregatedAmount) / 10 ** toToken.decimals;
 
       // Set the to swap quoted amount
       form.setValue("to.quantity", Number(aggregatedQuantity));
@@ -293,6 +298,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const genericExecutionQuotes = useMemo(() => {
     // Initialize the token swaps
     const tokenSwaps: SwapFetcherProps[] = [];
@@ -310,9 +316,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         debouncedFromSwapQuantity === fromSwapMaximumQuantity
           ? fromSwapMaximumAmount
           : BigInt(
-              Math.floor(
-                debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
-              ),
+              Math.floor(debouncedFromSwapQuantity * 10 ** fromToken.decimals),
             );
 
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
@@ -411,7 +415,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 onClose: () => {
                   hideTokenModal();
                 },
-                onTokenSelect: token => {
+                onTokenSelect: (token) => {
                   // Check if the from and to swap tokens are the same
                   if (
                     toSwap?.address === token?.address &&
@@ -442,27 +446,26 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {fromSwap && fromSwap?.groupId && (
-              <TokenGroup groupId={fromSwap?.groupId} />
-            )}
+            {fromSwap?.groupId && <TokenGroup groupId={fromSwap?.groupId} />}
             {fromSwap &&
               fromSwap?.chainId === 0 &&
               genericExecutionQuotes &&
               genericExecutionQuotes.length > 0 &&
               genericExecutionQuotes.map((quote, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <SwapFetcher key={index} {...quote} />
               ))}
-            {fromToken && fromToken.address && fromToken.symbol ? (
+            {fromToken?.address && fromToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                  withChainLogo={fromToken.chain_id !== 0}
                   token={{
                     ...fromToken,
                     amount: Number(fromToken.amount),
                     group: undefined,
                   }}
                 />
-                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
+                <span className="ml-1 max-w-24 truncate text-2xl text-text tracking-wide">
                   {fromToken.symbol}
                 </span>
               </>
@@ -479,7 +482,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
             {fromTokenDollarRatio && (
-              <span className="truncate text-xs text-text-weak">
+              <span className="truncate text-text-weak text-xs">
                 {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
               </span>
             )}
@@ -513,7 +516,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
       </div>
-      <div className="z-10 -my-4 flex items-center justify-center">
+      <div className="-my-4 z-10 flex items-center justify-center">
         <ButtonIcon
           className="ring-4 ring-background-body"
           onClick={() => {
@@ -612,17 +615,17 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {toToken && toToken.address && toToken.symbol ? (
+            {toToken?.address && toToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={toToken.chain_id !== 0 ? true : false}
+                  withChainLogo={toToken.chain_id !== 0}
                   token={{
                     ...toToken,
                     amount: Number(toToken.amount),
                     group: undefined,
                   }}
                 />
-                <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
+                <span className="min-w-10 max-w-24 truncate text-2xl text-text tracking-wide">
                   {toToken.symbol}
                 </span>
               </>
@@ -639,7 +642,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
             {toTokenDollarRatio && (
-              <span className="truncate text-xs text-text-weak">
+              <span className="truncate text-text-weak text-xs">
                 {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenDollarRatio)})`}
               </span>
             )}
@@ -707,7 +710,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   <div className="inline-flex items-center">
                     <ChainStack
                       chainIds={genericExecutionQuotes.map(
-                        quote => quote.fromChainId ?? 0,
+                        (quote) => quote.fromChainId ?? 0,
                       )}
                     />
                     <span className="ml-2 text-sm text-text-weak">
@@ -719,6 +722,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 <AccordionContent className="flex flex-col space-y-2">
                   {genericExecutionQuotes.map((quote, index) => (
                     <div
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={index}
                       className="flex items-center justify-between"
                     >
@@ -731,8 +735,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                       </span>
                       <span className="text-text">
                         {refineNumberFormat(
-                          Number(quote.fromAmount) /
-                            Math.pow(10, fromToken.decimals),
+                          Number(quote.fromAmount) / 10 ** fromToken.decimals,
                         )}{" "}
                         <span>{fromToken.symbol}</span>
                       </span>
@@ -745,7 +748,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         )}
       {isDev && (
         <div className="mt-4 max-h-96 max-w-md overflow-auto">
-          <pre className="break-all text-xs text-text-weak">
+          <pre className="break-all text-text-weak text-xs">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
               toSwapQueryState: toSwapQueryState,

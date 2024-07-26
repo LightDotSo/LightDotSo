@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { TITLES } from "@/const";
 import { SwapDialog } from "@lightdotso/dialogs";
 import type { Metadata } from "next";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

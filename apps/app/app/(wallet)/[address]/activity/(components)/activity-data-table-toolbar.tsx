@@ -14,9 +14,9 @@
 
 "use client";
 
-import { useAuth, useTables } from "@lightdotso/stores";
-import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-toolbar";
+import { useAuth, useTables } from "@lightdotso/stores";
+import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -34,6 +34,7 @@ export const ActivityDataTableToolbar: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

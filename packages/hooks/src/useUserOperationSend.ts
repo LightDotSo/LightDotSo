@@ -24,7 +24,7 @@ import {
 } from "@lightdotso/query";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useCallback, useMemo } from "react";
-import { type Hex, type Address } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -126,11 +126,9 @@ export const useUserOperationSend = ({
       ? userOperation.signatures.reduce((acc, signature) => {
           return (
             acc +
-            ((configuration &&
-              configuration.owners.find(
-                owner => owner.id === signature?.owner_id,
-              )?.weight) ||
-              0)
+            (configuration?.owners.find(
+              (owner) => owner.id === signature?.owner_id,
+            )?.weight || 0)
           );
         }, 0) >= (configuration ? configuration.threshold : 0)
       : false;
@@ -183,6 +181,7 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSubmit = useCallback(() => {
     if (
       !isUserOperationSendReady ||

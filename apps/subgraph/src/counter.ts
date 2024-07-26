@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Counter } from "../generated/schema";
 
@@ -44,19 +45,19 @@ export function getWalletCount(): BigInt {
 }
 
 export function incrementUserOpCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpCount = counter.userOpCount.plus(BigInt.fromI32(1));
   counter.save();
 }
 
 export function incrementUserOpRevertCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpRevertCount = counter.userOpRevertCount.plus(BigInt.fromI32(1));
   counter.save();
 }
 
 export function incrementUserOpSuccessCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpSuccessCount = counter.userOpSuccessCount.plus(
     BigInt.fromI32(1),
   );
@@ -64,7 +65,7 @@ export function incrementUserOpSuccessCount(): void {
 }
 
 export function incrementWalletCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.walletCount = counter.walletCount.plus(BigInt.fromI32(1));
   counter.save();
 }

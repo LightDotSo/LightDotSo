@@ -16,25 +16,25 @@
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
+  ButtonIcon,
   Dialog,
   DialogBody,
   DialogContent,
-  DialogPortal,
-  DialogOverlay,
-  Skeleton,
-  Drawer,
-  DrawerContent,
   DialogFooter,
   DialogHeader,
-  ButtonIcon,
+  DialogOverlay,
+  DialogPortal,
+  Drawer,
   DrawerBody,
+  DrawerContent,
   DrawerFooter,
   Sheet,
   SheetContent,
   SheetHeader,
+  Skeleton,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { X } from "lucide-react";
 import { Suspense, createContext, useContext } from "react";
 import type { FC, ReactNode } from "react";
@@ -127,7 +127,7 @@ export const Modal: FC<ModalProps> = ({
         shouldScaleBackground
         open={open}
         onClose={onClose}
-        onOpenChange={change => {
+        onOpenChange={(change) => {
           if (!change && onClose) {
             onClose();
           }
@@ -165,7 +165,7 @@ export const Modal: FC<ModalProps> = ({
         shouldScaleBackground
         open={open}
         onClose={onClose}
-        onOpenChange={change => {
+        onOpenChange={(change) => {
           if (!change && onClose) {
             onClose();
           }

@@ -31,6 +31,7 @@ export const preloadGetNfts = (params: NftListParams) => {
 export const getNfts = async (params: NftListParams) => {
   return getClientNftsByOwner(
     {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       address: params.address!,
       limit: params.limit,
       isTestnet: params.is_testnet,

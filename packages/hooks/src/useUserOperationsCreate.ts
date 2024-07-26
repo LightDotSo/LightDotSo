@@ -31,7 +31,7 @@ import {
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
-import { isAddressEqual, toBytes, hexToBytes, keccak256 } from "viem";
+import { hexToBytes, isAddressEqual, keccak256, toBytes } from "viem";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -79,6 +79,7 @@ export const useUserOperationsCreate = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const subdigest = useMemo(() => {
     // If the userOperation length is 0, return
     if (userOperations.length === 0) {
@@ -104,7 +105,7 @@ export const useUserOperationsCreate = ({
 
     // Check if all of the userOperations have hash
     const isAllHashed = userOperations.every(
-      userOperation => userOperation.hash,
+      (userOperation) => userOperation.hash,
     );
     if (!isAllHashed) {
       return;
@@ -114,7 +115,7 @@ export const useUserOperationsCreate = ({
     if (userOperations.length > 1) {
       // Get the leaves of the merkle tree
       const leaves = userOperations
-        .map(userOperation => hexToBytes(userOperation.hash as Hex))
+        .map((userOperation) => hexToBytes(userOperation.hash as Hex))
         .sort(Buffer.compare);
 
       // If the number of leaves is not 2, add a leaf w/ 0
@@ -181,7 +182,7 @@ export const useUserOperationsCreate = ({
       return;
     }
 
-    return configuration?.owners?.find(owner =>
+    return configuration?.owners?.find((owner) =>
       isAddressEqual(owner.address as Address, userAddress),
     );
   }, [configuration?.owners, userAddress]);
@@ -228,6 +229,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Reset the signed data, merkle tree, and userOperations
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const resetUserOperationsCreate = useCallback(() => {
     setSignedData(undefined);
     setMerkleTree(undefined);
@@ -236,6 +238,7 @@ export const useUserOperationsCreate = ({
   }, []);
 
   // Sign the userOperation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const signUserOperations = useCallback(() => {
     if (!subdigest) {
       return;
@@ -271,6 +274,7 @@ export const useUserOperationsCreate = ({
   }, [data]);
 
   // Create the userOperation (single or batch)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Create a single user operation
     const createUserOp = async () => {
@@ -344,7 +348,7 @@ export const useUserOperationsCreate = ({
     return (
       userOperations &&
       userOperations.length > 0 &&
-      userOperations.every(userOperation => {
+      userOperations.every((userOperation) => {
         return !!(
           typeof owner !== "undefined" &&
           userOperation &&
@@ -397,6 +401,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction disabled state
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isUserOperationsDisabled = useMemo(() => {
     console.info("isValidUserOperations", isValidUserOperations);
     console.info("isUserOperationsCreateable", isUserOperationsCreateable);

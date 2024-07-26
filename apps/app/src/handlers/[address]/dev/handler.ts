@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { validateAddress } from "@lightdotso/validators";
-import { redirect, notFound } from "next/navigation";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
+import { validateAddress } from "@lightdotso/validators";
+import { notFound, redirect } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Handler

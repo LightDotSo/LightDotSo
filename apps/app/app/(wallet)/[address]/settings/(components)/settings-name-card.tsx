@@ -14,8 +14,12 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
+import { TITLES } from "@/const";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
-import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
+import { useMutationWalletUpdate, useQueryWallet } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
@@ -28,16 +32,12 @@ import {
   FormMessage,
   Input,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { z } from "zod";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -112,6 +112,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<WalletNameFormValues> = useMemo(() => {
     return {
       name: wallet?.name,
@@ -136,7 +137,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Submit Handler
   // ---------------------------------------------------------------------------
 
-  const onSubmit: SubmitHandler<WalletNameFormValues> = data => {
+  const onSubmit: SubmitHandler<WalletNameFormValues> = (data) => {
     mutate({ name: data.name });
   };
 
@@ -208,14 +209,12 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   return (
     <SettingsCard
       title={
-        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
-          "Name"
-        ].title
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories
+          .Name.title
       }
       subtitle={
-        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
-          "Name"
-        ].description
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories
+          .Name.description
       }
       footerContent={
         <>
@@ -252,7 +251,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                 <FormLabel>
                   {
                     TITLES.WalletSettings.subcategories["Wallet Settings"]
-                      .subcategories["Name"].title
+                      .subcategories.Name.title
                   }
                 </FormLabel>
                 <FormControl>
@@ -261,7 +260,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                 <FormDescription>
                   {
                     TITLES.WalletSettings.subcategories["Wallet Settings"]
-                      .subcategories["Name"].note
+                      .subcategories.Name.note
                   }
                 </FormDescription>
                 <FormMessage />

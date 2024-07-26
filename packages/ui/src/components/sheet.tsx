@@ -15,15 +15,15 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import type {
   ComponentProps,
   ComponentPropsWithoutRef,
   ElementRef,
   HTMLAttributes,
 } from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
 import { forwardRef } from "react";
+import { Drawer as DrawerPrimitive } from "vaul";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -77,7 +77,7 @@ const SheetOverlay = forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-background-overlay backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-background-overlay backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in",
       className,
     )}
     {...props}
@@ -113,7 +113,7 @@ const SheetHeader = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-row items-center justify-end border-b border-border p-2",
+      "flex flex-row items-center justify-end border-border border-b p-2",
       className,
     )}
     {...props}
@@ -141,7 +141,7 @@ const SheetTitle = forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-text", className)}
+    className={cn("font-semibold text-lg text-text", className)}
     {...props}
   />
 ));

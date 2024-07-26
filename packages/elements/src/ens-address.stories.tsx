@@ -39,7 +39,7 @@ type Story = StoryObj<typeof EnsAddress>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <EnsAddress {...args} />,
+  render: (args) => <EnsAddress {...args} />,
   args: {
     name: "kaki.eth",
   },

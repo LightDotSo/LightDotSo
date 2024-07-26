@@ -39,6 +39,7 @@ export const LightLogo: FC<LightLogoProps> = ({ className, ...props }) => {
       className={className}
       {...props}
     >
+      <title>Light</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

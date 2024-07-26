@@ -67,10 +67,10 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data.result as SocketBalanceData[];
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

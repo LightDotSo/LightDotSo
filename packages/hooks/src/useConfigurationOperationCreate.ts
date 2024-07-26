@@ -16,8 +16,8 @@
 
 import type { ConfigurationOperationCreateBodyParams } from "@lightdotso/params";
 import {
-  useQueryConfiguration,
   useMutationConfigurationOperationCreate,
+  useQueryConfiguration,
   useQueryConfigurationOperationSimulation,
 } from "@lightdotso/query";
 import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
@@ -127,7 +127,7 @@ export const useConfigurationOperationCreate = ({
       return;
     }
 
-    return configuration?.owners?.find(owner =>
+    return configuration?.owners?.find((owner) =>
       isAddressEqual(owner.address as Address, userAddress),
     );
   }, [configuration?.owners, userAddress]);
@@ -149,6 +149,7 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Refetch the simulation when the parameters change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchConfigurationOperationSimulation();
   }, [params, refetchConfigurationOperationSimulation]);
@@ -162,6 +163,7 @@ export const useConfigurationOperationCreate = ({
     setSignedData(data);
   }, [data]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const createConfigurationOp = async () => {
       if (!owner || !signedData || !params) {

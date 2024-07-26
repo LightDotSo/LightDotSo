@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { NavSidebar } from "@/components/nav/nav-sidebar";
+import { TITLES } from "@/const";
 import {
-  BaseLayerWrapper,
-  SettingsPageWrapper,
-  HStackFull,
   BannerSection,
+  BaseLayerWrapper,
+  HStackFull,
+  SettingsPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { NavSidebar } from "@/components/nav/nav-sidebar";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -33,15 +33,15 @@ const navSidebarItems = [
     href: "/settings",
   },
   {
-    title: TITLES.WalletSettings.subcategories["Billing"].title,
+    title: TITLES.WalletSettings.subcategories.Billing.title,
     href: "/settings/billing",
   },
   {
-    title: TITLES.WalletSettings.subcategories["Deployment"].title,
+    title: TITLES.WalletSettings.subcategories.Deployment.title,
     href: "/settings/deployment",
   },
   {
-    title: TITLES.WalletSettings.subcategories["Notifications"].title,
+    title: TITLES.WalletSettings.subcategories.Notifications.title,
     href: "/settings/notifications",
   },
 ];

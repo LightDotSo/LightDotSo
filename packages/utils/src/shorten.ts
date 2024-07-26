@@ -17,19 +17,11 @@
 // -----------------------------------------------------------------------------
 
 export const shortenAddress = (address: string) => {
-  return (
-    address?.substring(0, 6) +
-    `...` +
-    address?.substring(address.length - 4, address.length)
-  );
+  return `${address?.substring(0, 6)}...${address?.substring(address.length - 4, address.length)}`;
 };
 
 export const shortenBytes32 = (bytes32: string) => {
-  return (
-    bytes32?.substring(0, 6) +
-    `...` +
-    bytes32?.substring(bytes32.length - 8, bytes32.length)
-  );
+  return `${bytes32?.substring(0, 6)}...${bytes32?.substring(bytes32.length - 8, bytes32.length)}`;
 };
 
 export const shortenName = (name: string) => {

@@ -24,6 +24,7 @@ export const getLifiTokens = async (
   {
     parameters,
   }: {
+    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     parameters: {};
   },
   clientType?: ClientType,

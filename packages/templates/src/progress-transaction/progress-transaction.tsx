@@ -59,7 +59,7 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
   useEffect(() => {
     if (isLoading) {
       toast.info("Transaction in progress...", {
-        duration: Infinity,
+        duration: Number.POSITIVE_INFINITY,
         id: hash,
         position: "top-right",
       });
@@ -104,7 +104,7 @@ export const ProgressTransaction: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return Object.values(pendingTransactions).map(tx => (
+  return Object.values(pendingTransactions).map((tx) => (
     <ProgressTransactionInternal
       key={tx.hash}
       hash={tx.hash}

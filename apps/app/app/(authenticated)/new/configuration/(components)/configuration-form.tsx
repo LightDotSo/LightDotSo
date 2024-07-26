@@ -14,6 +14,8 @@
 
 "use client";
 
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
@@ -29,7 +31,7 @@ import {
   useTypeQueryState,
 } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
-import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
+import { newFormConfigurationSchema, newFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
@@ -43,11 +45,11 @@ import {
   CardTitle,
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
-  FormDescription,
-  FormMessage,
   FormLabel,
+  FormMessage,
   Input,
   Label,
   Select,
@@ -60,17 +62,15 @@ import {
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -88,7 +88,7 @@ function timestampToBytes32(timestamp: number): string {
   buffer.writeBigInt64BE(BigInt(timestamp), 24); // write the timestamp starting from the 25th byte (zero-based), so the first 24 bytes will be zeros
 
   // Convert the buffer to a hexadecimal string with '0x' prefix
-  return "0x" + buffer.toString("hex");
+  return `0x${buffer.toString("hex")}`;
 }
 
 // -----------------------------------------------------------------------------
@@ -135,6 +135,7 @@ export const ConfigurationForm: FC = () => {
   }, [userAddress, userEns]);
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -187,8 +188,8 @@ export const ConfigurationForm: FC = () => {
 
         // Check if no two owners have the same address
         const addresses = value.owners
-          .map(owner => owner?.address)
-          .filter(address => address && address.trim() !== "");
+          .map((owner) => owner?.address)
+          .filter((address) => address && address.trim() !== "");
         const uniqueAddresses = new Set(addresses);
         if (uniqueAddresses.size !== addresses.length) {
           // Add an error to the duplicate address
@@ -238,6 +239,7 @@ export const ConfigurationForm: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
@@ -272,7 +274,7 @@ export const ConfigurationForm: FC = () => {
         } else {
           // Iterate over each owner which has a weight
           const owners = value.owners.filter(
-            owner => owner?.weight && owner?.address,
+            (owner) => owner?.weight && owner?.address,
           ) as Owners;
           setOwners(owners);
         }
@@ -285,6 +287,7 @@ export const ConfigurationForm: FC = () => {
   }, [form.watch]);
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Set the form values from the default values
     setFormValues({
@@ -332,6 +335,7 @@ export const ConfigurationForm: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);
     url.searchParams.set("inviteCode", inviteCode);
@@ -373,7 +377,7 @@ export const ConfigurationForm: FC = () => {
           .getEnsAddress({
             name: normalize(address),
           })
-          .then(ensNameAddress => {
+          .then((ensNameAddress) => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
               form.setValue(`owners.${index}.address`, ensNameAddress);
@@ -433,6 +437,7 @@ export const ConfigurationForm: FC = () => {
             <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="space-y-4">
                 {fields.map((field, index) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   <div key={index}>
                     {/* A hack to make a padding above the separator */}
                     {type === "personal" && index === 1 && (
@@ -480,7 +485,7 @@ export const ConfigurationForm: FC = () => {
                                   className="pl-12"
                                   {...field}
                                   placeholder="Your address or ENS name"
-                                  onBlur={e => {
+                                  onBlur={(e) => {
                                     // Validate the address
                                     if (!e.target.value) {
                                       // Clear the value of key address
@@ -493,7 +498,7 @@ export const ConfigurationForm: FC = () => {
 
                                     validateAddress(address, index);
                                   }}
-                                  onChange={e => {
+                                  onChange={(e) => {
                                     // Update the field value
                                     field.onChange(e.target.value || "");
 
@@ -517,10 +522,8 @@ export const ConfigurationForm: FC = () => {
                                       }
                                       className={cn(
                                         // If the field is not valid, add opacity
-                                        form.formState.errors.owners &&
-                                          form.formState.errors.owners[index] &&
-                                          form.formState.errors.owners[index]
-                                            ?.addressOrEns
+                                        form.formState.errors.owners?.[index]
+                                          ?.addressOrEns
                                           ? "opacity-50"
                                           : "opacity-100",
                                       )}
@@ -543,8 +546,8 @@ export const ConfigurationForm: FC = () => {
                               <Label htmlFor="weight">Weight</Label>
                               <Select
                                 defaultValue={field.value.toString()}
-                                onValueChange={value => {
-                                  field.onChange(parseInt(value));
+                                onValueChange={(value) => {
+                                  field.onChange(Number.parseInt(value));
                                   form.trigger(`owners.${index}.weight`);
                                   form.trigger("threshold");
                                 }}
@@ -562,6 +565,7 @@ export const ConfigurationForm: FC = () => {
                                   {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
                                     (_, i) => (
                                       <SelectItem
+                                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                         key={i}
                                         value={(i + 1).toString()}
                                       >
@@ -580,9 +584,7 @@ export const ConfigurationForm: FC = () => {
                         className={cn(
                           "col-span-1 flex h-full flex-col items-center",
                           // If there is error, justify center, else end
-                          form.formState.errors.owners &&
-                            form.formState.errors.owners[index] &&
-                            form.formState.errors.owners[index]?.addressOrEns
+                          form.formState.errors.owners?.[index]?.addressOrEns
                             ? "justify-center"
                             : "justify-end",
                         )}
@@ -630,8 +632,8 @@ export const ConfigurationForm: FC = () => {
                           onOpenChange={() => {
                             form.trigger("threshold");
                           }}
-                          onValueChange={value => {
-                            field.onChange(parseInt(value));
+                          onValueChange={(value) => {
+                            field.onChange(Number.parseInt(value));
                             form.trigger("threshold");
                           }}
                         >
@@ -643,6 +645,7 @@ export const ConfigurationForm: FC = () => {
                           <SelectContent>
                             {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
                               (_, i) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                 <SelectItem key={i} value={(i + 1).toString()}>
                                   {i + 1}
                                 </SelectItem>
@@ -657,7 +660,7 @@ export const ConfigurationForm: FC = () => {
                     </FormDescription>
                     <FormMessage />
                     {form.formState.errors && (
-                      <p className="text-sm font-medium text-text-destructive">
+                      <p className="font-medium text-sm text-text-destructive">
                         {/* Print any message one line at a time */}
                         {Object.entries(form.formState.errors)
                           .filter(
@@ -665,6 +668,7 @@ export const ConfigurationForm: FC = () => {
                               !key.startsWith("threshold") &&
                               !key.startsWith("owners"),
                           )
+                          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                           .map(([_key, error]: [string, any]) => error.message)
                           .join("\n")}
                       </p>

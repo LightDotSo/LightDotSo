@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { setBalance } from "viem/actions";
-import { expect, test } from "vitest";
 import { publicClient, testClient } from "@/contracts/test/spec/utils";
 import { accounts } from "@/contracts/test/spec/utils/constants";
+import { setBalance } from "viem/actions";
+import { expect, test } from "vitest";
 
 const targetAccount = accounts[0];
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { UserOperation } from "@lightdotso/schemas";
-import { ExecutionWithChainId } from "@lightdotso/types";
+import type { ExecutionWithChainId } from "@lightdotso/types";
 import type { Hex } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
@@ -64,16 +64,16 @@ type UserOperationsStore = {
 export const useUserOperations = create(
   devtools(
     persist<UserOperationsStore>(
-      set => ({
+      (set) => ({
         executionParams: [],
         setExecutionParamsByChainId: (chainId, execution) =>
-          set(state => {
+          set((state) => {
             // Gets the current executionParams
             const executionParams = [...state.executionParams];
 
             // Removes all the operations with the same chainId
             const newExecutionParams = executionParams.filter(
-              execution => execution.chainId !== chainId,
+              (execution) => execution.chainId !== chainId,
             );
 
             // Adds the new operations
@@ -82,13 +82,13 @@ export const useUserOperations = create(
             return { executionParams: newExecutionParams };
           }),
         prependExecutionParamsByChainId: (chainId, execution) =>
-          set(state => {
+          set((state) => {
             // Gets the current executionParams
             const executionParams = [...state.executionParams];
 
             // Gets the first operation with the same chainId
             const firstOperationIndex = executionParams.findIndex(
-              execution => execution.chainId === chainId,
+              (execution) => execution.chainId === chainId,
             );
 
             // If the operation is found, it prepends the execution before it, otherwise it appends it
@@ -114,13 +114,13 @@ export const useUserOperations = create(
             return { partialUserOperations: operations };
           }),
         setPartialUserOperationByChainIdAndNonce: (chainId, nonce, operation) =>
-          set(state => {
+          set((state) => {
             // Gets the current partialUserOperations
             const partialUserOperations = [...state.partialUserOperations];
 
             // Finds the index of the operation matching the chainId
             const operationIndex = partialUserOperations.findIndex(
-              op => op.chainId === chainId && op.nonce === nonce,
+              (op) => op.chainId === chainId && op.nonce === nonce,
             );
 
             // If the operation is found, it updates it, otherwise it adds it to the array
@@ -138,13 +138,13 @@ export const useUserOperations = create(
             return { userOperations: [] };
           }),
         setUserOperationByChainIdAndNonce: (chainId, nonce, operation) =>
-          set(state => {
+          set((state) => {
             // Gets the current userOperations
             const userOperations = [...state.userOperations];
 
             // Finds the index of the operation matching the chainId
             const operationIndex = userOperations.findIndex(
-              op => op.chainId === chainId && op.nonce === nonce,
+              (op) => op.chainId === chainId && op.nonce === nonce,
             );
 
             // If the operation is found, it updates it, otherwise it adds it to the array
@@ -157,7 +157,7 @@ export const useUserOperations = create(
             return { userOperations: userOperations };
           }),
         pendingUserOperationMerkleRoot: null,
-        addPendingUserOperationMerkleRoot: hash =>
+        addPendingUserOperationMerkleRoot: (hash) =>
           set(() => {
             return { pendingUserOperationMerkleRoot: hash };
           }),
@@ -166,8 +166,8 @@ export const useUserOperations = create(
             return { pendingUserOperationMerkleRoot: null };
           }),
         pendingUserOperationHashes: [],
-        addPendingUserOperationHash: hash =>
-          set(state => {
+        addPendingUserOperationHash: (hash) =>
+          set((state) => {
             return {
               pendingUserOperationHashes: [
                 ...state.pendingUserOperationHashes,
@@ -193,6 +193,7 @@ export const useUserOperations = create(
       {
         name: "user-operations-state-v1",
         storage: createJSONStorage(() => sessionStorage, {
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           reviver: (_key: string, value: any): any => {
             // Ignore functions during serialization
             if (typeof value === "function") {
@@ -203,6 +204,7 @@ export const useUserOperations = create(
             }
             return value;
           },
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           replacer: (_key: string, value: any): any => {
             if (typeof value === "bigint") {
               return { type: "bigint", value: value.toString() };
@@ -218,6 +220,7 @@ export const useUserOperations = create(
       anonymousActionType: "useUserOperations",
       name: "UserOperationsStore",
       serialize: {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         replacer: (_key: any, value: any) =>
           typeof value === "bigint" ? value.toString() : value,
       },

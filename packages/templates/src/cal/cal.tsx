@@ -16,7 +16,7 @@
 
 import { useTheme } from "next-themes";
 // import EmbedCal, { getCalApi } from "@calcom/embed-react";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -24,6 +24,7 @@ import { FC, useEffect } from "react";
 
 declare global {
   interface Window {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     Cal: any;
   }
 }
@@ -66,19 +67,23 @@ export const Cal: FC = () => {
 
   // Function to dynamically load the Cal.com script
   const loadCalScript = () => {
-    (function (C, A, L) {
+    ((C, A, L) => {
       // @ts-ignore
-      let p = function (a, ar) {
+      const p = (a, ar) => {
         a.q.push(ar);
       };
-      let d = C.document;
+      const d = C.document;
       // @ts-ignore
       C.Cal =
         // @ts-ignore
         C.Cal ||
-        function () {
+        (() => {
           // @ts-ignore
+          // biome-ignore lint/style/useConst: <explanation>
           let cal = C.Cal;
+          // @ts-expect-error
+          // biome-ignore lint/style/useConst: <explanation>
+          // biome-ignore lint/style/noArguments: <explanation>
           let ar = arguments;
           if (!cal.loaded) {
             cal.ns = {};
@@ -87,7 +92,9 @@ export const Cal: FC = () => {
             cal.loaded = true;
           }
           if (ar[0] === L) {
-            const api = function () {
+            const api = () => {
+              // @ts-expect-error
+              // biome-ignore lint/style/noArguments: <explanation>
               p(api, arguments);
             };
             const namespace = ar[1];
@@ -103,10 +110,11 @@ export const Cal: FC = () => {
             return;
           }
           p(cal, ar);
-        };
+        });
     })(window, "https://app.cal.com/embed/embed.js", "init");
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Load the Cal.com script
     loadCalScript();

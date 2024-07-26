@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { redis } from "@lightdotso/redis";
 import { inngest } from "@/inngest/client";
+import { redis } from "@lightdotso/redis";
 
 // -----------------------------------------------------------------------------
 // Inngest
@@ -32,10 +32,10 @@ export const walletRedisCron = inngest.createFunction(
 
     // For each wallet, add to `wallet` set
     await step.run("Add wallets to Redis", async () => {
-      let pipe = redis.pipeline();
+      const pipe = redis.pipeline();
 
       // Add the commands to the pipeline
-      for (let wallet of wallets) {
+      for (const wallet of wallets) {
         pipe.sadd("wallets", wallet.address);
       }
 

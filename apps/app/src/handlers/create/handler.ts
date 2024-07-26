@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as rootPreloader } from "@/handlers/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
-import { UserOperation } from "@lightdotso/schemas";
+import type { UserOperation } from "@lightdotso/schemas";
 import { getConfiguration, getWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
-import { handler as rootPreloader } from "@/handlers/handler";
 
 // -----------------------------------------------------------------------------
 // Handler

@@ -22,8 +22,8 @@ import type {
   RefAttributes,
   SVGProps,
 } from "react";
-import { ArbitrumNovaLogo } from "./arbitrum-nova";
 import { ArbitrumLogo } from "./arbitrum";
+import { ArbitrumNovaLogo } from "./arbitrum-nova";
 import { AvalancheLogo } from "./avalanche";
 import { BaseLogo } from "./base";
 import { BlastLogo } from "./blast";
@@ -37,8 +37,8 @@ import { GnosisLogo } from "./gnosis";
 import { LineaLogo } from "./linea";
 import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
-import { PolygonZkEvmLogo } from "./polygon-zkevm";
 import { PolygonLogo } from "./polygon";
+import { PolygonZkEvmLogo } from "./polygon-zkevm";
 import { RedstoneLogo } from "./redstone";
 import { ScrollLogo } from "./scroll";
 import { SeiLogo } from "./sei";
@@ -96,7 +96,7 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
     <Logo {...props} />
     <span
       className={cn(
-        "absolute bottom-0 right-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
+        "absolute right-0 bottom-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
         testnetChainLogoVariants({ size: size }),
       )}
     >

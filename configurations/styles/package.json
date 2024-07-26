@@ -12,9 +12,7 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "files": [
-    "global.css"
-  ],
+  "files": ["global.css"],
   "publishConfig": {
     "access": "public"
   }

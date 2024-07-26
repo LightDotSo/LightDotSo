@@ -14,6 +14,9 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
@@ -30,13 +33,10 @@ import {
   Switch,
   toast,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -123,8 +123,8 @@ export const SettingsNotificationCard: FC = () => {
 
   return (
     <SettingsCard
-      title={TITLES.Settings.subcategories["Notifications"].title}
-      subtitle={TITLES.Settings.subcategories["Notifications"].description}
+      title={TITLES.Settings.subcategories.Notifications.title}
+      subtitle={TITLES.Settings.subcategories.Notifications.description}
       footerContent={<SettingsNotificationCardSubmitButton />}
     >
       <Form {...form}>
@@ -174,7 +174,7 @@ export const SettingsNotificationCard: FC = () => {
             )}
           />
           <div>
-            <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
+            <h3 className="mb-4 font-medium text-lg">Email Notifications</h3>
             <div className="space-y-4">
               <FormField
                 control={form.control}

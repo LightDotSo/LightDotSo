@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SettingsNotificationsSettingsCard } from "@/app/(wallet)/[address]/settings/notifications/(components)/settings-notifications-settings-card";
+import { handler } from "@/handlers/[address]/settings/notifications/handler";
+import { preloader } from "@/preloaders/[address]/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { SettingsNotificationsSettingsCard } from "@/app/(wallet)/[address]/settings/notifications/(components)/settings-notifications-settings-card";
-import { handler } from "@/handlers/[address]/settings/notifications/handler";
-import { preloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AddressFormField } from "@lightdotso/forms";
 import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
@@ -24,13 +25,12 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandList,
   CommandItem,
+  CommandList,
   Form,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -71,7 +71,7 @@ export function AddressModal() {
   } = useModals();
 
   const getEns = async ({ name }: { name: string }) =>
-    publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
+    publicClient.getEnsAddress({ name: normalize(name) }).then((addr) => {
       console.info(addr);
       return !!addr;
     });
@@ -145,6 +145,7 @@ export function AddressModal() {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (ensAddress) {
       methods.setValue("addressOrEns", delayedName);
@@ -240,7 +241,7 @@ export function AddressModal() {
                 >
                   <div className="flex items-center space-x-3">
                     {watchName}
-                    <span className="ml-4 text-xs text-text-weak">
+                    <span className="ml-4 text-text-weak text-xs">
                       (Select to enter)
                     </span>
                   </div>
@@ -252,8 +253,8 @@ export function AddressModal() {
                 {!isEnsDomainsLoading &&
                   ensDomains &&
                   ensDomains
-                    .filter(ensDomain => ensDomain.name !== watchName)
-                    .map(ensDomain => (
+                    .filter((ensDomain) => ensDomain.name !== watchName)
+                    .map((ensDomain) => (
                       <CommandItem
                         key={ensDomain.id}
                         value={ensDomain.name ?? undefined}
@@ -268,7 +269,7 @@ export function AddressModal() {
                       >
                         <div className="flex items-center space-x-3">
                           {ensDomain.name}
-                          <span className="ml-4 text-xs text-text-weak">
+                          <span className="ml-4 text-text-weak text-xs">
                             ({ensDomain.id})
                           </span>
                         </div>
@@ -278,25 +279,24 @@ export function AddressModal() {
             )}
             {!isWalletsLoading && wallets && wallets.length > 0 && (
               <CommandGroup heading="Owned Wallets">
-                {wallets &&
-                  wallets.map(wallet => (
-                    <CommandItem
-                      key={wallet.address}
-                      value={wallet.address}
-                      onSelect={() => {
-                        methods.setValue("addressOrEns", wallet.address);
-                        methods.trigger("addressOrEns");
-                        validEns.invalidate();
-                      }}
-                    >
-                      <div className="flex items-center space-x-3">
-                        {wallet.name}
-                        <span className="ml-4 text-xs text-text-weak">
-                          ({wallet.address})
-                        </span>
-                      </div>
-                    </CommandItem>
-                  ))}
+                {wallets?.map((wallet) => (
+                  <CommandItem
+                    key={wallet.address}
+                    value={wallet.address}
+                    onSelect={() => {
+                      methods.setValue("addressOrEns", wallet.address);
+                      methods.trigger("addressOrEns");
+                      validEns.invalidate();
+                    }}
+                  >
+                    <div className="flex items-center space-x-3">
+                      {wallet.name}
+                      <span className="ml-4 text-text-weak text-xs">
+                        ({wallet.address})
+                      </span>
+                    </div>
+                  </CommandItem>
+                ))}
               </CommandGroup>
             )}
           </CommandList>

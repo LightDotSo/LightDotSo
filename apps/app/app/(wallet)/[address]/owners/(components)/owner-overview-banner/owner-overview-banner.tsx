@@ -21,8 +21,8 @@ import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
 import { PencilIcon } from "lucide-react";
 import type { FC } from "react";
@@ -70,7 +70,7 @@ export const OwnerOverviewBanner: FC = () => {
               onClick={() => {
                 setOwnerModalProps({
                   initialOwners: configuration?.owners
-                    ? configuration?.owners.map(owner => {
+                    ? configuration?.owners.map((owner) => {
                         return {
                           address: owner.address as Address,
                           addressOrEns: owner.address,

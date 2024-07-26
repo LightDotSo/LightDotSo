@@ -33,16 +33,16 @@ export const useUserOperationsProgress = () => {
     // However, filter out the operations that are the same chainId and nonce
 
     const incompletePartialUserOperations = partialUserOperations.filter(
-      partialUserOperation =>
+      (partialUserOperation) =>
         typeof partialUserOperation.chainId === "undefined" ||
         typeof partialUserOperation.callData === "undefined" ||
         typeof partialUserOperation.nonce === "undefined",
     );
 
     const duplicatePartialUserOperations = partialUserOperations.filter(
-      partialUserOperation =>
+      (partialUserOperation) =>
         userOperations.some(
-          userOperation =>
+          (userOperation) =>
             (userOperation.chainId === partialUserOperation.chainId &&
               userOperation.callData === partialUserOperation.callData) ||
             (userOperation.chainId === partialUserOperation.chainId &&
@@ -56,7 +56,7 @@ export const useUserOperationsProgress = () => {
     // Remove the duplicate partial user operations from the partial user operations
     // to prevent duplicate transaction details.
     const filteredPartialUserOperations = partialUserOperations.filter(
-      partialUserOperation =>
+      (partialUserOperation) =>
         !incompletePartialUserOperations.includes(partialUserOperation) ||
         !duplicatePartialUserOperations.includes(partialUserOperation),
     );

@@ -15,6 +15,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Button } from "./button";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "./number";
 
 // -----------------------------------------------------------------------------
@@ -40,9 +41,9 @@ type Story = StoryObj<typeof Number>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => {
+  render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    let [value, setValue] = useState(300.0);
+    const [value, setValue] = useState(300.0);
 
     return (
       <div className="space-x-3">
@@ -55,15 +56,15 @@ export const Base: Story = {
   args: {},
 };
 export const Prefix: Story = {
-  render: args => <Number value={100_000_000} {...args} prefix="$" />,
+  render: (args) => <Number value={100_000_000} {...args} prefix="$" />,
   args: {},
 };
 export const Large: Story = {
-  render: args => <Number value={100_000_000} {...args} size="xl" />,
+  render: (args) => <Number value={100_000_000} {...args} size="xl" />,
   args: {},
 };
 export const Neutral: Story = {
-  render: args => <Number value={300} {...args} />,
+  render: (args) => <Number value={300} {...args} />,
   args: {
     variant: "neutral",
   },

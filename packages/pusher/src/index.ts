@@ -15,6 +15,7 @@
 import PusherClient from "pusher-js";
 
 export const pusherClient = new PusherClient(
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   process.env.NEXT_PUBLIC_SOKETI_DEFAULT_APP_KEY!,
   {
     wsHost: "soketi.light.so",

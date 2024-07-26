@@ -38,7 +38,7 @@ type Story = StoryObj<typeof ToggleGroup>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <ToggleGroup type="single">
       <ToggleGroupItem value="a">A</ToggleGroupItem>
       <ToggleGroupItem value="b">B</ToggleGroupItem>

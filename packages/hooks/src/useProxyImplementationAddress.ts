@@ -16,7 +16,7 @@
 
 import { useStorageAt } from "@lightdotso/wagmi";
 import { useMemo } from "react";
-import { getAddress, type Address } from "viem";
+import { type Address, getAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Hook Props

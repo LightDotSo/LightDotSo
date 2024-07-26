@@ -99,10 +99,10 @@ export const useQueryLifiQuote = (params: LifiQuoteParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as LifiQuotePageData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

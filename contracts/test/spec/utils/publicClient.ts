@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createPublicClient, http } from "viem";
 import { anvil } from "@/contracts/test/spec/utils";
+import { http, createPublicClient } from "viem";
 
 export const publicClient = createPublicClient({
   chain: anvil,

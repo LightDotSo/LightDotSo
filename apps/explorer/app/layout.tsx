@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
+import { EXPLORER_TABS } from "@/const";
 import { Banner, Footer, Nav, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
-import { EXPLORER_TABS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props

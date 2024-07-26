@@ -39,7 +39,7 @@ type Story = StoryObj<typeof Modal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Modal
       size="sm"
       footerContent={

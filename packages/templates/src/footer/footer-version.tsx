@@ -26,7 +26,7 @@ export const FooterVersion: FC = () => {
 
   return (
     <div className="flex items-center justify-between space-x-2">
-      <span className="text-xs text-text-weak/60">
+      <span className="text-text-weak/60 text-xs">
         Version:{" "}
         <a
           className="text-text-weak hover:underline"

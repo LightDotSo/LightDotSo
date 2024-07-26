@@ -77,7 +77,7 @@ export const NotificationComboDialog: FC = () => {
       onOpenChange={toggleIsNotificationComboDialogOpen}
     >
       <Tabs defaultValue="inbox" variant="outline">
-        <div className="flex justify-between border-b border-border">
+        <div className="flex justify-between border-border border-b">
           <TabsList>
             <TabsTrigger value="inbox">Inbox</TabsTrigger>
             <TabsTrigger value="archive">Archive</TabsTrigger>
@@ -97,12 +97,11 @@ export const NotificationComboDialog: FC = () => {
         </div>
         <TabsContent value="inbox">
           {!sessionId && <Login />}
-          {notifications &&
-            notifications.map(notification => (
-              <div key={notification.id} className="p-4">
-                <p className="text-sm text-text-primary">{notification.id}</p>
-              </div>
-            ))}
+          {notifications?.map((notification) => (
+            <div key={notification.id} className="p-4">
+              <p className="text-sm text-text-primary">{notification.id}</p>
+            </div>
+          ))}
           {notificationsCount?.count === 0 && (
             <div className="w-full justify-center py-8 text-center">
               <EmptyState entity="notification" />

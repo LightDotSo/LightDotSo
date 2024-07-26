@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import headlessPlugin from "@headlessui/tailwindcss";
-import animatePlugin from "tailwindcss-animate";
 import aspectRatioPlugin from "@tailwindcss/aspect-ratio";
 import formsPlugin from "@tailwindcss/forms";
 import typographyPlugin from "@tailwindcss/typography";
+import animatePlugin from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {

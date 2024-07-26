@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalInterception } from "@lightdotso/templates";
-import type { Address, Hex } from "viem";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
 import { handler } from "@/handlers/[address]/op/[userOperationHash]/handler";
+import { ModalInterception } from "@lightdotso/templates";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,12 +14,12 @@
 
 "use client";
 
-import { TokenData } from "@lightdotso/data";
+import type { TokenData } from "@lightdotso/data";
 import { useTokenAmount } from "@lightdotso/hooks";
 import { useQueryTokenGroup } from "@lightdotso/query";
 import { useAuth, useTokenGroups } from "@lightdotso/stores";
 import { memo, useEffect } from "react";
-import { Address } from "viem";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -63,17 +63,16 @@ export const BaseTokenGroup = ({ groupId }: TokenGroupProps) => {
 
   return (
     <>
-      {tokenGroup?.tokens &&
-        tokenGroup?.tokens.map(token => {
-          return (
-            <TokenGroupToken
-              key={token.id}
-              token={token}
-              groupId={groupId}
-              wallet={wallet}
-            />
-          );
-        })}
+      {tokenGroup?.tokens?.map((token) => {
+        return (
+          <TokenGroupToken
+            key={token.id}
+            token={token}
+            groupId={groupId}
+            wallet={wallet}
+          />
+        );
+      })}
     </>
   );
 };
@@ -107,6 +106,7 @@ export const BaseTokenGroupToken = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (groupId && tokenAmount) {
       setTokenGroupByGroupId(groupId, tokenAmount);

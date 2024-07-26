@@ -37,9 +37,7 @@ export const TransactionCardTimestamp: FC<TransactionCardTimestampProps> = ({
   return (
     <div className="flex items-center space-x-1.5">
       <span>
-        {new Date(timestamp).toLocaleDateString() +
-          " " +
-          new Date(timestamp).toLocaleTimeString()}
+        {`${new Date(timestamp).toLocaleDateString()} ${new Date(timestamp).toLocaleTimeString()}`}
       </span>
     </div>
   );

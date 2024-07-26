@@ -44,14 +44,14 @@ type QuotesStore = {
 export const useQuotes = create(
   devtools(
     persist<QuotesStore>(
-      set => ({
+      (set) => ({
         quotes: [],
         resetQuotes: () => set({ quotes: [] }),
-        setQuote: quote =>
-          set(state => {
+        setQuote: (quote) =>
+          set((state) => {
             // Filter out the quote if it already exists
             const newQuotes = state.quotes.filter(
-              oldQuote =>
+              (oldQuote) =>
                 oldQuote.fromChain !== quote.fromChain ||
                 oldQuote.toChain !== quote.toChain ||
                 oldQuote.fromTokenAddress !== quote.fromTokenAddress ||
@@ -69,6 +69,7 @@ export const useQuotes = create(
       {
         name: "quotes-state-v1",
         storage: createJSONStorage(() => sessionStorage, {
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           reviver: (_key: string, value: any): any => {
             // Ignore functions during serialization
             if (typeof value === "function") {
@@ -79,6 +80,7 @@ export const useQuotes = create(
             }
             return value;
           },
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           replacer: (_key: string, value: any): any => {
             if (typeof value === "bigint") {
               return { type: "bigint", value: value.toString() };
@@ -94,6 +96,7 @@ export const useQuotes = create(
       anonymousActionType: "useQuotes",
       name: "QuotesStore",
       serialize: {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         replacer: (_key: any, value: any) =>
           typeof value === "bigint" ? value.toString() : value,
       },

@@ -26,15 +26,15 @@ const INTEGRITY_CHECKSUM = "c5f7f8e188b673ea4e677df7ea3c5a39";
 const IS_MOCKED_RESPONSE = Symbol("isMockedResponse");
 const activeClientIds = new Set();
 
-self.addEventListener("install", function () {
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener("message", async function (event) {
+self.addEventListener("message", async (event) => {
   const clientId = event.source.id;
 
   if (!clientId || !self.clients) {
@@ -85,7 +85,7 @@ self.addEventListener("message", async function (event) {
     case "CLIENT_CLOSED": {
       activeClientIds.delete(clientId);
 
-      const remainingClients = allClients.filter(client => {
+      const remainingClients = allClients.filter((client) => {
         return client.id !== clientId;
       });
 
@@ -99,7 +99,7 @@ self.addEventListener("message", async function (event) {
   }
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
 
   // Bypass navigation requests.
@@ -133,7 +133,7 @@ async function handleRequest(event, requestId) {
   // Ensure MSW is active and ready to handle the message, otherwise
   // this message will pend indefinitely.
   if (client && activeClientIds.has(client.id)) {
-    (async function () {
+    (async () => {
       const responseClone = response.clone();
 
       sendToClient(
@@ -174,11 +174,11 @@ async function resolveMainClient(event) {
   });
 
   return allClients
-    .filter(client => {
+    .filter((client) => {
       // Get only those clients that are currently visible.
       return client.visibilityState === "visible";
     })
-    .find(client => {
+    .find((client) => {
       // Find the client ID that's recorded in the
       // set of clients that have registered the worker.
       return activeClientIds.has(client.id);
@@ -198,7 +198,7 @@ async function getResponse(event, client, requestId) {
     // Remove internal MSW request header so the passthrough request
     // complies with any potential CORS preflight checks on the server.
     // Some servers forbid unknown request headers.
-    delete headers["x-msw-intention"];
+    headers["x-msw-intention"] = undefined;
 
     return fetch(requestClone, { headers });
   }
@@ -266,8 +266,8 @@ function sendToClient(client, message, transferrables = []) {
   return new Promise((resolve, reject) => {
     const channel = new MessageChannel();
 
-    channel.port1.onmessage = event => {
-      if (event.data && event.data.error) {
+    channel.port1.onmessage = (event) => {
+      if (event.data?.error) {
         return reject(event.data.error);
       }
 

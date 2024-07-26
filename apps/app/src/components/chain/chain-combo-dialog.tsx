@@ -14,6 +14,8 @@
 
 "use client";
 
+import { DEMO_WALLET_ADDRESS } from "@/const";
+import { useAppGroup } from "@/hooks";
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useComboDialogs } from "@lightdotso/stores";
@@ -33,8 +35,6 @@ import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { DEMO_WALLET_ADDRESS } from "@/const";
-import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -91,8 +91,8 @@ export const ChainComboDialog: FC = () => {
           role="combobox"
         >
           <Globe className="size-4 shrink-0" />
-          <div className="flex -space-x-1.5 overflow-hidden">
-            {chains.slice(0, 3).map(chain => (
+          <div className="-space-x-1.5 flex overflow-hidden">
+            {chains.slice(0, 3).map((chain) => (
               <ChainLogo
                 key={chain.id}
                 chainId={chain.id}
@@ -100,7 +100,7 @@ export const ChainComboDialog: FC = () => {
               />
             ))}
           </div>
-          <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
+          <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-text text-xs">
             {chains.length}
           </span>
         </Button>
@@ -113,7 +113,7 @@ export const ChainComboDialog: FC = () => {
         <CommandEmpty>No chain found.</CommandEmpty>
         <CommandGroup>
           <ScrollArea className="h-96">
-            {chains.map(chain => (
+            {chains.map((chain) => (
               <a
                 key={chain.id}
                 target="_blank"

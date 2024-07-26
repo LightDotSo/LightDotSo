@@ -25,24 +25,24 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const swapsParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     if (value === "") {
       return [];
     }
 
-    const swapPairs = value.split(";").map(pair => {
-      const [from, to] = pair.split("->").map(swapStr => {
+    const swapPairs = value.split(";").map((pair) => {
+      const [from, to] = pair.split("->").map((swapStr) => {
         const [address, chainId, quantity, groupId] = swapStr.split("|");
         const parsedAddress = address === "_" ? undefined : address;
-        const parsedChainId = parseInt(chainId);
-        const parsedQuantity = parseFloat(quantity);
+        const parsedChainId = Number.parseInt(chainId);
+        const parsedQuantity = Number.parseFloat(quantity);
         const parsedGroupId = groupId === "_" ? undefined : groupId;
 
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          !isNaN(parsedChainId) &&
-          !isNaN(parsedQuantity) &&
+          !Number.isNaN(parsedChainId) &&
+          !Number.isNaN(parsedQuantity) &&
           parsedGroupId
         ) {
           return {
@@ -50,7 +50,7 @@ export const swapsParser = createParser({
             chainId: parsedChainId,
             quantity: parsedQuantity,
             groupId: parsedGroupId,
-          };
+          } as Swap;
         }
         return null;
       });
@@ -63,10 +63,10 @@ export const swapsParser = createParser({
     });
 
     // Filter out any null values, return empty if no valid pairs exist
-    const validSwapPairs = swapPairs.filter(pair => pair !== null);
+    const validSwapPairs = swapPairs.filter((pair) => pair !== null);
     return validSwapPairs.length > 0 ? validSwapPairs : [];
   },
-  serialize: function (value: Array<{ from: Swap; to: Swap }>) {
+  serialize: (value: Array<{ from: Swap; to: Swap }>) => {
     if (!value) {
       return "";
     }

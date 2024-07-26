@@ -41,7 +41,7 @@ export const newFormSchema = z.object({
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
 
 export const newFormConfigurationSchema = z.object({
-  salt: z.string().refine(value => BYTES32_REGEX.test(value), {
+  salt: z.string().refine((value) => BYTES32_REGEX.test(value), {
     message: "Input should be a valid bytes32 value",
   }),
   threshold: z
@@ -79,8 +79,8 @@ export const newFormConfigurationRefinedSchema =
 
     // Check if no two owners have the same address
     const addresses = value.owners
-      .map(owner => owner?.address)
-      .filter(address => address && address.trim() !== "");
+      .map((owner) => owner?.address)
+      .filter((address) => address && address.trim() !== "");
     const uniqueAddresses = new Set(addresses);
     if (uniqueAddresses.size !== addresses.length) {
       // Add an error to the duplicate address

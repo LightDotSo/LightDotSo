@@ -15,10 +15,10 @@
 "use client";
 
 import { useModals, useUserOperations } from "@lightdotso/stores";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
-import { Modal, ModalProps } from "../modal";
+import { Modal, type ModalProps } from "../modal";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -151,6 +151,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Dismiss the modal and go back to the previous page
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onDismiss = useCallback(() => {
     switch (type) {
       // Only the create modal can be nested opened from the send modal
@@ -199,6 +200,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Show the modal when the path matches the modal type
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isOpen) {
       return;
@@ -246,6 +248,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // Disable hide all modals background when the interception modal is opened
   // This is to prevent the modal sent to background and not being visible when the modal is opened
   // Except for the create modal, which can be nested opened from the send modal
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (type === "create") {
       return;

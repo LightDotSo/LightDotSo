@@ -1,12 +1,9 @@
 module.exports = {
   "*": ["pnpm run license:cmd add"],
-  "*.{js,mjs,ts,tsx}": [
-    // "pnpm run eslint:cmd --fix",
-    "pnpm run oxlint:cmd --fix",
-    "pnpm run prettier:cmd --write",
+  "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+    "pnpm biome check --write --unsafe --no-errors-on-unmatched",
   ],
-  "*.{ts,tsx}": ["sh -c 'pnpm turbo run tsc && echo \"\"'"],
-  "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
+  "*.{md}": ["pnpm dprint fmt"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
     // "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",

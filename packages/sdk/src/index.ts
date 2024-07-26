@@ -16,14 +16,14 @@ import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { UserOperation } from "@lightdotso/schemas";
 import type { ExecutionWithChainId } from "@lightdotso/types";
 import { lightWalletAbi } from "@lightdotso/wagmi";
-import { encodeFunctionData, Hex, type Address } from "viem";
+import { type Address, type Hex, encodeFunctionData } from "viem";
 
 export const generatePartialUserOperations = (
   sender: Address,
   executions: ExecutionWithChainId[],
   walletFactoriesByChainId?: Record<number, Address>,
 ): Partial<UserOperation>[] => {
-  let userOperations: Partial<UserOperation>[] = [];
+  const userOperations: Partial<UserOperation>[] = [];
 
   // Group executions by chainId
   const executionsByChainId: Record<string, ExecutionWithChainId[]> = {};
@@ -47,7 +47,7 @@ export const generatePartialUserOperations = (
       walletFactory === CONTRACT_ADDRESSES["v0.2.0 Implementation"]
     ) {
       // Check if there's more than one execution for the same chainId
-      let executionCallData =
+      const executionCallData =
         executions.length === 0
           ? encodeFunctionData({
               abi: lightWalletAbi,
@@ -62,9 +62,9 @@ export const generatePartialUserOperations = (
               abi: lightWalletAbi,
               functionName: "executeBatch",
               args: [
-                executions.map(execution => execution.address) as Address[],
-                executions.map(execution => execution.value) as bigint[],
-                executions.map(execution => execution.callData) as Hex[],
+                executions.map((execution) => execution.address) as Address[],
+                executions.map((execution) => execution.value) as bigint[],
+                executions.map((execution) => execution.callData) as Hex[],
               ],
             });
 

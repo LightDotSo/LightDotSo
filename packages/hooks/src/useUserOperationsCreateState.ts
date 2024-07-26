@@ -39,7 +39,7 @@ export const useUserOperationsCreateState = () => {
 
   // Check if the signMessage is loading
   const isSignMessageAsyncLoading = useMemo(() => {
-    return signMessageStatus?.some(status => status === "pending");
+    return signMessageStatus?.some((status) => status === "pending");
   }, [signMessageStatus]);
 
   // Check if the userOperation is loading and there is only one status
@@ -52,12 +52,14 @@ export const useUserOperationsCreateState = () => {
 
   // Check if the userOperations are all loading
   const isUserOperationCreateLoading = useMemo(() => {
-    return userOperationCreateStatus?.some(status => status === "pending");
+    return userOperationCreateStatus?.some((status) => status === "pending");
   }, [userOperationCreateStatus]);
 
   // Check if the userOperations are all loading
   const isUserOperationsCreateBatchLoading = useMemo(() => {
-    return userOperationCreateBatchStatus?.some(status => status === "pending");
+    return userOperationCreateBatchStatus?.some(
+      (status) => status === "pending",
+    );
   }, [userOperationCreateBatchStatus]);
 
   // Check if the userOperations are all loading
@@ -76,16 +78,16 @@ export const useUserOperationsCreateState = () => {
   // Check if the userOperations are all successful
   const isUserOperationsCreateSuccess = useMemo(() => {
     return (
-      userOperationCreateStatus?.some(status => status === "success") ||
-      userOperationCreateBatchStatus?.some(status => status === "success")
+      userOperationCreateStatus?.some((status) => status === "success") ||
+      userOperationCreateBatchStatus?.some((status) => status === "success")
     );
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 
   // Check if the userOperations are all failed
   const isUserOperationsCreateError = useMemo(() => {
     return (
-      userOperationCreateStatus?.some(status => status === "error") ||
-      userOperationCreateBatchStatus?.some(status => status === "error")
+      userOperationCreateStatus?.some((status) => status === "error") ||
+      userOperationCreateBatchStatus?.some((status) => status === "error")
     );
   }, [userOperationCreateStatus, userOperationCreateBatchStatus]);
 

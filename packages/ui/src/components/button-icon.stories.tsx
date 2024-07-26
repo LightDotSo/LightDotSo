@@ -39,7 +39,7 @@ type Story = StoryObj<typeof ButtonIcon>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <ButtonIcon {...args}>
       <Mail />
     </ButtonIcon>

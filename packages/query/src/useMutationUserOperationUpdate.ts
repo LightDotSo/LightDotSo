@@ -61,10 +61,10 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully updated operations!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -13,9 +13,7 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "main": "src/index.mjs",
-  "files": [
-    "src/index.mjs"
-  ],
+  "files": ["src/index.mjs"],
   "scripts": {
     "tailwind-config-viewer": "tailwind-config-viewer -o"
   },

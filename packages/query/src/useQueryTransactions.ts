@@ -76,10 +76,10 @@ export const useQueryTransactions = (params: TransactionListParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as TransactionData[];
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

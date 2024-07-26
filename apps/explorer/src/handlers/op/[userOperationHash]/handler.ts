@@ -46,7 +46,7 @@ export const handler = async (params: { userOperationHash: string }) => {
   // ---------------------------------------------------------------------------
 
   return userOperation.match(
-    userOperation => {
+    (userOperation) => {
       return {
         userOperation: userOperation,
       };

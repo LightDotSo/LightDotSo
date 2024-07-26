@@ -27,8 +27,8 @@ import {
 import { cn } from "@lightdotso/utils";
 import type {
   ColumnDef,
-  TableOptions,
   Table as ReactTable,
+  TableOptions,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
 import { UserOperationCardTransaction } from "./card";
@@ -101,13 +101,13 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
 
   const tableColumns = useMemo(() => {
     if (address === null) {
-      return columns.filter(column => column.id !== "toggle");
+      return columns.filter((column) => column.id !== "toggle");
     }
     if (isDesktop) {
-      return columns.filter(column => column.id !== "row_actions");
+      return columns.filter((column) => column.id !== "row_actions");
     }
     // Filter out columns w/ id `row_actions`
-    return columns.filter(column => column.id !== "row_actions");
+    return columns.filter((column) => column.id !== "row_actions");
   }, [address, columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
@@ -135,6 +135,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setUserOperationTable) {
       setUserOperationTable(table);
@@ -144,18 +145,29 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain_id"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getCanHide(),
+    table
+      ?.getColumn("chain_id")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getIsVisible(),
+    table
+      ?.getColumn("chain_id")
+      ?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table
+      ?.getColumn("chain_id")
+      ?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("status")?.getCanHide(),
+    table
+      ?.getColumn("status")
+      ?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table?.getColumn("status")?.getIsVisible(),
+    table
+      ?.getColumn("status")
+      ?.getIsVisible(),
     setUserOperationTable,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!table.getIsAllRowsExpanded()) {
       table.toggleAllRowsExpanded();
@@ -169,7 +181,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
 
   const items = table
     .getRowModel()
-    .rows.map(row => ({ original: row.original, row: row }));
+    .rows.map((row) => ({ original: row.original, row: row }));
 
   const groupedItems = groupByDate(items);
 
@@ -181,9 +193,9 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     return (
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
+              {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -203,7 +215,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             table
               .getRowModel()
               .rows.slice(0, table.getRowModel().rows?.length)
-              .map(row => (
+              .map((row) => (
                 <TableRow
                   key={row.id}
                   className={cn(
@@ -218,7 +230,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                     }
                   }}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -232,8 +244,13 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             Array(pageSize)
               .fill(null)
               .map((_, index) => (
-                <TableRow key={`loading-${index}`}>
-                  {table.getVisibleLeafColumns().map(column => (
+                <TableRow
+                  key={`loading-${
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                    index
+                  }`}
+                >
+                  {table.getVisibleLeafColumns().map((column) => (
                     <TableCell
                       key={column.id}
                       style={{ width: column.getSize() }}

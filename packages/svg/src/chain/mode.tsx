@@ -32,6 +32,7 @@ export const ModeLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Mode</title>
     <rect width="24" height="24" rx="6" fill="#DFFE00" />
     <g clip-path="url(#clip0_10113_10253)">
       <path
