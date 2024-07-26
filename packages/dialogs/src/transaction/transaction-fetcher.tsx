@@ -303,6 +303,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ? verificationGasLimit * BigInt(currentConfiguration?.threshold)
         : verificationGasLimit;
 
+    // Bump the pre-verification gas limit to handle lesser used chains
+    const updatedPreVerificationGas = preVerificationGas
+      ? (preVerificationGas * BigInt(120)) / BigInt(100)
+      : preVerificationGas;
+
     return {
       sender: targetUserOperation?.sender,
       chainId: targetUserOperation?.chainId,
@@ -312,7 +317,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
       callGasLimit: callGasLimit,
-      preVerificationGas: preVerificationGas,
+      preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

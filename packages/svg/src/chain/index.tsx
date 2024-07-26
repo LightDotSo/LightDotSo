@@ -29,6 +29,7 @@ import { BaseLogo } from "./base";
 import { BlastLogo } from "./blast";
 import { BscLogo } from "./bsc";
 import { CeloLogo } from "./celo";
+import { CyberLogo } from "./cyber";
 import { EthereumLogo } from "./ethereum";
 import { FantomLogo } from "./fantom";
 import { FuseLogo } from "./fuse";
@@ -38,8 +39,9 @@ import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonZkEvmLogo } from "./polygon-zkevm";
 import { PolygonLogo } from "./polygon";
-import { SeiLogo } from "./sei";
+import { RedstoneLogo } from "./redstone";
 import { ScrollLogo } from "./scroll";
+import { SeiLogo } from "./sei";
 import { ZoraLogo } from "./zora";
 
 // -----------------------------------------------------------------------------
@@ -145,10 +147,14 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <PolygonLogo className={variantClassName} {...props} />;
     case 250:
       return <FantomLogo className={variantClassName} {...props} />;
+    case 690:
+      return <RedstoneLogo className={variantClassName} {...props} />;
     case 1101:
       return <PolygonZkEvmLogo className={variantClassName} {...props} />;
     case 1329:
       return <SeiLogo className={variantClassName} {...props} />;
+    case 7560:
+      return <CyberLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
     case 34443:
