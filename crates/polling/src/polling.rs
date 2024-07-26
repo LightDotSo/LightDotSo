@@ -240,7 +240,7 @@ impl Polling {
         hash: H256,
     ) -> Result<Response<UserOperationReceipt>> {
         let params = vec![json!(format!("{:?}", hash))];
-        println!("params: {:?}", params);
+        info!("params: {:?}", params);
 
         let req_body = Request {
             jsonrpc: "2.0".to_string(),
@@ -913,15 +913,19 @@ impl Polling {
         let provider = self.get_provider(chain_id).await?;
 
         if let Some(provider) = provider {
-            let block = provider.get_block(block_number as u64).await.unwrap();
-
-            let payload = serde_json::to_value((&block, &chain_id))
-                .unwrap_or_else(|_| serde_json::Value::Null)
-                .to_string();
-
-            let _ = { || produce_transaction_message(client.clone(), &payload) }
+            let block = { || provider.get_block(block_number as u64) }
                 .retry(&ExponentialBuilder::default())
-                .await;
+                .await?;
+
+            if let Some(block) = block {
+                let payload = serde_json::to_value((&block, &chain_id))
+                    .unwrap_or_else(|_| serde_json::Value::Null)
+                    .to_string();
+
+                let _ = { || produce_transaction_message(client.clone(), &payload) }
+                    .retry(&ExponentialBuilder::default())
+                    .await;
+            }
         }
 
         Ok(())

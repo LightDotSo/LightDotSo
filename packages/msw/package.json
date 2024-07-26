@@ -28,11 +28,11 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/demo": "workspace:*",
-    "msw": "^2.3.2"
+    "msw": "^2.3.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.14.12",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

@@ -30,6 +30,8 @@ import {
   celoAlfajores,
   polygon,
   polygonAmoy,
+  scroll,
+  scrollSepolia,
 } from "viem/chains";
 import { USER_OPERATION_CONFIG } from "./config";
 import { useQueryGasEstimation } from "./useQueryGasEstimation";
@@ -143,6 +145,22 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
     console.info("baseMaxFeePerGas", baseMaxFeePerGas);
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
+
+    // For scroll, the maxFeePerGas and maxPriorityFeePerGas are the same
+    if (chainId === scroll.id || chainId === scrollSepolia.id) {
+      // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
+      const baseGasFeePerGas =
+        baseMaxFeePerGas &&
+        baseMaxPriorityFeePerGas &&
+        baseMaxFeePerGas > baseMaxPriorityFeePerGas
+          ? baseMaxFeePerGas
+          : baseMaxPriorityFeePerGas;
+
+      if (baseGasFeePerGas) {
+        // Return the base gas fee per gas
+        return [baseGasFeePerGas, baseGasFeePerGas];
+      }
+    }
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {
