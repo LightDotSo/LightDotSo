@@ -76,7 +76,9 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
+    "@biomejs/biome": "^1.8.3",
     "@headlessui/react": "0.0.0-insiders.03c22b4",
+    "dprint": "^0.47.2",
     "next": "15.0.0-canary.79",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
@@ -94,8 +96,6 @@
     "@evmts/ts-plugin": "^0.11.2",
     "@evmts/vite-plugin": "^0.11.2",
     "@evmts/webpack-plugin": "^0.11.2",
-    "@lightdotso/eslint-config": "workspace:*",
-    "@lightdotso/prettier": "workspace:*",
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",

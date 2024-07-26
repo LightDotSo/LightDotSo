@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
-    "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/addon-actions": "^8.2.6",

@@ -17,7 +17,6 @@ ignores:
   - tailwindcss
   - typescript
   - critters
-  - "@lightdotso/eslint-config"
   - "@lightdotso/styles"
   - "@next/bundle-analyzer"
   - "@coinbase/onchainkit"

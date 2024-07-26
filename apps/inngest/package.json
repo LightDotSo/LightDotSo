@@ -45,7 +45,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",

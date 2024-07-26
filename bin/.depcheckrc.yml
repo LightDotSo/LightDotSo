@@ -5,6 +5,5 @@ ignores:
   - "@lightdotso/inpage"
   - "@lightdotso/popup"
   - "@lightdotso/resources"
-  - "@lightdotso/eslint-config"
   - typescript
   - web-ext

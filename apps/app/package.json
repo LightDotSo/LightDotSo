@@ -110,7 +110,6 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.12",

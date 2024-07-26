@@ -142,6 +142,7 @@ bilkent
 binaryen
 bindgen
 binop
+biomejs
 Biswap
 BITCANNA
 bitnami
@@ -426,6 +427,7 @@ dotall
 dotenv
 Dotenv
 dotenvy
+dprint
 Drawables
 drbg
 drsuxv

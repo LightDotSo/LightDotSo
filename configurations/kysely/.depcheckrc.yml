@@ -7,7 +7,6 @@ ignores:
   - prisma-kysely
   - "@types/node"
   - typescript
-  - "@lightdotso/eslint-config"
   - "@lightdotso/tsconfig"
   - "@lightdotso/prisma"
   - "@lightdotso/wagmi"
