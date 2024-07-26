@@ -452,8 +452,10 @@ lazy_static! {
         m.insert(1, "https://ethereum-bundler.etherspot.io/".to_string());
         m.insert(10, "https://optimism-bundler.etherspot.io/".to_string());
         m.insert(14, "https://flare-bundler.etherspot.io/".to_string());
+        m.insert(30, "https://rootstock-bundler.etherspot.io/".to_string());
         m.insert(56, "https://bnb-bundler.etherspot.io/".to_string());
         m.insert(100, "https://gnosis-bundler.etherspot.io/".to_string());
+        m.insert(122, "https://fuse-bundler.etherspot.io/".to_string());
         m.insert(137, "https://polygon-bundler.etherspot.io/".to_string());
         m.insert(5000, "https://mantle-bundler.etherspot.io/".to_string());
         m.insert(8453, "https://base-bundler.etherspot.io/".to_string());
@@ -461,12 +463,20 @@ lazy_static! {
         m.insert(43114, "https://avalanche-bundler.etherspot.io/".to_string());
         m.insert(59144, "https://linea-bundler.etherspot.io/".to_string());
         m.insert(534352, "https://scroll-bundler.etherspot.io/".to_string());
+        m.insert(888888888, "https://ancient8-bundler.etherspot.io/".to_string());
 
         // Testnet
-        m.insert(5001, "https://mantletestnet-bundler.etherspot.io/".to_string());
-        m.insert(80001, "https://mumbai-bundler.etherspot.io/".to_string());
-        m.insert(534351, "https://scrollsepolia-bundler.etherspot.io/".to_string());
-        m.insert(11155111, "https://sepolia-bundler.etherspot.io/".to_string());
+        m.insert(31, "https://testnet-rpc.etherspot.io/v1/31".to_string());
+        m.insert(114, "https://testnet-rpc.etherspot.io/v1/114".to_string());
+        m.insert(123, "https://testnet-rpc.etherspot.io/v1/123".to_string());
+        m.insert(5003, "https://testnet-rpc.etherspot.io/v1/5003".to_string());
+        m.insert(80002, "https://testnet-rpc.etherspot.io/v1/80002".to_string());
+        m.insert(84532, "https://testnet-rpc.etherspot.io/v1/84532".to_string());
+        m.insert(421614, "https://testnet-rpc.etherspot.io/v1/421614".to_string());
+        m.insert(534351, "https://testnet-rpc.etherspot.io/v1/534351".to_string());
+        m.insert(11155111, "https://testnet-rpc.etherspot.io/v1/11155111".to_string());
+        m.insert(11155420, "https://testnet-rpc.etherspot.io/v1/11155420".to_string());
+        m.insert(28122024, "https://testnet-rpc.etherspot.io/v1/28122024".to_string());
 
         m
     };
