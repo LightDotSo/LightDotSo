@@ -18,7 +18,7 @@ import { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
-import { toHex } from "viem";
+import { fromHex, Hex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
@@ -102,6 +102,22 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
 
   return {
     gasAndPaymasterAndData: gasAndPaymasterAndData,
+    paymasterAndData: gasAndPaymasterAndData?.paymasterAndData,
+    callGasLimit: gasAndPaymasterAndData?.callGasLimit
+      ? fromHex(gasAndPaymasterAndData?.callGasLimit as Hex, {
+          to: "bigint",
+        })
+      : undefined,
+    preVerificationGas: gasAndPaymasterAndData?.preVerificationGas
+      ? fromHex(gasAndPaymasterAndData?.preVerificationGas as Hex, {
+          to: "bigint",
+        })
+      : undefined,
+    verificationGasLimit: gasAndPaymasterAndData?.verificationGasLimit
+      ? fromHex(gasAndPaymasterAndData?.verificationGasLimit as Hex, {
+          to: "bigint",
+        })
+      : undefined,
     isGasAndPaymasterAndDataLoading: isGasAndPaymasterAndDataLoading,
     gasAndPaymasterAndDataError: gasAndPaymasterAndDataError,
   };
