@@ -31,7 +31,7 @@ export const FooterStatusButton: FC = () => {
       <Button asChild size="xs" variant="ghost">
         <a href={INTERNAL_LINKS.Status} target="_blank" rel="noreferrer">
           <MonitorCheck className="size-4 text-text-info" />
-          <span className="ml-2 text-xs text-text-info-strong">
+          <span className="ml-2 text-text-info-strong text-xs">
             All systems normal.
           </span>
         </a>

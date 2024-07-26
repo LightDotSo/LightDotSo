@@ -104,6 +104,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<WalletTestnetFormValues> = useMemo(() => {
     return {
       enabled: walletSettings?.is_enabled_testnet ?? false,
@@ -242,7 +243,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <p className="text-xs text-text-weak">
+                  <p className="text-text-weak text-xs">
                     {field.value ? "Enabled" : "Disabled"}
                   </p>
                 </div>

@@ -625,7 +625,7 @@ export const OwnerForm: FC = () => {
               </FormDescription>
               <FormMessage />
               {form.formState.errors && (
-                <p className="text-sm font-medium text-text-destructive">
+                <p className="font-medium text-sm text-text-destructive">
                   {/* Print any message one line at a time */}
                   {Object.entries(form.formState.errors)
                     .filter(

@@ -123,7 +123,7 @@ export const NavTabs: FC<NavTabsProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 mb-1.5 mt-2 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
+      className="relative z-0 mt-2 mb-1.5 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={(e) => setHoveredTabIndex(null)}
     >
@@ -133,6 +133,7 @@ export const NavTabs: FC<NavTabsProps> = ({
 
         return (
           <Link
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={i}
             passHref
             legacyBehavior
@@ -140,9 +141,10 @@ export const NavTabs: FC<NavTabsProps> = ({
           >
             <motion.a
               // @ts-ignore
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               ref={(el) => (anchorRefs[i] = el)}
               className={cn(
-                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 font-medium text-sm transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text hover:text-text",
               )}
               onPointerEnter={() => {
@@ -151,6 +153,7 @@ export const NavTabs: FC<NavTabsProps> = ({
               onFocus={() => {
                 setHoveredTabIndex(i);
               }}
+              // biome-ignore lint/a11y/useValidAnchor: <explanation>
               onClick={() => {
                 setSelectedTabIndex(i);
               }}
@@ -161,7 +164,7 @@ export const NavTabs: FC<NavTabsProps> = ({
                 <Badge
                   type="number"
                   variant="outline"
-                  className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak"
+                  className="ml-2 rounded-full border-0 bg-background-strong font-sm text-text-weak"
                 >
                   {item?.number}
                 </Badge>
@@ -174,7 +177,7 @@ export const NavTabs: FC<NavTabsProps> = ({
         {hoveredRect && navRect && (
           <motion.div
             key={"hover"}
-            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-background-stronger"
+            className="absolute top-0 left-0 z-10 mb-1 rounded-md bg-background-stronger"
             initial={{
               x: hoveredRect.left - navRect.left,
               y: hoveredRect.top - navRect.top,

@@ -101,13 +101,13 @@ export const BaseTokenImage: FC<TokenImageProps> = ({
     return (
       <div className={cn("relative inline-block shrink-0", className)}>
         <TokenImageBase
-          className="flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak"
+          className="flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-text-weak text-xs leading-none"
           isLoading={isLoading}
           token={token}
           size={size}
         />
         {withChainLogo && (
-          <span className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4">
+          <span className="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4">
             <ChainLogo chainId={token.chain_id} size="sm" />
           </span>
         )}
@@ -212,7 +212,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
     return (
       <span
         className={cn(
-          "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+          "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-text-weak text-xs leading-none",
           tokenImageBaseVariants({ size: size }),
           className,
         )}
@@ -231,7 +231,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   return (
     <span
       className={cn(
-        "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+        "relative inline-flex items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-text-weak text-xs leading-none",
         tokenImageBaseVariants({ size: size }),
         className,
       )}

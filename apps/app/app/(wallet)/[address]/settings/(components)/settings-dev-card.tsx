@@ -102,6 +102,7 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<WalletDevFormValues> = useMemo(() => {
     return {
       enabled: walletSettings?.is_enabled_dev ?? false,
@@ -240,7 +241,7 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <p className="text-xs text-text-weak">
+                  <p className="text-text-weak text-xs">
                     {field.value ? "Enabled" : "Disabled"}
                   </p>
                 </div>

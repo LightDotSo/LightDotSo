@@ -72,7 +72,7 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   return (
     <div className={cn("flex min-w-20 items-center space-x-3", className)}>
       <ActionLogo action={action} />
-      <span className="text-xs font-medium text-text md:text-sm ">
+      <span className="font-medium text-text text-xs md:text-sm ">
         {ACTION_LABELS[action]}
       </span>
     </div>

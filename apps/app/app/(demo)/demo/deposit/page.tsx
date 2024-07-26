@@ -18,7 +18,7 @@
 
 export default async function Page() {
   return (
-    <div className="text-lg font-medium tracking-tight">
+    <div className="font-medium text-lg tracking-tight">
       Not supported on the demo.
     </div>
   );

@@ -119,7 +119,7 @@ export const WalletOverviewBannerAddress: FC<
       </Avatar>
       <div className="p-1">
         <div className="flex items-center space-x-3 overflow-hidden text-ellipsis pr-2 text-left text-sm md:text-base">
-          <div className="text-lg font-extrabold tracking-tight md:text-2xl">
+          <div className="font-extrabold text-lg tracking-tight md:text-2xl">
             {wallet
               ? wallet.name
               : ens ?? (typeof address === "string" && shortenAddress(address))}
@@ -162,11 +162,11 @@ export const WalletOverviewBannerAddress: FC<
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="hidden w-auto items-center space-x-1.5 rounded-md bg-background-stronger py-1 pl-2 pr-1 md:mt-3 md:inline-flex">
+        <div className="hidden w-auto items-center space-x-1.5 rounded-md bg-background-stronger py-1 pr-1 pl-2 md:mt-3 md:inline-flex">
           <Tooltip>
             <TooltipTrigger asChild>
               <>
-                <p className="text-xs text-text-weak md:text-sm">
+                <p className="text-text-weak text-xs md:text-sm">
                   {shortenAddress(address)}
                 </p>
                 <ButtonIcon

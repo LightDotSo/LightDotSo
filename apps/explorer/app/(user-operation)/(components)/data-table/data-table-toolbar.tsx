@@ -128,7 +128,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           checked={isTestnetState ?? false}
           onCheckedChange={() => setIsTestnetState(!isTestnetState)}
         />
-        <Label className="text-xs text-text-primary" htmlFor="is-testnet">
+        <Label className="text-text-primary text-xs" htmlFor="is-testnet">
           Include Testnets
         </Label>
         <DataTableViewOptions

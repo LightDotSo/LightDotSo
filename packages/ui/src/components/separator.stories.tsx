@@ -41,7 +41,7 @@ export const Base: Story = {
   render: (args) => (
     <div>
       <div className="space-y-1">
-        <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
+        <h4 className="font-medium text-sm leading-none">Radix Primitives</h4>
         <p className="text-sm text-text-primary">
           An open-source UI component library.
         </p>

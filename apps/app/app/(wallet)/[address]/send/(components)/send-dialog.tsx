@@ -1068,7 +1068,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   type="single"
                 >
                   <AccordionItem className="border-0" value={`value-${index}`}>
-                    <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                    <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                       Transfer #{index}
                     </AccordionTrigger>
                     <AccordionContent className="px-1 pt-4">
@@ -1164,7 +1164,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                         ) && (
                                           <span className="flex items-center space-x-1">
                                             <CheckBadgeIcon className="size-4 text-text-info" />
-                                            <span className="text-xs text-text-weak">
+                                            <span className="text-text-weak text-xs">
                                               <EnsAddress
                                                 name={
                                                   form.getValues(
@@ -1341,7 +1341,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs text-text-weak">
+                                        <div className="flex items-center justify-between text-text-weak text-xs">
                                           <div>
                                             {/* Get the current balance in USD */}
                                             {token

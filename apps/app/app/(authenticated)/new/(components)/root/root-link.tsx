@@ -112,7 +112,8 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const navigateToStep = useCallback(
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+        const navigateToStep = useCallback(
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
       // Forward the search params to the next step
@@ -191,11 +192,11 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       <span
         className={cn(
           stepType === StepsEnum.New &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:top-auto md:w-[calc(100%-1.25rem)]",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:bottom-0 md:w-[calc(100%-1.25rem)]",
           stepType === StepsEnum.Configuration &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:w-full",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:right-5 md:bottom-0 md:left-auto md:w-full",
           stepType === StepsEnum.Confirm &&
-            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:w-[calc(100%+1.25rem)]",
+            "absolute top-0 left-0 h-full bg-transparent md:top-auto md:right-0 md:bottom-0 md:left-auto md:w-[calc(100%+1.25rem)]",
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
@@ -204,7 +205,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         )}
         aria-hidden="true"
       />
-      <span className="flex items-center px-4 py-2 text-sm font-medium md:px-6 md:py-4">
+      <span className="flex items-center px-4 py-2 font-medium text-sm md:px-6 md:py-4">
         <span
           className={cn(
             "flex size-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
@@ -230,7 +231,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         </span>
         <span
           className={cn(
-            "ml-4 text-sm font-medium",
+            "ml-4 font-medium text-sm",
             step.status === "current" ? "text-text" : "text-border",
           )}
         >

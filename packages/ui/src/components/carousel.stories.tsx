@@ -53,8 +53,8 @@ export const Base: Story = {
           <CarouselItem key={index}>
             <div className="p-1">
               <Card>
-                <CardContent className="aspect-square flex items-center justify-center p-6">
-                  <span className="text-4xl font-semibold">{index + 1}</span>
+                <CardContent className="flex aspect-square items-center justify-center p-6">
+                  <span className="font-semibold text-4xl">{index + 1}</span>
                 </CardContent>
               </Card>
             </div>

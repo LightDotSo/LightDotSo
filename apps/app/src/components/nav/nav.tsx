@@ -66,7 +66,7 @@ export const Nav: FC<NavProps> = ({ children }) => {
           <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
             <div className="flex items-center">
               <RootLogo />
-              <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
+              <span className="mr-1 ml-2 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
             <NavApp mobile={<ConnectButton />} tabs={tabProps.tabs} />

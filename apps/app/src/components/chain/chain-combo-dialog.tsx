@@ -91,7 +91,7 @@ export const ChainComboDialog: FC = () => {
           role="combobox"
         >
           <Globe className="size-4 shrink-0" />
-          <div className="flex -space-x-1.5 overflow-hidden">
+          <div className="-space-x-1.5 flex overflow-hidden">
             {chains.slice(0, 3).map((chain) => (
               <ChainLogo
                 key={chain.id}
@@ -100,7 +100,7 @@ export const ChainComboDialog: FC = () => {
               />
             ))}
           </div>
-          <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
+          <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-text text-xs">
             {chains.length}
           </span>
         </Button>

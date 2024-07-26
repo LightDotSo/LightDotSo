@@ -123,7 +123,7 @@ const CommandGroup = forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-hidden p-1 text-text [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-text-weak",
+      "overflow-hidden p-1 text-text [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-text-weak [&_[cmdk-group-heading]]:text-xs",
       className,
     )}
     {...props}
@@ -167,7 +167,7 @@ const CommandShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-text-weak",
+        "ml-auto text-text-weak text-xs tracking-widest",
         className,
       )}
       {...props}

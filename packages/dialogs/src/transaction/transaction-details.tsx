@@ -110,7 +110,7 @@ export const TransactionDetails: FC = () => {
             type="single"
           >
             <AccordionItem className="border-0" value={`value-${index}`}>
-              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+              <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                 <div className="flex items-center">
                   <span className="mr-2.5">Transaction on {chain.name}</span>
                   <ChainLogo chainId={chain.id} />

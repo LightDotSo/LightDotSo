@@ -25,7 +25,7 @@ export const FooterCopy: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <p className="text-xs text-text-weak/60 xl:text-center">
+    <p className="text-text-weak/60 text-xs xl:text-center">
       &copy; {new Date().getFullYear()}
       <span className="hidden md:inline-flex">&nbsp;LightDotSo - </span>{" "}
       <a

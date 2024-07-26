@@ -52,7 +52,7 @@ export const NftImage: FC<NftImageProps> = ({
   return (
     <div
       className={cn(
-        "aspect-h-1 aspect-w-1 relative w-full overflow-hidden bg-background",
+        "relative aspect-h-1 aspect-w-1 w-full overflow-hidden bg-background",
         className,
       )}
     >
@@ -64,17 +64,19 @@ export const NftImage: FC<NftImageProps> = ({
       <NextImage
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
-          !isImageLoaded && "bg-emphasis-medium animate-pulse",
+          !isImageLoaded && "animate-pulse bg-emphasis-medium",
           !isImageLoaded
             ? "scale-90 blur-xl"
-            : "group-hover:blur-2 scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:grayscale-0",
+            : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
         )}
         src={
           image_url ??
           previews?.image_large_url ??
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          extra_metadata?.image_original_url!
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                    extra_metadata?.image_original_url!
         }
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         alt={collection?.description ?? contract_address!}
         onLoad={() => setIsImageLoaded(true)}
       />

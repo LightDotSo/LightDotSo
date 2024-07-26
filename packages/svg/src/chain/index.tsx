@@ -96,7 +96,7 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
     <Logo {...props} />
     <span
       className={cn(
-        "absolute bottom-0 right-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
+        "absolute right-0 bottom-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
         testnetChainLogoVariants({ size: size }),
       )}
     >

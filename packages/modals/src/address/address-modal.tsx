@@ -145,6 +145,7 @@ export function AddressModal() {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (ensAddress) {
       methods.setValue("addressOrEns", delayedName);
@@ -240,7 +241,7 @@ export function AddressModal() {
                 >
                   <div className="flex items-center space-x-3">
                     {watchName}
-                    <span className="ml-4 text-xs text-text-weak">
+                    <span className="ml-4 text-text-weak text-xs">
                       (Select to enter)
                     </span>
                   </div>
@@ -268,7 +269,7 @@ export function AddressModal() {
                       >
                         <div className="flex items-center space-x-3">
                           {ensDomain.name}
-                          <span className="ml-4 text-xs text-text-weak">
+                          <span className="ml-4 text-text-weak text-xs">
                             ({ensDomain.id})
                           </span>
                         </div>
@@ -290,7 +291,7 @@ export function AddressModal() {
                   >
                     <div className="flex items-center space-x-3">
                       {wallet.name}
-                      <span className="ml-4 text-xs text-text-weak">
+                      <span className="ml-4 text-text-weak text-xs">
                         ({wallet.address})
                       </span>
                     </div>

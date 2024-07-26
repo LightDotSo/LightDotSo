@@ -79,7 +79,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                     key={index}
                     className="flex w-full items-center justify-between"
                   >
-                    <div className="flex items-center gap-3 truncate p-2 text-xs font-medium text-text">
+                    <div className="flex items-center gap-3 truncate p-2 font-medium text-text text-xs">
                       <TokenImage
                         size="xs"
                         withChainLogo
@@ -91,7 +91,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                       />
                       {getChainNameWithChainId(token.chain_id)}
                     </div>
-                    <div className="truncate text-xs text-text">
+                    <div className="truncate text-text text-xs">
                       {token.amount &&
                         token.decimals &&
                         refineNumberFormat(

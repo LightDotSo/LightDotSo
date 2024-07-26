@@ -77,7 +77,7 @@ export const NotificationComboDialog: FC = () => {
       onOpenChange={toggleIsNotificationComboDialogOpen}
     >
       <Tabs defaultValue="inbox" variant="outline">
-        <div className="flex justify-between border-b border-border">
+        <div className="flex justify-between border-border border-b">
           <TabsList>
             <TabsTrigger value="inbox">Inbox</TabsTrigger>
             <TabsTrigger value="archive">Archive</TabsTrigger>

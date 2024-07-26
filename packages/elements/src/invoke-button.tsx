@@ -63,7 +63,7 @@ export const InvokeButton: FC<InvokeButtonProps> = ({
               {!isLoading ? (
                 <RefreshCcw className="size-4" />
               ) : (
-                <div className="duration-&lsqb;50ms&rsqb; flex items-center justify-center space-x-1">
+                <div className="flex items-center justify-center space-x-1 duration-&lsqb;50ms&rsqb;">
                   <div className="size-1 animate-bounce rounded-full bg-background-primary [animation-delay:-300ms]" />
                   <div className="size-1 animate-bounce rounded-full bg-background-primary-weak [animation-delay:-150ms]" />
                   <div className="size-1 animate-bounce rounded-full bg-background-primary" />

@@ -44,7 +44,7 @@ function StateInfoSection({
   return (
     <div className={cn("text-center", baseHeightWrapper, className)} {...props}>
       {icon}
-      <h3 className="mt-2 text-xl font-semibold tracking-tight md:mt-4 md:text-2xl">
+      <h3 className="mt-2 font-semibold text-xl tracking-tight md:mt-4 md:text-2xl">
         {title}
       </h3>
       <p className="mt-1 text-sm text-text-weak md:text-base">{description}</p>

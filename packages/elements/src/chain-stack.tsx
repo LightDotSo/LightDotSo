@@ -35,7 +35,7 @@ export const ChainStack: FC<ChainStackProps> = ({ chainIds }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex -space-x-1.5 overflow-hidden">
+    <div className="-space-x-1.5 flex overflow-hidden">
       {chainIds?.slice(0, 5).map((chainId) => (
         <ChainLogo
           key={chainId}

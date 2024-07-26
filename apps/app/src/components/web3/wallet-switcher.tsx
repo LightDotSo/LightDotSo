@@ -257,10 +257,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         <CommandList onScroll={handleScroll}>
           <CommandGroup>
             {/* Negative margins to widen out to full width */}
-            <div className="relative -ml-1 -mr-2">
+            <div className="-ml-1 -mr-2 relative">
               <div
                 className={cn(
-                  "from-muted pointer-events-none absolute left-0 top-1 -mt-2 h-14 w-full bg-gradient-to-b to-transparent transition-opacity duration-500",
+                  "-mt-2 pointer-events-none absolute top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
                   scrollIsAtTop ? "opacity-0" : "opacity-100",
                 )}
               />

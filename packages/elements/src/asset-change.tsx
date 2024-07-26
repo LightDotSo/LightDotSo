@@ -36,10 +36,10 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
         <TokenImage size="xs" token={assetChange.token} />
       )}
       {assetChange?.token && assetChange?.token?.decimals !== 0 && (
-        <span className="text-xs text-text md:text-sm">
+        <span className="text-text text-xs md:text-sm">
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
           {
-            <span className="text-xs text-text-weak">
+            <span className="text-text-weak text-xs">
               (
               {refineNumberFormat(
                 assetChange?.amount / 10 ** assetChange?.token.decimals,

@@ -100,7 +100,7 @@ export const TableStory: Story = {
     <div className="my-6 w-full overflow-y-auto">
       <Table className="w-full">
         <THead>
-          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+          <TR className="m-0 border-border border-t p-0 even:bg-background-primary-weakest">
             <TH className="border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
               King&apos;s Treasury
             </TH>
@@ -110,7 +110,7 @@ export const TableStory: Story = {
           </TR>
         </THead>
         <TBody>
-          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+          <TR className="m-0 border-border border-t p-0 even:bg-background-primary-weakest">
             <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Empty
             </TD>
@@ -118,7 +118,7 @@ export const TableStory: Story = {
               Overflowing
             </TD>
           </TR>
-          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+          <TR className="m-0 border-border border-t p-0 even:bg-background-primary-weakest">
             <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Modest
             </TD>
@@ -126,7 +126,7 @@ export const TableStory: Story = {
               Satisfied
             </TD>
           </TR>
-          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+          <TR className="m-0 border-border border-t p-0 even:bg-background-primary-weakest">
             <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Full
             </TD>

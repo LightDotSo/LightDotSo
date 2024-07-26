@@ -135,7 +135,8 @@ export const ConfigurationForm: FC = () => {
   }, [userAddress, userEns]);
 
   // The default values for the form
-  const defaultValues: Partial<NewFormValues> = useMemo(() => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
       threshold:
@@ -238,6 +239,7 @@ export const ConfigurationForm: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
@@ -285,7 +287,8 @@ export const ConfigurationForm: FC = () => {
   }, [form.watch]);
 
   // Set the form values from the URL on mount
-  useEffect(() => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
@@ -332,6 +335,7 @@ export const ConfigurationForm: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);
     url.searchParams.set("inviteCode", inviteCode);
@@ -433,6 +437,7 @@ export const ConfigurationForm: FC = () => {
             <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="space-y-4">
                 {fields.map((field, index) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   <div key={index}>
                     {/* A hack to make a padding above the separator */}
                     {type === "personal" && index === 1 && (
@@ -560,6 +565,7 @@ export const ConfigurationForm: FC = () => {
                                   {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
                                     (_, i) => (
                                       <SelectItem
+                                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                         key={i}
                                         value={(i + 1).toString()}
                                       >
@@ -639,6 +645,7 @@ export const ConfigurationForm: FC = () => {
                           <SelectContent>
                             {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
                               (_, i) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                 <SelectItem key={i} value={(i + 1).toString()}>
                                   {i + 1}
                                 </SelectItem>
@@ -653,7 +660,7 @@ export const ConfigurationForm: FC = () => {
                     </FormDescription>
                     <FormMessage />
                     {form.formState.errors && (
-                      <p className="text-sm font-medium text-text-destructive">
+                      <p className="font-medium text-sm text-text-destructive">
                         {/* Print any message one line at a time */}
                         {Object.entries(form.formState.errors)
                           .filter(
@@ -661,6 +668,7 @@ export const ConfigurationForm: FC = () => {
                               !key.startsWith("threshold") &&
                               !key.startsWith("owners"),
                           )
+                          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                           .map(([_key, error]: [string, any]) => error.message)
                           .join("\n")}
                       </p>

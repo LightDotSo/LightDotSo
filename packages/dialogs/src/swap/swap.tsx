@@ -458,7 +458,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     group: undefined,
                   }}
                 />
-                <span className="ml-1 max-w-24 truncate text-2xl tracking-wide text-text">
+                <span className="ml-1 max-w-24 truncate text-2xl text-text tracking-wide">
                   {fromToken.symbol}
                 </span>
               </>
@@ -475,7 +475,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
             {fromTokenDollarRatio && (
-              <span className="truncate text-xs text-text-weak">
+              <span className="truncate text-text-weak text-xs">
                 {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
               </span>
             )}
@@ -509,7 +509,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           </Button>
         </div>
       </div>
-      <div className="z-10 -my-4 flex items-center justify-center">
+      <div className="-my-4 z-10 flex items-center justify-center">
         <ButtonIcon
           className="ring-4 ring-background-body"
           onClick={() => {
@@ -618,7 +618,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                     group: undefined,
                   }}
                 />
-                <span className="min-w-10 max-w-24 truncate text-2xl tracking-wide text-text">
+                <span className="min-w-10 max-w-24 truncate text-2xl text-text tracking-wide">
                   {toToken.symbol}
                 </span>
               </>
@@ -635,7 +635,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
             {toTokenDollarRatio && (
-              <span className="truncate text-xs text-text-weak">
+              <span className="truncate text-text-weak text-xs">
                 {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenDollarRatio)})`}
               </span>
             )}
@@ -740,7 +740,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         )}
       {isDev && (
         <div className="mt-4 max-h-96 max-w-md overflow-auto">
-          <pre className="break-all text-xs text-text-weak">
+          <pre className="break-all text-text-weak text-xs">
             {serialize({
               fromSwapQueryState: fromSwapQueryState,
               toSwapQueryState: toSwapQueryState,

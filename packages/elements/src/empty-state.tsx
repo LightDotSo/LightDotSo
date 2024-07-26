@@ -97,7 +97,7 @@ export const EmptyState: FC<EmptyStateProps> = ({ entity, size }) => {
       <span className="inline-flex rounded-full border-2 border-border p-4">
         <Wallet
           className={cn(
-            "mx-auto text-lg text-border",
+            "mx-auto text-border text-lg",
             emptyStateVariants({ size: size }),
           )}
         />

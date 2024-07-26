@@ -115,7 +115,7 @@ export const SettingsAppearanceCard: FC = () => {
 
   const LightModeCard: FC = () => {
     return (
-      <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
+      <div className="items-center rounded-md border-2 border-border p-1 hover:border-accent">
         <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
           <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
             <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />

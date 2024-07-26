@@ -27,7 +27,7 @@ const H1 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h1">>(
     <h1
       ref={ref}
       className={cn(
-        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        "scroll-m-20 font-extrabold text-4xl tracking-tight lg:text-5xl",
         className,
       )}
       {...props}
@@ -40,7 +40,7 @@ const H2 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h2">>(
     <h2
       ref={ref}
       className={cn(
-        "mt-10 scroll-m-20 border-b border-b-border pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0",
+        "mt-10 scroll-m-20 border-b border-b-border pb-2 font-semibold text-3xl tracking-tight transition-colors first:mt-0",
         className,
       )}
       {...props}
@@ -53,7 +53,7 @@ const H3 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h3">>(
     <h3
       ref={ref}
       className={cn(
-        "mt-8 scroll-m-20 text-2xl font-semibold tracking-tight",
+        "mt-8 scroll-m-20 font-semibold text-2xl tracking-tight",
         className,
       )}
       {...props}
@@ -66,7 +66,7 @@ const H4 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h4">>(
     <h4
       ref={ref}
       className={cn(
-        "mt-8 scroll-m-20 text-xl font-semibold tracking-tight",
+        "mt-8 scroll-m-20 font-semibold text-xl tracking-tight",
         className,
       )}
       {...props}
@@ -91,7 +91,7 @@ const BlockQuote = forwardRef<
   <blockquote
     ref={ref}
     className={cn(
-      "mt-6 border-l-2 border-border pl-6 italic text-text-primary",
+      "mt-6 border-border border-l-2 pl-6 text-text-primary italic",
       className,
     )}
     {...props}
@@ -123,7 +123,7 @@ const TR = forwardRef<HTMLTableRowElement, ComponentPropsWithoutRef<"tr">>(
     <tr
       ref={ref}
       className={cn(
-        "even:bg-background-weaker m-0 border-t border-border p-0",
+        "m-0 border-border border-t p-0 even:bg-background-weaker",
         className,
       )}
       {...props}
@@ -178,7 +178,7 @@ const InlineCode = forwardRef<HTMLElement, ComponentPropsWithoutRef<"code">>(
     <code
       ref={ref}
       className={cn(
-        "relative rounded bg-background px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-text-primary",
+        "relative rounded bg-background px-[0.3rem] py-[0.2rem] font-mono font-semibold text-sm text-text-primary",
         className,
       )}
       {...props}
@@ -190,7 +190,7 @@ const Lead = forwardRef<HTMLParagraphElement, ComponentPropsWithoutRef<"p">>(
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-xl text-text-primary", className)}
+      className={cn("text-text-primary text-xl", className)}
       {...props}
     />
   ),
@@ -200,7 +200,7 @@ const Large = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("text-lg font-semibold text-text-primary", className)}
+      className={cn("font-semibold text-lg text-text-primary", className)}
       {...props}
     />
   ),
@@ -210,7 +210,7 @@ const Small = forwardRef<HTMLElement, ComponentPropsWithoutRef<"small">>(
   ({ className, ...props }, ref) => (
     <small
       ref={ref}
-      className={cn("text-sm font-medium leading-none", className)}
+      className={cn("font-medium text-sm leading-none", className)}
       {...props}
     />
   ),

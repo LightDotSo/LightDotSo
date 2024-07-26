@@ -460,7 +460,7 @@ export const TokenModal: FC = () => {
                     />
                     <div className="flex grow flex-col pl-4">
                       <div className="text-text">{token?.name}</div>
-                      <div className="text-sm font-light text-text-weak">
+                      <div className="font-light text-sm text-text-weak">
                         {token?.symbol}
                       </div>
                     </div>

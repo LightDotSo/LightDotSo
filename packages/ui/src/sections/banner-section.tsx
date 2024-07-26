@@ -49,10 +49,10 @@ export const BannerSection: FC<BannerSectionProps> = ({
       <MiddleLayerWrapper size={size}>
         <div className="py-4 sm:py-6 md:py-8 lg:flex lg:items-center lg:justify-between">
           <div className="flex flex-col justify-between gap-2">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
+            <h2 className="font-bold text-2xl tracking-tight sm:text-3xl lg:text-4xl">
               {title}
             </h2>
-            <p className="leading-8 text-text-weak">{description}</p>
+            <p className="text-text-weak leading-8">{description}</p>
           </div>
           {cta && (
             <div className="mt-4 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">

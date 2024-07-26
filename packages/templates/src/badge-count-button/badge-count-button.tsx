@@ -45,7 +45,7 @@ export const BadgeCountButton: FC<BadgeCountButtonProps> = ({
       {(count || count === 0) && count !== 0 && (
         <BadgeIcon
           intent="info"
-          className="absolute -bottom-1.5 -right-1.5 size-1 p-2"
+          className="-bottom-1.5 -right-1.5 absolute size-1 p-2"
           size="unsized"
           type="number"
         >

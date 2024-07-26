@@ -58,6 +58,7 @@ export const AddressFormField: FC<AddressFormFieldProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // If the form is not dirty, return
     const fieldValue = methods.getValues(name);
@@ -102,14 +103,14 @@ export const AddressFormField: FC<AddressFormFieldProps> = ({
                   placeholder="Your address or ENS name"
                 />
                 <span
-                  className="absolute left-4 top-1/2 -translate-y-1/2"
+                  className="-translate-y-1/2 absolute top-1/2 left-4"
                   style={{ left: `${spanLeft}px` }}
                 >
                   {methods.formState.isValid &&
                   !methods.formState.errors[name] ? (
                     <span className="flex items-center space-x-1">
                       <CheckBadgeIcon className="size-4 text-text-info" />
-                      <span className="text-xs text-text-weak">
+                      <span className="text-text-weak text-xs">
                         <EnsAddress name={field.value} />
                       </span>
                     </span>

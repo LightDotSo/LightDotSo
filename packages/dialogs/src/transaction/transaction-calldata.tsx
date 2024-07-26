@@ -51,7 +51,7 @@ export const TransactionCalldata: FC = () => {
               type="single"
             >
               <AccordionItem className="border-0" value={`value-${index}`}>
-                <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                <AccordionTrigger className="px-1 py-0 font-medium text-xl md:text-2xl">
                   Calldata #{index + 1}
                 </AccordionTrigger>
                 <AccordionContent className="px-1 pt-4">

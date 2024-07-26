@@ -72,7 +72,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
           {tabs.map((tab) => {
             if (tab.href.startsWith("http")) {
               return (
-                <div key={tab.id} className="border-b border-border py-1.5">
+                <div key={tab.id} className="border-border border-b py-1.5">
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       <span className="flex">
@@ -88,7 +88,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
             return (
               <div
                 key={tab.id}
-                className="border-b border-border py-1.5 first:border-t"
+                className="border-border border-b py-1.5 first:border-t"
               >
                 <Button asChild className="w-full justify-start" variant="link">
                   <Link href={`${baseSlug}${tab.href}`}>
@@ -98,7 +98,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                       <Badge
                         type="number"
                         variant="outline"
-                        className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak no-underline"
+                        className="ml-2 rounded-full border-0 bg-background-strong font-sm text-text-weak no-underline"
                       >
                         {tab?.number}
                       </Badge>

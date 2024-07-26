@@ -156,7 +156,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       🤯
                     </div>
                   </FormLabel>
@@ -169,7 +169,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       🙂
                     </div>
                   </FormLabel>
@@ -182,7 +182,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
+                    <div className="flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl hover:border-accent">
                       😭
                     </div>
                   </FormLabel>

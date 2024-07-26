@@ -154,6 +154,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
       return;
     }
 
+    // biome-ignore lint/style/noNonNullAssertion:
     return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
   }, [address, userOperationsParams]);
   // ---------------------------------------------------------------------------
@@ -336,7 +337,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         }}
                       />
                       <FormMessage />
-                      <div className="mt-2 flex items-center justify-between text-xs text-text-weak">
+                      <div className="mt-2 flex items-center justify-between text-text-weak text-xs">
                         <div>{/* tokenPrice could come here */}</div>
                         <div>
                           &nbsp;

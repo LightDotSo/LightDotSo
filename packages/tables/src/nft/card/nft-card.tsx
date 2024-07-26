@@ -73,7 +73,7 @@ export const NftCard: FC<NftCardProps> = ({
       {(showChain || showName || showDescription || showSpamScore) && (
         <div className="flex flex-col space-y-3 px-3 py-4">
           {showChain && (
-            <div className="flex items-center text-xs text-text-weak">
+            <div className="flex items-center text-text-weak text-xs">
               {getChainIdBySimplehashChainName(nft.chain!) && (
                 <ChainLogo
                   className="mr-1.5 size-4"
@@ -85,10 +85,10 @@ export const NftCard: FC<NftCardProps> = ({
           )}
           {showName && <div className="text-sm text-text">{nft.name}</div>}
           {showDescription && (
-            <div className="text-xs text-text-weak"># {nft.token_id}</div>
+            <div className="text-text-weak text-xs"># {nft.token_id}</div>
           )}
           {showSpamScore && (
-            <div className="text-xs text-text-weak">
+            <div className="text-text-weak text-xs">
               Spam Score: {nft.collection?.spam_score}
             </div>
           )}

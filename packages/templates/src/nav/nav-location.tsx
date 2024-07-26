@@ -63,7 +63,7 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
               asChild
               variant="link"
               size="sm"
-              className="text-sm font-medium"
+              className="font-medium text-sm"
             >
               <a href={tab.href} target="_blank" rel="noreferrer">
                 {<tab.icon className="mr-2 size-4" />}
@@ -79,7 +79,7 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
             asChild
             variant="ghost"
             size="sm"
-            className="text-sm font-medium"
+            className="font-medium text-sm"
           >
             <Link href={tab.href}>{tab.label}</Link>
           </Button>

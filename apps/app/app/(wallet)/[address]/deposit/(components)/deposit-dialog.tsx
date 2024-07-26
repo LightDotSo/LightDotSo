@@ -176,6 +176,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (typeof value === "undefined") {
@@ -544,6 +545,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     isConnecting,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isFormValid = useMemo(() => {
     return (
       form.formState.isValid &&
@@ -796,7 +798,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                               )}
                             />
                             <FormMessage />
-                            <div className="flex items-center justify-between text-xs text-text-weak">
+                            <div className="flex items-center justify-between text-text-weak text-xs">
                               <div>{/* tokenPrice could come here */}</div>
                               <div>
                                 &nbsp;
@@ -837,11 +839,13 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                       transfer?.asset?.address &&
                       "tokenId" in
                         // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+                        // biome-ignore lint/style/noNonNullAssertion: <explanation>
                         transfer?.asset! &&
                       nftPage.nfts?.find(
                         (nft) =>
                           nft.contract_address ===
                             (transfer?.asset?.address || "") &&
+                          // biome-ignore lint/style/noNonNullAssertion: <explanation>
                           Number.parseInt(nft.token_id!) ===
                             // prettier-ignore
                             // @ts-expect-error
@@ -885,6 +889,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                       form.setValue(
                                         "chainId",
                                         SIMPLEHASH_CHAIN_ID_MAPPING[
+                                          // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                           nft.chain! as
                                             | SimplehashMainnetChain
                                             | SimplehashTestnetChain
@@ -1031,7 +1036,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             />
                             <FormMessage />
                             {/* Placeholder text for alignment purposes */}
-                            <div className="flex items-center justify-between text-xs text-text-weak">
+                            <div className="flex items-center justify-between text-text-weak text-xs">
                               &nbsp;
                             </div>
                           </div>

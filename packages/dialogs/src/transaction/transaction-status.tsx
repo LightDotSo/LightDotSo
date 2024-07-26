@@ -108,7 +108,7 @@ export const TransactionStatus: FC = () => {
     >
       <div className="space-y-3">
         {userOperation && (
-          <div className="text-xs text-text-weak">
+          <div className="text-text-weak text-xs">
             User Operation Hash:{" "}
             <a
               className="inline-flex items-center hover:underline"
@@ -122,7 +122,7 @@ export const TransactionStatus: FC = () => {
           </div>
         )}
         {pendingUserOperationMerkleRoot && (
-          <div className="text-xs text-text-weak">
+          <div className="text-text-weak text-xs">
             Merkle Root:{" "}
             <a
               className="inline-flex items-center hover:underline"
@@ -138,7 +138,7 @@ export const TransactionStatus: FC = () => {
         {userOperationMerkle?.user_operations
           .filter((userOperation) => userOperation.transaction !== null)
           .map((userOperation) => (
-            <div key={userOperation.hash} className="text-xs text-text-weak">
+            <div key={userOperation.hash} className="text-text-weak text-xs">
               Transaction Hash:{" "}
               <a
                 className="inline-flex items-center hover:underline"
@@ -152,7 +152,7 @@ export const TransactionStatus: FC = () => {
             </div>
           ))}
         {userOperation?.transaction && (
-          <div className="text-xs text-text-weak">
+          <div className="text-text-weak text-xs">
             Transaction Hash:{" "}
             <a
               className="inline-flex items-center hover:underline"
