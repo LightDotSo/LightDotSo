@@ -12,3 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { activityColumns, ActivityTable } from "./activity";
+export { nftColumns, NftTable } from "./nft";
+export { notificationColumns, NotificationTable } from "./notification";
+export { ownerColumns, OwnerTable } from "./owner";
+export { tokenColumns, TokenTable } from "./token";
+export { transactionColumns, TransactionTable } from "./transaction";
+export { userOperationColumns, UserOperationTable } from "./user-operation";
+export { walletColumns, WalletTable } from "./wallet";
