@@ -298,7 +298,13 @@ impl Polling {
     ) -> Result<Response<UserOperationReceipt>> {
         let get_user_operation = || async { self.get_user_operation(chain_id, hash).await };
 
-        let res = get_user_operation.retry(&ExponentialBuilder::default().with_max_times(10)).await;
+        let res = get_user_operation
+            .retry(
+                &ExponentialBuilder::default()
+                    .with_max_delay(Duration::from_secs(12))
+                    .with_max_times(10),
+            )
+            .await;
         info!("res: {:?}", res);
 
         res
