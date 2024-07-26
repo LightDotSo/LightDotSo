@@ -2,4 +2,4 @@
 
 [ -n "$CI" ] && exit 0
 
-exec < /dev/tty && pnpm git-cz -e --disable-emoji --hook || true
+pnpm lint-staged
