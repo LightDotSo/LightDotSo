@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { transfersParser } from "@lightdotso/nuqs";
 import { getNfts, getTokens } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
-import { handler as addressHandler } from "@/handlers/[address]/handler";
 
 // -----------------------------------------------------------------------------
 // Handler

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { DepositDialog } from "@/app/(wallet)/[address]/deposit/(components)/deposit-dialog";
+import { handler } from "@/handlers/[address]/deposit/handler";
+import { preloader } from "@/preloaders/[address]/deposit/preloader";
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { DepositDialog } from "@/app/(wallet)/[address]/deposit/(components)/deposit-dialog";
-import { handler } from "@/handlers/[address]/deposit/handler";
-import { preloader } from "@/preloaders/[address]/deposit/preloader";
 
 // ------------------------------------------------------c-----------------------
 // Props

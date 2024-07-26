@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import {
   BaseLayerWrapper,
-  MinimalPageWrapper,
   HStackFull,
+  MinimalPageWrapper,
 } from "@lightdotso/ui";
-import { ReactNode } from "react";
-import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

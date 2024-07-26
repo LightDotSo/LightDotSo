@@ -71,13 +71,13 @@ export const NavSidebar: FC<NavSidebarProps> = ({
       )}
       {...props}
     >
-      {items.map(item => (
+      {items.map((item) => (
         <Link
           key={item.href}
-          href={baseHref ? "/" + baseHref + item.href : item.href}
+          href={baseHref ? `/${baseHref}${item.href}` : item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === (baseHref ? "/" + baseHref + item.href : item.href)
+            pathname === (baseHref ? `/${baseHref}${item.href}` : item.href)
               ? "bg-background-stronger hover:bg-background-stronger"
               : "text-text-weak hover:bg-transparent hover:underline",
             "justify-start",

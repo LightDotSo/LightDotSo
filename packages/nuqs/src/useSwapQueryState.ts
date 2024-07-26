@@ -21,7 +21,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const swapParser = createParser({
-  parse: function (value) {
+  parse: (value) => {
     // If the value is empty, return null
     if (value === "") {
       return null;
@@ -32,9 +32,11 @@ export const swapParser = createParser({
     // Parse the address as a string (if possible)
     const parsedAddress = address === "_" ? undefined : address;
     // Parse the decimals as a integer (if possible)
-    const parsedChainId = chainId !== "0" ? parseInt(chainId) : undefined;
+    const parsedChainId =
+      chainId !== "0" ? Number.parseInt(chainId) : undefined;
     // Parse the value as a float (if possible)
-    const parsedQuantity = quantity !== "0" ? parseFloat(quantity) : undefined;
+    const parsedQuantity =
+      quantity !== "0" ? Number.parseFloat(quantity) : undefined;
     // Parse the group ID as a string (if possible)
     const parsedGroupId = groupId === "_" ? undefined : groupId;
 
@@ -51,7 +53,7 @@ export const swapParser = createParser({
     return null;
   },
 
-  serialize: function (value: Swap | null) {
+  serialize: (value: Swap | null) => {
     // If the value is empty, return an empty string
     if (!value) {
       return "";

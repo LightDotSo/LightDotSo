@@ -39,7 +39,7 @@ type Story = StoryObj<typeof PlaceholderOrb>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Avatar className="size-6">
       <PlaceholderOrb {...args} />
     </Avatar>

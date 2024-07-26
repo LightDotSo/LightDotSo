@@ -17,23 +17,24 @@
 import type { TokenData } from "@lightdotso/data";
 import { ChainStack, TokenImage } from "@lightdotso/elements";
 import {
+  type QuoteParams,
   useDebouncedValue,
   useQuote,
-  type QuoteParams,
 } from "@lightdotso/hooks";
 import { useCreate, useSwap } from "@lightdotso/hooks";
 import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
-import { swapFormSchema, UserOperation } from "@lightdotso/schemas";
+import type { UserOperation, swapFormSchema } from "@lightdotso/schemas";
 import { generatePartialUserOperations } from "@lightdotso/sdk";
 import {
   useAuth,
   useDev,
-  useQuotes,
   useModals,
+  useQuotes,
   useUserOperations,
 } from "@lightdotso/stores";
-import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
+import { ChainLogo } from "@lightdotso/svg";
+import { TokenGroup } from "@lightdotso/templates";
 import {
   Accordion,
   AccordionContent,
@@ -44,14 +45,13 @@ import {
   FormField,
   Input,
 } from "@lightdotso/ui";
-import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
-import { useEffect, useMemo, type FC } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { type Address } from "viem";
+import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { serialize } from "@lightdotso/wagmi";
-import { ChainLogo } from "@lightdotso/svg";
-import { TokenGroup } from "@lightdotso/templates";
+import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
+import { type FC, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import type { Address } from "viem";
+import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -178,7 +178,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const subscription = form.watch(value => {
+    const subscription = form.watch((value) => {
       // Set buy swap query state
       if (value.from) {
         setFromSwapQueryState(value.from);
@@ -260,7 +260,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
       // Divide the aggregated amount by the decimal places
       const aggregatedQuantity =
-        Number(aggregatedAmount) / Math.pow(10, toToken.decimals);
+        Number(aggregatedAmount) / 10 ** toToken.decimals;
 
       // Set the to swap quoted amount
       form.setValue("to.quantity", Number(aggregatedQuantity));
@@ -310,9 +310,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         debouncedFromSwapQuantity === fromSwapMaximumQuantity
           ? fromSwapMaximumAmount
           : BigInt(
-              Math.floor(
-                debouncedFromSwapQuantity * Math.pow(10, fromToken.decimals),
-              ),
+              Math.floor(debouncedFromSwapQuantity * 10 ** fromToken.decimals),
             );
 
       // Iterate through the tokenAmounts, and fill the swap(s) with the required amount until the current swap is satisfied
@@ -411,7 +409,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 onClose: () => {
                   hideTokenModal();
                 },
-                onTokenSelect: token => {
+                onTokenSelect: (token) => {
                   // Check if the from and to swap tokens are the same
                   if (
                     toSwap?.address === token?.address &&
@@ -442,9 +440,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {fromSwap && fromSwap?.groupId && (
-              <TokenGroup groupId={fromSwap?.groupId} />
-            )}
+            {fromSwap?.groupId && <TokenGroup groupId={fromSwap?.groupId} />}
             {fromSwap &&
               fromSwap?.chainId === 0 &&
               genericExecutionQuotes &&
@@ -452,10 +448,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               genericExecutionQuotes.map((quote, index) => (
                 <SwapFetcher key={index} {...quote} />
               ))}
-            {fromToken && fromToken.address && fromToken.symbol ? (
+            {fromToken?.address && fromToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={fromToken.chain_id !== 0 ? true : false}
+                  withChainLogo={fromToken.chain_id !== 0}
                   token={{
                     ...fromToken,
                     amount: Number(fromToken.amount),
@@ -612,10 +608,10 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
             className="ml-1 inline-flex max-w-48 items-center gap-1 rounded-full p-1"
             size="unsized"
           >
-            {toToken && toToken.address && toToken.symbol ? (
+            {toToken?.address && toToken.symbol ? (
               <>
                 <TokenImage
-                  withChainLogo={toToken.chain_id !== 0 ? true : false}
+                  withChainLogo={toToken.chain_id !== 0}
                   token={{
                     ...toToken,
                     amount: Number(toToken.amount),
@@ -707,7 +703,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                   <div className="inline-flex items-center">
                     <ChainStack
                       chainIds={genericExecutionQuotes.map(
-                        quote => quote.fromChainId ?? 0,
+                        (quote) => quote.fromChainId ?? 0,
                       )}
                     />
                     <span className="ml-2 text-sm text-text-weak">
@@ -731,8 +727,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                       </span>
                       <span className="text-text">
                         {refineNumberFormat(
-                          Number(quote.fromAmount) /
-                            Math.pow(10, fromToken.decimals),
+                          Number(quote.fromAmount) / 10 ** fromToken.decimals,
                         )}{" "}
                         <span>{fromToken.symbol}</span>
                       </span>

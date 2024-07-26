@@ -17,7 +17,7 @@
 import { useUserOperationSend } from "@lightdotso/hooks";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useCallback, type FC } from "react";
+import { type FC, useCallback } from "react";
 import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------

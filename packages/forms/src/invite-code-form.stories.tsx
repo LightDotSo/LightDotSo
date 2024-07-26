@@ -38,7 +38,7 @@ type Story = StoryObj<typeof InviteCodeForm>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => {
+  render: (args) => {
     return <InviteCodeForm {...args} />;
   },
   args: {

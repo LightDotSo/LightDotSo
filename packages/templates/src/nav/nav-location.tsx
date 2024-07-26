@@ -55,7 +55,7 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
 
   return (
     <div className="ml-auto hidden items-center space-x-1 md:flex">
-      {tabs.map(tab => {
+      {tabs.map((tab) => {
         if (tab.id === "app") {
           return (
             <Button

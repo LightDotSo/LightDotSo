@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Progress>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Progress value={33} />,
+  render: (args) => <Progress value={33} />,
   args: {},
 };

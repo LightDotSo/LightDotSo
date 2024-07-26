@@ -14,11 +14,11 @@
 
 "use client";
 
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { EnsAddress, PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
-import { type FC, type InputHTMLAttributes, useState, useEffect } from "react";
+import { type FC, type InputHTMLAttributes, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { isAddress } from "viem";
 

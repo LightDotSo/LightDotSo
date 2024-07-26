@@ -19,8 +19,8 @@ import { parseAsStringEnum, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export enum WalletType {
-  "MULTI" = "multi",
-  "PERSONAL" = "personal",
+  MULTI = "multi",
+  PERSONAL = "personal",
   "2FA" = "2fa",
 }
 

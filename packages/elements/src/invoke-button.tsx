@@ -18,8 +18,8 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { RefreshCcw } from "lucide-react";

@@ -32,7 +32,7 @@ export const useMutationStateSignMessage = () => {
       exact: true,
     },
     // Get the first mutation state because only there is one unique `useSignMessage` hook
-    select: mutations => mutations.state.status,
+    select: (mutations) => mutations.state.status,
   });
 
   return signMessageStatus;

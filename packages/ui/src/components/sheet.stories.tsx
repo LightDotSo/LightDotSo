@@ -45,7 +45,7 @@ type Story = StoryObj<typeof Sheet>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Sheet>
       <SheetTrigger>Open</SheetTrigger>
       <SheetContent>

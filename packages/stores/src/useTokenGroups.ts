@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenAmount } from "@lightdotso/types";
+import type { TokenAmount } from "@lightdotso/types";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
@@ -32,18 +32,18 @@ type TokenGroupsStore = {
 export const useTokenGroups = create(
   devtools(
     persist<TokenGroupsStore>(
-      set => ({
+      (set) => ({
         tokenGroups: {},
         setTokenGroupByGroupId: (groupId, tokenAmount) =>
           // Add tokenAmount to tokenGroups for groupId and chainId
           // The chainId has to be unique for each group
-          set(state => {
+          set((state) => {
             // Get tokenAmounts for groupId
             const groupTokenAmounts = state.tokenGroups[groupId] ?? [];
 
             // Check if tokenAmount is already in tokenAmounts
             const index = groupTokenAmounts.findIndex(
-              groupTokenAmount =>
+              (groupTokenAmount) =>
                 groupTokenAmount.chain_id === tokenAmount.chain_id &&
                 groupTokenAmount.address === tokenAmount.address,
             );

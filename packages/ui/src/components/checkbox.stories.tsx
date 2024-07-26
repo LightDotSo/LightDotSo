@@ -38,7 +38,7 @@ type Story = StoryObj<typeof Checkbox>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <div className="items-top flex space-x-2">
       <Checkbox {...args} id="terms1" />
       <div className="grid gap-1.5 leading-none">
@@ -57,7 +57,7 @@ export const Base: Story = {
   args: {},
 };
 export const Disabled: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Checkbox {...args} id="terms2" />
       <label

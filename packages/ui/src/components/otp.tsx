@@ -21,8 +21,8 @@ import { cn } from "@lightdotso/utils";
 import type {
   ChangeEvent,
   ClipboardEvent,
-  KeyboardEvent,
   InputHTMLAttributes,
+  KeyboardEvent,
 } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Input } from "./input";
@@ -88,7 +88,7 @@ export const OTP = ({
     if (onChange) {
       let formattedValue = value;
       if (value.length === 6) {
-        formattedValue = value.slice(0, 3) + "-" + value.slice(3, 6);
+        formattedValue = `${value.slice(0, 3)}-${value.slice(3, 6)}`;
       }
       const newEvent = {
         target: {
@@ -124,7 +124,7 @@ export const OTP = ({
 
     switch (key) {
       case "BACKSPACE":
-        setInputs(prevInputs => {
+        setInputs((prevInputs) => {
           prevInputs[activeInputIndex] = "";
           return [...prevInputs];
         });
@@ -150,7 +150,7 @@ export const OTP = ({
       default:
         if (key && /^[0-9A-Z]$/.test(key)) {
           e.preventDefault();
-          setInputs(prevInputs => {
+          setInputs((prevInputs) => {
             prevInputs[activeInputIndex] = key;
             return [...prevInputs];
           });
@@ -212,7 +212,7 @@ export const OTP = ({
 
       if (
         alphanumericChars.length === length &&
-        alphanumericChars.every(char => /^[0-9A-Z]$/.test(char))
+        alphanumericChars.every((char) => /^[0-9A-Z]$/.test(char))
       ) {
         setInputs([...alphanumericChars]);
         setActiveInputIndex(-1);

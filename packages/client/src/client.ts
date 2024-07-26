@@ -99,7 +99,7 @@ export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
 
 export const getSocketClient: (
   clientType?: "admin" | "authenticated" | "public",
-) => ReturnType<typeof createClient<SocketPaths>> = clientType =>
+) => ReturnType<typeof createClient<SocketPaths>> = (clientType) =>
   process.env.LOCAL_ENV === "dev" ||
   process.env.NEXT_PUBLIC_LOCAL_ENV === "dev" ||
   process.env.STORYBOOK_ENV === "dev"
@@ -161,7 +161,7 @@ const adminApiClient: ReturnType<typeof createClient<ApiPaths>> =
 
 export const getClient: (
   clientType?: "admin" | "authenticated" | "public",
-) => ReturnType<typeof createClient<ApiPaths>> = clientType =>
+) => ReturnType<typeof createClient<ApiPaths>> = (clientType) =>
   (process.env.LOCAL_ENV === "dev" ||
     process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&
   clientType === "admin"

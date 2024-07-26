@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { AppBanner } from "@/components/app-banner";
+import { Nav } from "@/components/nav/nav";
+import { WalletState } from "@/components/state/wallet-state";
+import { WssState } from "@/components/wss/wss-state";
 import {
   AuthState,
   FormState,
@@ -20,19 +24,15 @@ import {
 } from "@lightdotso/states";
 import {
   Footer,
+  Root as LightRoot,
   ProgressTransaction,
   ProgressUserOperation,
-  Root as LightRoot,
 } from "@lightdotso/templates";
 import { Toaster, Web3Provider } from "@lightdotso/ui";
 import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
 import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import type { FC, ReactNode } from "react";
-import { AppBanner } from "@/components/app-banner";
-import { Nav } from "@/components/nav/nav";
-import { WalletState } from "@/components/state/wallet-state";
-import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
 // Dynamic

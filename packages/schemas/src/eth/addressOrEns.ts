@@ -21,7 +21,7 @@ import { z } from "zod";
 
 export const addressOrEns = Address.or(
   z.string().refine(
-    value => {
+    (value) => {
       // Check if it's a possible ENS name
       const dnsRegex = /^(?:(?:(?:\w[\w-]*\.)+[a-zA-Z]{2,}))/;
       if (dnsRegex.test(value)) {

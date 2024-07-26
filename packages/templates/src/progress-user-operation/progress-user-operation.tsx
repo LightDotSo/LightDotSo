@@ -121,7 +121,7 @@ export const ProgressUserOperation: FC = () => {
         if (!hashedToasts.has(pendingUserOperation.hash)) {
           toast.info("Processing user operation...", {
             id: pendingUserOperation.hash,
-            duration: Infinity,
+            duration: Number.POSITIVE_INFINITY,
             action: {
               label: "View",
               onClick: () => {
@@ -135,7 +135,7 @@ export const ProgressUserOperation: FC = () => {
           });
 
           setHashedToasts(
-            prevHashes => new Set(prevHashes.add(pendingUserOperation.hash)),
+            (prevHashes) => new Set(prevHashes.add(pendingUserOperation.hash)),
           );
         }
       }
@@ -158,7 +158,7 @@ export const ProgressUserOperation: FC = () => {
   return (
     pendingUserOperations &&
     pendingUserOperations?.length > 0 &&
-    pendingUserOperations?.map(pendingUserOperation => (
+    pendingUserOperations?.map((pendingUserOperation) => (
       <ProgressUserOperationOp
         key={pendingUserOperation.hash}
         hash={pendingUserOperation.hash as Hex}

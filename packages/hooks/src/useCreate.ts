@@ -14,12 +14,12 @@
 
 "use client";
 
-import { UserOperation } from "@lightdotso/schemas";
+import { userOperationsParser } from "@lightdotso/nuqs";
+import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
+import { toast } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { userOperationsParser } from "@lightdotso/nuqs";
-import { toast } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Hook Props

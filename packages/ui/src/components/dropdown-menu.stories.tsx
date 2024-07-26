@@ -68,7 +68,7 @@ type Story = StoryObj<typeof DropdownMenu>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Open</Button>

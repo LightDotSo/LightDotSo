@@ -14,11 +14,11 @@
 
 "use client";
 
+import { useAppGroup } from "@/hooks";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { BadgeCountButton } from "@lightdotso/templates";
 import { ShoppingCartIcon } from "lucide-react";
 import type { FC } from "react";
-import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component

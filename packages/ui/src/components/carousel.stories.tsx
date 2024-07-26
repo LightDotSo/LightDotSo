@@ -18,8 +18,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "./carousel";
 
 // -----------------------------------------------------------------------------

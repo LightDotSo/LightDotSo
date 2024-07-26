@@ -17,7 +17,7 @@ import { useTokenAmounts } from "@lightdotso/hooks/src/useTokenAmounts";
 import { useQueryTokenGroup } from "@lightdotso/query";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@lightdotso/ui";
 import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -63,8 +63,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
   return (
     <HoverCard>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
-      {tokenGroup &&
-        tokenGroup?.tokens &&
+      {tokenGroup?.tokens &&
         tokenGroup?.tokens.length > 0 &&
         tokenAmounts &&
         tokenAmounts.length > 0 && (
@@ -96,7 +95,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
                       {token.amount &&
                         token.decimals &&
                         refineNumberFormat(
-                          token.original_amount / Math.pow(10, token.decimals),
+                          token.original_amount / 10 ** token.decimals,
                         )}{" "}
                       {token.symbol}
                     </div>

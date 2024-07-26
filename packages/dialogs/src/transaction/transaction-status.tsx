@@ -24,7 +24,7 @@ import { StateInfoSection } from "@lightdotso/ui";
 import { shortenBytes32 } from "@lightdotso/utils";
 import { getEtherscanUrlWithChainId } from "@lightdotso/utils/src/etherscan";
 import { ArrowUpRight, CheckCircle2, LoaderIcon } from "lucide-react";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -66,11 +66,9 @@ export const TransactionStatus: FC = () => {
   const isStatusPending = useMemo(() => {
     // Get the status from the user operation merkle
     if (userOperationMerkle) {
-      return userOperationMerkle.user_operations.every(
-        userOperation => userOperation.transaction !== null,
-      )
-        ? false
-        : true;
+      return !userOperationMerkle.user_operations.every(
+        (userOperation) => userOperation.transaction !== null,
+      );
     }
 
     // Get the status from the single user operation
@@ -137,24 +135,23 @@ export const TransactionStatus: FC = () => {
             </a>
           </div>
         )}
-        {userOperationMerkle &&
-          userOperationMerkle.user_operations
-            .filter(userOperation => userOperation.transaction !== null)
-            .map(userOperation => (
-              <div key={userOperation.hash} className="text-xs text-text-weak">
-                Transaction Hash:{" "}
-                <a
-                  className="inline-flex items-center hover:underline"
-                  href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction!.hash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {shortenBytes32(userOperationMerkle.root)}
-                  <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
-                </a>
-              </div>
-            ))}
-        {userOperation && userOperation.transaction && (
+        {userOperationMerkle?.user_operations
+          .filter((userOperation) => userOperation.transaction !== null)
+          .map((userOperation) => (
+            <div key={userOperation.hash} className="text-xs text-text-weak">
+              Transaction Hash:{" "}
+              <a
+                className="inline-flex items-center hover:underline"
+                href={`${getEtherscanUrlWithChainId(userOperation.chain_id)}/tx/${userOperation.transaction?.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {shortenBytes32(userOperationMerkle.root)}
+                <ArrowUpRight className="ml-0.5 size-3 shrink-0 opacity-50" />
+              </a>
+            </div>
+          ))}
+        {userOperation?.transaction && (
           <div className="text-xs text-text-weak">
             Transaction Hash:{" "}
             <a

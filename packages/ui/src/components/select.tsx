@@ -16,7 +16,7 @@
 
 import { cn } from "@lightdotso/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { Check, ChevronDown } from "lucide-react";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";

@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as addressHandler } from "@/handlers/[address]/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
+import type { UserOperation } from "@lightdotso/schemas";
 import { getConfiguration, getWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -22,8 +24,6 @@ import type {
   Address,
   // Hex
 } from "viem";
-import { handler as addressHandler } from "@/handlers/[address]/handler";
-import { UserOperation } from "@lightdotso/schemas";
 
 // -----------------------------------------------------------------------------
 // Handler

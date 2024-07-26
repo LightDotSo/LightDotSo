@@ -39,7 +39,7 @@ type Story = StoryObj<typeof ComboDialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <ComboDialog
       buttonTrigger={
         <Button type="submit" size="sm" className="px-3">

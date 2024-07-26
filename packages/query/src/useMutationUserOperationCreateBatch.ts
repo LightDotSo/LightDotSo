@@ -61,7 +61,7 @@ export const useMutationUserOperationCreateBatch = (
   const { mutate: userOperationCreateBatch, failureCount } = useMutation({
     mutationKey: queryKeys.user_operation.create_batch._def,
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
-      let hasInvalidData = body.userOperations.some(userOperation => {
+      const hasInvalidData = body.userOperations.some((userOperation) => {
         return (
           !userOperation.chainId ||
           !userOperation.hash ||
@@ -103,7 +103,7 @@ export const useMutationUserOperationCreateBatch = (
               ),
               signature_type: 2,
             },
-            user_operations: body.userOperations.map(userOperation => {
+            user_operations: body.userOperations.map((userOperation) => {
               return {
                 chain_id: Number(userOperation.chainId),
                 hash: userOperation.hash!,
@@ -131,10 +131,10 @@ export const useMutationUserOperationCreateBatch = (
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully created transactions!");
         },
-        err => {
+        (err) => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);

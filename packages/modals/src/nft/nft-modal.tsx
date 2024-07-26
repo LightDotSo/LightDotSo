@@ -67,12 +67,12 @@ export function NftModal() {
         <div className="grid grid-cols-3 gap-2">
           {nftPage.nfts
             .filter(
-              nft =>
+              (nft) =>
                 nft?.collection?.spam_score !== undefined &&
                 nft?.collection?.spam_score !== null &&
                 nft?.collection?.spam_score < 60,
             )
-            .map(nft => (
+            .map((nft) => (
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
               <div
                 key={nft.nft_id}

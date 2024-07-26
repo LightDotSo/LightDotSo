@@ -70,7 +70,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<string>();
-    nftPage?.nfts?.forEach(nft => {
+    nftPage?.nfts?.forEach((nft) => {
       uniqueChainValues.add(nft.chain!);
     });
     return uniqueChainValues;
@@ -83,21 +83,21 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table?.getColumn("chain") && (
+        {table?.getColumn("chain") && (
           <DataTableFacetedFilter
             column={table?.getColumn("chain")}
             title="Chain"
-            options={Array.from(uniqueChainValues).map(chain => ({
+            options={Array.from(uniqueChainValues).map((chain) => ({
               value: chain,
               label: chain,
             }))}
           />
         )}
-        {table && table?.getColumn("spam_score") && (
+        {table?.getColumn("spam_score") && (
           <DataTableFacetedFilter
             column={table?.getColumn("spam_score")}
             title="Spam"
-            options={["Yes", "No"].map(value => ({
+            options={["Yes", "No"].map((value) => ({
               value: value === "No" ? "0" : "70",
               label: value,
             }))}

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { verifyUserId } from "@/auth";
 import { paginationParser } from "@lightdotso/nuqs";
 import { getUser, getWallets, getWalletsCount } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import { verifyUserId } from "@/auth";
 
 // -----------------------------------------------------------------------------
 // Handler

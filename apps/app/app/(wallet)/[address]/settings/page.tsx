@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import type { Address } from "viem";
 import { SettingsDevCard } from "@/app/(wallet)/[address]/settings/(components)/settings-dev-card";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
 import { handler } from "@/handlers/[address]/settings/handler";
 import { preloader } from "@/preloaders/[address]/settings/preloader";
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
+import { SettingsSectionWrapper } from "@lightdotso/ui";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -63,10 +63,10 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
       toast.dismiss(loadingToast);
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Thanks for your feedback!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

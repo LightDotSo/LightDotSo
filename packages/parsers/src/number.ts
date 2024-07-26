@@ -21,13 +21,13 @@ import { hexRegex } from "@lightdotso/regexs";
 export const parseNumber = (value: string): number => {
   // Check if the value is a non-negative integer
   if (/^\d+$/.test(value)) {
-    return parseInt(value, 10);
+    return Number.parseInt(value, 10);
   }
 
   // Check if the value is Hex
   if (hexRegex.test(value)) {
-    return parseInt(value, 16);
+    return Number.parseInt(value, 16);
   }
 
-  return parseInt(value);
+  return Number.parseInt(value);
 };

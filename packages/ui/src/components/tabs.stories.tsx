@@ -41,7 +41,7 @@ type Story = StoryObj<typeof Tabs>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Tabs {...args} className="w-[400px]">
       <TabsList>
         <TabsTrigger value="account">Account</TabsTrigger>
@@ -90,7 +90,7 @@ export const Base: Story = {
   },
 };
 export const Outline: Story = {
-  render: args => (
+  render: (args) => (
     <Tabs {...args} variant="outline" className="w-[400px]">
       <TabsList>
         <TabsTrigger value="account">Account</TabsTrigger>

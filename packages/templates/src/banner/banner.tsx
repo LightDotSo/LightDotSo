@@ -14,14 +14,14 @@
 
 "use client";
 
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
 import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { XMarkIcon } from "@heroicons/react/20/solid";
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import {
   AlertTriangleIcon,
   ArrowUpRight,
@@ -30,7 +30,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, type FC } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { PiTelegramLogoDuotone } from "react-icons/pi";
 
 // -----------------------------------------------------------------------------

@@ -87,7 +87,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<number>();
-    userOperations?.forEach(userOperation => {
+    userOperations?.forEach((userOperation) => {
       uniqueChainValues.add(userOperation.chain_id!);
     });
     return uniqueChainValues;
@@ -104,7 +104,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
           <DataTableFacetedFilter
             column={table?.getColumn("chain_id")}
             title="Chain"
-            options={Array.from(uniqueChainValues).map(chain => ({
+            options={Array.from(uniqueChainValues).map((chain) => ({
               value: chain.toString(),
               label: getChainNameWithChainId(chain),
             }))}

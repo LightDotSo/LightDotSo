@@ -15,8 +15,8 @@
 import { useUserOperationsProgress } from "@lightdotso/hooks";
 import {
   Accordion,
-  AccordionItem,
   AccordionContent,
+  AccordionItem,
   AccordionTrigger,
   Textarea,
 } from "@lightdotso/ui";

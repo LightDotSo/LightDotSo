@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
+import { Root } from "@/components/root/root";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
 
 // -----------------------------------------------------------------------------
 // Metadata

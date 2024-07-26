@@ -39,6 +39,6 @@ type Story = StoryObj<typeof AssetChange>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <AssetChange assetChange={assetChangeGetData} />,
+  render: (args) => <AssetChange assetChange={assetChangeGetData} />,
   args: {},
 };

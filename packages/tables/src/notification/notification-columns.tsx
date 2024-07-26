@@ -33,7 +33,7 @@ export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
     id: "user_address",
     accessorKey: "user_address",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.activity?.address;
     },
     header: ({ column }) => (
@@ -46,7 +46,7 @@ export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
     id: "entity",
     accessorKey: "entity",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.activity?.entity;
     },
     header: ({ column }) => (
@@ -57,7 +57,7 @@ export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
     id: "operation",
     accessorKey: "operation",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.activity?.operation;
     },
     header: ({ column }) => (
@@ -74,7 +74,7 @@ export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
     id: "timestamp",
     accessorKey: "timestamp",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.activity?.timestamp;
     },
     header: ({ column }) => (

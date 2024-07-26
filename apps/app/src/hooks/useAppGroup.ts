@@ -41,7 +41,10 @@ export const useAppGroup = (): AppGroup => {
   // ---------------------------------------------------------------------------
 
   const appGroup = useMemo(() => {
-    if (INTERCEPTION_PATHS.some(path => pathname.startsWith(path)) && wallet) {
+    if (
+      INTERCEPTION_PATHS.some((path) => pathname.startsWith(path)) &&
+      wallet
+    ) {
       return "interception";
     }
 

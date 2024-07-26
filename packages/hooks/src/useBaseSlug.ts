@@ -35,7 +35,7 @@ export const useBaseSlug = () => {
 
   const baseSlug = useMemo(() => {
     // Split the path using '/' as delimiter and remove empty strings
-    const slugs = pathname.split("/").filter(slug => slug);
+    const slugs = pathname.split("/").filter((slug) => slug);
 
     // If the first slug is `demo`, return `/demo`
     if (slugs.length > 0 && slugs[0] === "demo") {
@@ -43,7 +43,7 @@ export const useBaseSlug = () => {
     }
 
     // Return the first slug if it is an address
-    return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
+    return slugs.length > 0 && isAddress(slugs[0]) ? `/${slugs[0]}` : "";
   }, [pathname]);
 
   // ---------------------------------------------------------------------------

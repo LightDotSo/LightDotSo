@@ -33,7 +33,7 @@ type BannersStore = {
 export const useBanners = create(
   devtools(
     persist<BannersStore>(
-      set => ({
+      (set) => ({
         isBetaClosed: false,
         isNotOwner: false,
         setIsBetaClosed: (isBetaClosed: boolean) =>

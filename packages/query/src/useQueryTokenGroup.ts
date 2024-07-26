@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTokenGroup } from "@lightdotso/client";
 import type { TokenGroupData } from "@lightdotso/data";
 import type { TokenGroupGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -67,10 +67,10 @@ export const useQueryTokenGroup = (params: TokenGroupGetParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as TokenGroupData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

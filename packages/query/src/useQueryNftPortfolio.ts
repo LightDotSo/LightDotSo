@@ -52,10 +52,10 @@ export const useQueryNftPortfolio = (params: PortfolioParams) => {
         const res = await getNftValuation(params.address, clientType);
 
         return res.match(
-          data => {
+          (data) => {
             return data;
           },
-          err => {
+          (err) => {
             if (failureCount % 3 !== 2) {
               throw err;
             }

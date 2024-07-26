@@ -51,8 +51,8 @@ export const useMutationSimulationCreate = () => {
       );
 
       res.match(
-        _ => {},
-        err => {
+        (_) => {},
+        (err) => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

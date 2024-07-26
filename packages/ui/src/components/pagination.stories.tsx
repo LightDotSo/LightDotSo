@@ -46,7 +46,7 @@ type Story = StoryObj<typeof Pagination>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Pagination>
       <PaginationContent>
         <PaginationItem>

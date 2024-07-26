@@ -21,8 +21,8 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
 import { Send, Shuffle } from "lucide-react";
 import Link from "next/link";

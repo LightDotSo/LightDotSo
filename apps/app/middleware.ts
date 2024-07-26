@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { COOKIES } from "@lightdotso/const";
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { isAddress } from "viem";
 import { DEMO_WALLET_ADDRESS } from "@/const";
 import { getAppGroup } from "@/utils";
-import { AppGroup } from "@lightdotso/types";
+import { COOKIES } from "@lightdotso/const";
+import type { AppGroup } from "@lightdotso/types";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Middleware
@@ -44,7 +44,7 @@ export async function middleware(req: NextRequest) {
   const MIDDLEWARE_REDIRECT_PATHS = ["/"];
   if (
     process.env.NODE_ENV === "production" &&
-    MIDDLEWARE_REDIRECT_PATHS.some(path => req.nextUrl.pathname === path) &&
+    MIDDLEWARE_REDIRECT_PATHS.some((path) => req.nextUrl.pathname === path) &&
     wallet_cookie &&
     req.nextUrl.searchParams.size === 0
   ) {

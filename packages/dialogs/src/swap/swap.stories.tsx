@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { SwapDialog } from "./swap";
-import { useAuth } from "@lightdotso/stores";
-import { useEffect } from "react";
 import { TokenModal } from "@lightdotso/modals/src/token/token-modal";
+import { useAuth } from "@lightdotso/stores";
+import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import { SwapDialog } from "./swap";
 
 // -----------------------------------------------------------------------------
 // Meta

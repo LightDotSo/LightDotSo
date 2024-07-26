@@ -38,6 +38,6 @@ type Story = StoryObj<typeof FeedbackComboDialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <FeedbackComboDialog />,
+  render: (args) => <FeedbackComboDialog />,
   args: {},
 };

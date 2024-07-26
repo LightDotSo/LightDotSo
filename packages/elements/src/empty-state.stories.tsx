@@ -38,7 +38,7 @@ type Story = StoryObj<typeof EmptyState>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <EmptyState entity={args.entity} />,
+  render: (args) => <EmptyState entity={args.entity} />,
   args: {
     entity: "wallet",
   },

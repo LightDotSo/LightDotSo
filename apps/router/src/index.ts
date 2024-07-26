@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { API_URLS } from "@lightdotso/const";
 import {
   type RateLimitBinding,
   cloudflareRateLimiter,
 } from "@hono-rate-limiter/cloudflare";
+import { API_URLS } from "@lightdotso/const";
 import { Hono } from "hono";
-import { basicProxy } from "./proxy";
 import { cors } from "hono/cors";
+import { basicProxy } from "./proxy";
 
 // -----------------------------------------------------------------------------
 // Hono App Types
@@ -68,10 +68,11 @@ app.get(
   (c, next) =>
     cloudflareRateLimiter<AppType>({
       rateLimitBinding: c.env.RATE_LIMITER,
-      keyGenerator: c => c.req.header("cf-connecting-ip") ?? "",
+      keyGenerator: (c) => c.req.header("cf-connecting-ip") ?? "",
       handler: (_, next) => next(),
     })(c, next),
-  c => c.json({ message: `router.light.so rateLimit: ${c.get("rateLimit")}` }),
+  (c) =>
+    c.json({ message: `router.light.so rateLimit: ${c.get("rateLimit")}` }),
 );
 
 app.all("/ens/*", basicProxy(API_URLS.THE_GRAPH_API_URL, { the_graph: "ENS" }));

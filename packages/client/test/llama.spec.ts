@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getLlama } from "../src"; // Replace with your actual file path
 

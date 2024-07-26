@@ -44,14 +44,14 @@ type QuotesStore = {
 export const useQuotes = create(
   devtools(
     persist<QuotesStore>(
-      set => ({
+      (set) => ({
         quotes: [],
         resetQuotes: () => set({ quotes: [] }),
-        setQuote: quote =>
-          set(state => {
+        setQuote: (quote) =>
+          set((state) => {
             // Filter out the quote if it already exists
             const newQuotes = state.quotes.filter(
-              oldQuote =>
+              (oldQuote) =>
                 oldQuote.fromChain !== quote.fromChain ||
                 oldQuote.toChain !== quote.toChain ||
                 oldQuote.fromTokenAddress !== quote.fromTokenAddress ||

@@ -14,6 +14,9 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
@@ -34,13 +37,10 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -144,8 +144,8 @@ export const SettingsProfileCard: FC = () => {
 
   return (
     <SettingsCard
-      title={TITLES.Settings.subcategories["Profile"].title}
-      subtitle={TITLES.Settings.subcategories["Profile"].description}
+      title={TITLES.Settings.subcategories.Profile.title}
+      subtitle={TITLES.Settings.subcategories.Profile.description}
       footerContent={<SettingsProfileCardSubmitButton />}
     >
       <Form {...form}>

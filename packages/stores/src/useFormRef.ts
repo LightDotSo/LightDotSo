@@ -42,7 +42,7 @@ export interface FormRefState {
 
 export const useFormRef = create(
   devtools<FormRefState>(
-    set => ({
+    (set) => ({
       formControl: undefined,
       setFormControl: (formControl: Control<any, any> | undefined) =>
         set({ formControl: formControl }),

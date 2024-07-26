@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
 import { Root } from "@/components/root/root";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

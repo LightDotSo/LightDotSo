@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { StoryObj, Meta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import type { ReactNode } from "react";
 import type { ExternalToast } from "sonner";
 import { toast } from "sonner";

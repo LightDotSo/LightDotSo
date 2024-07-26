@@ -14,11 +14,11 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { PaymasterAndData } from "@lightdotso/data";
-import { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
+import type { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
-import { fromHex, Hex, toHex } from "viem";
+import { type Hex, fromHex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------

@@ -22,13 +22,13 @@ import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import {
   Command,
-  CommandList,
-  CommandItem,
   CommandInput,
-  TabsList,
-  TabsTrigger,
+  CommandItem,
+  CommandList,
   Tabs,
   TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@lightdotso/ui";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -109,7 +109,7 @@ export function ChainModal() {
             {isTestnet ? (
               <>
                 <TabsContent value="mainnet">
-                  {MAINNET_CHAINS.map(chain => (
+                  {MAINNET_CHAINS.map((chain) => (
                     <CommandItem
                       key={chain.id}
                       value={chain.name}
@@ -127,7 +127,7 @@ export function ChainModal() {
                   ))}
                 </TabsContent>
                 <TabsContent value="testnet">
-                  {TESTNET_CHAINS.map(chain => (
+                  {TESTNET_CHAINS.map((chain) => (
                     <CommandItem
                       key={chain.id}
                       value={chain.name}
@@ -147,7 +147,7 @@ export function ChainModal() {
               </>
             ) : (
               <div className="mt-2">
-                {MAINNET_CHAINS.map(chain => (
+                {MAINNET_CHAINS.map((chain) => (
                   <CommandItem
                     key={chain.id}
                     value={chain.name}

@@ -31,7 +31,7 @@ import {
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
-import { isAddressEqual, toBytes, hexToBytes, keccak256 } from "viem";
+import { hexToBytes, isAddressEqual, keccak256, toBytes } from "viem";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -104,7 +104,7 @@ export const useUserOperationsCreate = ({
 
     // Check if all of the userOperations have hash
     const isAllHashed = userOperations.every(
-      userOperation => userOperation.hash,
+      (userOperation) => userOperation.hash,
     );
     if (!isAllHashed) {
       return;
@@ -114,7 +114,7 @@ export const useUserOperationsCreate = ({
     if (userOperations.length > 1) {
       // Get the leaves of the merkle tree
       const leaves = userOperations
-        .map(userOperation => hexToBytes(userOperation.hash as Hex))
+        .map((userOperation) => hexToBytes(userOperation.hash as Hex))
         .sort(Buffer.compare);
 
       // If the number of leaves is not 2, add a leaf w/ 0
@@ -181,7 +181,7 @@ export const useUserOperationsCreate = ({
       return;
     }
 
-    return configuration?.owners?.find(owner =>
+    return configuration?.owners?.find((owner) =>
       isAddressEqual(owner.address as Address, userAddress),
     );
   }, [configuration?.owners, userAddress]);
@@ -344,7 +344,7 @@ export const useUserOperationsCreate = ({
     return (
       userOperations &&
       userOperations.length > 0 &&
-      userOperations.every(userOperation => {
+      userOperations.every((userOperation) => {
         return !!(
           typeof owner !== "undefined" &&
           userOperation &&

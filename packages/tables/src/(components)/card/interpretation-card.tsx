@@ -51,12 +51,9 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
         className,
       )}
     >
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .slice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
+      {interpretation?.asset_changes?.slice(0, 1).map((assetChange, index) => (
+        <AssetChange key={index} assetChange={assetChange} />
+      ))}
     </div>
   );
 };

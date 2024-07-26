@@ -46,7 +46,7 @@ interface AuthState {
 export const useAuth = create(
   devtools(
     persist<AuthState>(
-      set => ({
+      (set) => ({
         address: undefined,
         setAddress: (address: Address | undefined) => set({ address: address }),
         clientType: undefined,

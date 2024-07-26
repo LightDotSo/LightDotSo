@@ -97,7 +97,7 @@ function createRefinement<T>(ctxRef: MutableRefObject<RefinementContext<T>>) {
     abortController = new AbortController();
 
     if (ctxRef.current.debounce != null) {
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         // Wait for the debounce duration
         timeout = setTimeout(resolve, ctxRef.current.debounce);
       });

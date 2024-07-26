@@ -38,14 +38,14 @@ type Story = StoryObj<typeof InvokeButton>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <InvokeButton {...args} />,
+  render: (args) => <InvokeButton {...args} />,
   args: {
     onClick: () => {},
     isLoading: false,
   },
 };
 export const Loading: Story = {
-  render: args => <InvokeButton {...args} />,
+  render: (args) => <InvokeButton {...args} />,
   args: {
     onClick: () => {},
     isLoading: true,

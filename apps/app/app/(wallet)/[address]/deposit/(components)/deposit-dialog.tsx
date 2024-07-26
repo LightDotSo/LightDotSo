@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useDelayedValue } from "@lightdotso/hooks";
@@ -38,7 +39,6 @@ import {
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
-  toast,
   Button,
   Form,
   FormControl,
@@ -50,6 +50,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { getChainWithChainId } from "@lightdotso/utils";
 import {
@@ -62,7 +63,6 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
@@ -437,7 +437,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       return;
     }
 
-    const bigIntQuantity = BigInt(quantity * Math.pow(10, decimals));
+    const bigIntQuantity = BigInt(quantity * 10 ** decimals);
 
     if (contractAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       const res = await sendTransaction({
@@ -491,7 +491,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
           chainId &&
           socketBalances?.length > 0 &&
           socketBalances?.find(
-            token =>
+            (token) =>
               token.address === transfer.asset?.address &&
               token.chainId === transfer.chainId,
           )) ||
@@ -611,7 +611,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                         chainId &&
                         socketBalances?.length > 0 &&
                         socketBalances?.find(
-                          token =>
+                          (token) =>
                             token.address === transfer.asset?.address &&
                             token.chainId === transfer.chainId,
                         )) ||
@@ -644,7 +644,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     hideTokenModal();
                                     setDepositBackgroundModal(false);
                                   },
-                                  onTokenSelect: token => {
+                                  onTokenSelect: (token) => {
                                     form.setValue("chainId", token.chain_id);
                                     form.setValue(
                                       "asset.address",
@@ -730,20 +730,20 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                                       //   field.onChange(quantity);
                                       // }}
-                                      onBlur={e => {
+                                      onBlur={(e) => {
                                         // Validate the address
                                         if (!e.target.value) {
                                           // Clear the value of key address
                                           form.setValue("asset.quantity", 0);
                                         }
 
-                                        const quantity = parseFloat(
+                                        const quantity = Number.parseFloat(
                                           e.target.value,
                                         );
 
                                         validateTokenQuantity(quantity);
                                       }}
-                                      onChange={e => {
+                                      onChange={(e) => {
                                         // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
                                         if (
                                           e.target.value.endsWith(".") ||
@@ -754,16 +754,17 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                         } else {
                                           // Only parse to float if the value doesn't end with "."
                                           field.onChange(
-                                            parseFloat(e.target.value) || 0,
+                                            Number.parseFloat(e.target.value) ||
+                                              0,
                                           );
                                         }
 
                                         // Validate the number
-                                        const quantity = parseFloat(
+                                        const quantity = Number.parseFloat(
                                           e.target.value,
                                         );
 
-                                        if (!isNaN(quantity)) {
+                                        if (!Number.isNaN(quantity)) {
                                           validateTokenQuantity(quantity);
                                         }
                                       }}
@@ -838,13 +839,13 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                         // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                         transfer?.asset! &&
                       nftPage.nfts?.find(
-                        nft =>
+                        (nft) =>
                           nft.contract_address ===
                             (transfer?.asset?.address || "") &&
-                          parseInt(nft.token_id!) ===
+                          Number.parseInt(nft.token_id!) ===
                             // prettier-ignore
                             // @ts-expect-error
-                            transfer?.asset!.tokenId,
+                            transfer?.asset?.tokenId,
                       );
 
                     return (
@@ -873,7 +874,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                       setDepositBackgroundModal(false);
                                     }
                                   },
-                                  onNftSelect: nft => {
+                                  onNftSelect: (nft) => {
                                     if (nft.contract_address) {
                                       form.setValue(
                                         "asset.address",
@@ -893,7 +894,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     if (nft.token_id) {
                                       form.setValue(
                                         "asset.tokenId",
-                                        parseInt(nft.token_id),
+                                        Number.parseInt(nft.token_id),
                                       );
                                     }
 
@@ -966,20 +967,20 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                                       //   field.onChange(quantity);
                                       // }}
-                                      onBlur={e => {
+                                      onBlur={(e) => {
                                         // Validate the address
                                         if (!e.target.value) {
                                           // Clear the value of key address
                                           form.setValue("asset.quantity", 0);
                                         }
 
-                                        const quantity = parseFloat(
+                                        const quantity = Number.parseFloat(
                                           e.target.value,
                                         );
 
                                         validateTokenQuantity(quantity);
                                       }}
-                                      onChange={e => {
+                                      onChange={(e) => {
                                         // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
                                         if (
                                           e.target.value.endsWith(".") ||
@@ -990,16 +991,17 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                         } else {
                                           // Only parse to float if the value doesn't end with "."
                                           field.onChange(
-                                            parseFloat(e.target.value) || 0,
+                                            Number.parseFloat(e.target.value) ||
+                                              0,
                                           );
                                         }
 
                                         // Validate the number
-                                        const quantity = parseFloat(
+                                        const quantity = Number.parseFloat(
                                           e.target.value,
                                         );
 
-                                        if (!isNaN(quantity)) {
+                                        if (!Number.isNaN(quantity)) {
                                           validateTokenQuantity(quantity);
                                         }
                                       }}

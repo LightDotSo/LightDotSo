@@ -15,7 +15,7 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import { useEffect, useState, type FC } from "react";
+import { type FC, useEffect, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Component

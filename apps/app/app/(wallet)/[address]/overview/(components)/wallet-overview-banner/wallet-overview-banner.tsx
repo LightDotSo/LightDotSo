@@ -14,20 +14,20 @@
 
 "use client";
 
+import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
 
 // -----------------------------------------------------------------------------
 // Props

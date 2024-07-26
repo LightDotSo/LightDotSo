@@ -101,7 +101,7 @@ export const NavTabs: FC<NavTabsProps> = ({
 
   // Set the anchor refs array length to the tabs length
   useEffect(() => {
-    setAnchorRefs(prev => prev.slice(0, tabs.length));
+    setAnchorRefs((prev) => prev.slice(0, tabs.length));
   }, [tabs.length]);
 
   // Animate the indicator on first render
@@ -125,7 +125,7 @@ export const NavTabs: FC<NavTabsProps> = ({
       ref={navRef}
       className="relative z-0 mb-1.5 mt-2 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-      onPointerLeave={e => setHoveredTabIndex(null)}
+      onPointerLeave={(e) => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {
         const isActive =
@@ -140,7 +140,7 @@ export const NavTabs: FC<NavTabsProps> = ({
           >
             <motion.a
               // @ts-ignore
-              ref={el => (anchorRefs[i] = el)}
+              ref={(el) => (anchorRefs[i] = el)}
               className={cn(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text hover:text-text",

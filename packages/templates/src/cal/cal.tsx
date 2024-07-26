@@ -16,7 +16,7 @@
 
 import { useTheme } from "next-themes";
 // import EmbedCal, { getCalApi } from "@calcom/embed-react";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -66,20 +66,20 @@ export const Cal: FC = () => {
 
   // Function to dynamically load the Cal.com script
   const loadCalScript = () => {
-    (function (C, A, L) {
+    ((C, A, L) => {
       // @ts-ignore
-      let p = function (a, ar) {
+      const p = (a, ar) => {
         a.q.push(ar);
       };
-      let d = C.document;
+      const d = C.document;
       // @ts-ignore
       C.Cal =
         // @ts-ignore
         C.Cal ||
-        function () {
+        (() => {
           // @ts-ignore
-          let cal = C.Cal;
-          let ar = arguments;
+          const cal = C.Cal;
+          const ar = arguments;
           if (!cal.loaded) {
             cal.ns = {};
             cal.q = cal.q || [];
@@ -87,7 +87,7 @@ export const Cal: FC = () => {
             cal.loaded = true;
           }
           if (ar[0] === L) {
-            const api = function () {
+            const api = () => {
               p(api, arguments);
             };
             const namespace = ar[1];
@@ -103,7 +103,7 @@ export const Cal: FC = () => {
             return;
           }
           p(cal, ar);
-        };
+        });
     })(window, "https://app.cal.com/embed/embed.js", "init");
   };
 

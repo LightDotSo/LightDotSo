@@ -48,10 +48,10 @@ export const useMutationNotificationRead = () => {
       );
 
       res.match(
-        _ => {
+        (_) => {
           toast.success("Successfully read notifications!");
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

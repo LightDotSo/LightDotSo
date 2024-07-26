@@ -39,7 +39,7 @@ type Story = StoryObj<typeof UserOperationTimeline>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <UserOperationTimeline {...args} />,
+  render: (args) => <UserOperationTimeline {...args} />,
   args: {
     userOperation: userOperationListData[0],
   },

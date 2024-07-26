@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAbiEncodedQueryState } from "@lightdotso/nuqs";
 import { abi } from "@lightdotso/schemas";
 import {
@@ -33,25 +34,24 @@ import {
   SelectValue,
   Textarea,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Abi, AbiFunction, AbiParameter } from "abitype";
 import {
-  Abi as zodAbi,
-  SolidityArray,
   SolidityAddress,
+  SolidityArray,
   SolidityBool,
   SolidityBytes,
   SolidityFunction,
   SolidityInt,
   SolidityString,
   SolidityTuple,
+  Abi as zodAbi,
 } from "abitype/zod";
 import {
-  useEffect,
   type FC,
   type InputHTMLAttributes,
-  useMemo,
   useCallback,
+  useEffect,
+  useMemo,
 } from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import {
@@ -60,8 +60,8 @@ import {
   hexToBytes,
   isAddress,
   isBytes,
-  toFunctionSelector,
   isHex,
+  toFunctionSelector,
 } from "viem";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
@@ -193,7 +193,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     // Filter the function names w/ state mutability `pure` or `view`
-    return abi.filter(func => {
+    return abi.filter((func) => {
       return (
         func.type === "function" &&
         func.stateMutability !== "pure" &&
@@ -214,7 +214,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
 
     // Get the abi input value from the matching `functionName`
     // @ts-expect-error
-    const matchingAbiFunctions: AbiFunction[] = abi.filter(func => {
+    const matchingAbiFunctions: AbiFunction[] = abi.filter((func) => {
       return func.type === "function" && func.name === functionNameWatch;
     });
 
@@ -240,7 +240,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     // Get the `AbiFunction` value from the `functionName`
     // @ts-expect-error
     const matchingAbiFunction: AbiFunction | undefined = abi.find(
-      func => func.type === "function" && func.name === functionNameWatch,
+      (func) => func.type === "function" && func.name === functionNameWatch,
     );
 
     if (matchingAbiFunction) {
@@ -267,7 +267,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
     // Map the `value` of the `abiArguments` to an array of values
     // @ts-expect-error
-    const abiArgumentsValues = abiArguments.map(arg => arg.value);
+    const abiArgumentsValues = abiArguments.map((arg) => arg.value);
 
     if (abiInputs && abiArgumentsValues) {
       return encodeAbiParameters(abiInputs, abiArgumentsValues);
@@ -490,7 +490,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
                 placeholder="Paste your ABI here"
                 className="resize-none"
                 {...field}
-                onChange={event => {
+                onChange={(event) => {
                   field.onChange(event.target.value);
                   const newValue = zodAbi.parse(JSON.parse(event.target.value));
                   if (newValue) {
@@ -535,7 +535,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
               id="address"
               placeholder="Contract Address"
               defaultValue={field.value}
-              onChange={e => {
+              onChange={(e) => {
                 field.onChange(e);
               }}
             />
@@ -555,10 +555,10 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
               <Label htmlFor="weight">Function</Label>
               <Select
                 disabled={executableFuncs.length < 1}
-                onValueChange={value => {
+                onValueChange={(value) => {
                   field.onChange(value);
                 }}
-                onOpenChange={value => {
+                onOpenChange={(value) => {
                   field.onChange(value);
                 }}
               >
@@ -599,7 +599,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
               <FormControl>
                 <Input
                   type="text"
-                  onChange={e => {
+                  onChange={(e) => {
                     validateSolidityParam(
                       // @ts-ignore
                       rootField.type,

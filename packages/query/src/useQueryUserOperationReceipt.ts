@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { getUserOperationReceipt } from "@lightdotso/client";
-import { queryKeys } from "@lightdotso/query-keys";
 import type { RpcUserOperationReceiptParams } from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { USER_OPERATION_RECEIPT_CONFIG } from "./config";

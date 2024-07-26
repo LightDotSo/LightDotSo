@@ -32,7 +32,7 @@ type SettingsStore = {
 export const useSettings = create(
   devtools(
     persist<SettingsStore>(
-      set => ({
+      (set) => ({
         isQueryDevToolsOpen: false,
         setIsQueryDevToolsOpen: (isQueryDevToolsOpen: boolean) =>
           set(() => ({ isQueryDevToolsOpen: isQueryDevToolsOpen })),

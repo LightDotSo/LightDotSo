@@ -55,8 +55,7 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   }
 
   return (
-    nftPortfolio &&
-    nftPortfolio.wallets &&
+    nftPortfolio?.wallets &&
     nftPortfolio.wallets.length > 0 && (
       <Number
         value={nftPortfolio.wallets[0].usd_value ?? 0.0}

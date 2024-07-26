@@ -14,6 +14,12 @@
 
 "use client";
 
+import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
+import {
+  StepsEnum,
+  steps,
+} from "@/app/(authenticated)/new/(components)/root/root";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import {
   ownerParser,
   useInviteCodeQueryState,
@@ -24,16 +30,10 @@ import {
   useTypeQueryState,
 } from "@lightdotso/nuqs";
 import { cn } from "@lightdotso/utils";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import type { FC } from "react";
-import {
-  steps,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root/root";
-import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -71,7 +71,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // Mapping
   // ---------------------------------------------------------------------------
 
-  const linkSteps = steps.map(step => {
+  const linkSteps = steps.map((step) => {
     // Update the status of the step based on the current step
     if (step.enum === currentStepType) {
       return { ...step, status: "current" };
@@ -106,7 +106,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
 
   // Get the step from the stepType
   const step =
-    linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
+    linkSteps.find((step) => step.href.includes(stepType)) ?? linkSteps[0];
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -136,8 +136,8 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     params: ReadonlyURLSearchParams,
     requiredParams: string[],
   ) => {
-    let totalWeight = 0;
-    let threshold = 0;
+    const totalWeight = 0;
+    const threshold = 0;
 
     // Iterate over each key-value pair
     // for (const [key, value] of params.entries()) {
@@ -166,13 +166,14 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     return true;
   };
 
-  let requiredParams = ["inviteCode", "name", "owners", "salt", "threshold"];
+  const requiredParams = ["inviteCode", "name", "owners", "salt", "threshold"];
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
+    // biome-ignore lint/a11y/useButtonType: <explanation>
     <button
       disabled={
         // If stepType is `new`, it's always enabled

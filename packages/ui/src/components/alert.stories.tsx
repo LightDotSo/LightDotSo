@@ -14,7 +14,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { AlertCircle, FileWarning, Trash2Icon } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "./alert";
+import { Alert, AlertDescription, AlertTitle } from "./alert";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -39,7 +39,7 @@ type Story = StoryObj<typeof Alert>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <AlertTitle>Title</AlertTitle>
       <AlertDescription>Description</AlertDescription>
@@ -48,7 +48,7 @@ export const Base: Story = {
   args: {},
 };
 export const Destructive: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <Trash2Icon className="size-4" />
       <AlertTitle>Destructive</AlertTitle>
@@ -60,7 +60,7 @@ export const Destructive: Story = {
   },
 };
 export const Error: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <AlertCircle className="size-4" />
       <AlertTitle>Error</AlertTitle>
@@ -72,7 +72,7 @@ export const Error: Story = {
   },
 };
 export const Warning: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <FileWarning className="size-4" />
       <AlertTitle>Warning</AlertTitle>
@@ -84,7 +84,7 @@ export const Warning: Story = {
   },
 };
 export const Info: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <AlertTitle>Info</AlertTitle>
       <AlertDescription>Info Alert Description</AlertDescription>
@@ -95,7 +95,7 @@ export const Info: Story = {
   },
 };
 export const Success: Story = {
-  render: args => (
+  render: (args) => (
     <Alert {...args}>
       <AlertTitle>Success</AlertTitle>
       <AlertDescription>Success Alert Description</AlertDescription>

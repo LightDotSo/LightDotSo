@@ -42,10 +42,10 @@ type TransactionsStore = {
 export const useTransactions = create(
   devtools(
     persist<TransactionsStore>(
-      set => ({
+      (set) => ({
         pendingTransactions: {},
-        addPendingTransaction: transaction =>
-          set(state => {
+        addPendingTransaction: (transaction) =>
+          set((state) => {
             // Checks if the transaction is already in the state to prevent duplicates.
             if (state.pendingTransactions[transaction.hash])
               throw new Error("This transaction hash is already present.");
@@ -56,8 +56,8 @@ export const useTransactions = create(
               },
             };
           }),
-        removePendingTransaction: hash =>
-          set(state => {
+        removePendingTransaction: (hash) =>
+          set((state) => {
             // Checks if the transaction is not in the state to prevent errors.
             if (!state.pendingTransactions[hash])
               throw new Error("This transaction hash is not present.");

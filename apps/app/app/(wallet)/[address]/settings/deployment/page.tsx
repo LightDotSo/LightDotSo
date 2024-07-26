@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card";
+import { handler } from "@/handlers/[address]/settings/deployment/handler";
+import { preloader } from "@/preloaders/[address]/preloader";
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address, Hex } from "viem";
-import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card";
-import { handler } from "@/handlers/[address]/settings/deployment/handler";
-import { preloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -77,7 +77,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        {wallet_chains.map(chain => (
+        {wallet_chains.map((chain) => (
           <SettingsDeploymentCard
             key={chain.id}
             chain={JSON.stringify(chain)}

@@ -19,12 +19,12 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Wallet } from "lucide-react";
 import {
   Timeline,
+  TimelineBody,
   TimelineContent,
   TimelineItem,
   TimelinePoint,
-  TimelineTitle,
-  TimelineBody,
   TimelineTime,
+  TimelineTitle,
 } from "./timeline";
 
 // -----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ type Story = StoryObj<typeof Timeline>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Timeline>
       <TimelineItem>
         <TimelinePoint>Hi</TimelinePoint>

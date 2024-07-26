@@ -14,10 +14,6 @@
 
 "use client";
 
-import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
-import { useIsDemoPathname } from "@lightdotso/hooks";
-import { type FC } from "react";
-import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
@@ -26,13 +22,17 @@ import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { TokensList } from "@/components/token/tokens-list";
 import { TransactionsList } from "@/components/transaction/transactions-list";
 import { OverviewSubCategory, TITLES } from "@/const";
+import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { useIsDemoPathname } from "@lightdotso/hooks";
+import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
 const initialItems = Object.keys(TITLES.Overview.subcategories).filter(
-  key => key !== OverviewSubCategory.All,
+  (key) => key !== OverviewSubCategory.All,
 );
 
 // -----------------------------------------------------------------------------
@@ -80,7 +80,6 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
         return <TokenPortfolio isNeutral address={address} size="balance" />;
       case OverviewSubCategory.NFTs:
         return <NftPortfolio isNeutral address={address} size="balance" />;
-      case OverviewSubCategory.History:
       default:
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -93,11 +92,11 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
 
   return (
     <div className="relative flex flex-col space-y-6">
-      {initialItems.map(item => (
+      {initialItems.map((item) => (
         <OverviewCard
           key={item}
           href={`/${!isDemo ? address : "demo"}${
-            OVERVIEW_NAV_ITEMS.find(nav => nav.category === item)?.href ?? ""
+            OVERVIEW_NAV_ITEMS.find((nav) => nav.category === item)?.href ?? ""
           }`}
           title={TITLES.Overview.subcategories[item]?.title}
           nav={itemToNav(item)}

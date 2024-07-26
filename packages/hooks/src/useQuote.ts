@@ -13,9 +13,15 @@
 // limitations under the License.
 
 import { useQueryLifiQuote } from "@lightdotso/query";
-import { ExecutionWithChainId } from "@lightdotso/types";
+import type { ExecutionWithChainId } from "@lightdotso/types";
 import { useMemo } from "react";
-import { encodeFunctionData, erc20Abi, fromHex, Hex, type Address } from "viem";
+import {
+  type Address,
+  type Hex,
+  encodeFunctionData,
+  erc20Abi,
+  fromHex,
+} from "viem";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -75,7 +81,7 @@ export const useQuote = ({
 
   const executionParams: ExecutionWithChainId[] = useMemo(() => {
     let executionIndex = 0;
-    let executions: ExecutionWithChainId[] = [];
+    const executions: ExecutionWithChainId[] = [];
 
     // If wallet is not available, return userOperations
     if (!fromTokenAddress || !fromChainId) {
@@ -112,7 +118,7 @@ export const useQuote = ({
       }
     }
 
-    if (lifiQuote && lifiQuote?.transactionRequest) {
+    if (lifiQuote?.transactionRequest) {
       // Get the approval address
       const approvalAddress =
         lifiQuote?.estimate?.approvalAddress ??

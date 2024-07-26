@@ -29,7 +29,7 @@ export const useMutationStateUserOperationCreate = () => {
       mutationKey: queryKeys.user_operation.create._def,
       exact: true,
     },
-    select: mutations => mutations.state.status,
+    select: (mutations) => mutations.state.status,
   });
 
   return userOperationCreateStatus;

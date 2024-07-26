@@ -24,7 +24,7 @@ import { zodJsonRpcFetch } from "../zod";
 
 const EthChainIdResponse = z
   .string()
-  .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {
+  .refine((value) => /^0x[0-9a-fA-F]+$/.test(value), {
     message: "ChainId must be a hexadecimal string",
   });
 
@@ -36,13 +36,13 @@ export const getChainId = async (chainId: number, clientType?: ClientType) => {
       [],
       EthChainIdResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };
 
 const HexStringSchema = z
   .string()
-  .refine(value => /^0x[0-9a-fA-F]*$/.test(value), {
+  .refine((value) => /^0x[0-9a-fA-F]*$/.test(value), {
     message: "Must be a hexadecimal string",
   });
 
@@ -75,7 +75,7 @@ export const getRequestGasEstimation = async (
       [],
       getGasEstimationResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };
 
@@ -85,7 +85,7 @@ export const getRequestGasEstimation = async (
 
 const getUserOperationReceiptResponse = z
   .any()
-  .refine(value => typeof value !== "undefined" && value !== null);
+  .refine((value) => typeof value !== "undefined" && value !== null);
 
 const getUserOperationReceiptRequest = z.array(HexStringSchema);
 
@@ -105,7 +105,7 @@ export const getUserOperationReceipt = async (
       params,
       getUserOperationReceiptResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };
 
@@ -147,7 +147,7 @@ export const sendUserOperation = async (
       params,
       sendUserOperationResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };
 
@@ -196,7 +196,7 @@ export const estimateUserOperationGas = async (
       params,
       estimateUserOperationGasResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };
 
@@ -243,6 +243,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
       params,
       paymasterGasAndPaymasterAndDataResponse,
     ),
-    e => e,
+    (e) => e,
   );
 };

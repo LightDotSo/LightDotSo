@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Tab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { BaseLayerWrapper } from "@lightdotso/ui";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavLocation } from "./nav-location";

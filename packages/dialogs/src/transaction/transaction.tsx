@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { TokenImage } from "@lightdotso/elements";
 import {
   useIsMounted,
@@ -32,33 +33,32 @@ import {
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import {
+  FooterButton,
+  Loading,
+  ModalSwiper,
+  useIsInsideModal,
+} from "@lightdotso/templates";
+import {
+  Button,
+  Checkbox,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  Label,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  Form,
-  FormItem,
-  FormField,
-  FormControl,
-  Checkbox,
-  FormLabel,
-  Label,
   toast,
-  Button,
 } from "@lightdotso/ui";
 import { cn, getChainWithChainId } from "@lightdotso/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState, type FC } from "react";
-import { useForm } from "react-hook-form";
 import { usePathname } from "next/navigation";
+import { type FC, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import type * as z from "zod";
-import {
-  FooterButton,
-  Loading,
-  useIsInsideModal,
-  ModalSwiper,
-} from "@lightdotso/templates";
 import { TransactionCalldata } from "./transaction-calldata";
 import { TransactionDetails } from "./transaction-details";
 import { TransactionFetcher } from "./transaction-fetcher";
@@ -328,16 +328,13 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                           // eslint-disable-next-line @typescript-eslint/no-unused-vars
                           render={({ field: _field }) => {
                             // Get the matching token
-                            const token =
-                              tokens &&
-                              tokens?.find(
-                                token =>
-                                  token.address ===
-                                    (form.getValues("gas.asset.address") ||
-                                      "") &&
-                                  token.chain_id ===
-                                    form.getValues("gas.chainId"),
-                              );
+                            const token = tokens?.find(
+                              (token) =>
+                                token.address ===
+                                  (form.getValues("gas.asset.address") || "") &&
+                                token.chain_id ===
+                                  form.getValues("gas.chainId"),
+                            );
 
                             return (
                               <FormControl>
@@ -365,7 +362,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             hideTokenModal();
                                             setCreateBackgroundModal(false);
                                           },
-                                          onTokenSelect: token => {
+                                          onTokenSelect: (token) => {
                                             form.setValue(
                                               "gas.chainId",
                                               token.chain_id,
@@ -512,7 +509,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                 <TabsContent
                   className={cn(isInsideModal && "h-72 overflow-y-auto")}
                   value="dev"
-                ></TabsContent>
+                />
               </Tabs>
             </>
           )}

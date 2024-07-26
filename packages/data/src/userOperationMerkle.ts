@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { UserOperationData } from "./userOperation";
-import { UserOperationMerkleProofData } from "./userOperationMerkleProof";
+import type { UserOperationData } from "./userOperation";
+import type { UserOperationMerkleProofData } from "./userOperationMerkleProof";
 
 // -----------------------------------------------------------------------------
 // Data

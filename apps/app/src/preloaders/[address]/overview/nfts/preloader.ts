@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { paginationParser } from "@lightdotso/nuqs";
-import { preloadGetNfts, preloadGetNftValuation } from "@lightdotso/services";
-import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/[address]/preloader";
+import { paginationParser } from "@lightdotso/nuqs";
+import { preloadGetNftValuation, preloadGetNfts } from "@lightdotso/services";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Preloader

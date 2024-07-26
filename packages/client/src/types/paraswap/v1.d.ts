@@ -4,587 +4,723 @@
  */
 
 export interface paths {
-    "/tokens": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description alias for /tokens/1 */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["TokensResponse"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/tokens": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/tokens/{network}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
-                    network: components["parameters"]["Network"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["TokensResponse"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** @description alias for /tokens/1 */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: components["responses"]["TokensResponse"];
+      };
     };
-    "/prices": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Request prices. */
-        get: {
-            parameters: {
-                query: {
-                    /**
-                     * @description Source Token Address or Token Symbol (for tokens from /tokens).
-                     * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-                     */
-                    srcToken: string;
-                    /**
-                     * @description Source Token Decimals; can be omitted if Symbol is provided for `srcToken`.
-                     * @example 18
-                     */
-                    srcDecimals?: components["schemas"]["TokenDecimals"];
-                    /**
-                     * @description Destination Token Address or Token Symbol (for tokens from /tokens).
-                     * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
-                     */
-                    destToken: string;
-                    /**
-                     * @description Destination Token Decimals; can be omitted if Symbol is provided for `destToken`.
-                     * @example 6
-                     */
-                    destDecimals?: components["schemas"]["TokenDecimals"];
-                    /**
-                     * @description Amount in the Denomination of Source Token
-                     * @example 1000000000000000000
-                     */
-                    amount: string;
-                    /** @description Side of the swap. */
-                    side: components["schemas"]["SwapSide"];
-                    /** @description ID of the blockchain network. */
-                    network?: components["schemas"]["Network"] & unknown;
-                    /** @description _If provided_, **others** object is filled in the response with price quotes from other exchanges (if available for comparison). */
-                    otherExchangePrices?: boolean;
-                    /** @description Comma Separated List of DEXs to include without spaces. */
-                    includeDEXS?: components["schemas"]["DEXs"][];
-                    /** @description Comma Separated List of DEXs to exclude without spaces. */
-                    excludeDEXS?: components["schemas"]["DEXs"][];
-                    /** @description Comma Separated List of Contract Methods to include without spaces. */
-                    includeContractMethods?: components["schemas"]["ContractMethod"][];
-                    /** @description Comma Separated List of Contract Methods to exclude without spaces. */
-                    excludeContractMethods?: components["schemas"]["ContractMethod"][];
-                    /** @description User Wallet Address. */
-                    userAddress?: string;
-                    /** @description Dash (-) separated list of tokens (addresses or symbols from /tokens) to comprise the price route. Max 4 tokens */
-                    route?: string;
-                    /** @description partner string */
-                    partner?: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["PricesSuccessResponse"];
-                400: components["responses"]["PricesErrorResponse"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/tokens/{network}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/transactions/{network}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
+          network: components["parameters"]["Network"];
         };
-        get?: never;
-        put?: never;
-        /** Build Transaction to be sent to the blockchain. */
-        post: {
-            parameters: {
-                query?: {
-                    /** @description The set gas-price for the transaction in wei. */
-                    gasPrice?: string;
-                    /** @description Allows the API to skip performing onchain checks such as balances, allowances, as well as transaction simulations.
-                     *     <b>Note:</b> The response does not contain <b><u>gas</u></b> parameter when <i>ignoreChecks</i> is set to `true`.
-                     *      */
-                    ignoreChecks?: boolean;
-                    /** @description Allows the API to skip gas checks <b>Note:</b> The response does not contain <b><u>gas</u></b> parameter when <i>ignoreGasEstimate</i> is set to `true`. */
-                    ignoreGasEstimate?: boolean;
-                    /** @description Allows the API to return the contract parameters only. */
-                    onlyParams?: boolean;
-                };
-                header?: never;
-                path: {
-                    /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
-                    network: components["parameters"]["Network"];
-                };
-                cookie?: never;
-            };
-            requestBody: components["requestBodies"]["TransactionsRequestBody"];
-            responses: {
-                200: components["responses"]["TransactionsBuildSuccessResponse"];
-                400: components["responses"]["TransactionsBuildErrorResponse"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: components["responses"]["TokensResponse"];
+      };
     };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/prices": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Request prices. */
+    get: {
+      parameters: {
+        query: {
+          /**
+           * @description Source Token Address or Token Symbol (for tokens from /tokens).
+           * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+           */
+          srcToken: string;
+          /**
+           * @description Source Token Decimals; can be omitted if Symbol is provided for `srcToken`.
+           * @example 18
+           */
+          srcDecimals?: components["schemas"]["TokenDecimals"];
+          /**
+           * @description Destination Token Address or Token Symbol (for tokens from /tokens).
+           * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+           */
+          destToken: string;
+          /**
+           * @description Destination Token Decimals; can be omitted if Symbol is provided for `destToken`.
+           * @example 6
+           */
+          destDecimals?: components["schemas"]["TokenDecimals"];
+          /**
+           * @description Amount in the Denomination of Source Token
+           * @example 1000000000000000000
+           */
+          amount: string;
+          /** @description Side of the swap. */
+          side: components["schemas"]["SwapSide"];
+          /** @description ID of the blockchain network. */
+          network?: components["schemas"]["Network"] & unknown;
+          /** @description _If provided_, **others** object is filled in the response with price quotes from other exchanges (if available for comparison). */
+          otherExchangePrices?: boolean;
+          /** @description Comma Separated List of DEXs to include without spaces. */
+          includeDEXS?: components["schemas"]["DEXs"][];
+          /** @description Comma Separated List of DEXs to exclude without spaces. */
+          excludeDEXS?: components["schemas"]["DEXs"][];
+          /** @description Comma Separated List of Contract Methods to include without spaces. */
+          includeContractMethods?: components["schemas"]["ContractMethod"][];
+          /** @description Comma Separated List of Contract Methods to exclude without spaces. */
+          excludeContractMethods?: components["schemas"]["ContractMethod"][];
+          /** @description User Wallet Address. */
+          userAddress?: string;
+          /** @description Dash (-) separated list of tokens (addresses or symbols from /tokens) to comprise the price route. Max 4 tokens */
+          route?: string;
+          /** @description partner string */
+          partner?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: components["responses"]["PricesSuccessResponse"];
+        400: components["responses"]["PricesErrorResponse"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/transactions/{network}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Build Transaction to be sent to the blockchain. */
+    post: {
+      parameters: {
+        query?: {
+          /** @description The set gas-price for the transaction in wei. */
+          gasPrice?: string;
+          /** @description Allows the API to skip performing onchain checks such as balances, allowances, as well as transaction simulations.
+           *     <b>Note:</b> The response does not contain <b><u>gas</u></b> parameter when <i>ignoreChecks</i> is set to `true`.
+           *      */
+          ignoreChecks?: boolean;
+          /** @description Allows the API to skip gas checks <b>Note:</b> The response does not contain <b><u>gas</u></b> parameter when <i>ignoreGasEstimate</i> is set to `true`. */
+          ignoreGasEstimate?: boolean;
+          /** @description Allows the API to return the contract parameters only. */
+          onlyParams?: boolean;
+        };
+        header?: never;
+        path: {
+          /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
+          network: components["parameters"]["Network"];
+        };
+        cookie?: never;
+      };
+      requestBody: components["requestBodies"]["TransactionsRequestBody"];
+      responses: {
+        200: components["responses"]["TransactionsBuildSuccessResponse"];
+        400: components["responses"]["TransactionsBuildErrorResponse"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @enum {string} */
-        SwapSide: "SELL" | "BUY";
-        /**
-         * @description Supported DEXs. The list may change
-         * @example SushiSwap
-         * @enum {string}
-         */
-        DEXs: "Uniswap" | "Kyber" | "Bancor" | "Oasis" | "Compound" | "Fulcrum" | "0x" | "MakerDAO" | "Chai" | "ParaSwapPool" | "Aave" | "Aave2" | "MultiPath" | "MegaPath" | "Curve" | "Curve3" | "Saddle" | "IronV2" | "BDai" | "idle" | "Weth" | "Beth" | "UniswapV2" | "Balancer" | "0xRFQt" | "ParaSwapPool2" | "ParaSwapPool3" | "ParaSwapPool4" | "ParaSwapPool5" | "ParaSwapPool6" | "SushiSwap" | "LINKSWAP" | "Synthetix" | "DefiSwap" | "Swerve" | "CoFiX" | "Shell" | "DODOV1" | "DODOV2" | "OnChainPricing" | "PancakeSwap" | "PancakeSwapV2" | "ApeSwap" | "Wbnb" | "acryptos" | "streetswap" | "bakeryswap" | "julswap" | "vswap" | "vpegswap" | "beltfi" | "ellipsis" | "QuickSwap" | "COMETH" | "Wmatic" | "Nerve" | "Dfyn" | "UniswapV3" | "Smoothy" | "PantherSwap" | "OMM1" | "OneInchLP" | "CurveV2" | "mStable" | "WaultFinance" | "MDEX" | "ShibaSwap" | "CoinSwap" | "SakeSwap" | "JetSwap" | "Biswap" | "BProtocol";
-        /** @enum {string} */
-        ContractMethod: "swapOnUniswap" | "buyOnUniswap" | "swapOnUniswapFork" | "buyOnUniswapFork" | "swapOnUniswapV2Fork" | "buyOnUniswapV2Fork" | "simpleBuy" | "simpleSwap" | "multiSwap" | "megaSwap" | "protectedMultiSwap" | "protectedMegaSwap" | "protectedSimpleSwap" | "protectedSimpleBuy" | "swapOnZeroXv2" | "swapOnZeroXv4" | "buy";
-        /** @enum {number} */
-        Network: 1 | 3 | 56 | 137;
-        Token: {
-            symbol: string;
-            address: string;
-            name?: string;
-            decimals: components["schemas"]["TokenDecimals"];
-            img: string;
-            network: components["schemas"]["Network"];
-            /** @default false */
-            newToken: boolean;
-            connectors: string[];
-            /** @enum {string} */
-            tokenType: "ETH" | "ERC20" | "SYNTH" | "cToken" | "iToken" | "aToken" | "aToken2" | "idleToken" | "Chai" | "bDAI";
-        };
-        TokenDecimals: number;
-        TokensList: {
-            tokens?: components["schemas"]["Token"][];
-        };
-        /** @description Response Body returned from `/prices` endpoint. */
-        PriceRoute: {
-            /** @example 13015909 */
-            blockNumber: number;
-            network: components["schemas"]["Network"];
-            /**
-             * @description Source Token Address
-             * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-             */
-            srcToken: string;
-            srcDecimals: components["schemas"]["TokenDecimals"];
-            /** @example 1000000000000000000 */
-            srcAmount: string;
-            /**
-             * @description Destination Token Address
-             * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
-             */
-            destToken: string;
-            destDecimals: components["schemas"]["TokenDecimals"];
-            /** @example 1000000000000000000 */
-            destAmount: string;
-            bestRoute: components["schemas"]["OptimalRoute"];
-            others?: unknown & components["schemas"]["OptionalRate"];
-            /** @example 11.947163 */
-            gasCostUSD: string;
-            /** @example 111435 */
-            gasCost: string;
-            side: components["schemas"]["SwapSide"];
-            /** @example 0x3e7d31751347BAacf35945074a4a4A41581B2271 */
-            tokenTransferProxy: string;
-            /** @example 0x485D2446711E141D2C8a94bC24BeaA5d5A110D74 */
-            contractAddress: string;
-            /** @example swapOnUniswap */
-            contractMethod: string;
-            /** @example 3230.3000000000 */
-            srcUSD: string;
-            /** @example 3218.9300566052 */
-            destUSD: string;
-            /** @example paraswap.io */
-            partner: string;
-            /** @example 0 */
-            partnerFee: number;
-            /** @example false */
-            maxImpactReached: boolean;
-            /** @example 319c5cf83098a07aeebb11bed6310db51311201f */
-            hmac: string;
-        };
-        /** @enum {string} */
-        PriceErrorMessage: "Invalid tokens" | "Invalid route, from token should be the first token of the route" | "Invalid route, to token should be the last token of the route" | "Token not found" | "Price Timeout" | "computePrice Error" | "Bad USD price" | "ERROR_GETTING_PRICES" | "An error has occurred, please try again later or contact our support";
-        /** @example {
-         *       "error": "computePrice Error"
-         *     } */
-        PriceError: {
-            error: components["schemas"]["PriceErrorMessage"];
-        };
-        PriceRouteWithError: {
-            /** @enum {string} */
-            error: "ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT";
-            /**
-             * @description price impact %
-             * @example 99%
-             */
-            value: string;
-            priceRoute: components["schemas"]["PriceRoute"];
-        };
-        OptimalSwap: {
-            /** @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE */
-            srcToken: string;
-            srcDecimals: components["schemas"]["TokenDecimals"];
-            /** @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 */
-            destToken: string;
-            destDecimals: components["schemas"]["TokenDecimals"];
-            swapExchanges: components["schemas"]["OptimalSwapExchange"][];
-        };
-        OptimalRoute: {
-            /** @example 100 */
-            percent: number;
-            swaps: components["schemas"]["OptimalSwap"][];
-        };
-        OptimalSwapExchange: {
-            /** @example UniswapV2 */
-            exchange: string;
-            /** @example 1000000000000000000 */
-            srcAmount: string;
-            /** @example 1000000000000000000 */
-            destAmount: string;
-            /** @example 100 */
-            percent: number;
-            /** @example {
-             *       "router": "0x0000000000000000000000000000000000000000",
-             *       "path": [
-             *         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-             *         "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-             *       ],
-             *       "factory": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-             *       "initCode": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
-             *       "feeFactor": 10000,
-             *       "pools": [
-             *         {
-             *           "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
-             *           "fee": 30,
-             *           "direction": false
-             *         }
-             *       ],
-             *       "gasUSD": "13.227195"
-             *     } */
-            data?: Record<string, never>;
-        };
-        OptionalRate: {
-            /** @example UniswapV2 */
-            exchange: string;
-            /** @example 1000000000000000000 */
-            srcAmount: string;
-            /** @example 3255989380 */
-            destAmount: string;
-            /** @example 3255989380 */
-            unit?: string;
-            /** @example {
-             *       "router": "0x0000000000000000000000000000000000000000",
-             *       "path": [
-             *         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-             *         "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-             *       ],
-             *       "factory": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-             *       "initCode": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
-             *       "feeFactor": 10000,
-             *       "pools": [
-             *         {
-             *           "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
-             *           "fee": 30,
-             *           "direction": false
-             *         }
-             *       ],
-             *       "gasUSD": "13.227195"
-             *     } */
-            data?: Record<string, never>;
-        };
-        /** @example {
-         *       "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-         *       "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-         *       "srcAmount": "10000000000000000",
-         *       "destAmount": "29504841",
-         *       "priceRoute": {
-         *         "blockNumber": 13056637,
-         *         "network": 1,
-         *         "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-         *         "srcDecimals": 18,
-         *         "srcAmount": "10000000000000000",
-         *         "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-         *         "destDecimals": 6,
-         *         "destAmount": "30708775",
-         *         "bestRoute": [
-         *           {
-         *             "percent": 100,
-         *             "swaps": [
-         *               {
-         *                 "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-         *                 "srcDecimals": 18,
-         *                 "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-         *                 "destDecimals": 6,
-         *                 "swapExchanges": [
-         *                   {
-         *                     "exchange": "SakeSwap",
-         *                     "srcAmount": "10000000000000000",
-         *                     "destAmount": "30708775",
-         *                     "percent": 100,
-         *                     "data": {
-         *                       "router": "0xF9234CB08edb93c0d4a4d4c70cC3FfD070e78e07",
-         *                       "path": [
-         *                         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-         *                         "0xdac17f958d2ee523a2206206994597c13d831ec7"
-         *                       ],
-         *                       "factory": "0x75e48C954594d64ef9613AeEF97Ad85370F13807",
-         *                       "initCode": "0xb2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308",
-         *                       "feeFactor": 10000,
-         *                       "pools": [
-         *                         {
-         *                           "address": "0xE2E5Aca8E483a4C057892EE1f03BEBc9BfA1F9C2",
-         *                           "fee": 30,
-         *                           "direction": true
-         *                         }
-         *                       ],
-         *                       "gasUSD": "16.005884"
-         *                     }
-         *                   }
-         *                 ]
-         *               }
-         *             ]
-         *           }
-         *         ],
-         *         "gasCostUSD": "17.836157",
-         *         "gasCost": "111435",
-         *         "side": "SELL",
-         *         "tokenTransferProxy": "0x216b4b4ba9f3e719726886d34a177484278bfcae",
-         *         "contractAddress": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
-         *         "contractMethod": "swapOnUniswapFork",
-         *         "partnerFee": 0,
-         *         "srcUSD": "30.7085000000",
-         *         "destUSD": "30.7087750000",
-         *         "partner": "paraswap.io",
-         *         "maxImpactReached": false,
-         *         "hmac": "1ea308b9bcd027b4c89cebc260b550e812873191"
-         *       },
-         *       "userAddress": "0xbe0eb53f46cd790cd13851d5eff43d12404d33e8",
-         *       "partner": "paraswap.io",
-         *       "srcDecimals": 18,
-         *       "destDecimals": 6
-         *     } */
-        TransactionsRequestPayload: {
-            /**
-             * @description Source Token Address. Only Token Symbol could be speciﬁed for tokens from `/tokens`.
-             * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-             */
-            srcToken: string;
-            /**
-             * @description Source Token Decimals; can be omitted if Symbol is provided for `srcToken`.
-             * @example 18
-             */
-            srcDecimals?: number;
-            /**
-             * @description Destination Token Address. Only Token Symbol could be speciﬁed for tokens from `/tokens`.
-             * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
-             */
-            destToken: string;
-            /**
-             * @description Destination Token Decimals; can be omitted if Symbol is provided for `destToken`.
-             * @example 6
-             */
-            destDecimals?: number;
-            /**
-             * @description Amount in the Denomination of `srcToken` as returned from the `/prices` end-point. Required if `side=SELL`. Could only be ommitted if slippage & destAmount is provided when `side=BUY`
-             * @example 1000000000000000000
-             */
-            srcAmount?: number;
-            /**
-             * @description Amount in the Denomination of `destToken`  as returned from the `/prices` end-point.Required if `side=SELL`. Could only be ommitted if slippage & srcAmount is provided when `side=SELL`
-             * @example 1000000000000000000
-             */
-            destAmount?: number;
-            /** @description Slippage percentage (represented in basis points). Eg: for 2.5% slippage, set the value to 0.025 * 10000 = 250; for 10% = 1000. <b>slippage</b> could be passed instead of `destAmount` when `side=SELL` or `srcAmount` when `side=BUY` */
-            slippage?: number;
-            /**
-             * @description Address of the Signer
-             * @example 0xF7B2F3cD946052f8b397F801299b80F053515AF9
-             */
-            userAddress: string;
-            /** @description Whenever msg.sender (userAddress) is different than the address calling the paraswap contract, `txOrigin` must be passed along with `userAddress`. */
-            txOrigin?: string;
-            /** @description Address of the Receiver. */
-            receiver?: string;
-            /** @description Partner Address. If provided takes precedence over `partner` */
-            partnerAddress?: string;
-            /** @description Used together with `partner` if provided. Should be parsed in Basis Points. Look at `slippage` parameter description to understand better. */
-            partnerFeePercent?: number;
-            /**
-             * @description Partner string. If `partnerAddress` not provided, partnerFeePercent is matched against known partners
-             * @example metamask
-             */
-            partner?: string;
-            /** @description Permit-hash (hex-string) to omit approving the user before swap. Helps in saving gas. */
-            permit?: string;
-            /** @description Timestamp (10 digit/seconds precision) till when the given transaction is valid. Eg: 1629214486. For a 5 minute, `deadline` could be calculated as `Date.now()/1000 + 300.` */
-            deadline?: number;
-            priceRoute: components["schemas"]["PriceRoute"];
-        };
-        TransactionsBuildResponse: {
-            /** @example 0xbe0eb53f46cd790cd13851d5eff43d12404d33e8 */
-            from?: string;
-            /** @example 0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57 */
-            to?: string;
-            /** @example 10000000000000000 */
-            value?: string;
-            /** @example 0xf566103400000000000000000000000075e48c954594d64ef9613aeef97ad85370f13807b2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000000000000001c2354900000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7 */
-            data?: string;
-            /** @example 42452400000 */
-            gasPrice?: string;
-            chainId?: components["schemas"]["Network"];
-            /**
-             * @description `gas` is included only if neither of `ignoreChecks` and `ignoreGasEstimate` are true
-             * @example 197142
-             */
-            gas?: string;
-        };
-        /** @enum {string} */
-        TransactionsErrorMessage: "Unable to check price impact" | "It seems like the rate has changed, please re-query the latest Price" | "The rate has changed, please re-query the latest Price" | "It seems like your wallet doesn't contain enough ETH to cover the gas fees." | "It seems like your wallet doesn't contain enough BNB to cover the gas fees." | "It seems like your wallet doesn't contain enough MATIC to cover the gas fees." | "Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> balance" | "Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> allowance given to TokenTransferProxy(<CONTRACT_ADDRESS>)" | "Network Mismatch" | "Missing srcAmount" | "Missing destAmount" | "Cannot specify both slippage and srcAmount" | "Cannot specify both slippage and destAmount" | "Missing slippage or srcAmount" | "Missing slippage or destAmount" | "Source Amount Mismatch" | "Destination Amount Mismatch" | "Source Token Mismatch" | "Destination Token Mismatch" | "Error Parsing params" | "priceRoute must be unmodified as sent by the price endpoint" | "Unable to process the transaction" | "ERROR_BUILDING_TRANSACTION" | "An error has occurred, please try again later or contact our support";
-        /** @example {
-         *       "error": "Unable to process the transaction"
-         *     } */
-        TransactionsError: {
-            error: components["schemas"]["TransactionsErrorMessage"];
-        };
-        /**
-         * @description returned when `/tarnsactions` is called with `onlyParams=true`
-         * @example [
-         *       "0x115934131916C8b277DD010Ee02de363c09d037c",
-         *       "0x65d1a3b1e46c6e4f1be1ad5f99ef14dc488ae0549dc97db9b30afe2241ce1c7a",
-         *       "10000000000000000",
-         *       "29504841",
-         *       [
-         *         "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-         *         "0xdac17f958d2ee523a2206206994597c13d831ec7"
-         *       ]
-         *     ]
-         */
-        RouterParameters: (string | string[])[];
+  schemas: {
+    /** @enum {string} */
+    SwapSide: "SELL" | "BUY";
+    /**
+     * @description Supported DEXs. The list may change
+     * @example SushiSwap
+     * @enum {string}
+     */
+    DEXs:
+      | "Uniswap"
+      | "Kyber"
+      | "Bancor"
+      | "Oasis"
+      | "Compound"
+      | "Fulcrum"
+      | "0x"
+      | "MakerDAO"
+      | "Chai"
+      | "ParaSwapPool"
+      | "Aave"
+      | "Aave2"
+      | "MultiPath"
+      | "MegaPath"
+      | "Curve"
+      | "Curve3"
+      | "Saddle"
+      | "IronV2"
+      | "BDai"
+      | "idle"
+      | "Weth"
+      | "Beth"
+      | "UniswapV2"
+      | "Balancer"
+      | "0xRFQt"
+      | "ParaSwapPool2"
+      | "ParaSwapPool3"
+      | "ParaSwapPool4"
+      | "ParaSwapPool5"
+      | "ParaSwapPool6"
+      | "SushiSwap"
+      | "LINKSWAP"
+      | "Synthetix"
+      | "DefiSwap"
+      | "Swerve"
+      | "CoFiX"
+      | "Shell"
+      | "DODOV1"
+      | "DODOV2"
+      | "OnChainPricing"
+      | "PancakeSwap"
+      | "PancakeSwapV2"
+      | "ApeSwap"
+      | "Wbnb"
+      | "acryptos"
+      | "streetswap"
+      | "bakeryswap"
+      | "julswap"
+      | "vswap"
+      | "vpegswap"
+      | "beltfi"
+      | "ellipsis"
+      | "QuickSwap"
+      | "COMETH"
+      | "Wmatic"
+      | "Nerve"
+      | "Dfyn"
+      | "UniswapV3"
+      | "Smoothy"
+      | "PantherSwap"
+      | "OMM1"
+      | "OneInchLP"
+      | "CurveV2"
+      | "mStable"
+      | "WaultFinance"
+      | "MDEX"
+      | "ShibaSwap"
+      | "CoinSwap"
+      | "SakeSwap"
+      | "JetSwap"
+      | "Biswap"
+      | "BProtocol";
+    /** @enum {string} */
+    ContractMethod:
+      | "swapOnUniswap"
+      | "buyOnUniswap"
+      | "swapOnUniswapFork"
+      | "buyOnUniswapFork"
+      | "swapOnUniswapV2Fork"
+      | "buyOnUniswapV2Fork"
+      | "simpleBuy"
+      | "simpleSwap"
+      | "multiSwap"
+      | "megaSwap"
+      | "protectedMultiSwap"
+      | "protectedMegaSwap"
+      | "protectedSimpleSwap"
+      | "protectedSimpleBuy"
+      | "swapOnZeroXv2"
+      | "swapOnZeroXv4"
+      | "buy";
+    /** @enum {number} */
+    Network: 1 | 3 | 56 | 137;
+    Token: {
+      symbol: string;
+      address: string;
+      name?: string;
+      decimals: components["schemas"]["TokenDecimals"];
+      img: string;
+      network: components["schemas"]["Network"];
+      /** @default false */
+      newToken: boolean;
+      connectors: string[];
+      /** @enum {string} */
+      tokenType:
+        | "ETH"
+        | "ERC20"
+        | "SYNTH"
+        | "cToken"
+        | "iToken"
+        | "aToken"
+        | "aToken2"
+        | "idleToken"
+        | "Chai"
+        | "bDAI";
     };
-    responses: {
-        /** @description List of available tokens */
-        TokensResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["TokensList"];
-            };
-        };
-        /** @description Successful prices response */
-        PricesSuccessResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    priceRoute?: components["schemas"]["PriceRoute"];
-                };
-            };
-        };
-        /** @description Price Error */
-        PricesErrorResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["PriceError"] | components["schemas"]["PriceRouteWithError"];
-            };
-        };
-        /** @description Ethereum transaction request object.<br/>
-         *     `gas` is included only if neither of `ignoreChecks` and `ignoreGasEstimate` are true<br/>
-         *     When `onlyParams=true` `schemas/RouterParametersExample` is returned
-         *      */
-        TransactionsBuildSuccessResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["TransactionsBuildResponse"] | components["schemas"]["RouterParameters"];
-            };
-        };
-        /** @description Transaction Building Error */
-        TransactionsBuildErrorResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["TransactionsError"];
-            };
-        };
+    TokenDecimals: number;
+    TokensList: {
+      tokens?: components["schemas"]["Token"][];
     };
-    parameters: {
-        /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
-        Network: components["schemas"]["Network"] & unknown;
+    /** @description Response Body returned from `/prices` endpoint. */
+    PriceRoute: {
+      /** @example 13015909 */
+      blockNumber: number;
+      network: components["schemas"]["Network"];
+      /**
+       * @description Source Token Address
+       * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+       */
+      srcToken: string;
+      srcDecimals: components["schemas"]["TokenDecimals"];
+      /** @example 1000000000000000000 */
+      srcAmount: string;
+      /**
+       * @description Destination Token Address
+       * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+       */
+      destToken: string;
+      destDecimals: components["schemas"]["TokenDecimals"];
+      /** @example 1000000000000000000 */
+      destAmount: string;
+      bestRoute: components["schemas"]["OptimalRoute"];
+      others?: unknown & components["schemas"]["OptionalRate"];
+      /** @example 11.947163 */
+      gasCostUSD: string;
+      /** @example 111435 */
+      gasCost: string;
+      side: components["schemas"]["SwapSide"];
+      /** @example 0x3e7d31751347BAacf35945074a4a4A41581B2271 */
+      tokenTransferProxy: string;
+      /** @example 0x485D2446711E141D2C8a94bC24BeaA5d5A110D74 */
+      contractAddress: string;
+      /** @example swapOnUniswap */
+      contractMethod: string;
+      /** @example 3230.3000000000 */
+      srcUSD: string;
+      /** @example 3218.9300566052 */
+      destUSD: string;
+      /** @example paraswap.io */
+      partner: string;
+      /** @example 0 */
+      partnerFee: number;
+      /** @example false */
+      maxImpactReached: boolean;
+      /** @example 319c5cf83098a07aeebb11bed6310db51311201f */
+      hmac: string;
     };
-    requestBodies: {
-        /** @description Checkout `schemas/TransactionsRequestPayload` to infer what parameters are required to be parsed in the responseBody. (<b>Note</b>: The priceRoute object should be directly parsed without any change.) */
-        TransactionsRequestBody: {
-            content: {
-                "application/json": components["schemas"]["TransactionsRequestPayload"];
-            };
+    /** @enum {string} */
+    PriceErrorMessage:
+      | "Invalid tokens"
+      | "Invalid route, from token should be the first token of the route"
+      | "Invalid route, to token should be the last token of the route"
+      | "Token not found"
+      | "Price Timeout"
+      | "computePrice Error"
+      | "Bad USD price"
+      | "ERROR_GETTING_PRICES"
+      | "An error has occurred, please try again later or contact our support";
+    /** @example {
+     *       "error": "computePrice Error"
+     *     } */
+    PriceError: {
+      error: components["schemas"]["PriceErrorMessage"];
+    };
+    PriceRouteWithError: {
+      /** @enum {string} */
+      error: "ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT";
+      /**
+       * @description price impact %
+       * @example 99%
+       */
+      value: string;
+      priceRoute: components["schemas"]["PriceRoute"];
+    };
+    OptimalSwap: {
+      /** @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE */
+      srcToken: string;
+      srcDecimals: components["schemas"]["TokenDecimals"];
+      /** @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 */
+      destToken: string;
+      destDecimals: components["schemas"]["TokenDecimals"];
+      swapExchanges: components["schemas"]["OptimalSwapExchange"][];
+    };
+    OptimalRoute: {
+      /** @example 100 */
+      percent: number;
+      swaps: components["schemas"]["OptimalSwap"][];
+    };
+    OptimalSwapExchange: {
+      /** @example UniswapV2 */
+      exchange: string;
+      /** @example 1000000000000000000 */
+      srcAmount: string;
+      /** @example 1000000000000000000 */
+      destAmount: string;
+      /** @example 100 */
+      percent: number;
+      /** @example {
+       *       "router": "0x0000000000000000000000000000000000000000",
+       *       "path": [
+       *         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+       *         "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+       *       ],
+       *       "factory": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+       *       "initCode": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
+       *       "feeFactor": 10000,
+       *       "pools": [
+       *         {
+       *           "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+       *           "fee": 30,
+       *           "direction": false
+       *         }
+       *       ],
+       *       "gasUSD": "13.227195"
+       *     } */
+      data?: Record<string, never>;
+    };
+    OptionalRate: {
+      /** @example UniswapV2 */
+      exchange: string;
+      /** @example 1000000000000000000 */
+      srcAmount: string;
+      /** @example 3255989380 */
+      destAmount: string;
+      /** @example 3255989380 */
+      unit?: string;
+      /** @example {
+       *       "router": "0x0000000000000000000000000000000000000000",
+       *       "path": [
+       *         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+       *         "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+       *       ],
+       *       "factory": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+       *       "initCode": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
+       *       "feeFactor": 10000,
+       *       "pools": [
+       *         {
+       *           "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+       *           "fee": 30,
+       *           "direction": false
+       *         }
+       *       ],
+       *       "gasUSD": "13.227195"
+       *     } */
+      data?: Record<string, never>;
+    };
+    /** @example {
+     *       "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+     *       "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+     *       "srcAmount": "10000000000000000",
+     *       "destAmount": "29504841",
+     *       "priceRoute": {
+     *         "blockNumber": 13056637,
+     *         "network": 1,
+     *         "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+     *         "srcDecimals": 18,
+     *         "srcAmount": "10000000000000000",
+     *         "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+     *         "destDecimals": 6,
+     *         "destAmount": "30708775",
+     *         "bestRoute": [
+     *           {
+     *             "percent": 100,
+     *             "swaps": [
+     *               {
+     *                 "srcToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+     *                 "srcDecimals": 18,
+     *                 "destToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+     *                 "destDecimals": 6,
+     *                 "swapExchanges": [
+     *                   {
+     *                     "exchange": "SakeSwap",
+     *                     "srcAmount": "10000000000000000",
+     *                     "destAmount": "30708775",
+     *                     "percent": 100,
+     *                     "data": {
+     *                       "router": "0xF9234CB08edb93c0d4a4d4c70cC3FfD070e78e07",
+     *                       "path": [
+     *                         "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     *                         "0xdac17f958d2ee523a2206206994597c13d831ec7"
+     *                       ],
+     *                       "factory": "0x75e48C954594d64ef9613AeEF97Ad85370F13807",
+     *                       "initCode": "0xb2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308",
+     *                       "feeFactor": 10000,
+     *                       "pools": [
+     *                         {
+     *                           "address": "0xE2E5Aca8E483a4C057892EE1f03BEBc9BfA1F9C2",
+     *                           "fee": 30,
+     *                           "direction": true
+     *                         }
+     *                       ],
+     *                       "gasUSD": "16.005884"
+     *                     }
+     *                   }
+     *                 ]
+     *               }
+     *             ]
+     *           }
+     *         ],
+     *         "gasCostUSD": "17.836157",
+     *         "gasCost": "111435",
+     *         "side": "SELL",
+     *         "tokenTransferProxy": "0x216b4b4ba9f3e719726886d34a177484278bfcae",
+     *         "contractAddress": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+     *         "contractMethod": "swapOnUniswapFork",
+     *         "partnerFee": 0,
+     *         "srcUSD": "30.7085000000",
+     *         "destUSD": "30.7087750000",
+     *         "partner": "paraswap.io",
+     *         "maxImpactReached": false,
+     *         "hmac": "1ea308b9bcd027b4c89cebc260b550e812873191"
+     *       },
+     *       "userAddress": "0xbe0eb53f46cd790cd13851d5eff43d12404d33e8",
+     *       "partner": "paraswap.io",
+     *       "srcDecimals": 18,
+     *       "destDecimals": 6
+     *     } */
+    TransactionsRequestPayload: {
+      /**
+       * @description Source Token Address. Only Token Symbol could be speciﬁed for tokens from `/tokens`.
+       * @example 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+       */
+      srcToken: string;
+      /**
+       * @description Source Token Decimals; can be omitted if Symbol is provided for `srcToken`.
+       * @example 18
+       */
+      srcDecimals?: number;
+      /**
+       * @description Destination Token Address. Only Token Symbol could be speciﬁed for tokens from `/tokens`.
+       * @example 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+       */
+      destToken: string;
+      /**
+       * @description Destination Token Decimals; can be omitted if Symbol is provided for `destToken`.
+       * @example 6
+       */
+      destDecimals?: number;
+      /**
+       * @description Amount in the Denomination of `srcToken` as returned from the `/prices` end-point. Required if `side=SELL`. Could only be ommitted if slippage & destAmount is provided when `side=BUY`
+       * @example 1000000000000000000
+       */
+      srcAmount?: number;
+      /**
+       * @description Amount in the Denomination of `destToken`  as returned from the `/prices` end-point.Required if `side=SELL`. Could only be ommitted if slippage & srcAmount is provided when `side=SELL`
+       * @example 1000000000000000000
+       */
+      destAmount?: number;
+      /** @description Slippage percentage (represented in basis points). Eg: for 2.5% slippage, set the value to 0.025 * 10000 = 250; for 10% = 1000. <b>slippage</b> could be passed instead of `destAmount` when `side=SELL` or `srcAmount` when `side=BUY` */
+      slippage?: number;
+      /**
+       * @description Address of the Signer
+       * @example 0xF7B2F3cD946052f8b397F801299b80F053515AF9
+       */
+      userAddress: string;
+      /** @description Whenever msg.sender (userAddress) is different than the address calling the paraswap contract, `txOrigin` must be passed along with `userAddress`. */
+      txOrigin?: string;
+      /** @description Address of the Receiver. */
+      receiver?: string;
+      /** @description Partner Address. If provided takes precedence over `partner` */
+      partnerAddress?: string;
+      /** @description Used together with `partner` if provided. Should be parsed in Basis Points. Look at `slippage` parameter description to understand better. */
+      partnerFeePercent?: number;
+      /**
+       * @description Partner string. If `partnerAddress` not provided, partnerFeePercent is matched against known partners
+       * @example metamask
+       */
+      partner?: string;
+      /** @description Permit-hash (hex-string) to omit approving the user before swap. Helps in saving gas. */
+      permit?: string;
+      /** @description Timestamp (10 digit/seconds precision) till when the given transaction is valid. Eg: 1629214486. For a 5 minute, `deadline` could be calculated as `Date.now()/1000 + 300.` */
+      deadline?: number;
+      priceRoute: components["schemas"]["PriceRoute"];
+    };
+    TransactionsBuildResponse: {
+      /** @example 0xbe0eb53f46cd790cd13851d5eff43d12404d33e8 */
+      from?: string;
+      /** @example 0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57 */
+      to?: string;
+      /** @example 10000000000000000 */
+      value?: string;
+      /** @example 0xf566103400000000000000000000000075e48c954594d64ef9613aeef97ad85370f13807b2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000000000000001c2354900000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7 */
+      data?: string;
+      /** @example 42452400000 */
+      gasPrice?: string;
+      chainId?: components["schemas"]["Network"];
+      /**
+       * @description `gas` is included only if neither of `ignoreChecks` and `ignoreGasEstimate` are true
+       * @example 197142
+       */
+      gas?: string;
+    };
+    /** @enum {string} */
+    TransactionsErrorMessage:
+      | "Unable to check price impact"
+      | "It seems like the rate has changed, please re-query the latest Price"
+      | "The rate has changed, please re-query the latest Price"
+      | "It seems like your wallet doesn't contain enough ETH to cover the gas fees."
+      | "It seems like your wallet doesn't contain enough BNB to cover the gas fees."
+      | "It seems like your wallet doesn't contain enough MATIC to cover the gas fees."
+      | "Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> balance"
+      | "Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> allowance given to TokenTransferProxy(<CONTRACT_ADDRESS>)"
+      | "Network Mismatch"
+      | "Missing srcAmount"
+      | "Missing destAmount"
+      | "Cannot specify both slippage and srcAmount"
+      | "Cannot specify both slippage and destAmount"
+      | "Missing slippage or srcAmount"
+      | "Missing slippage or destAmount"
+      | "Source Amount Mismatch"
+      | "Destination Amount Mismatch"
+      | "Source Token Mismatch"
+      | "Destination Token Mismatch"
+      | "Error Parsing params"
+      | "priceRoute must be unmodified as sent by the price endpoint"
+      | "Unable to process the transaction"
+      | "ERROR_BUILDING_TRANSACTION"
+      | "An error has occurred, please try again later or contact our support";
+    /** @example {
+     *       "error": "Unable to process the transaction"
+     *     } */
+    TransactionsError: {
+      error: components["schemas"]["TransactionsErrorMessage"];
+    };
+    /**
+     * @description returned when `/tarnsactions` is called with `onlyParams=true`
+     * @example [
+     *       "0x115934131916C8b277DD010Ee02de363c09d037c",
+     *       "0x65d1a3b1e46c6e4f1be1ad5f99ef14dc488ae0549dc97db9b30afe2241ce1c7a",
+     *       "10000000000000000",
+     *       "29504841",
+     *       [
+     *         "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+     *         "0xdac17f958d2ee523a2206206994597c13d831ec7"
+     *       ]
+     *     ]
+     */
+    RouterParameters: (string | string[])[];
+  };
+  responses: {
+    /** @description List of available tokens */
+    TokensResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["TokensList"];
+      };
+    };
+    /** @description Successful prices response */
+    PricesSuccessResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": {
+          priceRoute?: components["schemas"]["PriceRoute"];
         };
+      };
     };
-    headers: never;
-    pathItems: never;
+    /** @description Price Error */
+    PricesErrorResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json":
+          | components["schemas"]["PriceError"]
+          | components["schemas"]["PriceRouteWithError"];
+      };
+    };
+    /** @description Ethereum transaction request object.<br/>
+     *     `gas` is included only if neither of `ignoreChecks` and `ignoreGasEstimate` are true<br/>
+     *     When `onlyParams=true` `schemas/RouterParametersExample` is returned
+     *      */
+    TransactionsBuildSuccessResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json":
+          | components["schemas"]["TransactionsBuildResponse"]
+          | components["schemas"]["RouterParameters"];
+      };
+    };
+    /** @description Transaction Building Error */
+    TransactionsBuildErrorResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["TransactionsError"];
+      };
+    };
+  };
+  parameters: {
+    /** @description ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137). */
+    Network: components["schemas"]["Network"] & unknown;
+  };
+  requestBodies: {
+    /** @description Checkout `schemas/TransactionsRequestPayload` to infer what parameters are required to be parsed in the responseBody. (<b>Note</b>: The priceRoute object should be directly parsed without any change.) */
+    TransactionsRequestBody: {
+      content: {
+        "application/json": components["schemas"]["TransactionsRequestPayload"];
+      };
+    };
+  };
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes, ethereum } from "@graphprotocol/graph-ts";
+import type { Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(

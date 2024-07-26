@@ -37,27 +37,27 @@ type ComboDialogsStore = {
 
 export const useComboDialogs = create(
   devtools<ComboDialogsStore>(
-    set => ({
+    (set) => ({
       isChainComboDialogOpen: false,
       toggleIsChainComboDialogOpen: () =>
-        set(state => ({
+        set((state) => ({
           isChainComboDialogOpen: !state.isChainComboDialogOpen,
         })),
-      setIsChainComboDialogOpen: isOpen =>
+      setIsChainComboDialogOpen: (isOpen) =>
         set(() => ({ isChainComboDialogOpen: isOpen })),
       isFeedbackComboDialogOpen: false,
       toggleIsFeedbackComboDialogOpen: () =>
-        set(state => ({
+        set((state) => ({
           isFeedbackComboDialogOpen: !state.isFeedbackComboDialogOpen,
         })),
-      setIsFeedbackComboDialogOpen: isOpen =>
+      setIsFeedbackComboDialogOpen: (isOpen) =>
         set(() => ({ isFeedbackComboDialogOpen: isOpen })),
       isNotificationComboDialogOpen: false,
       toggleIsNotificationComboDialogOpen: () =>
-        set(state => ({
+        set((state) => ({
           isNotificationComboDialogOpen: !state.isNotificationComboDialogOpen,
         })),
-      setIsNotificationComboDialogOpen: isOpen =>
+      setIsNotificationComboDialogOpen: (isOpen) =>
         set(() => ({ isNotificationComboDialogOpen: isOpen })),
     }),
     {

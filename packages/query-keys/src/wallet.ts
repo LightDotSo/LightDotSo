@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import type {
-  WalletListParams,
   WalletListCountParams,
+  WalletListParams,
   WalletParams,
 } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";

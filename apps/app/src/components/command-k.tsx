@@ -30,17 +30,17 @@ import {
 import {
   Calculator,
   Calendar,
+  Computer,
+  CopyIcon,
+  CopySlashIcon,
   CreditCard,
+  DeleteIcon,
   Settings,
   Smile,
   User,
-  DeleteIcon,
-  CopyIcon,
-  CopySlashIcon,
-  Computer,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -107,7 +107,7 @@ export const CommandK: FC = () => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen(open => !open);
+        setOpen((open) => !open);
       }
       if (e.key === "a" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();

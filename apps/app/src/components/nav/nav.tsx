@@ -17,16 +17,16 @@
 
 "use client";
 
-import { ConnectButton } from "@lightdotso/templates";
-import { baseWidthWrapper } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
-import { useMemo } from "react";
-import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavApp } from "@/components/nav/nav-app";
 import { NavTabs } from "@/components/nav/nav-tabs";
 import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
+import { ConnectButton } from "@lightdotso/templates";
+import { baseWidthWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { useMemo } from "react";
+import type { FC, HTMLAttributes, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

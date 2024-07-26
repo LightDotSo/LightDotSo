@@ -21,7 +21,7 @@ import {
   wagmiConfig,
 } from "@lightdotso/wagmi";
 import { useTheme } from "next-themes";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Component

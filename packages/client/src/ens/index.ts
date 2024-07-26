@@ -53,6 +53,6 @@ export const getEnsDomains = async (params: {
   const client = ensClient();
   return ResultAsync.fromPromise(
     zodGraphqlRequest(client, ENS_DOMAINS_QUERY, params, ensDomainsSchema),
-    e => e,
+    (e) => e,
   );
 };

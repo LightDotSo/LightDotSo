@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { ActivityDataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-toolbar";
+import { verifyUserId } from "@/auth";
+import { TITLES } from "@/const";
 import {
-  BaseLayerWrapper,
-  MiddleLayerWrapper,
-  BasicPageWrapper,
   BannerSection,
+  BaseLayerWrapper,
+  BasicPageWrapper,
   HStackFull,
+  MiddleLayerWrapper,
   MinimalPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { ActivityDataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-toolbar";
-import { verifyUserId } from "@/auth";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

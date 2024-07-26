@@ -21,8 +21,8 @@ import { ChainLogo } from "@lightdotso/svg";
 import { Skeleton } from "@lightdotso/ui";
 import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
-import { cva, type VariantProps } from "class-variance-authority";
-import { useState, type FC, useEffect, memo, useMemo } from "react";
+import { type VariantProps, cva } from "class-variance-authority";
+import { type FC, memo, useEffect, useMemo, useState } from "react";
 import { NextImage } from "./next-image";
 
 // -----------------------------------------------------------------------------
@@ -31,13 +31,13 @@ import { NextImage } from "./next-image";
 
 export const parseTokenAddress = (token: TokenData) => {
   if (
-    token.chain_id == 137 &&
-    token.address == "0x0000000000000000000000000000000000000000"
+    token.chain_id === 137 &&
+    token.address === "0x0000000000000000000000000000000000000000"
   ) {
     return [1, "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"];
   }
 
-  if (token.address == "0x0000000000000000000000000000000000000000") {
+  if (token.address === "0x0000000000000000000000000000000000000000") {
     return [1, "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"];
   }
 
@@ -153,12 +153,12 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
         typeof token.symbol === "string" && token.symbol
           ? `https://raw.githubusercontent.com/0xa3k5/token-icons/main/packages/core/src/raw-svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`
           : null,
-      ].filter(url => url !== null) as string[],
+      ].filter((url) => url !== null) as string[],
     [tokenChainId, tokenAddress, token.symbol],
   );
 
   const currentUrl = useMemo(() => {
-    if (token && token.logo_url) {
+    if (token?.logo_url) {
       return token.logo_url;
     }
 
@@ -175,7 +175,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
     img.onload = () => setIsImageLoaded(true);
     img.onerror = () => {
       if (currentUrlIndex < urls.length - 1) {
-        setCurrentUrlIndex(prevUrlIndex => prevUrlIndex + 1);
+        setCurrentUrlIndex((prevUrlIndex) => prevUrlIndex + 1);
         setIsImageLoaded(false);
       } else {
         setIsImageLoaded(true);

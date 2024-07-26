@@ -19,8 +19,8 @@ import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
 } from "./tooltip";
 
 // -----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ type Story = StoryObj<typeof Tooltip>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>

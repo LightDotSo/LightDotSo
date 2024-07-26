@@ -28,8 +28,8 @@ import {
   DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipProvider,
+  TooltipTrigger,
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
@@ -43,7 +43,7 @@ import {
   Shuffle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, type FC } from "react";
+import { type FC, useCallback } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -122,8 +122,7 @@ export const WalletOverviewBannerAddress: FC<
           <div className="text-lg font-extrabold tracking-tight md:text-2xl">
             {wallet
               ? wallet.name
-              : (ens ??
-                (typeof address === "string" && shortenAddress(address)))}
+              : ens ?? (typeof address === "string" && shortenAddress(address))}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

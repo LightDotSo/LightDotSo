@@ -32,7 +32,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
   {
     id: "user_address",
     accessorKey: "user_address",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.user?.address;
     },
     header: ({ column }) => (

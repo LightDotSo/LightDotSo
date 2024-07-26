@@ -1,5 +1,5 @@
-import { type BaseLayoutProps, type DocsLayoutProps } from "fumadocs-ui/layout";
 import { pageTree } from "@/source";
+import type { BaseLayoutProps, DocsLayoutProps } from "fumadocs-ui/layout";
 
 export const baseOptions: BaseLayoutProps = {
   nav: {

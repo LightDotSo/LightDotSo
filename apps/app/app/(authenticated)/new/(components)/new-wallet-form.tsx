@@ -14,6 +14,13 @@
 
 "use client";
 
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
+import {
+  BanknotesIcon,
+  BuildingLibraryIcon,
+  ShieldExclamationIcon,
+} from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { NOTION_LINKS } from "@lightdotso/const";
 import { InviteCodeForm } from "@lightdotso/forms";
 import {
@@ -23,7 +30,7 @@ import {
 } from "@lightdotso/nuqs";
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
-import { useNewForm, useFormRef } from "@lightdotso/stores";
+import { useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
   Card,
@@ -32,34 +39,27 @@ import {
   CardHeader,
   CardTitle,
   Form,
+  FormDescription,
   FormField,
   FormItem,
-  FormDescription,
   FormLabel,
-  RadioGroup,
-  RadioGroupItem,
+  FormMessage,
   Input,
   Label,
-  TooltipProvider,
+  RadioGroup,
+  RadioGroupItem,
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
-  FormMessage,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@lightdotso/ui";
-import {
-  BanknotesIcon,
-  BuildingLibraryIcon,
-  ShieldExclamationIcon,
-} from "@heroicons/react/24/solid";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -304,7 +304,7 @@ export const NewWalletForm: FC = () => {
                         id="name"
                         placeholder="Your Wallet Name"
                         defaultValue={field.value}
-                        onChange={e => {
+                        onChange={(e) => {
                           field.onChange(e);
                         }}
                       />

@@ -35,11 +35,11 @@ type GasSpeed = {
 
 export const useGasSpeed = create(
   devtools<GasSpeed>(
-    set => ({
+    (set) => ({
       gasSpeed: "medium",
       gasSpeedBumpAmount: getGasSpeedBumpAmount("medium"),
-      setGasSpeed: gasSpeed => set(() => ({ gasSpeed: gasSpeed })),
-      setGasSpeedBumpAmount: gasSpeed =>
+      setGasSpeed: (gasSpeed) => set(() => ({ gasSpeed: gasSpeed })),
+      setGasSpeedBumpAmount: (gasSpeed) =>
         set(() => ({
           gasSpeedBumpAmount: getGasSpeedBumpAmount(gasSpeed),
         })),

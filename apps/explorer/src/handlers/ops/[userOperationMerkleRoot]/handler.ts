@@ -43,7 +43,7 @@ export const handler = async (params: { userOperationMerkleRoot: string }) => {
   // ---------------------------------------------------------------------------
 
   return userOperationMerkle.match(
-    userOperationMerkle => {
+    (userOperationMerkle) => {
       return {
         userOperationMerkle: userOperationMerkle,
       };

@@ -75,6 +75,6 @@ type Story = StoryObj<typeof MobileAppDrawer>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <MobileAppDrawer tabs={tabs} />,
+  render: (args) => <MobileAppDrawer tabs={tabs} />,
   args: {},
 };

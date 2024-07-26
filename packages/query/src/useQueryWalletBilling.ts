@@ -64,10 +64,10 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -14,9 +14,9 @@
 
 "use client";
 
+import { useAppGroup } from "@/hooks";
 import type { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
-import { useAppGroup } from "@/hooks";
 
 export const MSWState = () => {
   // ---------------------------------------------------------------------------

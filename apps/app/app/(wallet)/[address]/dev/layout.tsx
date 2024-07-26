@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { TITLES } from "@/const";
 import {
-  HStackFull,
   BannerSection,
-  BasicPageWrapper,
   BaseLayerWrapper,
+  BasicPageWrapper,
+  HStackFull,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

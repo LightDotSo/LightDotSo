@@ -97,12 +97,11 @@ export const NotificationComboDialog: FC = () => {
         </div>
         <TabsContent value="inbox">
           {!sessionId && <Login />}
-          {notifications &&
-            notifications.map(notification => (
-              <div key={notification.id} className="p-4">
-                <p className="text-sm text-text-primary">{notification.id}</p>
-              </div>
-            ))}
+          {notifications?.map((notification) => (
+            <div key={notification.id} className="p-4">
+              <p className="text-sm text-text-primary">{notification.id}</p>
+            </div>
+          ))}
           {notificationsCount?.count === 0 && (
             <div className="w-full justify-center py-8 text-center">
               <EmptyState entity="notification" />

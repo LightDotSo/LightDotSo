@@ -172,7 +172,7 @@ export const UserOperationCardTransaction: FC<
           type={undefined}
         >
           <div className="transaction group flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
-            {row.getVisibleCells().map(cell => (
+            {row.getVisibleCells().map((cell) => (
               <Fragment key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </Fragment>

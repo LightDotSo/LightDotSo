@@ -209,19 +209,19 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Wallet Settings",
         description: "Manage your wallet settings",
         subcategories: {
-          ["Name"]: {
+          Name: {
             title: "Name",
             description: "Manage your wallet name",
             note: "This is the name that will be displayed to others.",
             subcategories: {},
           },
-          ["Dev"]: {
+          Dev: {
             title: "Developer Mode",
             description: "Enable or disable developer mode",
             note: "This will enable or disable developer mode for your wallet.",
             subcategories: {},
           },
-          ["Testnet"]: {
+          Testnet: {
             title: "Testnet",
             description: "Enable or disable testnet",
             note: "This will enable or disable testnet for your wallet.",
@@ -238,7 +238,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Billing",
         description: "Manage your billing information",
         subcategories: {
-          ["Balance"]: {
+          Balance: {
             title: "Balance",
             description: "Manage your wallet balance",
             note: "View and manage your wallet balance.",
@@ -250,7 +250,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Deployment",
         description: "Manage your wallet deployments.",
         subcategories: {
-          ["Chain"]: {
+          Chain: {
             title: "Chain",
             description: "Manage your chain deployment",
             note: "Deploy to a new chain or update your existing chain.",
@@ -262,7 +262,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Notifications",
         description: "Manage your wallet notifications.",
         subcategories: {
-          ["Notification Settings"]: {
+          "Notification Settings": {
             title: "Notification Settings",
             description: "Manage your wallet notification settings.",
             note: "Manage your wallet notification settings.",

@@ -16,8 +16,8 @@ import { useUserOperationsProgress } from "@lightdotso/hooks";
 import { ChainLogo } from "@lightdotso/svg";
 import {
   Accordion,
-  AccordionItem,
   AccordionContent,
+  AccordionItem,
   AccordionTrigger,
 } from "@lightdotso/ui";
 import {
@@ -27,7 +27,7 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { ArrowUpRight } from "lucide-react";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------

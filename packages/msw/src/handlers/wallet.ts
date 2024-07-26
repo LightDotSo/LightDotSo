@@ -14,7 +14,7 @@
 
 import { BASE_API_URLS } from "@lightdotso/const";
 import { walletListData } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 export const getWallets = (url: string) =>
   http.get(`${url}/v1/wallet/list`, () => {

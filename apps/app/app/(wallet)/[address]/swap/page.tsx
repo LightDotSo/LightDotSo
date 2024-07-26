@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import { SwapDialog } from "@lightdotso/dialogs";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import type { Address } from "viem";
 import { handler } from "@/handlers/[address]/swap/handler";
 import { preloader } from "@/preloaders/[address]/swap/preloader";
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
+import { SwapDialog } from "@lightdotso/dialogs";
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

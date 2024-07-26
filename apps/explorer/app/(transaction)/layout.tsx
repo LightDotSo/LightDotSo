@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { TransactionsDataTableToolbar } from "@/app/(transaction)/(components)/transactions-data-table-toolbar";
+import { TITLES } from "@/const";
 import {
-  BaseLayerWrapper,
-  MinimalPageWrapper,
-  MiddleLayerWrapper,
   BannerSection,
+  BaseLayerWrapper,
+  MiddleLayerWrapper,
+  MinimalPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { TransactionsDataTableToolbar } from "@/app/(transaction)/(components)/transactions-data-table-toolbar";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES["Transactions"].title,
-  description: TITLES["Transactions"].description,
+  title: TITLES.Transactions.title,
+  description: TITLES.Transactions.description,
 };
 
 // -----------------------------------------------------------------------------
@@ -48,8 +48,8 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
       <BannerSection
-        title={TITLES["Transactions"].title}
-        description={TITLES["Transactions"].description}
+        title={TITLES.Transactions.title}
+        description={TITLES.Transactions.description}
       >
         <MiddleLayerWrapper>
           <TransactionsDataTableToolbar />

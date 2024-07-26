@@ -76,10 +76,10 @@ export const useQueryConfigurationOperationSimulation = (
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -33,7 +33,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
         checked={table.getIsAllPageRowsSelected()}
         aria-label="Select all"
         className="translate-y-[2px]"
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       />
     ),
     cell: ({ row }) => (
@@ -41,7 +41,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
         checked={row.getIsSelected()}
         aria-label="Select row"
         className="translate-y-[2px]"
-        onCheckedChange={value => row.toggleSelected(!!value)}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
       />
     ),
     enableSorting: false,

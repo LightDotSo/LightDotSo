@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BaseLayerWrapper,
-  MiddleLayerWrapper,
-  BasicPageWrapper,
-  BannerSection,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { OwnerOverviewBanner } from "@/app/(wallet)/[address]/owners/(components)/owner-overview-banner/owner-overview-banner";
 import { OwnersDataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-toolbar";
 import { TITLES } from "@/const";
+import {
+  BannerSection,
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  MiddleLayerWrapper,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Metadata

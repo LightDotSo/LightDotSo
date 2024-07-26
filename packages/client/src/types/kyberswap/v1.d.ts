@@ -4,581 +4,581 @@
  */
 
 export interface paths {
-    "/{chain}/route/encode": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
-        };
-        /**
-         * Get Swap Info with Encoded Data
-         * @description Retrieve the information about a Swap between 2 tokens with encoded data to submit to KyberSwap router contract.
-         *     Please refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
-         */
-        get: operations["get-route-encode"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/{chain}/route/encode": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
     };
-    "/{chain}/api/v1/routes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
-        };
-        /**
-         * [V1] Get Swap Route
-         * @description Retrieve the route information about a Swap between 2 tokens. Please use V1 `GET` API for a more performant route query. The route returned can then be combined with transaction specific params in the `POST` API payload to get the encoded data for submission to the KyberSwap router contract. Refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
-         */
-        get: operations["get-route"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get Swap Info with Encoded Data
+     * @description Retrieve the information about a Swap between 2 tokens with encoded data to submit to KyberSwap router contract.
+     *     Please refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
+     */
+    get: operations["get-route-encode"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/{chain}/api/v1/routes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
     };
-    "/{chain}/api/v1/route/build": {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the body. */
-                "x-client-id"?: string;
-            };
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * [V1] Post Swap Route For Encoded Data
-         * @description Get the encoded swap route to be forwarded to the KyberSwap router contract. For simplicity, the request body should contain the `routeSummary` returned by [V1] Get Swap Route appended with the additional tx parameters. Please refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
-         */
-        post: operations["post-route-encoded"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * [V1] Get Swap Route
+     * @description Retrieve the route information about a Swap between 2 tokens. Please use V1 `GET` API for a more performant route query. The route returned can then be combined with transaction specific params in the `POST` API payload to get the encoded data for submission to the KyberSwap router contract. Refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
+     */
+    get: operations["get-route"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/{chain}/api/v1/route/build": {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the body. */
+        "x-client-id"?: string;
+      };
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    /**
+     * [V1] Post Swap Route For Encoded Data
+     * @description Get the encoded swap route to be forwarded to the KyberSwap router contract. For simplicity, the request body should contain the `routeSummary` returned by [V1] Get Swap Route appended with the additional tx parameters. Please refer to [Supported Exchanges And Networks](https://docs.kyberswap.com/getting-started/supported-exchanges-and-networks) for full list of supported networks.
+     */
+    post: operations["post-route-encoded"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        Swap: {
-            /** @description The input amount of `tokenIn`, in wei */
-            inputAmount?: string;
-            /** @description The input amount of `tokenOut`, in wei */
-            outputAmount?: string;
-            /** @description Estimated gas fee */
-            totalGas?: number;
-            /** @description Current gas price in Gwei */
-            gasPriceGwei?: string;
-            /** @description Current gas price in USD */
-            gasUsd?: number;
-            /** @description Estimate of input value, in USD */
-            amountInUsd?: number;
-            /** @description Estimate of out value, in USD */
-            amountOutUsd?: number;
-            /** @description Estimate of final received value, in USD */
-            receivedUsd?: number;
-            /** @description Swap path, a 2-dimen array describe how swap is executed */
-            swaps?: components["schemas"]["SwapSequence"][][];
-            /** @description The encoded data to be sent to our router address */
-            encodedSwapData?: string;
-            /** @description The KyberSwap router address */
-            routerAddress?: string;
-        };
-        SwapSequence: {
-            /** @description The address of the pool used in our executor */
+  schemas: {
+    Swap: {
+      /** @description The input amount of `tokenIn`, in wei */
+      inputAmount?: string;
+      /** @description The input amount of `tokenOut`, in wei */
+      outputAmount?: string;
+      /** @description Estimated gas fee */
+      totalGas?: number;
+      /** @description Current gas price in Gwei */
+      gasPriceGwei?: string;
+      /** @description Current gas price in USD */
+      gasUsd?: number;
+      /** @description Estimate of input value, in USD */
+      amountInUsd?: number;
+      /** @description Estimate of out value, in USD */
+      amountOutUsd?: number;
+      /** @description Estimate of final received value, in USD */
+      receivedUsd?: number;
+      /** @description Swap path, a 2-dimen array describe how swap is executed */
+      swaps?: components["schemas"]["SwapSequence"][][];
+      /** @description The encoded data to be sent to our router address */
+      encodedSwapData?: string;
+      /** @description The KyberSwap router address */
+      routerAddress?: string;
+    };
+    SwapSequence: {
+      /** @description The address of the pool used in our executor */
+      pool?: string;
+      /** @description The input token for this pool */
+      tokenIn?: string;
+      /** @description The output token for this pool */
+      tokenOut?: string;
+      /** @description The input amount swap through this pool */
+      swapAmount?: string;
+      /** @description The output amount after swap through this pool */
+      amountOut?: string;
+      /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
+      limitReturnAmount?: string;
+      /** @description The max price */
+      maxPrice?: string;
+      /** @description The original exchange of this pool */
+      exchange?: string;
+      /** @description The number of token in this pool */
+      poolLength?: number;
+      /** @description The type of this pool (internal definition by our aggregator)
+       *      */
+      poolType?: string;
+    };
+    SwapRouteSuccess: {
+      /** @description Response code */
+      code?: string;
+      /** @description Response message */
+      message?: string;
+      /** @description Response data */
+      data?: {
+        /** @description The summarised routing data */
+        routeSummary?: {
+          /** @description The input token for the swap */
+          tokenIn?: string;
+          /** @description The amount of input token for the swap in wei */
+          amountIn?: string;
+          /** @description Estimate of input value, in USD */
+          amountInUsd?: string;
+          /** @description Indicates tokenIn external market price availability at time of query */
+          tokenInMarketPriceAvailable?: boolean;
+          /** @description The output token for the swap */
+          tokenOut?: string;
+          /** @description The amount of output token for the swap in wei */
+          amountOut?: string;
+          /** @description Estimate of output value, in USD */
+          amountOutUsd?: string;
+          /** @description Indicates tokenOut external market price availability at time of query */
+          tokenOutMarketPriceAvailable?: boolean;
+          /** @description Estimated gas required for swap */
+          gas?: string;
+          /** @description Estimated price of gas required for swap, in wei units */
+          gasPrice?: string;
+          /** @description Estimated USD price of gas required for swap */
+          gasUsd?: string;
+          /** @description Fee configuration for the swap */
+          extraFee?: {
+            /** @description Fee amount to be collected */
+            feeAmount?: string;
+            /**
+             * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
+             *     Default is empty whereby no fee is charged
+             *
+             * @enum {string}
+             */
+            chargeFeeBy?: "currency_in" | "currency_out";
+            /** @description If true, fee is taken in BPS */
+            isInBps?: boolean;
+            /** @description Address which the fees will be sent to */
+            feeReceiver?: string;
+          };
+          /** @description Array of swap routes */
+          route?: {
+            /** @description Address of the pool which the swap has been routed to */
             pool?: string;
-            /** @description The input token for this pool */
+            /** @description The input token address for this pool */
             tokenIn?: string;
-            /** @description The output token for this pool */
+            /** @description The output token address for this pool */
             tokenOut?: string;
-            /** @description The input amount swap through this pool */
-            swapAmount?: string;
-            /** @description The output amount after swap through this pool */
-            amountOut?: string;
             /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
             limitReturnAmount?: string;
-            /** @description The max price */
-            maxPrice?: string;
-            /** @description The original exchange of this pool */
+            /** @description The amount of input token to be swapped through this pool, in wei */
+            swapAmount?: string;
+            /** @description The amount of output token received through swapping through this pool, in wei */
+            amountOut?: string;
+            /** @description The exchange where the pool originated from */
             exchange?: string;
-            /** @description The number of token in this pool */
+            /** @description Number of tokens in the pool */
             poolLength?: number;
-            /** @description The type of this pool (internal definition by our aggregator)
-             *      */
+            /** @description The pool type as defined by our internal aggregator */
             poolType?: string;
+            /** @description Additional pool metadata */
+            poolExtra?: string;
+            /** @description Additional swap metadata */
+            extra?: string;
+          }[][];
         };
-        SwapRouteSuccess: {
-            /** @description Response code */
-            code?: string;
-            /** @description Response message */
-            message?: string;
-            /** @description Response data */
-            data?: {
-                /** @description The summarised routing data */
-                routeSummary?: {
-                    /** @description The input token for the swap */
-                    tokenIn?: string;
-                    /** @description The amount of input token for the swap in wei */
-                    amountIn?: string;
-                    /** @description Estimate of input value, in USD */
-                    amountInUsd?: string;
-                    /** @description Indicates tokenIn external market price availability at time of query */
-                    tokenInMarketPriceAvailable?: boolean;
-                    /** @description The output token for the swap */
-                    tokenOut?: string;
-                    /** @description The amount of output token for the swap in wei */
-                    amountOut?: string;
-                    /** @description Estimate of output value, in USD */
-                    amountOutUsd?: string;
-                    /** @description Indicates tokenOut external market price availability at time of query */
-                    tokenOutMarketPriceAvailable?: boolean;
-                    /** @description Estimated gas required for swap */
-                    gas?: string;
-                    /** @description Estimated price of gas required for swap, in wei units */
-                    gasPrice?: string;
-                    /** @description Estimated USD price of gas required for swap */
-                    gasUsd?: string;
-                    /** @description Fee configuration for the swap */
-                    extraFee?: {
-                        /** @description Fee amount to be collected */
-                        feeAmount?: string;
-                        /**
-                         * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
-                         *     Default is empty whereby no fee is charged
-                         *
-                         * @enum {string}
-                         */
-                        chargeFeeBy?: "currency_in" | "currency_out";
-                        /** @description If true, fee is taken in BPS */
-                        isInBps?: boolean;
-                        /** @description Address which the fees will be sent to */
-                        feeReceiver?: string;
-                    };
-                    /** @description Array of swap routes */
-                    route?: {
-                        /** @description Address of the pool which the swap has been routed to */
-                        pool?: string;
-                        /** @description The input token address for this pool */
-                        tokenIn?: string;
-                        /** @description The output token address for this pool */
-                        tokenOut?: string;
-                        /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
-                        limitReturnAmount?: string;
-                        /** @description The amount of input token to be swapped through this pool, in wei */
-                        swapAmount?: string;
-                        /** @description The amount of output token received through swapping through this pool, in wei */
-                        amountOut?: string;
-                        /** @description The exchange where the pool originated from */
-                        exchange?: string;
-                        /** @description Number of tokens in the pool */
-                        poolLength?: number;
-                        /** @description The pool type as defined by our internal aggregator */
-                        poolType?: string;
-                        /** @description Additional pool metadata */
-                        poolExtra?: string;
-                        /** @description Additional swap metadata */
-                        extra?: string;
-                    }[][];
-                };
-                /** @description The KyberSwap router address */
-                routerAddress?: string;
-            };
-        };
-        SwapEncode: {
-            /** @description The summarised routing data */
-            routeSummary: {
-                /** @description The input token for the swap */
-                tokenIn: string;
-                /** @description The amount of input token for the swap in wei */
-                amountIn: string;
-                /** @description Estimate of input value, in USD */
-                amountInUsd: string;
-                /** @description The output token for the swap */
-                tokenOut: string;
-                /** @description The amount of output token for the swap in wei */
-                amountOut: string;
-                /** @description Estimate of output value, in USD */
-                amountOutUsd: string;
-                /** @description Estimated gas required for swap */
-                gas: string;
-                /** @description Estimated price of gas required for swap, in wei units */
-                gasPrice: string;
-                /** @description Estimated USD price of gas required for swap */
-                gasUsd: string;
-                /** @description Fee configuration for the swap */
-                extraFee: {
-                    /** @description Fee amount to be collected */
-                    feeAmount: string;
-                    /**
-                     * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
-                     *     Default is empty whereby no fee is charged
-                     *
-                     * @enum {string}
-                     */
-                    chargeFeeBy: "currency_in" | "currency_out";
-                    /** @description If true, fee is taken in BPS */
-                    isInBps: boolean;
-                    /** @description Address which the fees will be sent to */
-                    feeReceiver: string;
-                };
-                /** @description Array of swap routes */
-                route: {
-                    /** @description Address of the pool which the swap has been routed to */
-                    pool: string;
-                    /** @description The input token address for this pool */
-                    tokenIn: string;
-                    /** @description The output token address for this pool */
-                    tokenOut: string;
-                    /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
-                    limitReturnAmount: string;
-                    /** @description The amount of input token to be swapped through this pool, in wei */
-                    swapAmount: string;
-                    /** @description The amount of output token received through swapping through this pool, in wei */
-                    amountOut: string;
-                    /** @description The exchange where the pool originated from */
-                    exchange: string;
-                    /** @description Number of tokens in the pool */
-                    poolLength: number;
-                    /** @description The pool type as defined by our internal aggregator */
-                    poolType: string;
-                    /** @description Additional pool metadata */
-                    poolExtra: string;
-                }[][];
-            };
-        };
-        SwapEncodeSuccess: {
-            /** @description Response code */
-            code?: string;
-            /** @description Response message */
-            message?: string;
-            /** @description Response data for encoded swap */
-            data?: {
-                /** @description The amount of input token for the swap in wei */
-                amountIn?: string;
-                /** @description Estimated input value, in USD */
-                amountInUsd?: string;
-                /** @description The amount of output token for the swap in wei */
-                amountOut?: string;
-                /** @description Estimated output value, in USD */
-                amountOutUsd?: string;
-                /** @description Estimated gas required for swap */
-                gas?: string;
-                /** @description Estimated USD price of gas required for swap */
-                gasUsd?: string;
-                /** @description \[Deprecated] Additional swap data for client calculation */
-                outputChange?: {
-                    /** @description Output change in number of tokens */
-                    amount?: string;
-                    /** @description Output change as a percentage */
-                    percent?: number;
-                    /** @description Output change level */
-                    level?: number;
-                };
-                /** @description The encoded data to be sent to KyberSwap router address */
-                data?: string;
-                /** @description The KyberSwap router address */
-                routerAddress?: string;
-            };
-        };
-        SwapEncodePostBody: {
-            /** @description The summarised routing data */
-            routeSummary: {
-                /** @description The input token for the swap */
-                tokenIn: string;
-                /** @description The amount of input token for the swap in wei */
-                amountIn: string;
-                /** @description Estimate of input value, in USD */
-                amountInUsd: string;
-                /** @description Indicates tokenIn external market price availability at time of query */
-                tokenInMarketPriceAvailable?: boolean;
-                /** @description The output token for the swap */
-                tokenOut: string;
-                /** @description The amount of output token for the swap in wei */
-                amountOut: string;
-                /** @description Estimate of output value, in USD */
-                amountOutUsd: string;
-                /** @description Indicates tokenOut external market price availability at time of query */
-                tokenOutMarketPriceAvailable?: boolean;
-                /** @description Estimated gas required for swap */
-                gas: string;
-                /** @description Estimated price of gas required for swap, in wei units */
-                gasPrice: string;
-                /** @description Estimated USD price of gas required for swap */
-                gasUsd: string;
-                /** @description Fee configuration for the swap */
-                extraFee: {
-                    /** @description Fee amount to be collected */
-                    feeAmount: string;
-                    /**
-                     * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
-                     *     Default is empty whereby no fee is charged
-                     *
-                     * @enum {string}
-                     */
-                    chargeFeeBy: "currency_in" | "currency_out";
-                    /** @description If true, fee is taken in BPS */
-                    isInBps: boolean;
-                    /** @description Address which the fees will be sent to */
-                    feeReceiver: string;
-                };
-                /** @description Array of swap routes */
-                route: {
-                    /** @description Address of the pool which the swap has been routed to */
-                    pool: string;
-                    /** @description The input token address for this pool */
-                    tokenIn: string;
-                    /** @description The output token address for this pool */
-                    tokenOut: string;
-                    /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
-                    limitReturnAmount: string;
-                    /** @description The amount of input token to be swapped through this pool, in wei */
-                    swapAmount: string;
-                    /** @description The amount of output token received through swapping through this pool, in wei */
-                    amountOut: string;
-                    /** @description The exchange where the pool originated from */
-                    exchange: string;
-                    /** @description Number of tokens in the pool */
-                    poolLength: number;
-                    /** @description The pool type as defined by our internal aggregator */
-                    poolType: string;
-                    /** @description Additional pool metadata */
-                    poolExtra: string;
-                    /** @description Additional swap metadata */
-                    extra: string;
-                }[][];
-            };
-            /** @description Deadline (in Unix time second) for the transaction to be executed. Default will be +20 minute. Cannot be in the past. */
-            deadline?: number;
-            /** @description This is the amount of slippage the user can accept for his trade. The unit is bip.
-             *     The value is in ranges [0, 2000], 10 means 0.1%.
-             *     If no value is provided, slippageTolerance will be set to 0.
-             *      */
-            slippageTolerance?: number;
-            /** @description Address which the swap input tokens will be debited from */
-            sender: string;
-            /** @description Address which the swap output tokens will be sent to */
-            recipient: string;
-            /** @description ClientID of the party calling the API. Please use the same ClientID as the `x-client-id` in the header. */
-            source?: string;
-        };
-        Error: {
-            /** @description The error code */
-            code: number;
-            /** @description The error message */
-            message: string;
-            /** @description KyberSwap's internal request identity for tracing/troubleshooting */
-            requestId: string;
-            /** @description Optional object which contains the validation error, if any */
-            details?: Record<string, never>;
-        };
+        /** @description The KyberSwap router address */
+        routerAddress?: string;
+      };
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    SwapEncode: {
+      /** @description The summarised routing data */
+      routeSummary: {
+        /** @description The input token for the swap */
+        tokenIn: string;
+        /** @description The amount of input token for the swap in wei */
+        amountIn: string;
+        /** @description Estimate of input value, in USD */
+        amountInUsd: string;
+        /** @description The output token for the swap */
+        tokenOut: string;
+        /** @description The amount of output token for the swap in wei */
+        amountOut: string;
+        /** @description Estimate of output value, in USD */
+        amountOutUsd: string;
+        /** @description Estimated gas required for swap */
+        gas: string;
+        /** @description Estimated price of gas required for swap, in wei units */
+        gasPrice: string;
+        /** @description Estimated USD price of gas required for swap */
+        gasUsd: string;
+        /** @description Fee configuration for the swap */
+        extraFee: {
+          /** @description Fee amount to be collected */
+          feeAmount: string;
+          /**
+           * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
+           *     Default is empty whereby no fee is charged
+           *
+           * @enum {string}
+           */
+          chargeFeeBy: "currency_in" | "currency_out";
+          /** @description If true, fee is taken in BPS */
+          isInBps: boolean;
+          /** @description Address which the fees will be sent to */
+          feeReceiver: string;
+        };
+        /** @description Array of swap routes */
+        route: {
+          /** @description Address of the pool which the swap has been routed to */
+          pool: string;
+          /** @description The input token address for this pool */
+          tokenIn: string;
+          /** @description The output token address for this pool */
+          tokenOut: string;
+          /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
+          limitReturnAmount: string;
+          /** @description The amount of input token to be swapped through this pool, in wei */
+          swapAmount: string;
+          /** @description The amount of output token received through swapping through this pool, in wei */
+          amountOut: string;
+          /** @description The exchange where the pool originated from */
+          exchange: string;
+          /** @description Number of tokens in the pool */
+          poolLength: number;
+          /** @description The pool type as defined by our internal aggregator */
+          poolType: string;
+          /** @description Additional pool metadata */
+          poolExtra: string;
+        }[][];
+      };
+    };
+    SwapEncodeSuccess: {
+      /** @description Response code */
+      code?: string;
+      /** @description Response message */
+      message?: string;
+      /** @description Response data for encoded swap */
+      data?: {
+        /** @description The amount of input token for the swap in wei */
+        amountIn?: string;
+        /** @description Estimated input value, in USD */
+        amountInUsd?: string;
+        /** @description The amount of output token for the swap in wei */
+        amountOut?: string;
+        /** @description Estimated output value, in USD */
+        amountOutUsd?: string;
+        /** @description Estimated gas required for swap */
+        gas?: string;
+        /** @description Estimated USD price of gas required for swap */
+        gasUsd?: string;
+        /** @description \[Deprecated] Additional swap data for client calculation */
+        outputChange?: {
+          /** @description Output change in number of tokens */
+          amount?: string;
+          /** @description Output change as a percentage */
+          percent?: number;
+          /** @description Output change level */
+          level?: number;
+        };
+        /** @description The encoded data to be sent to KyberSwap router address */
+        data?: string;
+        /** @description The KyberSwap router address */
+        routerAddress?: string;
+      };
+    };
+    SwapEncodePostBody: {
+      /** @description The summarised routing data */
+      routeSummary: {
+        /** @description The input token for the swap */
+        tokenIn: string;
+        /** @description The amount of input token for the swap in wei */
+        amountIn: string;
+        /** @description Estimate of input value, in USD */
+        amountInUsd: string;
+        /** @description Indicates tokenIn external market price availability at time of query */
+        tokenInMarketPriceAvailable?: boolean;
+        /** @description The output token for the swap */
+        tokenOut: string;
+        /** @description The amount of output token for the swap in wei */
+        amountOut: string;
+        /** @description Estimate of output value, in USD */
+        amountOutUsd: string;
+        /** @description Indicates tokenOut external market price availability at time of query */
+        tokenOutMarketPriceAvailable?: boolean;
+        /** @description Estimated gas required for swap */
+        gas: string;
+        /** @description Estimated price of gas required for swap, in wei units */
+        gasPrice: string;
+        /** @description Estimated USD price of gas required for swap */
+        gasUsd: string;
+        /** @description Fee configuration for the swap */
+        extraFee: {
+          /** @description Fee amount to be collected */
+          feeAmount: string;
+          /**
+           * @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
+           *     Default is empty whereby no fee is charged
+           *
+           * @enum {string}
+           */
+          chargeFeeBy: "currency_in" | "currency_out";
+          /** @description If true, fee is taken in BPS */
+          isInBps: boolean;
+          /** @description Address which the fees will be sent to */
+          feeReceiver: string;
+        };
+        /** @description Array of swap routes */
+        route: {
+          /** @description Address of the pool which the swap has been routed to */
+          pool: string;
+          /** @description The input token address for this pool */
+          tokenIn: string;
+          /** @description The output token address for this pool */
+          tokenOut: string;
+          /** @description Maximum for amount of output token returned. Set to zero as using minReturnAmount instead */
+          limitReturnAmount: string;
+          /** @description The amount of input token to be swapped through this pool, in wei */
+          swapAmount: string;
+          /** @description The amount of output token received through swapping through this pool, in wei */
+          amountOut: string;
+          /** @description The exchange where the pool originated from */
+          exchange: string;
+          /** @description Number of tokens in the pool */
+          poolLength: number;
+          /** @description The pool type as defined by our internal aggregator */
+          poolType: string;
+          /** @description Additional pool metadata */
+          poolExtra: string;
+          /** @description Additional swap metadata */
+          extra: string;
+        }[][];
+      };
+      /** @description Deadline (in Unix time second) for the transaction to be executed. Default will be +20 minute. Cannot be in the past. */
+      deadline?: number;
+      /** @description This is the amount of slippage the user can accept for his trade. The unit is bip.
+       *     The value is in ranges [0, 2000], 10 means 0.1%.
+       *     If no value is provided, slippageTolerance will be set to 0.
+       *      */
+      slippageTolerance?: number;
+      /** @description Address which the swap input tokens will be debited from */
+      sender: string;
+      /** @description Address which the swap output tokens will be sent to */
+      recipient: string;
+      /** @description ClientID of the party calling the API. Please use the same ClientID as the `x-client-id` in the header. */
+      source?: string;
+    };
+    Error: {
+      /** @description The error code */
+      code: number;
+      /** @description The error message */
+      message: string;
+      /** @description KyberSwap's internal request identity for tracing/troubleshooting */
+      requestId: string;
+      /** @description Optional object which contains the validation error, if any */
+      details?: Record<string, never>;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    "get-route-encode": {
-        parameters: {
-            query: {
-                /** @description Address of the input token
-                 *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
-                 *      */
-                tokenIn: string;
-                /** @description Address of the output token
-                 *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
-                 *      */
-                tokenOut: string;
-                /** @description Amount of the input token (in wei) */
-                amountIn: string;
-                /** @description `false`/`0` = route will be based on the maximum output token returned
-                 *     `true`/`1` = route will be based on the lowest gas cost (i.e. the least hops)
-                 *      */
-                saveGas?: boolean;
-                /** @description This is the amount of slippage the user can accept for his trade. The unit is bip.
-                 *     The value is in ranges [0, 2000], 10 means 0.1%.
-                 *     If no value is provided, slippageTolerance will be set to 0.
-                 *      */
-                slippageTolerance?: string;
-                /** @description if true, fee is taken in BPS
-                 *      */
-                isInBps?: boolean;
-                /** @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
-                 *     Default is empty whereby no fee is charged
-                 *      */
-                chargeFeeBy?: "currency_in" | "currency_out";
-                /** @description Address to receive fee (if `chargeFeeBy` is not empty) */
-                feeReceiver?: string;
-                /** @description Fee amount to be collected \
-                 *     if `isInBps` = `true`, `feeAmount` is the percentage of fees that we will take with base unit = 10000, i.e `feeAmount` = 10 and `isInBps` = `true` then fee = 0.1%
-                 *     if `isInBps` = `false`, `feeAmount` is the amount of token that we will take as fee, i.e `feeAmount` = 10 and `isInBps` = 'false' then fee = 10 token weis
-                 *      */
-                feeAmount?: string;
-                /** @description Deadline (in Unix time second) for the transaction to be executed. Default will be +20 minute. Cannot be in the past. */
-                deadline?: string;
-                /** @description Address to receive the output token */
-                to: string;
-                /** @description Json string to present to your client (i.e. clientID) */
-                clientData?: string;
-            };
-            header: {
-                /** @description Version of Aggregator */
-                "Accept-Version": "Latest";
-            };
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Swap Found */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Swap"];
-                };
-            };
-        };
+  "get-route-encode": {
+    parameters: {
+      query: {
+        /** @description Address of the input token
+         *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
+         *      */
+        tokenIn: string;
+        /** @description Address of the output token
+         *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
+         *      */
+        tokenOut: string;
+        /** @description Amount of the input token (in wei) */
+        amountIn: string;
+        /** @description `false`/`0` = route will be based on the maximum output token returned
+         *     `true`/`1` = route will be based on the lowest gas cost (i.e. the least hops)
+         *      */
+        saveGas?: boolean;
+        /** @description This is the amount of slippage the user can accept for his trade. The unit is bip.
+         *     The value is in ranges [0, 2000], 10 means 0.1%.
+         *     If no value is provided, slippageTolerance will be set to 0.
+         *      */
+        slippageTolerance?: string;
+        /** @description if true, fee is taken in BPS
+         *      */
+        isInBps?: boolean;
+        /** @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
+         *     Default is empty whereby no fee is charged
+         *      */
+        chargeFeeBy?: "currency_in" | "currency_out";
+        /** @description Address to receive fee (if `chargeFeeBy` is not empty) */
+        feeReceiver?: string;
+        /** @description Fee amount to be collected \
+         *     if `isInBps` = `true`, `feeAmount` is the percentage of fees that we will take with base unit = 10000, i.e `feeAmount` = 10 and `isInBps` = `true` then fee = 0.1%
+         *     if `isInBps` = `false`, `feeAmount` is the amount of token that we will take as fee, i.e `feeAmount` = 10 and `isInBps` = 'false' then fee = 10 token weis
+         *      */
+        feeAmount?: string;
+        /** @description Deadline (in Unix time second) for the transaction to be executed. Default will be +20 minute. Cannot be in the past. */
+        deadline?: string;
+        /** @description Address to receive the output token */
+        to: string;
+        /** @description Json string to present to your client (i.e. clientID) */
+        clientData?: string;
+      };
+      header: {
+        /** @description Version of Aggregator */
+        "Accept-Version": "Latest";
+      };
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
     };
-    "get-route": {
-        parameters: {
-            query: {
-                /** @description Address of the input token
-                 *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
-                 *      */
-                tokenIn: string;
-                /** @description Address of the output token
-                 *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
-                 *      */
-                tokenOut: string;
-                /** @description Amount of the input token (in wei) */
-                amountIn: string;
-                /** @description `false`/`0` = route will be based on the maximum output token returned
-                 *     `true`/`1` = route will be based on the lowest gas cost (i.e. the least hops)
-                 *      */
-                saveGas?: boolean;
-                /** @description DEX IDs included in the route, separated by comma */
-                includedSources?: string;
-                /** @description DEX IDs excluded from the route, separated by comma */
-                excludedSources?: string;
-                /** @description Determines whether gas costs are included when searching for route */
-                gasInclude?: boolean;
-                /** @description Estimated price of gas required for swap, in wei units */
-                gasPrice?: string;
-                /** @description Fee amount to be collected \
-                 *     if `isInBps` = `true`, `feeAmount` is the percentage of fees that we will take with base unit = 10000, i.e `feeAmount` = 10 and `isInBps` = `true` then fee = 0.1%
-                 *     if `isInBps` = `false`, `feeAmount` is the amount of token that we will take as fee, i.e `feeAmount` = 10 and `isInBps` = 'false' then fee = 10 token weis
-                 *      */
-                feeAmount?: string;
-                /** @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
-                 *     Default is empty whereby no fee is charged
-                 *      */
-                chargeFeeBy?: "currency_in" | "currency_out";
-                /** @description if true, fee is taken in BPS
-                 *      */
-                isInBps?: boolean;
-                /** @description Address to receive fee (if `chargeFeeBy` is not empty) */
-                feeReceiver?: string;
-                /** @description ClientID of the party calling the API. Please use the same ClientID as the `x-client-id` in the header.
-                 *      */
-                source?: string;
-            };
-            header?: {
-                /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the params. */
-                "x-client-id"?: string;
-            };
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Swap Found */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Swap Found */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SwapRouteSuccess"];
-                };
-            };
-            422: components["errors"]["4221"];
-            "400: Bad Request (4001)": components["errors"]["4001"];
-            "400: Bad Request (4002)": components["errors"]["4002"];
-            "400: Bad Request (4005)": components["errors"]["4005"];
-            "400: Bad Request (4007)": components["errors"]["4007"];
-            "400: Bad Request (4008)": components["errors"]["4008"];
-            "400: Bad Request (4009)": components["errors"]["4009"];
-            "400: Bad Request (4010)": components["errors"]["4010"];
-            "400: Bad Request (4011)": components["errors"]["4011"];
+        content: {
+          "application/json": components["schemas"]["Swap"];
         };
+      };
     };
-    "post-route-encoded": {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the body. */
-                "x-client-id"?: string;
-            };
-            path: {
-                /** @description Full list of supported chains available on Docs. */
-                chain: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SwapEncodePostBody"];
-            };
-        };
-        responses: {
-            /** @description Successfully encoded */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SwapEncodeSuccess"];
-                };
-            };
-            422: components["errors"]["4221"];
-            "400: Bad Request (4001)": components["errors"]["4001"];
-            "400: Bad Request (4002)": components["errors"]["4002"];
-            "400: Bad Request (4005)": components["errors"]["4005"];
-            "400: Bad Request (4007)": components["errors"]["4007"];
-            "400: Bad Request (4008)": components["errors"]["4008"];
-            "400: Bad Request (4009)": components["errors"]["4009"];
-            "400: Bad Request (4010)": components["errors"]["4010"];
-            "400: Bad Request (4011)": components["errors"]["4011"];
-        };
+  };
+  "get-route": {
+    parameters: {
+      query: {
+        /** @description Address of the input token
+         *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
+         *      */
+        tokenIn: string;
+        /** @description Address of the output token
+         *     `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` in case of native token
+         *      */
+        tokenOut: string;
+        /** @description Amount of the input token (in wei) */
+        amountIn: string;
+        /** @description `false`/`0` = route will be based on the maximum output token returned
+         *     `true`/`1` = route will be based on the lowest gas cost (i.e. the least hops)
+         *      */
+        saveGas?: boolean;
+        /** @description DEX IDs included in the route, separated by comma */
+        includedSources?: string;
+        /** @description DEX IDs excluded from the route, separated by comma */
+        excludedSources?: string;
+        /** @description Determines whether gas costs are included when searching for route */
+        gasInclude?: boolean;
+        /** @description Estimated price of gas required for swap, in wei units */
+        gasPrice?: string;
+        /** @description Fee amount to be collected \
+         *     if `isInBps` = `true`, `feeAmount` is the percentage of fees that we will take with base unit = 10000, i.e `feeAmount` = 10 and `isInBps` = `true` then fee = 0.1%
+         *     if `isInBps` = `false`, `feeAmount` is the amount of token that we will take as fee, i.e `feeAmount` = 10 and `isInBps` = 'false' then fee = 10 token weis
+         *      */
+        feeAmount?: string;
+        /** @description Indicates whether fee is charged by input token `currency_in` or output token `currency_out`
+         *     Default is empty whereby no fee is charged
+         *      */
+        chargeFeeBy?: "currency_in" | "currency_out";
+        /** @description if true, fee is taken in BPS
+         *      */
+        isInBps?: boolean;
+        /** @description Address to receive fee (if `chargeFeeBy` is not empty) */
+        feeReceiver?: string;
+        /** @description ClientID of the party calling the API. Please use the same ClientID as the `x-client-id` in the header.
+         *      */
+        source?: string;
+      };
+      header?: {
+        /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the params. */
+        "x-client-id"?: string;
+      };
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
     };
+    requestBody?: never;
+    responses: {
+      /** @description Swap Found */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SwapRouteSuccess"];
+        };
+      };
+      422: components["errors"]["4221"];
+      "400: Bad Request (4001)": components["errors"]["4001"];
+      "400: Bad Request (4002)": components["errors"]["4002"];
+      "400: Bad Request (4005)": components["errors"]["4005"];
+      "400: Bad Request (4007)": components["errors"]["4007"];
+      "400: Bad Request (4008)": components["errors"]["4008"];
+      "400: Bad Request (4009)": components["errors"]["4009"];
+      "400: Bad Request (4010)": components["errors"]["4010"];
+      "400: Bad Request (4011)": components["errors"]["4011"];
+    };
+  };
+  "post-route-encoded": {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description ClientID of the party calling the API. Please use the same ClientID as the `source` in the body. */
+        "x-client-id"?: string;
+      };
+      path: {
+        /** @description Full list of supported chains available on Docs. */
+        chain: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SwapEncodePostBody"];
+      };
+    };
+    responses: {
+      /** @description Successfully encoded */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SwapEncodeSuccess"];
+        };
+      };
+      422: components["errors"]["4221"];
+      "400: Bad Request (4001)": components["errors"]["4001"];
+      "400: Bad Request (4002)": components["errors"]["4002"];
+      "400: Bad Request (4005)": components["errors"]["4005"];
+      "400: Bad Request (4007)": components["errors"]["4007"];
+      "400: Bad Request (4008)": components["errors"]["4008"];
+      "400: Bad Request (4009)": components["errors"]["4009"];
+      "400: Bad Request (4010)": components["errors"]["4010"];
+      "400: Bad Request (4011)": components["errors"]["4011"];
+    };
+  };
 }

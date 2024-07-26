@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Metadata } from "next";
 import OriginalLayout from "@/app/(wallet)/[address]/transactions/queue/layout";
 import { TITLES } from "@/const";
+import type { Metadata } from "next";
 
 // -----------------------------------------------------------------------------
 // Metadata

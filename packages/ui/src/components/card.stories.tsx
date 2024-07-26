@@ -15,11 +15,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import {
   Card,
-  CardHeader,
   CardContent,
   CardDescription,
-  CardTitle,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "./card";
 
 // -----------------------------------------------------------------------------

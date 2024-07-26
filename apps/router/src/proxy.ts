@@ -14,8 +14,8 @@
 
 import { API_URLS } from "@lightdotso/const";
 import { THE_GRAPH_SUBGRAPH_IDS } from "@lightdotso/const/src/api_urls";
-import { Handler } from "hono";
-import { StatusCode } from "hono/utils/http-status";
+import type { Handler } from "hono";
+import type { StatusCode } from "hono/utils/http-status";
 
 // From: https://github.com/linnil1/hono-cf-proxy/blob/628084ec7a18a964f612559a62651487d81cd2df/src/utils_basic.ts#L3-L41
 // License: MIT
@@ -35,11 +35,8 @@ export type ProxyOptions = {
 // Proxy
 // -----------------------------------------------------------------------------
 
-export const basicProxy = (
-  proxy_url: string = "",
-  options?: ProxyOptions,
-): Handler => {
-  return async c => {
+export const basicProxy = (proxy_url = "", options?: ProxyOptions): Handler => {
+  return async (c) => {
     // Removes prefix
     // prefix = /app1/*, path = /app1/a/b
     // => suffix_path = /a/b
@@ -53,17 +50,17 @@ export const basicProxy = (
     let url = proxy_url ? proxy_url + path : c.req.url;
 
     // If the_graph is provided, construct the URL
-    if (options?.the_graph && proxy_url == API_URLS.THE_GRAPH_API_URL) {
+    if (options?.the_graph && proxy_url === API_URLS.THE_GRAPH_API_URL) {
       url = `${API_URLS.THE_GRAPH_API_URL}/${c.env.THE_GRAPH_API_KEY}/subgraphs/id/${THE_GRAPH_SUBGRAPH_IDS[options.the_graph]}`;
     }
 
     // Add params
     if (c.req.query()) {
-      url = url + "?" + new URLSearchParams(c.req.query());
+      url = `${url}?${new URLSearchParams(c.req.query())}`;
     }
 
     // Initialize Headers
-    let headers = new Headers();
+    const headers = new Headers();
 
     headers.set("Content-Type", "application/json");
     // Automatically add API keys to headers
@@ -95,7 +92,7 @@ export const basicProxy = (
     });
 
     // Return response
-    if (response.status == 101) {
+    if (response.status === 101) {
       return response;
     }
 

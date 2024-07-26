@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Toaster, ReactQueryProvider, Web3Provider } from "@lightdotso/ui";
+import { ReactQueryProvider, Toaster, Web3Provider } from "@lightdotso/ui";
 // import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
@@ -54,7 +54,7 @@ import "./global.css";
 // };
 
 export const decorators = [
-  Story => (
+  (Story) => (
     <AppRouterContext.Provider value={{} as AppRouterInstance}>
       <ReactQueryProvider>
         <Web3Provider>

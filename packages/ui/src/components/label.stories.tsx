@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Label>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Label htmlFor="email">Your email address</Label>,
+  render: (args) => <Label htmlFor="email">Your email address</Label>,
   args: {},
 };

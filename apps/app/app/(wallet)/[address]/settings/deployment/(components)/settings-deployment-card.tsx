@@ -14,6 +14,8 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
 import {
   LATEST_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
@@ -36,10 +38,8 @@ import {
 } from "@lightdotso/utils";
 import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import Link from "next/link";
-import { useMemo, type FC } from "react";
-import { encodeFunctionData, type Address, type Chain, type Hex } from "viem";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
+import { type FC, useMemo } from "react";
+import { type Address, type Chain, type Hex, encodeFunctionData } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -112,7 +112,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // Try to extract a matching operation w/ the current chain id
-  const deployed_op = userOperations?.find(op => op.chain_id === chain.id);
+  const deployed_op = userOperations?.find((op) => op.chain_id === chain.id);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -220,7 +220,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     <SettingsCard
       title={chain.name}
       subtitle={
-        TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
+        TITLES.WalletSettings.subcategories.Deployment.subcategories.Chain
           .description
       }
       chainId={chain.id}
@@ -243,7 +243,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         </div>
       )}
       <div className="flex flex-row items-center">
-        {deployed_op && deployed_op.transaction?.hash && (
+        {deployed_op?.transaction?.hash && (
           <div className="flex items-center gap-2">
             Tx:{" "}
             <a

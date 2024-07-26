@@ -14,6 +14,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
 import type { RefinementCallback } from "@lightdotso/hooks";
 import { useRefinement } from "@lightdotso/hooks";
@@ -27,12 +28,11 @@ import {
   FormMessage,
   OTP,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  useEffect,
   type FC,
   type InputHTMLAttributes,
   useCallback,
+  useEffect,
 } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import type { z } from "zod";
@@ -82,7 +82,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
     });
 
     return res.match(
-      data => data.status === "ACTIVE",
+      (data) => data.status === "ACTIVE",
       () => false,
     );
   };
@@ -175,14 +175,14 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
                 id={name}
                 placeholder="Your Invite Code"
                 defaultValue={field.value}
-                onBlur={e => {
+                onBlur={(e) => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
                   validInviteCode.invalidate();
                   parentMethods.trigger();
                 }}
-                onChange={e => {
+                onChange={(e) => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }

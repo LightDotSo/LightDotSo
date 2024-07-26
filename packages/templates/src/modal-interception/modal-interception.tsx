@@ -15,10 +15,10 @@
 "use client";
 
 import { useModals, useUserOperations } from "@lightdotso/stores";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
-import { Modal, ModalProps } from "../modal";
+import { Modal, type ModalProps } from "../modal";
 
 // -----------------------------------------------------------------------------
 // Props

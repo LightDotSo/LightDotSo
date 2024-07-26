@@ -30,7 +30,7 @@ type ModalSwiperStore = {
 
 export const useModalSwiper = create(
   devtools<ModalSwiperStore>(
-    set => ({
+    (set) => ({
       pageIndex: 0,
       setPageIndex: (index: number) => set({ pageIndex: index }),
     }),

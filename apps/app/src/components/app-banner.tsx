@@ -14,9 +14,9 @@
 
 "use client";
 
+import { useAppGroup } from "@/hooks";
 import { Banner } from "@lightdotso/templates";
 import type { FC } from "react";
-import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component

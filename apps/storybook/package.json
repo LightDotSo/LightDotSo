@@ -12,9 +12,7 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "files": [
-    "dist/**"
-  ],
+  "files": ["dist/**"],
   "scripts": {
     "add": "shadcn-ui add",
     "build": "pnpm run build:styles && pnpm run build:storybook || true",

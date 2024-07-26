@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { useQueryTokenGroup } from "@lightdotso/query";
+import type { TokenAmount } from "@lightdotso/types";
 import { useMemo } from "react";
-import { Address } from "viem";
+import type { Address } from "viem";
 import { useTokenAmount } from "./useTokenAmount";
 import { useTokenAmounts } from "./useTokenAmounts";
-import { TokenAmount } from "@lightdotso/types";
-import { useQueryTokenGroup } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -130,7 +130,7 @@ export const useToken = ({
 
   const tokens = useMemo(() => {
     if (tokenAmounts && tokenAmounts.length > 0) {
-      return tokenAmounts.filter(token => {
+      return tokenAmounts.filter((token) => {
         // Filter amounts that are not zero
         return token.amount > BigInt(0);
       });

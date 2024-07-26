@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
+import { handler } from "@/handlers/[address]/owners/handler";
+import { preloader } from "@/preloaders/[address]/owners/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
-import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
-import { handler } from "@/handlers/[address]/owners/handler";
-import { preloader } from "@/preloaders/[address]/owners/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

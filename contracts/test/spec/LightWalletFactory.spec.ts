@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { expect, test } from "vitest";
 //@ts-expect-error
 import { LightWalletFactory } from "@/contracts/LightWalletFactory.sol";
+import { expect, test } from "vitest";
 
 test("LightWalletFactory: Correct humanReadableAbi", () => {
-  expect(Object.values(LightWalletFactory.humanReadableAbi))
-    .toMatchInlineSnapshot(`
+  expect(
+    Object.values(LightWalletFactory.humanReadableAbi),
+  ).toMatchInlineSnapshot(`
     [
       "constructor(address entryPoint)",
       "error EntrypointAddressZero()",

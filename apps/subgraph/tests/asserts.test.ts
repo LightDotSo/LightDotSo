@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { describe, test, assert } from "matchstick-as/assembly/index";
+import { assert, describe, test } from "matchstick-as/assembly/index";
 
 // From: https://github.com/LimeChain/demo-subgraph/blob/f43cb41a6bae431ac7f014eab8dbad1a4f13f041/tests/asserts.test.ts
 // License: MIT

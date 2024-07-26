@@ -66,10 +66,10 @@ export const useQueryWalletSimulation = (params: WalletCreateBodyParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

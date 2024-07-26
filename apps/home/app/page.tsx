@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Spiral } from "@/components/spiral";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
-import { Spiral } from "@/components/spiral";
 
 // -----------------------------------------------------------------------------
 // Page

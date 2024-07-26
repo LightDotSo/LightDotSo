@@ -38,7 +38,7 @@ export default async function Page() {
 
   return (
     <ul className="text-lg hover:underline">
-      {proposals.map(proposal => (
+      {proposals.map((proposal) => (
         <li key={proposal.slug}>
           <a href={`/proposals/${proposal.slug}`}>{proposal.entry.title}</a>
         </li>

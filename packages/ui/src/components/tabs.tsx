@@ -16,7 +16,7 @@
 
 import { cn } from "@lightdotso/utils";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { createContext, forwardRef, useContext } from "react";
 

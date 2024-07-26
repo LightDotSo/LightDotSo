@@ -74,10 +74,10 @@ export const useQueryUserOperationMerkle = (
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as UserOperationMerkleData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

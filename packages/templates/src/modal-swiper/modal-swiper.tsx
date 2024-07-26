@@ -16,7 +16,7 @@
 
 import { useModalSwiper } from "@lightdotso/stores";
 import { motion } from "framer-motion";
-import { useState, type FC, type ReactNode, useEffect } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Const

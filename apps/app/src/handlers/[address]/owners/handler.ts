@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
 import { getConfiguration } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
-import { handler as addressHandler } from "@/handlers/[address]/handler";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -58,7 +58,7 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   return res.match(
-    configuration => {
+    (configuration) => {
       return {
         paginationState: paginationState,
         configuration: configuration,

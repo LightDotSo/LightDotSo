@@ -21,13 +21,13 @@ import { useAuth } from "@lightdotso/stores";
 import { useSignMessage } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  hexToBytes,
   type Address,
   type Hex,
   getAddress,
+  hexToBytes,
+  isAddress,
   toBytes,
   toHex,
-  isAddress,
 } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ export const useUserOperationSign = ({
 
   const userOwnerId = useMemo(() => {
     // Map the user id to the owner id
-    return owners.find(owner => owner.address === userAddress)?.id;
+    return owners.find((owner) => owner.address === userAddress)?.id;
   }, [owners, userAddress]);
 
   const isUserOperationOwner = useMemo(() => {
@@ -77,7 +77,7 @@ export const useUserOperationSign = ({
 
     // Check if the user is an owner
     return owners.some(
-      owner => owner.address === getAddress(userAddress as Address),
+      (owner) => owner.address === getAddress(userAddress as Address),
     );
   }, [owners, userAddress]);
 
@@ -88,7 +88,7 @@ export const useUserOperationSign = ({
 
     // Check if the user has already signed
     return userOperation.signatures.some(
-      signature => signature.owner_id === userOwnerId,
+      (signature) => signature.owner_id === userOwnerId,
     );
   }, [userAddress, userOperation.signatures, userOwnerId]);
 

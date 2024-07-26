@@ -14,6 +14,7 @@
 
 "use client";
 
+import deleteCookiesAction from "@/actions/deleteCookiesAction";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
@@ -38,17 +39,16 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import {
-  useDisconnect,
-  useModal,
   cookieStorage,
   createStorage,
+  useDisconnect,
+  useModal,
 } from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
-import Link from "next/link";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
-import deleteCookiesAction from "@/actions/deleteCookiesAction";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -109,7 +109,7 @@ export const NavUser: FC = () => {
         <Button>
           <Wallet className="mr-2 size-4" />
           {address
-            ? (ens ?? shortenAddress(address as Address))
+            ? ens ?? shortenAddress(address as Address)
             : "Connect Wallet"}
         </Button>
       </DropdownMenuTrigger>

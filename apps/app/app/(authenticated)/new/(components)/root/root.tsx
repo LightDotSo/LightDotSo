@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { FC, ReactNode } from "react";
 import { RootContext } from "@/app/(authenticated)/new/(components)/root/root-context";
 import { RootLink } from "@/app/(authenticated)/new/(components)/root/root-link";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Types

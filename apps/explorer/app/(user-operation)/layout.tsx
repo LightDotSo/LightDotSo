@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { UserOperationsDataTableToolbar } from "@/app/(user-operation)/(components)/user-operations-data-table-toolbar";
+import { TITLES } from "@/const";
 import {
-  BaseLayerWrapper,
-  MinimalPageWrapper,
-  MiddleLayerWrapper,
   BannerSection,
+  BaseLayerWrapper,
+  MiddleLayerWrapper,
+  MinimalPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { UserOperationsDataTableToolbar } from "@/app/(user-operation)/(components)/user-operations-data-table-toolbar";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES["UserOperations"].title,
-  description: TITLES["UserOperations"].description,
+  title: TITLES.UserOperations.title,
+  description: TITLES.UserOperations.description,
 };
 
 // -----------------------------------------------------------------------------
@@ -48,8 +48,8 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
       <BannerSection
-        title={TITLES["UserOperations"].title}
-        description={TITLES["UserOperations"].description}
+        title={TITLES.UserOperations.title}
+        description={TITLES.UserOperations.description}
       >
         <MiddleLayerWrapper>
           <UserOperationsDataTableToolbar />

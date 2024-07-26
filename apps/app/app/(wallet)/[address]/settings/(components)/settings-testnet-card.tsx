@@ -14,6 +14,10 @@
 
 "use client";
 
+import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
+import { TITLES } from "@/const";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDelayedValue } from "@lightdotso/hooks";
 import {
   useMutationWalletSettingsUpdate,
@@ -31,14 +35,10 @@ import {
   FormMessage,
   Switch,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, type FC, useEffect, useMemo } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { z } from "zod";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -199,14 +199,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   return (
     <SettingsCard
       title={
-        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
-          "Testnet"
-        ].title
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories
+          .Testnet.title
       }
       subtitle={
-        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
-          "Testnet"
-        ].description
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories
+          .Testnet.description
       }
       footerContent={
         <SettingsCardBaseButton>
@@ -228,13 +226,13 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
                 <FormLabel>
                   {
                     TITLES.WalletSettings.subcategories["Wallet Settings"]
-                      .subcategories["Testnet"].title
+                      .subcategories.Testnet.title
                   }
                 </FormLabel>
                 <FormDescription>
                   {
                     TITLES.WalletSettings.subcategories["Wallet Settings"]
-                      .subcategories["Testnet"].note
+                      .subcategories.Testnet.note
                   }
                 </FormDescription>
                 <div className="flex items-center space-x-2">

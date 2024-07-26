@@ -39,7 +39,7 @@ type Story = StoryObj<typeof TransactionTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <TransactionTable
       isLoading={false}
       pageSize={10}

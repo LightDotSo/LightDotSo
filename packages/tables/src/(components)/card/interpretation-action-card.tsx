@@ -18,7 +18,7 @@ import { ACTION_LABELS, Action } from "@lightdotso/const";
 import type { InterpretationData } from "@lightdotso/data";
 import { ActionLogo } from "@lightdotso/elements";
 import { cn } from "@lightdotso/utils";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,10 +48,10 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
     }
 
     // Flatten actions to just be an array of action keys
-    const flattenedActions = interpretation?.actions.map(a => a.action);
+    const flattenedActions = interpretation?.actions.map((a) => a.action);
 
     // Find the first action from flattenedActions that is a key in Action enum
-    const matchedActionKey = flattenedActions.find(action =>
+    const matchedActionKey = flattenedActions.find((action) =>
       Object.values(Action).includes(action),
     );
 

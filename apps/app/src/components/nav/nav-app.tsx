@@ -14,6 +14,9 @@
 
 "use client";
 
+import { CartBadgeCountButton } from "@/components/cart/cart-badge-count-button";
+import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
+import { NavUser } from "@/components/nav/nav-user";
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
@@ -23,9 +26,6 @@ import {
 } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
-import { CartBadgeCountButton } from "@/components/cart/cart-badge-count-button";
-import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
-import { NavUser } from "@/components/nav/nav-user";
 
 // -----------------------------------------------------------------------------
 // Props

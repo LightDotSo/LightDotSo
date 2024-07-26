@@ -44,19 +44,19 @@ export function getWalletCount(): BigInt {
 }
 
 export function incrementUserOpCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpCount = counter.userOpCount.plus(BigInt.fromI32(1));
   counter.save();
 }
 
 export function incrementUserOpRevertCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpRevertCount = counter.userOpRevertCount.plus(BigInt.fromI32(1));
   counter.save();
 }
 
 export function incrementUserOpSuccessCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.userOpSuccessCount = counter.userOpSuccessCount.plus(
     BigInt.fromI32(1),
   );
@@ -64,7 +64,7 @@ export function incrementUserOpSuccessCount(): void {
 }
 
 export function incrementWalletCount(): void {
-  let counter = getCounter();
+  const counter = getCounter();
   counter.walletCount = counter.walletCount.plus(BigInt.fromI32(1));
   counter.save();
 }

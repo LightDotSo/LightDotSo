@@ -24,7 +24,7 @@ import type {
   HTMLAttributes,
 } from "react";
 import { forwardRef } from "react";
-import { Dialog, DialogPortal, DialogOverlay, DialogContent } from "./dialog";
+import { Dialog, DialogContent, DialogOverlay, DialogPortal } from "./dialog";
 
 // -----------------------------------------------------------------------------
 // Components

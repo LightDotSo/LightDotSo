@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createPublicClient, http } from "viem";
+import { http, createPublicClient } from "viem";
 import { mainnet } from "viem/chains";
 
 // -----------------------------------------------------------------------------

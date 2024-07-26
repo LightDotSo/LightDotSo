@@ -16,8 +16,8 @@
 
 import type { UserOperationData } from "@lightdotso/data";
 import {
-  usePaginationQueryState,
   useIsTestnetQueryState,
+  usePaginationQueryState,
 } from "@lightdotso/nuqs";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
@@ -25,7 +25,7 @@ import {
   DataTableFacetedFilter,
   DataTableViewOptions,
 } from "@lightdotso/templates";
-import { Button, ToolbarSectionWrapper, Switch, Label } from "@lightdotso/ui";
+import { Button, Label, Switch, ToolbarSectionWrapper } from "@lightdotso/ui";
 import { getChainNameWithChainId } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
@@ -88,7 +88,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<number>();
-    currentData?.forEach(userOperation => {
+    currentData?.forEach((userOperation) => {
       uniqueChainValues.add(userOperation.chain_id!);
     });
     return uniqueChainValues;
@@ -105,7 +105,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           <DataTableFacetedFilter
             column={table?.getColumn("chain_id")}
             title="Chain"
-            options={Array.from(uniqueChainValues).map(chain => ({
+            options={Array.from(uniqueChainValues).map((chain) => ({
               value: chain.toString(),
               label: getChainNameWithChainId(chain),
             }))}

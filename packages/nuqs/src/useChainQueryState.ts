@@ -14,21 +14,21 @@
 
 import { CHAINS, LIGHT_CHAIN } from "@lightdotso/const";
 import { createParser, useQueryState } from "nuqs";
-import { Chain } from "viem";
+import type { Chain } from "viem";
 
 // -----------------------------------------------------------------------------
 // Parser
 // -----------------------------------------------------------------------------
 
 export const chainParser = createParser({
-  parse: function (value: string) {
+  parse: (value: string) => {
     // Find the chain by lowercase name of value w/ matching `chain.name` in `CHAINS`
     const chain = [LIGHT_CHAIN, ...CHAINS].find(
-      chain => chain.name.toLowerCase() === value.toLowerCase(),
+      (chain) => chain.name.toLowerCase() === value.toLowerCase(),
     );
     return chain ?? null;
   },
-  serialize: function (value: Chain) {
+  serialize: (value: Chain) => {
     // Return the lowercase name of `chain.name`
     return value.name.toLowerCase();
   },

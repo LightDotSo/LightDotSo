@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiCheck, AssertionBuilder } from "checkly/constructs";
-import { websiteGroup, targetUrl } from "..";
+import { targetUrl, websiteGroup } from "..";
 
 new ApiCheck("app-inngest", {
   name: "API Inngest",

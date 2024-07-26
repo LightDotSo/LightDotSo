@@ -63,10 +63,10 @@ export const useQueryAuthSession = (params: AuthParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

@@ -18,7 +18,7 @@ export const camelCaseToCapitalizedWords = (input: string): string => {
 
   // Capitalize the first letter of each word and make sure the rest of the letters are lowercase
   const capitalizedWords = words.map(
-    word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
   );
 
   // Join the words back into a single string with spaces

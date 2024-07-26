@@ -14,10 +14,11 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getWallet } from "@lightdotso/client";
 import {
-  useNameQueryState,
   useInviteCodeQueryState,
+  useNameQueryState,
   useOwnersQueryState,
   useSaltQueryState,
   useThresholdQueryState,
@@ -25,8 +26,8 @@ import {
 } from "@lightdotso/nuqs";
 import { useMutationWalletCreate } from "@lightdotso/query";
 import {
-  newFormSchema,
   newFormConfigurationSchema,
+  newFormSchema,
   newFormStoreSchema,
 } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
@@ -39,15 +40,14 @@ import {
   CardTitle,
   Checkbox,
   Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormLabel,
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
@@ -169,7 +169,7 @@ export const ConfirmForm: FC = () => {
         simulate: false,
         name: form.getValues("name"),
         threshold: form.getValues("threshold"),
-        owners: form.getValues("owners").map(owner => ({
+        owners: form.getValues("owners").map((owner) => ({
           weight: owner.weight!,
           address: owner.address!,
         })),
@@ -190,9 +190,9 @@ export const ConfirmForm: FC = () => {
         getWallet(
           { params: { query: { address: formAddress! } } },
           clientType,
-        ).then(res => res._unsafeUnwrap()),
+        ).then((res) => res._unsafeUnwrap()),
       )
-        .then(res => {
+        .then((res) => {
           toast.dismiss(loadingToast);
 
           if (res) {
@@ -227,7 +227,7 @@ export const ConfirmForm: FC = () => {
 
     async function fetchENSNametoAddress() {
       // We will use newOwners array instead of mutating owners directly
-      let newOwners = [...owners];
+      const newOwners = [...owners];
       for (let i = 0; i < newOwners.length; i++) {
         if (
           newOwners[i].addressOrEns &&

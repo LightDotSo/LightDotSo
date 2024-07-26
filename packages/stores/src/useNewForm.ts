@@ -54,10 +54,10 @@ export const useNewForm = create(
         inviteCode: "",
         name: "",
       },
-      setFormValues: async values => {
+      setFormValues: async (values) => {
         const currentState = get().formValues;
 
-        set(prevState => ({
+        set((prevState) => ({
           formValues: { ...prevState?.formValues, ...values },
         }));
 
@@ -82,7 +82,7 @@ export const useNewForm = create(
           errors: result.success ? null : result.error,
         });
       },
-      fetchToCreate: async function (isCreate: boolean) {
+      fetchToCreate: async (isCreate: boolean) => {
         // Run validation before fetching
         get().validate();
 
@@ -105,7 +105,7 @@ export const useNewForm = create(
             name: get().formValues.name!,
             salt: get().formValues.salt!,
             threshold: get().formValues.threshold!,
-            owners: get().formValues.owners!.map(owner => ({
+            owners: get().formValues.owners?.map((owner) => ({
               weight: owner.weight!,
               address: owner.address!,
             })),
@@ -114,7 +114,7 @@ export const useNewForm = create(
 
         // Parse the response and set the address
         res.match(
-          data => {
+          (data) => {
             set(() => ({
               address: data?.address,
             }));

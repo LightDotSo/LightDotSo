@@ -13,17 +13,17 @@
 // limitations under the License.
 
 import "@lightdotso/styles/keystatic.css";
-import {
-  HStackFull,
-  BannerSection,
-  BasicPageWrapper,
-  BaseLayerWrapper,
-} from "@lightdotso/ui";
 import { createReader } from "@keystatic/core/reader";
+import {
+  BannerSection,
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  HStackFull,
+} from "@lightdotso/ui";
 import Markdoc from "@markdoc/markdoc";
-import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import React from "react";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const blogs = await reader.collections.posts.all();
 
-  return blogs.map(blog => ({
+  return blogs.map((blog) => ({
     slug: blog.slug.split("/"),
   }));
 }

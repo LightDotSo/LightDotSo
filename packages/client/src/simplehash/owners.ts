@@ -57,7 +57,7 @@ export const getNftsByOwner = async (
       "GET",
       headers,
     ),
-    err => {
+    (err) => {
       console.error(err);
       return err as Error;
     },

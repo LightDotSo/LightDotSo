@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRefinement } from "@lightdotso/hooks";
 import { addressOrEns, ownerFormSchema } from "@lightdotso/schemas";
 import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
 import { normalize } from "viem/ens";
@@ -54,9 +54,9 @@ const walletNameFormSchema = z.object({
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => {
+  render: (args) => {
     const getEns = async ({ name }: { name: string }) =>
-      publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
+      publicClient.getEnsAddress({ name: normalize(name) }).then((addr) => {
         // console.log(addr);
         return !!addr;
       });

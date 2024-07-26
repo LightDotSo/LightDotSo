@@ -56,10 +56,10 @@ export const useQueryEnsDomains = (params: EnsListParams) => {
       });
 
       return res.match(
-        data => {
+        (data) => {
           return data as EnsDataPage;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }
@@ -71,16 +71,16 @@ export const useQueryEnsDomains = (params: EnsListParams) => {
 
   return {
     ensDomains:
-      ensPage && ensPage?.domains && ensPage?.domains.length > 0
+      ensPage?.domains && ensPage?.domains.length > 0
         ? ensPage?.domains
             .filter(
-              domain =>
+              (domain) =>
                 domain.resolver &&
                 domain.resolver.addr &&
                 domain.resolver.addr.id !== null &&
                 domain.name !== null,
             )
-            .map(domain => ({
+            .map((domain) => ({
               name: domain.name,
               id: domain.resolver.addr.id,
             }))

@@ -16,18 +16,18 @@ import { CHAINS } from "@lightdotso/const";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createClient, fallback } from "viem";
 import {
+  http,
   cookieStorage,
   createConfig,
   createStorage,
-  http,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   unstable_connector,
 } from "wagmi";
 import {
-  walletConnect,
-  injected,
   coinbaseWallet,
+  injected,
   safe,
+  walletConnect,
 } from "wagmi/connectors";
 
 // -----------------------------------------------------------------------------
@@ -52,13 +52,12 @@ export const wagmiConfig = createConfig({
   //     ]),
   //   });
   // },
-  client: function ({ chain }) {
-    return createClient({
+  client: ({ chain }) =>
+    createClient({
       chain: chain,
       transport: http(),
       // transport: fallback([http(), unstable_connector(injected)]),
-    });
-  },
+    }),
   connectors: [
     coinbaseWallet({
       appName: "Light",

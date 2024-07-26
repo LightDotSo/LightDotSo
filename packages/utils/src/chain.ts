@@ -14,11 +14,11 @@
 
 import {
   CHAINS,
-  SIMPLEHASH_CHAIN_ID_MAPPING,
   CHAIN_ID_LABELS,
-  TESTNET_CHAINS,
-  MAINNET_CHAINS,
   DEPRECATED_CHAINS,
+  MAINNET_CHAINS,
+  SIMPLEHASH_CHAIN_ID_MAPPING,
+  TESTNET_CHAINS,
 } from "@lightdotso/const";
 import type { Chain } from "viem";
 import { extractChain } from "viem";
@@ -69,9 +69,8 @@ export function getChainIdBySimplehashChainName(chain: string): number {
         chain as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
       ];
     return chainId;
-  } else {
-    return 1;
   }
+  return 1;
 }
 
 export function getChainBySimplehashChainName(chain: string): Chain {
@@ -82,7 +81,7 @@ export function getChainBySimplehashChainName(chain: string): Chain {
 
 export function isTestnet(chainId: number): boolean {
   return (
-    TESTNET_CHAINS.some(chain => chain.id === chainId) ||
-    !MAINNET_CHAINS.some(chain => chain.id === chainId)
+    TESTNET_CHAINS.some((chain) => chain.id === chainId) ||
+    !MAINNET_CHAINS.some((chain) => chain.id === chainId)
   );
 }

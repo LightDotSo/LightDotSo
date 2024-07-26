@@ -19,13 +19,13 @@ import { useDebouncedValue } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
+  useQueryUserOperationEstimateFeesPerGas,
+  useQueryUserOperationEstimateGas,
   useQueryUserOperationNonce,
   useQueryUserOperations,
   useQueryWallet,
-  useQueryUserOperationEstimateGas,
-  useQueryUserOperationEstimateFeesPerGas,
 } from "@lightdotso/query";
-import { type UserOperation } from "@lightdotso/schemas";
+import type { UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -36,11 +36,11 @@ import {
 } from "@lightdotso/wagmi";
 import { getUserOperationHash } from "permissionless";
 import type {
-  UserOperation as PermissionlessUserOperation,
   ENTRYPOINT_ADDRESS_V06,
+  UserOperation as PermissionlessUserOperation,
 } from "permissionless";
-import { type FC, useMemo, useEffect, useState } from "react";
-import { type Hex, type Address } from "viem";
+import { type FC, useEffect, useMemo, useState } from "react";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -182,7 +182,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             genesisConfiguration?.image_hash as Hex,
             wallet?.salt as Hex,
           )
-        : (initialUserOperation.initCode ?? "0x");
+        : initialUserOperation.initCode ?? "0x";
 
     // If the initial user operation nonce is provided, make sure it is same or greater
     // In the case that it is not, update the nonce to the minimum nonce

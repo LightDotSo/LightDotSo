@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalInterception } from "@lightdotso/templates";
-import type { Address } from "viem";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@create/(.)[address]/create/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/create/page";
+import { ModalInterception } from "@lightdotso/templates";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

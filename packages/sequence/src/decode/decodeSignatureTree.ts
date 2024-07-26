@@ -31,7 +31,7 @@
 // License: Apache 2.0
 
 import type { Address } from "viem";
-import { bytesToString, bytesToHex } from "viem";
+import { bytesToHex, bytesToString } from "viem";
 import { SignaturePartType } from "../typings";
 import type { RecoveryNode, RecoveryTopology } from "../typings";
 

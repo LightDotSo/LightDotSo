@@ -73,10 +73,10 @@ export const useQueryUserOperationSignature = (
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as UserOperationSignatureData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

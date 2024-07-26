@@ -14,7 +14,7 @@
 
 import { BASE_API_URLS } from "@lightdotso/const";
 import { simulationCreateData } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 export const postSimulation = (url: string) =>
   http.post(`${url}/v1/simulation/create`, () => {

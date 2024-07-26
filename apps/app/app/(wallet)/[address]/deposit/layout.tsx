@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BaseLayerWrapper,
-  MiddleLayerWrapper,
-  BasicPageWrapper,
-  BannerSection,
-  DialogSectionWrapper,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { ACTION_NAV_ITEMS } from "@/app/(wallet)/[address]/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
+import {
+  BannerSection,
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  DialogSectionWrapper,
+  MiddleLayerWrapper,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Metadata

@@ -20,7 +20,7 @@ export const refineNumberFormat = (number: number) => {
   if (
     typeof number === "undefined" ||
     number === null ||
-    isNaN(number) ||
+    Number.isNaN(number) ||
     typeof number !== "number"
   ) {
     return "0";
@@ -38,17 +38,17 @@ export const refineNumberFormat = (number: number) => {
       minimumFractionDigits: 3,
       maximumFractionDigits: 4,
     });
-  } else if (number < 0.01) {
+  }
+  if (number < 0.01) {
     return number.toLocaleString("en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 3,
     });
-  } else {
-    return number.toLocaleString("en-US", {
-      style: "decimal",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
   }
+  return number.toLocaleString("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 };

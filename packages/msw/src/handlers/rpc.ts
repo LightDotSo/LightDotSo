@@ -17,7 +17,7 @@ import {
   getEstimateUserOperationGas,
   getPaymasterAndData,
 } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 export const getRpcHandler = (url: string) =>
   http.post(url, async ({ request }) => {

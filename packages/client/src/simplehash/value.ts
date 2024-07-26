@@ -42,7 +42,7 @@ export const getNftValuation = async (
       "GET",
       headers,
     ),
-    err => {
+    (err) => {
       if (err instanceof Error) {
         return err;
       }

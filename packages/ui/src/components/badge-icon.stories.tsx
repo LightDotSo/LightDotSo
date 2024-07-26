@@ -39,7 +39,7 @@ type Story = StoryObj<typeof BadgeIcon>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <BadgeIcon {...args}>
       <Mail className="size-5" />
     </BadgeIcon>

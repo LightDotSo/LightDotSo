@@ -29,7 +29,7 @@ export const useMutationStateUserOperationCreateBatch = () => {
       mutationKey: queryKeys.user_operation.create_batch._def,
       exact: true,
     },
-    select: mutations => mutations.state.status,
+    select: (mutations) => mutations.state.status,
   });
 
   return userOperationCreateBatchStatus;

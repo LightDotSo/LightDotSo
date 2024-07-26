@@ -46,7 +46,7 @@ const config: StorybookConfig = {
   docs: {
     autodocs: true,
   },
-  managerHead: head => `
+  managerHead: (head) => `
     ${head}
     <meta name="description" content="Storybook of Light">
     <meta name="image" content="https://storybook.light.so/storybook.png">
@@ -62,7 +62,7 @@ const config: StorybookConfig = {
     <meta name="twitter:description" content="Storybook of Light">
     <meta name="twitter:image" content="https://storybook.light.so/storybook.png">
   `,
-  env: config => ({
+  env: (config) => ({
     LOCAL_ENV: "dev",
   }),
   staticDirs: ["../public"],

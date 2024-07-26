@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-browser.runtime.sendMessage({ greeting: "hello" }).then(response => {
+browser.runtime.sendMessage({ greeting: "hello" }).then((response) => {
   // eslint-disable-next-line no-console
   console.warn("Received response: ", response);
 });

@@ -14,12 +14,12 @@
 
 "use client";
 
-import { useQueryUserOperationMerkle } from "@lightdotso/query";
-import { TableSectionWrapper } from "@lightdotso/ui";
-import { userOperationColumns } from "@lightdotso/tables";
-import { type FC } from "react";
-import type { Hex } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
+import { useQueryUserOperationMerkle } from "@lightdotso/query";
+import { userOperationColumns } from "@lightdotso/tables";
+import { TableSectionWrapper } from "@lightdotso/ui";
+import type { FC } from "react";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

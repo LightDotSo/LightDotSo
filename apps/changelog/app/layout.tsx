@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
+import { CHANGELOG_TABS } from "@/const";
 import { Footer, Nav, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
-import { CHANGELOG_TABS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props

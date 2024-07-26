@@ -18,12 +18,12 @@ import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import {
   Command,
-  CommandList,
   CommandInput,
-  TabsList,
-  TabsTrigger,
+  CommandList,
   Tabs,
   TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------

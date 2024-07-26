@@ -52,7 +52,7 @@ type Story = StoryObj<typeof Menubar>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
+  render: (args) => (
     <Menubar>
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>

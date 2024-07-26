@@ -64,10 +64,10 @@ export const useQueryActivitiesCount = (params: ActivityListCountParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

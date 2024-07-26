@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import { type BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 
 export function handleUserOperationFromCalldata(
-  callData: String,
+  callData: string,
   nonce: BigInt,
 ): UserOperationStructTuple {
   // Decode the user operation from the input
   log.info("callData: {}", [callData.toString()]);
 
   // Get the function selector
-  let functionSelector = callData.substring(0, 10);
+  const functionSelector = callData.substring(0, 10);
   log.info("functionSelector: {}", [functionSelector.toString()]);
 
   // Get the function parameters
-  let functionParameters = callData.substring(10);
+  const functionParameters = callData.substring(10);
   log.info("functionParameters: {}", [functionParameters.toString()]);
 
   // Decode the function parameters to hex
@@ -57,7 +57,7 @@ export function handleUserOperationFromCalldata(
 
   // Return the decoded user operation params w/ the matching nonce
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
-    if (userOpStructTupletArray[i].nonce == nonce) {
+    if (userOpStructTupletArray[i].nonce === nonce) {
       userOperationStructTuple = userOpStructTupletArray[i];
     }
   }

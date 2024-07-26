@@ -19,8 +19,8 @@ import type { TokenModalProps } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import type { Address } from "viem";
-import { TokenModal } from "./token-modal";
 import ChainModal from "../chain/chain-modal";
+import { TokenModal } from "./token-modal";
 
 // -----------------------------------------------------------------------------
 // Meta

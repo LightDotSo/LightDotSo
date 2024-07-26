@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { getUserOperation } from "@lightdotso/services";
 import {
   validateAddress,
@@ -19,7 +20,6 @@ import {
 } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
-import { handler as addressHandler } from "@/handlers/[address]/handler";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -60,7 +60,7 @@ export const handler = async (params: {
   // ---------------------------------------------------------------------------
 
   return userOperation.match(
-    userOperation => {
+    (userOperation) => {
       return {
         config: config,
         userOperation: userOperation,

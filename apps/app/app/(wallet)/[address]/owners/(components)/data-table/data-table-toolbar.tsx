@@ -62,7 +62,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueWeightValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueWeightValues = new Set<number>();
-    configuration?.owners.forEach(owner => {
+    configuration?.owners.forEach((owner) => {
       uniqueWeightValues.add(owner.weight);
     });
     return uniqueWeightValues;
@@ -81,7 +81,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             (table?.getColumn("address")?.getFilterValue() as string) ?? ""
           }
           className="h-8 w-[150px] lg:w-[250px]"
-          onChange={event =>
+          onChange={(event) =>
             table?.getColumn("address")?.setFilterValue(event.target.value)
           }
         />
@@ -89,7 +89,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           <DataTableFacetedFilter
             column={table?.getColumn("weight")}
             title="Weight"
-            options={Array.from(uniqueWeightValues).map(i => ({
+            options={Array.from(uniqueWeightValues).map((i) => ({
               value: i.toString(),
               label: i.toString(),
             }))}

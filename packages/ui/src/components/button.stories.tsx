@@ -39,54 +39,54 @@ type Story = StoryObj<typeof Button>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Button {...args}>Base</Button>,
+  render: (args) => <Button {...args}>Base</Button>,
   args: {},
 };
 export const Shadow: Story = {
-  render: args => <Button {...args}>Shadow</Button>,
+  render: (args) => <Button {...args}>Shadow</Button>,
   args: {
     variant: "shadow",
   },
 };
 export const Outline: Story = {
-  render: args => <Button {...args}>Outline</Button>,
+  render: (args) => <Button {...args}>Outline</Button>,
   args: {
     variant: "outline",
   },
 };
 export const Ghost: Story = {
-  render: args => <Button {...args}>Ghost</Button>,
+  render: (args) => <Button {...args}>Ghost</Button>,
   args: {
     variant: "ghost",
   },
 };
 export const Link: Story = {
-  render: args => <Button {...args}>Link</Button>,
+  render: (args) => <Button {...args}>Link</Button>,
   args: {
     variant: "link",
   },
 };
 export const Loading: Story = {
-  render: args => <Button {...args}>Loading</Button>,
+  render: (args) => <Button {...args}>Loading</Button>,
   args: {
     isLoading: true,
   },
 };
 export const Disabled: Story = {
-  render: args => <Button {...args}>Disabled</Button>,
+  render: (args) => <Button {...args}>Disabled</Button>,
   args: {
     disabled: true,
   },
 };
 export const WithIcon: Story = {
-  render: args => (
+  render: (args) => (
     <Button {...args}>
       <Mail className="mr-2 size-4" /> Login with Email Button
     </Button>
   ),
 };
 export const Default: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -116,7 +116,7 @@ export const Default: Story = {
   },
 };
 export const Destructive: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -146,7 +146,7 @@ export const Destructive: Story = {
   },
 };
 export const Error: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -176,7 +176,7 @@ export const Error: Story = {
   },
 };
 export const Warning: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -206,7 +206,7 @@ export const Warning: Story = {
   },
 };
 export const Info: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -236,7 +236,7 @@ export const Info: Story = {
   },
 };
 export const Success: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -266,7 +266,7 @@ export const Success: Story = {
   },
 };
 export const Indigo: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -296,7 +296,7 @@ export const Indigo: Story = {
   },
 };
 export const Pink: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default
@@ -326,7 +326,7 @@ export const Pink: Story = {
   },
 };
 export const Purple: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex items-center space-x-2">
       <Button {...args} variant="default">
         Default

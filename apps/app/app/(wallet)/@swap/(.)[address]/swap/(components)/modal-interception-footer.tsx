@@ -21,7 +21,7 @@ import {
 import { useAuth, useFormRef } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useMemo, type FC, useCallback } from "react";
+import { type FC, useCallback, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Component

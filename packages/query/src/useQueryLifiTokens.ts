@@ -54,10 +54,10 @@ export const useQueryLifiTokens = () => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as LifiTokensPageData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }
@@ -68,12 +68,9 @@ export const useQueryLifiTokens = () => {
   });
 
   return {
-    lifiTokens:
-      lifiTokensPage !== null &&
-      lifiTokensPage !== undefined &&
-      lifiTokensPage.tokens
-        ? Object.values(lifiTokensPage.tokens).flatMap(tokens => tokens)
-        : [],
+    lifiTokens: lifiTokensPage?.tokens
+      ? Object.values(lifiTokensPage.tokens).flat()
+      : [],
     isLifiTokensLoading: isLifiTokensLoading,
   };
 };

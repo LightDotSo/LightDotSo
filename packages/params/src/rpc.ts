@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { UserOperation } from "@lightdotso/schemas";
-import { Hex } from "viem";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params

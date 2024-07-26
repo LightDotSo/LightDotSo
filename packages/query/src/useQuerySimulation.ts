@@ -73,10 +73,10 @@ export const useQuerySimulation = (params: SimulationParams) => {
       );
 
       return res.match(
-        data => {
+        (data) => {
           return data as SimulationData;
         },
-        err => {
+        (err) => {
           if (failureCount % 3 !== 2) {
             throw err;
           }

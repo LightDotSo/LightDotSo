@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Cal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Cal />,
+  render: (args) => <Cal />,
   args: {},
 };

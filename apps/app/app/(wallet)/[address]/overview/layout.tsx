@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { OverviewInvokeButton } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-invoke-button";
+import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
+import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { TITLES } from "@/const";
 import {
   BaseLayerWrapper,
   LargeLayerWrapper,
@@ -21,11 +26,6 @@ import {
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import { OverviewInvokeButton } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-invoke-button";
-import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
-import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
-import { LinkButtonGroup } from "@/components/section/link-button-group";
-import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

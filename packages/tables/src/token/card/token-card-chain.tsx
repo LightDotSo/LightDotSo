@@ -44,7 +44,7 @@ export const TokenCardChain: FC<TokenCardChainProps> = ({
 
   if (isGrouped && leafTokens) {
     // Get the grouped tokens w/ the same group
-    const chainIds = leafTokens.map(t => t.chain_id);
+    const chainIds = leafTokens.map((t) => t.chain_id);
 
     if (!chainIds) {
       return null;

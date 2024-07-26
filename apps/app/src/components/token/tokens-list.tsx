@@ -17,7 +17,7 @@
 import { useQueryTokens, useQueryWalletSettings } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { TokenTable } from "@lightdotso/tables";
-import { type FC } from "react";
+import type { FC } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------

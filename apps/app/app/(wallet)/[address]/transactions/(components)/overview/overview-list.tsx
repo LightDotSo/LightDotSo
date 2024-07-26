@@ -14,12 +14,12 @@
 
 "use client";
 
-import { useIsDemoPathname } from "@lightdotso/hooks";
-import type { FC } from "react";
-import type { Address } from "viem";
 import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
+import { useIsDemoPathname } from "@lightdotso/hooks";
+import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

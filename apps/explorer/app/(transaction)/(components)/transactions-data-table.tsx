@@ -14,9 +14,10 @@
 
 "use client";
 
+import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 import {
-  usePaginationQueryState,
   useIsTestnetQueryState,
+  usePaginationQueryState,
 } from "@lightdotso/nuqs";
 import {
   useQueryTransactions,
@@ -24,9 +25,8 @@ import {
 } from "@lightdotso/query";
 import { transactionColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { useMemo, type FC } from "react";
+import { type FC, useMemo } from "react";
 import type { Address } from "viem";
-import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Props

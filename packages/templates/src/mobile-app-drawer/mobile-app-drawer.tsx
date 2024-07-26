@@ -19,12 +19,12 @@ import {
   Button,
   ButtonIcon,
   Drawer,
-  DrawerTrigger,
   DrawerBody,
-  DrawerContent,
-  DrawerHeader,
   DrawerClose,
+  DrawerContent,
   DrawerFooter,
+  DrawerHeader,
+  DrawerTrigger,
 } from "@lightdotso/ui";
 import { AlignRight, ArrowUpRight, XIcon } from "lucide-react";
 import Link from "next/link";
@@ -69,7 +69,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
       <DrawerContent>
         <DrawerHeader>{children}</DrawerHeader>
         <DrawerBody>
-          {tabs.map(tab => {
+          {tabs.map((tab) => {
             if (tab.href.startsWith("http")) {
               return (
                 <div key={tab.id} className="border-b border-border py-1.5">

@@ -34,7 +34,7 @@ export const nftColumns: ColumnDef<NftData>[] = [
   {
     id: "spam_score",
     accessorKey: "spam_score",
-    accessorFn: row => {
+    accessorFn: (row) => {
       return row.collection?.spam_score;
     },
     filterFn: (row, id, value) => {

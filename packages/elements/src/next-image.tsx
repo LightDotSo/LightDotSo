@@ -14,7 +14,7 @@
 
 import type { ImageLoader, ImageProps } from "next/image";
 import Image from "next/image";
-import { FC } from "react";
+import type { FC } from "react";
 
 // From: https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/
 
@@ -31,7 +31,7 @@ export const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
   return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
 };
 
-export const NextImage: FC<ImageProps> = props => {
+export const NextImage: FC<ImageProps> = (props) => {
   return (
     <Image
       {...props}

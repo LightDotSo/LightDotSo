@@ -48,7 +48,7 @@ import {
 import { HomeIcon, WalletIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
-import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, FC, UIEvent } from "react";
 import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
 
@@ -150,7 +150,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
     if (wallet && wallets) {
       // Find the selected wallet from the wallets query
       const selectedWallet = wallets.find(
-        queryWallet => queryWallet.address === getAddress(wallet),
+        (queryWallet) => queryWallet.address === getAddress(wallet),
       );
 
       // If the wallet is not found, set the selected wallet to undefined
@@ -280,8 +280,8 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
               wallets?.length > 0 &&
               // Filter out the selected wallet
               wallets
-                .filter(wallet => wallet.address !== selectedWallet?.address)
-                .map(wallet => (
+                .filter((wallet) => wallet.address !== selectedWallet?.address)
+                .map((wallet) => (
                   <CommandItem
                     key={wallet.address}
                     className="text-sm"

@@ -48,7 +48,7 @@ function App() {
 
       <form
         className="row"
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           greet();
         }}
@@ -56,7 +56,7 @@ function App() {
         <input
           id="greet-input"
           placeholder="Enter a name..."
-          onChange={e => setName(e.currentTarget.value)}
+          onChange={(e) => setName(e.currentTarget.value)}
         />
         <button type="submit">Greet</button>
       </form>
