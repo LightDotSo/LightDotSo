@@ -4,7 +4,12 @@
     "enabled": true
   },
   "files": {
-    "ignore": [".vscode/settings.json", "**/generated/**", "background.js"]
+    "ignore": [
+      ".vscode/settings.json",
+      "**/_next/static/**",
+      "**/generated/**",
+      "background.js"
+    ]
   },
   "formatter": {
     "enabled": true,

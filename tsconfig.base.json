@@ -22,7 +22,6 @@
     "outDir": "dist",
     "preserveConstEnums": true,
     "resolveJsonModule": true,
-    // DONT DO THIS so jsdoc will remain
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": false,
