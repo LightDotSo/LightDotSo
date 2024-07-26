@@ -186,6 +186,7 @@ lazy_static! {
         m.insert(5000, "https://rpc.mantle.xyz".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
+        m.insert(42170, "https://nova.arbitrum.io/rpc".to_string());
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
         m.insert(59140, "https://rpc.linea.build ".to_string());
         m.insert(81457, "https://rpc.blast.io".to_string());
