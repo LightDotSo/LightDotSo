@@ -111,6 +111,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     account: address as Address,
     data: callData as Hex,
     to: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       findContractAddressByAddress(wallet?.factory_address as Address)!
     ],
   });

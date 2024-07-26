@@ -44,6 +44,7 @@ export const Base: Story = {
   render: () => {
     const { setAddress } = useAuth();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       setAddress("0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F");
       // eslint-disable-next-line react-hooks/exhaustive-deps

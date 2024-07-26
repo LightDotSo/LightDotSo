@@ -130,6 +130,7 @@ export const useUserOperationSign = ({
   // ---------------------------------------------------------------------------
 
   // A handler for submitting the signature
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Set loading state
     setIsLoading(true);

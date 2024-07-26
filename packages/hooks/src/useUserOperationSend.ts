@@ -181,6 +181,7 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSubmit = useCallback(() => {
     if (
       !isUserOperationSendReady ||

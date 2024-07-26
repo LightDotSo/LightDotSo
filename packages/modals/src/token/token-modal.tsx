@@ -287,6 +287,7 @@ export const TokenModal: FC = () => {
     300,
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isTokenModalLoading = useMemo(() => {
     return (
       isTokensLoading ||
@@ -315,6 +316,7 @@ export const TokenModal: FC = () => {
   const virtualizer = useVirtualizer({
     count: renderedTokens.length,
     getScrollElement: () => parentRef.current,
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     estimateSize: useCallback(
       () => 60,
       [
@@ -342,6 +344,7 @@ export const TokenModal: FC = () => {
   //   }, [renderedTokens]);
 
   const handleKeyDown = (event: React.KeyboardEvent) =>
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useCallback(() => {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();

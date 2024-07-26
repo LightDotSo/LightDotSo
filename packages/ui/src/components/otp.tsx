@@ -97,6 +97,7 @@ export const OTP = ({
         },
       };
 
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       onChange(newEvent as any);
     }
   };
@@ -230,7 +231,10 @@ export const OTP = ({
     <div className={cn("flex space-x-3", className)}>
       {inputs.map((value, index) => (
         <NumericInputField
-          key={`input-${index}`}
+          key={`input-${
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            index
+          }`}
           id={`input-${index}`}
           focus={activeInputIndex === index}
           value={value}

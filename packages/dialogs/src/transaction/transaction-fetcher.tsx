@@ -107,6 +107,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Get the nonce for the entry point
   const { data: entryPointNonce } = useReadEntryPointGetNonce({
     address: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       findContractAddressByAddress(wallet?.factory_address as Address)!
     ] as typeof ENTRYPOINT_ADDRESS_V06,
     chainId: Number(initialUserOperation.chainId),
@@ -160,6 +161,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Should not change from the initial user operation
   const targetUserOperation: Partial<
     Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
@@ -280,6 +282,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const updatedUserOperation: Omit<
     UserOperation,
     "hash" | "signature" | "paymasterAndData"
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (
       !targetUserOperation?.sender ||
@@ -375,6 +378,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const finalizedUserOperation: Omit<
     UserOperation,
     "hash" | "signature"
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (
       !debouncedUserOperation?.sender ||
@@ -427,6 +431,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
       if (!finalizedUserOperation) {
@@ -456,6 +461,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
         chainId: Number(finalizedUserOperation.chainId) as number,
         entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           findContractAddressByAddress(wallet?.factory_address as Address)!
         ] as typeof ENTRYPOINT_ADDRESS_V06,
       });
@@ -502,6 +508,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setIsFormLoading(isTransactionFetcherLoading);
   }, [isTransactionFetcherLoading]);
@@ -511,6 +518,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Sync `targetUserOperation` to the store
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
       !targetUserOperation?.chainId ||
@@ -531,6 +539,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   ]);
 
   // Sync `debouncedUserOperation` to the store
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
       !debouncedUserOperation?.chainId ||

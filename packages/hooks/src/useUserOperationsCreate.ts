@@ -79,6 +79,7 @@ export const useUserOperationsCreate = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const subdigest = useMemo(() => {
     // If the userOperation length is 0, return
     if (userOperations.length === 0) {
@@ -228,6 +229,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Reset the signed data, merkle tree, and userOperations
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const resetUserOperationsCreate = useCallback(() => {
     setSignedData(undefined);
     setMerkleTree(undefined);
@@ -236,6 +238,7 @@ export const useUserOperationsCreate = ({
   }, []);
 
   // Sign the userOperation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const signUserOperations = useCallback(() => {
     if (!subdigest) {
       return;
@@ -271,6 +274,7 @@ export const useUserOperationsCreate = ({
   }, [data]);
 
   // Create the userOperation (single or batch)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Create a single user operation
     const createUserOp = async () => {
@@ -397,6 +401,7 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction disabled state
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isUserOperationsDisabled = useMemo(() => {
     console.info("isValidUserOperations", isValidUserOperations);
     console.info("isUserOperationsCreateable", isUserOperationsCreateable);

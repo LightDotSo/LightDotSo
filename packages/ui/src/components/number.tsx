@@ -99,6 +99,7 @@ const NumberValue = ({
   return <>{value}</>;
 };
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
   ({ prefix, value, className, size, variant, ...props }, ref) => {
     const spring = useSpring(0, {
@@ -111,7 +112,8 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
       if (
         typeof current === "undefined" ||
         current === null ||
-        Number.isNaN(current)
+        // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
+        isNaN(current)
       ) {
         return "0";
       }
@@ -125,7 +127,8 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     useEffect(() => {
       // Delay the spring animation to give the component time to mount
       setTimeout(() => {
-        spring.set(Number.parseFloat(value.toFixed(2)));
+        // biome-ignore lint/style/useNumberNamespace: <explanation>
+        spring.set(parseFloat(value.toFixed(2)));
       }, 300);
     }, [spring, value]);
 

@@ -244,6 +244,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   }, [isUserOperationsCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
       isTransactionSuccess &&
@@ -255,6 +256,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   }, [isTransactionSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetUserOperations();
     resetPendingUserOperationHashes();
@@ -264,6 +266,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   }, [pathname]);
 
   // If create is successful, reset the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isTransactionSuccess) {
       resetPartialUserOperations();

@@ -53,6 +53,7 @@ export const fromResponse = <T>(response: Response) =>
 // From: https://github.com/radixdlt/babylon-alphanet/blob/5c73dab8e04163250c7e4dcc17fc85d37b89b778/alphanet-walletextension-sdk/sandbox/core-api/core-api.ts#L80C9-L80C16
 // License: Apache-2.0
 export const fetchWithResult = <T>(
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: any,
   ...input: Parameters<typeof fetch>
 ) =>

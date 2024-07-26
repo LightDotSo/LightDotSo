@@ -51,6 +51,7 @@ export const useCreate = ({ userOperations }: CreateProps) => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleCreate = useCallback(() => {
     const rootPath = isAddressPath
       ? `/${wallet}/create`

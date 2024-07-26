@@ -106,6 +106,7 @@ export const ProgressUserOperation: FC = () => {
   // ---------------------------------------------------------------------------
 
   // Issue a `toast.info` for each pending user operation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!pendingUserOperations || isPendingUserOperationsLoading) {
       return;

@@ -106,10 +106,14 @@ export const useMutationUserOperationCreateBatch = (
             user_operations: body.userOperations.map((userOperation) => {
               return {
                 chain_id: Number(userOperation.chainId),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 hash: userOperation.hash!,
                 nonce: Number(userOperation.nonce),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 init_code: userOperation.initCode!,
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 sender: userOperation.sender!,
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 call_data: userOperation.callData!,
                 call_gas_limit: Number(userOperation.callGasLimit),
                 verification_gas_limit: Number(
@@ -120,6 +124,7 @@ export const useMutationUserOperationCreateBatch = (
                 max_priority_fee_per_gas: Number(
                   userOperation.maxPriorityFeePerGas,
                 ),
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 paymaster_and_data: userOperation.paymasterAndData!,
               };
             }),

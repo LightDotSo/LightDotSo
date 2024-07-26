@@ -32,6 +32,7 @@ export const getTokensCount = async (params: TokenListCountParams) => {
   return getClientTokensCount(
     {
       params: {
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         query: { address: params.address!, is_testnet: params.is_testnet },
       },
     },

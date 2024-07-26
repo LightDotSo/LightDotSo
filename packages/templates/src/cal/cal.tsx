@@ -24,6 +24,7 @@ import { type FC, useEffect } from "react";
 
 declare global {
   interface Window {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     Cal: any;
   }
 }
@@ -78,8 +79,12 @@ export const Cal: FC = () => {
         C.Cal ||
         (() => {
           // @ts-ignore
-          const cal = C.Cal;
-          const ar = arguments;
+          // biome-ignore lint/style/useConst: <explanation>
+          let cal = C.Cal;
+          // @ts-expect-error
+          // biome-ignore lint/style/useConst: <explanation>
+          // biome-ignore lint/style/noArguments: <explanation>
+          let ar = arguments;
           if (!cal.loaded) {
             cal.ns = {};
             cal.q = cal.q || [];
@@ -88,6 +93,8 @@ export const Cal: FC = () => {
           }
           if (ar[0] === L) {
             const api = () => {
+              // @ts-expect-error
+              // biome-ignore lint/style/noArguments: <explanation>
               p(api, arguments);
             };
             const namespace = ar[1];
@@ -107,6 +114,7 @@ export const Cal: FC = () => {
     })(window, "https://app.cal.com/embed/embed.js", "init");
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Load the Cal.com script
     loadCalScript();

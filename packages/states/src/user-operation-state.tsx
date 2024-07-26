@@ -75,6 +75,7 @@ export const UserOperationState: FC = () => {
     }
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchPendingUserOperations();
     refetchUserOperationsCount();

@@ -132,6 +132,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
     fromSwapMaximumQuantity,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const fromTokenDollarRatio = useMemo(() => {
     return fromToken?.balance_usd && fromToken?.amount && fromSwapDecimals
       ? fromToken?.balance_usd /
@@ -139,6 +140,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       : null;
   }, [fromToken?.balance_usd, fromToken?.original_amount, fromSwapDecimals]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const toTokenDollarRatio = useMemo(() => {
     return toToken?.balance_usd && toToken?.amount && toSwapDecimals
       ? toToken?.balance_usd /
@@ -204,6 +206,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (executionParams && executionParams.length > 0) {
       setExecutionParamsByChainId(executionParams[0].chainId, executionParams);

@@ -100,6 +100,7 @@ export const useTokenAmount = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const tokenAmount: TokenAmount | null = useMemo(() => {
     return getSwapToken(queryToken, fromWagmiToken);
   }, [queryToken, fromWagmiToken]);

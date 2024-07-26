@@ -52,6 +52,7 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
       )}
     >
       {interpretation?.asset_changes?.slice(0, 1).map((assetChange, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <AssetChange key={index} assetChange={assetChange} />
       ))}
     </div>

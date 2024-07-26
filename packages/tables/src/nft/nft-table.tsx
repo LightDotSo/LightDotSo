@@ -114,6 +114,7 @@ export const NftTable: FC<NftTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setNftTable) {
       setNftTable(table);
@@ -204,6 +205,7 @@ export const NftTable: FC<NftTableProps> = ({
       ) : delayedIsLoading ? (
         Array(pageSize)
           .fill(null)
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           .map((_, index) => <Skeleton key={index} className="size-24" />)
       ) : (
         <div className="col-span-6">

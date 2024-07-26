@@ -74,6 +74,7 @@ export const useToken = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const token: TokenAmount = useMemo(() => {
     if (tokenAmounts && tokenAmounts.length > 0 && chainId === 0 && groupId) {
       // Return the aggregated token amount
@@ -128,6 +129,7 @@ export const useToken = ({
     return { group_id: tokenGroup?.id, ...tokenAmount };
   }, [tokenAmount, tokenGroup, tokenAmounts, chainId, groupId]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const tokens = useMemo(() => {
     if (tokenAmounts && tokenAmounts.length > 0) {
       return tokenAmounts.filter((token) => {

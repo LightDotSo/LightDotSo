@@ -87,6 +87,7 @@ export const readNotification = async (
     params,
     body,
   }: {
+    // biome-ignore lint/complexity/noBannedTypes: <explanation>
     params: {};
     body: {
       notifications: {

@@ -70,6 +70,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   // Only set once on initial render
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
       setIsQueryDevToolsOpen(true);

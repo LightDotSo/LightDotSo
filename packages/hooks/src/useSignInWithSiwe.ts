@@ -55,6 +55,7 @@ export const useSignInWithSiwe = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSignIn = useCallback(async () => {
     if (!address || !chain || sessionId) {
       return;
@@ -71,6 +72,7 @@ export const useSignInWithSiwe = () => {
           uri: window.location.origin,
           version: "1",
           chainId: chain.id,
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           nonce: res._unsafeUnwrap().nonce!,
         });
         const messageToSign = message.prepareMessage();

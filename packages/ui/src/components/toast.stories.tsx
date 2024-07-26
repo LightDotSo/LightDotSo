@@ -100,6 +100,7 @@ export const Description: Story = {
     },
   },
 };
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export const Error: Story = {
   args: {
     message: "There was a problem with your request.",

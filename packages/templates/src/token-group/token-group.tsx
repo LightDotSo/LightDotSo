@@ -106,6 +106,7 @@ export const BaseTokenGroupToken = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (groupId && tokenAmount) {
       setTokenGroupByGroupId(groupId, tokenAmount);

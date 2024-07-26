@@ -38,6 +38,7 @@ export interface Refinement<T> {
 }
 
 export interface RefinementCallback<T> {
+  // biome-ignore lint/style/useShorthandFunctionType: <explanation>
   (data: T, ctx: { signal: AbortSignal }): boolean | Promise<boolean>; // Callback function signature
 }
 
@@ -78,6 +79,7 @@ export function useRefinement<T>(
   }
 
   // Cleanup effect to abort ongoing refinement when the component unmounts
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => () => refinementRef.current.abort(), []);
 
   return refinementRef.current.refine;
@@ -120,6 +122,7 @@ function createRefinement<T>(ctxRef: MutableRefObject<RefinementContext<T>>) {
       return result;
     }
 
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     return (result = start(data));
   };
 

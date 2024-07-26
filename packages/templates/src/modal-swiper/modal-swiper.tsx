@@ -57,6 +57,7 @@ export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (pageIndex === 0) {
       setHasAnimated(true);

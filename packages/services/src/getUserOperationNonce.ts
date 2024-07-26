@@ -36,6 +36,7 @@ export const getUserOperationNonce = async (
   return getClientUserOperationNonce(
     {
       params: {
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
         query: { address: params.address!, chain_id: params.chain_id },
       },
     },

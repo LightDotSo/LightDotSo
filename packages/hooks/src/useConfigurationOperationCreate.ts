@@ -149,6 +149,7 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Refetch the simulation when the parameters change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetchConfigurationOperationSimulation();
   }, [params, refetchConfigurationOperationSimulation]);
@@ -162,6 +163,7 @@ export const useConfigurationOperationCreate = ({
     setSignedData(data);
   }, [data]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const createConfigurationOp = async () => {
       if (!owner || !signedData || !params) {
