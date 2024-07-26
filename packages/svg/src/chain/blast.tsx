@@ -32,6 +32,7 @@ export const BlastLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Blast</title>
     <g clipPath="url(#clip0_7987_9178)">
       <rect width="24" height="24" rx="6" fill="#FCFC03" />
       <path

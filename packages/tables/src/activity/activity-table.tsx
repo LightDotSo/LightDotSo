@@ -113,6 +113,7 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setActivityTable) {
       setActivityTable(table);
@@ -210,7 +211,12 @@ export const ActivityTable: FC<ActivityTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
                 {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}

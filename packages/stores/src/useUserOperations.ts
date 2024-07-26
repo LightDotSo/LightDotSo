@@ -193,6 +193,7 @@ export const useUserOperations = create(
       {
         name: "user-operations-state-v1",
         storage: createJSONStorage(() => sessionStorage, {
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           reviver: (_key: string, value: any): any => {
             // Ignore functions during serialization
             if (typeof value === "function") {
@@ -203,6 +204,7 @@ export const useUserOperations = create(
             }
             return value;
           },
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           replacer: (_key: string, value: any): any => {
             if (typeof value === "bigint") {
               return { type: "bigint", value: value.toString() };
@@ -218,6 +220,7 @@ export const useUserOperations = create(
       anonymousActionType: "useUserOperations",
       name: "UserOperationsStore",
       serialize: {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         replacer: (_key: any, value: any) =>
           typeof value === "bigint" ? value.toString() : value,
       },

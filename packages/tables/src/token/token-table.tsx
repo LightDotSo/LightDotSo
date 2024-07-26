@@ -119,6 +119,7 @@ export const TokenTable: FC<TokenTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setTokenTable) {
       setTokenTable(table);
@@ -160,6 +161,7 @@ export const TokenTable: FC<TokenTableProps> = ({
     setTokenTable,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!table.getIsAllRowsExpanded()) {
       table.toggleAllRowsExpanded();
@@ -254,7 +256,12 @@ export const TokenTable: FC<TokenTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
                 {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}

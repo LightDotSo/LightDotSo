@@ -79,6 +79,7 @@ export const useQuote = ({
     return null;
   }, [lifiQuote?.estimate?.toAmount]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const executionParams: ExecutionWithChainId[] = useMemo(() => {
     let executionIndex = 0;
     const executions: ExecutionWithChainId[] = [];

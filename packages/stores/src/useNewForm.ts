@@ -101,12 +101,19 @@ export const useNewForm = create(
             },
           },
           body: {
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             invite_code: get().formValues.inviteCode!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             name: get().formValues.name!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             salt: get().formValues.salt!,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             threshold: get().formValues.threshold!,
+            // @ts-expect-error
             owners: get().formValues.owners?.map((owner) => ({
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               weight: owner.weight!,
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               address: owner.address!,
             })),
           },

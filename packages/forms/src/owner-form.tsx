@@ -102,6 +102,7 @@ export const OwnerForm: FC = () => {
   }, [userAddress, userEns]);
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<OwnerFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -203,6 +204,7 @@ export const OwnerForm: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
@@ -245,6 +247,7 @@ export const OwnerForm: FC = () => {
   }, [form.watch]);
 
   // Set the form values from the URL on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Recursively iterate the owners and validate the addresses on mount
     owners.forEach((owner, index) => {
@@ -323,6 +326,7 @@ export const OwnerForm: FC = () => {
           address: owner.address as string,
           weight: owner.weight,
         })),
+        // @ts-expect-error
         ownerId: owner?.id,
       },
     });
@@ -421,6 +425,7 @@ export const OwnerForm: FC = () => {
       >
         <div className="space-y-4">
           {fields.map((field, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             <div key={index}>
               {/* A hack to make a padding above the separator */}
               {index === 1 && <div className="pt-4" />}
@@ -537,6 +542,7 @@ export const OwnerForm: FC = () => {
                           <SelectContent className="max-h-60">
                             {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
                               (_, i) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                                 <SelectItem key={i} value={(i + 1).toString()}>
                                   {i + 1}
                                 </SelectItem>
@@ -612,6 +618,7 @@ export const OwnerForm: FC = () => {
                     </FormControl>
                     <SelectContent>
                       {[...Array(CONFIGURATION_MAX_THRESHOLD)].map((_, i) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                         <SelectItem key={i} value={(i + 1).toString()}>
                           {i + 1}
                         </SelectItem>
@@ -633,6 +640,7 @@ export const OwnerForm: FC = () => {
                         !key.startsWith("threshold") &&
                         !key.startsWith("owners"),
                     )
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     .map(([_key, error]: [string, any]) => error.message)
                     .join("\n")}
                 </p>

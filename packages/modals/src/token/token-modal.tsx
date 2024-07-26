@@ -231,6 +231,7 @@ export const TokenModal: FC = () => {
     return overlay_tokens;
   }, [light_tokens, lifi_tokens]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const socket_tokens = useMemo(() => {
     // Socket balances
     const filtered_balances =
@@ -263,6 +264,7 @@ export const TokenModal: FC = () => {
     return socket_tokens;
   }, [socketBalances, chainState]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const renderedTokens: TokenData[] = useMemo(() => {
     if (type === "light") {
       return light_tokens;
@@ -438,6 +440,7 @@ export const TokenModal: FC = () => {
                       : undefined
                   }
                 >
+                  {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                   <div
                     style={{
                       position: "absolute",

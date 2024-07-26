@@ -34,8 +34,11 @@ test("llamaGetSchema", async () => {
     decimals?: number;
   }[] = [];
 
+  // biome-ignore lint/complexity/noForEach: <explanation>
   parsed.protocols.forEach((protocol) => {
+    // biome-ignore lint/complexity/noForEach: <explanation>
     protocol.groups.forEach((group) => {
+      // biome-ignore lint/complexity/noForEach: <explanation>
       group.balances.forEach((balance) => {
         // Here we add both the balance object and the protocol id to the balances array
         balances.push({

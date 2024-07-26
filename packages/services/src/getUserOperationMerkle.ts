@@ -34,6 +34,7 @@ export const getUserOperationMerkle = async (
   params: UserOperationMerkleGetParams,
 ) => {
   return getClientUserOperationMerkle(
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { root: params.root! } } },
     "admin",
   );

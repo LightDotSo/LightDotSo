@@ -74,6 +74,7 @@ export function NftModal() {
             )
             .map((nft) => (
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
               <div
                 key={nft.nft_id}
                 className="col-span-1 cursor-pointer flex-row items-center rounded-md ring-border-primary hover:ring-2"

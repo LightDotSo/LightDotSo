@@ -40,6 +40,7 @@ export const LightHorizontalLogo: FC<LightHorizontalLogoProps> = ({
       className={cn("fill-text", className)}
       {...props}
     >
+      <title>Light Horizontal</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

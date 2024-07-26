@@ -113,6 +113,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setNotificationTable) {
       setNotificationTable(table);
@@ -191,7 +192,12 @@ export const NotificationTable: FC<NotificationTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
                 {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}

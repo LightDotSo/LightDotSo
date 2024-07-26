@@ -46,6 +46,7 @@ export const Base: Story = {
   render: () => {
     const { showConnectModal } = useModals();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       showConnectModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps

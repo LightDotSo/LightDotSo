@@ -32,6 +32,7 @@ export const PolygonZkEvmLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Polygon ZkEvm</title>
     <rect width="24" height="24" rx="6" fill="#8247E5" />
     <mask
       id="mask0_10229_8048"

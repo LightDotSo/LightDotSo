@@ -32,6 +32,7 @@ export const GnosisLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Gnosis</title>
     <rect width="22" height="22" rx="6" fill="#008B73" />
     <path
       fillRule="evenodd"

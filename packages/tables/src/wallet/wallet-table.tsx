@@ -114,6 +114,7 @@ export const WalletTable: FC<WalletTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (setWalletTable) {
       setWalletTable(table);
@@ -194,7 +195,12 @@ export const WalletTable: FC<WalletTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
                 {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}

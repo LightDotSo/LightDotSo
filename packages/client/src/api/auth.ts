@@ -20,6 +20,7 @@ import { getClient } from "../client";
 // GET
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export const getNonce = async (params?: {}, clientType?: ClientType) => {
   const client = getClient(clientType);
 
@@ -33,6 +34,7 @@ export const getNonce = async (params?: {}, clientType?: ClientType) => {
   });
 };
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
   const client = getClient(clientType);
 
@@ -50,6 +52,7 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 // POST
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export const authLogout = async (params?: {}, clientType?: ClientType) => {
   const client = getClient(clientType);
 

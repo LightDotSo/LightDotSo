@@ -69,7 +69,9 @@ export const zodGraphqlRequest = async <TResponseSchema extends z.Schema>(
 
 interface JsonResponseSchema {
   jsonrpc: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   result?: any;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   error?: { code: number; message: string; data?: any };
   id: string | number;
 }

@@ -166,6 +166,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
 
     // If there is an error, sync with parent
     if (!form.formState.isValid && form.formState.errors[name]) {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       parentMethods.setError(name, form.formState.errors[name]!);
     }
 
@@ -185,6 +186,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   const abiWatch = form.watch("abi");
 
   // @ts-expect-error
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const executableFuncs: AbiFunction[] = useMemo(() => {
     const abi = form.getValues("abi") as Abi | undefined;
 
@@ -205,6 +207,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
 
   const functionNameWatch = form.watch("functionName");
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const abiInputs: readonly AbiParameter[] | undefined = useMemo(() => {
     const abi = form.getValues("abi") as Abi | undefined;
 
@@ -230,6 +233,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
 
   const functionAbiWatch = form.watch("abiArguments");
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const encodedFunctionSelector = useMemo(() => {
     const abi = form.getValues("abi") as Abi | undefined;
 
@@ -251,6 +255,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
 
   const abiInputsWatch = form.watch("abiArguments");
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const encodedAbiParameters = useMemo(() => {
     if (!form.formState.isValid) {
       return undefined;
@@ -297,7 +302,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (encodedCallData && encodedFunctionSelector) {
       setAbiEncoded({
         address: formAddress,
-        callData: encodedCallData,
+        callData: encodedCallData as Hex,
         functionName: encodedFunctionSelector,
       });
     }
@@ -322,7 +327,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   ) {
     if (SolidityString.safeParse(abiType).success) {
       if (value?.length > 0) {
-        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.setValue(
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
+          value,
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
@@ -338,7 +349,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
         isAddress(value) ||
         "0x000000000000000000000000000000000000000" === value
       ) {
-        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.setValue(
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
+          value,
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
@@ -353,7 +370,10 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       const boolValue = value.toLowerCase();
       if (boolValue === "true" || boolValue === "false") {
         form.setValue(
-          `abiArguments.${index}.value` as any,
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
           boolValue === "true",
         );
         form.clearErrors(`abiArguments.${index}.value`);
@@ -368,7 +388,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
     if (SolidityBytes.safeParse(abiType).success) {
       if (isHex(value) && isBytes(hexToBytes(value as Hex))) {
-        form.setValue(`abiArguments.${index}.value` as any, value as Hex);
+        form.setValue(
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
+          value as Hex,
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
@@ -381,7 +407,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (SolidityFunction.safeParse(abiType).success) {
       /** TODO: Add validations for Function type inputs. */
       if (value?.length > 0) {
-        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.setValue(
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
+          value,
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
@@ -395,7 +427,10 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       const parsedNumber = BigInt(value);
       if (parsedNumber) {
         form.setValue(
-          `abiArguments.${index}.value` as any,
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
           Number(parsedNumber),
         );
         form.clearErrors(`abiArguments.${index}.value`);
@@ -409,7 +444,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
     if (SolidityTuple.safeParse(abiType).success) {
       if (value?.length > 0) {
-        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.setValue(
+          `abiArguments.${
+            index
+            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          }.value` as any,
+          value,
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
@@ -421,6 +462,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     if (SolidityArray.safeParse(abiType).success) {
+      // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
       let parsedArray;
       try {
         parsedArray = JSON.parse(value);
@@ -436,10 +478,17 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
             ? "boolean"
             : "string";
         const areValuesValid = parsedArray.every(
+          // biome-ignore lint/suspicious/useValidTypeof: <explanation>
           (value: unknown) => typeof value === parseArrayType,
         );
         if (areValuesValid) {
-          form.setValue(`abiArguments.${index}.value` as any, parsedArray);
+          form.setValue(
+            `abiArguments.${
+              index
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+            }.value` as any,
+            parsedArray,
+          );
           form.clearErrors(`abiArguments.${index}.value`);
           form.trigger();
           return;
@@ -460,6 +509,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
 
   // Only on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     syncWithParent();
 
@@ -467,6 +517,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   }, []);
 
   // Sync w/ every invalidation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     syncWithParent();
 
@@ -569,6 +620,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
                 </FormControl>
                 <SelectContent className="max-h-60">
                   {executableFuncs.map((func, i) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     <SelectItem key={i} value={func.name}>
                       {func.name}
                     </SelectItem>

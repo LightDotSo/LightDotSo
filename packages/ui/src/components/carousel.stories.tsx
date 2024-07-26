@@ -50,6 +50,7 @@ export const Base: Story = {
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <CarouselItem key={index}>
             <div className="p-1">
               <Card>

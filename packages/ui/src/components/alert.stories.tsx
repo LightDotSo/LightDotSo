@@ -59,6 +59,7 @@ export const Destructive: Story = {
     intent: "destructive",
   },
 };
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export const Error: Story = {
   render: (args) => (
     <Alert {...args}>

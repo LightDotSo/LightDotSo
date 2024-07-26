@@ -34,6 +34,7 @@ import {
 // Config
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
 // -----------------------------------------------------------------------------

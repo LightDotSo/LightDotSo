@@ -116,6 +116,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!isLoading && setTransactionTable) {
       setTransactionTable(table);
@@ -213,7 +214,12 @@ export const TransactionTable: FC<TransactionTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={`loading-${index}`}>
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
                 {table.getVisibleLeafColumns().map((column) => (
                   <TableCell
                     key={column.id}

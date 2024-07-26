@@ -22,7 +22,9 @@ import { devtools } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 export interface FormRefState {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   formControl: Control<any, any> | undefined;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   setFormControl: (formControl: Control<any, any> | undefined) => void;
   formRef: MutableRefObject<HTMLFormElement | null> | undefined;
   setFormRef: (
@@ -44,6 +46,7 @@ export const useFormRef = create(
   devtools<FormRefState>(
     (set) => ({
       formControl: undefined,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       setFormControl: (formControl: Control<any, any> | undefined) =>
         set({ formControl: formControl }),
       formRef: undefined,

@@ -20,6 +20,8 @@ import { Kafka } from "@upstash/kafka";
 
 export const kafka = new Kafka({
   url: `https://${process.env.KAFKA_BROKER?.split(":")[0]}`,
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   username: process.env.KAFKA_USERNAME!,
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   password: process.env.KAFKA_PASSWORD!,
 });

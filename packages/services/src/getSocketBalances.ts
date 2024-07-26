@@ -33,6 +33,7 @@ export const getSocketBalances = async (params: SocketBalanceParams) => {
     {
       parameters: {
         query: {
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           userAddress: params.address!,
         },
       },

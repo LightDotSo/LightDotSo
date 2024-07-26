@@ -131,6 +131,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
 
     // If there is an error, sync with parent
     if (!form.formState.isValid && form.formState.errors[name]) {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       parentMethods.setError(name, form.formState.errors[name]!);
     }
   }, [form, name, parentMethods]);
@@ -140,6 +141,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
   // ---------------------------------------------------------------------------
 
   // Only on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (initialInviteCode) {
       form.setValue(name, initialInviteCode);
@@ -151,6 +153,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
   }, []);
 
   // Sync w/ every invalidation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     syncWithParent();
 

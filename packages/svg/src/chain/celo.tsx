@@ -32,6 +32,7 @@ export const CeloLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Celo</title>
     <g clipPath="url(#clip0_7984_9126)">
       <rect width="24" height="24" rx="6" fill="#FCFF52" />
       <path

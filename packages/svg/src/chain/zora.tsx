@@ -32,6 +32,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Zora</title>
     <g clip-path="url(#clip0_10113_10246)">
       <mask
         id="mask0_10113_10246"

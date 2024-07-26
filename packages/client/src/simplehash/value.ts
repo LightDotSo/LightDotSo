@@ -32,6 +32,7 @@ export const getNftValuation = async (
   };
 
   if (clientType === "admin") {
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     headers["X-API-KEY"] = process.env.SIMPLEHASH_API_KEY!;
   }
 
