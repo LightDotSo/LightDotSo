@@ -44,6 +44,7 @@ export const TransactionCalldata: FC = () => {
         progressUserOperations.map((progressUserOperation, index) => {
           return (
             <Accordion
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={index}
               collapsible
               defaultValue="value-0"

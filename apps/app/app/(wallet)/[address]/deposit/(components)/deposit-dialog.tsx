@@ -848,7 +848,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                           // biome-ignore lint/style/noNonNullAssertion: <explanation>
                           Number.parseInt(nft.token_id!) ===
                             // prettier-ignore
-                            // @ts-expect-error
                             transfer?.asset?.tokenId,
                       );
 

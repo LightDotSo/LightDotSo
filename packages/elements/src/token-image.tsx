@@ -144,6 +144,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const urls = useMemo(
     () =>
       [

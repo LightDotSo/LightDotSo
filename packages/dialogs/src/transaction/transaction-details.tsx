@@ -103,6 +103,7 @@ export const TransactionDetails: FC = () => {
         );
         return (
           <Accordion
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
             collapsible
             defaultValue="value-0"
@@ -128,6 +129,7 @@ export const TransactionDetails: FC = () => {
                   )
                   .map(([key, value], itemIndex) => (
                     <TransactionDetailInfo
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={`${index}-${itemIndex}`}
                       title={camelCaseToCapitalizedWords(key)}
                       value={

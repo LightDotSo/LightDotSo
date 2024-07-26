@@ -76,6 +76,7 @@ export const TokenModalGroupHoverCard: FC<TokenModalGroupHoverCardProps> = ({
               <div className="w-full">
                 {tokenAmounts.map((token, index) => (
                   <div
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     className="flex w-full items-center justify-between"
                   >

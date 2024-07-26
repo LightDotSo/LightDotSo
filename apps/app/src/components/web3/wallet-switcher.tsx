@@ -139,6 +139,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
     if (appGroup === "unauthenticated") {

@@ -88,6 +88,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (toQuotedAmount) {
       setQuote({
@@ -151,6 +152,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // The default values for the form
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const defaultValues: Partial<SwapFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
@@ -177,6 +179,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = form.watch((value) => {
       // Set buy swap query state
@@ -242,12 +245,14 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // Reset the execution params when the from swap quantity, address, or chain id changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetQuotes();
     resetExecutionParams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     console.info("quotes:", quotes);
 
@@ -293,6 +298,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const genericExecutionQuotes = useMemo(() => {
     // Initialize the token swaps
     const tokenSwaps: SwapFetcherProps[] = [];
@@ -446,6 +452,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               genericExecutionQuotes &&
               genericExecutionQuotes.length > 0 &&
               genericExecutionQuotes.map((quote, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <SwapFetcher key={index} {...quote} />
               ))}
             {fromToken?.address && fromToken.symbol ? (
@@ -715,6 +722,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
                 <AccordionContent className="flex flex-col space-y-2">
                   {genericExecutionQuotes.map((quote, index) => (
                     <div
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       key={index}
                       className="flex items-center justify-between"
                     >
