@@ -185,6 +185,7 @@ lazy_static! {
         m.insert(1329, "https://evm-rpc.sei-apis.com".to_string());
         m.insert(5000, "https://rpc.mantle.xyz".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
+        m.insert(34443, "https://mainnet.mode.network".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
         m.insert(42170, "https://nova.arbitrum.io/rpc".to_string());
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
@@ -216,6 +217,7 @@ lazy_static! {
         m.insert(137, "https://rpc.ankr.com/polygon".to_string());
         m.insert(250, "https://rpc.ankr.com/fantom".to_string());
         m.insert(1101, "https://rpc.ankr.com/polygon_zkevm".to_string());
+        m.insert(1329, "https://rpc.ankr.com/sei".to_string());
         m.insert(8453, "https://rpc.ankr.com/base".to_string());
         m.insert(42161, "https://rpc.ankr.com/arbitrum".to_string());
         m.insert(42170, "https://rpc.ankr.com/arbitrumnova".to_string());
@@ -256,6 +258,7 @@ lazy_static! {
         m.insert(5000, "https://5000.rpc.thirdweb.com".to_string());
         m.insert(8453, "https://8453.rpc.thirdweb.com".to_string());
         m.insert(9980, "https://9980.rpc.thirdweb.com".to_string());
+        m.insert(34443, "https://34443.rpc.thirdweb.com".to_string());
         m.insert(42161, "https://42161.rpc.thirdweb.com".to_string());
         m.insert(42170, "https://42170.rpc.thirdweb.com".to_string());
         m.insert(42220, "https://42220.rpc.thirdweb.com".to_string());
@@ -372,25 +375,67 @@ lazy_static! {
         m.insert(100, "https://api.pimlico.io/v2/gnosis/rpc".to_string());
         m.insert(122, "https://api.pimlico.io/v2/fuse/rpc".to_string());
         m.insert(137, "https://api.pimlico.io/v2/polygon/rpc".to_string());
+        m.insert(204, "https://api.pimlico.io/v2/opbnb/rpc".to_string());
+        m.insert(252, "https://api.pimlico.io/v2/fraxtal/rpc".to_string());
+        m.insert(690, "https://api.pimlico.io/v2/redstone/rpc".to_string());
+        m.insert(957, "https://api.pimlico.io/v2/lyra/rpc".to_string());
+        m.insert(5000, "https://api.pimlico.io/v2/mantle/rpc".to_string());
+        m.insert(7560, "https://api.pimlico.io/v2/cyber-mainnet/rpc".to_string());
+        m.insert(7887, "https://api.pimlico.io/v2/kinto/rpc".to_string());
+        m.insert(7979, "https://api.pimlico.io/v2/dos-mainnet/rpc".to_string());
+        m.insert(8217, "https://api.pimlico.io/v2/klaytn-cypress/rpc".to_string());
         m.insert(8453, "https://api.pimlico.io/v2/base/rpc".to_string());
+        m.insert(22222, "https://api.pimlico.io/v2/nautilus/rpc".to_string());
+        m.insert(34443, "https://api.pimlico.io/v2/mode/rpc".to_string());
         m.insert(42161, "https://api.pimlico.io/v2/arbitrum/rpc".to_string());
+        m.insert(42170, "https://api.pimlico.io/v2/arbitrum-nova/rpc".to_string());
         m.insert(42220, "https://api.pimlico.io/v2/celo/rpc".to_string());
         m.insert(43114, "https://api.pimlico.io/v2/avalanche/rpc".to_string());
+        m.insert(53935, "https://api.pimlico.io/v2/dfk-chain/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v2/linea/rpc".to_string());
+        m.insert(60808, "https://api.pimlico.io/v2/bob/rpc".to_string());
         m.insert(81457, "https://api.pimlico.io/v2/blast/rpc".to_string());
         m.insert(534352, "https://api.pimlico.io/v2/scroll/rpc".to_string());
+        m.insert(660279, "https://api.pimlico.io/v2/xai/rpc".to_string());
+        m.insert(978657, "https://api.pimlico.io/v2/treasure-ruby/rpc".to_string());
         m.insert(7777777, "https://api.pimlico.io/v2/zora/rpc".to_string());
+        m.insert(888888888, "https://api.pimlico.io/v2/ancient8/rpc".to_string());
 
         // Testnet
+        m.insert(31, "https://api.pimlico.io/v2/rootstock-testnet/rpc".to_string());
+        m.insert(97, "https://api.pimlico.io/v2/binance-testnet/rpc".to_string());
+        m.insert(111, "https://api.pimlico.io/v2/bob-sepolia/rpc".to_string());
+        m.insert(123, "https://api.pimlico.io/v2/fuse-sparknet/rpc".to_string());
+        m.insert(335, "https://api.pimlico.io/v2/dfk-chain-test/rpc".to_string());
+        m.insert(919, "https://api.pimlico.io/v2/mode-sepolia/rpc".to_string());
+        m.insert(1001, "https://api.pimlico.io/v2/klaytn-baobab/rpc".to_string());
+        m.insert(1513, "https://api.pimlico.io/v2/story-testnet/rpc".to_string());
+        m.insert(1993, "https://api.pimlico.io/v2/b3-sepolia/rpc".to_string());
+        m.insert(3939, "https://api.pimlico.io/v2/dos-testnet/rpc".to_string());
+        m.insert(4202, "https://api.pimlico.io/v2/lisk-sepolia/rpc".to_string());
         m.insert(10200, "https://api.pimlico.io/v2/chiado-testnet/rpc".to_string());
+        m.insert(17069, "https://api.pimlico.io/v2/garnet-holesky/rpc".to_string());
+        m.insert(43113, "https://api.pimlico.io/v2/avalanche-fuji/rpc".to_string());
         m.insert(44787, "https://api.pimlico.io/v2/celo-alfajores-testnet/rpc".to_string());
-        m.insert(80001, "https://api.pimlico.io/v2/mumbai/rpc".to_string());
+        m.insert(59141, "https://api.pimlico.io/v2/linea-sepolia/rpc".to_string());
+        m.insert(78600, "https://api.pimlico.io/v2/vanguard-testnet/rpc".to_string());
+        m.insert(80002, "https://api.pimlico.io/v2/polygon-amoy/rpc".to_string());
         m.insert(84532, "https://api.pimlico.io/v2/base-sepolia/rpc".to_string());
+        m.insert(90354, "https://api.pimlico.io/v2/camp-sepolia/rpc".to_string());
+        m.insert(98985, "https://api.pimlico.io/v2/superposition-testnet/rpc".to_string());
+        m.insert(132902, "https://api.pimlico.io/v2/form-testnet/rpc".to_string());
+        m.insert(167008, "https://api.pimlico.io/v2/taiko-katla-l2/rpc".to_string());
         m.insert(421614, "https://api.pimlico.io/v2/arbitrum-sepolia/rpc".to_string());
         m.insert(534351, "https://api.pimlico.io/v2/scroll-sepolia-testnet/rpc".to_string());
+        m.insert(3397901, "https://api.pimlico.io/v2/funki-testnet/rpc".to_string());
         m.insert(11155111, "https://api.pimlico.io/v2/sepolia/rpc".to_string());
         m.insert(11155420, "https://api.pimlico.io/v2/optimism-sepolia/rpc".to_string());
+        m.insert(28122024, "https://api.pimlico.io/v2/ancient8-testnet/rpc".to_string());
+        m.insert(111557560, "https://api.pimlico.io/v2/cyber-testnet/rpc".to_string());
+        m.insert(161221135, "https://api.pimlico.io/v2/plume-testnet/rpc".to_string());
+        m.insert(168587773, "https://api.pimlico.io/v2/blast-sepolia/rpc".to_string());
         m.insert(999999999, "https://api.pimlico.io/v2/zora-sepolia/rpc".to_string());
+        m.insert(37714555429, "https://api.pimlico.io/v2/xai-sepolia-orbit/rpc".to_string());
 
         m
     };
@@ -407,8 +452,10 @@ lazy_static! {
         m.insert(1, "https://ethereum-bundler.etherspot.io/".to_string());
         m.insert(10, "https://optimism-bundler.etherspot.io/".to_string());
         m.insert(14, "https://flare-bundler.etherspot.io/".to_string());
+        m.insert(30, "https://rootstock-bundler.etherspot.io/".to_string());
         m.insert(56, "https://bnb-bundler.etherspot.io/".to_string());
         m.insert(100, "https://gnosis-bundler.etherspot.io/".to_string());
+        m.insert(122, "https://fuse-bundler.etherspot.io/".to_string());
         m.insert(137, "https://polygon-bundler.etherspot.io/".to_string());
         m.insert(5000, "https://mantle-bundler.etherspot.io/".to_string());
         m.insert(8453, "https://base-bundler.etherspot.io/".to_string());
@@ -416,12 +463,20 @@ lazy_static! {
         m.insert(43114, "https://avalanche-bundler.etherspot.io/".to_string());
         m.insert(59144, "https://linea-bundler.etherspot.io/".to_string());
         m.insert(534352, "https://scroll-bundler.etherspot.io/".to_string());
+        m.insert(888888888, "https://ancient8-bundler.etherspot.io/".to_string());
 
         // Testnet
-        m.insert(5001, "https://mantletestnet-bundler.etherspot.io/".to_string());
-        m.insert(80001, "https://mumbai-bundler.etherspot.io/".to_string());
-        m.insert(534351, "https://scrollsepolia-bundler.etherspot.io/".to_string());
-        m.insert(11155111, "https://sepolia-bundler.etherspot.io/".to_string());
+        m.insert(31, "https://testnet-rpc.etherspot.io/v1/31".to_string());
+        m.insert(114, "https://testnet-rpc.etherspot.io/v1/114".to_string());
+        m.insert(123, "https://testnet-rpc.etherspot.io/v1/123".to_string());
+        m.insert(5003, "https://testnet-rpc.etherspot.io/v1/5003".to_string());
+        m.insert(80002, "https://testnet-rpc.etherspot.io/v1/80002".to_string());
+        m.insert(84532, "https://testnet-rpc.etherspot.io/v1/84532".to_string());
+        m.insert(421614, "https://testnet-rpc.etherspot.io/v1/421614".to_string());
+        m.insert(534351, "https://testnet-rpc.etherspot.io/v1/534351".to_string());
+        m.insert(11155111, "https://testnet-rpc.etherspot.io/v1/11155111".to_string());
+        m.insert(11155420, "https://testnet-rpc.etherspot.io/v1/11155420".to_string());
+        m.insert(28122024, "https://testnet-rpc.etherspot.io/v1/28122024".to_string());
 
         m
     };
@@ -441,10 +496,15 @@ lazy_static! {
         m.insert(100, "https://bundler.particle.network?chainId=100".to_string());
         m.insert(122, "https://bundler.particle.network?chainId=122".to_string());
         m.insert(137, "https://bundler.particle.network?chainId=137".to_string());
+        m.insert(204, "https://bundler.particle.network?chainId=204".to_string());
         m.insert(250, "https://bundler.particle.network?chainId=250".to_string());
+        m.insert(424, "https://bundler.particle.network?chainId=424".to_string());
         m.insert(1101, "https://bundler.particle.network?chainId=1101".to_string());
         m.insert(1329, "https://bundler.particle.network?chainId=1329".to_string());
+        m.insert(3776, "https://bundler.particle.network?chainId=3776".to_string());
+        m.insert(5000, "https://bundler.particle.network?chainId=5000".to_string());
         m.insert(8453, "https://bundler.particle.network?chainId=8453".to_string());
+        m.insert(9980, "https://bundler.particle.network?chainId=9980".to_string());
         m.insert(34443, "https://bundler.particle.network?chainId=34443".to_string());
         m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
         m.insert(42170, "https://bundler.particle.network?chainId=42170".to_string());
@@ -452,13 +512,18 @@ lazy_static! {
         m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
         m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
         m.insert(81457, "https://bundler.particle.network?chainId=81457".to_string());
+        m.insert(167000, "https://bundler.particle.network?chainId=167000".to_string());
         m.insert(534352, "https://bundler.particle.network?chainId=534352".to_string());
         m.insert(7777777, "https://bundler.particle.network?chainId=7777777".to_string());
 
         // Testnet
+        m.insert(5003, "https://bundler.particle.network?chainId=5003".to_string());
+        m.insert(10200, "https://bundler.particle.network?chainId=10200".to_string());
         m.insert(59141, "https://bundler.particle.network?chainId=59141".to_string());
+        m.insert(58008, "https://bundler.particle.network?chainId=58008".to_string());
         m.insert(80002, "https://bundler.particle.network?chainId=80002".to_string());
         m.insert(84532, "https://bundler.particle.network?chainId=84532".to_string());
+        m.insert(91715, "https://bundler.particle.network?chainId=91715".to_string());
         m.insert(421614, "https://bundler.particle.network?chainId=421614".to_string());
         m.insert(713715, "https://bundler.particle.network?chainId=713715".to_string());
         m.insert(11155111, "https://bundler.particle.network?chainId=11155111".to_string());
