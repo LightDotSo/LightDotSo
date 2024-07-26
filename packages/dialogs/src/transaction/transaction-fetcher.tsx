@@ -348,19 +348,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Get the paymaster and data from the target user operation
-  const { gasAndPaymasterAndData, isGasAndPaymasterAndDataLoading } =
-    useQueryPaymasterGasAndPaymasterAndData({
-      sender: address as Address,
-      chainId: debouncedUserOperation?.chainId,
-      nonce: debouncedUserOperation?.nonce,
-      initCode: debouncedUserOperation?.initCode,
-      callData: debouncedUserOperation?.callData,
-      callGasLimit: debouncedUserOperation?.callGasLimit,
-      preVerificationGas: debouncedUserOperation?.preVerificationGas,
-      verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
-      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
-      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
-    });
+  const {
+    paymasterAndData,
+    callGasLimit: gasAndPaymasterCallGasLimit,
+    preVerificationGas: gasAndPaymasterPreVerificationGas,
+    verificationGasLimit: gasAndPaymasterVerificationGasLimit,
+    isGasAndPaymasterAndDataLoading,
+  } = useQueryPaymasterGasAndPaymasterAndData({
+    sender: address as Address,
+    chainId: debouncedUserOperation?.chainId,
+    nonce: debouncedUserOperation?.nonce,
+    initCode: debouncedUserOperation?.initCode,
+    callData: debouncedUserOperation?.callData,
+    callGasLimit: debouncedUserOperation?.callGasLimit,
+    preVerificationGas: debouncedUserOperation?.preVerificationGas,
+    verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
+    maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+    maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -383,7 +388,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !debouncedUserOperation?.callGasLimit ||
       !debouncedUserOperation?.preVerificationGas ||
       !debouncedUserOperation?.verificationGasLimit ||
-      !gasAndPaymasterAndData
+      !paymasterAndData
     ) {
       return null;
     }
@@ -396,17 +401,25 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       callData: debouncedUserOperation?.callData,
       maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
       maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
-      callGasLimit: debouncedUserOperation?.callGasLimit,
-      preVerificationGas: debouncedUserOperation?.preVerificationGas,
-      verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
-      paymasterAndData: gasAndPaymasterAndData?.paymasterAndData ?? "0x",
+      callGasLimit:
+        gasAndPaymasterCallGasLimit ?? debouncedUserOperation?.callGasLimit,
+      preVerificationGas:
+        gasAndPaymasterPreVerificationGas ??
+        debouncedUserOperation?.preVerificationGas,
+      verificationGasLimit:
+        gasAndPaymasterVerificationGasLimit ??
+        debouncedUserOperation?.verificationGasLimit,
+      paymasterAndData: paymasterAndData ?? "0x",
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Only paymaster and data is required to compute the gas limits and paymaster
     // The rest of the values are dependencies of the paymaster and data
     // As it is the final layer of computation
-    gasAndPaymasterAndData,
+    gasAndPaymasterCallGasLimit,
+    gasAndPaymasterPreVerificationGas,
+    gasAndPaymasterVerificationGasLimit,
+    paymasterAndData,
   ]);
   console.info("finalizedUserOperation", finalizedUserOperation);
 
