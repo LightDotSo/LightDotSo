@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { type Hex, fromBytes, fromHex } from "viem";
+import { type Hex, fromBytes, fromHex, toHex } from "viem";
 import { describe, expect, it } from "vitest";
 import { decodePaymasterAndData } from "../src/paymaster";
 
@@ -30,6 +30,39 @@ describe("decodePaymasterAndData Tests", () => {
     expect(validAfter).toBe(0x1234);
     expect(fromBytes(signature, "hex")).toBe(
       "0xdd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c",
+    );
+  });
+
+  it("should decode paymaster and data for test case 'pimlico'", () => {
+    const expectedMsg =
+      "0xe3dc822d77f8ca7ac74c30b0dffea9fcdcaaa32100000000000000000000000000000000000000000000000000000000668402bc00000000000000000000000000000000000000000000000000000000000000009103b16eef142ff044288bc9c89812c5656a246a466cd024e7a86bc0eac13ee17f356f203dc99326d5ae0b7e7dd65df065bbf4dff0251c54952eaa2874d8a0571c" as Hex;
+
+    const [address, validUntil, validAfter, signature] = decodePaymasterAndData(
+      fromHex(expectedMsg, "bytes"),
+    )._unsafeUnwrap();
+
+    expect(address).toBe("0xe3dc822d77f8ca7ac74c30b0dffea9fcdcaaa321");
+    expect(validUntil).toBe(0x668402bc);
+    expect(validAfter).toBe(0);
+    expect(toHex(signature)).toBe(
+      "0x9103b16eef142ff044288bc9c89812c5656a246a466cd024e7a86bc0eac13ee17f356f203dc99326d5ae0b7e7dd65df065bbf4dff0251c54952eaa2874d8a0571c",
+    );
+  });
+
+  it("should decode paymaster and data for test case 'alchemy'", () => {
+    const expectedMsg =
+      "0x4fd9098af9ddcb41da48a1d78f91f1398965addc00000000000000006685d0520000000000000000000000000000000000000000bab40d3c364ad63d5bcf59da8a8c872a2c6f2aad81a4bd8b46812e16271855115b9d6479508ad438ad247884664ef7cb40cbc1898891f08da75509df37e089051c" as Hex;
+
+    const [address, validUntil, validAfter, signature] = decodePaymasterAndData(
+      fromHex(expectedMsg, "bytes"),
+    )._unsafeUnwrap();
+
+    expect(address).toBe("0x4fd9098af9ddcb41da48a1d78f91f1398965addc");
+    expect(validUntil).toBe(0x6685d052);
+    expect(validAfter).toBe(0);
+    // Convert the signature bytes to a hex string for comparison
+    expect(toHex(signature)).toBe(
+      "0xbab40d3c364ad63d5bcf59da8a8c872a2c6f2aad81a4bd8b46812e16271855115b9d6479508ad438ad247884664ef7cb40cbc1898891f08da75509df37e089051c",
     );
   });
 });

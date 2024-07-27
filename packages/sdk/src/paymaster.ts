@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { type Result, err, ok } from "neverthrow";
-import { type Address, fromBytes } from "viem";
+import { type Address, fromBytes, isAddressEqual } from "viem";
 
 // Define the Alchemy v0.6.0 Gas Manager address
 export const ALCHEMY_V060_GAS_MANAGER_ADDRESS: Address =
@@ -24,14 +24,16 @@ export const decodePaymasterAndData = (
 ): Result<[Address, number, number, Uint8Array], string> => {
   // Helper function to check if a timestamp is valid
   function isValidTimestamp(timestamp: number): boolean {
-    return !Number.isNaN(new Date(timestamp * 1000).getTime());
+    return !Number.isNaN(new Date(timestamp).getTime());
   }
 
   // Extract the paymaster address from the message
   const verifyingPaymasterAddress: Address = `0x${Buffer.from(msg.subarray(0, 20)).toString("hex")}`;
 
   // Check if the address matches the predefined address (assuming it's a constant)
-  if (verifyingPaymasterAddress === ALCHEMY_V060_GAS_MANAGER_ADDRESS) {
+  if (
+    isAddressEqual(verifyingPaymasterAddress, ALCHEMY_V060_GAS_MANAGER_ADDRESS)
+  ) {
     // Extract the valid until timestamp
     const validUntil = fromBytes(msg.subarray(28, 32), "number");
     const validAfter = 0; // Set valid after to 0 as per the logic
@@ -47,7 +49,6 @@ export const decodePaymasterAndData = (
 
   // For other addresses, extract timestamps and signature differently
   const validUntil = fromBytes(msg.subarray(44, 52), "number");
-
   const validAfter = fromBytes(msg.subarray(76, 84), "number");
   const signature = msg.subarray(84);
 
