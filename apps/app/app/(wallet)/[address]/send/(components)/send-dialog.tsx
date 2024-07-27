@@ -99,7 +99,7 @@ type SendFormValues = z.infer<typeof sendFormSchema>;
 
 type SendDialogProps = {
   address: Address;
-  initialTransfers?: Array<Transfer>;
+  initialTransfers?: Transfer[];
 };
 
 // -----------------------------------------------------------------------------
@@ -191,9 +191,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   // create default transfer object
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const defaultTransfer: Array<Transfer> = useMemo(() => {
+  const defaultTransfer: Transfer[] = useMemo(() => {
     // For each token, create a transfer object
-    const transfers: Array<Transfer> =
+    const transfers: Transfer[] =
       tokens && tokens?.length > 0
         ? [
             {
@@ -293,14 +293,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   );
 
                 // If the token is not found or undefined, set an error
-                if (!token) {
-                  // Show an error on the message
-                  ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Please select a valid token",
-                    path: ["transfers", index, "asset", "address"],
-                  });
-                } else {
+                if (token) {
                   // Add quantity to total by token address
                   const tokenIndex = `${token.chain_id}:${token.address}`;
                   const totalQuantity =
@@ -337,6 +330,13 @@ export const SendDialog: FC<SendDialogProps> = ({
                       }
                     });
                   }
+                } else {
+                  // Show an error on the message
+                  ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Please select a valid token",
+                    path: ["transfers", index, "asset", "address"],
+                  });
                 }
               }
             }
@@ -897,7 +897,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
-    if (!address || address.length <= 3) return;
+    if (!address || address.length <= 3) {
+      return;
+    }
 
     // Try to parse the address
     if (isAddress(address)) {
@@ -969,7 +971,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   async function validateTokenQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
-    if (!quantity) return;
+    if (!quantity) {
+      return;
+    }
 
     // Check if the quantity is a number and more than the token balance
     if (quantity && quantity > 0) {
@@ -1011,7 +1015,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   async function validateNftQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
-    if (!quantity) return;
+    if (!quantity) {
+      return;
+    }
 
     // Check if the quantity is a number and more than the token balance
     if (quantity && quantity > 0) {

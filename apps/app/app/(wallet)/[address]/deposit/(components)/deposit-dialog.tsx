@@ -236,7 +236,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const formStateText = useMemo(() => {
-    if (!address || !chainId) {
+    if (!(address && chainId)) {
       return "Connect Wallet";
     }
 

@@ -35,7 +35,7 @@ export type ProxyOptions = {
 // Proxy
 // -----------------------------------------------------------------------------
 
-export const basicProxy = (proxy_url = "", options?: ProxyOptions): Handler => {
+export const basicProxy = (proxyUrl = "", options?: ProxyOptions): Handler => {
   return async (c) => {
     // Removes prefix
     // prefix = /app1/*, path = /app1/a/b
@@ -47,10 +47,10 @@ export const basicProxy = (proxy_url = "", options?: ProxyOptions): Handler => {
       "/",
     );
 
-    let url = proxy_url ? proxy_url + path : c.req.url;
+    let url = proxyUrl ? proxyUrl + path : c.req.url;
 
     // If the_graph is provided, construct the URL
-    if (options?.the_graph && proxy_url === API_URLS.THE_GRAPH_API_URL) {
+    if (options?.the_graph && proxyUrl === API_URLS.THE_GRAPH_API_URL) {
       url = `${API_URLS.THE_GRAPH_API_URL}/${c.env.THE_GRAPH_API_KEY}/subgraphs/id/${THE_GRAPH_SUBGRAPH_IDS[options.the_graph]}`;
     }
 
@@ -64,7 +64,7 @@ export const basicProxy = (proxy_url = "", options?: ProxyOptions): Handler => {
 
     headers.set("Content-Type", "application/json");
     // Automatically add API keys to headers
-    switch (proxy_url) {
+    switch (proxyUrl) {
       case API_URLS.LIFI_API_URL_V1:
         headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
         break;

@@ -8,7 +8,9 @@ import { notFound } from "next/navigation";
 export default function Page({ params }: { params: { slug?: string[] } }) {
   const page = getPage(params.slug);
 
-  if (!page) notFound();
+  if (!page) {
+    notFound();
+  }
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
@@ -32,7 +34,9 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug?: string[] } }) {
   const page = getPage(params.slug);
 
-  if (!page) notFound();
+  if (!page) {
+    notFound();
+  }
 
   return {
     title: page.data.title,

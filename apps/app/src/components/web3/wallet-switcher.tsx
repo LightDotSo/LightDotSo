@@ -50,7 +50,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { ComponentPropsWithoutRef, FC, UIEvent } from "react";
 import type { Address } from "viem";
-import { getAddress, isAddress } from "viem";
+import { getAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -187,7 +187,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // If the address is empty or is not mounted, don't render
-  if (!isMounted || !address || isWalletsLoading) {
+  if (!(isMounted && address) || isWalletsLoading) {
     return null;
   }
 

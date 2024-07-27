@@ -84,7 +84,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   }, [isTransactionsLoading, isTransactionsCountLoading]);
 
   const pageCount = useMemo(() => {
-    if (!transactionsCount || !transactionsCount?.count) {
+    if (!transactionsCount?.count) {
       return null;
     }
     return Math.ceil(transactionsCount.count / paginationState.pageSize);

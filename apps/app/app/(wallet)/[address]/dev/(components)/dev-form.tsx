@@ -126,11 +126,13 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
 
   const userOperationsParams = useMemo(() => {
     if (
-      !formChainId ||
-      !abiEncoded ||
-      !balance ||
-      !balance.data ||
-      !abiEncoded.address
+      !(
+        formChainId &&
+        abiEncoded &&
+        balance &&
+        balance.data &&
+        abiEncoded.address
+      )
     ) {
       return;
     }
@@ -188,7 +190,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     // Check if the quantity is a number and more than the token balance
     if (quantity) {
       // If the token is not found or undefined, set an error
-      if (!balance || !balance?.data) {
+      if (!balance?.data) {
         // Show an error on the message
         form.setError("value", {
           type: "manual",

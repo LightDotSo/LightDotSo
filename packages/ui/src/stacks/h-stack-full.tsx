@@ -18,6 +18,7 @@ import type { ReactNode } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 interface HStackFullProps {
   children: ReactNode;
 }
@@ -26,6 +27,7 @@ interface HStackFullProps {
 // Layout
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export function HStackFull({ children }: HStackFullProps) {
   // ---------------------------------------------------------------------------
   // Render

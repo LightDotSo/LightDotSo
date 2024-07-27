@@ -136,7 +136,7 @@ export const useUserOperationSign = ({
     setIsLoading(true);
 
     const processSignature = async () => {
-      if (!userOwnerId || !signedMessage) {
+      if (!(userOwnerId && signedMessage)) {
         return;
       }
 

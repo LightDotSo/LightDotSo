@@ -5,5 +5,5 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  assetPrefix: !process.env.VERCEL ? "/popup" : "/",
+  assetPrefix: process.env.VERCEL ? "/" : "/popup",
 };

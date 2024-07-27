@@ -57,7 +57,7 @@ export const useSignInWithSiwe = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSignIn = useCallback(async () => {
-    if (!address || !chain || sessionId) {
+    if (!(address && chain) || sessionId) {
       return;
     }
 

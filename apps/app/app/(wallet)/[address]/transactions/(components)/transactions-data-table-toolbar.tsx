@@ -55,7 +55,7 @@ export const TransactionsDataTableToolbar: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!userOperationTable || !useTables.persist.hasHydrated()) {
+  if (!(userOperationTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

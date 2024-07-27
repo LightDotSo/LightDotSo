@@ -47,7 +47,7 @@ type Story = StoryObj<typeof Table>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
@@ -71,7 +71,7 @@ export const Base: Story = {
   args: {},
 };
 export const Loading: Story = {
-  render: (args) => (
+  render: (_args) => (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>

@@ -66,22 +66,19 @@ export const QueueState: FC = () => {
 
   useEffect(() => {
     // Wait for persisted state to load
-    if (!wallet || !useQueues.persist.hasHydrated()) {
+    if (!(wallet && useQueues.persist.hasHydrated())) {
       return;
     }
 
     const now = Date.now();
-    const THREE_MINUTES_IN_MILLISECONDS = 3 * 60 * 1000;
+    const threeMinutesInMilliseconds = 3 * 60 * 1000;
 
-    if (
-      now - (tokenQueueTimestamp[wallet] ?? 0) >
-      THREE_MINUTES_IN_MILLISECONDS
-    ) {
+    if (now - (tokenQueueTimestamp[wallet] ?? 0) > threeMinutesInMilliseconds) {
       queueToken();
       setTokenQueueTimestamp(wallet, now);
     } else if (
       now - (portfolioQueueTimestamp[wallet] ?? 0) >
-      THREE_MINUTES_IN_MILLISECONDS
+      threeMinutesInMilliseconds
     ) {
       queuePortfolio();
       setPortfolioQueueTimestamp(wallet, now);

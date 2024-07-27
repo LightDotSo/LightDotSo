@@ -285,9 +285,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (
-      !targetUserOperation?.sender ||
-      !targetUserOperation?.chainId ||
-      !targetUserOperation?.initCode ||
+      !(
+        targetUserOperation?.sender &&
+        targetUserOperation?.chainId &&
+        targetUserOperation?.initCode
+      ) ||
       typeof targetUserOperation?.nonce === "undefined" ||
       targetUserOperation?.nonce === null ||
       !targetUserOperation?.callData ||
@@ -381,9 +383,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (
-      !debouncedUserOperation?.sender ||
-      !debouncedUserOperation?.chainId ||
-      !debouncedUserOperation?.initCode ||
+      !(
+        debouncedUserOperation?.sender &&
+        debouncedUserOperation?.chainId &&
+        debouncedUserOperation?.initCode
+      ) ||
       typeof debouncedUserOperation?.nonce === "undefined" ||
       debouncedUserOperation?.nonce === null ||
       !debouncedUserOperation?.callData ||

@@ -47,8 +47,9 @@ export const useTransactions = create(
         addPendingTransaction: (transaction) =>
           set((state) => {
             // Checks if the transaction is already in the state to prevent duplicates.
-            if (state.pendingTransactions[transaction.hash])
+            if (state.pendingTransactions[transaction.hash]) {
               throw new Error("This transaction hash is already present.");
+            }
             return {
               pendingTransactions: {
                 ...state.pendingTransactions,
@@ -59,8 +60,9 @@ export const useTransactions = create(
         removePendingTransaction: (hash) =>
           set((state) => {
             // Checks if the transaction is not in the state to prevent errors.
-            if (!state.pendingTransactions[hash])
+            if (!state.pendingTransactions[hash]) {
               throw new Error("This transaction hash is not present.");
+            }
             const pendingTransactions = { ...state.pendingTransactions };
             delete pendingTransactions[hash];
             return { pendingTransactions: pendingTransactions };

@@ -98,7 +98,7 @@ export const userOperationsParser = createParser({
       return parsedOp;
     });
   },
-  serialize: (value: Array<Partial<UserOperation>>) =>
+  serialize: (value: Partial<UserOperation>[]) =>
     value
       ?.map(
         (operation, i) =>
@@ -122,7 +122,7 @@ export const userOperationsParser = createParser({
 // -----------------------------------------------------------------------------
 
 export const useUserOperationsQueryState = (
-  defaultUserOperations?: Array<Partial<UserOperation>>,
+  defaultUserOperations?: Partial<UserOperation>[],
 ) => {
   return useQueryState(
     "userOperations",

@@ -90,7 +90,7 @@ export const useUserOperationsCreate = ({
     const userOperation = userOperations[0];
 
     // Check if the userOperation has hash and chainId
-    if (!userOperation?.hash || !userOperation?.chainId) {
+    if (!(userOperation?.hash && userOperation?.chainId)) {
       return;
     }
 
@@ -278,7 +278,7 @@ export const useUserOperationsCreate = ({
   useEffect(() => {
     // Create a single user operation
     const createUserOp = async () => {
-      if (!owner || !signedData || !userOperation) {
+      if (!(owner && signedData && userOperation)) {
         return;
       }
 
@@ -295,7 +295,7 @@ export const useUserOperationsCreate = ({
 
     // Create a batch of user operations
     const createUserOpBatch = async () => {
-      if (!owner || !signedData || !merkleTree || !userOperations) {
+      if (!(owner && signedData && merkleTree && userOperations)) {
         return;
       }
 
@@ -410,11 +410,11 @@ export const useUserOperationsCreate = ({
     // A combination of conditions that would disable the transaction
     return (
       // Nor if the user operations are not valid
-      !isValidUserOperations ||
-      // Nor if the user operations are not createable
-      !isUserOperationsCreateable ||
-      // Nor if the merkle root is not equal
-      !isUserOperationsMerkleEqual
+      !(
+        isValidUserOperations &&
+        isUserOperationsCreateable &&
+        isUserOperationsMerkleEqual
+      )
     );
   }, [
     subdigest,

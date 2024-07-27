@@ -47,7 +47,7 @@ if (typeof window !== "undefined") {
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <TransactionDialog address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" />
   ),
   args: {},

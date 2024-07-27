@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Footer>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <Footer />,
+  render: (_args) => <Footer />,
   args: {},
 };

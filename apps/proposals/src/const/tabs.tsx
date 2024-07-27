@@ -15,7 +15,7 @@
 "use client";
 
 import type { Tab } from "@lightdotso/types";
-import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
+import { DashboardIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ArrowUpRightFromSquare } from "lucide-react";
 import type { RefAttributes } from "react";

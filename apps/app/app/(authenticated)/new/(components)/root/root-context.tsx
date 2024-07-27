@@ -138,10 +138,12 @@ export const RootContext: FC = () => {
       // Filter out issues that are not related to the form with `issue.path` that is either `threshold` or `salt`
       const filtereIssues = errors.issues.filter(
         (issue) =>
-          !issue.path.includes("threshold") &&
-          !issue.path.includes("salt") &&
-          !issue.path.includes("owners") &&
-          !issue.path.includes("check"),
+          !(
+            issue.path.includes("threshold") ||
+            issue.path.includes("salt") ||
+            issue.path.includes("owners") ||
+            issue.path.includes("check")
+          ),
       );
 
       return filtereIssues;

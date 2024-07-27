@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { BadgeIcon, ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

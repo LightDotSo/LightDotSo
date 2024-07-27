@@ -62,7 +62,7 @@ const config: StorybookConfig = {
     <meta name="twitter:description" content="Storybook of Light">
     <meta name="twitter:image" content="https://storybook.light.so/storybook.png">
   `,
-  env: (config) => ({
+  env: (_config) => ({
     LOCAL_ENV: "dev",
   }),
   staticDirs: ["../public"],

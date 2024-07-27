@@ -223,19 +223,7 @@ export const UserOperationCardTransaction: FC<
                   ))}
                 </CardContent>
                 <CardFooter>
-                  {!isDefaultOpen ? (
-                    <Button
-                      asChild
-                      variant="ghost"
-                      className="w-full bg-background-stronger"
-                    >
-                      <Link
-                        href={`/${!isDemo ? userOperation.sender : "demo"}/op/${userOperation.hash}`}
-                      >
-                        See Details
-                      </Link>
-                    </Button>
-                  ) : (
+                  {isDefaultOpen ? (
                     <Button
                       variant="ghost"
                       className="w-full bg-background-stronger"
@@ -247,6 +235,18 @@ export const UserOperationCardTransaction: FC<
                         <ShareIcon className="mr-2 size-3" />
                       )}
                       Share Link
+                    </Button>
+                  ) : (
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="w-full bg-background-stronger"
+                    >
+                      <Link
+                        href={`/${isDemo ? "demo" : userOperation.sender}/op/${userOperation.hash}`}
+                      >
+                        See Details
+                      </Link>
                     </Button>
                   )}
                 </CardFooter>

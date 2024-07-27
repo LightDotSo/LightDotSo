@@ -71,7 +71,7 @@ export const WalletsDataTable: FC = () => {
   }, [isWalletsLoading, isWalletsCountLoading]);
 
   const pageCount = useMemo(() => {
-    if (!walletsCount || !walletsCount?.count) {
+    if (!walletsCount?.count) {
       return null;
     }
     return Math.ceil(walletsCount.count / paginationState.pageSize);

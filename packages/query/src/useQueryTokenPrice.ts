@@ -44,7 +44,7 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
     }).queryKey,
   );
 
-  const { data: token_price, failureCount } = useQuery<TokenPriceData | null>({
+  const { data: tokenPrice, failureCount } = useQuery<TokenPriceData | null>({
     queryKey: queryKeys.token_price.get({
       address: params.address,
       chain_id: params.chain_id,
@@ -85,6 +85,6 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
   });
 
   return {
-    token_price: token_price,
+    token_price: tokenPrice,
   };
 };

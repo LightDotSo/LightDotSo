@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   // eslint-disable-next-line no-console
   console.warn("Received request: ", request);
 

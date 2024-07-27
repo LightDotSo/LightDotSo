@@ -665,8 +665,10 @@ export const ConfigurationForm: FC = () => {
                         {Object.entries(form.formState.errors)
                           .filter(
                             ([key]) =>
-                              !key.startsWith("threshold") &&
-                              !key.startsWith("owners"),
+                              !(
+                                key.startsWith("threshold") ||
+                                key.startsWith("owners")
+                              ),
                           )
                           // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                           .map(([_key, error]: [string, any]) => error.message)

@@ -23,7 +23,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("message", async (event) => {
   const clientId = event.source.id;
 
-  if (!clientId || !self.clients) {
+  if (!(clientId && self.clients)) {
     return;
   }
 

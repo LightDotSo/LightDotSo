@@ -65,12 +65,14 @@ export const useQueryLifiQuote = (params: LifiQuoteParams) => {
     }).queryKey,
     queryFn: async () => {
       if (
-        !params.fromAddress ||
-        !params.fromAmount ||
-        !params.fromChain ||
-        !params.fromToken ||
-        !params.toChain ||
-        !params.toToken ||
+        !(
+          params.fromAddress &&
+          params.fromAmount &&
+          params.fromChain &&
+          params.fromToken &&
+          params.toChain &&
+          params.toToken
+        ) ||
         params.fromChain === 0 ||
         params.toChain === 0 ||
         isTestnet(params.fromChain) ||

@@ -78,13 +78,7 @@ export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
         {/* eslint-disable-next-line no-constant-binary-expression */}
-        {false && (
-          <DropdownMenuContent align="end" className="w-[160px]">
-            <DropdownMenuItem onClick={handleCopyClick}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        )}
+        {false}
       </DropdownMenu>
     </div>
   );

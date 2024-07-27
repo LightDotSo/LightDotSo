@@ -74,7 +74,7 @@ export const useUserOperationSend = ({
   const { configuration } = useQueryConfiguration({
     address: address as Address,
     image_hash: imageHash,
-    checkpoint: !imageHash ? 0 : undefined,
+    checkpoint: imageHash ? undefined : 0,
   });
 
   const { userOperationSignature, isUserOperationSignatureLoading } =
@@ -184,9 +184,7 @@ export const useUserOperationSend = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const handleSubmit = useCallback(() => {
     if (
-      !isUserOperationSendReady ||
-      !userOperation ||
-      !userOperationSignature
+      !(isUserOperationSendReady && userOperation && userOperationSignature)
     ) {
       console.error("User operation is not ready to be sent");
       console.error("Params", address, hash);

@@ -45,7 +45,7 @@ export const Base: Story = {
       handlers: handlers,
     },
   },
-  render: (args) => (
+  render: (_args) => (
     <TokenTable isLoading={false} pageSize={10} data={tokenListData} />
   ),
   args: {},

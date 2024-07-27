@@ -39,7 +39,7 @@ type Story = StoryObj<typeof NotificationTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <NotificationTable
       isLoading={false}
       pageSize={10}

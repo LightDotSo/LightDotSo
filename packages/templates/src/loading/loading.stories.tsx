@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Loading>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <Loading />,
+  render: (_args) => <Loading />,
   args: {},
 };

@@ -27,7 +27,7 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { ArrowUpRight } from "lucide-react";
-import { type FC, useMemo } from "react";
+import type { FC } from "react";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------

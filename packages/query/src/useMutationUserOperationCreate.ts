@@ -35,7 +35,9 @@ import { toBytes, toHex } from "viem";
 // -----------------------------------------------------------------------------
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const useMutationUserOperationCreate = (params: UserOperationParams) => {
+export const useMutationUserOperationCreate = (
+  _params: UserOperationParams,
+) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -57,8 +59,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
     mutationKey: queryKeys.user_operation.create._def,
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
-        !body.userOperation.chainId ||
-        !body.userOperation.hash ||
+        !(body.userOperation.chainId && body.userOperation.hash) ||
         typeof body.userOperation.nonce === "undefined" ||
         body.userOperation.nonce === null ||
         !body.userOperation.initCode ||

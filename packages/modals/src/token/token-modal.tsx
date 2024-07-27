@@ -154,25 +154,25 @@ export const TokenModal: FC = () => {
     return chains.slice(0, availableChains);
   }, [dimensions?.width, chains, chainState]);
 
-  const light_tokens: TokenData[] = useMemo(() => {
+  const lightTokens: TokenData[] = useMemo(() => {
     if (chainState && chainState.id === 0 && groupTokens) {
       return groupTokens;
     }
 
-    const filtered_tokens =
+    const filteredTokens =
       tokens && tokens?.length > 0 && chainState
         ? tokens.filter((token) => token.chain_id === chainState.id)
         : tokens;
 
-    const light_indexed_tokens =
-      filtered_tokens && filtered_tokens?.length > 0 ? filtered_tokens : [];
+    const lightIndexedTokens =
+      filteredTokens && filteredTokens?.length > 0 ? filteredTokens : [];
 
-    return light_indexed_tokens;
+    return lightIndexedTokens;
   }, [tokens, groupTokens, chainState]);
 
   const lifi_tokens: TokenData[] = useMemo(() => {
     // Lifi tokens
-    const filtered_lifi_tokens =
+    const filteredLifiTokens =
       // Filter the tokens by chain that is in the `MAINNET_CHAINS` array
       lifiTokens && lifiTokens?.length > 0
         ? lifiTokens.filter((token) => {
@@ -181,7 +181,7 @@ export const TokenModal: FC = () => {
         : [];
 
     // Map the tokens to tokens
-    const lifi_tokens = filtered_lifi_tokens.map((token) => ({
+    const lifi_tokens = filteredLifiTokens.map((token) => ({
       id: `${token.chainId}-${token.address}-${token.decimals}`,
       chain_id: token.chainId ?? 0,
       balance_usd: 0,
@@ -195,46 +195,46 @@ export const TokenModal: FC = () => {
     return lifi_tokens;
   }, [lifiTokens, chainState]);
 
-  const overlay_tokens = useMemo(() => {
+  const overlayTokens = useMemo(() => {
     // Overlay light tokens amounts and balances on lifi tokens
-    const overlayed_tokens = light_tokens.map((light_token) => {
-      const lifi_token = lifi_tokens.find(
+    const overlayedTokens = lightTokens.map((lightToken) => {
+      const lifiToken = lifi_tokens.find(
         (token) =>
-          token.address === light_token.address &&
-          token.chain_id === light_token.chain_id,
+          token.address === lightToken.address &&
+          token.chain_id === lightToken.chain_id,
       );
 
-      if (lifi_token) {
+      if (lifiToken) {
         return {
-          ...lifi_token,
-          ...light_token,
-          name: lifi_token.name,
+          ...lifiToken,
+          ...lightToken,
+          name: lifiToken.name,
         };
       }
 
-      return light_token;
+      return lightToken;
     });
 
     // Remove the overlayed tokens from the lifi tokens
-    const duplicated_lifi_tokens = lifi_tokens.filter(
+    const duplicatedLifiTokens = lifi_tokens.filter(
       (token) =>
-        !overlayed_tokens.find(
-          (overlayed_token) =>
-            overlayed_token.address === token.address &&
-            overlayed_token.chain_id === token.chain_id,
+        !overlayedTokens.find(
+          (overlayedToken) =>
+            overlayedToken.address === token.address &&
+            overlayedToken.chain_id === token.chain_id,
         ),
     );
 
     // Combine the overlayed tokens and the lifi tokens to the front
-    const overlay_tokens = [...overlayed_tokens, ...duplicated_lifi_tokens];
+    const overlay_tokens = [...overlayedTokens, ...duplicatedLifiTokens];
 
     return overlay_tokens;
-  }, [light_tokens, lifi_tokens]);
+  }, [lightTokens, lifi_tokens]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const socket_tokens = useMemo(() => {
+  const socketTokens = useMemo(() => {
     // Socket balances
-    const filtered_balances =
+    const filteredBalances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
       socketBalances && socketBalances?.length > 0
         ? socketBalances
@@ -250,7 +250,7 @@ export const TokenModal: FC = () => {
         : [];
 
     // Map the balances to tokens
-    const socket_tokens = filtered_balances.map((balance) => ({
+    const socket_tokens = filteredBalances.map((balance) => ({
       id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
       chain_id: balance.chainId,
       balance_usd: 0,
@@ -267,16 +267,16 @@ export const TokenModal: FC = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const renderedTokens: TokenData[] = useMemo(() => {
     if (type === "light") {
-      return light_tokens;
+      return lightTokens;
     }
 
     // Also, return the overlayed tokens early if the type is swap
     if (type === "swap") {
-      return overlay_tokens;
+      return overlayTokens;
     }
 
-    return socket_tokens;
-  }, [light_tokens, overlay_tokens, lifi_tokens, socket_tokens, type]);
+    return socketTokens;
+  }, [lightTokens, overlayTokens, lifi_tokens, socketTokens, type]);
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
@@ -288,7 +288,7 @@ export const TokenModal: FC = () => {
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const isTokenModalLoading = useMemo(() => {
+  const _isTokenModalLoading = useMemo(() => {
     return (
       isTokensLoading ||
       isGroupTokensLoading ||
@@ -343,7 +343,7 @@ export const TokenModal: FC = () => {
   //     );
   //   }, [renderedTokens]);
 
-  const handleKeyDown = (event: React.KeyboardEvent) =>
+  const _handleKeyDown = (event: React.KeyboardEvent) =>
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useCallback(() => {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {

@@ -59,8 +59,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     }).queryKey,
     queryFn: async () => {
       if (
-        !params?.chainId ||
-        !params?.sender ||
+        !(params?.chainId && params?.sender) ||
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
         !params?.initCode ||

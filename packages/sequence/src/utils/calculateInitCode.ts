@@ -16,21 +16,17 @@ import { encodePacked, toFunctionSelector } from "viem";
 import type { Address, Hex } from "viem";
 
 export const calculateInitCode = (
-  factory_address: Address,
-  image_hash: Hex,
+  factoryAddress: Address,
+  imageHash: Hex,
   salt: Hex,
 ) => {
   return encodePacked(
     ["address", "bytes"],
     [
-      factory_address,
+      factoryAddress,
       encodePacked(
         ["bytes4", "bytes32", "bytes32"],
-        [
-          toFunctionSelector("createAccount(bytes32,bytes32)"),
-          image_hash,
-          salt,
-        ],
+        [toFunctionSelector("createAccount(bytes32,bytes32)"), imageHash, salt],
       ),
     ],
   );

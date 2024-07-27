@@ -103,7 +103,7 @@ export const NftCard: FC<NftCardProps> = ({
           className="w-full rounded-none py-2 opacity-100 hover:bg-background-primary-strong"
         >
           <Link
-            href={`/${!isDemo ? wallet : "demo"}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
+            href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
               // biome-ignore lint/style/noNonNullAssertion: <explanation>
               nft.chain!,
             )}:${nft.contract?.type?.toLowerCase()}:${nft.contract_address}|${

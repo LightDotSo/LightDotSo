@@ -44,7 +44,7 @@ export const NftsDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!nftTable || !useTables.persist.hasHydrated()) {
+  if (!(nftTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

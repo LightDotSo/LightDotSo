@@ -60,14 +60,14 @@ export const InvokeButton: FC<InvokeButtonProps> = ({
               variant="shadow"
               onClick={onClick}
             >
-              {!isLoading ? (
-                <RefreshCcw className="size-4" />
-              ) : (
+              {isLoading ? (
                 <div className="flex items-center justify-center space-x-1 duration-&lsqb;50ms&rsqb;">
                   <div className="size-1 animate-bounce rounded-full bg-background-primary [animation-delay:-300ms]" />
                   <div className="size-1 animate-bounce rounded-full bg-background-primary-weak [animation-delay:-150ms]" />
                   <div className="size-1 animate-bounce rounded-full bg-background-primary" />
                 </div>
+              ) : (
+                <RefreshCcw className="size-4" />
               )}
             </ButtonIcon>
           </span>

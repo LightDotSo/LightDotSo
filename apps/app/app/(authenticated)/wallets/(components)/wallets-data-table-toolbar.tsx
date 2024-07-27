@@ -43,7 +43,7 @@ export const WalletsDataTableToolbar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!walletTable || !useTables.persist.hasHydrated()) {
+  if (!(walletTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

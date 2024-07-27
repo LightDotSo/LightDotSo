@@ -151,17 +151,15 @@ export function AddressModal() {
       methods.setValue("addressOrEns", delayedName);
       methods.setValue("address", ensAddress);
       methods.trigger("addressOrEns");
+    } else if (isAddress(delayedName)) {
+      methods.setValue("address", delayedName);
+      methods.setValue("addressOrEns", delayedName);
+      methods.trigger("addressOrEns");
     } else {
-      if (isAddress(delayedName)) {
-        methods.setValue("address", delayedName);
-        methods.setValue("addressOrEns", delayedName);
-        methods.trigger("addressOrEns");
-      } else {
-        methods.setError("addressOrEns", {
-          type: "manual",
-          message: "Ens name is not valid",
-        });
-      }
+      methods.setError("addressOrEns", {
+        type: "manual",
+        message: "Ens name is not valid",
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ensAddress, delayedName]);

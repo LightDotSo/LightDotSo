@@ -18,7 +18,7 @@
 import { LightWallet } from "@/contracts/LightWallet.sol";
 import { subdigestOf } from "@lightdotso/sequence";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { describe, expect, it, test } from "vitest";
+import { expect, test } from "vitest";
 
 // describe("LightWallet", function () {
 //   it("Should return run correct function parameters on hardhat", async function () {

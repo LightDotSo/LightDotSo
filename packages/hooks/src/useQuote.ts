@@ -85,7 +85,7 @@ export const useQuote = ({
     const executions: ExecutionWithChainId[] = [];
 
     // If wallet is not available, return userOperations
-    if (!fromTokenAddress || !fromChainId) {
+    if (!(fromTokenAddress && fromChainId)) {
       return [];
     }
 

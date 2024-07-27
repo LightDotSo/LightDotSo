@@ -51,7 +51,7 @@ export const useQueryUserOperationReceipt = (
     }).queryKey,
     queryFn: async () => {
       // If no `chainId` or `hash` is provided, return null
-      if (!params.chainId || !params.hash) {
+      if (!(params.chainId && params.hash)) {
         return null;
       }
 

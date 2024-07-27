@@ -41,7 +41,7 @@ export const useIsHorizontalOverflow = (
         return;
       }
 
-      const hasOverflow = current?.scrollWidth > current?.clientWidth || false;
+      const hasOverflow = current?.scrollWidth > current?.clientWidth;
 
       setIsOverflow(hasOverflow);
     };

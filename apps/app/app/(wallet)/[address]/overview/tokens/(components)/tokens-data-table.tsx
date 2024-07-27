@@ -85,7 +85,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   }, [isTokensLoading, isTokensCountLoading]);
 
   const pageCount = useMemo(() => {
-    if (!tokensCount || !tokensCount?.count) {
+    if (!tokensCount?.count) {
       return null;
     }
     return Math.ceil(tokensCount.count / paginationState.pageSize);

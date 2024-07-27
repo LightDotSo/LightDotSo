@@ -17,7 +17,7 @@ import { Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
-  userOpHash: Bytes,
+  _userOpHash: Bytes,
   eventTransaction: ethereum.Transaction,
   eventReceipt: ethereum.TransactionReceipt | null,
 ): void {

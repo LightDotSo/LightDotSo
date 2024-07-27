@@ -156,32 +156,38 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       // Only the create modal can be nested opened from the send modal
       // Hence, we need to set the send modal to visible when the create modal is dismissed
-      case "create":
+      case "create": {
         setSendBackgroundModal(false);
         hideCreateModal();
         resetAll();
         router.back();
         break;
-      case "deposit":
+      }
+      case "deposit": {
         hideDepositModal();
         router.back();
         break;
-      case "op":
+      }
+      case "op": {
         hideOpModal();
         router.back();
         break;
-      case "notifications":
+      }
+      case "notifications": {
         hideNotificationsModal();
         router.back();
         break;
-      case "send":
+      }
+      case "send": {
         hideSendModal();
         router.back();
         break;
-      case "swap":
+      }
+      case "swap": {
         hideSwapModal();
         router.back();
         break;
+      }
     }
   }, [
     hideCreateModal,

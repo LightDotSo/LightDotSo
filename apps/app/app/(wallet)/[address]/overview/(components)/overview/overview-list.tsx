@@ -95,7 +95,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
       {initialItems.map((item) => (
         <OverviewCard
           key={item}
-          href={`/${!isDemo ? address : "demo"}${
+          href={`/${isDemo ? "demo" : address}${
             OVERVIEW_NAV_ITEMS.find((nav) => nav.category === item)?.href ?? ""
           }`}
           title={TITLES.Overview.subcategories[item]?.title}

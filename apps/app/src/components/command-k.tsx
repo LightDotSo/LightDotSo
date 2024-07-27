@@ -85,14 +85,14 @@ export const CommandK: FC = () => {
     router.replace(url.toString());
   }, [router]);
 
-  const copyURIParams = useCallback(() => {
+  const copyUriParams = useCallback(() => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(url.search);
     console.info(url.search);
   }, [copy]);
 
-  const copyDecodedURIParams = useCallback(() => {
+  const copyDecodedUriParams = useCallback(() => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(decodeURIComponent(url.search));
@@ -126,11 +126,11 @@ export const CommandK: FC = () => {
       }
       if (e.key === "c" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        copyURIParams();
+        copyUriParams();
       }
       if (e.key === "v" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        copyDecodedURIParams();
+        copyDecodedUriParams();
       }
     };
 
@@ -138,8 +138,8 @@ export const CommandK: FC = () => {
     return () => document.removeEventListener("keydown", down);
   }, [
     onClearSearch,
-    copyURIParams,
-    copyDecodedURIParams,
+    copyUriParams,
+    copyDecodedUriParams,
     wallet,
     copy,
     toggleDev,
@@ -219,7 +219,7 @@ export const CommandK: FC = () => {
           </CommandItem>
           <CommandItem
             onSelect={() => {
-              copyURIParams();
+              copyUriParams();
               setOpen(false);
             }}
           >
@@ -229,7 +229,7 @@ export const CommandK: FC = () => {
           </CommandItem>
           <CommandItem
             onSelect={() => {
-              copyDecodedURIParams();
+              copyDecodedUriParams();
               setOpen(false);
             }}
           >

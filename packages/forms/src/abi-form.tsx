@@ -466,7 +466,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       let parsedArray;
       try {
         parsedArray = JSON.parse(value);
-      } catch (error) {
+      } catch (_error) {
         // return "Invalid array.";
       }
       if (Array.isArray(parsedArray)) {

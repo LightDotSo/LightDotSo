@@ -45,8 +45,8 @@ export const sentryMiddleware = new InngestMiddleware({
         //   data: ctx.event,
         // });
 
-        let memoSpan: Sentry.Span;
-        let execSpan: Sentry.Span;
+        let _memoSpan: Sentry.Span;
+        let _execSpan: Sentry.Span;
 
         return {
           transformInput: () => ({

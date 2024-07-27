@@ -50,7 +50,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
         address={address as Address}
         status="queued"
         title="Queue"
-        href={`/${!isDemo ? address : "demo"}/transactions/queue`}
+        href={`/${isDemo ? "demo" : address}/transactions/queue`}
       >
         <TransactionsDataTable address={address as Address} status="queued" />
       </OverviewSection>
@@ -58,7 +58,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
         address={address as Address}
         status="history"
         title="History"
-        href={`/${!isDemo ? address : "demo"}/transactions/history`}
+        href={`/${isDemo ? "demo" : address}/transactions/history`}
       >
         <TransactionsDataTable address={address as Address} status="history" />
       </OverviewSection>

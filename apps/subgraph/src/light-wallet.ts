@@ -66,10 +66,10 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
 
     // Get the image hash of the LightWallet
     const wallet = LightWaletInterface.bind(event.params.sender);
-    const try_imageHash = wallet.try_imageHash();
-    lightWallet.imageHash = try_imageHash.reverted
+    const tryImageHash = wallet.try_imageHash();
+    lightWallet.imageHash = tryImageHash.reverted
       ? new Bytes(0)
-      : try_imageHash.value;
+      : tryImageHash.value;
 
     lightWallet.save();
   }
