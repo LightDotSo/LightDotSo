@@ -328,6 +328,21 @@
       }
     },
     {
+      "include": ["packages/templates/src/cal/cal.tsx"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "off",
+            "useArrowFunction": "off"
+          },
+          "style": {
+            "noArguments": "off",
+            "useConst": "off"
+          }
+        }
+      }
+    },
+    {
       "include": ["packages/types/src/**"],
       "linter": {
         "rules": {
