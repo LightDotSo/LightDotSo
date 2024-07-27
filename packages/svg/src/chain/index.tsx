@@ -32,9 +32,9 @@ import { CeloLogo } from "./celo";
 import { CyberLogo } from "./cyber";
 import { EthereumLogo } from "./ethereum";
 import { FantomLogo } from "./fantom";
-import { FuseLogo } from "./fuse";
 import { GnosisLogo } from "./gnosis";
 import { LineaLogo } from "./linea";
+import { MantleLogo } from "./mantle";
 import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
@@ -141,8 +141,6 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <BscLogo className={variantClassName} {...props} />;
     case 100:
       return <GnosisLogo className={variantClassName} {...props} />;
-    case 122:
-      return <FuseLogo className={variantClassName} {...props} />;
     case 137:
       return <PolygonLogo className={variantClassName} {...props} />;
     case 250:
@@ -153,6 +151,8 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <PolygonZkEvmLogo className={variantClassName} {...props} />;
     case 1329:
       return <SeiLogo className={variantClassName} {...props} />;
+    case 5000:
+      return <MantleLogo className={variantClassName} {...props} />;
     case 7560:
       return <CyberLogo className={variantClassName} {...props} />;
     case 8453:
