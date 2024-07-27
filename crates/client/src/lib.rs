@@ -14,7 +14,8 @@
 
 #![allow(clippy::unwrap_used)]
 
-mod constants;
+pub mod constants;
+pub mod crypto;
 
 use backon::{ExponentialBuilder, Retryable};
 use constants::{ADMIN_BASE_API_URL, PUBLIC_BASE_API_URL};

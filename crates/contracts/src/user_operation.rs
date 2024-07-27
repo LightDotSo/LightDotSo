@@ -182,11 +182,8 @@ fn pad_len(b: &Bytes) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use std::str::FromStr;
-
-    use ethers::types::{Bytes, U256};
-
     use super::*;
+    use ethers::types::{Bytes, U256};
 
     #[test]
     fn test_hash_zeroed() {
