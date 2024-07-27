@@ -46,7 +46,7 @@ type Story = StoryObj<typeof Tooltip>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>

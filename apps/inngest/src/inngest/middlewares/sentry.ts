@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/style/noNamespaceImport: <explanation>
 import * as Sentry from "@sentry/node";
 import { InngestMiddleware } from "inngest";
 
@@ -45,8 +46,8 @@ export const sentryMiddleware = new InngestMiddleware({
         //   data: ctx.event,
         // });
 
-        let memoSpan: Sentry.Span;
-        let execSpan: Sentry.Span;
+        let _memoSpan: Sentry.Span;
+        let _execSpan: Sentry.Span;
 
         return {
           transformInput: () => ({

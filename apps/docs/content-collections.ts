@@ -21,6 +21,7 @@ const metas = defineCollection({
   schema: createMetaSchema,
 });
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineConfig({
   collections: [docs, metas],
 });

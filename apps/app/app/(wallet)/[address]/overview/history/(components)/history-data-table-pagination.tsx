@@ -43,7 +43,7 @@ export const HistoryDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!transactionTable || !useTables.persist.hasHydrated()) {
+  if (!(transactionTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

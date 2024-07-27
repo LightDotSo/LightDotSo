@@ -66,6 +66,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
     address: address as Address,
     limit: limit,
     offset: 0,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

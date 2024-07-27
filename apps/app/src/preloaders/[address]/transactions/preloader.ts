@@ -24,7 +24,7 @@ import type { Address } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = (params: { address: string }) => {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------

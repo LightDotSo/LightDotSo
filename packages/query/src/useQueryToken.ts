@@ -55,7 +55,7 @@ export const useQueryToken = (params: TokenGetParams) => {
       wallet: params.wallet,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address || !params.chain_id) {
+      if (!(params.address && params.chain_id)) {
         return null;
       }
 

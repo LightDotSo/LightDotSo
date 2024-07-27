@@ -129,7 +129,9 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   async function onSubmit(data: WalletTestnetFormValues) {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     mutate({ is_enabled_testnet: data.enabled });
   }
 

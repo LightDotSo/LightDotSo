@@ -44,7 +44,7 @@ export const ActivityDataTablePagination: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-  if (!sessionId || !activityTable || !useTables.persist.hasHydrated()) {
+  if (!(sessionId && activityTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

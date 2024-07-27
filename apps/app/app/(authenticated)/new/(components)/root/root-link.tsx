@@ -155,14 +155,17 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     // }
 
     // Iterate over each required param
+    // biome-ignore lint/style/useForOf: <explanation>
     for (let i = 0; i < requiredParams.length; i++) {
-      if (!params.has(requiredParams[i]) || !params.get(requiredParams[i])) {
+      if (!(params.has(requiredParams[i]) && params.get(requiredParams[i]))) {
         return false;
       }
     }
 
     // If the total weight is lesser than the threshold, then return false
-    if (totalWeight < threshold) return false;
+    if (totalWeight < threshold) {
+      return false;
+    }
 
     return true;
   };

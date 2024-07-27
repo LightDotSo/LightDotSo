@@ -161,6 +161,7 @@ const adminApiClient: ReturnType<typeof createClient<ApiPaths>> =
 
 export const getClient: (
   clientType?: "admin" | "authenticated" | "public",
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 ) => ReturnType<typeof createClient<ApiPaths>> = (clientType) =>
   (process.env.LOCAL_ENV === "dev" ||
     process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&

@@ -33,7 +33,7 @@ export const preloadGetWalletNotificationSettings = (
 export const getWalletNotificationSettings = async (
   params: WalletSettingsParams,
 ) => {
-  return getClientWalletSettings(
+  return await getClientWalletSettings(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",

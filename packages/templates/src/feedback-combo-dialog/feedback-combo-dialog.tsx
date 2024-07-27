@@ -46,7 +46,7 @@ export const FeedbackComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
 
   // If the address is empty, return null
-  if (!isMounted || !address) {
+  if (!(isMounted && address)) {
     return null;
   }
 

@@ -45,7 +45,7 @@ export const NotificationsDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!sessionId || !notificationTable || !useTables.persist.hasHydrated()) {
+  if (!(sessionId && notificationTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

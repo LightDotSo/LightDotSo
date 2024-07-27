@@ -50,7 +50,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { ComponentPropsWithoutRef, FC, UIEvent } from "react";
 import type { Address } from "viem";
-import { getAddress, isAddress } from "viem";
+import { getAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -100,6 +100,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const [open, setOpen] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<{
     address: string;
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     factory_address: string;
     name: string;
     salt: string;
@@ -187,7 +188,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // If the address is empty or is not mounted, don't render
-  if (!isMounted || !address || isWalletsLoading) {
+  if (!(isMounted && address) || isWalletsLoading) {
     return null;
   }
 

@@ -31,7 +31,7 @@ import { Input } from "./input";
 // Types
 // -----------------------------------------------------------------------------
 
-interface OTPFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+interface OtpFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   length: number;
 }
 
@@ -75,12 +75,14 @@ export const OTP = ({
   className,
   defaultValue,
   onChange,
-}: OTPFieldProps) => {
+}: OtpFieldProps) => {
   const [activeInputIndex, setActiveInputIndex] = useState(0);
   const [inputs, setInputs] = useState(Array<string>(length).fill(""));
 
   const focusInput = (index: number) => {
-    if (activeInputIndex === 0 && index === -1) return;
+    if (activeInputIndex === 0 && index === -1) {
+      return;
+    }
     setActiveInputIndex(Math.max(Math.min(length - 1, index), 0));
   };
 
@@ -124,7 +126,7 @@ export const OTP = ({
     }
 
     switch (key) {
-      case "BACKSPACE":
+      case "BACKSPACE": {
         setInputs((prevInputs) => {
           prevInputs[activeInputIndex] = "";
           return [...prevInputs];
@@ -137,16 +139,19 @@ export const OTP = ({
           `input-${activeInputIndex}`,
         );
         break;
+      }
 
-      case "ARROWLEFT":
+      case "ARROWLEFT": {
         e.preventDefault();
         focusInput(Math.max(0, activeInputIndex - 1));
         break;
+      }
 
-      case "ARROWRIGHT":
+      case "ARROWRIGHT": {
         e.preventDefault();
         focusInput(Math.min(length - 1, activeInputIndex + 1));
         break;
+      }
 
       default:
         if (key && /^[0-9A-Z]$/.test(key)) {
@@ -155,7 +160,9 @@ export const OTP = ({
             prevInputs[activeInputIndex] = key;
             return [...prevInputs];
           });
-          if (activeInputIndex < length - 1) focusInput(activeInputIndex + 1);
+          if (activeInputIndex < length - 1) {
+            focusInput(activeInputIndex + 1);
+          }
           triggerOnChange(
             `${inputs.join("").slice(0, activeInputIndex)}${key}${inputs
               .join("")

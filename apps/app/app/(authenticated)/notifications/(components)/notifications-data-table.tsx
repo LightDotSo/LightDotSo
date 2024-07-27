@@ -81,7 +81,7 @@ export const NotificationsDataTable: FC = () => {
   }, [isNotificationsLoading, isNotificationsCountLoading]);
 
   const pageCount = useMemo(() => {
-    if (!notificationsCount || !notificationsCount?.count) {
+    if (!notificationsCount?.count) {
       return null;
     }
     return Math.ceil(notificationsCount.count / paginationState.pageSize);

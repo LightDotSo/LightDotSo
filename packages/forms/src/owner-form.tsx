@@ -206,6 +206,7 @@ export const OwnerForm: FC = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
       setFormValues(value);
@@ -222,6 +223,7 @@ export const OwnerForm: FC = () => {
           setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
+          // biome-ignore lint/style/useCollapsedElseIf: <explanation>
           if (ownerFormSchema.shape.threshold.safeParse(value)) {
             setThreshold(value.threshold);
           }
@@ -335,6 +337,7 @@ export const OwnerForm: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   async function onSubmit() {
     if (!userAddress) {
       toast.error("Please connect your wallet to continue.");
@@ -637,8 +640,10 @@ export const OwnerForm: FC = () => {
                   {Object.entries(form.formState.errors)
                     .filter(
                       ([key]) =>
-                        !key.startsWith("threshold") &&
-                        !key.startsWith("owners"),
+                        !(
+                          key.startsWith("threshold") ||
+                          key.startsWith("owners")
+                        ),
                     )
                     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     .map(([_key, error]: [string, any]) => error.message)

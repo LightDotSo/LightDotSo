@@ -83,7 +83,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   }, [isActivitiesLoading, isActivitiesCountLoading]);
 
   const pageCount = useMemo(() => {
-    if (!activitiesCount || !activitiesCount?.count) {
+    if (!activitiesCount?.count) {
       return null;
     }
     return Math.ceil(activitiesCount.count / paginationState.pageSize);

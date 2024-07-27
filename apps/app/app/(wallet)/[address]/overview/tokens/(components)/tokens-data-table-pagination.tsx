@@ -43,7 +43,7 @@ export const TokensDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!tokenTable || !useTables.persist.hasHydrated()) {
+  if (!(tokenTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

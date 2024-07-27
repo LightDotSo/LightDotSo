@@ -13,10 +13,7 @@
 // limitations under the License.
 
 import { getUserOperation } from "@lightdotso/services";
-import {
-  validateAddress,
-  validateUserOperationHash,
-} from "@lightdotso/validators";
+import { validateUserOperationHash } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 

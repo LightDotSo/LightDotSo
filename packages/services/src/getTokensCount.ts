@@ -29,7 +29,7 @@ export const preloadGetTokensCount = (params: TokenListCountParams) => {
 // -----------------------------------------------------------------------------
 
 export const getTokensCount = async (params: TokenListCountParams) => {
-  return getClientTokensCount(
+  return await getClientTokensCount(
     {
       params: {
         // biome-ignore lint/style/noNonNullAssertion: <explanation>

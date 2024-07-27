@@ -21,7 +21,7 @@ import { preloader as addressPreloader } from "@/preloaders/[address]/preloader"
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = (params: { address: string }) => {
   addressPreloader(params);
   // preloadOverviewHistory(params);
   // preloadOverviewNfts(params);

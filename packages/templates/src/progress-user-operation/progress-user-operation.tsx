@@ -149,8 +149,7 @@ export const ProgressUserOperation: FC = () => {
   // ---------------------------------------------------------------------------
 
   if (
-    !pendingUserOperations ||
-    !Array.isArray(pendingUserOperations) ||
+    !(pendingUserOperations && Array.isArray(pendingUserOperations)) ||
     isPendingUserOperationsLoading
   ) {
     return null;

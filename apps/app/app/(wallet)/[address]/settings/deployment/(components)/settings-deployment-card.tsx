@@ -48,6 +48,7 @@ import { type Address, type Chain, type Hex, encodeFunctionData } from "viem";
 type SettingsDeploymentCardProps = {
   address: Address;
   chain: string;
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   image_hash: Hex;
   salt: Hex;
 };
@@ -58,7 +59,7 @@ type SettingsDeploymentCardProps = {
 
 export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   address,
-  chain: chain_JSON,
+  chain: chainJson,
   image_hash,
   salt,
 }) => {
@@ -66,7 +67,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Parse
   // ---------------------------------------------------------------------------
 
-  const chain = JSON.parse(chain_JSON) as Chain;
+  const chain = JSON.parse(chainJson) as Chain;
 
   // ---------------------------------------------------------------------------
   // Query
@@ -86,6 +87,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     order: "asc",
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
@@ -112,7 +114,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // Try to extract a matching operation w/ the current chain id
-  const deployed_op = userOperations?.find((op) => op.chain_id === chain.id);
+  const deployedOp = userOperations?.find((op) => op.chain_id === chain.id);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -183,11 +185,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     return userOperationsParser.serialize([
       {
         chainId: BigInt(chain.id),
-        initCode: !deployed_op ? initCode : "0x",
+        initCode: deployedOp ? "0x" : initCode,
         callData: callData,
       },
     ]);
-  }, [initCode, callData, chain.id, deployed_op]);
+  }, [initCode, callData, chain.id, deployedOp]);
 
   // ---------------------------------------------------------------------------
   // Submit Button
@@ -198,12 +200,12 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       <Button
         type="submit"
         form="settings-deployment-card-form"
-        disabled={deployed_op && callData === "0x"}
+        disabled={deployedOp && callData === "0x"}
       >
         <Link
           href={`/${address}/create?userOperations=${deployedUserOperation}`}
         >
-          {typeof deployed_op !== "undefined"
+          {typeof deployedOp !== "undefined"
             ? callData === "0x"
               ? "Already Deployed"
               : "Upgrade"
@@ -227,7 +229,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       chainId={chain.id}
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      {deployed_op && implAddress && (
+      {deployedOp && implAddress && (
         <div className="flex items-center gap-2">
           Version: {implVersion}
           <span className="text-sm text-text-weak">
@@ -235,7 +237,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
           </span>
         </div>
       )}
-      {deployed_op && imageHash && (
+      {deployedOp && imageHash && (
         <div className="flex items-center gap-2">
           Hash:
           <span className="text-sm text-text-weak">
@@ -244,20 +246,20 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         </div>
       )}
       <div className="flex flex-row items-center">
-        {deployed_op?.transaction?.hash && (
+        {deployedOp?.transaction?.hash && (
           <div className="flex items-center gap-2">
             Tx:{" "}
             <a
               className="text-sm text-text-weak hover:underline"
               target="_blank"
               rel="noreferrer"
-              href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
+              href={`${getEtherscanUrl(chain)}/tx/${deployedOp.transaction?.hash}`}
             >
-              {shortenBytes32(deployed_op.transaction?.hash)}
+              {shortenBytes32(deployedOp.transaction?.hash)}
             </a>
           </div>
         )}
-        {!deployed_op && (
+        {!deployedOp && (
           <p className="text-sm text-text-weak">
             No deployment found. <br />
           </p>

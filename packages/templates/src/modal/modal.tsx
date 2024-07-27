@@ -105,6 +105,7 @@ export const Modal: FC<ModalProps> = ({
   bannerContent,
   footerContent,
   onClose,
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 }) => {
   // ---------------------------------------------------------------------------
   // Hooks

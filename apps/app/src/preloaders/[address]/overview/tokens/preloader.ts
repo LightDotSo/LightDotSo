@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (
+export const preloader = (
   params: { address: string },
   searchParams: {
     pagination?: string;

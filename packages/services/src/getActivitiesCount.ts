@@ -29,7 +29,7 @@ export const preloadGetActivitiesCount = (params: ActivityListCountParams) => {
 // -----------------------------------------------------------------------------
 
 export const getActivitiesCount = async (params: ActivityListCountParams) => {
-  return getClientActivitiesCount(
+  return await getClientActivitiesCount(
     {
       params: {
         query: {

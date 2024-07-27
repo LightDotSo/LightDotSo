@@ -82,7 +82,7 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
             <span>
               <ButtonIcon asChild size="sm" variant="shadow">
                 <Link
-                  href={`/${!isDemo ? wallet : "demo"}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
+                  href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
                   <Send className="size-4" />
                   <span className="sr-only">Open send modal</span>

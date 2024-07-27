@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { ChevronsUpDown, Plus, X } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "./button";
 import {
   Collapsible,

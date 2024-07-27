@@ -112,6 +112,7 @@ export const NewWalletForm: FC = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     const subscription = form.watch((value, { name }) => {
       setFormValues(value);
       if (name === "name") {

@@ -20,7 +20,7 @@ import type { Hex } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: {
+export const preloader = (params: {
   address: string;
   userOperationHash: string;
 }) => {

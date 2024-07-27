@@ -54,7 +54,7 @@ export const useProxyImplementationAddress = ({
 
   const implAddress = useMemo(() => {
     // Don't continue if the impl address is not available or the call failed
-    if (!implAddressBytes32 || !isImplAddressBytes32Success) {
+    if (!(implAddressBytes32 && isImplAddressBytes32Success)) {
       return;
     }
 

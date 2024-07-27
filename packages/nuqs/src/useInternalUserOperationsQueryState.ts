@@ -21,7 +21,7 @@ import { userOperationsParser } from "./useUserOperationsQueryState";
 // -----------------------------------------------------------------------------
 
 export const useInternalUserOperationsQueryState = (
-  defaultInternalUserOperations?: Array<Partial<UserOperation>>,
+  defaultInternalUserOperations?: Partial<UserOperation>[],
 ) => {
   return useQueryState(
     "internalUserOperations",

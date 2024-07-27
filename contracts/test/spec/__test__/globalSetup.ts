@@ -15,6 +15,7 @@
 // From: https://github.com/wagmi-dev/anvil.js/blob/main/examples/example-vitest/tests/globalSetup.ts
 import { startProxy } from "@viem/anvil";
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default async function () {
   // Start a proxy server on port 8585
   return await startProxy({

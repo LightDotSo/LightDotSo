@@ -132,7 +132,7 @@ const Carousel = forwardRef<
     );
 
     useEffect(() => {
-      if (!api || !setApi) {
+      if (!(api && setApi)) {
         return;
       }
 

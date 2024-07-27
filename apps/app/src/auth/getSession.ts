@@ -30,8 +30,10 @@ type Session = {
     };
     deleted: boolean | null | undefined;
     expiry: {
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       AtDateTime: number[];
     };
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     modified_at: string | null | undefined;
   };
 };
@@ -49,6 +51,7 @@ export const getSessionCookie = () => {
 // Auth
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/useAwait: <explanation>
 export const getSession = async (): Promise<Session | null | undefined> => {
   const sessionId = getSessionCookie();
 

@@ -99,7 +99,7 @@ type SendFormValues = z.infer<typeof sendFormSchema>;
 
 type SendDialogProps = {
   address: Address;
-  initialTransfers?: Array<Transfer>;
+  initialTransfers?: Transfer[];
 };
 
 // -----------------------------------------------------------------------------
@@ -164,6 +164,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { nftPage } = useQueryNfts({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
@@ -171,10 +172,12 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { tokens } = useQueryTokens({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     group: false,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
@@ -191,9 +194,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   // create default transfer object
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const defaultTransfer: Array<Transfer> = useMemo(() => {
+  const defaultTransfer: Transfer[] = useMemo(() => {
     // For each token, create a transfer object
-    const transfers: Array<Transfer> =
+    const transfers: Transfer[] =
       tokens && tokens?.length > 0
         ? [
             {
@@ -268,6 +271,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         // Create a map to calculate the total quantity by token address
         const totalByTokenAddress = new Map();
 
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         value.transfers.forEach((transfer, index) => {
           // Check if asset and the quantity is not empty
           if (transfer?.asset && "quantity" in transfer.asset) {
@@ -293,14 +297,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   );
 
                 // If the token is not found or undefined, set an error
-                if (!token) {
-                  // Show an error on the message
-                  ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Please select a valid token",
-                    path: ["transfers", index, "asset", "address"],
-                  });
-                } else {
+                if (token) {
                   // Add quantity to total by token address
                   const tokenIndex = `${token.chain_id}:${token.address}`;
                   const totalQuantity =
@@ -337,6 +334,13 @@ export const SendDialog: FC<SendDialogProps> = ({
                       }
                     });
                   }
+                } else {
+                  // Show an error on the message
+                  ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Please select a valid token",
+                    path: ["transfers", index, "asset", "address"],
+                  });
                 }
               }
             }
@@ -422,9 +426,11 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [form.formState]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (
       transfer: Transfer,
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     ): [Address, bigint, Hex] | undefined => {
       if (
         transfer?.address &&
@@ -897,7 +903,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
-    if (!address || address.length <= 3) return;
+    if (!address || address.length <= 3) {
+      return;
+    }
 
     // Try to parse the address
     if (isAddress(address)) {
@@ -969,7 +977,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   async function validateTokenQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
-    if (!quantity) return;
+    if (!quantity) {
+      return;
+    }
 
     // Check if the quantity is a number and more than the token balance
     if (quantity && quantity > 0) {
@@ -1009,9 +1019,12 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   async function validateNftQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
-    if (!quantity) return;
+    if (!quantity) {
+      return;
+    }
 
     // Check if the quantity is a number and more than the token balance
     if (quantity && quantity > 0) {
@@ -1684,6 +1697,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     );
                                                   }
                                                 },
+                                                // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
                                                 onNftSelect: (nft) => {
                                                   if (nft.contract_address) {
                                                     form.setValue(

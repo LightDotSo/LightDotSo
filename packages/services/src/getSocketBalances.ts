@@ -29,7 +29,7 @@ export const preloadGetSocketBalances = (params: SocketBalanceParams) => {
 // -----------------------------------------------------------------------------
 
 export const getSocketBalances = async (params: SocketBalanceParams) => {
-  return getClientSocketBalances(
+  return await getClientSocketBalances(
     {
       parameters: {
         query: {

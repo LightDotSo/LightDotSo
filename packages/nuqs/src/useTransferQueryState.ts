@@ -21,6 +21,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const transferParser = createParser({
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   parse: (value) => {
     if (value === "") {
       return null;
@@ -93,6 +94,7 @@ export const transferParser = createParser({
     return null;
   },
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   serialize: (value: Transfer) => {
     if (!value) {
       return "";

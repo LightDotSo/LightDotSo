@@ -87,8 +87,7 @@ export const useConfigurationOperationCreate = ({
 
   const subdigest = useMemo(() => {
     if (
-      !address ||
-      !configurationOperationSimulation?.image_hash ||
+      !(address && configurationOperationSimulation?.image_hash) ||
       isConfigurationOperationSimulationLoading
     ) {
       return;
@@ -166,7 +165,7 @@ export const useConfigurationOperationCreate = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const createConfigurationOp = async () => {
-      if (!owner || !signedData || !params) {
+      if (!(owner && signedData && params)) {
         return;
       }
 

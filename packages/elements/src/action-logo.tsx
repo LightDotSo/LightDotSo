@@ -54,6 +54,7 @@ export const ActionLogoIntents: Record<
   [Action.ERC1155_BURN]: "destructive",
 };
 
+// biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
 export const ActionLogos: Record<Action, React.ElementType> = {
   [Action.UNKNOWN]: HelpCircle,
   [Action.NATIVE_RECEIVE]: ArrowDown,

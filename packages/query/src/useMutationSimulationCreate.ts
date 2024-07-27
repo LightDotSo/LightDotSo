@@ -51,6 +51,7 @@ export const useMutationSimulationCreate = () => {
       );
 
       res.match(
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         (_) => {},
         (err) => {
           if (err instanceof Error) {

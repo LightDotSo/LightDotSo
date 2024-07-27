@@ -40,7 +40,7 @@ type Story = StoryObj<typeof ScrollArea>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <ScrollArea className="h-72 w-48 rounded-md border border-border text-text">
       <div className="p-4">
         <h4 className="mb-4 font-medium text-sm leading-none">Tags</h4>

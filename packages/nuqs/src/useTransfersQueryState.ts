@@ -26,7 +26,8 @@ export const transfersParser = createParser({
       return null;
     }
     const keys = value.split(";");
-    return keys.reduce<Array<Transfer>>((acc, key) => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+    return keys.reduce<Transfer[]>((acc, key) => {
       const [id, address, addressOrEns, chainId, assetType, asset] =
         key.split(":");
       const transferAddress = address;
@@ -96,9 +97,10 @@ export const transfersParser = createParser({
       return acc;
     }, []);
   },
-  serialize: (value: Array<Transfer>) => {
+  serialize: (value: Transfer[]) => {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       ?.map(([id, transfer]) => {
         let assetString = "";
 
@@ -148,7 +150,7 @@ export const transfersParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useTransfersQueryState = (initialTransfers?: Array<Transfer>) => {
+export const useTransfersQueryState = (initialTransfers?: Transfer[]) => {
   return useQueryState(
     "transfers",
     transfersParser.withDefault(initialTransfers ?? []).withOptions({

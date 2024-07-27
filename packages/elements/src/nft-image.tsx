@@ -65,9 +65,9 @@ export const NftImage: FC<NftImageProps> = ({
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
           !isImageLoaded && "animate-pulse bg-emphasis-medium",
-          !isImageLoaded
-            ? "scale-90 blur-xl"
-            : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
+          isImageLoaded
+            ? "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0"
+            : "scale-90 blur-xl",
         )}
         src={
           image_url ??

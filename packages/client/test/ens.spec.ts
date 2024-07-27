@@ -17,7 +17,7 @@ import { getEnsDomains } from "../src"; // Replace with your actual file path
 
 test("getEnsDomains", async () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const result = await getEnsDomains({ name: "kaki", amount: 3 });
+  const _result = await getEnsDomains({ name: "kaki", amount: 3 });
 
   // expect(result._unsafeUnwrap()).haveOwnProperty("domains");
   // console.log(JSON.stringify(result));

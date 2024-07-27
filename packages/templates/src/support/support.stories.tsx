@@ -38,6 +38,6 @@ type Story = StoryObj<typeof Support>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <Support />,
+  render: (_args) => <Support />,
   args: {},
 };

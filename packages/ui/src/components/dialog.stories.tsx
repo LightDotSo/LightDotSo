@@ -51,7 +51,7 @@ type Story = StoryObj<typeof Dialog>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>

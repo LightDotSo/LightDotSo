@@ -40,7 +40,7 @@ type Story = StoryObj<typeof BadgeCountButton>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <Popover>
       <PopoverTrigger>
         <BadgeCountButton count={0}>

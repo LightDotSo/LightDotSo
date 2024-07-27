@@ -20,6 +20,7 @@ import {
   USER_OPERATION_EVENT_HASH,
 } from "./const";
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export function handleUserOperationLogs(
   userOpHash: Bytes,
   eventTransaction: ethereum.Transaction,

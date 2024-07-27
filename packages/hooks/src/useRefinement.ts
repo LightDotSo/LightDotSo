@@ -116,6 +116,7 @@ function createRefinement<T>(ctxRef: MutableRefObject<RefinementContext<T>>) {
     return result;
   };
 
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   const refine = async (data: T) => {
     // Refinement is cached. Return previous result.
     if (result != null) {

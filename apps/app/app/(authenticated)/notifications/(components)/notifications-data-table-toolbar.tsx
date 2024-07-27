@@ -45,7 +45,7 @@ export const NotificationsDataTableToolbar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!sessionId || !notificationTable || !useTables.persist.hasHydrated()) {
+  if (!(sessionId && notificationTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

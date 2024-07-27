@@ -15,7 +15,7 @@
 "use client";
 
 import type { Tab } from "@lightdotso/types";
-import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
+import { DashboardIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ArrowUpRightFromSquare } from "lucide-react";
 import type { RefAttributes } from "react";
@@ -30,6 +30,7 @@ export const CHANGELOG_TABS: Tab[] = [
     id: "changelog",
     href: "/",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
   },
@@ -38,6 +39,7 @@ export const CHANGELOG_TABS: Tab[] = [
     id: "app",
     href: "https://light.so",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ArrowUpRightFromSquare {...props} />,
   },

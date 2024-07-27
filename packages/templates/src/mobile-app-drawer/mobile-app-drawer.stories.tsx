@@ -30,6 +30,7 @@ const tabs: Tab[] = [
     id: "user-operations",
     href: "/",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
   },
@@ -39,6 +40,7 @@ const tabs: Tab[] = [
     href: "/transactions",
     number: 4,
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
   },
@@ -47,6 +49,7 @@ const tabs: Tab[] = [
     id: "external",
     href: "https://light.so",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <FileIcon {...props} />,
   },
@@ -75,6 +78,6 @@ type Story = StoryObj<typeof MobileAppDrawer>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <MobileAppDrawer tabs={tabs} />,
+  render: (_args) => <MobileAppDrawer tabs={tabs} />,
   args: {},
 };

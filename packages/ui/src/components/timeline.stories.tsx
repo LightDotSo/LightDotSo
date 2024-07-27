@@ -50,7 +50,7 @@ type Story = StoryObj<typeof Timeline>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <Timeline>
       <TimelineItem>
         <TimelinePoint>Hi</TimelinePoint>

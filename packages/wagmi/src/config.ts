@@ -14,15 +14,8 @@
 
 import { CHAINS } from "@lightdotso/const";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createClient, fallback } from "viem";
-import {
-  http,
-  cookieStorage,
-  createConfig,
-  createStorage,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  unstable_connector,
-} from "wagmi";
+import { createClient } from "viem";
+import { http, cookieStorage, createConfig, createStorage } from "wagmi";
 import {
   coinbaseWallet,
   injected,

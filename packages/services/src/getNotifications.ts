@@ -29,7 +29,7 @@ export const preloadGetNotifications = (params: WalletListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getNotifications = async (params: WalletListParams) => {
-  return getClientNotifications(
+  return await getClientNotifications(
     {
       params: {
         query: {

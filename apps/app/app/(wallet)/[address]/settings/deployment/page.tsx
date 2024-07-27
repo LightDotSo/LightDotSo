@@ -70,14 +70,14 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  const wallet_chains = walletSettings?.is_enabled_testnet
+  const walletChains = walletSettings?.is_enabled_testnet
     ? CHAINS
     : MAINNET_CHAINS;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        {wallet_chains.map((chain) => (
+        {walletChains.map((chain) => (
           <SettingsDeploymentCard
             key={chain.id}
             chain={JSON.stringify(chain)}

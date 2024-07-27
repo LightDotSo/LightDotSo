@@ -26,7 +26,7 @@ const abiItem = {
   outputs: [],
 };
 
-const encodeDepositCalldata = () => {
+const _encodeDepositCalldata = () => {
   return encodeFunctionData({
     abi: [abiItem],
     functionName: "execute",
@@ -40,10 +40,6 @@ const encodeDepositCalldata = () => {
     ],
   });
 };
-
-// Run the encoding
-// eslint-disable-next-line no-console
-console.log(encodeDepositCalldata());
 
 // Result:
 // 0xb61d27f6000000000000000000000000000000000003193facb32d1c120719892b7ae97700000000000000000000000000000000000000000000000000000000000f424000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000004d0e30db000000000000000000000000000000000000000000000000000000000

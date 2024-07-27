@@ -22,7 +22,7 @@ import {
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (searchParams: {
+export const preloader = (searchParams: {
   isTestnet?: string;
   pagination?: string;
 }) => {

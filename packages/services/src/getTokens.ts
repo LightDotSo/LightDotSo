@@ -29,7 +29,7 @@ export const preloadGetTokens = (params: TokenListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getTokens = async (params: TokenListParams) => {
-  return getClientTokens(
+  return await getClientTokens(
     {
       params: {
         query: {

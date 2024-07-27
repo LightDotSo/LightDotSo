@@ -47,7 +47,9 @@ type Story = StoryObj<typeof NftModal>;
 const nftModalProps: NftModalProps = {
   address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed" as Address,
   isTestnet: false,
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
   onClose: () => {},
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
   onNftSelect: () => {},
 };
 

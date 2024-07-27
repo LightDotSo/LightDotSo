@@ -29,7 +29,7 @@ export const preloadGetPortfolio = (params: PortfolioParams) => {
 // -----------------------------------------------------------------------------
 
 export const getPortfolio = async (params: PortfolioParams) => {
-  return getClientPortfolio(
+  return await getClientPortfolio(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",

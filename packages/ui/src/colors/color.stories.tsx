@@ -31,7 +31,7 @@ export default meta;
 // -----------------------------------------------------------------------------
 
 export const Base = {
-  render: (args) => (
+  render: (_args) => (
     <ColorPalette>
       <ColorItem
         title="background"

@@ -151,6 +151,7 @@ export function useTabs() {
     useQueryUserOperationsCount({
       address: walletAddress as Address,
       status: "queued",
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });
 
@@ -181,11 +182,11 @@ export function useTabs() {
     // If the user has connected their wallet
     if (connectedAddress) {
       // If the connected address is not in the owners addresses, show the not owner banner
-      if (!ownersAddresses.includes(connectedAddress)) {
-        setIsNotOwner(true);
-      } else {
+      if (ownersAddresses.includes(connectedAddress)) {
         // If the connected address is in the owners addresses, hide the not owner banner
         setIsNotOwner(false);
+      } else {
+        setIsNotOwner(true);
       }
       return;
     }

@@ -41,17 +41,10 @@ test("Should return correct merkle root", () => {
   const merkleRoot =
     "0xf79d62b0d87b6d1ff3f2492acc441100bf98127714feb1d31facf572564e0ae7";
 
-  const tree = new MerkleTree(leaves, keccak256, {
+  const _tree = new MerkleTree(leaves, keccak256, {
     // sort: true,
     // isBitcoinTree: false,
   });
-
-  // eslint-disable-next-line no-console
-  console.log(tree.getLeaves().map((x) => x.toString("hex")));
-
-  // expect(tree.getHexRoot()).to.equal(merkleRoot);
-  // eslint-disable-next-line no-console
-  console.log(tree.getHexRoot());
 
   // console.log(tree.getProofs());
 
@@ -60,9 +53,6 @@ test("Should return correct merkle root", () => {
     [merkleHashes],
     ["bytes32", "bytes32", "bytes32", "bytes32"],
   );
-
-  // eslint-disable-next-line no-console
-  console.log(standardTree.root.toString());
 
   expect(standardTree.root.toString()).to.equal(merkleRoot);
 });
@@ -82,29 +72,18 @@ test("simple merkle tree", () => {
 
   // const proof = tree.getProof(leaves[0]);
 
-  const root = tree.getHexRoot();
-  // eslint-disable-next-line no-console
-  console.log(root);
+  const _root = tree.getHexRoot();
 
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
     ["bytes32", "bytes32"],
   );
 
-  const proof = standardTree.getProof(0);
-  // eslint-disable-next-line no-console
-  console.log(proof);
-  // eslint-disable-next-line no-console
-  console.log(standardTree.dump());
-  // eslint-disable-next-line no-console
-  console.log(standardTree.render());
+  const _proof = standardTree.getProof(0);
 
-  const standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
-  console.log(standardTreeRoot);
+  const _standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
 
-  const simpleTree = SimpleMerkleTree.of(leaves);
-  // eslint-disable-next-line no-console
-  console.log(simpleTree.root.toString());
+  const _simpleTree = SimpleMerkleTree.of(leaves);
 });
 
 test("simple nested merkle tree", () => {
@@ -123,32 +102,18 @@ test("simple nested merkle tree", () => {
 
   // const proof = tree.getProof(leaves[0]);
 
-  const root = tree.getHexRoot(); // eslint-disable-next-line no-console
-  console.log(root);
-  // eslint-disable-next-line no-console
-  console.log(tree.getProof(merkleHashes[0]));
+  const _root = tree.getHexRoot(); // eslint-disable-next-line no-console
 
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
     ["bytes32", "bytes32", "bytes32"],
   );
 
-  const proof = standardTree.getProof(0);
-  // eslint-disable-next-line no-console
-  console.log(proof);
-  // eslint-disable-next-line no-console
-  console.log(standardTree.dump());
-  // eslint-disable-next-line no-console
-  console.log(standardTree.render());
+  const _proof = standardTree.getProof(0);
 
-  const standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
-  console.log(standardTreeRoot);
+  const _standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
 
-  const simpleTree = SimpleMerkleTree.of(leaves);
-  // eslint-disable-next-line no-console
-  console.log(simpleTree.root.toString());
-  // eslint-disable-next-line no-console
-  console.log(simpleTree.getProof(0));
+  const _simpleTree = SimpleMerkleTree.of(leaves);
 });
 
 test("simple deep nested merkle tree", () => {
@@ -186,14 +151,7 @@ test("simple deep nested merkle tree", () => {
     // isBitcoinTree: true,
   });
 
-  // const proof = tree.getProof(leaves[0]);
-  // eslint-disable-next-line no-console
-  console.log(tree.getProofs());
-
-  const root = tree.getHexRoot(); // eslint-disable-next-line no-console
-  console.log(root);
-  // eslint-disable-next-line no-console
-  console.log(tree.getProof(merkleHashes[0]));
+  const _root = tree.getHexRoot(); // eslint-disable-next-line no-console
 
   // const standardTree = StandardMerkleTree.of(
   //   [merkleHashes],
@@ -212,10 +170,6 @@ test("simple deep nested merkle tree", () => {
   // console.log(standardTreeRoot);
 
   const simpleTree = SimpleMerkleTree.of(leaves);
-  // eslint-disable-next-line no-console
-  console.log(simpleTree.root.toString());
-  // eslint-disable-next-line no-console
-  console.log(simpleTree.getProof(0));
 
   expect(tree.getHexRoot()).to.equal(simpleTree.root.toString());
 });

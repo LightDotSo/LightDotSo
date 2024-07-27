@@ -29,7 +29,7 @@ export const preloadGetActivities = (params: ActivityListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getActivities = async (params: ActivityListParams) => {
-  return getClientActivities(
+  return await getClientActivities(
     {
       params: {
         query: {

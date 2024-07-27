@@ -51,7 +51,7 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
     return <NotAvailableTestnetCard entityName="Chart" />;
   }
 
-  if (!token_price || !token_price.prices || chain_id === 0) {
+  if (!token_price?.prices || chain_id === 0) {
     return null;
   }
 

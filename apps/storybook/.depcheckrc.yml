@@ -66,3 +66,4 @@ ignores:
   - "@lightdotso/dialogs"
   - "@lightdotso/modals"
   - "@lightdotso/states"
+  - "@types/react"

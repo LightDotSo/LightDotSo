@@ -39,6 +39,6 @@ type Story = StoryObj<typeof NftImage>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <NftImage nft={nftGetData} />,
+  render: (_args) => <NftImage nft={nftGetData} />,
   args: {},
 };

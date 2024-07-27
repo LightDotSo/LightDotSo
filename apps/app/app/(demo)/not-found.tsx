@@ -16,4 +16,5 @@
 // NotFound
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
 export default async function NotFound() {}

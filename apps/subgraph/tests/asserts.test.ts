@@ -36,7 +36,9 @@ describe("Asserts", () => {
       [ethereum.Value.fromI32(1)],
     );
     assert.tupleEquals(
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       changetype<ethereum.Tuple>([ethereum.Value.fromI32(1)]),
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       changetype<ethereum.Tuple>([ethereum.Value.fromI32(1)]),
     );
     assert.assertTrue(true);
@@ -74,7 +76,9 @@ describe("Asserts", () => {
       "Arrays should be equal",
     );
     assert.tupleEquals(
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       changetype<ethereum.Tuple>([ethereum.Value.fromI32(1)]),
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       changetype<ethereum.Tuple>([ethereum.Value.fromI32(1)]),
       "Tuples should be equal",
     );

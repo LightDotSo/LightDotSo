@@ -61,6 +61,7 @@ export const OverviewSection = ({
     order: status === "queued" ? "asc" : "desc",
     limit: 10,
     offset: 0,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

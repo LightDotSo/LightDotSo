@@ -45,7 +45,7 @@ export const ActivityDataTableToolbar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!sessionId || !activityTable || !useTables.persist.hasHydrated()) {
+  if (!(sessionId && activityTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

@@ -241,6 +241,7 @@ export const ConfigurationForm: FC = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     const subscription = form.watch((value, { name }) => {
       // @ts-ignore
       setFormValues(value);
@@ -262,6 +263,7 @@ export const ConfigurationForm: FC = () => {
           setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
+          // biome-ignore lint/style/useCollapsedElseIf: <explanation>
           if (newFormConfigurationSchema.shape.threshold.safeParse(value)) {
             setThreshold(value.threshold);
           }
@@ -665,8 +667,10 @@ export const ConfigurationForm: FC = () => {
                         {Object.entries(form.formState.errors)
                           .filter(
                             ([key]) =>
-                              !key.startsWith("threshold") &&
-                              !key.startsWith("owners"),
+                              !(
+                                key.startsWith("threshold") ||
+                                key.startsWith("owners")
+                              ),
                           )
                           // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                           .map(([_key, error]: [string, any]) => error.message)

@@ -43,7 +43,7 @@ export const OwnersDataTableToolbar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!ownerTable || !useTables.persist.hasHydrated()) {
+  if (!(ownerTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

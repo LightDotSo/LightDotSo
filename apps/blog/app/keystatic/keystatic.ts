@@ -18,4 +18,5 @@ import { makePage } from "@keystatic/next/ui/app";
 
 import config from "~/keystatic.config";
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default makePage(config);

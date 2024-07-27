@@ -38,10 +38,10 @@ type Story = StoryObj<typeof FooterButton>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <FooterButton />,
+  render: (_args) => <FooterButton />,
   args: {},
 };
 export const Modal: Story = {
-  render: (args) => <FooterButton isModal />,
+  render: (_args) => <FooterButton isModal />,
   args: {},
 };

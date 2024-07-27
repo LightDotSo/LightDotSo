@@ -73,7 +73,7 @@ export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
       key={pageIndex}
       className="relative w-full"
       variants={variants}
-      initial={!hasAnimated ? "center" : "enter"}
+      initial={hasAnimated ? "enter" : "center"}
       animate="center"
       exit="exit"
       transition={{

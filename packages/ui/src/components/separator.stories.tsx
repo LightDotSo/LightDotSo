@@ -38,7 +38,7 @@ type Story = StoryObj<typeof Separator>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div>
       <div className="space-y-1">
         <h4 className="font-medium text-sm leading-none">Radix Primitives</h4>

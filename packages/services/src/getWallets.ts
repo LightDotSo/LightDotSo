@@ -29,7 +29,7 @@ export const preloadGetWallets = (params: WalletListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getWallets = async (params: WalletListParams) => {
-  return getClientWallets(
+  return await getClientWallets(
     {
       params: {
         query: {

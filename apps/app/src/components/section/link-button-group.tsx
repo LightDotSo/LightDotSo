@@ -80,7 +80,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   const itemHrefs = items.map((item) => item.href.split("/").pop());
 
   // If all the item hrefs are the same, get the same last part of the path
-  const itemSegment = itemHrefs.every((val, i, arr) => val === arr[0])
+  const itemSegment = itemHrefs.every((val, _i, arr) => val === arr[0])
     ? itemHrefs[0]
     : null;
 

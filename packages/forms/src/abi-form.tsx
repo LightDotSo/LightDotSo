@@ -320,6 +320,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // From: https://github.com/hashgraph/hedera-accelerator-defi-dex-ui/blob/cc70c3972c121774d19327718758c30fbe165e2b/src/dao/pages/DAOProposals/Forms/DAOGenericProposal/FormMultiInputList.tsx
   // License: MIT
   // Thanks to the Hedera team for the inspiration!
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   function validateSolidityParam(
     abiType: string,
     value: string,
@@ -466,7 +467,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       let parsedArray;
       try {
         parsedArray = JSON.parse(value);
-      } catch (error) {
+      } catch (_error) {
         // return "Invalid array.";
       }
       if (Array.isArray(parsedArray)) {

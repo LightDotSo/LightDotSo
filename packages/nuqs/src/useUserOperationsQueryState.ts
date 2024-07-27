@@ -22,6 +22,7 @@ import { createParser, useQueryState } from "nuqs";
 export const userOperationsParser = createParser({
   parse: (value) => {
     const operations = value.split(";");
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     return operations?.map<Partial<UserOperation>>((operation) => {
       const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -98,7 +99,7 @@ export const userOperationsParser = createParser({
       return parsedOp;
     });
   },
-  serialize: (value: Array<Partial<UserOperation>>) =>
+  serialize: (value: Partial<UserOperation>[]) =>
     value
       ?.map(
         (operation, i) =>
@@ -122,7 +123,7 @@ export const userOperationsParser = createParser({
 // -----------------------------------------------------------------------------
 
 export const useUserOperationsQueryState = (
-  defaultUserOperations?: Array<Partial<UserOperation>>,
+  defaultUserOperations?: Partial<UserOperation>[],
 ) => {
   return useQueryState(
     "userOperations",

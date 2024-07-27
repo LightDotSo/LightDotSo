@@ -79,6 +79,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: isTestnetState ?? false,
     }).queryKey,
   );
@@ -136,6 +137,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         <DataTableViewOptions
           table={table}
           columnMapping={{
+            // biome-ignore lint/style/useNamingConvention: <explanation>
             chain_id: "Chain",
             hash: "Tx Hash",
             timestamp: "Timestamp",

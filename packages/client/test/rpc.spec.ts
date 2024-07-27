@@ -17,17 +17,14 @@ import { getChainId, getUserOperationReceipt } from "../src";
 
 test("getChainId", async () => {
   const result = await getChainId(1);
-  // eslint-disable-next-line no-console
-  console.log(result);
 
   expect(result._unsafeUnwrap()).toBe("0x1");
 });
 
 test("getUserOperationReceipt", async () => {
-  const result = await getUserOperationReceipt(137, [
+  const _result = await getUserOperationReceipt(137, [
     "0xe627c1e5e10d3c267692c6b6b1d4ed803a26a237af489f14e597badf87e415a6",
   ]);
-  console.log(result);
   // expect(result._unsafeUnwrap()).toBeDefined();
 
   // Invalid hex string

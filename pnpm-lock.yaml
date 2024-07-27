@@ -210,9 +210,6 @@ importers:
       npm-package-json-lint-config-default:
         specifier: ^7.0.1
         version: 7.0.1(npm-package-json-lint@8.0.0(typescript@5.5.4))
-      oxlint:
-        specifier: ^0.6.1
-        version: 0.6.1
       postcss:
         specifier: ^8.4.40
         version: 8.4.40
@@ -451,8 +448,8 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1
       framer-motion:
-        specifier: ^11.3.18
-        version: 11.3.18(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^11.3.19
+        version: 11.3.19(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -1260,7 +1257,7 @@ importers:
         version: 0.0.24
       inngest:
         specifier: ^3.21.2
-        version: 3.21.2(@vercel/node@3.2.7(@swc/core@1.7.2(@swc/helpers@0.5.12))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.5.1)(koa@2.15.3)(next@15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.4)
+        version: 3.21.2(@vercel/node@3.2.7(@swc/core@1.7.2(@swc/helpers@0.5.12))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.5.2)(koa@2.15.3)(next@15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.4)
       next:
         specifier: 15.0.0-canary.79
         version: 15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -1432,7 +1429,7 @@ importers:
         version: 4.20240725.0
       '@hono-rate-limiter/cloudflare':
         specifier: ^0.1.2
-        version: 0.1.2(hono@4.5.1)
+        version: 0.1.2(hono@4.5.2)
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../../packages/client
@@ -1440,11 +1437,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/const
       hono:
-        specifier: ^4.5.1
-        version: 4.5.1
+        specifier: ^4.5.2
+        version: 4.5.2
       hono-rate-limiter:
         specifier: ^0.4.0
-        version: 0.4.0(hono@4.5.1)
+        version: 0.4.0(hono@4.5.2)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3176,8 +3173,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       framer-motion:
-        specifier: ^11.3.18
-        version: 11.3.18(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^11.3.19
+        version: 11.3.19(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
         specifier: ^0.416.0
         version: 0.416.0(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3415,8 +3412,8 @@ importers:
         specifier: ^0.17.3
         version: 0.17.19
       framer-motion:
-        specifier: ^11.3.18
-        version: 11.3.18(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^11.3.19
+        version: 11.3.19(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
         specifier: ^0.263.1
         version: 0.263.1(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -7287,46 +7284,6 @@ packages:
   '@openzeppelin/merkle-tree@https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71':
     resolution: {tarball: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71}
     version: 1.0.7
-
-  '@oxlint/darwin-arm64@0.6.1':
-    resolution: {integrity: sha512-qnPtdpX4a2wZJYHo/7pO5oHGFfA1t47M+gN9d/ds2+C7UzfZyp1kgE6cjeBidnkpSnFWUPfOmuoOOrFs8Ig+Sw==}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@oxlint/darwin-x64@0.6.1':
-    resolution: {integrity: sha512-/M126TTjEfzNRwYgopJ1qMxbJMUzzrMY64PjbXTID7ig7nLyxcMSAp454Znf8Sh/3uulPODynmkCdkReiGqPvw==}
-    cpu: [x64]
-    os: [darwin]
-
-  '@oxlint/linux-arm64-gnu@0.6.1':
-    resolution: {integrity: sha512-120Qbek2yJz59iIzS0bwoM2717UTd6MRggDBgRw70rN0zdzkAZhORSywuC+EPq8U6ltIqYeMfcl+sGq7ZyhPyg==}
-    cpu: [arm64]
-    os: [linux]
-
-  '@oxlint/linux-arm64-musl@0.6.1':
-    resolution: {integrity: sha512-wT0T+YOW8Ng2WGcLnWCylEpHwUDRun2HomTNslRed4RQzTWOisyp6hNB8sS6JZlRGYoCGUePgwBy7GM2P0IQYw==}
-    cpu: [arm64]
-    os: [linux]
-
-  '@oxlint/linux-x64-gnu@0.6.1':
-    resolution: {integrity: sha512-4qUcfTDXGOrm3/ohiCG09ZvjpCZImg1yI/IaOo25ij9VXLoaWUYJ6vbxY1GqPQegqZhli7fbFXQ5FP6AwjhBtQ==}
-    cpu: [x64]
-    os: [linux]
-
-  '@oxlint/linux-x64-musl@0.6.1':
-    resolution: {integrity: sha512-v0O46xwi0EW+J3QxIZAU1h+2voIsq+BZc6/mPKzkSlnyYSPECBDFOG6IJF/rf7qzsjvIeFqdYB+sGGCxoxM5mg==}
-    cpu: [x64]
-    os: [linux]
-
-  '@oxlint/win32-arm64@0.6.1':
-    resolution: {integrity: sha512-51NQgkd/XDQzAvFHKanjhFyKoPXvomNBHJnQF3iEYKmAGT2+VOOF9N6ism/FTLn+xGdzLBVU51xwRlmpCXt3kQ==}
-    cpu: [arm64]
-    os: [win32]
-
-  '@oxlint/win32-x64@0.6.1':
-    resolution: {integrity: sha512-T8uLmIxbs1X2wbiZzIjxHJgtYEOGl7d+wZTzj701JsKHsY8DWtOCvMMgmd3EoO0XX8PPxpJYdZDWupdiIlYQ4Q==}
-    cpu: [x64]
-    os: [win32]
 
   '@parcel/watcher-android-arm64@2.4.1':
     resolution: {integrity: sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==}
@@ -14592,8 +14549,8 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
-  framer-motion@11.3.18:
-    resolution: {integrity: sha512-pPJXcshW+AABch6FQxFCeBd/bZFaZC2w/VdkSEZGvKIaVGA4IsOS2SqUEIWMKMJJsKwr96O+7vY66M+/S7mOlw==}
+  framer-motion@11.3.19:
+    resolution: {integrity: sha512-+luuQdx4AsamyMcvzW7jUAJYIKvQs1KE7oHvKkW3eNzmo0S+3PSDWjBuQkuIP9WyneGnKGMLUSuHs8OP7jKpQg==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: 19.0.0-rc-cc1ec60d0d-20240607
@@ -15257,8 +15214,8 @@ packages:
     resolution: {integrity: sha512-5IAMJOXfpA5nT+K0MNjClchzz0IhBHs2Szl7WFAhrFOsbtQsYmNynFyJRg/a3IPsmCfxcrf8txUGiNShXpK5Rg==}
     engines: {node: '>=16.0.0'}
 
-  hono@4.5.1:
-    resolution: {integrity: sha512-6q8AugoWG5wlrjdGG8OFFiqEsPlPGjODjUik48sEJeko4Tae1UsLS2vUiYHLEJx1gJvOZa4BWkQC+urwDmkEvQ==}
+  hono@4.5.2:
+    resolution: {integrity: sha512-93P8XEALrHAUGRZoqXs8MDL3w9mDgRpbW9Sy5x4LS7srg78bKUw7EGynxze+Ft1e/rLGmDAbxeSTMu6dHUSRDw==}
     engines: {node: '>=16.0.0'}
 
   hosted-git-info@2.8.9:
@@ -18298,11 +18255,6 @@ packages:
 
   outvariant@1.4.2:
     resolution: {integrity: sha512-Ou3dJ6bA/UJ5GVHxah4LnqDwZRwAmWxrG3wtrHrbGnP4RnLCtA64A4F+ae7Y8ww660JaddSoArUR5HjipWSHAQ==}
-
-  oxlint@0.6.1:
-    resolution: {integrity: sha512-V66/akd9Gu2+KE6zP/QNTqlmBChL2Q9tPYR9CguKML1SaR/URXmgpvx+0ZfFIA+pDz/VzOOM0w79ozfakbW82w==}
-    engines: {node: '>=14.*'}
-    hasBin: true
 
   p-cancelable@3.0.0:
     resolution: {integrity: sha512-mlVgR3PGuzlo0MmTdk4cXqXWlwQDLnONTAg6sm62XkMJEiRxN3GL3SffkYvqwonbkJBcrI7Uvv5Zh9yjvn2iUw==}
@@ -25386,9 +25338,9 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
-  '@hono-rate-limiter/cloudflare@0.1.2(hono@4.5.1)':
+  '@hono-rate-limiter/cloudflare@0.1.2(hono@4.5.2)':
     dependencies:
-      hono: 4.5.1
+      hono: 4.5.2
 
   '@hono/node-server@1.11.2': {}
 
@@ -27079,30 +27031,6 @@ snapshots:
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/constants': 5.7.0
       '@ethersproject/keccak256': 5.7.0
-
-  '@oxlint/darwin-arm64@0.6.1':
-    optional: true
-
-  '@oxlint/darwin-x64@0.6.1':
-    optional: true
-
-  '@oxlint/linux-arm64-gnu@0.6.1':
-    optional: true
-
-  '@oxlint/linux-arm64-musl@0.6.1':
-    optional: true
-
-  '@oxlint/linux-x64-gnu@0.6.1':
-    optional: true
-
-  '@oxlint/linux-x64-musl@0.6.1':
-    optional: true
-
-  '@oxlint/win32-arm64@0.6.1':
-    optional: true
-
-  '@oxlint/win32-x64@0.6.1':
-    optional: true
 
   '@parcel/watcher-android-arm64@2.4.1':
     optional: true
@@ -37147,7 +37075,7 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
-  framer-motion@11.3.18(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+  framer-motion@11.3.19(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
       tslib: 2.6.3
     optionalDependencies:
@@ -38137,13 +38065,13 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
-  hono-rate-limiter@0.4.0(hono@4.5.1):
+  hono-rate-limiter@0.4.0(hono@4.5.2):
     dependencies:
-      hono: 4.5.1
+      hono: 4.5.2
 
   hono@3.12.12: {}
 
-  hono@4.5.1: {}
+  hono@4.5.2: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -38484,7 +38412,7 @@ snapshots:
       - encoding
       - supports-color
 
-  inngest@3.21.2(@vercel/node@3.2.7(@swc/core@1.7.2(@swc/helpers@0.5.12))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.5.1)(koa@2.15.3)(next@15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.4):
+  inngest@3.21.2(@vercel/node@3.2.7(@swc/core@1.7.2(@swc/helpers@0.5.12))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.5.2)(koa@2.15.3)(next@15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.4):
     dependencies:
       '@types/debug': 4.1.12
       canonicalize: 1.0.8
@@ -38501,7 +38429,7 @@ snapshots:
       '@vercel/node': 3.2.7(@swc/core@1.7.2(@swc/helpers@0.5.12))(encoding@0.1.13)
       express: 4.19.2
       h3: 1.11.1
-      hono: 4.5.1
+      hono: 4.5.2
       koa: 2.15.3
       next: 15.0.0-canary.79(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       typescript: 5.5.4
@@ -42212,17 +42140,6 @@ snapshots:
   outdent@0.8.0: {}
 
   outvariant@1.4.2: {}
-
-  oxlint@0.6.1:
-    optionalDependencies:
-      '@oxlint/darwin-arm64': 0.6.1
-      '@oxlint/darwin-x64': 0.6.1
-      '@oxlint/linux-arm64-gnu': 0.6.1
-      '@oxlint/linux-arm64-musl': 0.6.1
-      '@oxlint/linux-x64-gnu': 0.6.1
-      '@oxlint/linux-x64-musl': 0.6.1
-      '@oxlint/win32-arm64': 0.6.1
-      '@oxlint/win32-x64': 0.6.1
 
   p-cancelable@3.0.0: {}
 

@@ -129,6 +129,7 @@ export type SwapDialogProps = {
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -299,6 +300,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const genericExecutionQuotes = useMemo(() => {
     // Initialize the token swaps
     const tokenSwaps: SwapFetcherProps[] = [];
@@ -370,7 +372,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
     console.info("executionParams:", executionParams);
 
-    if (!wallet || !executionParams || executionParams.length === 0) {
+    if (!(wallet && executionParams) || executionParams.length === 0) {
       return [];
     }
 
@@ -694,9 +696,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
               : typeof fromSwap?.quantity === "undefined" ||
                   (fromSwap?.quantity && fromSwap?.quantity === 0)
                 ? "Enter Quantity"
-                : !isFromSwapValueValid
-                  ? `Insufficient ${fromToken?.symbol}`
-                  : "Invalid Swap"}
+                : isFromSwapValueValid
+                  ? "Invalid Swap"
+                  : `Insufficient ${fromToken?.symbol}`}
       </Button>
       {fromSwap?.chainId === 0 &&
         genericExecutionQuotes &&

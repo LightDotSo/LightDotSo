@@ -127,7 +127,9 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   async function onSubmit(data: WalletDevFormValues) {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     mutate({ is_enabled_dev: data.enabled });
   }
 

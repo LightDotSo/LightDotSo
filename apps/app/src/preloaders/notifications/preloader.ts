@@ -23,7 +23,7 @@ import {
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (searchParams: { pagination?: string }) => {
+export const preloader = (searchParams: { pagination?: string }) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------

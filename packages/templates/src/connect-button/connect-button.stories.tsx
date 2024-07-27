@@ -38,6 +38,6 @@ type Story = StoryObj<typeof ConnectButton>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => <ConnectButton />,
+  render: (_args) => <ConnectButton />,
   args: {},
 };

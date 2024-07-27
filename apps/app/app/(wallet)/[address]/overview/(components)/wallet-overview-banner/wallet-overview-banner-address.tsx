@@ -175,10 +175,10 @@ export const WalletOverviewBannerAddress: FC<
                   className="font-medium text-text-weak"
                   onClick={handleCopyClick}
                 >
-                  {!isCopied ? (
-                    <Copy className="size-4" />
-                  ) : (
+                  {isCopied ? (
                     <ClipboardCheck className="size-4" />
+                  ) : (
+                    <Copy className="size-4" />
                   )}
                 </ButtonIcon>
               </>

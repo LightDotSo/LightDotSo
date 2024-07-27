@@ -39,7 +39,7 @@ import {
 
 export const useMutationUserOperationCreateBatch = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  params: UserOperationParams,
+  _params: UserOperationParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -63,8 +63,7 @@ export const useMutationUserOperationCreateBatch = (
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
       const hasInvalidData = body.userOperations.some((userOperation) => {
         return (
-          !userOperation.chainId ||
-          !userOperation.hash ||
+          !(userOperation.chainId && userOperation.hash) ||
           typeof userOperation.nonce === "undefined" ||
           userOperation.nonce === null ||
           !userOperation.initCode ||

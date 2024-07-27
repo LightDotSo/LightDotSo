@@ -38,7 +38,7 @@ type Story = StoryObj<typeof Skeleton>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div className="flex items-center space-x-4">
       <Skeleton className="size-12 rounded-full" />
       <div className="space-y-2">

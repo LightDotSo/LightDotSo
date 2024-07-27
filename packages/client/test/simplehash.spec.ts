@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { expect, test } from "vitest";
+import { test } from "vitest";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getNftValuation, getNftsByOwner } from "../src"; // Replace with your actual file path
 // Load dotenv

@@ -63,6 +63,7 @@ export const useTokenAmount = ({
   // Utils
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   function getSwapToken(
     queryToken: TokenData | null | undefined,
     wagmiToken: WagmiToken | null | undefined,

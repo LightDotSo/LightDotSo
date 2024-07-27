@@ -57,6 +57,7 @@ const profileFormSchema = z.object({
     }),
   email: z
     .string({
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       required_error: "Please select an email to display.",
     })
     .email(),

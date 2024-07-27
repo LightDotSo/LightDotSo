@@ -29,7 +29,7 @@ export const preloadGetNfts = (params: NftListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getNfts = async (params: NftListParams) => {
-  return getClientNftsByOwner(
+  return await getClientNftsByOwner(
     {
       // biome-ignore lint/style/noNonNullAssertion: <explanation>
       address: params.address!,

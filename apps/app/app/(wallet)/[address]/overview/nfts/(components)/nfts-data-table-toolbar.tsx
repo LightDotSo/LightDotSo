@@ -43,7 +43,7 @@ export const NftsDataTableToolbar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!nftTable || !useTables.persist.hasHydrated()) {
+  if (!(nftTable && useTables.persist.hasHydrated())) {
     return null;
   }
 

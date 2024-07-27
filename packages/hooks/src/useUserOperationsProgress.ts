@@ -57,8 +57,10 @@ export const useUserOperationsProgress = () => {
     // to prevent duplicate transaction details.
     const filteredPartialUserOperations = partialUserOperations.filter(
       (partialUserOperation) =>
-        !incompletePartialUserOperations.includes(partialUserOperation) ||
-        !duplicatePartialUserOperations.includes(partialUserOperation),
+        !(
+          incompletePartialUserOperations.includes(partialUserOperation) &&
+          duplicatePartialUserOperations.includes(partialUserOperation)
+        ),
     );
 
     return [...filteredPartialUserOperations, ...userOperations];

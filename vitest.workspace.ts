@@ -1,6 +1,7 @@
 import { defineWorkspace } from "vitest/config";
 
 // defineWorkspace provides a nice type hinting DX
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineWorkspace([
   {
     extends: "./vitest.config.ts",

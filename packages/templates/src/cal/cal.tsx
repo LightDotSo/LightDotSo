@@ -25,6 +25,7 @@ import { type FC, useEffect } from "react";
 declare global {
   interface Window {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     Cal: any;
   }
 }
@@ -67,23 +68,19 @@ export const Cal: FC = () => {
 
   // Function to dynamically load the Cal.com script
   const loadCalScript = () => {
-    ((C, A, L) => {
+    (function (C, A, L) {
       // @ts-ignore
-      const p = (a, ar) => {
+      let p = function (a, ar) {
         a.q.push(ar);
       };
-      const d = C.document;
+      let d = C.document;
       // @ts-ignore
       C.Cal =
         // @ts-ignore
         C.Cal ||
-        (() => {
+        function () {
           // @ts-ignore
-          // biome-ignore lint/style/useConst: <explanation>
           let cal = C.Cal;
-          // @ts-expect-error
-          // biome-ignore lint/style/useConst: <explanation>
-          // biome-ignore lint/style/noArguments: <explanation>
           let ar = arguments;
           if (!cal.loaded) {
             cal.ns = {};
@@ -92,9 +89,7 @@ export const Cal: FC = () => {
             cal.loaded = true;
           }
           if (ar[0] === L) {
-            const api = () => {
-              // @ts-expect-error
-              // biome-ignore lint/style/noArguments: <explanation>
+            const api = function () {
               p(api, arguments);
             };
             const namespace = ar[1];
@@ -110,7 +105,7 @@ export const Cal: FC = () => {
             return;
           }
           p(cal, ar);
-        });
+        };
     })(window, "https://app.cal.com/embed/embed.js", "init");
   };
 
@@ -140,6 +135,7 @@ export const Cal: FC = () => {
       layout: "month_view",
     });
 
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
     return () => {};
   }, [theme.resolvedTheme]);
 

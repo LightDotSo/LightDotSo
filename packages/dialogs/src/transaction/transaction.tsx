@@ -137,10 +137,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   const { tokens } = useQueryTokens({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     group: false,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
@@ -294,19 +296,19 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
               <Tabs className="w-full" defaultValue="transaction">
                 <TabsList className="sticky w-full">
                   <TabsTrigger
-                    className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                    className={cn(isDev ? "w-1/4" : "w-1/3")}
                     value="transaction"
                   >
                     Transaction
                   </TabsTrigger>
                   <TabsTrigger
-                    className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                    className={cn(isDev ? "w-1/4" : "w-1/3")}
                     value="details"
                   >
                     Details
                   </TabsTrigger>
                   <TabsTrigger
-                    className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                    className={cn(isDev ? "w-1/4" : "w-1/3")}
                     value="data"
                   >
                     Data
@@ -422,8 +424,10 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             className="mr-2"
                                             token={{
                                               ...token,
+                                              // biome-ignore lint/style/useNamingConvention: <explanation>
                                               balance_usd: 0,
                                               id: "",
+                                              // biome-ignore lint/style/useNamingConvention: <explanation>
                                               chain_id: token.chain_id,
                                             }}
                                           />

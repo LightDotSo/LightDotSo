@@ -61,6 +61,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
@@ -103,8 +104,11 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // Get the gas estimate for the user operation
   // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     data: estimateGas,
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     error: estimateGasError,
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     isLoading: isEstimateGasLoading,
   } = useEstimateGas({
     chainId: Number(chainId),
@@ -118,6 +122,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
   // Get the max priority fee per gas, fallbacks to mainnet
   // @eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { data: estimatedMaxPriorityFeePerGas } =
     useEstimateMaxPriorityFeePerGas({
       chainId: Number(chainId),
@@ -131,6 +136,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     return isEstimateFeesPerGasLoading;
   }, [isEstimateFeesPerGasLoading]);
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
     const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
       ? // Get the `maxFeePerGas` and apply the speed bump
@@ -165,7 +171,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
     // For celo and alfajores, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === celo.id || chainId === celoAlfajores.id) {
-      const CELO_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(12000000000);
+      const celoBaseMaxPriorityFeePerGas = BigInt(12000000000);
 
       // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
       const baseCeloFeePerGas =
@@ -184,49 +190,47 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
         // Return compared to the celo base max priority fee per gas
         return [
-          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+          celoFeePerGas > celoBaseMaxPriorityFeePerGas
             ? celoFeePerGas
-            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
-          celoFeePerGas > CELO_BASE_MAX_PRIORITY_FEE_PER_GAS
+            : celoBaseMaxPriorityFeePerGas,
+          celoFeePerGas > celoBaseMaxPriorityFeePerGas
             ? celoFeePerGas
-            : CELO_BASE_MAX_PRIORITY_FEE_PER_GAS,
+            : celoBaseMaxPriorityFeePerGas,
         ];
       }
     }
 
     // For polygon, there's a base max fee per gas
     if (chainId === polygon.id || chainId === polygonAmoy.id) {
-      const POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(35);
+      const polygonBaseMaxPriorityFeePerGas = BigInt(35);
 
       return [
         // Return the larger of the `baseMaxFeePerGas` and the base fee
-        baseMaxFeePerGas &&
-        baseMaxFeePerGas > POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS
+        baseMaxFeePerGas && baseMaxFeePerGas > polygonBaseMaxPriorityFeePerGas
           ? baseMaxFeePerGas
-          : POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          : polygonBaseMaxPriorityFeePerGas,
         // Do the same for the `baseMaxPriorityFeePerGas`
         baseMaxPriorityFeePerGas &&
-        baseMaxPriorityFeePerGas > POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS
+        baseMaxPriorityFeePerGas > polygonBaseMaxPriorityFeePerGas
           ? baseMaxPriorityFeePerGas
-          : POLYGON_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          : polygonBaseMaxPriorityFeePerGas,
       ];
     }
 
     // For avalanche, there's a minimum fee per gas since it returns 0
     if (chainId === avalanche.id || chainId === avalancheFuji.id) {
-      const AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS = BigInt(1500000000);
+      const avalancheBaseMaxPriorityFeePerGas = BigInt(1500000000);
 
       return [
         // Return the larger of the `baseMaxFeePerGas` and the base fee
-        baseMaxFeePerGas &&
-        baseMaxFeePerGas > AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS
+        baseMaxFeePerGas && baseMaxFeePerGas > avalancheBaseMaxPriorityFeePerGas
           ? baseMaxFeePerGas
-          : AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          : avalancheBaseMaxPriorityFeePerGas,
         // Do the same for the `baseMaxPriorityFeePerGas`
         baseMaxPriorityFeePerGas &&
-        baseMaxPriorityFeePerGas > AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS
+        baseMaxPriorityFeePerGas > avalancheBaseMaxPriorityFeePerGas
           ? baseMaxPriorityFeePerGas
-          : AVALANCHE_BASE_MAX_PRIORITY_FEE_PER_GAS,
+          : avalancheBaseMaxPriorityFeePerGas,
       ];
     }
 

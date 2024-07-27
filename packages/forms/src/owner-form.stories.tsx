@@ -45,7 +45,7 @@ type Story = StoryObj<typeof OwnerForm>;
 // Schema
 // -----------------------------------------------------------------------------
 
-const walletNameFormSchema = z.object({
+const _walletNameFormSchema = z.object({
   addressOrEns: addressOrEns,
 });
 
@@ -62,7 +62,7 @@ export const Base: Story = {
       });
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const validEns = useRefinement(getEns, {
+    const _validEns = useRefinement(getEns, {
       debounce: 300,
     });
 
