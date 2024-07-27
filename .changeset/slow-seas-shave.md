@@ -1,6 +1,5 @@
 ---
 "@lightdotso/tailwindcss": patch
-"@lightdotso/eslint-config": patch
 "@lightdotso/kysely": patch
 "@lightdotso/prisma": patch
 "@lightdotso/background": patch
