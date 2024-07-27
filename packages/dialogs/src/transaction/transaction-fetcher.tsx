@@ -19,6 +19,7 @@ import { useDebouncedValue } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
+  useQueryPaymasterOperation,
   useQueryUserOperationEstimateFeesPerGas,
   useQueryUserOperationEstimateGas,
   useQueryUserOperationNonce,
@@ -40,7 +41,7 @@ import type {
   UserOperation as PermissionlessUserOperation,
 } from "permissionless";
 import { type FC, useEffect, useMemo, useState } from "react";
-import type { Address, Hex } from "viem";
+import { type Address, type Hex, fromHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -436,6 +437,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     paymasterAndData,
   ]);
   console.info("finalizedUserOperation", finalizedUserOperation);
+
+  const { paymasterOperation } = useQueryPaymasterOperation({
+    address: finalizedUserOperation?.paymasterAndData.slice(0, 42) as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    chain_id: finalizedUserOperation?.chainId
+      ? Number(finalizedUserOperation?.chainId)
+      : undefined,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    valid_until: fromHex(
+      `0x${finalizedUserOperation?.paymasterAndData ? finalizedUserOperation?.paymasterAndData.slice(154, 162) : 0}`,
+      "number",
+    ),
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    valid_after: fromHex(
+      `0x${finalizedUserOperation?.paymasterAndData ? finalizedUserOperation?.paymasterAndData.slice(162, 170) : 0}`,
+      "number",
+    ),
+  });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

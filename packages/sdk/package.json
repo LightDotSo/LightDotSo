@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -27,6 +30,7 @@
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
+    "neverthrow": "^7.0.0",
     "viem": "^2.18.2"
   },
   "devDependencies": {
