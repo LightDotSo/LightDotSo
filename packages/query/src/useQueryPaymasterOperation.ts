@@ -57,8 +57,7 @@ export const useQueryPaymasterOperation = (
         valid_after: params.valid_after,
       }).queryKey,
       queryFn: async () => {
-        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        if (!params.address || !params.chain_id || params.valid_until === 0) {
+        if (!(params.address && params.chain_id) || params.valid_until === 0) {
           return null;
         }
 
