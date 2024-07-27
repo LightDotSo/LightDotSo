@@ -47,6 +47,7 @@ export const decodePaymasterAndData = (
 
   // For other addresses, extract timestamps and signature differently
   const validUntil = fromBytes(msg.subarray(44, 52), "number");
+
   const validAfter = fromBytes(msg.subarray(76, 84), "number");
   const signature = msg.subarray(84);
 

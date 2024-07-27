@@ -19,13 +19,13 @@ import { decodePaymasterAndData } from "../src/paymaster";
 describe("decodePaymasterAndData Tests", () => {
   it("should decode paymaster and data correctly", () => {
     const expectedMsg =
-      "0dcd1bf9a1b36ce34237eeafef220931846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c" as Hex;
+      "0x0dcd1bf9a1b36ce34237eeafef220931846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c" as Hex;
 
     const [address, validUntil, validAfter, signature] = decodePaymasterAndData(
       fromHex(expectedMsg, "bytes"),
     )._unsafeUnwrap();
 
-    expect(address).toBe("0xcd1bf9a1b36ce34237eeafef220931846bcd8200");
+    expect(address).toBe("0x0dcd1bf9a1b36ce34237eeafef220931846bcd82");
     expect(validUntil).toBe(0xdeadbeef);
     expect(validAfter).toBe(0x1234);
     expect(fromBytes(signature, "hex")).toBe(
