@@ -3,7 +3,7 @@ module.exports = {
   "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
     "pnpm biome check --write --unsafe --no-errors-on-unmatched",
   ],
-  "*.{md}": ["pnpm dprint fmt"],
+  "*.{md,mdx}": ["pnpm dprint fmt"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
     // "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
