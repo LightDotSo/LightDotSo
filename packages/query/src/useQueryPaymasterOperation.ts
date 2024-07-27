@@ -77,7 +77,14 @@ export const useQueryPaymasterOperation = (
 
         return res.match(
           (data) => {
-            return data;
+            if (failureCount % 3 !== 2) {
+              // If the billing_operation is not found, return null
+              if (!data.billing_operation) {
+                throw new Error("Billing operation not found");
+              }
+              return data;
+            }
+            return null;
           },
           (err) => {
             if (failureCount % 3 !== 2) {
