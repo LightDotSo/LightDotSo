@@ -14,7 +14,7 @@
 
 import { UserOperationsDataTable } from "@/app/(user-operation)/(components)/user-operations-data-table";
 import { UserOperationsDataTablePagination } from "@/app/(user-operation)/(components)/user-operations-data-table-pagination";
-import { handler } from "@/handler";
+import { handler } from "@/handlers/handler";
 import { preloader } from "@/preloaders/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
