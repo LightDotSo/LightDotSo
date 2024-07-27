@@ -222,6 +222,7 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
 
   // Inside useTabs function
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const transformedTabs: Tab[] = useMemo(() => {
     if (walletSettings?.is_enabled_dev) {
       // If dev not yet in tabs, add it
@@ -258,6 +259,7 @@ export function useTabs() {
       return tab;
     });
   }, [
+    walletAddress,
     configuration,
     userOperationsCount,
     walletSettings?.is_enabled_dev,
