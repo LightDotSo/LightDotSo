@@ -25,6 +25,11 @@ export {
 } from "./useInviteCodeQueryState";
 export { useInternalUserOperationsQueryState } from "./useInternalUserOperationsQueryState";
 export {
+  isDemoParser,
+  isDemoParamsCache,
+  useIsDemoQueryState,
+} from "./useIsDemoQueryState";
+export {
   isTestnetParser,
   useIsTestnetQueryState,
 } from "./useIsTestnetQueryState";

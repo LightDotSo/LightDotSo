@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { MSWState } from "@/components/msw/msw-state";
+import { isDemoParamsCache } from "@lightdotso/nuqs";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -41,6 +42,12 @@ type RootLayoutProps = {
 // -----------------------------------------------------------------------------
 
 export default function RootLayout({ children, op }: RootLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  isDemoParamsCache.parse({ isDemo: "true" });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
