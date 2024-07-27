@@ -27,6 +27,7 @@ import {
   useQueryWallet,
 } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
+import { decodePaymasterAndData } from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -438,22 +439,32 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   ]);
   console.info("finalizedUserOperation", finalizedUserOperation);
 
+  const decodedPaymasterAndData = useMemo(() => {
+    if (
+      !finalizedUserOperation?.paymasterAndData ||
+      finalizedUserOperation?.paymasterAndData !== "0x"
+    ) {
+      return decodePaymasterAndData(
+        fromHex(finalizedUserOperation?.paymasterAndData as Hex, "bytes"),
+      ).unwrapOr(null);
+    }
+  }, [finalizedUserOperation?.paymasterAndData]);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { paymasterOperation } = useQueryPaymasterOperation({
-    address: finalizedUserOperation?.paymasterAndData.slice(0, 42) as Address,
+    address: decodedPaymasterAndData ? decodedPaymasterAndData[0] : undefined,
     // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_id: finalizedUserOperation?.chainId
       ? Number(finalizedUserOperation?.chainId)
       : undefined,
     // biome-ignore lint/style/useNamingConvention: <explanation>
-    valid_until: fromHex(
-      `0x${finalizedUserOperation?.paymasterAndData ? finalizedUserOperation?.paymasterAndData.slice(154, 162) : 0}`,
-      "number",
-    ),
+    valid_until: decodedPaymasterAndData ? decodedPaymasterAndData[1] : 0,
     // biome-ignore lint/style/useNamingConvention: <explanation>
-    valid_after: fromHex(
-      `0x${finalizedUserOperation?.paymasterAndData ? finalizedUserOperation?.paymasterAndData.slice(162, 170) : 0}`,
-      "number",
-    ),
+    valid_after: decodedPaymasterAndData ? decodedPaymasterAndData[2] : 0,
   });
 
   // ---------------------------------------------------------------------------
