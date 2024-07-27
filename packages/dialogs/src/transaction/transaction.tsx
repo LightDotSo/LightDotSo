@@ -411,13 +411,14 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             // if (quantity) {
                                             //   validateTokenQuantity(quantity);
                                             // }
-                                            toast.info(
-                                              Object.values(billingOperations)
-                                                .map((op) => op.status)
-                                                .join(","),
-                                            );
                                           },
                                         });
+
+                                        toast.info(
+                                          Object.values(billingOperations)
+                                            .map((op) => op.status)
+                                            .join(","),
+                                        );
 
                                         setCreateBackgroundModal(true);
                                         showTokenModal();

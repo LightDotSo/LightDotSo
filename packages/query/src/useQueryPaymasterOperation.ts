@@ -50,6 +50,7 @@ export const useQueryPaymasterOperation = (
 
   const { data: paymasterOperation, failureCount } =
     useQuery<PaymasterOperationData | null>({
+      retry: 10,
       queryKey: queryKeys.paymaster_operation.get({
         address: params.address,
         chain_id: params.chain_id,
@@ -77,7 +78,7 @@ export const useQueryPaymasterOperation = (
 
         return res.match(
           (data) => {
-            if (failureCount % 3 !== 2) {
+            if (failureCount % 10 !== 9) {
               // If the billing_operation is not found, return null
               if (!data.billing_operation) {
                 throw new Error("Billing operation not found");
@@ -87,7 +88,7 @@ export const useQueryPaymasterOperation = (
             return null;
           },
           (err) => {
-            if (failureCount % 3 !== 2) {
+            if (failureCount % 10 !== 9) {
               throw err;
             }
             return currentData ?? null;
