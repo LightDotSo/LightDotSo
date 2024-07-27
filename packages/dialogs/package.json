@@ -1,6 +1,6 @@
 {
   "name": "@lightdotso/dialogs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",

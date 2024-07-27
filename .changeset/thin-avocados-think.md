@@ -1,5 +1,4 @@
 ---
-"@lightdotso/eslint-config": patch
 "@lightdotso/validators": patch
 "@lightdotso/templates": patch
 "@lightdotso/elements": patch

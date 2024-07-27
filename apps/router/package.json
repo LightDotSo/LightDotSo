@@ -1,6 +1,6 @@
 {
   "name": "@lightdotso/router",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -29,7 +29,7 @@
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.12",
     "typescript": "^5.5.4",
-    "wrangler": "^3.67.0"
+    "wrangler": "^3.67.1"
   },
   "publishConfig": {
     "access": "public"

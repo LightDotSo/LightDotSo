@@ -1,5 +1,4 @@
 ---
-"@lightdotso/eslint-config": patch
 "@lightdotso/prisma": patch
 "@lightdotso/templates": patch
 "@lightdotso/elements": patch

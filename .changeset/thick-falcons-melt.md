@@ -1,7 +1,5 @@
 ---
 "@lightdotso/tailwindcss": patch
-"@lightdotso/prettier": patch
-"@lightdotso/eslint-config": patch
 "@lightdotso/validators": patch
 "@lightdotso/templates": patch
 "@lightdotso/elements": patch

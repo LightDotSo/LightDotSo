@@ -18,9 +18,7 @@
 "@lightdotso/storybook": patch
 "@lightdotso/subgraph": patch
 "@lightdotso/bin": patch
-"@lightdotso/eslint-config": patch
 "@lightdotso/kysely": patch
-"@lightdotso/prettier": patch
 "@lightdotso/prisma": patch
 "@lightdotso/styles": patch
 "@lightdotso/tailwindcss": patch
