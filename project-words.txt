@@ -535,6 +535,7 @@ frontends
 frontmatter
 fsevents
 fslib
+fsym
 ftch
 Ftqz
 fullscreen
@@ -1533,6 +1534,7 @@ tsort
 tsscmp
 tsup
 tsutils
+tsyms
 ttlcache
 tufjs
 Tuite
@@ -1546,6 +1548,7 @@ typechain
 typecheck
 typedarray
 typer
+tysms
 uczn
 udkf
 uhua

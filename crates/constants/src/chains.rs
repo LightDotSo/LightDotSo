@@ -26,11 +26,11 @@ lazy_static! {
         m.insert(10, "Optimism Mainnet");
         m.insert(56, "Binance Smart Chain Mainnet");
         m.insert(100, "Gnosis Mainnet");
-        m.insert(122, "Fuse Mainnet");
         m.insert(137, "Polygon Mainnet");
         m.insert(250, "Fantom Mainnet");
         m.insert(1101, "Polygon zkEVM Mainnet");
         m.insert(1329, "Sei Mainnet");
+        m.insert(5000, "Mantle Mainnet");
         m.insert(8453, "Base Mainnet");
         m.insert(34443, "Mode Mainnet");
         m.insert(42161, "Arbitrum One Mainnet");

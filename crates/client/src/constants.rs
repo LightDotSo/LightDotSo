@@ -23,3 +23,9 @@ lazy_static! {
 lazy_static! {
     pub static ref ADMIN_BASE_API_URL: String = "https://api.light.so/admin/v1".to_string();
 }
+
+// The mini crypto base api url
+lazy_static! {
+    pub static ref MINI_CRYPTO_BASE_API_URL: String =
+        "https://min-api.cryptocompare.com".to_string();
+}
