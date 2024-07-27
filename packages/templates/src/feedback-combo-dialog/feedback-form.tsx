@@ -44,9 +44,7 @@ const feedbackFormSchema = z.object({
   emoji: z.enum(
     ["exploding-head", "slightly-smiling-face", "loudly-crying-face"],
     {
-      // biome-ignore lint/style/useNamingConvention: <explanation>
       invalid_type_error: "Select an emoji",
-      // biome-ignore lint/style/useNamingConvention: <explanation>
       required_error: "Please select an emoji.",
     },
   ),
@@ -88,7 +86,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // ---------------------------------------------------------------------------
 
   const { feedbackCreate, isFeedbackCreateSuccess, isFeedbackCreatePending } =
-    // biome-ignore lint/style/useNamingConvention: <explanation>
     useMutationFeedbackCreate({ user_id: userId });
 
   // ---------------------------------------------------------------------------

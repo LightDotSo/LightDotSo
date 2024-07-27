@@ -82,7 +82,6 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
         position: "top-right",
       });
       removePendingTransaction(hash);
-      // biome-ignore lint/style/useNamingConvention: <explanation>
       queueTransaction({ chain_id: chainId, hash: hash });
     }
   }, [isSuccess, hash, chainId, removePendingTransaction, queueTransaction]);

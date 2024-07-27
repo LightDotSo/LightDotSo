@@ -135,6 +135,7 @@ export const Cal: FC = () => {
       layout: "month_view",
     });
 
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
     return () => {};
   }, [theme.resolvedTheme]);
 

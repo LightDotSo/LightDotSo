@@ -328,6 +328,16 @@
       }
     },
     {
+      "include": ["packages/templates/src/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
       "include": ["packages/templates/src/cal/cal.tsx"],
       "linter": {
         "rules": {

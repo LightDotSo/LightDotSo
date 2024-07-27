@@ -33,7 +33,6 @@ import type { Table } from "@tanstack/react-table";
 // Props
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/useNamingConvention: <explanation>
 interface DataTablePaginationProps<TData> {
   sizes?: number[];
   table: Table<TData>;
@@ -43,7 +42,6 @@ interface DataTablePaginationProps<TData> {
 // Component
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export function DataTablePagination<TData>({
   sizes = PAGINATION_SIZES,
   table,
