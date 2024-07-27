@@ -24,8 +24,11 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 type UserOperationsStore = {
-  billingOperations: BillingOperationData[];
-  setBillingOperation: (operation: BillingOperationData) => void;
+  billingOperations: Record<string, BillingOperationData>;
+  setBillingOperationByHash: (
+    hash: Hex,
+    operation: BillingOperationData,
+  ) => void;
   resetBillingOperations: () => void;
   executionParams: ExecutionWithChainId[];
   setExecutionParamsByChainId: (
@@ -69,17 +72,18 @@ export const useUserOperations = create(
   devtools(
     persist<UserOperationsStore>(
       (set) => ({
-        billingOperations: [],
-        setBillingOperation: (operation) =>
-          set((state) => {
-            return {
-              billingOperations: [...state.billingOperations, operation],
-            };
-          }),
+        billingOperations: {},
+        setBillingOperationByHash: (hash, operation) =>
+          set((state) => ({
+            billingOperations: {
+              ...state.billingOperations,
+              [hash]: operation,
+            },
+          })),
         resetBillingOperations: () =>
-          set(() => {
-            return { billingOperations: [] };
-          }),
+          set(() => ({
+            billingOperations: {},
+          })),
         executionParams: [],
         setExecutionParamsByChainId: (chainId, execution) =>
           set((state) => {
@@ -197,7 +201,7 @@ export const useUserOperations = create(
         resetAll: () =>
           set(() => {
             return {
-              billingOperations: [],
+              billingOperations: {},
               executionParams: [],
               partialUserOperations: [],
               userOperations: [],

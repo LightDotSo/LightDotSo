@@ -74,7 +74,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const { setIsFormLoading } = useFormRef();
   const {
-    setBillingOperation,
+    setBillingOperationByHash,
     setPartialUserOperationByChainIdAndNonce,
     setUserOperationByChainIdAndNonce,
   } = useUserOperations();
@@ -618,10 +618,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync `billingOperation` to the store
   useEffect(() => {
-    if (paymasterOperation?.billing_operation) {
-      setBillingOperation(paymasterOperation?.billing_operation);
+    if (userOperationWithHash?.hash && paymasterOperation?.billing_operation) {
+      setBillingOperationByHash(
+        userOperationWithHash?.hash as Hex,
+        paymasterOperation?.billing_operation,
+      );
     }
-  }, [paymasterOperation?.billing_operation, setBillingOperation]);
+  }, [
+    paymasterOperation?.billing_operation,
+    userOperationWithHash?.hash,
+    setBillingOperationByHash,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
