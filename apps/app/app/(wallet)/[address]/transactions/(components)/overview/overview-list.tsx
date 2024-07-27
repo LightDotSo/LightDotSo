@@ -33,7 +33,7 @@ export type OverviewListProps = {
 
 export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Cache
   // ---------------------------------------------------------------------------
 
   const isDemo = isDemoParamsCache.get("isDemo");
