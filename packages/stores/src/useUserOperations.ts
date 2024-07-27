@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { BillingOperationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import type { ExecutionWithChainId } from "@lightdotso/types";
 import type { Hex } from "viem";
@@ -23,6 +24,12 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 type UserOperationsStore = {
+  billingOperations: Record<string, BillingOperationData>;
+  setBillingOperationByHash: (
+    hash: Hex,
+    operation: BillingOperationData,
+  ) => void;
+  resetBillingOperations: () => void;
   executionParams: ExecutionWithChainId[];
   setExecutionParamsByChainId: (
     chainId: bigint,
@@ -65,6 +72,18 @@ export const useUserOperations = create(
   devtools(
     persist<UserOperationsStore>(
       (set) => ({
+        billingOperations: {},
+        setBillingOperationByHash: (hash, operation) =>
+          set((state) => ({
+            billingOperations: {
+              ...state.billingOperations,
+              [hash]: operation,
+            },
+          })),
+        resetBillingOperations: () =>
+          set(() => ({
+            billingOperations: {},
+          })),
         executionParams: [],
         setExecutionParamsByChainId: (chainId, execution) =>
           set((state) => {
@@ -182,6 +201,7 @@ export const useUserOperations = create(
         resetAll: () =>
           set(() => {
             return {
+              billingOperations: {},
               executionParams: [],
               partialUserOperations: [],
               userOperations: [],

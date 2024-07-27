@@ -25,6 +25,15 @@ export default defineWorkspace([
   {
     extends: "./vitest.config.ts",
     test: {
+      include: ["packages/sdk/test/**/*.spec.ts"],
+      name: "sdk",
+      environment: "node",
+      testTimeout: 100_000,
+    },
+  },
+  {
+    extends: "./vitest.config.ts",
+    test: {
       include: ["packages/client/test/**/*.spec.ts"],
       name: "client",
       environment: "node",

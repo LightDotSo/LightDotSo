@@ -19,6 +19,7 @@ import { useDebouncedValue } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndData,
+  useQueryPaymasterOperation,
   useQueryUserOperationEstimateFeesPerGas,
   useQueryUserOperationEstimateGas,
   useQueryUserOperationNonce,
@@ -26,6 +27,7 @@ import {
   useQueryWallet,
 } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
+import { decodePaymasterAndData } from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -40,7 +42,7 @@ import type {
   UserOperation as PermissionlessUserOperation,
 } from "permissionless";
 import { type FC, useEffect, useMemo, useState } from "react";
-import type { Address, Hex } from "viem";
+import { type Address, type Hex, fromHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -72,6 +74,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const { setIsFormLoading } = useFormRef();
   const {
+    setBillingOperationByHash,
     setPartialUserOperationByChainIdAndNonce,
     setUserOperationByChainIdAndNonce,
   } = useUserOperations();
@@ -437,6 +440,33 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   ]);
   console.info("finalizedUserOperation", finalizedUserOperation);
 
+  const decodedPaymasterAndData = useMemo(() => {
+    if (
+      finalizedUserOperation?.paymasterAndData &&
+      finalizedUserOperation?.paymasterAndData !== "0x"
+    ) {
+      return decodePaymasterAndData(
+        fromHex(finalizedUserOperation?.paymasterAndData as Hex, "bytes"),
+      ).unwrapOr(null);
+    }
+  }, [finalizedUserOperation?.paymasterAndData]);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { paymasterOperation } = useQueryPaymasterOperation({
+    address: decodedPaymasterAndData ? decodedPaymasterAndData[0] : undefined,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    chain_id: finalizedUserOperation?.chainId
+      ? Number(finalizedUserOperation?.chainId)
+      : undefined,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    valid_until: decodedPaymasterAndData ? decodedPaymasterAndData[1] : 0,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    valid_after: decodedPaymasterAndData ? decodedPaymasterAndData[2] : 0,
+  });
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -584,6 +614,20 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     userOperationWithHash?.chainId,
     setUserOperationByChainIdAndNonce,
     userOperationWithHash,
+  ]);
+
+  // Sync `billingOperation` to the store
+  useEffect(() => {
+    if (userOperationWithHash?.hash && paymasterOperation?.billing_operation) {
+      setBillingOperationByHash(
+        userOperationWithHash?.hash as Hex,
+        paymasterOperation?.billing_operation,
+      );
+    }
+  }, [
+    paymasterOperation?.billing_operation,
+    userOperationWithHash?.hash,
+    setBillingOperationByHash,
   ]);
 
   // ---------------------------------------------------------------------------

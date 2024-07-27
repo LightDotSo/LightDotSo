@@ -2799,6 +2799,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../wagmi
+      neverthrow:
+        specifier: ^7.0.0
+        version: 7.0.0
       viem:
         specifier: ^2.18.2
         version: 2.18.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
