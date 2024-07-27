@@ -112,15 +112,15 @@ jobs:
         name: Node Build
         run: |
           pnpm turbo run build
-      - if: matrix.workspace
-        name: Set up Docker
-        uses: douglascamata/setup-docker-macos-action@main
-        continue-on-error: true
-      - if: matrix.workspace
-        name: Docker Compose Up
-        continue-on-error: true
-        run: |
-          docker-compose up -d --build
+      # - if: matrix.workspace
+      #   name: Set up Docker
+      #   uses: douglascamata/setup-docker-macos-action@main
+      #   continue-on-error: true
+      # - if: matrix.workspace
+      #   name: Docker Compose Up
+      #   continue-on-error: true
+      #   run: |
+      #     docker-compose up -d --build
       - name: Make Install
         run: |
           make install
