@@ -442,7 +442,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const decodedPaymasterAndData = useMemo(() => {
     if (
-      !finalizedUserOperation?.paymasterAndData ||
+      finalizedUserOperation?.paymasterAndData &&
       finalizedUserOperation?.paymasterAndData !== "0x"
     ) {
       return decodePaymasterAndData(
