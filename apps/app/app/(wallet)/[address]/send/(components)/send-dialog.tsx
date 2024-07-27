@@ -164,6 +164,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { nftPage } = useQueryNfts({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
@@ -171,10 +172,12 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { tokens } = useQueryTokens({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     group: false,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
@@ -268,6 +271,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         // Create a map to calculate the total quantity by token address
         const totalByTokenAddress = new Map();
 
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         value.transfers.forEach((transfer, index) => {
           // Check if asset and the quantity is not empty
           if (transfer?.asset && "quantity" in transfer.asset) {
@@ -422,9 +426,11 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [form.formState]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (
       transfer: Transfer,
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     ): [Address, bigint, Hex] | undefined => {
       if (
         transfer?.address &&
@@ -1013,6 +1019,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   async function validateNftQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
     if (!quantity) {
@@ -1690,6 +1697,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     );
                                                   }
                                                 },
+                                                // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
                                                 onNftSelect: (nft) => {
                                                   if (nft.contract_address) {
                                                     form.setValue(

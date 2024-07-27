@@ -77,6 +77,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
     order: status === "queued" ? "asc" : "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
@@ -126,6 +127,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
       <DataTableViewOptions
         table={table}
         columnMapping={{
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           chain_id: "Chain",
           hash: "Hash",
           nonce: "Nonce",

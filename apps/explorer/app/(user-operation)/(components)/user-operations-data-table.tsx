@@ -68,6 +68,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
     order: "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: isTestnetState ?? false,
   });
 
@@ -75,6 +76,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
     useQueryUserOperationsCount({
       address: address ?? null,
       status: "history",
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: isTestnetState ?? false,
     });
 

@@ -155,6 +155,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     // }
 
     // Iterate over each required param
+    // biome-ignore lint/style/useForOf: <explanation>
     for (let i = 0; i < requiredParams.length; i++) {
       if (!(params.has(requiredParams[i]) && params.get(requiredParams[i]))) {
         return false;

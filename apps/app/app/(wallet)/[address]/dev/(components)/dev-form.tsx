@@ -181,6 +181,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // Validation
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   async function validateBalanceQuantity(quantity: number) {
     // If the quantity is empty, return
     if (!quantity) {

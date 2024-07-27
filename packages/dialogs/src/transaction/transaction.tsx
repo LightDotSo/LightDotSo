@@ -137,10 +137,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   const { tokens } = useQueryTokens({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     group: false,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
@@ -422,8 +424,10 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             className="mr-2"
                                             token={{
                                               ...token,
+                                              // biome-ignore lint/style/useNamingConvention: <explanation>
                                               balance_usd: 0,
                                               id: "",
+                                              // biome-ignore lint/style/useNamingConvention: <explanation>
                                               chain_id: token.chain_id,
                                             }}
                                           />

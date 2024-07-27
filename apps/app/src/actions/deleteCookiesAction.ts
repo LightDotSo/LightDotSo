@@ -21,6 +21,8 @@ import { cookies } from "next/headers";
 // Action
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/useAwait: <explanation>
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default async function action() {
   const cookieStore = cookies();
 

@@ -68,6 +68,7 @@ export type BannerProps = VariantProps<typeof bannerVariants> & {
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export const Banner: FC<BannerProps> = ({ kind }) => {
   // ---------------------------------------------------------------------------
   // Stores

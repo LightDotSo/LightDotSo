@@ -151,6 +151,7 @@ export function useTabs() {
     useQueryUserOperationsCount({
       address: walletAddress as Address,
       status: "queued",
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });
 

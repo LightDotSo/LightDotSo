@@ -29,7 +29,7 @@ export const preloadGetWalletsCount = (params: WalletListCountParams) => {
 // -----------------------------------------------------------------------------
 
 export const getWalletsCount = async (params: WalletListCountParams) => {
-  return getClientWalletsCount(
+  return await getClientWalletsCount(
     {
       params: {
         query: {

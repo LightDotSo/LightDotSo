@@ -151,6 +151,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
   const { nftPage } = useQueryNfts({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
@@ -196,6 +197,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { data } = useReadContract({
     abi: erc20Abi,
     account: form.getValues("asset.address") as Address,
@@ -235,6 +237,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const formStateText = useMemo(() => {
     if (!(address && chainId)) {
       return "Connect Wallet";
@@ -313,6 +316,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Submit Handler
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const onSubmit: SubmitHandler<DepositFormValues> = async () => {
     if (!address) {
       setOpen(true);
@@ -470,6 +474,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Validation
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   async function validateTokenQuantity(quantity: number) {
     // If the quantity is empty, return
     if (!quantity) {
@@ -688,8 +693,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     className="mr-2"
                                     token={{
                                       ...token,
+                                      // biome-ignore lint/style/useNamingConvention: <explanation>
                                       balance_usd: 0,
                                       id: "",
+                                      // biome-ignore lint/style/useNamingConvention: <explanation>
                                       chain_id: token.chainId,
                                     }}
                                   />
@@ -878,6 +885,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                       setDepositBackgroundModal(false);
                                     }
                                   },
+                                  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
                                   onNftSelect: (nft) => {
                                     if (nft.contract_address) {
                                       form.setValue(

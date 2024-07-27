@@ -26,6 +26,7 @@ export const transfersParser = createParser({
       return null;
     }
     const keys = value.split(";");
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     return keys.reduce<Transfer[]>((acc, key) => {
       const [id, address, addressOrEns, chainId, assetType, asset] =
         key.split(":");
@@ -99,6 +100,7 @@ export const transfersParser = createParser({
   serialize: (value: Transfer[]) => {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       ?.map(([id, transfer]) => {
         let assetString = "";
 

@@ -343,8 +343,10 @@ export const TokenModal: FC = () => {
   //     );
   //   }, [renderedTokens]);
 
+  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const _handleKeyDown = (event: React.KeyboardEvent) =>
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useCallback(() => {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();

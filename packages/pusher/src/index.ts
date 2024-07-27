@@ -21,6 +21,7 @@ export const pusherClient = new PusherClient(
     wsHost: "soketi.light.so",
     wsPort: 6001,
     wssPort: 443,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     forceTLS: true,
     disableStats: true,
     enabledTransports: ["ws", "wss"],

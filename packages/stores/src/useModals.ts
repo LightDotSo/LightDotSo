@@ -177,11 +177,13 @@ export const useModals = create(
       addressModalProps: {
         addressOrEns: "",
         isAddressModalVisible: false,
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onAddressSelect: () => {},
       },
       setAddressModalProps: (props: AddressModalProps) =>
         set({ addressModalProps: props }),
       cartModalProps: {
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onClose: () => {},
       },
       setCartModalProps: (props: CartModalProps) =>
@@ -189,6 +191,7 @@ export const useModals = create(
       chainModalProps: {
         chainId: "",
         isChainModalVisible: false,
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onChainSelect: () => {},
       },
       setChainModalProps: (props: ChainModalProps) =>
@@ -197,6 +200,7 @@ export const useModals = create(
         // @ts-expect-error
         address: "",
         isNftModalVisible: false,
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onNftSelect: () => {},
       },
       setNftModalProps: (props: NftModalProps) => set({ nftModalProps: props }),
@@ -204,6 +208,7 @@ export const useModals = create(
         initialOwners: [],
         initialThreshold: 1,
         isOwnerModalVisible: false,
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onOwnerSelect: () => {},
       },
       setOwnerModalProps: (props: OwnerModalProps) =>
@@ -212,6 +217,7 @@ export const useModals = create(
         // @ts-expect-error
         address: "",
         isTokenModalVisible: false,
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
         onTokenSelect: () => {},
         type: "light",
       },

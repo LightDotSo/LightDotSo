@@ -65,12 +65,14 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     address: address as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   const { transactionsCount, isTransactionsCountLoading } =
     useQueryTransactionsCount({
       address: address as Address,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });
 

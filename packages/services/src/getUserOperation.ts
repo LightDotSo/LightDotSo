@@ -29,7 +29,7 @@ export const preloadGetUserOperation = (params: UserOperationGetParams) => {
 // -----------------------------------------------------------------------------
 
 export const getUserOperation = async (params: UserOperationGetParams) => {
-  return getClientUserOperation(
+  return await getClientUserOperation(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { user_operation_hash: params.hash! } } },
     "admin",

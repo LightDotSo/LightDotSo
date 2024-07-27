@@ -33,7 +33,7 @@ export const preloadGetUserOperationMerkle = (
 export const getUserOperationMerkle = async (
   params: UserOperationMerkleGetParams,
 ) => {
-  return getClientUserOperationMerkle(
+  return await getClientUserOperationMerkle(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { root: params.root! } } },
     "admin",

@@ -29,7 +29,7 @@ export const preloadGetConfiguration = (params: ConfigurationParams) => {
 // -----------------------------------------------------------------------------
 
 export const getConfiguration = async (params: ConfigurationParams) => {
-  return getClientConfiguration(
+  return await getClientConfiguration(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",

@@ -72,6 +72,7 @@ export enum UserOperationSubCategory {
 export enum OverviewSubCategory {
   All = "All",
   Tokens = "Tokens",
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   NFTs = "NFTs",
   History = "History",
 }
@@ -218,18 +219,21 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Wallet Settings",
         description: "Manage your wallet settings",
         subcategories: {
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           Name: {
             title: "Name",
             description: "Manage your wallet name",
             note: "This is the name that will be displayed to others.",
             subcategories: {},
           },
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           Dev: {
             title: "Developer Mode",
             description: "Enable or disable developer mode",
             note: "This will enable or disable developer mode for your wallet.",
             subcategories: {},
           },
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           Testnet: {
             title: "Testnet",
             description: "Enable or disable testnet",
@@ -247,6 +251,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Billing",
         description: "Manage your billing information",
         subcategories: {
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           Balance: {
             title: "Balance",
             description: "Manage your wallet balance",
@@ -259,6 +264,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         title: "Deployment",
         description: "Manage your wallet deployments.",
         subcategories: {
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           Chain: {
             title: "Chain",
             description: "Manage your chain deployment",

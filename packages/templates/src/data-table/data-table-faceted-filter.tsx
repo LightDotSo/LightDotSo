@@ -36,6 +36,7 @@ import type { ComponentType } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
@@ -50,6 +51,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,

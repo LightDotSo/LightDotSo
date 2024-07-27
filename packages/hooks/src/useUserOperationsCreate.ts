@@ -277,7 +277,7 @@ export const useUserOperationsCreate = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Create a single user operation
-    const createUserOp = async () => {
+    const createUserOp = () => {
       if (!(owner && signedData && userOperation)) {
         return;
       }
@@ -294,7 +294,7 @@ export const useUserOperationsCreate = ({
     };
 
     // Create a batch of user operations
-    const createUserOpBatch = async () => {
+    const createUserOpBatch = () => {
       if (!(owner && signedData && merkleTree && userOperations)) {
         return;
       }

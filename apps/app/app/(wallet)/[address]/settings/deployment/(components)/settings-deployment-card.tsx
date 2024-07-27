@@ -48,6 +48,7 @@ import { type Address, type Chain, type Hex, encodeFunctionData } from "viem";
 type SettingsDeploymentCardProps = {
   address: Address;
   chain: string;
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   image_hash: Hex;
   salt: Hex;
 };
@@ -86,6 +87,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     order: "asc",
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

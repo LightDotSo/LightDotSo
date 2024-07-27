@@ -100,6 +100,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const [open, setOpen] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<{
     address: string;
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     factory_address: string;
     name: string;
     salt: string;

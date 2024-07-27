@@ -34,6 +34,7 @@ import type { HTMLAttributes } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 interface DataTableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
@@ -44,6 +45,7 @@ interface DataTableColumnHeaderProps<TData, TValue>
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export function DataTableColumnHeader<TData, TValue>({
   column,
   title,

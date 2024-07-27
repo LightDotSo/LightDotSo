@@ -24,6 +24,7 @@ test("llamaGetSchema", async () => {
   // Recursively get all balances w/ the id: wallet
 
   const balances: {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     balanceUSD: number;
     chainId: number;
     amount: bigint;
@@ -42,6 +43,7 @@ test("llamaGetSchema", async () => {
       group.balances.forEach((balance) => {
         // Here we add both the balance object and the protocol id to the balances array
         balances.push({
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           balanceUSD: balance.balanceUSD,
           chainId: 0,
           amount: BigInt(balance.amount),

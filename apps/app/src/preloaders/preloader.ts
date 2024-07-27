@@ -23,7 +23,7 @@ import type { Address } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (searchParams: { address?: string }) => {
+export const preloader = (searchParams: { address?: string }) => {
   if (!searchParams.address) {
     return;
   }

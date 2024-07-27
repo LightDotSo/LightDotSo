@@ -129,6 +129,7 @@ export type SwapDialogProps = {
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -299,6 +300,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const genericExecutionQuotes = useMemo(() => {
     // Initialize the token swaps
     const tokenSwaps: SwapFetcherProps[] = [];

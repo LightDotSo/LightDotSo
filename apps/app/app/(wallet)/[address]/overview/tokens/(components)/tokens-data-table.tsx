@@ -63,16 +63,20 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
 
   const { tokens, isTokensLoading } = useQueryTokens({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: paginationState.pageSize,
     offset: offsetCount,
     group: true,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
   const { tokensCount, isTokensCountLoading } = useQueryTokensCount({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 

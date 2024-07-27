@@ -32,6 +32,7 @@ new ApiCheck("app-inngest", {
     url: `${targetUrl}/api/inngest`,
     method: "GET",
     followRedirects: true,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     skipSSL: false,
     assertions: [
       AssertionBuilder.jsonBody("").hasKey("message"),

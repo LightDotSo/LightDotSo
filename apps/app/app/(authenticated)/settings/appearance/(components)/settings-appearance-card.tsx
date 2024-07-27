@@ -40,6 +40,7 @@ import { z } from "zod";
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark", "system"], {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     required_error: "Please select a theme.",
   }),
 });

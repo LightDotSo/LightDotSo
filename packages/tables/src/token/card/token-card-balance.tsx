@@ -31,7 +31,7 @@ type TokenCardBalanceProps = { token: TokenData };
 // -----------------------------------------------------------------------------
 
 export const TokenCardBalance: FC<TokenCardBalanceProps> = ({
-  token: { balance_usd, chain_id, is_testnet },
+  token: { balance_usd, is_testnet },
 }) => {
   // ---------------------------------------------------------------------------
   // Render

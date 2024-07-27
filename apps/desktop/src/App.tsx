@@ -66,4 +66,5 @@ function App() {
   );
 }
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default App;

@@ -41,6 +41,7 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { walletSettings } = await handler(params);
 
   // ---------------------------------------------------------------------------

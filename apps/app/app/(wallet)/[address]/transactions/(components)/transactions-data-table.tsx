@@ -70,6 +70,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     order: status === "queued" ? "asc" : "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
@@ -77,6 +78,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     useQueryUserOperationsCount({
       address: address as Address,
       status: status,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });
 

@@ -40,6 +40,7 @@ type Story = StoryObj<typeof InvokeButton>;
 export const Base: Story = {
   render: (args) => <InvokeButton {...args} />,
   args: {
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
     onClick: () => {},
     isLoading: false,
   },
@@ -47,6 +48,7 @@ export const Base: Story = {
 export const Loading: Story = {
   render: (args) => <InvokeButton {...args} />,
   args: {
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
     onClick: () => {},
     isLoading: true,
   },

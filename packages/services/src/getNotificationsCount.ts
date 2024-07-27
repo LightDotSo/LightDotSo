@@ -33,7 +33,7 @@ export const preloadGetNotificationsCount = (
 export const getNotificationsCount = async (
   params: NotificationListCountParams,
 ) => {
-  return getClientNotificationsCount(
+  return await getClientNotificationsCount(
     {
       params: {
         query: {

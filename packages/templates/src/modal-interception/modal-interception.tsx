@@ -207,6 +207,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   // Show the modal when the path matches the modal type
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   useEffect(() => {
     if (isOpen) {
       return;

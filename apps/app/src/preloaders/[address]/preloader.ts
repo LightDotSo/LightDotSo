@@ -23,7 +23,7 @@ import type { Address } from "viem";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = (params: { address: string }) => {
   preloadGetConfiguration({ address: params.address as Address });
   preloadGetWallet({ address: params.address as Address });
   preloadGetWalletSettings({ address: params.address as Address });

@@ -61,6 +61,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
@@ -103,8 +104,11 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // Get the gas estimate for the user operation
   // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     data: estimateGas,
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     error: estimateGasError,
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     isLoading: isEstimateGasLoading,
   } = useEstimateGas({
     chainId: Number(chainId),
@@ -118,6 +122,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
   // Get the max priority fee per gas, fallbacks to mainnet
   // @eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { data: estimatedMaxPriorityFeePerGas } =
     useEstimateMaxPriorityFeePerGas({
       chainId: Number(chainId),
@@ -131,6 +136,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     return isEstimateFeesPerGasLoading;
   }, [isEstimateFeesPerGasLoading]);
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
     const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
       ? // Get the `maxFeePerGas` and apply the speed bump

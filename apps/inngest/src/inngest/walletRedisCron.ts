@@ -25,7 +25,7 @@ export const walletRedisCron = inngest.createFunction(
   async ({ prisma, step }) => {
     // Fetch all users
     const wallets = await step.run("Find wallets in db", async () => {
-      const data = prisma.wallet.findMany({});
+      const data = await prisma.wallet.findMany({});
 
       return data;
     });

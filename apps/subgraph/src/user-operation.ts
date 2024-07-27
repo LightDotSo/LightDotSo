@@ -58,6 +58,7 @@ export function handleUserOperationFromCalldata(
     decoded.toTupleArray<UserOperationStructTuple>();
 
   // Return the decoded user operation params w/ the matching nonce
+  // biome-ignore lint/style/useForOf: <explanation>
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
     // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
     if (userOpStructTupletArray[i].nonce == nonce) {

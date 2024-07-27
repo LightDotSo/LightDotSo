@@ -131,14 +131,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Gets the configuration for the chain w/ the image hash
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { configuration } = useQueryConfiguration({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     image_hash: imageHash,
   });
 
   // Gets the user operation nonce
   const { userOperationNonce } = useQueryUserOperationNonce({
     address: address as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_id: Number(initialUserOperation.chainId),
   });
 
@@ -149,7 +152,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     offset: 0,
     limit: 1,
     order: "asc",
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: true,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_id: Number(initialUserOperation.chainId) as number,
   });
 
@@ -162,6 +167,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const targetUserOperation: Partial<
     Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =

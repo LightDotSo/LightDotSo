@@ -29,7 +29,7 @@ export const preloadGetUser = (params: UserParams) => {
 // -----------------------------------------------------------------------------
 
 export const getUser = async (params: UserParams) => {
-  return getClientUser(
+  return await getClientUser(
     { params: { query: { address: params.address, user_id: params.user_id } } },
     "admin",
   );

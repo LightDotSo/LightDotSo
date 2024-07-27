@@ -48,6 +48,7 @@ export const OverviewSectionEmpty = ({
   const { userOperationsCount } = useQueryUserOperationsCount({
     address: address as Address,
     status: null,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

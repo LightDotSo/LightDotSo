@@ -104,6 +104,7 @@ export const CommandK: FC = () => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -247,4 +248,5 @@ export const CommandK: FC = () => {
 // Export
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default CommandK;

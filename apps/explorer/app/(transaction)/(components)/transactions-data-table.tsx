@@ -66,12 +66,14 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     address: address ?? null,
     limit: paginationState.pageSize,
     offset: offsetCount,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: isTestnetQueryState ?? false,
   });
 
   const { transactionsCount, isTransactionsCountLoading } =
     useQueryTransactionsCount({
       address: address ?? null,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: isTestnetQueryState ?? false,
     });
 

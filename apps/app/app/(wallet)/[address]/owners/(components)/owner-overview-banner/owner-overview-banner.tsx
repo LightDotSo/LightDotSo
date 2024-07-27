@@ -79,6 +79,7 @@ export const OwnerOverviewBanner: FC = () => {
                       })
                     : [],
                   initialThreshold: configuration?.threshold ?? 1,
+                  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
                   onOwnerSelect: () => {},
                 });
 

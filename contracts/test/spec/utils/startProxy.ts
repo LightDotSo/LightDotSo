@@ -21,6 +21,7 @@ if (!process.env.ETH_RPC_MAINNET) {
   throw new Error('Missing environment variable "ETH_RPC_MAINNET"');
 }
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default async function () {
   return await startProxy({
     options: {

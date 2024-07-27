@@ -30,6 +30,7 @@ export const EXPLORER_TABS: Tab[] = [
     id: "user-operations",
     href: "/",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
   },
@@ -38,6 +39,7 @@ export const EXPLORER_TABS: Tab[] = [
     id: "transactions",
     href: "/transactions",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
   },
@@ -46,6 +48,7 @@ export const EXPLORER_TABS: Tab[] = [
     id: "app",
     href: "https://light.so",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ArrowUpRightFromSquare {...props} />,
   },

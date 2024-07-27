@@ -37,6 +37,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "overview",
     href: "/overview",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
   },
@@ -45,6 +46,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "transactions",
     href: "/transactions",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
   },
@@ -53,6 +55,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "owners",
     href: "/owners",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <PersonIcon {...props} />,
   },
@@ -61,6 +64,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "actions",
     href: "/swap/new",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <PlayCircleIcon {...props} />,
   },
@@ -69,6 +73,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "activity",
     href: "/activity",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ActivityLogIcon {...props} />,
   },
@@ -77,6 +82,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "settings",
     href: "/settings",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <MixerVerticalIcon {...props} />,
   },
@@ -85,6 +91,7 @@ export const DEFAULT_TABS: Tab[] = [
     id: "support",
     href: "/support",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ChatBubbleIcon {...props} />,
   },
@@ -96,6 +103,7 @@ export const HOME_TABS: Tab[] = [
     id: "new",
     href: "/new",
     icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <RadiobuttonIcon {...props} />,
   },
@@ -106,6 +114,7 @@ export const AI_TAB = {
   id: "ai",
   href: "/ai",
   icon: (
+    // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
   ) => <RadiobuttonIcon {...props} />,
 };
@@ -115,6 +124,7 @@ export const DEV_TAB = {
   id: "dev",
   href: "/dev",
   icon: (
+    // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
   ) => <DesktopIcon {...props} />,
 };

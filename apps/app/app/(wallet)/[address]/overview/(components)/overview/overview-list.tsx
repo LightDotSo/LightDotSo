@@ -58,6 +58,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   // Component Mapping
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToComponent = (itemId: string): JSX.Element => {
     switch (itemId) {
       case OverviewSubCategory.Tokens:
@@ -74,6 +75,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
     }
   };
 
+  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToNav = (itemId: string): JSX.Element => {
     switch (itemId) {
       case OverviewSubCategory.Tokens:

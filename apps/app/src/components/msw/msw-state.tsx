@@ -18,6 +18,7 @@ import { useAppGroup } from "@/hooks";
 import type { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export const MSWState = () => {
   // ---------------------------------------------------------------------------
   // Hooks

@@ -73,10 +73,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const { tokens } = useQueryTokens({
     address: wallet as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: paginationState.pageSize,
     offset: offsetCount,
     group: true,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     chain_ids: null,
   });
 
@@ -132,7 +134,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         table={table}
         columnMapping={{
           name: "Chain",
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           balance_usd: "Balance",
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           chain_id: "Chain",
           sparkline: "Last 7 Days",
           price: "Price",

@@ -33,7 +33,7 @@ export const preloadGetTransactionsCount = (
 export const getTransactionsCount = async (
   params: TransactionListCountParams,
 ) => {
-  return getClientTransactionsCount(
+  return await getClientTransactionsCount(
     {
       params: {
         query: {

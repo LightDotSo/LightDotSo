@@ -33,7 +33,7 @@ export const preloadGetUserOperationNonce = (
 export const getUserOperationNonce = async (
   params: UserOperationNonceParams,
 ) => {
-  return getClientUserOperationNonce(
+  return await getClientUserOperationNonce(
     {
       params: {
         // biome-ignore lint/style/noNonNullAssertion: <explanation>

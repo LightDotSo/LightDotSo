@@ -44,12 +44,17 @@ import { z } from "zod";
 
 const SettingsNotificationCardSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     required_error: "You need to select a notification type.",
   }),
   mobile: z.boolean().default(false).optional(),
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   communication_emails: z.boolean().default(false).optional(),
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   social_emails: z.boolean().default(false).optional(),
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   marketing_emails: z.boolean().default(false).optional(),
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   security_emails: z.boolean(),
 });
 
@@ -59,9 +64,13 @@ type SettingsNotificationCardValues = z.infer<
 
 // This can come from your database or API.
 const defaultValues: Partial<SettingsNotificationCardValues> = {
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   communication_emails: false,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   marketing_emails: false,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   social_emails: true,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   security_emails: true,
 };
 

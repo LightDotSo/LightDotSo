@@ -29,7 +29,7 @@ export const preloadGetUserOperations = (params: UserOperationListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getUserOperations = async (params: UserOperationListParams) => {
-  return getClientUserOperations(
+  return await getClientUserOperations(
     {
       params: {
         query: {

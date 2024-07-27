@@ -19,7 +19,9 @@ import { parseAsStringEnum, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export enum WalletType {
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   MULTI = "multi",
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   PERSONAL = "personal",
   "2FA" = "2fa",
 }

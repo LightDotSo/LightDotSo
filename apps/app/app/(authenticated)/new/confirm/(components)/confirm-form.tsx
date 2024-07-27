@@ -176,6 +176,7 @@ export const ConfirmForm: FC = () => {
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           address: owner.address!,
         })),
+        // biome-ignore lint/style/useNamingConvention: <explanation>
         invite_code: form.getValues("inviteCode"),
         salt: form.getValues("salt"),
       });
@@ -230,35 +231,35 @@ export const ConfirmForm: FC = () => {
     form.setValue("owners", owners);
     setFormValues(defaultValues);
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     async function fetchEnsNametoAddress() {
       // We will use newOwners array instead of mutating owners directly
       const newOwners = [...owners];
-      for (let i = 0; i < newOwners.length; i++) {
-        if (
-          newOwners[i].addressOrEns &&
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          !isAddress(newOwners[i].addressOrEns!)
-        ) {
-          try {
-            const ensNameAddress = await publicClient.getEnsAddress({
-              // biome-ignore lint/style/noNonNullAssertion: <explanation>
-              name: normalize(newOwners[i].addressOrEns!),
-            });
-            if (ensNameAddress) {
-              newOwners[i].address = ensNameAddress;
-            } else {
+
+      for (const owner of newOwners) {
+        if (owner.addressOrEns) {
+          if (!isAddress(owner.addressOrEns)) {
+            try {
+              const ensNameAddress = await publicClient.getEnsAddress({
+                name: normalize(owner.addressOrEns),
+              });
+              if (ensNameAddress) {
+                owner.address = ensNameAddress;
+              } else {
+                console.error(
+                  "The ENS name did not resolve. Please enter a valid address or ENS name",
+                );
+              }
+            } catch (error) {
               console.error(
-                "The ENS name did not resolve. Please enter a valid address or ENS name",
+                "An error occurred while resolving the ENS name",
+                error,
               );
             }
-          } catch (error) {
-            console.error(
-              "An error occurred while resolving the ENS name",
-              error,
-            );
           }
         }
       }
+
       form.setValue("owners", newOwners);
       setFormValues({ ...defaultValues, owners: newOwners });
     }

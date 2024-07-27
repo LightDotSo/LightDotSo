@@ -75,6 +75,7 @@ export const FormState: FC = () => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const formStateText = useMemo(() => {
     if (!address) {
       return "Connect Wallet";

@@ -36,6 +36,7 @@ export type ProxyOptions = {
 // -----------------------------------------------------------------------------
 
 export const basicProxy = (proxyUrl = "", options?: ProxyOptions): Handler => {
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   return async (c) => {
     // Removes prefix
     // prefix = /app1/*, path = /app1/a/b

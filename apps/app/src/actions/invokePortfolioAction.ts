@@ -21,6 +21,7 @@ import type { Address } from "viem";
 // Action
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default async function action(address: Address) {
-  revalidateTag(address);
+  await revalidateTag(address);
 }

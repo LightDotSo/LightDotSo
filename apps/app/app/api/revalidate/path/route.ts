@@ -19,6 +19,7 @@ import type { NextRequest } from "next/server";
 // Route
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/suspicious/useAwait: <explanation>
 export async function GET(request: NextRequest) {
   const path = request.nextUrl.searchParams.get("path");
 

@@ -29,7 +29,7 @@ export const preloadGetTransactions = (params: TransactionListParams) => {
 // -----------------------------------------------------------------------------
 
 export const getTransactions = async (params: TransactionListParams) => {
-  return getClientTransactions(
+  return await getClientTransactions(
     {
       params: {
         query: {

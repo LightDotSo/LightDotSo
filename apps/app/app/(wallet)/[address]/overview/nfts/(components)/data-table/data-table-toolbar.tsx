@@ -58,6 +58,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const { nftPage } = useQueryNfts({
     address: wallet as Address,
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: SIMPLEHASH_MAX_COUNT,
     cursor: null,
@@ -122,6 +123,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           chain: "Chain",
           name: "Name",
           description: "Description",
+          // biome-ignore lint/style/useNamingConvention: <explanation>
           spam_score: "Spam Score",
         }}
       />

@@ -46,6 +46,7 @@ export const UserOperationState: FC = () => {
       order: "desc",
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_testnet: true,
     });
 
@@ -56,6 +57,7 @@ export const UserOperationState: FC = () => {
   const { refetchUserOperationsCount } = useQueryUserOperationsCount({
     address: wallet as Address,
     status: "queued",
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

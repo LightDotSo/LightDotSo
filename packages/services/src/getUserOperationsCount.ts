@@ -33,7 +33,7 @@ export const preloadGetUserOperationsCount = (
 export const getUserOperationsCount = async (
   params: UserOperationListCountParams,
 ) => {
-  return getClientUserOperationsCount(
+  return await getClientUserOperationsCount(
     {
       params: {
         query: {

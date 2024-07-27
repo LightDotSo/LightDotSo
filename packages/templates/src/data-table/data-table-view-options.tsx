@@ -30,6 +30,7 @@ import type { Table } from "@tanstack/react-table";
 // Props
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
   columnMapping: { [columnId: string]: string };
@@ -39,6 +40,7 @@ interface DataTableViewOptionsProps<TData> {
 // Component
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export function DataTableViewOptions<TData>({
   table,
   columnMapping,

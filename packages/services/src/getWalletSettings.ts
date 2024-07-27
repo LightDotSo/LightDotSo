@@ -29,7 +29,7 @@ export const preloadGetWalletSettings = (params: WalletSettingsParams) => {
 // -----------------------------------------------------------------------------
 
 export const getWalletSettings = async (params: WalletSettingsParams) => {
-  return getClientWalletSettings(
+  return await getClientWalletSettings(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",
