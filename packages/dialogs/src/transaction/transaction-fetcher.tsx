@@ -74,6 +74,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const { setIsFormLoading } = useFormRef();
   const {
+    setBillingOperation,
     setPartialUserOperationByChainIdAndNonce,
     setUserOperationByChainIdAndNonce,
   } = useUserOperations();
@@ -454,7 +455,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: decodedPaymasterAndData ? decodedPaymasterAndData[0] : undefined,
     // biome-ignore lint/style/useNamingConvention: <explanation>
@@ -615,6 +615,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     setUserOperationByChainIdAndNonce,
     userOperationWithHash,
   ]);
+
+  // Sync `billingOperation` to the store
+  useEffect(() => {
+    if (paymasterOperation?.billing_operation) {
+      setBillingOperation(paymasterOperation?.billing_operation);
+    }
+  }, [paymasterOperation?.billing_operation, setBillingOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
