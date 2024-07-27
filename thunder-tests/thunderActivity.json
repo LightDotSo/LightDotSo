@@ -567,5 +567,98 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "60013b0e-b64c-48de-8b09-e10e3145623b",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://rpc.light.so/1329",
+    "url": "https://rpc.light.so/1329",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2024-07-27T01:57:39.011Z",
+    "modified": "2024-07-27T01:57:39.011Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "accept-language",
+        "value": "en,ja;q=0.9,zh;q=0.8"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "origin",
+        "value": "https://light.so"
+      },
+      {
+        "name": "priority",
+        "value": "u=1, i"
+      },
+      {
+        "name": "referer",
+        "value": "https://light.so/"
+      },
+      {
+        "name": "sec-ch-ua",
+        "value": "Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126"
+      },
+      {
+        "name": "sec-ch-ua-mobile",
+        "value": "?0"
+      },
+      {
+        "name": "sec-ch-ua-platform",
+        "value": "macOS"
+      },
+      {
+        "name": "sec-fetch-dest",
+        "value": "empty"
+      },
+      {
+        "name": "sec-fetch-mode",
+        "value": "cors"
+      },
+      {
+        "name": "sec-fetch-site",
+        "value": "same-site"
+      },
+      {
+        "name": "user-agent",
+        "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F\",\n      \"nonce\": \"0x0\",\n      \"initCode\": \"0x0000000000756d3e6464f5efe7e413a0af1c7474183815c806eedcf823b5a64f8528accf0d78edb31b7715f351e4c9b6d8b3ac69a16e094e0000000000000000000000000000000000000000000000000000018bac7d2d77\",\n      \"callData\": \"0xb61d27f6000000000000000000000000fbd80fe5ce1ece895845fd131bd621e2b6a1345f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000243659cfe6000000000000000000000000040d53c5dde1762f7cac48d5467e88236d4873d700000000000000000000000000000000000000000000000000000000\",\n      \"paymasterAndData\": \"0x\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\"\n    },\n    \"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789\"\n  ],\n  \"id\": 39\n}"
+    }
+  },
+  {
+    "_id": "84600078-9e75-4e80-a680-49cc29c241f1",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD",
+    "url": "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2024-07-27T01:57:47.540Z",
+    "modified": "2024-07-27T01:57:50.671Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "fsym",
+        "value": "ETH",
+        "isPath": false
+      },
+      {
+        "name": "tsyms",
+        "value": "USD",
+        "isPath": false
+      }
+    ]
   }
 ]

@@ -1534,6 +1534,7 @@ tsort
 tsscmp
 tsup
 tsutils
+tsyms
 ttlcache
 tufjs
 Tuite
