@@ -71,5 +71,5 @@ export default function RootLayout({
 // Config
 // -----------------------------------------------------------------------------
 
-export const experimental_ppr = false;
+export const experimental_ppr = true;
 export const revalidate = 300;
