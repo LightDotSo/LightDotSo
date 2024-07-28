@@ -27,9 +27,7 @@ use lightdotso_client::crypto::get_native_token_price;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::create_client,
-    models::{
-        activity::CustomParams, billing_operation::create_billing_operation, paymaster_operation,
-    },
+    models::{activity::CustomParams, billing_operation::create_billing_operation},
 };
 use lightdotso_kafka::{
     get_producer,
@@ -141,9 +139,9 @@ impl Billing {
             || {
                 create_billing_operation(
                     db_client.clone(),
-                    wallet_address.clone(),
+                    wallet_address,
                     paymaster_operation_id.clone(),
-                    pending_usd.clone(),
+                    pending_usd,
                 )
             }
         }
