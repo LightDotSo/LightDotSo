@@ -321,7 +321,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                   )}
                 </TabsList>
                 <TabsContent
-                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  className={cn(isInsideModal && "h-96 overflow-y-auto")}
                   value="transaction"
                 >
                   <div className="space-y-3 pt-3">
