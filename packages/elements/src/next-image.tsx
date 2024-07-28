@@ -33,15 +33,12 @@ export const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
 
 export const NextImage: FC<ImageProps> = (props) => {
   if (
-    process.env.NODE_ENV === "development" ||
-    !(
-      process.env.VERCEL_ENV === "preview" ||
-      process.env.VERCEL_ENV === "production"
-    )
+    process.env.VERCEL_ENV === "preview" ||
+    process.env.VERCEL_ENV === "production"
   ) {
-    // biome-ignore lint/a11y/useAltText: <explanation>
-    return <img {...props} src={props.src as string} />;
+    return <Image {...props} loader={cloudflareLoader} />;
   }
 
-  return <Image {...props} loader={cloudflareLoader} />;
+  // biome-ignore lint/a11y/useAltText: <explanation>
+  return <img {...props} src={props.src as string} />;
 };

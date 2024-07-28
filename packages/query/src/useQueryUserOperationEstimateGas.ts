@@ -19,7 +19,6 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { type Hex, fromHex, toHex } from "viem";
-import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -43,7 +42,6 @@ export const useQueryUserOperationEstimateGas = (
     isLoading: isEstimateUserOperationGasDataLoading,
     error: estimateUserOperationGasDataError,
   } = useQuery<EstimateUserOperationGasData | null>({
-    ...USER_OPERATION_CONFIG,
     retry: 10,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params?.chainId,

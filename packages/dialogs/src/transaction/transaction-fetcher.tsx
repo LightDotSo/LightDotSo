@@ -108,14 +108,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // Get the nonce for the entry point
-  const { data: entryPointNonce } = useReadEntryPointGetNonce({
-    address: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      findContractAddressByAddress(wallet?.factory_address as Address)!
-    ] as typeof ENTRYPOINT_ADDRESS_V06,
-    chainId: Number(initialUserOperation.chainId),
-    args: [address as Address, 0n],
-  });
+  const { data: entryPointNonce, isFetched: isEntryPointNonceFetched } =
+    useReadEntryPointGetNonce({
+      address: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        findContractAddressByAddress(wallet?.factory_address as Address)!
+      ] as typeof ENTRYPOINT_ADDRESS_V06,
+      chainId: Number(initialUserOperation.chainId),
+      args: [address as Address, 0n],
+    });
 
   // Get the bytecode for the light wallet
   const { data: walletBytecode } = useBytecode({
@@ -142,11 +143,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // Gets the user operation nonce
-  const { userOperationNonce } = useQueryUserOperationNonce({
-    address: address as Address,
-    // biome-ignore lint/style/useNamingConvention: <explanation>
-    chain_id: Number(initialUserOperation.chainId),
-  });
+  const { userOperationNonce, isUserOperationNonceFetched } =
+    useQueryUserOperationNonce({
+      address: address as Address,
+      // biome-ignore lint/style/useNamingConvention: <explanation>
+      chain_id: Number(initialUserOperation.chainId),
+    });
 
   // Gets the history of user operations
   const { userOperations: historyUserOperations } = useQueryUserOperations({
@@ -164,6 +166,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  /// This is the initial boolean to check if the initial fetch is done
+  /// The `entryPointNonce` and `userOperationNonce` are required to compute the `updatedMinimumNonce`
+  const isInitialFetched = useMemo(() => {
+    return isEntryPointNonceFetched && isUserOperationNonceFetched;
+  }, [isEntryPointNonceFetched, isUserOperationNonceFetched]);
 
   // Turns the partial userOperation into an userOperation w/ default values
   // Should not change from the initial user operation
@@ -561,7 +569,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
-      !targetUserOperation?.chainId ||
+      !(isInitialFetched && targetUserOperation?.chainId) ||
       typeof targetUserOperation?.nonce === "undefined" ||
       targetUserOperation?.nonce === null
     ) {

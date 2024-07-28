@@ -28,42 +28,27 @@ export const useUserOperationsProgress = () => {
   // ---------------------------------------------------------------------------
 
   const progressUserOperations: Partial<UserOperation>[] = useMemo(() => {
-    // Return the concatenated partial user operations and user operations
-    // to display the transaction details.
-    // However, filter out the operations that are the same chainId and nonce
-
-    const incompletePartialUserOperations = partialUserOperations.filter(
-      (partialUserOperation) =>
-        typeof partialUserOperation.chainId === "undefined" ||
-        typeof partialUserOperation.callData === "undefined" ||
-        typeof partialUserOperation.nonce === "undefined",
+    // Filter out incomplete partial user operations
+    const completePartialUserOperations = partialUserOperations.filter(
+      (op) =>
+        typeof op.chainId !== "undefined" &&
+        typeof op.callData !== "undefined" &&
+        typeof op.nonce !== "undefined",
     );
 
-    const duplicatePartialUserOperations = partialUserOperations.filter(
+    // Deduplicate partial user operations against user operations
+    const uniquePartialUserOperations = completePartialUserOperations.filter(
       (partialUserOperation) =>
-        userOperations.some(
+        !userOperations.some(
           (userOperation) =>
-            (userOperation.chainId === partialUserOperation.chainId &&
-              userOperation.callData === partialUserOperation.callData) ||
-            (userOperation.chainId === partialUserOperation.chainId &&
-              userOperation.nonce === partialUserOperation.nonce) ||
-            (userOperation.chainId === partialUserOperation.chainId &&
-              (typeof partialUserOperation.nonce === "undefined" ||
-                partialUserOperation.nonce === null)),
+            userOperation.chainId === partialUserOperation.chainId &&
+            userOperation.callData === partialUserOperation.callData &&
+            userOperation.nonce === partialUserOperation.nonce,
         ),
     );
 
-    // Remove the duplicate partial user operations from the partial user operations
-    // to prevent duplicate transaction details.
-    const filteredPartialUserOperations = partialUserOperations.filter(
-      (partialUserOperation) =>
-        !(
-          incompletePartialUserOperations.includes(partialUserOperation) &&
-          duplicatePartialUserOperations.includes(partialUserOperation)
-        ),
-    );
-
-    return [...filteredPartialUserOperations, ...userOperations];
+    // Combine unique partial user operations with user operations
+    return [...uniquePartialUserOperations, ...userOperations];
   }, [partialUserOperations, userOperations]);
 
   // ---------------------------------------------------------------------------

@@ -19,7 +19,6 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
 import { type Hex, fromHex, toHex } from "viem";
-import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -43,7 +42,6 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     isLoading: isGasAndPaymasterAndDataLoading,
     error: gasAndPaymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
-    ...USER_OPERATION_CONFIG,
     retry: 10,
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
       chainId: params?.chainId,
