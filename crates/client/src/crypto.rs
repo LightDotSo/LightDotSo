@@ -41,9 +41,9 @@ pub async fn request_mini_crypto_api_text<T: DeserializeOwned>(path: String) -> 
 }
 
 // Get the price of native token
-pub async fn get_native_token_price(_chain_id: u64) -> Result<f64> {
+pub async fn get_native_token_price(symbol: String) -> Result<f64> {
     // The path to the native token price
-    let path = format!("/data/price?fsym={}&tsyms=USD", "ETH");
+    let path = format!("/data/price?fsym={}&tsyms=USD", symbol);
 
     // Get the response from the api
     let response = request_mini_crypto_api_text::<CryptoResponse>(path).await?;
@@ -58,7 +58,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_native_token_price() {
-        let price = get_native_token_price(1).await.unwrap();
+        let price = get_native_token_price("ETH".to_string()).await.unwrap();
         assert!(price > 0.0);
     }
 }

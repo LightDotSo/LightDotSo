@@ -23,9 +23,9 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_contracts::utils::is_testnet;
 use lightdotso_prisma::{token, token_price};
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::is_testnet;
 use prisma_client_rust::{raw, Direction, PrismaValue};
 use serde::Deserialize;
 use utoipa::IntoParams;

@@ -33,7 +33,7 @@ use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
     constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data,
-    types::UserOperation as BaseUserOperation, utils::is_testnet,
+    types::UserOperation as BaseUserOperation,
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -46,6 +46,7 @@ use lightdotso_prisma::{
 };
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
+use lightdotso_utils::is_testnet;
 use prisma_client_rust::{
     chrono::{DateTime, NaiveDateTime, Utc},
     Direction,

@@ -30,6 +30,7 @@
   lightdotso-prisma = { workspace = true }
   lightdotso-routescan = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  lightdotso-utils = { workspace = true }
   opentelemetry = { workspace = true }
   prisma-client-rust = { workspace = true }
   rdkafka = { workspace = true }

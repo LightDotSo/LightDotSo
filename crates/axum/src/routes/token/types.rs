@@ -14,8 +14,8 @@
 
 #![allow(clippy::unwrap_used)]
 
-use lightdotso_contracts::utils::is_testnet;
 use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_utils::is_testnet;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 

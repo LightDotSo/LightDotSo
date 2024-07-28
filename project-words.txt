@@ -102,6 +102,7 @@ automock
 autoprefixer
 AUTORELEASING
 avaiable
+AVAX
 Avenir
 AXELAR
 axios

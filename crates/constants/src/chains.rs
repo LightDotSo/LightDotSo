@@ -86,6 +86,22 @@ lazy_static! {
     };
 }
 
+// Define the mapping of chain IDs to native token symbols
+lazy_static! {
+    pub static ref NATIVE_TOKEN_SYMBOLS: HashMap<u64, &'static str> = {
+        let mut m = HashMap::new();
+        m.insert(56, "BNB");
+        m.insert(100, "XDAI");
+        m.insert(137, "MATIC");
+        m.insert(250, "FTM");
+        m.insert(1329, "SEI");
+        m.insert(5000, "MANTLE");
+        m.insert(42220, "CELO");
+        m.insert(43114, "AVAX");
+        m
+    };
+}
+
 // The sleep chain ids
 lazy_static! {
     pub static ref SLEEP_CHAIN_IDS: HashMap<u64, i32> = {

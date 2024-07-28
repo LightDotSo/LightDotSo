@@ -38,6 +38,7 @@ use lightdotso_kafka::{
 use lightdotso_prisma::{billing_operation, ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_redis::{get_redis_client, redis::Client};
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::get_native_token_symbol;
 use std::sync::Arc;
 
 #[allow(dead_code)]
@@ -152,8 +153,12 @@ impl Billing {
     /// Get the native currency balance for the chain
     #[autometrics]
     pub async fn get_native_currency_price(&self, chain_id: u64) -> Result<f64> {
-        let res =
-            { || get_native_token_price(chain_id) }.retry(&ExponentialBuilder::default()).await?;
+        // Get the native token symbol
+        let symbol = get_native_token_symbol(chain_id);
+
+        let res = { || get_native_token_price(symbol.to_string()) }
+            .retry(&ExponentialBuilder::default())
+            .await?;
 
         Ok(res)
     }

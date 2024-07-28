@@ -16,11 +16,11 @@
 
 use ethers::utils::to_checksum;
 use eyre::{eyre, Result};
-use lightdotso_contracts::utils::is_testnet;
 use lightdotso_kafka::types::routescan::RoutescanMessage;
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
 use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::is_testnet;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 

@@ -27,13 +27,6 @@
 
 use crate::entrypoint::{ExecutionResult, FailedOp};
 use ethers::{abi::AbiDecode, contract::ContractError, providers::Middleware, types::Bytes};
-use lightdotso_constants::chains::{MAINNET_CHAIN_IDS, TESTNET_CHAIN_IDS};
-
-/// Returns `true` if the chain ID is a testnet chain ID.
-/// Falls back to `true` if the chain ID is not a mainnet chain ID.
-pub fn is_testnet(chain_id: u64) -> bool {
-    TESTNET_CHAIN_IDS.contains_key(&chain_id) || !MAINNET_CHAIN_IDS.contains_key(&chain_id)
-}
 
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.
