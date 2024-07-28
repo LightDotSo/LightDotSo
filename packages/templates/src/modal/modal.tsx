@@ -228,7 +228,7 @@ export const Modal: FC<ModalProps> = ({
             className={cn(
               !isOverflowHidden &&
                 "overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-              isHeightFixed ? "h-96" : "max-h-full",
+              isHeightFixed ? "h-[30rem]" : "max-h-full",
               className,
             )}
           >

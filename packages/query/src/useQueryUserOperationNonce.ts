@@ -49,6 +49,7 @@ export const useQueryUserOperationNonce = (
   const {
     data: userOperationNonce,
     isLoading: isUserOperationNonceLoading,
+    isFetched: isUserOperationNonceFetched,
     failureCount,
   } = useQuery<UserOperationNonceData | null>({
     queryKey: queryKeys.user_operation.nonce({
@@ -89,5 +90,6 @@ export const useQueryUserOperationNonce = (
   return {
     userOperationNonce: userOperationNonce,
     isUserOperationNonceLoading: isUserOperationNonceLoading,
+    isUserOperationNonceFetched: isUserOperationNonceFetched,
   };
 };
