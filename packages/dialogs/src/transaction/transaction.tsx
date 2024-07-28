@@ -53,7 +53,7 @@ import {
   TabsTrigger,
   toast,
 } from "@lightdotso/ui";
-import { cn, getChainWithChainId } from "@lightdotso/utils";
+import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { usePathname } from "next/navigation";
 import { type FC, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -232,6 +232,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
     return [...userOperationsQueryState, ...partialUserOperations];
   }, [userOperationsQueryState, partialUserOperations]);
 
+  const totalGasUsd = useMemo(() => {
+    return Object.values(billingOperations).reduce((acc, billingOperation) => {
+      return acc + billingOperation.balance_usd;
+    }, 0);
+  }, [billingOperations]);
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -346,7 +352,11 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                               <FormControl>
                                 <div className="flex flex-col space-y-3">
                                   <div className="w-full space-y-2">
-                                    <Label htmlFor="weight">Gas Token</Label>
+                                    <Label htmlFor="weight">
+                                      Gas Token{" "}
+                                      {totalGasUsd > 0 &&
+                                        `($${refineNumberFormat(totalGasUsd)})`}
+                                    </Label>
                                     <Button
                                       size="lg"
                                       type="button"
@@ -413,12 +423,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             // }
                                           },
                                         });
-
-                                        toast.info(
-                                          Object.values(billingOperations)
-                                            .map((op) => op.status)
-                                            .join(","),
-                                        );
 
                                         setCreateBackgroundModal(true);
                                         showTokenModal();
