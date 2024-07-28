@@ -23,12 +23,12 @@ use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::Bloom, utils::to_checksum};
 use eyre::Result;
-use lightdotso_utils::is_testnet;
 use lightdotso_prisma::{chain, log, log_topic, receipt, transaction, wallet};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
 };
+use lightdotso_utils::is_testnet;
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json::{self, json},
