@@ -127,31 +127,3 @@ lazy_static! {
         m
     };
 }
-
-// The default chain sleep seconds
-lazy_static! {
-    pub static ref DEFAULT_CHAIN_SLEEP_SECONDS: u64 = 12;
-}
-
-// The chain sleep seconds
-lazy_static! {
-    pub static ref CHAIN_SLEEP_SECONDS: HashMap<u64, u64> = {
-        let mut m = HashMap::new();
-
-        // Mainnet
-        m.insert(1, 12);
-        m.insert(10, 2);
-        m.insert(137, 3);
-        m.insert(8453, 2);
-        m.insert(42161, 2);
-
-
-        // Testnet
-        m.insert(80001, 12);
-        m.insert(84532, 12);
-        m.insert(421614, 12);
-        m.insert(11155111, 12);
-
-        m
-    };
-}

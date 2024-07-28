@@ -6209,6 +6209,7 @@ dependencies = [
  "lightdotso-redis",
  "lightdotso-sequence",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "reqwest",
  "serde_json",
  "tokio",

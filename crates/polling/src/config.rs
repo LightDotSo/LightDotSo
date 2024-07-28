@@ -20,9 +20,9 @@ use crate::{
 };
 use clap::Parser;
 use eyre::Result;
+use lightdotso_constants::chains::{CHAIN_BLOCK_SECONDS, DEFAULT_CHAIN_BLOCK_SECONDS};
 use lightdotso_graphql::constants::{
-    CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_STUDIO_BASE_URL,
-    THE_GRAPH_STUDIO_SERVICE_IDS,
+    SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_STUDIO_BASE_URL, THE_GRAPH_STUDIO_SERVICE_IDS,
 };
 use lightdotso_tracing::tracing::{error, info};
 use std::collections::HashMap;
@@ -164,7 +164,7 @@ pub async fn run_polling(
 pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
     let mut sleep_seconds_mapping = HashMap::new();
 
-    for (chain_id, seconds) in CHAIN_SLEEP_SECONDS.clone().into_iter() {
+    for (chain_id, seconds) in CHAIN_BLOCK_SECONDS.clone().into_iter() {
         sleep_seconds_mapping.insert(chain_id, seconds);
     }
 
