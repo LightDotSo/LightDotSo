@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::types::Address;
+use ethers::{types::Address, utils::to_checksum};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -40,7 +40,7 @@ impl ToJson for BillingOperationMessage {
         let msg_value: Value = json!({
             "chain_id": self.chain_id,
             "paymaster_operation_id": self.paymaster_operation_id,
-            "sender": self.sender.to_string(),
+            "sender": to_checksum(&self.sender, None),
             "pre_verification_gas": self.pre_verification_gas,
             "verification_gas_limit": self.verification_gas_limit,
             "call_gas_limit": self.call_gas_limit,
