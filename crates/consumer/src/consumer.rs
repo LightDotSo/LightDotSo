@@ -29,6 +29,7 @@ use crate::{
 };
 use clap::Parser;
 use eyre::Result;
+use lightdotso_billing::config::BillingArgs;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
@@ -87,6 +88,9 @@ impl Consumer {
     pub async fn run(&self) -> Result<()> {
         info!("Consumer run, starting");
 
+        // Parse the billing command line arguments
+        let billing_args = BillingArgs::parse();
+
         // Parse the command line arguments
         let args = IndexerArgs::parse();
 
@@ -98,6 +102,9 @@ impl Consumer {
 
         // Parse the notifer command line arguments
         let notifier_args = NotifierArgs::parse();
+
+        // Create the billing
+        let billing = billing_args.create().await?;
 
         // Create the poller
         let poller = polling_args.create().await?;
@@ -154,7 +161,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == BILLING_OPERATION.to_string() => {
-                            let res = billing_operation_consumer(&m).await;
+                            let res = billing_operation_consumer(&billing, &m).await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error

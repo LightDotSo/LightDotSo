@@ -13,11 +13,15 @@
 // limitations under the License.
 
 use eyre::Result;
+use lightdotso_billing::billing::Billing;
 use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
-pub async fn billing_operation_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
+pub async fn billing_operation_consumer(
+    billing: &Billing,
+    msg: &BorrowedMessage<'_>,
+) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -27,6 +31,9 @@ pub async fn billing_operation_consumer(msg: &BorrowedMessage<'_>) -> Result<()>
         // Parse the payload into a JSON object, `BillingOperationMessage`
         let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
         info!("payload: {:?}", payload);
+
+        // Run the billing operation
+        billing.run_pending(&payload).await?;
     }
 
     Ok(())

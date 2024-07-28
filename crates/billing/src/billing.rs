@@ -30,8 +30,10 @@ use lightdotso_db::{
     models::{activity::CustomParams, billing_operation::create_billing_operation},
 };
 use lightdotso_kafka::{
-    get_producer, rdkafka::producer::FutureProducer, topics::activity::produce_activity_message,
-    types::activity::ActivityMessage,
+    get_producer,
+    rdkafka::producer::FutureProducer,
+    topics::activity::produce_activity_message,
+    types::{activity::ActivityMessage, billing_operation::BillingOperationMessage},
 };
 use lightdotso_prisma::{billing_operation, ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_redis::{get_redis_client, redis::Client};
@@ -66,6 +68,18 @@ impl Billing {
 
         // Create the billing
         Ok(Self { db_client, redis_client, kafka_client })
+    }
+
+    /// Run the pending billing operation
+    pub async fn run_pending(&self, msg: &BillingOperationMessage) -> Result<()> {
+        info!("Run pending billing operation");
+
+        let currency = self.get_native_currency_balance(msg.chain_id).await?;
+
+        // Log the currency
+        info!("currency: {}", currency);
+
+        Ok(())
     }
 
     /// Get the provider

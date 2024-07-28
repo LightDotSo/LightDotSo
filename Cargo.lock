@@ -5868,6 +5868,7 @@ dependencies = [
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-billing",
  "lightdotso-client",
  "lightdotso-common",
  "lightdotso-contracts",
