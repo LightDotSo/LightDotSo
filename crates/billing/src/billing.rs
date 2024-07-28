@@ -108,14 +108,14 @@ impl Billing {
         info!("max_gas_limit: {}", max_gas_limit);
 
         // Multiply the gas price by the gas limit, denominated in ether 1e-18
-        let max_gas_consumed =
-            gas_price * U256::from(max_gas_limit) / U256::from(10).pow(U256::from(18));
+        let max_gas_consumed = gas_price * U256::from(max_gas_limit);
 
         // Log the gas consumed
         info!("max_gas_consumed: {}", max_gas_consumed);
 
         // Calculate the total cost
-        let total_cost_usd = (max_gas_consumed.as_u64() as f64) * currency_price_usd;
+        let total_cost_usd =
+            (max_gas_consumed.as_u64() as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
 
         // Log the total cost
         info!("total_cost_usd: {}", total_cost_usd);
@@ -215,5 +215,26 @@ impl Billing {
                 .await;
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Calculate the total cost
+    #[tokio::test]
+    async fn test_calculate_total_cost() {
+        let currency_price_usd = 3000_f64;
+        let gas_price = U256::from(1361699);
+        let max_gas_limit = 306824_u64;
+        let max_gas_consumed = gas_price * U256::from(max_gas_limit);
+
+        println!("max_gas_consumed: {}", max_gas_consumed);
+
+        let total_cost_usd =
+            (max_gas_consumed.as_u64() as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
+
+        println!("total_cost_usd: {}", total_cost_usd);
     }
 }
