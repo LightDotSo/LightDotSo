@@ -46,7 +46,6 @@ use lightdotso_db::{
     },
 };
 use lightdotso_graphql::{
-    constants::DEFAULT_CHAIN_SLEEP_SECONDS,
     polling::{
         min_block::run_min_block_query,
         user_operations::{
@@ -74,6 +73,7 @@ use lightdotso_prisma::{user_operation, ActivityEntity, ActivityOperation, Prism
 use lightdotso_redis::{get_redis_client, query::wallet::add_to_wallets, redis::Client};
 use lightdotso_sequence::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
+use lightdotso_utils::get_chain_block_seconds;
 use serde_json::json;
 use std::{collections::HashMap, sync::Arc, time::Duration};
 
@@ -132,8 +132,7 @@ impl Polling {
         let url = self.chain_mapping.get(&chain_id).unwrap().get(&service_provider).unwrap();
 
         // Get the sleep seconds from the sleep seconds mapping.
-        let sleep_seconds =
-            *self.sleep_seconds_mapping.get(&chain_id).unwrap_or(&*DEFAULT_CHAIN_SLEEP_SECONDS);
+        let sleep_seconds = get_chain_block_seconds(chain_id);
 
         // Get the initial min block.
         let initial_min_block = self.get_min_block(url.to_string()).await.unwrap_or_default();
@@ -301,7 +300,7 @@ impl Polling {
         let res = get_user_operation
             .retry(
                 &ExponentialBuilder::default()
-                    .with_max_delay(Duration::from_secs(12))
+                    .with_max_delay(Duration::from_secs(get_chain_block_seconds(chain_id)))
                     .with_max_times(10),
             )
             .await;

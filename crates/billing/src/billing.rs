@@ -38,7 +38,7 @@ use lightdotso_kafka::{
 use lightdotso_prisma::{billing_operation, ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_redis::{get_redis_client, redis::Client};
 use lightdotso_tracing::tracing::info;
-use lightdotso_utils::get_native_token_symbol;
+use lightdotso_utils::{get_native_token_symbol, is_testnet};
 use std::sync::Arc;
 
 #[allow(dead_code)]
@@ -74,6 +74,19 @@ impl Billing {
     /// Run the pending billing operation
     pub async fn run_pending(&self, msg: &BillingOperationMessage) -> Result<()> {
         info!("Run pending billing operation");
+
+        // If chain is testnet, create a new billing operation w/ 0 USD
+        if is_testnet(msg.chain_id) {
+            self.db_create_billing_operation(
+                self.db_client.clone(),
+                msg.sender,
+                msg.paymaster_operation_id.clone(),
+                0.0,
+            )
+            .await?;
+
+            return Ok(());
+        }
 
         let currency_price_usd = self.get_native_currency_price(msg.chain_id).await?;
 

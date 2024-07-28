@@ -29,6 +29,7 @@
   lightdotso-redis = { workspace = true }
   lightdotso-sequence = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  lightdotso-utils = { workspace = true }
   reqwest = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true }

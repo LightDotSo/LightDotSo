@@ -140,3 +140,25 @@ lazy_static! {
         m
     };
 }
+
+// The default chain sleep seconds
+lazy_static! {
+    pub static ref DEFAULT_CHAIN_BLOCK_SECONDS: u64 = 3;
+}
+
+// The default testnet chain sleep seconds
+lazy_static! {
+    pub static ref DEFAULT_TESTNET_CHAIN_BLOCK_SECONDS: u64 = 12;
+}
+
+// The chain sleep seconds
+lazy_static! {
+    pub static ref CHAIN_BLOCK_SECONDS: HashMap<u64, u64> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, 12);
+
+        m
+    };
+}
