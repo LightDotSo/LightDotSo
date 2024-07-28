@@ -16,7 +16,6 @@
 
 use ethers::utils::to_checksum;
 use eyre::{eyre, Result};
-use lightdotso_contracts::utils::is_testnet;
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::{
     topics::portfolio::produce_portfolio_message,
@@ -24,6 +23,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::is_testnet;
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 

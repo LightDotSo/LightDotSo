@@ -14,5 +14,5 @@
 
 #![recursion_limit = "512"]
 
-// pub mod billing;
-// pub mod config;
+pub mod billing;
+pub mod config;

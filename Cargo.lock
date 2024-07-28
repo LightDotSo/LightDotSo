@@ -5739,6 +5739,7 @@ dependencies = [
  "lightdotso-sequence",
  "lightdotso-simulator",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "prisma-client-rust",
  "reqwest",
  "rs_merkle",
@@ -5774,6 +5775,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lazy_static",
+ "lightdotso-client",
  "lightdotso-common",
  "lightdotso-constants",
  "lightdotso-contracts",
@@ -5785,6 +5787,7 @@ dependencies = [
  "lightdotso-redis",
  "lightdotso-sequence",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "serde_json",
  "tokio",
 ]
@@ -5867,6 +5870,7 @@ dependencies = [
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-billing",
  "lightdotso-client",
  "lightdotso-common",
  "lightdotso-contracts",
@@ -5882,6 +5886,7 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-routescan",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "opentelemetry 0.20.0",
  "prisma-client-rust",
  "rdkafka",
@@ -5934,6 +5939,7 @@ dependencies = [
  "lightdotso-interpreter",
  "lightdotso-prisma",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "prisma-client-rust",
  "revm",
  "serde",
@@ -6261,6 +6267,7 @@ dependencies = [
  "lazy_static",
  "lightdotso-contracts",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "reqwest",
  "serde",
  "serde_json",
@@ -6389,6 +6396,7 @@ name = "lightdotso-utils"
 version = "0.1.0"
 dependencies = [
  "ethers 2.0.8",
+ "lightdotso-constants",
 ]
 
 [[package]]

@@ -14,16 +14,20 @@
 
 use eyre::Result;
 use lightdotso_contracts::paymaster::{decode_paymaster_and_data, get_paymaster};
-use lightdotso_db::models::{
-    billing_operation::create_billing_operation, paymaster_operation::create_paymaster_operation,
+use lightdotso_db::models::paymaster_operation::create_paymaster_operation;
+use lightdotso_kafka::{
+    topics::billing_operation::produce_billing_operation_message,
+    types::{
+        billing_operation::BillingOperationMessage, paymaster_operation::PaymasterOperationMessage,
+    },
 };
-use lightdotso_kafka::types::paymaster_operation::PaymasterOperationMessage;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
-use rdkafka::{message::BorrowedMessage, Message};
+use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
 pub async fn paymaster_operation_consumer(
+    producer: Arc<FutureProducer>,
     msg: &BorrowedMessage<'_>,
     db: Arc<PrismaClient>,
 ) -> Result<()> {
@@ -61,8 +65,18 @@ pub async fn paymaster_operation_consumer(
             )
             .await?;
 
-            // Before exit, create the billing operation.
-            create_billing_operation(db.clone(), payload.sender, paymaster_operation.id).await?;
+            produce_billing_operation_message(
+                producer,
+                &BillingOperationMessage {
+                    sender: payload.sender,
+                    chain_id: payload.chain_id,
+                    paymaster_operation_id: paymaster_operation.id,
+                    pre_verification_gas: payload.pre_verification_gas.as_u64(),
+                    verification_gas_limit: payload.verification_gas_limit.as_u64(),
+                    call_gas_limit: payload.call_gas_limit.as_u64(),
+                },
+            )
+            .await?;
         }
     }
 

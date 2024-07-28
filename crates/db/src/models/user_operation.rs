@@ -29,13 +29,13 @@ use eyre::Result;
 use lightdotso_contracts::{
     paymaster::decode_paymaster_and_data,
     types::{UserOperation, UserOperationReceipt, UserOperationWithTransactionAndReceiptLogs},
-    utils::is_testnet,
 };
 use lightdotso_prisma::{
     chain, log, paymaster, paymaster_operation, transaction, user_operation, wallet,
     UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::is_testnet;
 use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
 

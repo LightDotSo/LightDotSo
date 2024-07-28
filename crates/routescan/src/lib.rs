@@ -17,7 +17,7 @@
 
 use constants::ROUTESCAN_BASE_URL;
 use eyre::Result;
-use lightdotso_contracts::utils::is_testnet;
+use lightdotso_utils::is_testnet;
 use reqwest::Response;
 use serde_json::Value;
 use types::{BalancesData, NativeBalanceData};

@@ -74,12 +74,30 @@ export const useUserOperations = create(
       (set) => ({
         billingOperations: {},
         setBillingOperationByHash: (hash, operation) =>
-          set((state) => ({
-            billingOperations: {
-              ...state.billingOperations,
-              [hash]: operation,
-            },
-          })),
+          set((state) => {
+            // Gets the hashes of the userOperations
+            const hashes = state.userOperations.map((op) => op.hash);
+
+            // Removes the hashes that are not in the userOperations
+            for (const hash of Object.keys(state.billingOperations)) {
+              if (!hashes.includes(hash)) {
+                delete state.billingOperations[hash];
+              }
+            }
+
+            // Check if the new hash is in the userOperations
+            if (!hashes.includes(hash)) {
+              return state;
+            }
+
+            // Updates the billingOperations with the new operation
+            return {
+              billingOperations: {
+                ...state.billingOperations,
+                [hash]: operation,
+              },
+            };
+          }),
         resetBillingOperations: () =>
           set(() => ({
             billingOperations: {},

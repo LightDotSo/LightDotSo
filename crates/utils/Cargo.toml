@@ -10,3 +10,4 @@
 
 [dependencies]
   ethers = { workspace = true }
+  lightdotso-constants = { workspace = true }

@@ -89,6 +89,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
 
   const { pageIndex, setPageIndex } = useModalSwiper();
   const {
+    billingOperations,
     resetUserOperations,
     partialUserOperations,
     resetPartialUserOperations,
@@ -412,6 +413,12 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                                             // }
                                           },
                                         });
+
+                                        toast.info(
+                                          Object.values(billingOperations)
+                                            .map((op) => op.status)
+                                            .join(","),
+                                        );
 
                                         setCreateBackgroundModal(true);
                                         showTokenModal();

@@ -18,12 +18,9 @@
 use ethers::types::{Address, Bytes};
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::{
-    types::{
-        EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
-        UserOperationRequest,
-    },
-    utils::is_testnet,
+use lightdotso_contracts::types::{
+    EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
+    UserOperationRequest,
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -37,6 +34,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_rpc::constants::{ALCHEMY_RPC_URLS, PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
 use lightdotso_tracing::tracing::{info, warn};
+use lightdotso_utils::is_testnet;
 use serde_json::{json, Value};
 use std::sync::Arc;
 

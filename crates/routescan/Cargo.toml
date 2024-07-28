@@ -13,6 +13,7 @@
   lazy_static = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  lightdotso-utils = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
