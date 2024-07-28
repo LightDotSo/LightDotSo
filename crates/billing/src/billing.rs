@@ -79,6 +79,9 @@ impl Billing {
         // Log the currency
         info!("currency: {}", currency);
 
+        // Create the billing operation
+        self.db_create_billing_operation(msg.sender, self.db_client.clone()).await?;
+
         Ok(())
     }
 
