@@ -33,6 +33,7 @@ import {
   scroll,
   scrollSepolia,
 } from "viem/chains";
+import { USER_OPERATION_CONFIG } from "./config";
 import { useQueryGasEstimation } from "./useQueryGasEstimation";
 import { useQueryWallet } from "./useQueryWallet";
 
@@ -71,6 +72,9 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   const { data: feesPerGas, isLoading: isEstimateFeesPerGasLoading } =
     useEstimateFeesPerGas({
       chainId: Number(chainId),
+      query: {
+        ...USER_OPERATION_CONFIG,
+      },
     });
 
   // ---------------------------------------------------------------------------

@@ -22,6 +22,11 @@ export const LIVE_CONFIG = {
   retryOnMount: false,
 };
 
+export const USER_OPERATION_CONFIG = {
+  refetchIntervalInBackground: true,
+  refetchInterval: 1000 * 30,
+};
+
 export const USER_OPERATION_RECEIPT_CONFIG = {
   retry: false,
 };
