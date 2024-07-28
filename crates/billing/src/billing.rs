@@ -23,6 +23,7 @@ use ethers::{
     types::U256,
 };
 use eyre::Result;
+use lightdotso_client::crypto::get_native_token_price;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::create_client,
@@ -87,7 +88,16 @@ impl Billing {
             .await
     }
 
-    /// Get the block logs for the given block number
+    /// Get the native currency balance for the chain
+    #[autometrics]
+    pub async fn get_native_currency_balance(&self, chain_id: u64) -> Result<f64> {
+        let res =
+            { || get_native_token_price(chain_id) }.retry(&ExponentialBuilder::default()).await?;
+
+        Ok(res)
+    }
+
+    /// Get the gas price for the chain
     #[autometrics]
     pub async fn get_gas_price(&self, chain_id: u64) -> Result<Option<U256>> {
         let client = self.get_provider(chain_id).await?;

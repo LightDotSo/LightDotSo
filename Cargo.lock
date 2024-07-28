@@ -5774,6 +5774,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lazy_static",
+ "lightdotso-client",
  "lightdotso-common",
  "lightdotso-constants",
  "lightdotso-contracts",
