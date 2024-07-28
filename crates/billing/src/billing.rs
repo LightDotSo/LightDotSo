@@ -24,7 +24,10 @@ use ethers::{
 };
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_db::{db::create_client, models::activity::CustomParams};
+use lightdotso_db::{
+    db::create_client,
+    models::{activity::CustomParams, billing_operation::create_billing_operation},
+};
 use lightdotso_kafka::{
     get_producer, rdkafka::producer::FutureProducer, topics::activity::produce_activity_message,
     types::activity::ActivityMessage,
@@ -70,6 +73,18 @@ impl Billing {
         let client: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
 
         Ok(client)
+    }
+
+    /// Creates a new transaction with log receipt in the database
+    #[autometrics]
+    pub async fn db_create_billing_operation(
+        &self,
+        wallet_address: ethers::types::H160,
+        db_client: Arc<PrismaClient>,
+    ) -> Result<()> {
+        { || create_billing_operation(db_client.clone(), wallet_address, "0x0".to_string()) }
+            .retry(&ExponentialBuilder::default())
+            .await
     }
 
     /// Get the block logs for the given block number

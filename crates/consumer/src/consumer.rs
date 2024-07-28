@@ -182,7 +182,9 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == PAYMASTER_OPERATION.to_string() => {
-                            let res = paymaster_operation_consumer(&m, db.clone()).await;
+                            let res =
+                                paymaster_operation_consumer(self.producer.clone(), &m, db.clone())
+                                    .await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error
