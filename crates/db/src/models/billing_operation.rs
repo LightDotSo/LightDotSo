@@ -33,6 +33,7 @@ pub async fn create_billing_operation(
     db: Database,
     sender_address: ethers::types::H160,
     paymaster_operation_id: String,
+    pending_usd: f64,
 ) -> Result<()> {
     info!("Creating new billing operation");
 
@@ -56,7 +57,7 @@ pub async fn create_billing_operation(
     let billing_operation = db
         .billing_operation()
         .create(
-            0.0,
+            pending_usd,
             BillingOperationStatus::Pending,
             billing::id::equals(billing.id),
             paymaster_operation::id::equals(paymaster_operation_id),

@@ -22,12 +22,14 @@ use ethers::{
     providers::{Http, Middleware},
     types::U256,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_client::crypto::get_native_token_price;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::create_client,
-    models::{activity::CustomParams, billing_operation::create_billing_operation},
+    models::{
+        activity::CustomParams, billing_operation::create_billing_operation, paymaster_operation,
+    },
 };
 use lightdotso_kafka::{
     get_producer,
@@ -74,13 +76,46 @@ impl Billing {
     pub async fn run_pending(&self, msg: &BillingOperationMessage) -> Result<()> {
         info!("Run pending billing operation");
 
-        let currency = self.get_native_currency_balance(msg.chain_id).await?;
+        let currency_price_usd = self.get_native_currency_price(msg.chain_id).await?;
 
         // Log the currency
-        info!("currency: {}", currency);
+        info!("currency_price_usd: {}", currency_price_usd);
+
+        // Get the gas price
+        let gas_price =
+            self.get_gas_price(msg.chain_id).await?.ok_or(eyre!("Gas price not found"))?;
+
+        // Log the gas price
+        info!("gas_price: {}", gas_price);
+
+        // Calculate the gas limit
+        let max_gas_limit =
+            msg.pre_verification_gas + msg.verification_gas_limit + msg.call_gas_limit;
+
+        // Log the gas limit
+        info!("max_gas_limit: {}", max_gas_limit);
+
+        // Multiply the gas price by the gas limit, denominated in ether 1e-18
+        let max_gas_consumed =
+            gas_price * U256::from(max_gas_limit) / U256::from(10).pow(U256::from(18));
+
+        // Log the gas consumed
+        info!("max_gas_consumed: {}", max_gas_consumed);
+
+        // Calculate the total cost
+        let total_cost_usd = (max_gas_consumed.as_u64() as f64) * currency_price_usd;
+
+        // Log the total cost
+        info!("total_cost_usd: {}", total_cost_usd);
 
         // Create the billing operation
-        self.db_create_billing_operation(msg.sender, self.db_client.clone()).await?;
+        self.db_create_billing_operation(
+            self.db_client.clone(),
+            msg.sender,
+            msg.paymaster_operation_id.clone(),
+            total_cost_usd,
+        )
+        .await?;
 
         Ok(())
     }
@@ -97,17 +132,28 @@ impl Billing {
     #[autometrics]
     pub async fn db_create_billing_operation(
         &self,
-        wallet_address: ethers::types::H160,
         db_client: Arc<PrismaClient>,
+        wallet_address: ethers::types::H160,
+        paymaster_operation_id: String,
+        pending_usd: f64,
     ) -> Result<()> {
-        { || create_billing_operation(db_client.clone(), wallet_address, "0x0".to_string()) }
-            .retry(&ExponentialBuilder::default())
-            .await
+        {
+            || {
+                create_billing_operation(
+                    db_client.clone(),
+                    wallet_address.clone(),
+                    paymaster_operation_id.clone(),
+                    pending_usd.clone(),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
     }
 
     /// Get the native currency balance for the chain
     #[autometrics]
-    pub async fn get_native_currency_balance(&self, chain_id: u64) -> Result<f64> {
+    pub async fn get_native_currency_price(&self, chain_id: u64) -> Result<f64> {
         let res =
             { || get_native_token_price(chain_id) }.retry(&ExponentialBuilder::default()).await?;
 
