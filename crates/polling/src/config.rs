@@ -20,7 +20,7 @@ use crate::{
 };
 use clap::Parser;
 use eyre::Result;
-use lightdotso_constants::chains::{CHAIN_BLOCK_SECONDS, DEFAULT_CHAIN_BLOCK_SECONDS};
+use lightdotso_constants::chains::CHAIN_BLOCK_SECONDS;
 use lightdotso_graphql::constants::{
     SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_STUDIO_BASE_URL, THE_GRAPH_STUDIO_SERVICE_IDS,
 };
