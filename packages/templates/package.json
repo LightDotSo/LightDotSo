@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -43,7 +46,7 @@
     "@tanstack/react-table": "^8.19.3",
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.3.19",
-    "lucide-react": "^0.416.0",
+    "lucide-react": "^0.417.0",
     "next": "15.0.0-canary.87",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
@@ -51,13 +54,13 @@
     "react-hook-form": "^7.52.1",
     "react-icons": "^5.2.1",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.18.2",
+    "viem": "^2.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.6",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

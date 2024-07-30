@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -24,9 +27,9 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "typescript": "^5.5.4",
-    "viem": "^2.18.2"
+    "viem": "^2.18.5"
   },
   "publishConfig": {
     "access": "public"

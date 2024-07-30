@@ -23,7 +23,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.9",
+    "@babel/core": "^7.25.2",
     "@metamask/eth-sig-util": "^7.0.3",
     "@types/firefox-webext-browser": "^120.0.4",
     "buffer": "^6.0.3",
@@ -37,7 +37,7 @@
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607"
   },
   "devDependencies": {
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",

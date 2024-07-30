@@ -12,7 +12,9 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "files": ["dist/**"],
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
     "add": "shadcn-ui add",
     "build": "pnpm run build:styles && pnpm run build:storybook || true",
@@ -49,7 +51,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.9",
+    "@babel/core": "^7.25.2",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/addon-actions": "^8.2.6",
@@ -76,7 +78,7 @@
     "@storybook/react-vite": "^8.2.6",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "^8.2.6",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
