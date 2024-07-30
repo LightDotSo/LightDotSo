@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { EntrypointContract } from "../generated/src/Handlers.gen";
+import { EntrypointContract } from "../generated/src/Handlers.res";
 
 EntrypointContract.UserOperationEvent.loader(({ event, context }) => {});
 
