@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Auto Approve
         if: (github.actor == 'shunkakinoki' || github.actor == 'dependabot[bot]') && github.actor != 'LightDotSoBot'
-        uses: hmarr/auto-approve-action@v3
+        uses: hmarr/auto-approve-action@v4
         continue-on-error: true
         with:
           github-token: ${{ secrets.BOT_TOKEN }}

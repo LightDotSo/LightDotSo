@@ -23,7 +23,7 @@ jobs:
         run: |
           sleep 30s
       - name: Wait Docker
-        uses: lewagon/wait-on-check-action@v1.3.3
+        uses: lewagon/wait-on-check-action@v1.3.4
         continue-on-error: true
         with:
           ref: ${{ github.ref }}
@@ -61,7 +61,7 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v4
       - name: Scan repo with kube-linter
-        uses: stackrox/kube-linter-action@v1.0.4
+        uses: stackrox/kube-linter-action@v1.0.5
         with:
           directory: pods
           format: sarif
