@@ -19,8 +19,8 @@ use ethers::types::{Address, Bytes};
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{
-    EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
-    UserOperationRequest,
+    BiconomyGasAndPaymasterAndData, EstimateResult, GasAndPaymasterAndData, PaymasterAndData,
+    UserOperationConstruct, UserOperationRequest,
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -441,7 +441,7 @@ pub async fn get_alchemy_paymaster_and_data(
 pub async fn get_biconomy_paymaster_and_data(
     rpc_url: String,
     user_operation: &UserOperationRequest,
-) -> Result<Response<PaymasterAndData>> {
+) -> Result<Response<BiconomyGasAndPaymasterAndData>> {
     let params = vec![json!([user_operation, {
         "mode": "SPONSORED",
         "calculateGasLimits": true,
