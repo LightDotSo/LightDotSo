@@ -113,6 +113,7 @@
     "@vitest/ui": "^2.0.4",
     "@wagmi/cli": "^2.1.15",
     "abitype": "^1.0.5",
+    "ardrive-cli": "^2.0.6",
     "autoprefixer": "^10.4.19",
     "chai": "^5.1.1",
     "checkly": "^4.8.0",
