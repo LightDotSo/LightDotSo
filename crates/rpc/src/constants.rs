@@ -608,6 +608,7 @@ lazy_static! {
         m.insert(421614, "https://rpc.silius.xyz/api/v1/chain/arbitrum-sepolia".to_string());
         m.insert(11155111, "https://rpc.silius.xyz/api/v1/chain/ethereum-sepolia".to_string());
         m.insert(11155420, "https://rpc.silius.xyz/api/v1/chain/optimism-sepolia".to_string());
+        m.insert(168587773, "https://rpc.silius.xyz/api/v1/chain/blast-sepolia".to_string());
 
         m
     };
