@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { EntrypointContract } from "../generated/src/Handlers.res";
+// import { EntrypointContract } from "../generated/src/Handlers.res";
 
-EntrypointContract.UserOperationEvent.loader(({ event, context }) => {});
+// EntrypointContract.UserOperationEvent.loader(({ event, context }) => {});
 
-EntrypointContract.UserOperationEvent.handler(({ event, context }) => {
-  context.UserOp.set({
-    id: `${event.chainId}-${event.params.userOpHash}`,
-    hash: event.params.userOpHash,
-    chainId: event.chainId,
-    txHash: event.transactionHash,
-    actualGasCost: event.params.actualGasCost,
-    actualGasUsed: event.params.actualGasUsed,
-    nonce: event.params.nonce,
-    paymaster: event.params.paymaster,
-    sender: event.params.sender,
-    success: event.params.success,
-    entryPoint: event.srcAddress,
-  });
-});
+// EntrypointContract.UserOperationEvent.handler(({ event, context }) => {
+//   context.UserOp.set({
+//     id: `${event.chainId}-${event.params.userOpHash}`,
+//     hash: event.params.userOpHash,
+//     chainId: event.chainId,
+//     txHash: event.transactionHash,
+//     actualGasCost: event.params.actualGasCost,
+//     actualGasUsed: event.params.actualGasUsed,
+//     nonce: event.params.nonce,
+//     paymaster: event.params.paymaster,
+//     sender: event.params.sender,
+//     success: event.params.success,
+//     entryPoint: event.srcAddress,
+//   });
+// });
