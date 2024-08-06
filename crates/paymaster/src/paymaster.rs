@@ -39,8 +39,8 @@ use serde_json::{json, Value};
 use std::sync::Arc;
 
 use crate::constants::{
-    ALCHEMY_POLICY_IDS, PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL,
-    PIMLICO_SPONSORSHIP_POLICIES,
+    ALCHEMY_POLICY_IDS, BICONOMY_PAYMASTER_RPC_URLS, BICONOMY_POLICY_IDS,
+    PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
 };
 
 /// The paymaster api implementation.
@@ -155,6 +155,34 @@ pub async fn fetch_gas_and_paymaster_and_data(
                 entry_point,
                 &user_operation,
                 (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
+            )
+            .await
+            .map_err(JsonRpcError::from);
+
+            // If the sponsorship is successful, return the result.
+            if let Ok(sponsorship_data) = sponsorship {
+                return Ok(GasAndPaymasterAndData {
+                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
+                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
+                    verification_gas_limit: user_operation
+                        .verification_gas_limit
+                        .unwrap_or_default(),
+                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
+                });
+            } else {
+                warn!("Failed to fetch user operation sponsorship from alchemy");
+                // error!("{:?}", sponsorship.unwrap_err());
+            }
+        }
+    }
+
+    // Check if the `chain_id` is one of the key of `BICONOMY_POLICY_IDS`.
+    if (*BICONOMY_POLICY_IDS).contains_key(&chain_id) {
+        // Get the alchemy rpc url from the `BICONOMY_PAYMASTER_RPC_URLS`.
+        if let Some(biconomy_rpc_url) = (*BICONOMY_PAYMASTER_RPC_URLS).get(&chain_id) {
+            let sponsorship = get_biconomy_paymaster_and_data(
+                format!("{}{}", biconomy_rpc_url, BICONOMY_POLICY_IDS.get(&chain_id).unwrap()),
+                &user_operation,
             )
             .await
             .map_err(JsonRpcError::from);
@@ -412,18 +440,25 @@ pub async fn get_alchemy_paymaster_and_data(
 
 pub async fn get_biconomy_paymaster_and_data(
     rpc_url: String,
-    entry_point: Address,
     user_operation: &UserOperationRequest,
-    policy_id: String,
 ) -> Result<Response<PaymasterAndData>> {
-    let params = vec![
-        json!({"policyId": policy_id, "entryPoint": entry_point, "userOperation": user_operation}),
-    ];
+    let params = vec![json!([user_operation, {
+        "mode": "SPONSORED",
+        "calculateGasLimits": true,
+        "expiryDuration": 300,
+        "sponsorshipInfo": {
+          "webhookData": {},
+          "smartAccountInfo": {
+            "name": "LIGHT",
+            "version": "0.3.0"
+          }
+        }
+    }])];
     info!("params: {:?}", params);
 
     let req_body = Request {
         jsonrpc: "2.0".to_string(),
-        method: "alchemy_requestPaymasterAndData".to_string(),
+        method: "pm_sponsorUserOperation".to_string(),
         params: params.clone(),
         id: 1,
     };

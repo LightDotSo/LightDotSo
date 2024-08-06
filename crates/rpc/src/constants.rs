@@ -141,9 +141,34 @@ lazy_static! {
         m.insert(1, "https://mainnet.gateway.tenderly.co".to_string());
         m.insert(10, "https://optimism.gateway.tenderly.co".to_string());
         m.insert(137, "https://polygon.gateway.tenderly.co".to_string());
+        m.insert(252, "https://fraxtal.gateway.tenderly.co".to_string());
+        m.insert(288, "https://boba-ethereum.gateway.tenderly.co".to_string());
+        m.insert(1135, "https://lisk.gateway.tenderly.co".to_string());
+        m.insert(4653, "https://gold.gateway.tenderly.co".to_string());
         m.insert(8453, "https://base.gateway.tenderly.co".to_string());
+        m.insert(13371, "https://immutable.gateway.tenderly.co".to_string());
+        m.insert(34443, "https://mode.gateway.tenderly.co".to_string());
         m.insert(42161, "https://arbitrum.gateway.tenderly.co".to_string());
         m.insert(42170, "https://arbitrum-nova.gateway.tenderly.co".to_string());
+        m.insert(56288, "https://boba-bnb.gateway.tenderly.co".to_string());
+        m.insert(60808, "https://bob.gateway.tenderly.co".to_string());
+        m.insert(81457, "https://blast.gateway.tenderly.co".to_string());
+        m.insert(111188, "https://tangible-real.gateway.tenderly.co".to_string());
+
+        // Testnet
+        m.insert(919, "https://mode-sepolia.gateway.tenderly.co".to_string());
+        m.insert(2522, "https://fraxtal-sepolia.gateway.tenderly.co".to_string());
+        m.insert(4202, "https://lisk-sepolia.gateway.tenderly.co".to_string());
+        m.insert(9728, "https://boba-bnb-testnet.gateway.tenderly.co".to_string());
+        m.insert(18233, "https://tangible-unreal.gateway.tenderly.co".to_string());
+        m.insert(18291, "https://concrete-testnet.gateway.tenderly.co".to_string());
+        m.insert(28882, "https://boba-sepolia.gateway.tenderly.co".to_string());
+        m.insert(80002, "https://polygon-amoy.gateway.tenderly.co".to_string());
+        m.insert(84532, "https://base-sepolia.gateway.tenderly.co".to_string());
+        m.insert(421614, "https://arbitrum-sepolia.gateway.tenderly.co".to_string());
+        m.insert(11155111, "https://sepolia.gateway.tenderly.co".to_string());
+        m.insert(11155420, "https://optimism-sepolia.gateway.tenderly.co".to_string());
+
 
         m
     };
