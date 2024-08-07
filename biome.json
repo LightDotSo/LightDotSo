@@ -22,6 +22,9 @@
       "all": true,
       "style": {
         "noImplicitBoolean": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "warn"
       }
     }
   },

@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ---------------------------------------------------------------------------
-// Next Config
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  basePath: "/blog",
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.light.so",
-        port: "",
-      },
-    ],
-  },
-  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
+export const refineDateFormat = (date: Date) => {
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-export default nextConfig;

@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20240806.0",
-    "@hono-rate-limiter/cloudflare": "^0.1.2",
     "@hono/zod-validator": "^0.2.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
