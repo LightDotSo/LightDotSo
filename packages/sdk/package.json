@@ -28,11 +28,11 @@
     "@lightdotso/types": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "neverthrow": "^7.0.0",
-    "viem": "^2.18.2"
+    "viem": "^2.18.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

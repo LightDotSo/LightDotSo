@@ -97,6 +97,22 @@ pub struct GasAndPaymasterAndData {
     pub paymaster_and_data: Bytes,
 }
 
+/// The biconomy gas and paymaster and data returned by the paymaster.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BiconomyGasAndPaymasterAndData {
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    #[serde(rename = "paymasterAndData")]
+    pub paymaster_and_data: Bytes,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mode: Option<String>,
+}
+
 /// User operation required for the request.
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

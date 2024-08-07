@@ -91,3 +91,30 @@ lazy_static! {
         m
     };
 }
+
+// The biconomy paymaster rpc urls
+// From: https://docs.biconomy.io/Bundler/supportedNetworks
+// Thank you to the Biconomy team for providing the service!
+lazy_static! {
+    pub static ref BICONOMY_PAYMASTER_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1329, "https://paymaster.biconomy.io/api/v1/1329/".to_string());
+
+        m
+    };
+}
+
+// The biconomy rpc policy ids
+// From: https://docs.biconomy.io/supportedNetworks
+lazy_static! {
+    pub static ref BICONOMY_POLICY_IDS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1329, "7GR4dz_kx.9ca8789e-cbae-4a71-91d6-6fca2a96d055".to_string());
+
+        m
+    };
+}

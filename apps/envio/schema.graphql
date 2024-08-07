@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Copyright 2023-2024 LightDotSo.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,4 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-rclone copy -P --exclude-from exclude.txt ./ r2:assets/
+type UserOp {
+  id: ID!
+  hash: String!
+  txHash: String!
+  chainId: Int!
+  actualGasCost: BigInt!
+  actualGasUsed: BigInt!
+  nonce: BigInt!
+  paymaster: String!
+  sender: String!
+  success: Boolean!
+  entryPoint: String!
+}
+type AccountDeployed {
+  id: ID!
+  hash: String!
+  chainId: Int!
+  txHash: String!
+  factory: String!
+  paymaster: String!
+  sender: String!
+  userOpHash: String!
+  entryPoint: String!
+}

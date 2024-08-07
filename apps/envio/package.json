@@ -1,0 +1,42 @@
+{
+  "name": "@lightdotso/envio",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "LightDotSo",
+  "scripts": {
+    "build": "tsc --build || true",
+    "clean": "tsc --clean",
+    "codegen": "envio codegen",
+    "dev": "envio dev",
+    "mocha": "ts-mocha test/**/*.ts",
+    "start": "ts-node generated/src/Index.bs.js",
+    "test": "pnpm mocha",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "chai": "^5.1.1",
+    "envio": "^1.3.1",
+    "ethers": "^6.13.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.0.0",
+    "mocha": "^10.7.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -130,6 +130,49 @@ lazy_static! {
     };
 }
 
+// The tenderly rpc urls
+// Thank you to the tenderly team for providing the service!
+// From: https://docs.tenderly.co/supported-networks
+lazy_static! {
+    pub static ref TENDERLY_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://mainnet.gateway.tenderly.co".to_string());
+        m.insert(10, "https://optimism.gateway.tenderly.co".to_string());
+        m.insert(137, "https://polygon.gateway.tenderly.co".to_string());
+        m.insert(252, "https://fraxtal.gateway.tenderly.co".to_string());
+        m.insert(288, "https://boba-ethereum.gateway.tenderly.co".to_string());
+        m.insert(1135, "https://lisk.gateway.tenderly.co".to_string());
+        m.insert(4653, "https://gold.gateway.tenderly.co".to_string());
+        m.insert(8453, "https://base.gateway.tenderly.co".to_string());
+        m.insert(13371, "https://immutable.gateway.tenderly.co".to_string());
+        m.insert(34443, "https://mode.gateway.tenderly.co".to_string());
+        m.insert(42161, "https://arbitrum.gateway.tenderly.co".to_string());
+        m.insert(42170, "https://arbitrum-nova.gateway.tenderly.co".to_string());
+        m.insert(56288, "https://boba-bnb.gateway.tenderly.co".to_string());
+        m.insert(60808, "https://bob.gateway.tenderly.co".to_string());
+        m.insert(81457, "https://blast.gateway.tenderly.co".to_string());
+        m.insert(111188, "https://tangible-real.gateway.tenderly.co".to_string());
+
+        // Testnet
+        m.insert(919, "https://mode-sepolia.gateway.tenderly.co".to_string());
+        m.insert(2522, "https://fraxtal-sepolia.gateway.tenderly.co".to_string());
+        m.insert(4202, "https://lisk-sepolia.gateway.tenderly.co".to_string());
+        m.insert(9728, "https://boba-bnb-testnet.gateway.tenderly.co".to_string());
+        m.insert(18233, "https://tangible-unreal.gateway.tenderly.co".to_string());
+        m.insert(18291, "https://concrete-testnet.gateway.tenderly.co".to_string());
+        m.insert(28882, "https://boba-sepolia.gateway.tenderly.co".to_string());
+        m.insert(80002, "https://polygon-amoy.gateway.tenderly.co".to_string());
+        m.insert(84532, "https://base-sepolia.gateway.tenderly.co".to_string());
+        m.insert(421614, "https://arbitrum-sepolia.gateway.tenderly.co".to_string());
+        m.insert(11155111, "https://sepolia.gateway.tenderly.co".to_string());
+        m.insert(11155420, "https://optimism-sepolia.gateway.tenderly.co".to_string());
+
+
+        m
+    };
+}
 // The chainnodes rpc urls
 // Thank you to the Chainnodes team for providing the service!
 lazy_static! {
@@ -333,6 +376,7 @@ lazy_static! {
         // Mainnet
         m.insert(1, "https://api.pimlico.io/v2/ethereum/rpc".to_string());
         m.insert(10, "https://api.pimlico.io/v2/optimism/rpc".to_string());
+        m.insert(30, "https://api.pimlico.io/v2/rootstock/rpc".to_string());
         m.insert(56, "https://api.pimlico.io/v2/binance/rpc".to_string());
         m.insert(100, "https://api.pimlico.io/v2/gnosis/rpc".to_string());
         m.insert(122, "https://api.pimlico.io/v2/fuse/rpc".to_string());
@@ -341,14 +385,17 @@ lazy_static! {
         m.insert(252, "https://api.pimlico.io/v2/fraxtal/rpc".to_string());
         m.insert(690, "https://api.pimlico.io/v2/redstone/rpc".to_string());
         m.insert(957, "https://api.pimlico.io/v2/lyra/rpc".to_string());
+        m.insert(1088, "https://api.pimlico.io/v2/metis/rpc".to_string());
         m.insert(5000, "https://api.pimlico.io/v2/mantle/rpc".to_string());
         m.insert(7560, "https://api.pimlico.io/v2/cyber-mainnet/rpc".to_string());
         m.insert(7887, "https://api.pimlico.io/v2/kinto/rpc".to_string());
         m.insert(7979, "https://api.pimlico.io/v2/dos-mainnet/rpc".to_string());
         m.insert(8217, "https://api.pimlico.io/v2/klaytn-cypress/rpc".to_string());
+        m.insert(8333, "https://api.pimlico.io/v2/b3/rpc".to_string());
         m.insert(8453, "https://api.pimlico.io/v2/base/rpc".to_string());
         m.insert(22222, "https://api.pimlico.io/v2/nautilus/rpc".to_string());
         m.insert(34443, "https://api.pimlico.io/v2/mode/rpc".to_string());
+        m.insert(41455, "https://api.pimlico.io/v2/alephzero/rpc".to_string());
         m.insert(42161, "https://api.pimlico.io/v2/arbitrum/rpc".to_string());
         m.insert(42170, "https://api.pimlico.io/v2/arbitrum-nova/rpc".to_string());
         m.insert(42220, "https://api.pimlico.io/v2/celo/rpc".to_string());
@@ -373,6 +420,7 @@ lazy_static! {
         m.insert(1001, "https://api.pimlico.io/v2/klaytn-baobab/rpc".to_string());
         m.insert(1513, "https://api.pimlico.io/v2/story-testnet/rpc".to_string());
         m.insert(1993, "https://api.pimlico.io/v2/b3-sepolia/rpc".to_string());
+        m.insert(2039, "https://api.pimlico.io/v2/alephzero-testnet/rpc".to_string());
         m.insert(3939, "https://api.pimlico.io/v2/dos-testnet/rpc".to_string());
         m.insert(4202, "https://api.pimlico.io/v2/lisk-sepolia/rpc".to_string());
         m.insert(10200, "https://api.pimlico.io/v2/chiado-testnet/rpc".to_string());
@@ -380,6 +428,7 @@ lazy_static! {
         m.insert(43113, "https://api.pimlico.io/v2/avalanche-fuji/rpc".to_string());
         m.insert(44787, "https://api.pimlico.io/v2/celo-alfajores-testnet/rpc".to_string());
         m.insert(59141, "https://api.pimlico.io/v2/linea-sepolia/rpc".to_string());
+        m.insert(59902, "https://api.pimlico.io/v2/metis-sepolia/rpc".to_string());
         m.insert(78600, "https://api.pimlico.io/v2/vanguard-testnet/rpc".to_string());
         m.insert(80002, "https://api.pimlico.io/v2/polygon-amoy/rpc".to_string());
         m.insert(84532, "https://api.pimlico.io/v2/base-sepolia/rpc".to_string());
@@ -559,6 +608,7 @@ lazy_static! {
         m.insert(421614, "https://rpc.silius.xyz/api/v1/chain/arbitrum-sepolia".to_string());
         m.insert(11155111, "https://rpc.silius.xyz/api/v1/chain/ethereum-sepolia".to_string());
         m.insert(11155420, "https://rpc.silius.xyz/api/v1/chain/optimism-sepolia".to_string());
+        m.insert(168587773, "https://rpc.silius.xyz/api/v1/chain/blast-sepolia".to_string());
 
         m
     };

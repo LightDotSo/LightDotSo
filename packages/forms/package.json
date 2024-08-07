@@ -40,16 +40,16 @@
     "@types/lodash": "^4.17.7",
     "abitype": "^1.0.5",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.416.0",
+    "lucide-react": "^0.417.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.1",
-    "viem": "^2.18.2",
+    "viem": "^2.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.6",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

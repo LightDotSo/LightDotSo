@@ -1,0 +1,15 @@
+name: Entrypoint
+unordered_multichain_mode: true
+contracts:
+  - name: Entrypoint
+    handler: ./src/EventHandlers.ts
+    events:
+      - event: UserOperationEvent(bytes32 indexed userOpHash, address indexed sender, address indexed paymaster, uint256 nonce, bool success, uint256 actualGasCost, uint256 actualGasUsed)
+      - event: AccountDeployed(bytes32 indexed userOpHash, address indexed sender, address factory, address paymaster)
+networks:
+  - id: 1 # Mainnet
+    start_block: 0
+    contracts:
+      - name: Entrypoint
+        address:
+          - "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789"

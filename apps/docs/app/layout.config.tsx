@@ -1,7 +1,7 @@
 import { pageTree } from "@/source";
-import type { BaseLayoutProps, DocsLayoutProps } from "fumadocs-ui/layout";
+import type { DocsLayoutProps } from "fumadocs-ui/layout";
 
-export const baseOptions: BaseLayoutProps = {
+export const docsOptions: DocsLayoutProps = {
   nav: {
     title: "Light Documentation",
   },
@@ -12,10 +12,6 @@ export const baseOptions: BaseLayoutProps = {
       active: "nested-url",
     },
   ],
-};
-
-export const docsOptions: DocsLayoutProps = {
-  ...baseOptions,
 
   tree: pageTree,
 };

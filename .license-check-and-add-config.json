@@ -6,6 +6,7 @@
     "**/SETUP.md",
     "**/.DS_STORE",
     "**/bun.lockb",
+    "**/config.yaml",
     "**/exclude.txt",
     "**/generated.ts",
     "**/plonk_vk.sol",

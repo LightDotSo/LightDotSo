@@ -463,6 +463,7 @@ endo
 enumset
 envify
 envinfo
+envio
 ENVIROMENT
 errno
 errorhandler
