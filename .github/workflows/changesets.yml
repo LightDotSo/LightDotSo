@@ -50,6 +50,7 @@ jobs:
           pnpm turbo run build
       - name: Changesets Release
         uses: changesets/action@v1
+        continue-on-error: true
         with:
           commit: "chore: changesets version [skip deploy]"
           title: "chore: changesets version"

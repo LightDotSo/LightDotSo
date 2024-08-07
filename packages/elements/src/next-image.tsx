@@ -52,7 +52,7 @@ export const NextImage: FC<ImageProps> = (props) => {
     if (path.startsWith("https://")) {
       searchParams.set("url", path);
 
-      return `https://lightimage.net/?${searchParams.toString()}`;
+      return `https://${INTERNAL_LINKS.Images}/?${searchParams.toString()}`;
     }
 
     return `${path}?${searchParams.toString()}`;
