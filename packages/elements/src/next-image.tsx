@@ -37,17 +37,14 @@ export const NextImage: FC<ImageProps> = (props) => {
   // Utils
   // ---------------------------------------------------------------------------
 
-  const config = {
-    width: 48,
-    quality: 20,
-    blur: 10,
-  };
-
   const blurDataUrl = (path: string) => {
     const searchParams = new URLSearchParams();
-    searchParams.set("width", config.width.toString());
-    searchParams.set("quality", config.quality.toString());
-    searchParams.set("blur", config.blur.toString());
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("width", `48`);
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("quality", `20`);
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("blur", `10`);
 
     if (path.startsWith("https://")) {
       searchParams.set("url", path);
