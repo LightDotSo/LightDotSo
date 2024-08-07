@@ -38,13 +38,18 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul>
+    <ul className="space-y-6">
       {changelogs.map((changelog) => (
         <li key={changelog.slug} className="group">
           <a href={`/changelog/${changelog.slug}`}>
             <NextImage
+              placeholder="blur"
+              className="rounded-sm group-hover:opacity-80"
               src={changelog.entry.ogp.src}
               alt={changelog.entry.title}
+              width={1200}
+              height={630}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
             <div className="flex justify-between mt-4">
               <div className="font-bold text-xl text-text tracking-tight sm:text-3xl group-hover:underline">
