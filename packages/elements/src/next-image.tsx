@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { INTERNAL_LINKS } from "@lightdotso/const";
-import type { ImageLoader, ImageProps } from "next/image";
-import Image from "next/image";
+// import { INTERNAL_LINKS } from "@lightdotso/const";
+import type { ImageProps } from "next/image";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -27,42 +26,41 @@ export const NextImage: FC<ImageProps> = (props) => {
   // ---------------------------------------------------------------------------
 
   // From: https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/
-  const normalizeSrc = (src: string) => {
-    return src.startsWith("/") ? src.slice(1) : src;
-  };
+  // const normalizeSrc = (src: string) => {
+  //   return src.startsWith("/") ? src.slice(1) : src;
+  // };
 
   // ---------------------------------------------------------------------------
   // Loader
   // ---------------------------------------------------------------------------
 
-  const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
-    const params = [`width=${width}`];
-    if (quality) {
-      params.push(`quality=${quality}`);
-    }
-    const paramsString = params.join(",");
-    return `https://light.so/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
-  };
+  // const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
+  //   const params = [`width=${width}`];
+  //   if (quality) {
+  //     params.push(`quality=${quality}`);
+  //   }
+  //   const paramsString = params.join(",");
+  //   return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
+  // };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // biome-ignore lint/style/useBlockStatements: <explanation>
-  if (
-    typeof props.src === "string" &&
-    (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
-  )
-    return (
-      <Image
-        {...props}
-        src={cloudflareLoader({
-          src: props.src as string,
-          width: typeof props.width === "number" ? props.width : 100,
-        })}
-      />
-    );
+  // if (
+  //   typeof props.src === "string" &&
+  //   (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
+  //   process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+  // )
+  //   return (
+  //     <Image
+  //       {...props}
+  //       src={cloudflareLoader({
+  //         src: props.src as string,
+  //         width: typeof props.width === "number" ? props.width : 100,
+  //       })}
+  //     />
+  //   );
 
   // biome-ignore lint/a11y/useAltText: <explanation>
   return <img {...props} src={props.src as string} />;

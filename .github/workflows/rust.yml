@@ -92,11 +92,6 @@ jobs:
         continue-on-error: true
         with:
           submodules: recursive
-      - name: Sync Git Submodules
-        continue-on-error: true
-        run: |
-          git submodule sync --force --recursive
-          git submodule update --force --init --recursive
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
