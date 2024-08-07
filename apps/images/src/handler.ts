@@ -16,6 +16,7 @@
 // Also: https://github.com/napolab/cloudflare-next-image-demo
 
 import { zValidator } from "@hono/zod-validator";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { createMiddleware } from "hono/factory";
 import { createFactory } from "hono/factory";
 import { z } from "zod";
@@ -72,6 +73,11 @@ export const transformImageHandler = factory.createHandlers(
   async (c) => {
     const query = c.req.valid("query");
     const accept = c.req.header("accept") ?? "";
+
+    // Return error if url is not assets
+    if (!query.url.startsWith(INTERNAL_LINKS.Assets)) {
+      return c.body("URL is not allowed", { status: 403 });
+    }
     const url = new URL(query.url, c.req.url);
 
     const res = await fetch(url, {

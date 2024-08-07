@@ -40,11 +40,11 @@ export const NextImage: FC<ImageProps> = (props) => {
   const blurDataUrl = (path: string) => {
     const searchParams = new URLSearchParams();
     // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-    searchParams.set("width", `48`);
+    searchParams.set("width", `64`);
     // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-    searchParams.set("quality", `20`);
+    searchParams.set("quality", `30`);
     // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-    searchParams.set("blur", `10`);
+    searchParams.set("blur", `12`);
 
     if (path.startsWith("https://")) {
       searchParams.set("url", path);
