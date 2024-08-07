@@ -90,8 +90,8 @@ export const NextImage: FC<ImageProps> = (props) => {
   if (
     typeof props.src === "string" &&
     (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
-    (process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
-      process.env.NODE_ENV === "development")
+    (process.env.NODE_ENV === "development" ||
+      process.env.NEXT_PUBLIC_VERCEL_ENV === "production")
   ) {
     // ---------------------------------------------------------------------------
     // Render
