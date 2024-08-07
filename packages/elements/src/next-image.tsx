@@ -41,7 +41,7 @@ export const NextImage: FC<ImageProps> = (props) => {
       params.push(`quality=${quality}`);
     }
     const paramsString = params.join(",");
-    return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
+    return `https://light.so/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
   };
 
   // ---------------------------------------------------------------------------
