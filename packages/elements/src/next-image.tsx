@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import type { ImageLoader, ImageProps } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
@@ -44,8 +45,9 @@ export const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
 
 export const NextImage: FC<ImageProps> = (props) => {
   if (
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+    (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
+    (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+      process.env.NEXT_PUBLIC_VERCEL_ENV === "production")
   ) {
     return <Image {...props} loader={cloudflareLoader} />;
   }
