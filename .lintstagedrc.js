@@ -1,8 +1,6 @@
 module.exports = {
   "*": ["pnpm run license:cmd add"],
-  "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-    "pnpm biome check --write --unsafe --no-errors-on-unmatched",
-  ],
+  "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": ["pnpm biome:cmd"],
   "*.{md,mdx}": ["pnpm dprint fmt"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
@@ -18,6 +16,7 @@ module.exports = {
   "package.json": [
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
+    "pnpm run biome:cmd",
   ],
   "thunder-tests/**/*.json": ["./scripts/check_thunder_url.sh"],
 };

@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "scripts": {
-    "biome:cmd": "biome check --unsafe --no-errors-on-unmatched",
+    "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",
     "biome:lint": "biome check --unsafe --no-errors-on-unmatched",
     "cargo:fmt:cmd": "make cargo-fmt",
