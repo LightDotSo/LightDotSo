@@ -14,4 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-rclone copy -P --exclude-from exclude.txt ./ r2:assets/
+GIT_DIR=$(git rev-parse --show-toplevel)
+
+# Use the current git directory in the path
+pnpm ardrive upload-file --local-path "$GIT_DIR/assets/changelog" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
+pnpm ardrive upload-file --local-path "$GIT_DIR/assets/paper" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
+pnpm ardrive upload-file --local-path "$GIT_DIR/assets/proposals" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
