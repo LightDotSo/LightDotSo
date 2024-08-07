@@ -41,10 +41,10 @@
     "@storybook/react": "^8.2.8",
     "@tanstack/react-virtual": "^3.8.4",
     "lucide-react": "^0.424.0",
-    "react": "19.0.0-rc-06d0b89e-20240801",
-    "react-dom": "19.0.0-rc-06d0b89e-20240801",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.2",
-    "react-is": "19.0.0-rc-06d0b89e-20240801",
+    "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
     "viem": "^2.19.1",
     "zod": "^3.23.8"
   },
