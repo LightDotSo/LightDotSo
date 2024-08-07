@@ -31,10 +31,10 @@
     "@tanstack/react-table": "^8.20.1",
     "@types/lodash": "^4.17.7",
     "lodash": "^4.17.21",
-    "react": "19.0.0-rc-cc1ec60d0d-20240607",
-    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react": "19.0.0-rc-06d0b89e-20240801",
+    "react-dom": "19.0.0-rc-06d0b89e-20240801",
     "react-hook-form": "^7.52.2",
-    "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-is": "19.0.0-rc-06d0b89e-20240801",
     "viem": "^2.19.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"

@@ -26,18 +26,18 @@
     "@content-collections/next": "^0.2.0",
     "@fumadocs/content-collections": "^1.1.0",
     "@lightdotso/templates": "workspace:*",
-    "@next/bundle-analyzer": "15.0.0-canary.87",
+    "@next/bundle-analyzer": "15.0.0-canary.105",
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.24.0",
     "fumadocs-core": "^13.0.7",
     "fumadocs-openapi": "^3.3.0",
     "fumadocs-ui": "^13.0.7",
-    "next": "15.0.0-canary.87",
+    "next": "15.0.0-canary.105",
     "next-themes": "^0.3.0",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",
-    "react": "19.0.0-rc-cc1ec60d0d-20240607",
-    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607"
+    "react": "19.0.0-rc-06d0b89e-20240801",
+    "react-dom": "19.0.0-rc-06d0b89e-20240801"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
