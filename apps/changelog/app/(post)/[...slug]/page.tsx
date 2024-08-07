@@ -105,7 +105,10 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection size="xs" title={changelog.title}>
+    <BannerSection
+      size="xs"
+      title={`Changelog #${changelog.issue} - ${changelog.title}`}
+    >
       <HStackFull>
         <BaseLayerWrapper size="xs">
           <BasicPageWrapper>
