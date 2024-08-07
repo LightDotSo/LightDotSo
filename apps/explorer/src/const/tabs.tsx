@@ -33,6 +33,7 @@ export const EXPLORER_TABS: Tab[] = [
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
+    isTextTogether: true,
   },
   {
     label: "Transactions",
@@ -42,6 +43,7 @@ export const EXPLORER_TABS: Tab[] = [
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
+    isTextTogether: true,
   },
   {
     label: "App",
@@ -51,5 +53,6 @@ export const EXPLORER_TABS: Tab[] = [
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ArrowUpRightFromSquare {...props} />,
+    isTextTogether: true,
   },
 ];
