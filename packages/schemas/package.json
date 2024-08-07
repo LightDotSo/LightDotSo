@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -23,13 +26,13 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "abitype": "^1.0.5",
-    "viem": "^2.18.5",
+    "abitype": "^1.0.6",
+    "viem": "^2.19.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.1.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {
