@@ -54,7 +54,15 @@ export const NextImage: FC<ImageProps> = (props) => {
     (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
   )
-    return <Image {...props} loader={cloudflareLoader} />;
+    return (
+      <Image
+        {...props}
+        src={cloudflareLoader({
+          src: props.src as string,
+          width: typeof props.width === "number" ? props.width : 100,
+        })}
+      />
+    );
 
   // biome-ignore lint/a11y/useAltText: <explanation>
   return <img {...props} src={props.src as string} />;
