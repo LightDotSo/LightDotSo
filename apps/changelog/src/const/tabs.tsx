@@ -14,10 +14,11 @@
 
 "use client";
 
+import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
 import type { Tab } from "@lightdotso/types";
-import { DashboardIcon } from "@radix-ui/react-icons";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ArrowUpRightFromSquare } from "lucide-react";
+import { FileTextIcon, HomeIcon } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
@@ -32,15 +33,24 @@ export const CHANGELOG_TABS: Tab[] = [
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <DashboardIcon {...props} />,
+    ) => <FileTextIcon {...props} />,
   },
   {
     label: "App",
     id: "app",
-    href: "https://light.so",
+    href: INTERNAL_LINKS.Home,
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <ArrowUpRightFromSquare {...props} />,
+    ) => <HomeIcon {...props} />,
+  },
+  {
+    label: "X",
+    id: "x",
+    href: SOCIAL_LINKS.Twitter,
+    icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <TwitterLogoIcon {...props} />,
   },
 ];

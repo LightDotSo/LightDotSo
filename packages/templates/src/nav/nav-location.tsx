@@ -14,6 +14,7 @@
 
 "use client";
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui";
@@ -55,24 +56,8 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
 
   return (
     <div className="ml-auto hidden items-center space-x-1 md:flex">
+      {/* biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation> */}
       {tabs.map((tab) => {
-        if (tab.id === "app") {
-          return (
-            <Button
-              key="app"
-              asChild
-              variant="link"
-              size="sm"
-              className="font-medium text-sm"
-            >
-              <a href={tab.href} target="_blank" rel="noreferrer">
-                {<tab.icon className="mr-2 size-4" />}
-                {tab.label}
-              </a>
-            </Button>
-          );
-        }
-
         return (
           <Button
             key={tab.id}
@@ -81,7 +66,30 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
             size="sm"
             className="font-medium text-sm"
           >
-            <Link href={tab.href}>{tab.label}</Link>
+            {tab.href.startsWith("/") || tab.href === INTERNAL_LINKS.Home ? (
+              <Link href={tab.href}>
+                {tab.icon ? (
+                  <tab.icon className="size-4 sm:size-5" />
+                ) : (
+                  tab.label
+                )}
+              </Link>
+            ) : (
+              <a href={tab.href} target="_blank" rel="noreferrer">
+                {tab.isTextTogether ? (
+                  <>
+                    {tab.label}
+                    {tab.icon ? (
+                      <tab.icon className="ml-1 size-4 sm:size-5" />
+                    ) : null}
+                  </>
+                ) : tab.icon ? (
+                  <tab.icon className="size-4 sm:size-5" />
+                ) : (
+                  tab.label
+                )}
+              </a>
+            )}
           </Button>
         );
       })}

@@ -16,6 +16,7 @@
 export enum Social {
   CAL = "Cal",
   DISCORD = "Discord",
+  FARCASTER = "Farcaster",
   GITHUB = "Github",
   MIRROR = "Mirror",
   NOTION = "Notion",
@@ -29,6 +30,7 @@ export const SOCIAL_LINKS: {
 } = {
   [Social.CAL]: "https://cal.com/lightdotso/support",
   [Social.DISCORD]: "https://discord.gg/LightDotSo",
+  [Social.FARCASTER]: "https://warpcast.com/~/channel/LightDotSo",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",
