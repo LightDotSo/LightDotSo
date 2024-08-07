@@ -16,11 +16,18 @@ import type { ImageLoader, ImageProps } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 
-// From: https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
+// From: https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/
 const normalizeSrc = (src: string) => {
   return src.startsWith("/") ? src.slice(1) : src;
 };
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
 
 export const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
   const params = [`width=${width}`];
@@ -31,10 +38,14 @@ export const cloudflareLoader: ImageLoader = ({ src, width, quality }) => {
   return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
 };
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const NextImage: FC<ImageProps> = (props) => {
   if (
-    process.env.VERCEL_ENV === "preview" ||
-    process.env.VERCEL_ENV === "production"
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
   ) {
     return <Image {...props} loader={cloudflareLoader} />;
   }
