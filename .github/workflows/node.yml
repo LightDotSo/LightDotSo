@@ -69,11 +69,6 @@ jobs:
         continue-on-error: true
         with:
           submodules: recursive
-      - name: Sync Git Submodules
-        continue-on-error: true
-        run: |
-          git submodule sync --force --recursive
-          git submodule update --force --init --recursive
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install Foundry
