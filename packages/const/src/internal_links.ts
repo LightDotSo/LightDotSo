@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export enum Internal {
+  ASSETS = "Assets",
   BLOG = "Blog",
   CHANGELOG = "Changelog",
   DOCS = "Docs",
@@ -30,6 +31,7 @@ export enum Internal {
 export const INTERNAL_LINKS: {
   readonly [key in Internal]: string;
 } = {
+  [Internal.ASSETS]: "https://assets.light.so",
   [Internal.BLOG]: "https://light.so/blog",
   [Internal.CHANGELOG]: "https://light.so/changelog",
   [Internal.DOCS]: "https://docs.light.so",
