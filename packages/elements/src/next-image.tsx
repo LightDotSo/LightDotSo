@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use server";
+
 import { INTERNAL_LINKS } from "@lightdotso/const";
 import type { ImageLoader, ImageProps } from "next/image";
 import Image from "next/image";
