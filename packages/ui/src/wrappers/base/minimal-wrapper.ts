@@ -12,5 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { baseWidthWrapper, baseHeightWrapper } from "./base-wrapper";
-export { minimalWidthWrapper, minimalHeightWrapper } from "./minimal-wrapper";
+import { cn } from "@lightdotso/utils";
+
+export const minimalWidthWrapper = cn("px-4 md:px-6 lg:px-8");
+export const minimalHeightWrapper = cn("my-4 md:my-6 lg:my-8");

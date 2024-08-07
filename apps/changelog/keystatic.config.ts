@@ -15,8 +15,18 @@ export default config({
       path: "content/**",
       format: { contentField: "content" },
       schema: {
-        title: fields.slug({ name: { label: "Title" } }),
-        ogp: fields.cloudImage({ label: "OGP" }),
+        issue: fields.integer({
+          label: "Issue",
+          validation: { isRequired: true },
+        }),
+        date: fields.date({ label: "Date", validation: { isRequired: true } }),
+        title: fields.slug({
+          name: { label: "Title", validation: { isRequired: true } },
+        }),
+        ogp: fields.cloudImage({
+          label: "OGP",
+          validation: { isRequired: true },
+        }),
         content: fields.markdoc({ label: "Content", extension: "md" }),
       },
     }),

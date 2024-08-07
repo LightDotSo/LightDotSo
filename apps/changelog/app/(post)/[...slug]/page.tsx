@@ -19,6 +19,7 @@ import {
   BaseLayerWrapper,
   BasicPageWrapper,
   HStackFull,
+  minimalHeightWrapper,
 } from "@lightdotso/ui";
 import Markdoc from "@markdoc/markdoc";
 import type { Metadata } from "next";
@@ -105,10 +106,13 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection size="sm" title={changelog.title}>
+    <BannerSection
+      size="xs"
+      title={`Changelog #${changelog.issue} - ${changelog.title}`}
+    >
       <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>
+        <BaseLayerWrapper size="xs">
+          <BasicPageWrapper className={minimalHeightWrapper}>
             <div className="keystatic">
               {Markdoc.renderers.react(renderable, React)}
             </div>

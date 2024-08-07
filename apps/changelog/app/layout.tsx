@@ -32,7 +32,6 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <Root>
-      {/* Layout */}
       <Nav tabs={CHANGELOG_TABS}>{children}</Nav>
       <Footer />
     </Root>

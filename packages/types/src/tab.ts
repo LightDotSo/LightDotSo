@@ -24,4 +24,5 @@ export type Tab = {
   href: string;
   number?: number;
   icon: (_props: { className?: string }) => ReactNode;
+  isTextTogether?: boolean;
 };

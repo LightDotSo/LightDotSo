@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
+import { NextImage } from "@lightdotso/elements";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -37,10 +38,23 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul className="text-lg hover:underline">
+    <ul>
       {changelogs.map((changelog) => (
-        <li key={changelog.slug}>
-          <a href={`/changelog/${changelog.slug}`}>{changelog.entry.title}</a>
+        <li key={changelog.slug} className="group">
+          <a href={`/changelog/${changelog.slug}`}>
+            <NextImage
+              src={changelog.entry.ogp.src}
+              alt={changelog.entry.title}
+            />
+            <div className="flex justify-between mt-4">
+              <div className="font-bold text-xl text-text tracking-tight sm:text-3xl group-hover:underline">
+                {changelog.entry.title}
+              </div>
+              <div className="text-lg group-hover:underline">
+                {new Date(changelog.entry.date).toLocaleDateString()}
+              </div>
+            </div>
+          </a>
         </li>
       ))}
     </ul>

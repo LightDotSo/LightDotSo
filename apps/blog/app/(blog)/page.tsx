@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
+import { NextImage } from "@lightdotso/elements";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -40,7 +41,9 @@ export default async function Page() {
     <ul className="text-lg hover:underline">
       {blogs.map((blog) => (
         <li key={blog.slug}>
-          <a href={`/blog/${blog.slug}`}>{blog.entry.title}</a>
+          <a href={`/blog/${blog.slug}`}>
+            <NextImage src={blog.entry.ogp.src} alt={blog.entry.title} />
+          </a>
         </li>
       ))}
     </ul>

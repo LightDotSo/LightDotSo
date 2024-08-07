@@ -35,17 +35,17 @@
     "studio:dev": "dotenv -e .env.development prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^5.17.0",
+    "@prisma/client": "^5.18.0",
     "kysely-postgres-js": "^2.0.0",
     "postgres": "^3.4.4",
-    "prisma": "^5.17.0",
+    "prisma": "^5.18.0",
     "prisma-kysely": "^1.8.0",
     "zod": "^3.23.8",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.1.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

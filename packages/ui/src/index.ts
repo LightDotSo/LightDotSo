@@ -266,7 +266,12 @@ export { Web3Provider } from "./providers/web3-provider";
 export { BannerSection } from "./sections/banner-section";
 export { StateInfoSection } from "./sections/state-info-section";
 export { HStackFull } from "./stacks/h-stack-full";
-export { baseWidthWrapper } from "./wrappers/base";
+export {
+  baseWidthWrapper,
+  baseHeightWrapper,
+  minimalHeightWrapper,
+  minimalWidthWrapper,
+} from "./wrappers/base";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,

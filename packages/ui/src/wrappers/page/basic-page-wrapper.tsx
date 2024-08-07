@@ -22,19 +22,25 @@ import { baseHeightWrapper } from "../base";
 
 interface BasicPageWrapperProps {
   children: ReactNode;
+  className?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export function BasicPageWrapper({ children }: BasicPageWrapperProps) {
+export function BasicPageWrapper({
+  className,
+  children,
+}: BasicPageWrapperProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className={cn("flex flex-col space-y-8", baseHeightWrapper)}>
+    <div
+      className={cn("flex flex-col space-y-8", baseHeightWrapper, className)}
+    >
       {children}
     </div>
   );
