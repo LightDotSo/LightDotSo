@@ -465,6 +465,7 @@ envify
 envinfo
 envio
 ENVIROMENT
+envsafe
 errno
 errorhandler
 ERRORLEVEL
@@ -560,6 +561,7 @@ ggjl
 giget
 gitmodules
 gjvg
+glennsl
 glimmerx
 glkx
 globalthis
@@ -1309,6 +1311,7 @@ rustfmt
 rustls
 RUSTSEC
 rustup
+ryyppy
 RZRU
 sabilier
 Sablier

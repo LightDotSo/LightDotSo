@@ -11,6 +11,7 @@
     "**/generated.ts",
     "**/plonk_vk.sol",
     "**/Package.swift",
+    "**/pnpm-workspace.yaml",
     "**/prisma/src/lib.rs",
     "**/schema-rs.prisma",
     "**/schema.prisma",
