@@ -20,7 +20,15 @@ import { createMiddleware } from "hono/factory";
 import { createFactory } from "hono/factory";
 import { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Factory
+// -----------------------------------------------------------------------------
+
 export const factory = createFactory();
+
+// -----------------------------------------------------------------------------
+// Middleware
+// -----------------------------------------------------------------------------
 
 export const preventResizeLoop = createMiddleware((c, next) => {
   const via = c.req.header("via") ?? "";
@@ -30,6 +38,10 @@ export const preventResizeLoop = createMiddleware((c, next) => {
 
   return next();
 });
+
+// -----------------------------------------------------------------------------
+// Zod
+// -----------------------------------------------------------------------------
 
 const Format = z.union([
   z.literal("avif"),
@@ -49,6 +61,10 @@ export const TransformOptions = z.object({
   q: z.coerce.number().min(0).max(100).optional(),
   url: z.string(),
 });
+
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
 
 export const transformImageHandler = factory.createHandlers(
   preventResizeLoop,

@@ -80,7 +80,7 @@ export const NextImage: FC<ImageProps> = (props) => {
             ...props.style,
             backgroundImage: `url(${blurDataUrl(props.src)})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: props.style?.objectPosition ?? "50% 50%",
             backgroundRepeat: "no-repeat",
           }
         : {},
