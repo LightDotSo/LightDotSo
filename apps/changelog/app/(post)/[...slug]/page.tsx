@@ -105,9 +105,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection size="sm" title={changelog.title}>
+    <BannerSection size="xs" title={changelog.title}>
       <HStackFull>
-        <BaseLayerWrapper size="sm">
+        <BaseLayerWrapper size="xs">
           <BasicPageWrapper>
             <div className="keystatic">
               {Markdoc.renderers.react(renderable, React)}

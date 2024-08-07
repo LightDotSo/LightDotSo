@@ -52,9 +52,10 @@ export default function ProposalsLayout({ children }: ProposalsLayoutProps) {
     <BannerSection
       title={TITLES.Changelog.title}
       description={TITLES.Changelog.description}
+      size="xs"
     >
       <HStackFull>
-        <BaseLayerWrapper>
+        <BaseLayerWrapper size="xs">
           <BasicPageWrapper>{children}</BasicPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>
