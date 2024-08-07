@@ -50,13 +50,13 @@ export const NextImage: FC<ImageProps> = (props) => {
   // Render
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/style/useBlockStatements: <explanation>
   if (
+    typeof props.src === "string" &&
     (props.src as string).startsWith(INTERNAL_LINKS.Assets) &&
-    (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
-      process.env.NEXT_PUBLIC_VERCEL_ENV === "production")
-  ) {
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+  )
     return <Image {...props} loader={cloudflareLoader} />;
-  }
 
   // biome-ignore lint/a11y/useAltText: <explanation>
   return <img {...props} src={props.src as string} />;
