@@ -51,7 +51,7 @@ export default async function Page() {
                 {changelog.entry.title}
               </div>
               <div className="text-lg group-hover:underline">
-                {changelog.entry.date}
+                {new Date(changelog.entry.date).toLocaleDateString()}
               </div>
             </div>
           </a>
