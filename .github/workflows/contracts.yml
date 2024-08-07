@@ -59,8 +59,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -86,8 +86,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -115,8 +115,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -182,8 +182,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -228,8 +228,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -261,8 +261,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -293,8 +293,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -337,8 +337,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
@@ -375,8 +375,8 @@ jobs:
       - name: Sync Git Submodules
         continue-on-error: true
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
+          git submodule sync --force --recursive
+          git submodule update --force --init --recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
