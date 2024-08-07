@@ -52,7 +52,7 @@ export const NextImage: FC<ImageProps> = (props) => {
     if (path.startsWith("https://")) {
       searchParams.set("url", path);
 
-      return `https://${INTERNAL_LINKS.Images}/?${searchParams.toString()}`;
+      return `https://${INTERNAL_LINKS.Images}/_next/image?${searchParams.toString()}`;
     }
 
     return `${path}?${searchParams.toString()}`;

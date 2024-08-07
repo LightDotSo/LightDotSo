@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// From: https://zenn.dev/naporin24690/scraps/1bc717da44e1d6
+// Also: https://github.com/napolab/cloudflare-next-image-demo
+
 import { zValidator } from "@hono/zod-validator";
 import { createMiddleware } from "hono/factory";
 import { createFactory } from "hono/factory";
