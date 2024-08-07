@@ -52,13 +52,11 @@ export default async function Page() {
               height={630}
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
-            <div className="mt-4 flex justify-between">
-              <div className="font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
-                {blog.entry.title}
-              </div>
-              <div className="text-lg group-hover:underline">
-                {refineDateFormat(new Date(blog.entry.date))}
-              </div>
+            <div className="mt-2 font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
+              {blog.entry.title}
+            </div>
+            <div className="group-hover:underline">
+              {refineDateFormat(new Date(blog.entry.date))}
             </div>
           </a>
         </li>

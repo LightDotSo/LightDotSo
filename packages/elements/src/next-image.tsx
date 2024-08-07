@@ -123,7 +123,9 @@ export const NextImage: FC<ImageProps> = (props) => {
         onLoad={handleLoad}
         alt={props.alt}
         style={isPlaceholderBlur && loading ? style : props.style}
-        loader={cloudflareLoader}
+        loader={
+          process.env.NEXT_PUBLIC_VERCEL_ENV ? cloudflareLoader : undefined
+        }
       />
     );
   }

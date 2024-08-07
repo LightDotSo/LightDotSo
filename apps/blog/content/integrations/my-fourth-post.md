@@ -5,4 +5,4 @@ ogp:
   src: https://assets.light.so/github.png
 ---
 
-This is my very first chain. I am **super** excited.
+WIP
