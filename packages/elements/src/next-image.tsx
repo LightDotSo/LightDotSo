@@ -37,22 +37,19 @@ export const NextImage: FC<ImageProps> = (props) => {
   // Utils
   // ---------------------------------------------------------------------------
 
-  const config = {
-    width: 48,
-    quality: 20,
-    blur: 10,
-  };
-
   const blurDataUrl = (path: string) => {
     const searchParams = new URLSearchParams();
-    searchParams.set("width", config.width.toString());
-    searchParams.set("quality", config.quality.toString());
-    searchParams.set("blur", config.blur.toString());
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("width", `64`);
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("quality", `30`);
+    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+    searchParams.set("blur", `12`);
 
     if (path.startsWith("https://")) {
       searchParams.set("url", path);
 
-      return `https://lightimage.net/?${searchParams.toString()}`;
+      return `${INTERNAL_LINKS.Images}/_next/image?${searchParams.toString()}`;
     }
 
     return `${path}?${searchParams.toString()}`;
@@ -80,7 +77,7 @@ export const NextImage: FC<ImageProps> = (props) => {
             ...props.style,
             backgroundImage: `url(${blurDataUrl(props.src)})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: props.style?.objectPosition ?? "50% 50%",
             backgroundRepeat: "no-repeat",
           }
         : {},
