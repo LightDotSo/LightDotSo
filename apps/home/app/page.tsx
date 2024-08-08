@@ -60,18 +60,30 @@ export default async function Page() {
         </div>
       </div>
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
-        <div className="m-auto max-w-3xl font-bold text-2xl">
-          Light enables using Ethereum, and EVM chains as seamless as possible.
-          Designed from the ground up for the rollup/multi-chain world that we
-          live in, Light enables you to use Ethereum like it is one. Say goodbye
-          to mundane bridging, gas deposits and refueling gas, or having
-          multiple smart contract wallets for each chain. With Light, users are
-          able to use a single smart account across chains allowing for maximum
-          composability and usability. Light aims to help realize the vision of
-          Ethereum making abstracting away the complexities of fragmentation
-          while aligning w/ the core ethos as an 100% open source project.
+        <div className="m-auto max-w-3xl border-t">
+          <div className="mt-8 text-thin">Introduction</div>
+          <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+            Use Ethereum as One.
+          </h1>
+          <p className="mt-12 font-base text-base text-xl">
+            Light enables using Ethereum, and EVM chains as seamless as
+            possible. Designed from the ground up for the rollup/multi-chain
+            world that we live in, Light enables you to use Ethereum like it is
+            one.
+            <br />
+            <br />
+            Say goodbye to mundane bridging, gas deposits and refueling gas, or
+            having multiple smart contract wallets for each chain. With Light,
+            users are able to use a single smart account across chains allowing
+            for maximum composability and usability.
+            <br />
+            <br />
+            Light aims to help realize the vision of Ethereum making abstracting
+            away the complexities of fragmentation while aligning w/ the core
+            ethos as an 100% open source project.
+          </p>
         </div>
-        <Grid className="mt-[20rem]" />
+        <Grid className="mt-20" />
       </div>
       <div className="relative z-10 mt-40 flex h-screen flex-col items-center justify-center">
         <div className="m-auto max-w-3xl font-bold text-2xl">
