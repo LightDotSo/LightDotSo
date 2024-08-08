@@ -11,6 +11,7 @@ type UserOp {
   success: Boolean!
   entryPoint: String!
 }
+
 type AccountDeployed {
   id: ID!
   hash: String!
