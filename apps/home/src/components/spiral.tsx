@@ -27,6 +27,7 @@ export const Spiral: FC = () => {
   // ---------------------------------------------------------------------------
 
   const [applyOpacity, setApplyOpacity] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -36,6 +37,7 @@ export const Spiral: FC = () => {
     const handleScroll = () => {
       const shouldBeOpaque = window.scrollY > 0;
       setApplyOpacity(shouldBeOpaque);
+      setScrollY(window.scrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -52,9 +54,12 @@ export const Spiral: FC = () => {
   return (
     <div
       className={cn(
-        "-top-[10rem] md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] fixed inset-x-0 z-0 block animate-slow-spin overflow-hidden transition-opacity duration-300",
+        "-top-[15rem] md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] fixed inset-x-0 z-0 block animate-slow-spin overflow-hidden transition-opacity duration-300",
         applyOpacity ? "opacity-70" : "opacity-100",
       )}
+      style={{
+        transform: `translateY(${-scrollY / 1.5}px)`,
+      }}
     >
       <img
         className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover"

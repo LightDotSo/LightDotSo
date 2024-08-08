@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Grid } from "@/components/grid";
+import { Menu } from "@/components/menu";
 import { Spiral } from "@/components/spiral";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
@@ -25,8 +27,13 @@ export default async function Page() {
   return (
     <div>
       <Spiral />
+      <div className="mt-2 flex justify-center">
+        <div className="absolute z-50">
+          <Menu />
+        </div>
+      </div>
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
-        <div className="m-auto w-full max-w-3xl">
+        <div className="m-auto w-full max-w-3xl p-4">
           <LightHorizontalLogo className="size-32" />
           <h1 className="font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
             <span className="mb-2 block">EVM chain abstraction</span>
@@ -34,16 +41,16 @@ export default async function Page() {
             <span className="mb-2 block">chains as one.</span>
           </h1>
           <div className="py-8">
-            <Button asChild size="xl" className="rounded-lg px-6">
+            <Button asChild size="lg" className="rounded-lg px-6 py-5">
               <a href="/">
                 <Compass className="mr-2 size-6" /> Explore Now
               </a>
             </Button>
             <Button
               asChild
-              size="xl"
+              size="lg"
               variant="outline"
-              className="ml-4 rounded-lg px-6"
+              className="ml-4 rounded-lg px-6 py-5"
             >
               <a href="/demo/overview">
                 <Gamepad className="mr-2 size-6" /> Start Demo
@@ -64,6 +71,13 @@ export default async function Page() {
           Ethereum making abstracting away the complexities of fragmentation
           while aligning w/ the core ethos as an 100% open source project.
         </div>
+        <Grid className="mt-[20rem]" />
+      </div>
+      <div className="relative z-10 mt-40 flex h-screen flex-col items-center justify-center">
+        <div className="m-auto max-w-3xl font-bold text-2xl">
+          Experience Now
+        </div>
+        <Grid className="mt-[20rem]" />
       </div>
     </div>
   );
