@@ -35,12 +35,12 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative col-span-1 w-full rounded-md border border-border p-2">
+    <div className="relative col-span-1 w-full rounded-md border border-border bg-background-weak p-4">
       <ChainLogo chainId={chain.id} size="lg" />
       <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
         {chain?.name}
       </p>
-      <p className="text-text-weaker tracking-tighter">{chain?.name}</p>
+      <p className="text-text-weak tracking-tighter">{chain?.name}</p>
     </div>
   );
 };
