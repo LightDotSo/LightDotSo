@@ -103,6 +103,7 @@ const ListItem = forwardRef<ElementRef<"a">, ComponentPropsWithoutRef<"a">>(
 );
 ListItem.displayName = "ListItem";
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 export const Menu: FC<GridProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Render

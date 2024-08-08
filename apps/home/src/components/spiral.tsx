@@ -55,7 +55,7 @@ export const Spiral: FC = () => {
     <div
       className={cn(
         "-top-[15rem] md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] fixed inset-x-0 z-0 block animate-slow-spin overflow-hidden transition-opacity duration-300",
-        applyOpacity ? "opacity-70" : "opacity-100",
+        applyOpacity ? "opacity-60" : "opacity-80",
       )}
       style={{
         transform: `translateY(${-scrollY / 1.5}px)`,
