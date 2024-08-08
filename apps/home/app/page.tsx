@@ -93,7 +93,7 @@ export default async function Page() {
             Unified Crypto Experience.
           </h1>
         </div>
-        <div className="mt-12 grid max-w-5xl grid-cols-3">
+        <div className="mt-12 grid max-w-5xl grid-cols-3 gap-5">
           <div className="relative col-span-1 w-full rounded-md bg-black">
             <div className="absolute top-0 right-0 left-0 p-4">
               <p className="font-bold text-white text-xl">Gasless</p>
@@ -106,6 +106,44 @@ export default async function Page() {
               className="relative mt-8"
               alt="Gasless"
               src="https://assets.light.so/home/gasless.png"
+              width={572}
+              height={690}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </div>
+          <div className="relative col-span-1 w-full rounded-md bg-black">
+            <div className="absolute top-0 right-0 left-0 p-4">
+              <p className="font-bold text-white text-xl">
+                All Chains. One Click.
+              </p>
+              <p className="mt-2 text-gray-300 tracking-tighter">
+                A single smart wallet will work across all chains without
+                security compromise.
+              </p>
+            </div>
+            <NextImage
+              className="relative mt-8"
+              alt="Gasless"
+              src="https://assets.light.so/home/all-chains.png"
+              width={572}
+              height={690}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </div>
+          <div className="relative col-span-1 w-full rounded-md bg-black">
+            <div className="absolute top-0 right-0 left-0 p-4">
+              <p className="font-bold text-white text-xl">
+                Programmable Execution
+              </p>
+              <p className="mt-2 text-gray-300 tracking-tighter">
+                One signature, batch execute across chains. No need for multiple
+                clicks, it all works with one single signature.
+              </p>
+            </div>
+            <NextImage
+              className="relative mt-8"
+              alt="Gasless"
+              src="https://assets.light.so/home/programmable-execution.png"
               width={572}
               height={690}
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
