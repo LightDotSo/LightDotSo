@@ -15,6 +15,7 @@
 import { Grid } from "@/components/grid";
 import { Menu } from "@/components/menu";
 import { Spiral } from "@/components/spiral";
+import { NextImage } from "@lightdotso/elements";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
 import { Compass, Gamepad } from "lucide-react";
@@ -85,7 +86,34 @@ export default async function Page() {
         </div>
         <Grid className="mt-20" />
       </div>
-      <div className="relative z-10 mt-40 flex h-screen flex-col items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger py-20">
+        <div className="m-auto max-w-3xl border-border-strong border-t">
+          <div className="mt-8 text-thin">Features</div>
+          <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+            Unified Crypto Experience.
+          </h1>
+        </div>
+        <div className="mt-12 grid max-w-5xl grid-cols-3">
+          <div className="relative col-span-1 w-full rounded-md bg-black">
+            <div className="absolute top-0 right-0 left-0 p-4">
+              <p className="font-bold text-white text-xl">Gasless</p>
+              <p className="mt-2 text-gray-300 tracking-tighter">
+                No need to bridge, or refuel across chains. Select any asset you
+                own across chains to pay for gas.
+              </p>
+            </div>
+            <NextImage
+              className="relative mt-8"
+              alt="Gasless"
+              src="https://assets.light.so/home/gasless.png"
+              width={572}
+              height={690}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="relative z-10 flex h-screen flex-col items-center justify-center">
         <div className="m-auto max-w-3xl font-bold text-2xl">
           Experience Now
         </div>
