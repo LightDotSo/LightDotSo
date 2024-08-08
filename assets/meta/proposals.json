@@ -1,0 +1,19 @@
+[
+  {
+    "appName": "ArDrive-CLI",
+    "appVersion": "2.0.6",
+    "arFS": "0.11",
+    "contentType": "application/json",
+    "driveId": "85363f63-fe22-4b75-a3ce-9f5be65bfce6",
+    "entityType": "folder",
+    "name": "lip",
+    "txId": "3Qf-94xg-tJJ8fW-TRoio4S0NpQfPk6lnkNXkibVc9A",
+    "unixTime": 1722988856,
+    "parentFolderId": "dd2b4fc4-4075-4970-89a5-57d06b683ba6",
+    "entityId": "89d76918-75e2-4459-8f3f-81a265695ced",
+    "folderId": "89d76918-75e2-4459-8f3f-81a265695ced",
+    "path": "/LightDotSo/proposals/lip",
+    "txIdPath": "/_vUuuegV4pyTF3lUhw65iwoXzcr3NANrFATt7qtNu7A/hhQo1ftnUK2-smHUoJZzHzqYVbfLqWFjLSI48A7Els4/3Qf-94xg-tJJ8fW-TRoio4S0NpQfPk6lnkNXkibVc9A",
+    "entityIdPath": "/e64326f2-d457-4dd8-85cb-27e1b9f3969b/dd2b4fc4-4075-4970-89a5-57d06b683ba6/89d76918-75e2-4459-8f3f-81a265695ced"
+  }
+]

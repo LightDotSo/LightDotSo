@@ -45,7 +45,17 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
             key={item.name}
             className="text-sm text-text-weak/60 hover:underline"
           >
-            <a href={item.href} target="_blank" rel="noreferrer">
+            <a
+              href={item.href}
+              target={
+                item.href.startsWith("https://light.so") ? undefined : "_blank"
+              }
+              rel={
+                item.href.startsWith("https://light.so")
+                  ? undefined
+                  : "noreferrer"
+              }
+            >
               {item.name}
             </a>
           </li>
