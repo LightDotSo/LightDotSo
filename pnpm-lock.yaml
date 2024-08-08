@@ -1161,6 +1161,12 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../../packages/const
+      '@lightdotso/elements':
+        specifier: workspace:*
+        version: link:../../packages/elements
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
@@ -1185,6 +1191,9 @@ importers:
       critters:
         specifier: ^0.0.24
         version: 0.0.24
+      lucide-react:
+        specifier: ^0.424.0
+        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)

@@ -54,9 +54,9 @@ jobs:
       - name: Node Build
         run: |
           pnpm turbo run build
-      - name: Docker Compose Up
-        run: |
-          docker-compose up -d --build
+      # - name: Docker Compose Up
+      #   run: |
+      #     docker-compose up -d --build
       - name: Run E2E App
         run: |
           pnpm run e2e:app:dev
@@ -76,9 +76,9 @@ jobs:
       - name: Playwright Install
         run: |
           npx playwright install
-      - name: Docker Compose Up
-        run: |
-          docker-compose up -d --build
+      # - name: Docker Compose Up
+      #   run: |
+      #     docker-compose up -d --build
       - name: Run E2E Explorer
         run: |
           pnpm run e2e:explorer:dev

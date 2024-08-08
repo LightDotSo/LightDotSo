@@ -12,22 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import type { FC } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { LightAppLogo } from "./light-app-logo";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+const meta: Meta<typeof LightAppLogo> = {
+  title: "svg/LightAppLogo",
+  component: LightAppLogo,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
-  return (
-    <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
-  );
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof LightAppLogo>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: (args) => <LightAppLogo {...args} />,
+  args: {},
 };
