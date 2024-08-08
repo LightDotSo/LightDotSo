@@ -12,6 +12,7 @@
     "**/plonk_vk.sol",
     "**/Package.swift",
     "**/pnpm-lock.yaml",
+    "**/pnpm-workspace.yaml",
     "**/prisma/src/lib.rs",
     "**/requirements.txt",
     "**/schema.graphql",
