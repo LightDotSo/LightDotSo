@@ -20,6 +20,7 @@ import { Button } from "@lightdotso/ui";
 import { Compass, Gamepad } from "lucide-react";
 import { Chains } from "./(components)/chains";
 import { Cta } from "./(components)/cta";
+import { Features } from "./(components)/features";
 import { Unified } from "./(components)/unified";
 
 // -----------------------------------------------------------------------------
@@ -89,6 +90,7 @@ export default async function Page() {
         <Grid className="mt-20" />
       </div>
       <Unified />
+      <Features />
       <Chains />
       <Cta />
     </div>
