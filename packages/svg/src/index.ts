@@ -13,4 +13,4 @@
 // limitations under the License.
 
 export { ChainLogo } from "./chain";
-export { LightLogo, LightHorizontalLogo } from "./logo";
+export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";
