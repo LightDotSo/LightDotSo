@@ -1,7 +1,6 @@
 packages:
   - "android"
   - "apps/*"
-  - "!apps/envio"
   - "bin"
   - "configurations/*"
   - "contracts"
