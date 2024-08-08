@@ -34,12 +34,17 @@ export default async function Page() {
             <span className="mb-2 block">chains as one.</span>
           </h1>
           <div className="py-8">
-            <Button asChild size="xl" className="px-6">
+            <Button asChild size="xl" className="rounded-lg px-6">
               <a href="/">
                 <Compass className="mr-2 size-6" /> Explore Now
               </a>
             </Button>
-            <Button asChild size="xl" variant="outline" className="ml-4 px-6">
+            <Button
+              asChild
+              size="xl"
+              variant="outline"
+              className="ml-4 rounded-lg px-6"
+            >
               <a href="/demo/overview">
                 <Gamepad className="mr-2 size-6" /> Start Demo
               </a>
