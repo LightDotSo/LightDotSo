@@ -28,13 +28,13 @@ export const Cta: FC = () => {
 
   return (
     <div className="relative z-10 mt-10 flex flex-col items-center justify-center">
-      <div className="m-auto w-full max-w-3xl p-4">
+      <div className="m-auto w-full w-full max-w-5xl p-4">
         <LightLogo className="size-16" />
         <div className="mt-8">
-          <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-4xl">
-            <span className="mb-2 block">Experience Now</span>
+          <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-5xl">
+            Experience Now
           </h1>
-          <span className="mb-2 block">
+          <span className="mt-4 block">
             Try our latest beta and shape our app with your feedback!
           </span>
         </div>

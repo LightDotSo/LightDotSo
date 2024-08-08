@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// From: https://magicui.design/docs/components/retro-grid
+// From: https://github.com/magicuidesign/magicui/blob/5ade13d309644c18ed29b2573d7abb7d6003df48/registry/components/magicui/retro-grid.tsx
+// License: MIT
+
 "use client";
 
 import { cn } from "@lightdotso/utils";
@@ -54,7 +58,6 @@ export const Grid: FC<GridProps> = ({ className }) => {
           )}
         />
       </div>
-
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-white to-90% to-transparent dark:from-black" />
     </div>

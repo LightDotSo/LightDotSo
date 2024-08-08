@@ -68,7 +68,7 @@ export const Unified: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger py-20">
+    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger pt-20">
       <div className="m-auto w-full w-full max-w-5xl border-border-strong border-t">
         <div className="mt-8 text-thin">Features</div>
         <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
