@@ -43,7 +43,7 @@
     "lucide-react": "^0.424.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.2",
-    "viem": "^2.19.1",
+    "viem": "^2.19.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
