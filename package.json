@@ -154,7 +154,7 @@
     "vercel": "^35.2.3",
     "viem": "^2.19.2",
     "vite": "^5.4.0",
-    "vite-tsconfig-paths": "^5.0.0",
+    "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.0.5",
     "vitest-solidity-coverage": "^0.1.13"
   },

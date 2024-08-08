@@ -2,3 +2,4 @@ upgrade: true
 reject:
   - "solc"
   - "@headlessui/react"
+  - "vite-tsconfig-paths"
