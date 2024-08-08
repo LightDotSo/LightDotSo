@@ -12,5 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { LightAppLogo } from "./light-app-logo";
 export { LightLogo } from "./light-logo";
 export { LightHorizontalLogo } from "./light-horizontal";

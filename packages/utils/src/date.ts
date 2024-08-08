@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import type { FC } from "react";
-
 // -----------------------------------------------------------------------------
-// Component
+// Utils
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
-  );
+export const refineDateFormat = (date: Date) => {
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };

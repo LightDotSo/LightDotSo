@@ -21,6 +21,7 @@ export {
 } from "./chain";
 export { cn } from "./cn";
 export { findContractAddressByAddress } from "./contract";
+export { refineDateFormat } from "./date";
 export { debounce } from "./debounce";
 export { getEtherscanUrl, getEtherscanUrlWithChainId } from "./etherscan";
 export { getGasSpeedBumpAmount } from "./gas";

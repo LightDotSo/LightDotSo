@@ -39,6 +39,15 @@ const nextConfig = {
       ],
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.light.so",
+        port: "",
+      },
+    ],
+  },
   outputFileTracing: true,
   transpilePackages: [
     "@lightdotso/svg",

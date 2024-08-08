@@ -103,6 +103,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
       return undefined;
     }
     if (!isAddress(maybeAddress)) {
+      if (maybeAddress === "demo") {
+        return "demo";
+      }
+
       return undefined;
     }
     return maybeAddress as Address;

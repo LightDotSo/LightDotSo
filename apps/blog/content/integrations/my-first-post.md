@@ -1,7 +1,8 @@
 ---
-title: My First Chain
+date: 2024-08-01
+title: My First Post
 ogp:
-  src: https://assets.light.so/logo.png
+  src: https://assets.light.so/github.png
 ---
 
-This is my very first chain. I am **super** excited.
+WIP

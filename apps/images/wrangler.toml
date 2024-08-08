@@ -1,0 +1,6 @@
+name = "images"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+workers_dev = false
+
+routes = [{ pattern = "images.light.so", custom_domain = true }]

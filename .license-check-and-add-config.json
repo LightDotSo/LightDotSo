@@ -12,6 +12,7 @@
     "**/plonk_vk.sol",
     "**/Package.swift",
     "**/prisma/src/lib.rs",
+    "**/requirements.txt",
     "**/schema-rs.prisma",
     "**/schema.prisma",
     "**/.gitkeep",

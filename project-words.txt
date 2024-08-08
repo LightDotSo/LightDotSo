@@ -1046,6 +1046,7 @@ offchain
 ohash
 ommer
 ommitted
+Omni
 onchainkit
 oneinch
 oneline
@@ -1053,6 +1054,7 @@ oneshot
 Onone
 Ooptions
 Opeartion
+openai
 opengraph
 openocean
 opentype
@@ -1469,6 +1471,7 @@ taplo
 tarnsactions
 Tarun's
 tauri
+tavily
 telejson
 TELOS
 teloxide

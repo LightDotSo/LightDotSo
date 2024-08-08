@@ -14,6 +14,7 @@
 
 import { createReader } from "@keystatic/core/reader";
 import { NextImage } from "@lightdotso/elements";
+import { refineDateFormat } from "@lightdotso/utils";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -38,20 +39,25 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul>
+    <ul className="space-y-6">
       {changelogs.map((changelog) => (
         <li key={changelog.slug} className="group">
           <a href={`/changelog/${changelog.slug}`}>
             <NextImage
+              placeholder="blur"
+              className="rounded-sm group-hover:opacity-80"
               src={changelog.entry.ogp.src}
               alt={changelog.entry.title}
+              width={1200}
+              height={630}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
-            <div className="flex justify-between mt-4">
-              <div className="font-bold text-xl text-text tracking-tight sm:text-3xl group-hover:underline">
+            <div className="mt-4 flex items-center justify-between">
+              <div className="font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
                 {changelog.entry.title}
               </div>
               <div className="text-lg group-hover:underline">
-                {new Date(changelog.entry.date).toLocaleDateString()}
+                {refineDateFormat(new Date(changelog.entry.date))}
               </div>
             </div>
           </a>

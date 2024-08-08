@@ -1,0 +1,8 @@
+ignores:
+  - "@cloudflare/workers-types"
+  - typescript
+  - wrangler
+  - hono-rate-limiter
+  - "@lightdotso/tsconfig"
+  - "@types/node"
+  - "@lightdotso/client"

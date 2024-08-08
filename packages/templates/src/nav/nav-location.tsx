@@ -43,6 +43,27 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const NavLocationContent = ({ tab }: { tab: Tab }) => {
+    return (
+      <>
+        {tab.isTextTogether ? (
+          <>
+            {tab.label}
+            {tab.icon ? <tab.icon className="ml-1 size-4 sm:size-5" /> : null}
+          </>
+        ) : tab.icon ? (
+          <tab.icon className="size-4 sm:size-5" />
+        ) : (
+          tab.label
+        )}
+      </>
+    );
+  };
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -56,7 +77,6 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
 
   return (
     <div className="ml-auto hidden items-center space-x-1 md:flex">
-      {/* biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation> */}
       {tabs.map((tab) => {
         return (
           <Button
@@ -68,26 +88,11 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
           >
             {tab.href.startsWith("/") || tab.href === INTERNAL_LINKS.Home ? (
               <Link href={tab.href}>
-                {tab.icon ? (
-                  <tab.icon className="size-4 sm:size-5" />
-                ) : (
-                  tab.label
-                )}
+                <NavLocationContent tab={tab} />
               </Link>
             ) : (
               <a href={tab.href} target="_blank" rel="noreferrer">
-                {tab.isTextTogether ? (
-                  <>
-                    {tab.label}
-                    {tab.icon ? (
-                      <tab.icon className="ml-1 size-4 sm:size-5" />
-                    ) : null}
-                  </>
-                ) : tab.icon ? (
-                  <tab.icon className="size-4 sm:size-5" />
-                ) : (
-                  tab.label
-                )}
+                <NavLocationContent tab={tab} />
               </a>
             )}
           </Button>
