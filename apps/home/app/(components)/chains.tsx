@@ -37,10 +37,10 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   return (
     <div className="relative col-span-1 w-full rounded-md border border-border p-2">
       <ChainLogo chainId={chain.id} size="lg" />
-      <p className="mt-2 font-bold font-normal text-lg text-text sm:text-xl">
+      <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
         {chain?.name}
       </p>
-      <p className="text-text-weak tracking-tighter">{chain?.name}</p>
+      <p className="text-text-weaker tracking-tighter">{chain?.name}</p>
     </div>
   );
 };
@@ -55,10 +55,10 @@ export const Chains: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-primary-weaker py-20">
+    <div className="relative z-10 flex flex-col items-center justify-center py-20">
       <div className="m-auto w-full max-w-5xl border-border-strong border-t">
-        <div className="mt-8 text-thin">Ecosystem</div>
-        <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+        <div className="mt-8 text-text text-thin">Ecosystem</div>
+        <h1 className="mt-8 font-medium text-4xl text-text-strong leading-8 tracking-tight md:leading-10 lg:text-6xl">
           Light brings all chains as one.
         </h1>
       </div>
