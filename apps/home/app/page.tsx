@@ -15,6 +15,7 @@
 import { Spiral } from "@/components/spiral";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
+import { Compass, Gamepad } from "lucide-react";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -25,25 +26,29 @@ export default async function Page() {
     <div>
       <Spiral />
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
-        <div className="p-4">
+        <div className="m-auto w-full max-w-3xl">
           <LightHorizontalLogo className="size-32" />
-          <h1 className="max-w-2xl font-extrabold text-4xl lg:text-6xl">
-            EVM chain abstraction
-            <br />
-            protocol unifying all
-            <br />
-            chains as one.
+          <h1 className="font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+            <span className="mb-2 block">EVM chain abstraction</span>
+            <span className="mb-2 block">protocol unifying all</span>
+            <span className="mb-2 block">chains as one.</span>
           </h1>
           <div className="py-8">
-            <Button size="lg">Explore Now</Button>
-            <Button size="lg" variant="outline" className="ml-4">
-              Learn More
+            <Button asChild size="xl" className="px-6">
+              <a href="/">
+                <Compass className="mr-2 size-6" /> Explore Now
+              </a>
+            </Button>
+            <Button asChild size="xl" variant="outline" className="ml-4 px-6">
+              <a href="/demo/overview">
+                <Gamepad className="mr-2 size-6" /> Start Demo
+              </a>
             </Button>
           </div>
         </div>
       </div>
       <div className="relative z-10 flex h-screen flex-col items-center justify-center">
-        <div className="m-auto max-w-2xl font-bold text-2xl">
+        <div className="m-auto max-w-3xl font-bold text-2xl">
           Light enables using Ethereum, and EVM chains as seamless as possible.
           Designed from the ground up for the rollup/multi-chain world that we
           live in, Light enables you to use Ethereum like it is one. Say goodbye
@@ -51,8 +56,8 @@ export default async function Page() {
           multiple smart contract wallets for each chain. With Light, users are
           able to use a single smart account across chains allowing for maximum
           composability and usability. Light aims to help realize the vision of
-          Ethereum making abstracting the complexities of fragmentation while
-          aligning w/ the core ethos as an 100% open source project.
+          Ethereum making abstracting away the complexities of fragmentation
+          while aligning w/ the core ethos as an 100% open source project.
         </div>
       </div>
     </div>

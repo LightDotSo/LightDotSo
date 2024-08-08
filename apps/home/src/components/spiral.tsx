@@ -52,12 +52,12 @@ export const Spiral: FC = () => {
   return (
     <div
       className={cn(
-        "md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] fixed inset-x-0 z-0 block animate-slow-spin overflow-hidden transition-opacity duration-300",
+        "-top-[10rem] md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] fixed inset-x-0 z-0 block animate-slow-spin overflow-hidden transition-opacity duration-300",
         applyOpacity ? "opacity-70" : "opacity-100",
       )}
     >
       <img
-        className="pointer-events-none size-full animate-spin-slow select-none object-cover"
+        className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover"
         src="/spiral.svg"
         alt="Spiral"
       />

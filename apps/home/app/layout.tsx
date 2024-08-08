@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import { Root } from "@/components/root/root";
+import { Footer, Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -29,5 +29,10 @@ interface RootLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  return <Root>{children}</Root>;
+  return (
+    <Root>
+      {children}
+      <Footer />
+    </Root>
+  );
 }
