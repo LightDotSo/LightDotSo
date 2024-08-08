@@ -43,7 +43,7 @@ importers:
         version: 2.13.0-alpha.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       solc:
         specifier: 0.8.18
-        version: 0.8.18(debug@4.3.5)
+        version: 0.8.18
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.0
@@ -256,8 +256,8 @@ importers:
         specifier: ^5.4.0
         version: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
       vite-tsconfig-paths:
-        specifier: ^5.0.0
-        version: 5.0.0(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
+        specifier: ^4.3.2
+        version: 4.3.2(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
       vitest:
         specifier: ^2.0.5
         version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1)
@@ -1194,6 +1194,9 @@ importers:
       critters:
         specifier: ^0.0.24
         version: 0.0.24
+      framer-motion:
+        specifier: ^11.3.24
+        version: 11.3.24(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
         specifier: ^0.424.0
         version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -1666,13 +1669,13 @@ importers:
         version: 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.23.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@storybook/preview-api':
         specifier: ^8.2.8
-        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/preview-web':
         specifier: ^7.6.17
         version: 7.6.17
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/react-vite':
         specifier: ^8.2.8
         version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
@@ -1681,7 +1684,7 @@ importers:
         version: 0.2.2
       '@storybook/theming':
         specifier: ^8.2.8
-        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -1708,7 +1711,7 @@ importers:
         version: 0.8.0(typescript@5.5.4)
       storybook:
         specifier: ^8.2.8
-        version: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       storybook-dark-mode:
         specifier: ^4.0.2
         version: 4.0.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
@@ -2136,7 +2139,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2203,7 +2206,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2291,7 +2294,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2489,7 +2492,7 @@ importers:
         version: link:../wagmi
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@tanstack/react-virtual':
         specifier: ^3.8.4
         version: 3.8.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3081,7 +3084,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -3141,7 +3144,7 @@ importers:
         version: 1.3.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@tanstack/react-table':
         specifier: ^8.20.1
         version: 8.20.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3284,7 +3287,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -3550,7 +3553,7 @@ importers:
         version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -21964,8 +21967,8 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
-  vite-tsconfig-paths@5.0.0:
-    resolution: {integrity: sha512-sCdKc6uC7ir102lW8deBiMnS0NGEs0100OJX8WZQmf3Uf7tJ/T3uQnzznq/tZWph7tkG+44JYOsKE7YTZjDn+Q==}
+  vite-tsconfig-paths@4.3.2:
+    resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -23643,7 +23646,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.24.8
       '@babel/types': 7.24.9
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -24364,7 +24367,7 @@ snapshots:
       '@devicefarmer/adbkit-monkey': 1.2.1
       bluebird: 3.7.2
       commander: 9.5.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       node-forge: 1.3.1
       split: 1.0.1
     transitivePeerDependencies:
@@ -24531,7 +24534,7 @@ snapshots:
   '@esbuild-plugins/node-resolve@0.2.2(esbuild@0.19.12)':
     dependencies:
       '@types/resolve': 1.20.6
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       esbuild: 0.19.12
       escape-string-regexp: 4.0.0
       resolve: 1.22.8
@@ -25273,7 +25276,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.2
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -25293,7 +25296,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.2
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -25309,7 +25312,7 @@ snapshots:
       '@types/node': 20.14.12
       bundle-require: 4.2.1(esbuild@0.19.2)
       jsonc-parser: 3.2.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -25323,7 +25326,7 @@ snapshots:
       '@types/node': 20.14.12
       bundle-require: 4.2.1(esbuild@0.23.0)
       jsonc-parser: 3.2.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -25341,7 +25344,7 @@ snapshots:
       '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       esbuild: 0.19.2
       glob: 10.4.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       typescript: 5.5.4
       zod: 3.23.8
@@ -26007,7 +26010,7 @@ snapshots:
 
   '@koa/router@12.0.1':
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       http-errors: 2.0.0
       koa-compose: 4.1.0
       methods: 1.1.2
@@ -26341,7 +26344,7 @@ snapshots:
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.6
       '@types/debug': 4.1.12
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       pony-cause: 2.1.11
       semver: 7.6.3
       uuid: 9.0.1
@@ -26740,7 +26743,7 @@ snapshots:
       chalk: 4.1.2
       clean-stack: 3.0.1
       cli-progress: 3.12.0
-      debug: 4.3.5(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       ejs: 3.1.10
       fs-extra: 9.1.0
       get-package-type: 0.1.0
@@ -26770,7 +26773,7 @@ snapshots:
       chalk: 4.1.2
       clean-stack: 3.0.1
       cli-progress: 3.12.0
-      debug: 4.3.5(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       ejs: 3.1.10
       get-package-type: 0.1.0
       globby: 11.1.0
@@ -26806,7 +26809,7 @@ snapshots:
       chalk: 4.1.2
       clean-stack: 3.0.1
       cli-progress: 3.12.0
-      debug: 4.3.5(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       ejs: 3.1.10
       fs-extra: 9.1.0
       get-package-type: 0.1.0
@@ -26843,7 +26846,7 @@ snapshots:
       chalk: 4.1.2
       clean-stack: 3.0.1
       cli-progress: 3.12.0
-      debug: 4.3.5(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       ejs: 3.1.10
       fs-extra: 9.1.0
       get-package-type: 0.1.0
@@ -26881,7 +26884,7 @@ snapshots:
       clean-stack: 3.0.1
       cli-progress: 3.12.0
       color: 4.2.3
-      debug: 4.3.5(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       ejs: 3.1.10
       get-package-type: 0.1.0
       globby: 11.1.0
@@ -26908,7 +26911,7 @@ snapshots:
     dependencies:
       '@oclif/core': 2.16.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)
       chalk: 4.1.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -26947,7 +26950,7 @@ snapshots:
     dependencies:
       '@oclif/core': 3.27.0
       chalk: 5.3.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       npm: 10.2.3
       npm-run-path: 4.0.1
       semver: 7.6.3
@@ -26961,7 +26964,7 @@ snapshots:
     dependencies:
       '@oclif/core': 2.16.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)
       chalk: 4.1.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       fs-extra: 9.1.0
       http-call: 5.3.0
       lodash: 4.17.21
@@ -30551,21 +30554,21 @@ snapshots:
       '@types/uuid': 9.0.8
       dequal: 2.0.3
       polished: 4.3.1
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       uuid: 9.0.1
 
   '@storybook/addon-backgrounds@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-controls@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       dequal: 2.0.3
       lodash: 4.17.21
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-docs@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
@@ -30575,14 +30578,14 @@ snapshots:
       '@storybook/blocks': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/csf-plugin': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/react': 18.3.3
       fs-extra: 11.2.0
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       rehype-external-links: 3.0.0
       rehype-slug: 6.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -30598,7 +30601,7 @@ snapshots:
       '@storybook/addon-outline': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/addon-toolbars': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/addon-viewport': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -30606,7 +30609,7 @@ snapshots:
   '@storybook/addon-highlight@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addon-interactions@8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))':
     dependencies:
@@ -30614,7 +30617,7 @@ snapshots:
       '@storybook/instrumenter': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/test': 8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))
       polished: 4.3.1
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - '@jest/globals'
@@ -30627,7 +30630,7 @@ snapshots:
     dependencies:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     optionalDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
@@ -30635,13 +30638,13 @@ snapshots:
   '@storybook/addon-measure@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tiny-invariant: 1.3.3
 
   '@storybook/addon-outline@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-postcss@2.0.0(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
@@ -30694,17 +30697,17 @@ snapshots:
 
   '@storybook/addon-themes@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-toolbars@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addon-viewport@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       memoizerific: 1.11.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addons@7.6.17(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)':
     dependencies:
@@ -30736,7 +30739,7 @@ snapshots:
       memoizerific: 1.11.3
       polished: 4.3.1
       react-colorful: 5.6.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       telejson: 7.2.0
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
@@ -30754,7 +30757,7 @@ snapshots:
       find-cache-dir: 3.3.2
       fs-extra: 11.2.0
       magic-string: 0.30.10
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
     optionalDependencies:
@@ -30781,7 +30784,7 @@ snapshots:
       path-browserify: 1.0.1
       process: 0.11.10
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       style-loader: 3.3.4(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       terser-webpack-plugin: 5.3.10(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       ts-dedent: 2.2.0
@@ -30911,9 +30914,9 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
-  '@storybook/components@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/components@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/core-common@7.6.19(encoding@0.1.13)':
     dependencies:
@@ -30960,7 +30963,7 @@ snapshots:
   '@storybook/core-webpack@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@types/node': 18.19.34
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/core@8.2.8(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
@@ -30983,7 +30986,7 @@ snapshots:
 
   '@storybook/csf-plugin@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       unplugin: 1.10.1
 
   '@storybook/csf@0.1.11':
@@ -31001,7 +31004,7 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
       '@vitest/utils': 1.6.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       util: 0.12.5
 
   '@storybook/manager-api@7.6.17(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)':
@@ -31065,9 +31068,9 @@ snapshots:
       - react
       - react-dom
 
-  '@storybook/manager-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/manager-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/nextjs@8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.23.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
     dependencies:
@@ -31087,7 +31090,7 @@ snapshots:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(type-fest@4.23.0)(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@storybook/builder-webpack5': 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/preset-react-webpack': 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/test': 8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))
       '@types/node': 18.19.34
       '@types/semver': 7.5.8
@@ -31108,7 +31111,7 @@ snapshots:
       resolve-url-loader: 5.0.0
       sass-loader: 12.6.0(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       style-loader: 3.3.4(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       styled-jsx: 5.1.1(@babel/core@7.25.2)(react@19.0.0-rc-cc1ec60d0d-20240607)
       ts-dedent: 2.2.0
@@ -31155,7 +31158,7 @@ snapshots:
   '@storybook/preset-react-webpack@8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
     dependencies:
       '@storybook/core-webpack': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.5.4)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@types/node': 18.19.34
       '@types/semver': 7.5.8
@@ -31167,7 +31170,7 @@ snapshots:
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       resolve: 1.22.8
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tsconfig-paths: 4.2.0
       webpack: 5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)
     optionalDependencies:
@@ -31213,9 +31216,9 @@ snapshots:
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
 
-  '@storybook/preview-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/preview-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/preview-web@7.6.17':
     dependencies:
@@ -31236,25 +31239,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/react-dom-shim@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/react-dom-shim@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/react-vite@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
       '@rollup/pluginutils': 5.1.0(rollup@4.19.0)
       '@storybook/builder-vite': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       find-up: 5.0.0
       magic-string: 0.30.10
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-docgen: 7.0.3
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       resolve: 1.22.8
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tsconfig-paths: 4.2.0
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
     transitivePeerDependencies:
@@ -31264,14 +31267,14 @@ snapshots:
       - typescript
       - vite-plugin-glimmerx
 
-  '@storybook/react@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
+  '@storybook/react@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
     dependencies:
-      '@storybook/components': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/components': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/global': 5.0.0
-      '@storybook/manager-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/preview-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/manager-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/preview-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/escodegen': 0.0.6
       '@types/estree': 0.0.51
       '@types/node': 18.19.34
@@ -31286,7 +31289,7 @@ snapshots:
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       react-element-to-jsx-string: 15.0.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       util-deprecate: 1.0.2
@@ -31320,7 +31323,7 @@ snapshots:
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.1.0)
       '@vitest/expect': 1.6.0
       '@vitest/spy': 1.6.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       util: 0.12.5
     transitivePeerDependencies:
       - '@jest/globals'
@@ -31363,9 +31366,9 @@ snapshots:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
 
-  '@storybook/theming@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/theming@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/types@7.6.17':
     dependencies:
@@ -32206,7 +32209,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 6.19.0
       '@typescript-eslint/visitor-keys': 6.19.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
@@ -33340,13 +33343,13 @@ snapshots:
 
   agent-base@7.1.1:
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
   agent-base@7.1.1(supports-color@9.4.0):
     dependencies:
-      debug: 4.3.5(supports-color@9.4.0)
+      debug: 4.3.6(supports-color@9.4.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -33516,7 +33519,7 @@ snapshots:
       arweave: 1.11.4
       arweave-stream-tx: 1.2.2(arweave@1.11.4)
       avsc: https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef
-      axios: 0.21.4
+      axios: 0.21.4(debug@4.3.4)
       base64url: 3.0.1
       bs58: 4.0.1
       ethers: 5.7.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -33590,7 +33593,7 @@ snapshots:
     dependencies:
       ardrive-core-js: 2.0.6(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4
+      axios: 0.21.4(debug@4.3.4)
       bn.js: 5.2.1
       commander: 8.3.0
       ipfs-only-hash: 4.0.0(encoding@0.1.13)
@@ -33609,7 +33612,7 @@ snapshots:
       '@alexsasharegan/simple-cache': 3.3.3
       arbundles: 0.6.23(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4
+      axios: 0.21.4(debug@4.3.4)
       axios-retry: 3.9.1
       base64-js: 1.5.1
       bignumber.js: 9.1.2
@@ -33855,12 +33858,6 @@ snapshots:
       '@babel/runtime': 7.25.0
       is-retry-allowed: 2.2.0
 
-  axios@0.21.4:
-    dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
-    transitivePeerDependencies:
-      - debug
-
   axios@0.21.4(debug@4.3.4):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
@@ -33869,14 +33866,14 @@ snapshots:
 
   axios@0.27.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
 
   axios@1.6.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -33884,7 +33881,7 @@ snapshots:
 
   axios@1.7.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -35678,23 +35675,23 @@ snapshots:
     optionalDependencies:
       supports-color: 5.5.0
 
-  debug@4.3.5(supports-color@8.1.1):
-    dependencies:
-      ms: 2.1.2
-    optionalDependencies:
-      supports-color: 8.1.1
-
-  debug@4.3.5(supports-color@9.4.0):
-    dependencies:
-      ms: 2.1.2
-    optionalDependencies:
-      supports-color: 9.4.0
-
   debug@4.3.6(supports-color@5.5.0):
     dependencies:
       ms: 2.1.2
     optionalDependencies:
       supports-color: 5.5.0
+
+  debug@4.3.6(supports-color@8.1.1):
+    dependencies:
+      ms: 2.1.2
+    optionalDependencies:
+      supports-color: 8.1.1
+
+  debug@4.3.6(supports-color@9.4.0):
+    dependencies:
+      ms: 2.1.2
+    optionalDependencies:
+      supports-color: 9.4.0
 
   decamelize-keys@1.1.1:
     dependencies:
@@ -36434,14 +36431,14 @@ snapshots:
 
   esbuild-register@3.5.0(esbuild@0.18.20):
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       esbuild: 0.18.20
     transitivePeerDependencies:
       - supports-color
 
   esbuild-register@3.5.0(esbuild@0.21.5):
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       esbuild: 0.21.5
     transitivePeerDependencies:
       - supports-color
@@ -36697,7 +36694,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -38553,7 +38550,7 @@ snapshots:
   http-call@5.3.0:
     dependencies:
       content-type: 1.0.5
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       is-retry-allowed: 1.2.0
       is-stream: 2.0.1
       parse-json: 4.0.0
@@ -38607,7 +38604,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -38628,14 +38625,14 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@6.2.1:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -38649,14 +38646,14 @@ snapshots:
   https-proxy-agent@7.0.4:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@7.0.4(supports-color@9.4.0):
     dependencies:
       agent-base: 7.1.1(supports-color@9.4.0)
-      debug: 4.3.5(supports-color@9.4.0)
+      debug: 4.3.6(supports-color@9.4.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -38920,7 +38917,7 @@ snapshots:
       any-signal: 2.1.2
       blob-to-it: 1.0.4
       browser-readablestream-to-it: 1.0.3
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@2.7.0(encoding@0.1.13))
       ipfs-unixfs: 6.0.9
@@ -38949,7 +38946,7 @@ snapshots:
       '@ipld/dag-pb': 2.1.18
       abort-controller: 3.0.0
       any-signal: 2.1.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@2.7.0(encoding@0.1.13))
       ipfs-core-utils: 0.13.0(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))
@@ -39361,7 +39358,7 @@ snapshots:
   istanbul-lib-source-maps@5.0.6:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
@@ -39772,7 +39769,7 @@ snapshots:
 
   koa-send@5.0.1:
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       http-errors: 1.8.1
       resolve-path: 1.4.0
     transitivePeerDependencies:
@@ -39792,7 +39789,7 @@ snapshots:
       content-disposition: 0.5.4
       content-type: 1.0.5
       cookies: 0.9.1
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       delegates: 1.0.0
       depd: 2.0.0
       destroy: 1.2.0
@@ -41483,7 +41480,7 @@ snapshots:
   micromark@4.0.0:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       decode-named-character-reference: 1.0.2
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.1
@@ -41716,7 +41713,7 @@ snapshots:
     dependencies:
       commist: 1.1.0
       concat-stream: 2.0.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       duplexify: 4.1.3
       help-me: 3.0.0
       inherits: 2.0.4
@@ -44827,6 +44824,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  solc@0.8.18:
+    dependencies:
+      command-exists: 1.2.9
+      commander: 8.3.0
+      follow-redirects: 1.15.6(debug@4.3.4)
+      js-sha3: 0.8.0
+      memorystream: 0.3.1
+      semver: 5.7.2
+      tmp: 0.0.33
+    transitivePeerDependencies:
+      - debug
+
   solc@0.8.18(debug@4.3.5):
     dependencies:
       command-exists: 1.2.9
@@ -45043,7 +45052,7 @@ snapshots:
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.2.9(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@storybook/manager-api': 8.1.10(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       fast-deep-equal: 3.1.3
       memoizerific: 1.11.3
     transitivePeerDependencies:
@@ -45053,7 +45062,7 @@ snapshots:
       - react-dom
       - storybook
 
-  storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
       '@babel/core': 7.25.2
       '@babel/types': 7.25.2
@@ -46627,7 +46636,7 @@ snapshots:
   vite-node@2.0.5(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1):
     dependencies:
       cac: 6.7.14
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@5.5.0)
       pathe: 1.1.2
       tinyrainbow: 1.2.0
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
@@ -46642,7 +46651,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@5.0.0(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)):
+  vite-tsconfig-paths@4.3.2(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)):
     dependencies:
       debug: 4.3.6(supports-color@5.5.0)
       globrex: 0.1.2
