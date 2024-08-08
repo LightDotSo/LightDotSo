@@ -69,13 +69,13 @@ export const Unified: FC = () => {
 
   return (
     <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger py-20">
-      <div className="m-auto max-w-4xl border-border-strong border-t">
+      <div className="m-auto w-full max-w-4xl border-border-strong border-t">
         <div className="mt-8 text-thin">Features</div>
         <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
           An Unified Crypto Experience.
         </h1>
       </div>
-      <div className="mt-16 grid max-w-5xl grid-cols-3 gap-5">
+      <div className="mt-16 grid w-full max-w-5xl grid-cols-3 gap-5">
         <UnifiedCard
           title="Gasless"
           description="No need to bridge, or refuel across chains. Select any asset you own across chains to pay for gas."

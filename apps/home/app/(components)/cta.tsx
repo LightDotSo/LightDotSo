@@ -29,9 +29,9 @@ export const Cta: FC = () => {
   return (
     <div className="relative z-10 mt-10 flex flex-col items-center justify-center">
       <div className="m-auto w-full max-w-3xl p-4">
-        <LightLogo className="size-20" />
+        <LightLogo className="size-16" />
         <div className="mt-8">
-          <h1 className="font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+          <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-4xl">
             <span className="mb-2 block">Experience Now</span>
           </h1>
           <span className="mb-2 block">
@@ -39,20 +39,15 @@ export const Cta: FC = () => {
           </span>
         </div>
         <div className="py-8">
-          <Button asChild size="lg" className="rounded-lg px-6 py-5">
+          <Button asChild className="rounded-lg ">
             <a href="/">
-              <Compass className="mr-2 size-6" />
+              <Compass className="mr-2 size-4" />
               Start Now
             </a>
           </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="ml-4 rounded-lg px-6 py-5"
-          >
+          <Button asChild variant="outline" className="ml-4 rounded-lg">
             <a href="/demo/overview">
-              <Gamepad className="mr-2 size-6" />
+              <Gamepad className="mr-2 size-4" />
               Open Demo
             </a>
           </Button>

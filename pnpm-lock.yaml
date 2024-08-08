@@ -1161,6 +1161,9 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../../packages/const
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../../packages/elements

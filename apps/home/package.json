@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",

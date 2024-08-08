@@ -18,6 +18,7 @@ import { Spiral } from "@/components/spiral";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
 import { Compass, Gamepad } from "lucide-react";
+import { Chains } from "./(components)/chains";
 import { Cta } from "./(components)/cta";
 import { Unified } from "./(components)/unified";
 
@@ -88,6 +89,7 @@ export default async function Page() {
         <Grid className="mt-20" />
       </div>
       <Unified />
+      <Chains />
       <Cta />
     </div>
   );
