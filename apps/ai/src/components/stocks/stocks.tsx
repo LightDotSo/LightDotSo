@@ -14,7 +14,7 @@
 
 "use client";
 
-import type { AI } from "@/lib/chat/actions";
+import type { AI } from "@/chat/actions";
 import { useActions, useUIState } from "ai/rsc";
 
 // -----------------------------------------------------------------------------

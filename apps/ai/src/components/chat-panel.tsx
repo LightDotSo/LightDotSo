@@ -13,12 +13,12 @@
 // limitations under the License.
 
 import { shareChat } from "@/app/actions";
+import type { AI } from "@/chat/actions";
 import { ButtonScrollToBottom } from "@/components/button-scroll-to-bottom";
 import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { FooterText } from "@/components/footer";
 import { IconShare } from "@/components/icons";
 import { PromptForm } from "@/components/prompt-form";
-import type { AI } from "@/lib/chat/actions";
 import { Button } from "@lightdotso/ui";
 import { useAIState, useActions, useUIState } from "ai/rsc";
 import { nanoid } from "nanoid";

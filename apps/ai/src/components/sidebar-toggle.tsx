@@ -15,7 +15,7 @@
 "use client";
 
 import { IconSidebar } from "@/components/icons";
-import { useSidebar } from "@/lib/hooks/use-sidebar";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { Button } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------

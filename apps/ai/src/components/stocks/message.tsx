@@ -16,7 +16,7 @@
 
 import { CodeBlock } from "@/components/codeblock";
 import { IconOpenAI, IconUser } from "@/components/icons";
-import { useStreamableText } from "@/lib/hooks/use-streamable-text";
+import { useStreamableText } from "@/hooks/use-streamable-text";
 import { cn } from "@lightdotso/utils";
 import type { StreamableValue } from "ai/rsc";
 import type { ReactNode } from "react";

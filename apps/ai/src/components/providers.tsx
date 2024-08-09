@@ -14,7 +14,7 @@
 
 "use client";
 
-import { SidebarProvider } from "@/lib/hooks/use-sidebar";
+import { SidebarProvider } from "@/hooks/use-sidebar";
 import { TooltipProvider } from "@lightdotso/ui";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ThemeProviderProps } from "next-themes/dist/types";

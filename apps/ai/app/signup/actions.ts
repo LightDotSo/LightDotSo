@@ -15,7 +15,7 @@
 "use server";
 
 // import { signIn } from "@/auth";
-import { ResultCode } from "@/lib/utils";
+import { ResultCode } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Action

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { AI } from "@/chat/actions";
 import { Chat } from "@/components/chat";
-import { AI } from "@/lib/chat/actions";
-import { nanoid } from "@/lib/utils";
+import { nanoid } from "@/utils";
 import { getMissingKeys } from "../actions";
 
 // -----------------------------------------------------------------------------

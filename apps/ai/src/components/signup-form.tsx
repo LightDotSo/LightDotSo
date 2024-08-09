@@ -16,7 +16,7 @@
 
 import { signup } from "@/app/signup/actions";
 import { IconSpinner } from "@/components/icons";
-import { getMessageFromCode } from "@/lib/utils";
+import { getMessageFromCode } from "@/utils";
 import { toast } from "@lightdotso/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

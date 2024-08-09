@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Session } from "@/lib/types";
+import type { Session } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,

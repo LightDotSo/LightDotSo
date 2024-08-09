@@ -18,7 +18,7 @@
 "use client";
 
 import { IconCheck, IconCopy, IconDownload } from "@/components/icons";
-import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { ButtonIcon } from "@lightdotso/ui";
 import { type FC, memo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";

@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useSidebar } from "@/lib/hooks/use-sidebar";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps } from "react";
 

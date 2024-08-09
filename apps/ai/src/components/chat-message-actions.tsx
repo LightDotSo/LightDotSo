@@ -15,7 +15,7 @@
 "use client";
 
 import { IconCheck, IconCopy } from "@/components/icons";
-import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import type { Message } from "ai";

@@ -15,8 +15,8 @@
 "use client";
 
 import { IconSpinner } from "@/components/icons";
-import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
-import type { Chat, ServerActionResult } from "@/lib/types";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import type { Chat, ServerActionResult } from "@/types";
 import { toast } from "@lightdotso/ui";
 import {
   Dialog,

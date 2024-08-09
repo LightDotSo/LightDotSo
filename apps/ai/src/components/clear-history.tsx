@@ -15,7 +15,7 @@
 "use client";
 
 import { IconSpinner } from "@/components/icons";
-import type { ServerActionResult } from "@/lib/types";
+import type { ServerActionResult } from "@/types";
 import { toast } from "@lightdotso/ui";
 import {
   AlertDialog,

@@ -14,9 +14,9 @@
 
 "use client";
 import { ChatPanel } from "@/components/chat-panel";
-import { useLocalStorage } from "@/lib/hooks/use-local-storage";
-import { useScrollAnchor } from "@/lib/hooks/use-scroll-anchor";
-import type { Message } from "@/lib/types";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useScrollAnchor } from "@/hooks/use-scroll-anchor";
+import type { Message } from "@/types";
 import { toast } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { useAIState } from "ai/rsc";

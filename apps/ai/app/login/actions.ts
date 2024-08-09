@@ -14,7 +14,7 @@
 
 "use server";
 
-import { ResultCode } from "@/lib/utils";
+import { ResultCode } from "@/utils";
 import { z } from "zod";
 
 // -----------------------------------------------------------------------------

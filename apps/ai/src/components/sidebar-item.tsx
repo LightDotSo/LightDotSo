@@ -15,8 +15,8 @@
 "use client";
 
 import { IconMessage, IconUsers } from "@/components/icons";
-import { useLocalStorage } from "@/lib/hooks/use-local-storage";
-import type { Chat } from "@/lib/types";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import type { Chat } from "@/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@lightdotso/ui";
 import { buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";

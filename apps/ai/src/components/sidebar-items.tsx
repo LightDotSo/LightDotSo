@@ -14,7 +14,7 @@
 
 "use client";
 
-import type { Chat } from "@/lib/types";
+import type { Chat } from "@/types";
 
 // -----------------------------------------------------------------------------
 // Props

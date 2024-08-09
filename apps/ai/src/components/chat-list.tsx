@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { UIState } from "@/lib/chat/actions";
-import type { Session } from "@/lib/types";
+import type { UIState } from "@/chat/actions";
+import type { Session } from "@/types";
 import { Separator } from "@lightdotso/ui";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";

@@ -14,9 +14,9 @@
 
 "use client";
 
+import type { AI } from "@/chat/actions";
 import { IconArrowElbow, IconPlus } from "@/components/icons";
-import type { AI } from "@/lib/chat/actions";
-import { useEnterSubmit } from "@/lib/hooks/use-enter-submit";
+import { useEnterSubmit } from "@/hooks/use-enter-submit";
 import {
   ButtonIcon,
   Tooltip,

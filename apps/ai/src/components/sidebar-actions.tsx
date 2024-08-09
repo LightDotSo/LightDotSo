@@ -16,7 +16,7 @@
 
 import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { IconShare, IconSpinner, IconTrash } from "@/components/icons";
-import type { Chat, ServerActionResult } from "@/lib/types";
+import type { Chat, ServerActionResult } from "@/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@lightdotso/ui";
 import { toast } from "@lightdotso/ui";
 import {

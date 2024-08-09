@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { getMissingKeys } from "@/app/actions";
+import { AI } from "@/chat/actions";
 import { Chat } from "@/components/chat";
-import { AI } from "@/lib/chat/actions";
 import type { Metadata } from "next";
 
 // -----------------------------------------------------------------------------
