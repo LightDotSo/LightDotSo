@@ -63,7 +63,7 @@ export const Spiral: FC = () => {
     >
       <img
         className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover"
-        src="/spiral.svg"
+        src="/home/spiral.svg"
         alt="Spiral"
       />
     </div>
