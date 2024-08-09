@@ -148,6 +148,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   const urls = useMemo(
     () =>
       [
+        `https://assets.smold.app/api/token/${tokenChainId}/${tokenAddress}/logo.svg`,
         `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
         `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
         `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
