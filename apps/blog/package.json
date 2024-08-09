@@ -38,14 +38,14 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
-    "lucide-react": "^0.424.0",
+    "lucide-react": "^0.426.0",
     "motion": "^10.18.0",
     "next": "15.0.0-canary.87",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-error-boundary": "^4.0.13",
-    "tailwindcss": "^3.4.8",
+    "tailwindcss": "^3.4.9",
     "typescript": "^5.5.4"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.8",
+    "tailwindcss": "^3.4.9",
     "typescript": "^5.5.4"
   }
 }

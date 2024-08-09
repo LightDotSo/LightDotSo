@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { MagicCard } from "@/components/magic-card";
+import { MagicContainer } from "@/components/magic-container";
 import { NextImage } from "@lightdotso/elements";
 import type { FC } from "react";
 
@@ -39,7 +41,7 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative col-span-1 w-full rounded-md bg-black">
+    <MagicCard backgroundColor="bg-black" className="col-span-1 w-full">
       <div className="absolute top-0 right-0 left-0 p-4">
         <p className="font-bold font-normal text-white text-xl sm:text-3xl">
           {title}
@@ -47,14 +49,14 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
         <p className="mt-2 text-gray-300 tracking-tighter">{description}</p>
       </div>
       <NextImage
-        className="relative mt-12"
+        className="relative mt-12 w-full"
         alt={title}
         src={imageUrl}
         width={572}
         height={690}
         style={{ width: "100%", height: "auto", objectFit: "cover" }}
       />
-    </div>
+    </MagicCard>
   );
 };
 
@@ -75,7 +77,7 @@ export const Unified: FC = () => {
           An Unified Crypto Experience.
         </h1>
       </div>
-      <div className="mt-16 grid w-full max-w-5xl grid-cols-3 gap-5">
+      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-3 gap-5">
         <UnifiedCard
           title="Gasless"
           description="No need to bridge, or refuel across chains. Select any asset you own across chains to pay for gas."
@@ -91,7 +93,7 @@ export const Unified: FC = () => {
           description="One signature, batch execute across chains. No need for multiple clicks, it all works with one single signature."
           imageUrl="https://assets.light.so/home/programmable-execution.png"
         />
-      </div>
+      </MagicContainer>
     </div>
   );
 };

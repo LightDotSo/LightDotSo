@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import packageJson from "./package.json" assert { type: "json" };
+
+// ---------------------------------------------------------------------------
+// Next Config
+// ---------------------------------------------------------------------------
+
 // ---------------------------------------------------------------------------
 // Next Config
 // ---------------------------------------------------------------------------
@@ -19,8 +25,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: "/proposals",
+  env: {
+    NEXT_PUBLIC_APP_VERSION: `@lightdotso/proposals@${packageJson.version}`,
+  },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.light.so",
+        port: "",
+      },
+    ],
   },
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };

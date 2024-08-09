@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { MagicCard } from "@/components/magic-card";
+import { MagicContainer } from "@/components/magic-container";
 import { MAINNET_CHAINS } from "@lightdotso/const";
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
@@ -35,13 +37,16 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative col-span-1 w-full rounded-md border border-border bg-background-weak p-4">
+    <MagicCard
+      backgroundColor="bg-background-weak"
+      className="col-span-1 w-full p-4"
+    >
       <ChainLogo chainId={chain.id} size="lg" />
       <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
         {chain?.name}
       </p>
       <p className="text-text-weak tracking-tighter">{chain?.name}</p>
-    </div>
+    </MagicCard>
   );
 };
 
@@ -62,11 +67,11 @@ export const Chains: FC = () => {
           Light brings all chains as one.
         </h1>
       </div>
-      <div className="mt-16 grid w-full max-w-5xl grid-cols-4 gap-5">
+      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-4 gap-5">
         {MAINNET_CHAINS.slice(0, 20).map((chain) => (
           <ChainCard key={chain.id} chain={chain} />
         ))}
-      </div>
+      </MagicContainer>
     </div>
   );
 };

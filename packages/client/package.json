@@ -43,7 +43,7 @@
     "graphql-request": "^6.1.0",
     "neverthrow": "^7.0.0",
     "openapi-fetch": "^0.9.7",
-    "type-fest": "^4.23.0",
+    "type-fest": "^4.24.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
