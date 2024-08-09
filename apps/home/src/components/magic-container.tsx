@@ -137,6 +137,10 @@ export const MagicContainer = ({
     }
   };
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className={cn("h-full w-full", className)} ref={containerRef}>
       {children}

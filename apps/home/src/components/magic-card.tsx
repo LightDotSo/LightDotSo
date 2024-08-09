@@ -19,33 +19,20 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import {} from "framer-motion";
-import { type MouseEvent, useCallback, useEffect } from "react";
-import type {
-  CSSProperties,
-  HTMLAttributes,
-  ReactElement,
-  ReactNode,
-} from "react";
+import {} from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 export interface MagicCardProps extends HTMLAttributes<HTMLDivElement> {
-  as?: ReactElement;
   className?: string;
   children?: ReactNode;
   size?: number;
-  spotlight?: boolean;
-  spotlightColor?: string;
-  isolated?: boolean;
-  background?: string;
+  backgroundColor?: string;
   borderColor?: string;
-  gradientSize?: number;
-  gradientColor?: string;
-  gradientOpacity?: number;
 }
 
 // -----------------------------------------------------------------------------
@@ -56,52 +43,16 @@ export function MagicCard({
   children,
   className,
   size = 600,
-  spotlight = true,
+  backgroundColor,
   borderColor = "hsl(0 0% 98%)",
-  isolated = true,
-  gradientSize = 300,
-  gradientColor = "#262626",
-  gradientOpacity = 0.9,
   ...props
 }: MagicCardProps) {
   // ---------------------------------------------------------------------------
-  // Motion Values
+  // Render
   // ---------------------------------------------------------------------------
-
-  const mouseX = useMotionValue(-gradientSize);
-  const mouseY = useMotionValue(-gradientSize);
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      const { left, top } = e.currentTarget.getBoundingClientRect();
-      mouseX.set(e.clientX - left);
-      mouseY.set(e.clientY - top);
-    },
-    [mouseX, mouseY],
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    mouseX.set(-gradientSize);
-    mouseY.set(-gradientSize);
-  }, [mouseX, mouseY, gradientSize]);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    mouseX.set(-gradientSize);
-    mouseY.set(-gradientSize);
-  }, [mouseX, mouseY, gradientSize]);
 
   return (
     <div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       style={
         {
           "--mask-size": `${size}px`,
@@ -109,24 +60,18 @@ export function MagicCard({
         } as CSSProperties
       }
       className={cn(
-        "z-20 h-full w-full rounded-lg",
-        "bg-gray-300 dark:bg-gray-700",
+        "relative z-10 h-full w-full overflow-hidden rounded-md",
+        // This is the border color that is present in the inset
+        "bg-gray-500 dark:bg-gray-700",
         "bg-[radial-gradient(var(--mask-size)_circle_at_var(--mouse-x)_var(--mouse-y),var(--border-color),transparent_100%)]",
         className,
       )}
       {...props}
     >
-      <div className="relative z-10">{children}</div>
-      <motion.div
-        className="pointer-events-none absolute inset-[1px] rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 "
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
-          `,
-          opacity: gradientOpacity,
-        }}
+      <div className="z-10">{children}</div>
+      <div
+        className={cn("-z-20 absolute inset-[1px] rounded-md", backgroundColor)}
       />
-      <div className="-z-20 absolute inset-[1px] rounded-lg bg-black" />
     </div>
   );
 }

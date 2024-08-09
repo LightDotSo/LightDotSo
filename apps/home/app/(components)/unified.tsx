@@ -41,7 +41,7 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <MagicCard className="relative col-span-1 w-full bg-black">
+    <MagicCard backgroundColor="bg-black" className="col-span-1 w-full">
       <div className="absolute top-0 right-0 left-0 p-4">
         <p className="font-bold font-normal text-white text-xl sm:text-3xl">
           {title}
