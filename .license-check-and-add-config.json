@@ -125,8 +125,7 @@
     "**/snapshots/**",
     "**/target/**",
     "**/tools/**",
-    "**/wiki/**",
-    "!apps/ai/src/lib/**"
+    "**/wiki/**"
   ],
   "license": "LICENSE.header",
   "defaultFormat": {
