@@ -20,7 +20,6 @@ import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import type { FC } from "react";
@@ -63,27 +62,25 @@ export const UserOperationCardTransactionSignButton: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            disabled={!isUserOperationSignable}
-            isLoading={isUserOperationSignPending}
-            variant={isUserOperationSignable ? "default" : "outline"}
-            className="w-full"
-            onClick={signUserOperation}
-          >
-            Sign
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          {isUserOperationSignable
-            ? "Sign this transaction"
-            : isUserOperationSigned
-              ? "You have already signed this transaction"
-              : "This transaction is not signable"}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          disabled={!isUserOperationSignable}
+          isLoading={isUserOperationSignPending}
+          variant={isUserOperationSignable ? "default" : "outline"}
+          className="w-full"
+          onClick={signUserOperation}
+        >
+          Sign
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        {isUserOperationSignable
+          ? "Sign this transaction"
+          : isUserOperationSigned
+            ? "You have already signed this transaction"
+            : "This transaction is not signable"}
+      </TooltipContent>
+    </Tooltip>
   );
 };

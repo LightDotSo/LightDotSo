@@ -24,7 +24,6 @@ import {
   Badge,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
@@ -169,79 +168,77 @@ export const RootContext: FC = () => {
     <div className="space-y-6">
       <AnimatePresence>
         <motion.div className="rounded-md border border-border bg-background-weak">
-          <TooltipProvider>
-            <div className="flex-col space-y-3 p-4">
-              {pathname === "/new" && (
-                <div>
-                  Thank you for using Light!
-                  <div className="mt-1.5 text-sm text-text-weak">
-                    We&apos;re currently in private beta. Get on waitlist here
-                    if you don&apos;t have an invite code yet.&nbsp;
-                    <a
-                      className="underline hover:text-text-weaker"
-                      href={INTERNAL_LINKS.Waitlist}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Waitlist
-                      <ArrowUpRight className="mb-3 ml-1 inline size-2" />
-                    </a>
-                  </div>
+          <div className="flex-col space-y-3 p-4">
+            {pathname === "/new" && (
+              <div>
+                Thank you for using Light!
+                <div className="mt-1.5 text-sm text-text-weak">
+                  We&apos;re currently in private beta. Get on waitlist here if
+                  you don&apos;t have an invite code yet.&nbsp;
+                  <a
+                    className="underline hover:text-text-weaker"
+                    href={INTERNAL_LINKS.Waitlist}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Waitlist
+                    <ArrowUpRight className="mb-3 ml-1 inline size-2" />
+                  </a>
                 </div>
-              )}
-              {address && (
-                <div className="flex justify-between">
-                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
-                  <>
-                    Your New Address:{" "}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span>{shortenAddress(address)}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{address}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </>
-                </div>
-              )}
-              {formValues?.name && (
-                <div className="flex justify-between">
-                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
-                  <>
-                    Name:{" "}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span>{formValues.name}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>This can be edited later!</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </>
-                </div>
-              )}
-              {formValues?.threshold && (
-                <div className="flex justify-between">
-                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
-                  <>
-                    Threshold:{" "}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span>{formValues.threshold}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          The number of threshold that need to sign a
-                          transaction for it to be valid.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </>
-                </div>
-              )}
-            </div>
-          </TooltipProvider>
+              </div>
+            )}
+            {address && (
+              <div className="flex justify-between">
+                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
+                <>
+                  Your New Address:{" "}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>{shortenAddress(address)}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{address}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </>
+              </div>
+            )}
+            {formValues?.name && (
+              <div className="flex justify-between">
+                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
+                <>
+                  Name:{" "}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>{formValues.name}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>This can be edited later!</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </>
+              </div>
+            )}
+            {formValues?.threshold && (
+              <div className="flex justify-between">
+                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
+                <>
+                  Threshold:{" "}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>{formValues.threshold}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        The number of threshold that need to sign a transaction
+                        for it to be valid.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </>
+              </div>
+            )}
+          </div>
         </motion.div>
         {formInfos && formInfos && formInfos.length > 0 && (
           <motion.div

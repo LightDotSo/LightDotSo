@@ -65,8 +65,10 @@ import { z } from "zod";
 // Action
 // -----------------------------------------------------------------------------
 
-function confirmPurchase(symbol: string, price: number, amount: number) {
+async function confirmPurchase(symbol: string, price: number, amount: number) {
   "use server";
+
+  await sleep(1000);
 
   const aiState = getMutableAIState<typeof AI>();
 

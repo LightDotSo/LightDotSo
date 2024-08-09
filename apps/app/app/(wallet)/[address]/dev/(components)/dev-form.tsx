@@ -38,7 +38,6 @@ import {
   FormMessage,
   Input,
   Label,
-  TooltipProvider,
 } from "@lightdotso/ui";
 import { getChainWithChainId } from "@lightdotso/utils";
 import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
@@ -229,144 +228,139 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
         <CardDescription>Input ABI to submit.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-10">
-        <TooltipProvider delayDuration={300}>
-          <Form {...form}>
-            <form
-              id="dev-form"
-              className="space-y-8"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
-              <FormField
-                control={form.control}
-                name="chainId"
-                render={({ field }) => {
-                  const chain = getChainWithChainId(field.value);
+        <Form {...form}>
+          <form
+            id="dev-form"
+            className="space-y-8"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <FormField
+              control={form.control}
+              name="chainId"
+              render={({ field }) => {
+                const chain = getChainWithChainId(field.value);
 
-                  return (
-                    <FormControl>
-                      <div className="w-full space-y-2">
-                        <Label htmlFor="chain">Chain</Label>
-                        <Button
-                          id="chain"
-                          size="lg"
-                          type="button"
-                          variant="outline"
-                          className="flex w-full items-center justify-between px-4 text-sm"
-                          onClick={() => {
-                            setChainModalProps({
-                              onClose: () => {
-                                hideChainModal();
-                                setSendBackgroundModal(false);
-                              },
-                              onChainSelect: (chainId) => {
-                                field.onChange(chainId);
-                                form.trigger();
-
-                                hideChainModal();
-                                if (isInsideModal) {
-                                  setSendBackgroundModal(false);
-                                }
-                              },
-                            });
-                            showChainModal();
-                          }}
-                        >
-                          {field.value ? (
-                            <>
-                              <ChainLogo
-                                className="mr-2"
-                                chainId={field.value}
-                              />
-                              {chain.name}
-                            </>
-                          ) : (
-                            "Select Chain"
-                          )}
-                          <div className="grow" />
-                          <ChevronDown className="size-4 opacity-50" />
-                        </Button>
-                        <FormMessage />
-                      </div>
-                    </FormControl>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="value"
-                render={({ field }) => (
+                return (
                   <FormControl>
-                    <div>
-                      <Label htmlFor="value">Value</Label>
-                      <Input
-                        {...field}
-                        className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                        type="text"
-                        placeholder="Your value in native token"
-                        onBlur={(e) => {
-                          // Validate the address
-                          if (!e.target.value) {
-                            // Clear the value of key address
-                            form.setValue("value", 0);
-                          }
+                    <div className="w-full space-y-2">
+                      <Label htmlFor="chain">Chain</Label>
+                      <Button
+                        id="chain"
+                        size="lg"
+                        type="button"
+                        variant="outline"
+                        className="flex w-full items-center justify-between px-4 text-sm"
+                        onClick={() => {
+                          setChainModalProps({
+                            onClose: () => {
+                              hideChainModal();
+                              setSendBackgroundModal(false);
+                            },
+                            onChainSelect: (chainId) => {
+                              field.onChange(chainId);
+                              form.trigger();
 
-                          const quantity = Number.parseFloat(e.target.value);
-
-                          if (!Number.isNaN(quantity)) {
-                            validateBalanceQuantity(quantity);
-                          }
+                              hideChainModal();
+                              if (isInsideModal) {
+                                setSendBackgroundModal(false);
+                              }
+                            },
+                          });
+                          showChainModal();
                         }}
-                        onChange={(e) => {
-                          // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
-                          if (
-                            e.target.value.endsWith(".") ||
-                            (e.target.value.includes(".") &&
-                              e.target.value.endsWith("0"))
-                          ) {
-                            field.onChange(e.target.value);
-                          } else {
-                            // Only parse to float if the value doesn't end with "."
-                            field.onChange(
-                              Number.parseFloat(e.target.value) || 0,
-                            );
-                          }
-
-                          // Validate the number
-                          const quantity = Number.parseFloat(e.target.value);
-
-                          if (!Number.isNaN(quantity)) {
-                            validateBalanceQuantity(quantity);
-                          }
-                        }}
-                      />
+                      >
+                        {field.value ? (
+                          <>
+                            <ChainLogo className="mr-2" chainId={field.value} />
+                            {chain.name}
+                          </>
+                        ) : (
+                          "Select Chain"
+                        )}
+                        <div className="grow" />
+                        <ChevronDown className="size-4 opacity-50" />
+                      </Button>
                       <FormMessage />
-                      <div className="mt-2 flex items-center justify-between text-text-weak text-xs">
-                        <div>{/* tokenPrice could come here */}</div>
-                        <div>
-                          &nbsp;
-                          {balance?.data?.decimals &&
-                          typeof balance.data?.decimals === "number"
-                            ? `${balance.data?.value / BigInt(10 ** balance.data?.decimals)} ${balance.data?.symbol} available`
-                            : ""}
-                        </div>
-                      </div>
                     </div>
                   </FormControl>
-                )}
-              />
-              <AbiForm name="abi" />
-              {/* Show all errors for debugging */}
-              {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
-              <FooterButton
-                form="dev-form"
-                isModal={false}
-                cancelDisabled={true}
-                disabled={!isFormValid}
-              />
-            </form>
-          </Form>
-        </TooltipProvider>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormControl>
+                  <div>
+                    <Label htmlFor="value">Value</Label>
+                    <Input
+                      {...field}
+                      className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      type="text"
+                      placeholder="Your value in native token"
+                      onBlur={(e) => {
+                        // Validate the address
+                        if (!e.target.value) {
+                          // Clear the value of key address
+                          form.setValue("value", 0);
+                        }
+
+                        const quantity = Number.parseFloat(e.target.value);
+
+                        if (!Number.isNaN(quantity)) {
+                          validateBalanceQuantity(quantity);
+                        }
+                      }}
+                      onChange={(e) => {
+                        // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                        if (
+                          e.target.value.endsWith(".") ||
+                          (e.target.value.includes(".") &&
+                            e.target.value.endsWith("0"))
+                        ) {
+                          field.onChange(e.target.value);
+                        } else {
+                          // Only parse to float if the value doesn't end with "."
+                          field.onChange(
+                            Number.parseFloat(e.target.value) || 0,
+                          );
+                        }
+
+                        // Validate the number
+                        const quantity = Number.parseFloat(e.target.value);
+
+                        if (!Number.isNaN(quantity)) {
+                          validateBalanceQuantity(quantity);
+                        }
+                      }}
+                    />
+                    <FormMessage />
+                    <div className="mt-2 flex items-center justify-between text-text-weak text-xs">
+                      <div>{/* tokenPrice could come here */}</div>
+                      <div>
+                        &nbsp;
+                        {balance?.data?.decimals &&
+                        typeof balance.data?.decimals === "number"
+                          ? `${balance.data?.value / BigInt(10 ** balance.data?.decimals)} ${balance.data?.symbol} available`
+                          : ""}
+                      </div>
+                    </div>
+                  </div>
+                </FormControl>
+              )}
+            />
+            <AbiForm name="abi" />
+            {/* Show all errors for debugging */}
+            {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+            {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
+            <FooterButton
+              form="dev-form"
+              isModal={false}
+              cancelDisabled={true}
+              disabled={!isFormValid}
+            />
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

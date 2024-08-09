@@ -34,7 +34,6 @@ import {
   CommandGroup,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
@@ -363,52 +362,47 @@ export const TokenModal: FC = () => {
       open={isTokenModalVisible}
       className="p-2"
       bannerContent={
-        <TooltipProvider delayDuration={300}>
-          <div
-            ref={containerRef}
-            className="flex w-full flex-row space-x-2 p-2"
+        <div ref={containerRef} className="flex w-full flex-row space-x-2 p-2">
+          <Button
+            className={cn(
+              "w-28 shrink-0",
+              chainState === null && "ring-2 ring-border-strong",
+            )}
+            variant="shadow"
+            onClick={() => setChainState(null)}
           >
-            <Button
-              className={cn(
-                "w-28 shrink-0",
-                chainState === null && "ring-2 ring-border-strong",
-              )}
-              variant="shadow"
-              onClick={() => setChainState(null)}
-            >
-              All Chains
-            </Button>
-            {renderedChains.map((chain) => (
-              <Tooltip key={chain.id}>
-                <TooltipTrigger asChild>
-                  <ButtonIcon
-                    size="default"
-                    className={cn(
-                      "shrink-0",
-                      chainState &&
-                        chainState.id === chain.id &&
-                        "ring-2 ring-border-strong",
-                    )}
-                    variant="shadow"
-                    onClick={() => setChainState(chain)}
-                  >
-                    {chain.id === 0 ? (
-                      <SparklesIcon className="size-4" />
-                    ) : (
-                      <ChainLogo chainId={chain.id} />
-                    )}
-                  </ButtonIcon>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{chain.name}</p>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-            <Button onClick={showChainModal} className="grow" variant="outline">
-              More
-            </Button>
-          </div>
-        </TooltipProvider>
+            All Chains
+          </Button>
+          {renderedChains.map((chain) => (
+            <Tooltip key={chain.id}>
+              <TooltipTrigger asChild>
+                <ButtonIcon
+                  size="default"
+                  className={cn(
+                    "shrink-0",
+                    chainState &&
+                      chainState.id === chain.id &&
+                      "ring-2 ring-border-strong",
+                  )}
+                  variant="shadow"
+                  onClick={() => setChainState(chain)}
+                >
+                  {chain.id === 0 ? (
+                    <SparklesIcon className="size-4" />
+                  ) : (
+                    <ChainLogo chainId={chain.id} />
+                  )}
+                </ButtonIcon>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{chain.name}</p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
+          <Button onClick={showChainModal} className="grow" variant="outline">
+            More
+          </Button>
+        </div>
       }
       onClose={onClose}
     >

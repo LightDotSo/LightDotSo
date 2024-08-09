@@ -28,6 +28,7 @@
 
 import "@lightdotso/styles/global.css";
 import { Header } from "@/components/header";
+import { SidebarProvider } from "@/hooks/use-sidebar";
 import { Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
 
@@ -77,10 +78,12 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <Root>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex flex-1 flex-col bg-muted/50">{children}</main>
-      </div>
+      <SidebarProvider>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex flex-1 flex-col bg-muted/50">{children}</main>
+        </div>
+      </SidebarProvider>
     </Root>
   );
 }

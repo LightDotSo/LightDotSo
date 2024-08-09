@@ -21,7 +21,6 @@ import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { PencilIcon } from "lucide-react";
@@ -60,41 +59,39 @@ export const OwnerOverviewBanner: FC = () => {
     }
 
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              disabled={isOwnerModalVisible}
-              type="button"
-              className="w-full md:w-28"
-              onClick={() => {
-                setOwnerModalProps({
-                  initialOwners: configuration?.owners
-                    ? configuration?.owners.map((owner) => {
-                        return {
-                          address: owner.address as Address,
-                          addressOrEns: owner.address,
-                          weight: owner.weight,
-                        };
-                      })
-                    : [],
-                  initialThreshold: configuration?.threshold ?? 1,
-                  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
-                  onOwnerSelect: () => {},
-                });
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            disabled={isOwnerModalVisible}
+            type="button"
+            className="w-full md:w-28"
+            onClick={() => {
+              setOwnerModalProps({
+                initialOwners: configuration?.owners
+                  ? configuration?.owners.map((owner) => {
+                      return {
+                        address: owner.address as Address,
+                        addressOrEns: owner.address,
+                        weight: owner.weight,
+                      };
+                    })
+                  : [],
+                initialThreshold: configuration?.threshold ?? 1,
+                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+                onOwnerSelect: () => {},
+              });
 
-                showOwnerModal();
-              }}
-            >
-              <PencilIcon className="mr-2 size-4" />
-              Edit
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Edit Owners</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+              showOwnerModal();
+            }}
+          >
+            <PencilIcon className="mr-2 size-4" />
+            Edit
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Edit Owners</p>
+        </TooltipContent>
+      </Tooltip>
     );
   };
 

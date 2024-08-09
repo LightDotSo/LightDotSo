@@ -18,6 +18,7 @@ import {
   TailwindIndicator,
   ThemeProvider,
   Toaster,
+  TooltipProvider,
   VercelToolbar,
 } from "@lightdotso/ui";
 import { Inter } from "next/font/google";
@@ -60,7 +61,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-dvh bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
             <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>

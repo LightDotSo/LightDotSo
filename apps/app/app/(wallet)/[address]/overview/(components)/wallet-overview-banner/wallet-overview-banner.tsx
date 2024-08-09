@@ -22,7 +22,6 @@ import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import Link from "next/link";
@@ -60,21 +59,19 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
     }
 
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button asChild type="button" className="w-full md:w-28">
-              <Link href={`/${address}/deposit`}>
-                <PlusCircleIcon className="mr-2 size-5" />
-                Deposit
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Deposit Assets</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button asChild type="button" className="w-full md:w-28">
+            <Link href={`/${address}/deposit`}>
+              <PlusCircleIcon className="mr-2 size-5" />
+              Deposit
+            </Link>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Deposit Assets</p>
+        </TooltipContent>
+      </Tooltip>
     );
   };
 
