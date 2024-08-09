@@ -43,7 +43,7 @@ importers:
         version: 2.13.0-alpha.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       solc:
         specifier: 0.8.18
-        version: 0.8.18
+        version: 0.8.18(debug@4.3.5)
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.0
@@ -62,16 +62,16 @@ importers:
         version: 0.10.0(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@evmts/core':
         specifier: ^0.11.2
-        version: 0.11.2(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+        version: 0.11.2(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/ts-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+        version: 0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/vite-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))(zod@3.23.8)
+        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))(zod@3.23.8)
       '@evmts/webpack-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.23.0))(zod@3.23.8)
+        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.23.0))(zod@3.23.8)
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:packages/sequence
@@ -205,8 +205,8 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       npm-check-updates:
-        specifier: ^17.0.5
-        version: 17.0.5
+        specifier: ^17.0.6
+        version: 17.0.6
       npm-package-json-lint:
         specifier: ^8.0.0
         version: 8.0.0(typescript@5.5.4)
@@ -229,8 +229,8 @@ importers:
         specifier: ^2.10.0
         version: 2.10.0
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)
@@ -250,8 +250,8 @@ importers:
         specifier: ^35.2.3
         version: 35.2.3(@swc/core@1.7.6(@swc/helpers@0.5.12))(encoding@0.1.13)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       vite:
         specifier: ^5.4.0
         version: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
@@ -422,7 +422,7 @@ importers:
         version: 8.20.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       '@types/lodash':
         specifier: ^4.17.7
         version: 4.17.7
@@ -463,8 +463,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       msw:
         specifier: ^2.3.5
         version: 2.3.5(typescript@5.5.4)
@@ -479,7 +479,7 @@ importers:
         version: 0.3.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       permissionless:
         specifier: ^0.1.44
-        version: 0.1.44(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+        version: 0.1.44(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       postgres:
         specifier: ^3.4.4
         version: 3.4.4
@@ -523,8 +523,8 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -554,8 +554,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -630,8 +630,8 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       motion:
         specifier: ^10.18.0
         version: 10.18.0
@@ -651,8 +651,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -727,8 +727,8 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       motion:
         specifier: ^10.18.0
         version: 10.18.0
@@ -748,8 +748,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -801,8 +801,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -826,7 +826,7 @@ importers:
         version: 0.2.0(@content-collections/core@0.6.4(typescript@5.5.4))(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))
       '@fumadocs/content-collections':
         specifier: ^1.1.0
-        version: 1.1.0(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(fumadocs-core@13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))
+        version: 1.1.0(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(fumadocs-core@13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))
       '@lightdotso/templates':
         specifier: workspace:*
         version: link:../../packages/templates
@@ -840,14 +840,14 @@ importers:
         specifier: ^8.24.0
         version: 8.24.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.19.12))
       fumadocs-core:
-        specifier: ^13.0.7
-        version: 13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^13.1.0
+        version: 13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       fumadocs-openapi:
         specifier: ^3.3.0
         version: 3.3.0
       fumadocs-ui:
-        specifier: ^13.0.7
-        version: 13.0.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        specifier: ^13.1.0
+        version: 13.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -892,8 +892,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -994,8 +994,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(kysely@0.27.4)(postgres@3.4.4)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       neverthrow:
         specifier: ^7.0.0
         version: 7.0.0
@@ -1024,8 +1024,8 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tailwindcss':
         specifier: workspace:*
@@ -1049,8 +1049,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1150,8 +1150,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1198,8 +1198,8 @@ importers:
         specifier: ^11.3.24
         version: 11.3.24(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -1210,8 +1210,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     devDependencies:
       '@lightdotso/styles':
         specifier: workspace:*
@@ -1238,8 +1238,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1372,8 +1372,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1458,8 +1458,8 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       motion:
         specifier: ^10.18.0
         version: 10.18.0
@@ -1479,8 +1479,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1581,7 +1581,7 @@ importers:
         version: 8.20.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       esbuild:
         specifier: ^0.17.3
         version: 0.17.19
@@ -1666,16 +1666,16 @@ importers:
         version: 7.6.17
       '@storybook/nextjs':
         specifier: ^8.2.8
-        version: 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.23.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
+        version: 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.24.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@storybook/preview-api':
         specifier: ^8.2.8
-        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/preview-web':
         specifier: ^7.6.17
         version: 7.6.17
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/react-vite':
         specifier: ^8.2.8
         version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
@@ -1684,7 +1684,7 @@ importers:
         version: 0.2.2
       '@storybook/theming':
         specifier: ^8.2.8
-        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+        version: 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -1711,13 +1711,13 @@ importers:
         version: 0.8.0(typescript@5.5.4)
       storybook:
         specifier: ^8.2.8
-        version: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       storybook-dark-mode:
         specifier: ^4.0.2
         version: 4.0.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1833,25 +1833,25 @@ importers:
     dependencies:
       '@headlessui/tailwindcss':
         specifier: ^0.2.1
-        version: 0.2.1(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 0.4.2(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       '@tailwindcss/forms':
         specifier: ^0.5.7
-        version: 0.5.7(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 0.5.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       '@tailwindcss/typography':
         specifier: ^0.5.14
-        version: 0.5.14(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       tailwind-config-viewer:
         specifier: ^2.0.4
-        version: 2.0.4(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 2.0.4(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
 
   configurations/tsconfig: {}
 
@@ -1944,8 +1944,8 @@ importers:
         specifier: ^0.9.7
         version: 0.9.7
       type-fest:
-        specifier: ^4.23.0
-        version: 4.23.0
+        specifier: ^4.24.0
+        version: 4.24.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1978,8 +1978,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2022,8 +2022,8 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
 
   packages/demo:
     dependencies:
@@ -2107,14 +2107,14 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       permissionless:
         specifier: ^0.1.44
-        version: 0.1.44(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8))
+        version: 0.1.44(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8))
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
@@ -2128,8 +2128,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2139,7 +2139,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2183,8 +2183,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -2198,15 +2198,15 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2274,8 +2274,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
@@ -2283,8 +2283,8 @@ importers:
         specifier: ^7.52.2
         version: 7.52.2(react@19.0.0-rc-cc1ec60d0d-20240607)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2294,7 +2294,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -2368,8 +2368,8 @@ importers:
         specifier: ^2.3.2
         version: 2.3.2(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2492,13 +2492,13 @@ importers:
         version: link:../wagmi
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@tanstack/react-virtual':
         specifier: ^3.8.4
         version: 3.8.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       react:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
@@ -2512,8 +2512,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2571,8 +2571,8 @@ importers:
         specifier: ^1.17.8
         version: 1.17.8(next@15.0.0-canary.87(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2593,8 +2593,8 @@ importers:
         specifier: workspace:*
         version: link:../schemas
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2677,8 +2677,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -2753,8 +2753,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2842,8 +2842,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(typescript@5.5.4)(zod@3.23.8)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2876,8 +2876,8 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2892,8 +2892,8 @@ importers:
   packages/sequence:
     dependencies:
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2978,8 +2978,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3036,8 +3036,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -3084,7 +3084,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -3144,16 +3144,16 @@ importers:
         version: 1.3.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@tanstack/react-table':
         specifier: ^8.20.1
         version: 8.20.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3170,8 +3170,8 @@ importers:
         specifier: 2.13.0-alpha.4
         version: 2.13.0-alpha.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3252,8 +3252,8 @@ importers:
         specifier: ^11.3.24
         version: 11.3.24(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^0.426.0
+        version: 0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next:
         specifier: 15.0.0-canary.87
         version: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3276,8 +3276,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -3287,7 +3287,7 @@ importers:
         version: link:../../configurations/tsconfig
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -3316,8 +3316,8 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3521,20 +3521,20 @@ importers:
         specifier: 19.0.0-rc-cc1ec60d0d-20240607
         version: 19.0.0-rc-cc1ec60d0d-20240607
       react-resizable-panels:
-        specifier: ^2.0.22
-        version: 2.0.22(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+        specifier: ^2.0.23
+        version: 2.0.23(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+        version: 1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       vaul:
         specifier: ^0.9.1
         version: 0.9.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -3553,7 +3553,7 @@ importers:
         version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/react':
         specifier: ^8.2.8
-        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+        version: 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@types/node':
         specifier: ^22.1.0
         version: 22.1.0
@@ -3576,8 +3576,8 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       tailwindcss:
-        specifier: ^3.4.8
-        version: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+        specifier: ^3.4.9
+        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -3612,8 +3612,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3631,8 +3631,8 @@ importers:
         specifier: workspace:*
         version: link:../regexs
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -3651,16 +3651,16 @@ importers:
         version: link:../const
       '@wagmi/core':
         specifier: ^2.13.3
-        version: 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+        version: 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       connectkit:
         specifier: ^1.8.2
-        version: 1.8.2(u7yhjggpzyea22ykc5m6xfl2sq)
+        version: 1.8.2(56wvf5br4fsjzrnydzvod5p3xa)
       viem:
-        specifier: ^2.19.2
-        version: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^2.19.3
+        version: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       wagmi:
         specifier: ^2.12.4
-        version: 2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+        version: 2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -10226,11 +10226,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
 
-  '@tailwindcss/typography@0.5.13':
-    resolution: {integrity: sha512-ADGcJ8dX21dVVHIwTRgzrcunY6YY9uSlAHHGVKvkA+vLc5qLwEszvKts40lx7z0qc4clpjclwLeK5rVCV2P/uw==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-
   '@tailwindcss/typography@0.5.14':
     resolution: {integrity: sha512-ZvOCjUbsJBjL9CxQBn+VEnFpouzuKhxh2dH8xMIWHILL+HfOYtlAkWcyoon8LlzE53d2Yo6YO6pahKKNW3q1YQ==}
     peerDependencies:
@@ -14882,8 +14877,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fumadocs-core@13.0.7:
-    resolution: {integrity: sha512-Zved9fEbF6HPbbcnaOaCqqJDaQCnm2lQ3qCR0LlRPH1TgE6sL05lzz1+yFRFMxjwV8pP/Wm7cdJu4FJY0H2hyQ==}
+  fumadocs-core@13.1.0:
+    resolution: {integrity: sha512-3slE62xnO5VS1Xw3ajfyhepNIwfymO3FkjW1E4f+wfR5zSx3ljCib+yRMTC3wEp3S4rNzq65cp+FcAkb57OO6A==}
     peerDependencies:
       next: 15.0.0-canary.87
       react: 19.0.0-rc-cc1ec60d0d-20240607
@@ -14892,8 +14887,8 @@ packages:
   fumadocs-openapi@3.3.0:
     resolution: {integrity: sha512-a6G1+FoBA4kH2HnjlgwmPpO9z4itrKPRENkVqxJPsOCwpCKdHZc6Tpwogo9CXvEifGqjAvyTbhNPy0N3+YmHLg==}
 
-  fumadocs-ui@13.0.7:
-    resolution: {integrity: sha512-tRgk2P4EVYTJQmWH9OV4qF016+AFYwN7qis4OXArcy/ocR2N3Qnhf3k/gQZavu4Pf4gXJ7ANG2Or0YJYQY2miA==}
+  fumadocs-ui@13.1.0:
+    resolution: {integrity: sha512-WoX3NEEA4K+gX6119Lt79E3IDZgz1hPKDHkz674Pod0uNSt+MKnefqW8WJnLOW8fJIOnmvhoN5TJeNKsLeiQsg==}
     peerDependencies:
       next: 15.0.0-canary.87
       react: 19.0.0-rc-cc1ec60d0d-20240607
@@ -16693,10 +16688,6 @@ packages:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
 
-  lilconfig@3.1.1:
-    resolution: {integrity: sha512-O18pf7nyvHTckunPWCV1XUNXU1piu01y2b7ATJ0ppkUkk8ocqVWBrYjJBCwHDjD/ZWcfyrA0P4gKhzWGi5EINQ==}
-    engines: {node: '>=14'}
-
   lilconfig@3.1.2:
     resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
     engines: {node: '>=14'}
@@ -16980,8 +16971,8 @@ packages:
     peerDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
-  lucide-react@0.424.0:
-    resolution: {integrity: sha512-x2Nj2aytk1iOyHqt4hKenfVlySq0rYxNeEf8hE0o+Yh0iE36Rqz0rkngVdv2uQtjZ70LAE73eeplhhptYt9x4Q==}
+  lucide-react@0.426.0:
+    resolution: {integrity: sha512-aby5G+Zt+LIIEU0n9900XQNJFJUcs7/S+jOEgIhkV08NX3kGx1zxALKh1JvAKcYqutWLg07exbnYvh66szhrRA==}
     peerDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
@@ -18145,8 +18136,8 @@ packages:
     resolution: {integrity: sha512-gZLxXdjEzE/+mOstGDqR6b0EkhJ+kM6fxM6vUuckuctuVPh80Q6pw/rSZj9s4Gex9GxWtIicO1pc8DB9KZWudw==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
 
-  npm-check-updates@17.0.5:
-    resolution: {integrity: sha512-PfJ7fJDRelNwDWfUYq7b7EBh56xLvxcBOEvYWe6aQbjV0i+fg7LSIdkcVjb6lIxlxvQqlaAX6Lsln69XadL22Q==}
+  npm-check-updates@17.0.6:
+    resolution: {integrity: sha512-KCiaJH1cfnh/RyzKiDNjNfXgcKFyQs550Uf1OF/Yzb8xO56w+RLpP/OKRUx23/GyP/mLYwEpOO65qjmVdh6j0A==}
     engines: {node: ^18.18.0 || >=20.0.0, npm: '>=8.12.1'}
     hasBin: true
 
@@ -19532,8 +19523,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@2.0.22:
-    resolution: {integrity: sha512-G8x8o7wjQxCG+iF4x4ngKVBpe0CY+DAZ/SaiDoqBEt0yuKJe9OE/VVYMBMMugQ3GyQ65NnSJt23tujlaZZe75A==}
+  react-resizable-panels@2.0.23:
+    resolution: {integrity: sha512-8ZKTwTU11t/FYwiwhMdtZYYyFxic5U5ysRu2YwfkAgDbUJXFvnWSJqhnzkSlW+mnDoNAzDCrJhdOSXBPA76wug==}
     peerDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607
@@ -20948,8 +20939,8 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@3.4.8:
-    resolution: {integrity: sha512-GkP17r9GQkxgZ9FKHJQEnjJuKBcbFhMFzKu5slmN6NjlCuFnYJMQ8N4AZ6VrUyiRXlDtPKHkesuQ/MS913Nvdg==}
+  tailwindcss@3.4.9:
+    resolution: {integrity: sha512-1SEOvRr6sSdV5IDf9iC+NU4dhwdqzF4zKKq3sAbasUWHEM6lsMhX+eNN5gkPx1BvLFEnZQEUFbXnGj8Qlp83Pg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -21456,6 +21447,10 @@ packages:
     resolution: {integrity: sha512-ZiBujro2ohr5+Z/hZWHESLz3g08BBdrdLMieYFULJO+tWc437sn8kQsWLJoZErY8alNhxre9K4p3GURAG11n+w==}
     engines: {node: '>=16'}
 
+  type-fest@4.24.0:
+    resolution: {integrity: sha512-spAaHzc6qre0TlZQQ2aA/nGMe+2Z/wyGk5Z+Ru2VUfdNwT6kWO6TjevOlpebsATEG1EIQ2sOiDszud3lO5mt/Q==}
+    engines: {node: '>=16'}
+
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
@@ -21949,8 +21944,8 @@ packages:
       typescript:
         optional: true
 
-  viem@2.19.2:
-    resolution: {integrity: sha512-BrR7fEEpuu9Om7obQGThb4BEu00PPHPKaUx+snB/F6yBZtr34FdXCPnphr+S73W2iIu/mt3yaRkfkLlD6a1R5g==}
+  viem@2.19.3:
+    resolution: {integrity: sha512-djOw1X/jOvDOEMiol4g/T030MVncF2utC9G929ODNJ/00E7UXjSpwOeuyapmaqn831eSIHlELicZETYl2vI9oQ==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
@@ -25267,16 +25262,16 @@ snapshots:
       '@ethersproject/properties': 5.7.0
       '@ethersproject/strings': 5.7.0
 
-  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
+  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
-      '@evmts/core': 0.11.2(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+      '@evmts/core': 0.11.2(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/tsconfig': 0.8.1
       '@types/node': 20.14.12
       '@types/resolve': 1.20.6
       glob: 10.4.2
       resolve: 1.22.8
-      solc: 0.8.18
+      solc: 0.8.18(debug@4.3.5)
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -25287,16 +25282,16 @@ snapshots:
       - viem
       - zod
 
-  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
+  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
-      '@evmts/core': 0.11.2(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+      '@evmts/core': 0.11.2(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/tsconfig': 0.8.1
       '@types/node': 20.14.12
       '@types/resolve': 1.20.6
       glob: 10.4.2
       resolve: 1.22.8
-      solc: 0.8.18
+      solc: 0.8.18(debug@4.3.5)
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -25312,7 +25307,7 @@ snapshots:
       '@types/node': 20.14.12
       bundle-require: 4.2.1(esbuild@0.19.2)
       jsonc-parser: 3.2.1
-      solc: 0.8.18
+      solc: 0.8.18(debug@4.3.5)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -25326,7 +25321,7 @@ snapshots:
       '@types/node': 20.14.12
       bundle-require: 4.2.1(esbuild@0.23.0)
       jsonc-parser: 3.2.1
-      solc: 0.8.18
+      solc: 0.8.18(debug@4.3.5)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -25335,16 +25330,16 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@evmts/core@0.11.2(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
+  '@evmts/core@0.11.2(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
     dependencies:
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
 
-  '@evmts/ts-plugin@0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
+  '@evmts/ts-plugin@0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       esbuild: 0.19.2
       glob: 10.4.1
-      solc: 0.8.18
+      solc: 0.8.18(debug@4.3.5)
       solidity-ast: 0.4.56
       typescript: 5.5.4
       zod: 3.23.8
@@ -25355,9 +25350,9 @@ snapshots:
 
   '@evmts/tsconfig@0.8.1': {}
 
-  '@evmts/vite-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))(zod@3.23.8)':
+  '@evmts/vite-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))(zod@3.23.8)':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
     transitivePeerDependencies:
       - bufferutil
@@ -25368,9 +25363,9 @@ snapshots:
       - viem
       - zod
 
-  '@evmts/webpack-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.23.0))(zod@3.23.8)':
+  '@evmts/webpack-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.23.0))(zod@3.23.8)':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.0)(solc@0.8.18)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       webpack: 5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.23.0)
     transitivePeerDependencies:
       - bufferutil
@@ -25465,11 +25460,11 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@fumadocs/content-collections@1.1.0(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(fumadocs-core@13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))':
+  '@fumadocs/content-collections@1.1.0(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(fumadocs-core@13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))':
     dependencies:
       '@content-collections/core': 0.6.4(typescript@5.5.4)
       '@content-collections/mdx': 0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      fumadocs-core: 13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      fumadocs-core: 13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       rehype-img-size: 1.0.1
 
   '@goldskycom/cli@9.3.0':
@@ -25543,9 +25538,9 @@ snapshots:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
 
-  '@headlessui/tailwindcss@0.2.1(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
+  '@headlessui/tailwindcss@0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
 
   '@heroicons/react@2.1.5(react@19.0.0-rc-cc1ec60d0d-20240607)':
     dependencies:
@@ -27303,7 +27298,7 @@ snapshots:
     dependencies:
       playwright: 1.46.0
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.14.2)(type-fest@4.23.0)(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.14.2)(type-fest@4.24.0)(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
     dependencies:
       ansi-html: 0.0.9
       core-js-pure: 3.37.1
@@ -27315,7 +27310,7 @@ snapshots:
       source-map: 0.7.4
       webpack: 5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)
     optionalDependencies:
-      type-fest: 4.23.0
+      type-fest: 4.24.0
       webpack-hot-middleware: 2.26.1
 
   '@pnpm/config.env-replace@1.1.0': {}
@@ -29976,7 +29971,7 @@ snapshots:
   '@safe-global/safe-apps-sdk@9.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.21.2
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -30554,21 +30549,21 @@ snapshots:
       '@types/uuid': 9.0.8
       dequal: 2.0.3
       polished: 4.3.1
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       uuid: 9.0.1
 
   '@storybook/addon-backgrounds@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-controls@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       dequal: 2.0.3
       lodash: 4.17.21
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-docs@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
@@ -30578,14 +30573,14 @@ snapshots:
       '@storybook/blocks': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/csf-plugin': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/react': 18.3.3
       fs-extra: 11.2.0
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       rehype-external-links: 3.0.0
       rehype-slug: 6.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -30601,7 +30596,7 @@ snapshots:
       '@storybook/addon-outline': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/addon-toolbars': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/addon-viewport': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -30609,7 +30604,7 @@ snapshots:
   '@storybook/addon-highlight@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addon-interactions@8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))':
     dependencies:
@@ -30617,7 +30612,7 @@ snapshots:
       '@storybook/instrumenter': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/test': 8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))
       polished: 4.3.1
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - '@jest/globals'
@@ -30630,7 +30625,7 @@ snapshots:
     dependencies:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
     optionalDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
@@ -30638,13 +30633,13 @@ snapshots:
   '@storybook/addon-measure@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tiny-invariant: 1.3.3
 
   '@storybook/addon-outline@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-postcss@2.0.0(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
@@ -30697,17 +30692,17 @@ snapshots:
 
   '@storybook/addon-themes@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/addon-toolbars@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addon-viewport@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       memoizerific: 1.11.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/addons@7.6.17(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)':
     dependencies:
@@ -30739,7 +30734,7 @@ snapshots:
       memoizerific: 1.11.3
       polished: 4.3.1
       react-colorful: 5.6.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       telejson: 7.2.0
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
@@ -30757,7 +30752,7 @@ snapshots:
       find-cache-dir: 3.3.2
       fs-extra: 11.2.0
       magic-string: 0.30.10
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
     optionalDependencies:
@@ -30784,7 +30779,7 @@ snapshots:
       path-browserify: 1.0.1
       process: 0.11.10
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       style-loader: 3.3.4(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       terser-webpack-plugin: 5.3.10(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       ts-dedent: 2.2.0
@@ -30914,9 +30909,9 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
-  '@storybook/components@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/components@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/core-common@7.6.19(encoding@0.1.13)':
     dependencies:
@@ -30963,7 +30958,7 @@ snapshots:
   '@storybook/core-webpack@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       '@types/node': 18.19.34
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
 
   '@storybook/core@8.2.8(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
@@ -30986,7 +30981,7 @@ snapshots:
 
   '@storybook/csf-plugin@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       unplugin: 1.10.1
 
   '@storybook/csf@0.1.11':
@@ -31004,7 +30999,7 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
       '@vitest/utils': 1.6.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       util: 0.12.5
 
   '@storybook/manager-api@7.6.17(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)':
@@ -31068,11 +31063,11 @@ snapshots:
       - react
       - react-dom
 
-  '@storybook/manager-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/manager-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
-  '@storybook/nextjs@8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.23.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
+  '@storybook/nextjs@8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/jest@29.5.12)(esbuild@0.17.19)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.24.0)(typescript@5.5.4)(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.25.2)
@@ -31087,10 +31082,10 @@ snapshots:
       '@babel/preset-react': 7.24.7(@babel/core@7.25.2)
       '@babel/preset-typescript': 7.24.7(@babel/core@7.25.2)
       '@babel/runtime': 7.25.0
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(type-fest@4.23.0)(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.2)(type-fest@4.24.0)(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@storybook/builder-webpack5': 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/preset-react-webpack': 8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/test': 8.2.8(@types/jest@29.5.12)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@22.1.0)(@vitest/ui@2.0.5(vitest@2.0.5))(less@4.2.0)(terser@5.31.1))
       '@types/node': 18.19.34
       '@types/semver': 7.5.8
@@ -31111,7 +31106,7 @@ snapshots:
       resolve-url-loader: 5.0.0
       sass-loader: 12.6.0(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       style-loader: 3.3.4(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       styled-jsx: 5.1.1(@babel/core@7.25.2)(react@19.0.0-rc-cc1ec60d0d-20240607)
       ts-dedent: 2.2.0
@@ -31158,7 +31153,7 @@ snapshots:
   '@storybook/preset-react-webpack@8.2.8(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
     dependencies:
       '@storybook/core-webpack': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.5.4)(webpack@5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19))
       '@types/node': 18.19.34
       '@types/semver': 7.5.8
@@ -31170,7 +31165,7 @@ snapshots:
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       resolve: 1.22.8
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tsconfig-paths: 4.2.0
       webpack: 5.91.0(@swc/core@1.7.6(@swc/helpers@0.5.12))(esbuild@0.17.19)
     optionalDependencies:
@@ -31216,9 +31211,9 @@ snapshots:
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
 
-  '@storybook/preview-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/preview-api@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/preview-web@7.6.17':
     dependencies:
@@ -31239,25 +31234,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/react-dom-shim@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/react-dom-shim@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/react-vite@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
       '@rollup/pluginutils': 5.1.0(rollup@4.19.0)
       '@storybook/builder-vite': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1))
-      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@storybook/react': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
       find-up: 5.0.0
       magic-string: 0.30.10
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-docgen: 7.0.3
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       resolve: 1.22.8
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       tsconfig-paths: 4.2.0
       vite: 5.4.0(@types/node@22.1.0)(less@4.2.0)(terser@5.31.1)
     transitivePeerDependencies:
@@ -31267,14 +31262,14 @@ snapshots:
       - typescript
       - vite-plugin-glimmerx
 
-  '@storybook/react@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
+  '@storybook/react@8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)':
     dependencies:
-      '@storybook/components': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/components': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@storybook/global': 5.0.0
-      '@storybook/manager-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/preview-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/manager-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/preview-api': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/react-dom-shim': 8.2.8(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@types/escodegen': 0.0.6
       '@types/estree': 0.0.51
       '@types/node': 18.19.34
@@ -31289,7 +31284,7 @@ snapshots:
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
       react-element-to-jsx-string: 15.0.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       semver: 7.6.3
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       util-deprecate: 1.0.2
@@ -31323,7 +31318,7 @@ snapshots:
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.1.0)
       '@vitest/expect': 1.6.0
       '@vitest/spy': 1.6.0
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       util: 0.12.5
     transitivePeerDependencies:
       - '@jest/globals'
@@ -31366,9 +31361,9 @@ snapshots:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
 
-  '@storybook/theming@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
+  '@storybook/theming@8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))':
     dependencies:
-      storybook: 8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      storybook: 8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   '@storybook/types@7.6.17':
     dependencies:
@@ -31455,30 +31450,22 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
 
-  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
+  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
 
-  '@tailwindcss/typography@0.5.13(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
+  '@tailwindcss/typography@0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
-
-  '@tailwindcss/typography@0.5.14(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
-    dependencies:
-      lodash.castarray: 4.4.0
-      lodash.isplainobject: 4.0.6
-      lodash.merge: 4.6.2
-      postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
 
   '@tanstack/query-core@5.51.21': {}
 
@@ -31721,11 +31708,11 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@tremor/react@3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
+  '@tremor/react@3.17.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
       '@floating-ui/react': 0.19.2(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@headlessui/react': 0.0.0-insiders.03c22b4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      '@headlessui/tailwindcss': 0.2.1(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+      '@headlessui/tailwindcss': 0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       date-fns: 3.6.0
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -32682,7 +32669,7 @@ snapshots:
       picocolors: 1.0.1
       picomatch: 3.0.1
       prettier: 3.3.3
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       zod: 3.23.8
     optionalDependencies:
       typescript: 5.5.4
@@ -32690,17 +32677,17 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@wagmi/connectors@5.1.4(@planetscale/database@1.18.0)(@types/react@18.3.3)(@upstash/redis@1.34.0)(@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
+  '@wagmi/connectors@5.1.4(@planetscale/database@1.18.0)(@types/react@18.3.3)(@upstash/redis@1.34.0)(@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@coinbase/wallet-sdk': 4.0.4
       '@metamask/sdk': 0.27.0(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(utf-8-validate@5.0.10)
       '@safe-global/safe-apps-provider': 0.18.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@safe-global/safe-apps-sdk': 9.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
-      '@wagmi/core': 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+      '@wagmi/core': 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@walletconnect/ethereum-provider': 2.14.0(@planetscale/database@1.18.0)(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10)
       '@walletconnect/modal': 2.6.2(@types/react@18.3.3)(react@19.0.0-rc-cc1ec60d0d-20240607)
       cbw-sdk: '@coinbase/wallet-sdk@3.9.3'
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     optionalDependencies:
       typescript: 5.5.4
     transitivePeerDependencies:
@@ -32729,11 +32716,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
+  '@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))':
     dependencies:
       eventemitter3: 5.0.1
       mipd: 0.0.7(typescript@5.5.4)
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       zustand: 4.4.1(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)
     optionalDependencies:
       '@tanstack/query-core': 5.51.21
@@ -33168,7 +33155,7 @@ snapshots:
       '@noble/curves': 1.4.2
       '@noble/hashes': 1.4.0
       '@xmtp/proto': 3.56.0
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -33519,7 +33506,7 @@ snapshots:
       arweave: 1.11.4
       arweave-stream-tx: 1.2.2(arweave@1.11.4)
       avsc: https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       base64url: 3.0.1
       bs58: 4.0.1
       ethers: 5.7.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -33593,7 +33580,7 @@ snapshots:
     dependencies:
       ardrive-core-js: 2.0.6(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       bn.js: 5.2.1
       commander: 8.3.0
       ipfs-only-hash: 4.0.0(encoding@0.1.13)
@@ -33612,7 +33599,7 @@ snapshots:
       '@alexsasharegan/simple-cache': 3.3.3
       arbundles: 0.6.23(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       axios-retry: 3.9.1
       base64-js: 1.5.1
       bignumber.js: 9.1.2
@@ -33858,6 +33845,12 @@ snapshots:
       '@babel/runtime': 7.25.0
       is-retry-allowed: 2.2.0
 
+  axios@0.21.4:
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.5)
+    transitivePeerDependencies:
+      - debug
+
   axios@0.21.4(debug@4.3.4):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
@@ -33866,14 +33859,14 @@ snapshots:
 
   axios@0.27.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.5)
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
 
   axios@1.6.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.5)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -33881,7 +33874,7 @@ snapshots:
 
   axios@1.7.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.5)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -34975,7 +34968,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  connectkit@1.8.2(u7yhjggpzyea22ykc5m6xfl2sq):
+  connectkit@1.8.2(56wvf5br4fsjzrnydzvod5p3xa):
     dependencies:
       '@tanstack/react-query': 5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607)
       buffer: 6.0.3
@@ -34988,8 +34981,8 @@ snapshots:
       react-use-measure: 2.1.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       resize-observer-polyfill: 1.5.1
       styled-components: 5.3.11(@babel/core@7.25.2)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-is@19.0.0-rc-cc1ec60d0d-20240607)(react@19.0.0-rc-cc1ec60d0d-20240607)
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
-      wagmi: 2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      wagmi: 2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
     transitivePeerDependencies:
       - '@babel/core'
       - react-is
@@ -37608,7 +37601,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fumadocs-core@13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+  fumadocs-core@13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.4
       '@shikijs/rehype': 1.12.0
@@ -37640,7 +37633,7 @@ snapshots:
       json-schema-to-typescript: 14.1.0
       openapi-sampler: 1.5.1
 
-  fumadocs-ui@13.0.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
+  fumadocs-ui@13.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
     dependencies:
       '@radix-ui/react-accordion': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@radix-ui/react-collapsible': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -37649,10 +37642,10 @@ snapshots:
       '@radix-ui/react-popover': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@radix-ui/react-scroll-area': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@radix-ui/react-tabs': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      '@tailwindcss/typography': 0.5.13(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
+      '@tailwindcss/typography': 0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)))
       class-variance-authority: 0.7.0
       cmdk: 1.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      fumadocs-core: 13.0.7(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      fumadocs-core: 13.1.0(@types/react@18.3.3)(next@15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       lucide-react: 0.414.0(react@19.0.0-rc-cc1ec60d0d-20240607)
       next: 15.0.0-canary.87(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       next-themes: 0.3.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -38604,7 +38597,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.5)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -39905,8 +39898,6 @@ snapshots:
 
   lilconfig@2.1.0: {}
 
-  lilconfig@3.1.1: {}
-
   lilconfig@3.1.2: {}
 
   linebreak@1.1.0:
@@ -40200,7 +40191,7 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
-  lucide-react@0.424.0(react@19.0.0-rc-cc1ec60d0d-20240607):
+  lucide-react@0.426.0(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
@@ -42187,7 +42178,7 @@ snapshots:
     dependencies:
       npm-normalize-package-bin: 2.0.0
 
-  npm-check-updates@17.0.5: {}
+  npm-check-updates@17.0.6: {}
 
   npm-normalize-package-bin@2.0.0: {}
 
@@ -42212,7 +42203,7 @@ snapshots:
       semver: 7.6.2
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      type-fest: 4.23.0
+      type-fest: 4.24.0
       validate-npm-package-name: 5.0.1
     transitivePeerDependencies:
       - supports-color
@@ -42672,7 +42663,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.24.7
       index-to-position: 0.1.2
-      type-fest: 4.23.0
+      type-fest: 4.24.0
 
   parse-ms@2.1.0: {}
 
@@ -42793,13 +42784,13 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.2
 
-  permissionless@0.1.44(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)):
+  permissionless@0.1.44(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)):
     dependencies:
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
 
-  permissionless@0.1.44(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)):
+  permissionless@0.1.44(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)):
     dependencies:
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
 
   pg-int8@1.0.1: {}
 
@@ -42974,7 +42965,7 @@ snapshots:
 
   postcss-load-config@6.0.1(jiti@1.21.3)(postcss@8.4.41)(yaml@2.5.0):
     dependencies:
-      lilconfig: 3.1.1
+      lilconfig: 3.1.2
     optionalDependencies:
       jiti: 1.21.3
       postcss: 8.4.41
@@ -43652,7 +43643,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.3
 
-  react-resizable-panels@2.0.22(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+  react-resizable-panels@2.0.23(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
       react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -44824,18 +44815,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  solc@0.8.18:
-    dependencies:
-      command-exists: 1.2.9
-      commander: 8.3.0
-      follow-redirects: 1.15.6(debug@4.3.4)
-      js-sha3: 0.8.0
-      memorystream: 0.3.1
-      semver: 5.7.2
-      tmp: 0.0.33
-    transitivePeerDependencies:
-      - debug
-
   solc@0.8.18(debug@4.3.5):
     dependencies:
       command-exists: 1.2.9
@@ -45052,7 +45031,7 @@ snapshots:
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.2.9(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       '@storybook/manager-api': 8.1.10(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
-      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      '@storybook/theming': 8.2.8(storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       fast-deep-equal: 3.1.3
       memoizerific: 1.11.3
     transitivePeerDependencies:
@@ -45062,7 +45041,7 @@ snapshots:
       - react-dom
       - storybook
 
-  storybook@8.2.8(@babel/preset-env@7.24.7(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  storybook@8.2.8(@babel/preset-env@7.24.7)(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
       '@babel/core': 7.25.2
       '@babel/types': 7.25.2
@@ -45413,7 +45392,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  tailwind-config-viewer@2.0.4(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
+  tailwind-config-viewer@2.0.4(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
     dependencies:
       '@koa/router': 12.0.1
       commander: 6.2.1
@@ -45423,7 +45402,7 @@ snapshots:
       open: 7.4.2
       portfinder: 1.0.32
       replace-in-file: 6.3.5
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
     transitivePeerDependencies:
       - supports-color
 
@@ -45431,11 +45410,11 @@ snapshots:
 
   tailwind-merge@2.4.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))):
     dependencies:
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
 
-  tailwindcss@3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)):
+  tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -45967,6 +45946,8 @@ snapshots:
   type-fest@3.13.1: {}
 
   type-fest@4.23.0: {}
+
+  type-fest@4.24.0: {}
 
   type-is@1.6.18:
     dependencies:
@@ -46579,7 +46560,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8):
+  viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8):
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
       '@noble/curves': 1.4.0
@@ -46597,7 +46578,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8):
+  viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8):
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
       '@noble/curves': 1.4.0
@@ -46778,7 +46759,7 @@ snapshots:
       remark-parse: 11.0.0
       serve-static: 1.15.0
       shiki: 1.10.3
-      tailwindcss: 3.4.8(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
+      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.6(@swc/helpers@0.5.12))(@types/node@22.1.0)(typescript@5.5.4))
       toml: 3.0.0
       twoslash: 0.2.9(typescript@5.5.4)
       ua-parser-js: 1.0.38
@@ -46816,14 +46797,14 @@ snapshots:
 
   wabt@1.0.36: {}
 
-  wagmi@2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8):
+  wagmi@2.12.4(@planetscale/database@1.18.0)(@tanstack/query-core@5.51.21)(@tanstack/react-query@5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607))(@types/react@18.3.3)(@upstash/redis@1.34.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8):
     dependencies:
       '@tanstack/react-query': 5.51.23(react@19.0.0-rc-cc1ec60d0d-20240607)
-      '@wagmi/connectors': 5.1.4(@planetscale/database@1.18.0)(@types/react@18.3.3)(@upstash/redis@1.34.0)(@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
-      '@wagmi/core': 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
+      '@wagmi/connectors': 5.1.4(@planetscale/database@1.18.0)(@types/react@18.3.3)(@upstash/redis@1.34.0)(@wagmi/core@2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react-native@0.74.2(@babel/core@7.25.2)(@babel/preset-env@7.24.7(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@19.0.0-rc-cc1ec60d0d-20240607)(utf-8-validate@5.0.10))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.19.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@wagmi/core': 2.13.3(@tanstack/query-core@5.51.21)(@types/react@18.3.3)(immer@10.1.1)(react@19.0.0-rc-cc1ec60d0d-20240607)(typescript@5.5.4)(viem@2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       react: 19.0.0-rc-cc1ec60d0d-20240607
       use-sync-external-store: 1.2.0(react@19.0.0-rc-cc1ec60d0d-20240607)
-      viem: 2.19.2(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      viem: 2.19.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     optionalDependencies:
       typescript: 5.5.4
     transitivePeerDependencies:
