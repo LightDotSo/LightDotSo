@@ -13,42 +13,38 @@
 // limitations under the License.
 
 "use client";
-
-import { ChatList } from "@/components/chat-list";
 import { ChatPanel } from "@/components/chat-panel";
-import { EmptyScreen } from "@/components/empty-screen";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { useScrollAnchor } from "@/lib/hooks/use-scroll-anchor";
-import type { Message, Session } from "@/lib/types";
+import type { Message } from "@/lib/types";
 import { toast } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useAIState, useUIState } from "ai/rsc";
-import { usePathname, useRouter } from "next/navigation";
+import { useAIState } from "ai/rsc";
+import { useRouter } from "next/navigation";
 import { type ComponentProps, useEffect, useState } from "react";
 
 export interface ChatProps extends ComponentProps<"div"> {
   initialMessages?: Message[];
   id?: string;
-  session?: Session;
   missingKeys: string[];
 }
 
-export function Chat({ id, className, session, missingKeys }: ChatProps) {
+export function Chat({ id, className, missingKeys }: ChatProps) {
   const router = useRouter();
-  const path = usePathname();
+  // const path = usePathname();
   const [input, setInput] = useState("");
-  const [messages] = useUIState();
+  // const [messages] = useUIState();
   const [aiState] = useAIState();
 
   const [_, setNewChatId] = useLocalStorage("newChatId", id);
 
-  useEffect(() => {
-    if (session?.user) {
-      if (!path.includes("chat") && messages.length === 1) {
-        window.history.replaceState({}, "", `/chat/${id}`);
-      }
-    }
-  }, [id, path, session?.user, messages]);
+  // useEffect(() => {
+  //   if (session?.user) {
+  //     if (!path.includes("chat") && messages.length === 1) {
+  //       window.history.replaceState({}, "", `/chat/${id}`);
+  //     }
+  //   }
+  // }, [id, path, session?.user, messages]);
 
   useEffect(() => {
     const messagesLength = aiState.messages?.length;
@@ -79,11 +75,11 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
         className={cn("pt-4 pb-[200px] md:pt-10", className)}
         ref={messagesRef}
       >
-        {messages.length ? (
+        {/* {messages.length ? (
           <ChatList messages={messages} isShared={false} session={session} />
         ) : (
           <EmptyScreen />
-        )}
+        )} */}
         <div className="h-px w-full" ref={visibilityRef} />
       </div>
       <ChatPanel
