@@ -22,7 +22,7 @@ import packageJson from "./package.json" assert { type: "json" };
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  basePath: "/home",
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/home@${packageJson.version}`,
   },
