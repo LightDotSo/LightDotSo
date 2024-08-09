@@ -38,7 +38,7 @@ import { cn } from "@lightdotso/utils";
 
 interface ButtonScrollToBottomProps extends ButtonIconProps {
   isAtBottom: boolean;
-  scrollToBottom: () => void;
+  scrollToBottomAction: () => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ interface ButtonScrollToBottomProps extends ButtonIconProps {
 export function ButtonScrollToBottom({
   className,
   isAtBottom,
-  scrollToBottom,
+  scrollToBottomAction,
   ...props
 }: ButtonScrollToBottomProps) {
   return (
@@ -59,7 +59,7 @@ export function ButtonScrollToBottom({
         isAtBottom ? "opacity-0" : "opacity-100",
         className,
       )}
-      onClick={() => scrollToBottom()}
+      onClick={() => scrollToBottomAction()}
       {...props}
     >
       <IconArrowDown />

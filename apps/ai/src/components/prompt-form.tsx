@@ -104,7 +104,7 @@ export function PromptForm({
           <TooltipTrigger asChild>
             <ButtonIcon
               variant="outline"
-              className="absolute top-[14px] left-0 size-8 rounded-full bg-background p-0 sm:left-4"
+              className="absolute top-[14px] left-0 rounded-full bg-background p-0 sm:left-4"
               onClick={() => {
                 router.push("/new");
               }}
