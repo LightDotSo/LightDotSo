@@ -29,10 +29,10 @@
 "use client";
 
 import { ChatPanel } from "@/components/chat-panel";
+import { EmptyScreen } from "@/components/empty-screen";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useScrollAnchor } from "@/hooks/use-scroll-anchor";
 import type { Message } from "@/types";
-import { toast } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { useAIState } from "ai/rsc";
 import { useRouter } from "next/navigation";
@@ -45,14 +45,13 @@ import { type ComponentProps, useEffect, useState } from "react";
 export interface ChatProps extends ComponentProps<"div"> {
   initialMessages?: Message[];
   id?: string;
-  missingKeys: string[];
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function Chat({ id, className, missingKeys }: ChatProps) {
+export function Chat({ id, className }: ChatProps) {
   const router = useRouter();
   // const path = usePathname();
   const [input, setInput] = useState("");
@@ -80,12 +79,6 @@ export function Chat({ id, className, missingKeys }: ChatProps) {
     setNewChatId(id);
   });
 
-  useEffect(() => {
-    missingKeys.map((key) => {
-      toast.error(`Missing ${key} environment variable!`);
-    });
-  }, [missingKeys]);
-
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
     useScrollAnchor();
 
@@ -98,6 +91,7 @@ export function Chat({ id, className, missingKeys }: ChatProps) {
         className={cn("pt-4 pb-[200px] md:pt-10", className)}
         ref={messagesRef}
       >
+        <EmptyScreen />
         {/* {messages.length ? (
           <ChatList messages={messages} isShared={false} session={session} />
         ) : (

@@ -29,7 +29,6 @@
 import { AI } from "@/chat/actions";
 import { Chat } from "@/components/chat";
 import { nanoid } from "@/utils";
-import { getMissingKeys } from "../actions";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -45,11 +44,10 @@ export const metadata = {
 
 export default async function IndexPage() {
   const id = nanoid();
-  const missingKeys = await getMissingKeys();
 
   return (
     <AI initialAIState={{ chatId: id, messages: [] }}>
-      <Chat id={id} missingKeys={missingKeys} />
+      <Chat id={id} />
     </AI>
   );
 }

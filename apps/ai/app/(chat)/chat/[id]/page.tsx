@@ -26,7 +26,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getMissingKeys } from "@/app/actions";
 import { AI } from "@/chat/actions";
 import { Chat } from "@/components/chat";
 import type { Metadata } from "next";
@@ -69,7 +68,6 @@ export async function generateMetadata(
 
 export default async function ChatPage(_params: ChatPageProps) {
   // const session = (await auth()) as Session;
-  const missingKeys = await getMissingKeys();
 
   // if (!session?.user) {
   //   redirect(`/login?next=/chat/${params.id}`);
@@ -88,7 +86,7 @@ export default async function ChatPage(_params: ChatPageProps) {
 
   return (
     <AI initialAIState={{ chatId: "id", messages: [] }}>
-      <Chat id={"id"} missingKeys={missingKeys} />
+      <Chat id={"id"} />
     </AI>
   );
 }

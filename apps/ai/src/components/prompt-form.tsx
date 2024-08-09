@@ -50,11 +50,10 @@ import { UserMessage } from "./stocks/message";
 
 export function PromptForm({
   input,
-  // @ts-ignore
-  setInput,
+  setInputAction,
 }: {
   input: string;
-  setInput: (value: string) => void;
+  setInputAction: (value: string) => void;
 }) {
   const router = useRouter();
   const { formRef, onKeyDown } = useEnterSubmit();
@@ -81,7 +80,7 @@ export function PromptForm({
         }
 
         const value = input.trim();
-        setInput("");
+        setInputAction("");
         if (!value) {
           return;
         }
@@ -121,7 +120,7 @@ export function PromptForm({
           tabIndex={0}
           onKeyDown={onKeyDown}
           placeholder="Send a message."
-          className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
+          className="min-h-[60px] w-full resize-none border-0 bg-transparent px-4 py-[1.3rem] focus-within:outline-none focus-visible:ring-0 sm:text-sm"
           autoFocus
           spellCheck={false}
           autoComplete="off"
@@ -130,7 +129,7 @@ export function PromptForm({
           rows={1}
           value={input}
           onChange={(e: { target: { value: string } }) =>
-            setInput(e.target.value)
+            setInputAction(e.target.value)
           }
         />
         <div className="absolute top-[13px] right-0 sm:right-4">
