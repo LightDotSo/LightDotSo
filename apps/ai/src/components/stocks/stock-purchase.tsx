@@ -35,6 +35,7 @@ export function Purchase({
   const [value, setValue] = useState(numberOfShares || 100);
   const [purchasingUi, setPurchasingUi] = useState<null | ReactNode>(null);
   const [aiState, setAiState] = useAIState<typeof AI>();
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const [, setMessages] = useUIState<typeof AI>();
   const { confirmPurchase } = useActions();
 
@@ -137,10 +138,10 @@ export function Purchase({
               setPurchasingUi(response.purchasingUI);
 
               // Insert a new system message to the UI.
-              setMessages((currentMessages: any) => [
-                ...currentMessages,
-                response.newMessage,
-              ]);
+              // setMessages((currentMessages: any) => [
+              //   ...currentMessages,
+              //   response.newMessage,
+              // ]);
             }}
           >
             Purchase
