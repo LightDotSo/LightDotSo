@@ -18,3 +18,4 @@ ignores:
   - "content-collections"
   - "next-themes"
   - "fumadocs-openapi"
+  - "@content-collections/next"
