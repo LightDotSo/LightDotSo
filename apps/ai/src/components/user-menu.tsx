@@ -22,14 +22,26 @@ import {
 } from "@lightdotso/ui";
 import { Button } from "@lightdotso/ui";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export interface UserMenuProps {
   user: Session["user"];
 }
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 function getUserInitials(name: string) {
   const [firstName, lastName] = name.split(" ");
   return lastName ? `${firstName[0]}${lastName[0]}` : firstName.slice(0, 2);
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function UserMenu({ user }: UserMenuProps) {
   return (

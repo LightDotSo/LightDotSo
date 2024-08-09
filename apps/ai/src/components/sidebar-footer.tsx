@@ -15,6 +15,10 @@
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function SidebarFooter({
   children,
   className,

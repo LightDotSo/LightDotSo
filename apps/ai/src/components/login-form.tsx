@@ -23,6 +23,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function LoginForm() {
   const router = useRouter();

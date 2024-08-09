@@ -17,9 +17,17 @@ import { AI } from "@/lib/chat/actions";
 import { nanoid } from "@/lib/utils";
 import { getMissingKeys } from "../actions";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata = {
   title: "Next.js AI Chatbot",
 };
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
 export default async function IndexPage() {
   const id = nanoid();

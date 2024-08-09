@@ -20,11 +20,19 @@ import { format, subMonths } from "date-fns";
 import { useEffect, useId, useRef, useState } from "react";
 import { useResizeObserver } from "usehooks-ts";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface Stock {
   symbol: string;
   price: number;
   delta: number;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Stock({ props: { symbol, price, delta } }: { props: Stock }) {
   const [aiState, setAiState] = useAIState();

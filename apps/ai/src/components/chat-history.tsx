@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Link from "next/link";
-
 import { IconPlus } from "@/components/icons";
 import { SidebarList } from "@/components/sidebar-list";
 import { buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
+import Link from "next/link";
 import { Suspense } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface ChatHistoryProps {
   userId?: string;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export async function ChatHistory({ userId }: ChatHistoryProps) {
   return (

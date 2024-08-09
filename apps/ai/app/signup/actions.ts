@@ -17,6 +17,10 @@
 // import { signIn } from "@/auth";
 import { ResultCode } from "@/lib/utils";
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function createUser(
   _email: string,
@@ -46,10 +50,18 @@ export async function createUser(
   };
 }
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 interface Result {
   type: string;
   resultCode: ResultCode;
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function signup(

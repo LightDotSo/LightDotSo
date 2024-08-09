@@ -18,11 +18,19 @@ import { Separator } from "@lightdotso/ui";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export interface ChatList {
   messages: UIState;
   session?: Session;
   isShared: boolean;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ChatList({ messages, session, isShared }: ChatList) {
   if (!messages.length) {

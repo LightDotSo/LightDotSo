@@ -19,6 +19,10 @@ import { ButtonIcon } from "@lightdotso/ui";
 import { useTheme } from "next-themes";
 import { useTransition } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
   const [_, startTransition] = useTransition();

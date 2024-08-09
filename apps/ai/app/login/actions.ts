@@ -17,15 +17,27 @@
 import { ResultCode } from "@/lib/utils";
 import { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 export async function getUser(_email: string) {
   // const user = await kv.hgetall<User>(`user:${email}`);
   // return user;
 }
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 interface Result {
   type: string;
   resultCode: ResultCode;
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function authenticate(

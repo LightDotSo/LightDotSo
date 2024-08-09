@@ -14,14 +14,19 @@
 
 import type { Metadata } from "next";
 
-export const runtime = "edge";
-export const preferredRegion = "home";
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface SharePageProps {
   params: {
     id: string;
   };
 }
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
 
 export async function generateMetadata(
   _params: SharePageProps,
@@ -33,6 +38,10 @@ export async function generateMetadata(
     title: "Chat",
   };
 }
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
 export default async function SharePage(_params: SharePageProps) {
   // const chat = await getSharedChat(params.id);
@@ -61,3 +70,10 @@ export default async function SharePage(_params: SharePageProps) {
   //   </>
   // );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const runtime = "edge";
+export const preferredRegion = "home";

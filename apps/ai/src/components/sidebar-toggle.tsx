@@ -18,6 +18,10 @@ import { IconSidebar } from "@/components/icons";
 import { useSidebar } from "@/lib/hooks/use-sidebar";
 import { Button } from "@lightdotso/ui";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function SidebarToggle() {
   const { toggleSidebar } = useSidebar();
 

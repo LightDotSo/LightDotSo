@@ -18,6 +18,10 @@ import { buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { Suspense } from "react";
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/suspicious/useAwait: <explanation>
 async function UserOrLogin() {
   // const session = (await auth()) as Session;
@@ -49,6 +53,10 @@ async function UserOrLogin() {
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Header() {
   return (

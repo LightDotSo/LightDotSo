@@ -17,6 +17,10 @@ import { Header } from "@/components/header";
 import { Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
     ? new URL(`https://${process.env.VERCEL_URL}`)
@@ -33,6 +37,10 @@ export const metadata = {
   },
 };
 
+// -----------------------------------------------------------------------------
+// Viewport
+// -----------------------------------------------------------------------------
+
 export const viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
@@ -40,9 +48,17 @@ export const viewport = {
   ],
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface RootLayoutProps {
   children: ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (

@@ -14,6 +14,10 @@
 
 import LoginForm from "@/components/login-form";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default async function LoginPage() {
   // const session = (await auth()) as Session;
 

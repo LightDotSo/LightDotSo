@@ -27,6 +27,10 @@ import { spinner } from "./spinner";
 
 // Different types of message bubbles.
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function UserMessage({ children }: { children: ReactNode }) {
   return (
     <div className="group md:-ml-12 relative flex items-start">
@@ -39,6 +43,10 @@ export function UserMessage({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function BotMessage({
   content,
@@ -101,6 +109,10 @@ export function BotMessage({
   );
 }
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function BotCard({
   children,
   showAvatar = true,
@@ -123,6 +135,10 @@ export function BotCard({
   );
 }
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function SystemMessage({ children }: { children: ReactNode }) {
   return (
     <div
@@ -134,6 +150,10 @@ export function SystemMessage({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function SpinnerMessage() {
   return (

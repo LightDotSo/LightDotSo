@@ -19,10 +19,18 @@ import { Button, type ButtonProps } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface LoginButtonProps extends ButtonProps {
   showGithubIcon?: boolean;
   text?: string;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function LoginButton({
   text = "Login with GitHub",

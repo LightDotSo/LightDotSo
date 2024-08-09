@@ -15,6 +15,10 @@
 // import { auth } from "@/auth";
 import SignupForm from "@/components/signup-form";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default async function SignupPage() {
   // const session = (await auth()) as Session;
 

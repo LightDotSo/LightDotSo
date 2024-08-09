@@ -24,14 +24,26 @@ import { type FC, memo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface Props {
   language: string;
   value: string;
 }
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 interface LanguageMap {
   [key: string]: string | undefined;
 }
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 export const programmingLanguages: LanguageMap = {
   javascript: ".js",
@@ -60,6 +72,10 @@ export const programmingLanguages: LanguageMap = {
   // add more file extensions here, make sure the key is same as language prop in CodeBlock.tsx component
 };
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const generateRandomString = (length: number, lowercase = false) => {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXY3456789"; // excluding similar looking characters like Z, 2, I, 1, O, 0
   let result = "";
@@ -68,6 +84,10 @@ export const generateRandomString = (length: number, lowercase = false) => {
   }
   return lowercase ? result.toLowerCase() : result;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
@@ -157,5 +177,9 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
   );
 });
 CodeBlock.displayName = "CodeBlock";
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
 export { CodeBlock };

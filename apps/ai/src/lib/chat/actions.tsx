@@ -1,14 +1,5 @@
 import "server-only";
 
-import { openai } from "@ai-sdk/openai";
-import {
-  createAI,
-  createStreamableUI,
-  createStreamableValue,
-  getMutableAIState,
-  streamUI,
-} from "ai/rsc";
-
 import {
   BotCard,
   BotMessage,
@@ -17,7 +8,6 @@ import {
   SystemMessage,
   spinner,
 } from "@/components/stocks";
-
 // import { auth } from "@/auth";
 import { Events } from "@/components/stocks/events";
 import { EventsSkeleton } from "@/components/stocks/events-skeleton";
@@ -32,6 +22,14 @@ import {
   runAsyncFnWithoutBlocking,
   sleep,
 } from "@/lib/utils";
+import { openai } from "@ai-sdk/openai";
+import {
+  createAI,
+  createStreamableUI,
+  createStreamableValue,
+  getMutableAIState,
+  streamUI,
+} from "ai/rsc";
 import type { ReactNode } from "react";
 import { z } from "zod";
 

@@ -16,6 +16,10 @@ import { ExternalLink } from "@/components/external-link";
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export function FooterText({ className, ...props }: ComponentProps<"p">) {
   return (
     <p

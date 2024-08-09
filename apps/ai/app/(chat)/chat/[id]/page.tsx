@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Metadata } from "next";
-import {} from "next/navigation";
-
 import { getMissingKeys } from "@/app/actions";
 import { Chat } from "@/components/chat";
 import { AI } from "@/lib/chat/actions";
+import type { Metadata } from "next";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 export interface ChatPageProps {
   params: {
     id: string;
   };
 }
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
 
 export async function generateMetadata(
   _params: ChatPageProps,
@@ -42,6 +48,10 @@ export async function generateMetadata(
     title: "Chat",
   };
 }
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
 export default async function ChatPage(_params: ChatPageProps) {
   // const session = (await auth()) as Session;

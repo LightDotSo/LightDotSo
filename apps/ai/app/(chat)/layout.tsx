@@ -15,9 +15,17 @@
 import { SidebarDesktop } from "@/components/sidebar-desktop";
 import type { ReactNode } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ChatLayoutProps {
   children: ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default async function ChatLayout({ children }: ChatLayoutProps) {
   return (

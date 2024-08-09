@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const placeholderEvents = [
   {
     date: "2022-10-01",
@@ -20,6 +24,10 @@ const placeholderEvents = [
       "NVIDIA unveils the latest graphics card infused with AI capabilities, revolutionizing gaming and rendering experiences.",
   },
 ];
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const EventsSkeleton = () => {
   return (

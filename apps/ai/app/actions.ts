@@ -14,12 +14,15 @@
 
 "use server";
 
+// import { auth } from "@/auth";
+import type { Chat } from "@/lib/types";
 // import { kv } from "@vercel/kv";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-// import { auth } from "@/auth";
-import type { Chat } from "@/lib/types";
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function getChats(userId?: string | null) {
@@ -45,6 +48,10 @@ export async function getChats(userId?: string | null) {
   // }
 }
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 export async function getChat(_id: string, _userId: string) {
   // const chat = await kv.hgetall<Chat>(`chat:${id}`);
   // if (!chat || (userId && chat.userId !== userId)) {
@@ -52,6 +59,10 @@ export async function getChat(_id: string, _userId: string) {
   // }
   // return chat;
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
@@ -79,6 +90,10 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
   revalidatePath("/");
   return revalidatePath(path);
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function clearChats() {
@@ -111,6 +126,10 @@ export async function clearChats() {
   return redirect("/");
 }
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function getSharedChat(_id: string) {
   return null;
@@ -120,6 +139,10 @@ export async function getSharedChat(_id: string) {
   // }
   // return chat;
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 export async function shareChat(_id: string) {
   // const session = await auth();
@@ -142,6 +165,10 @@ export async function shareChat(_id: string) {
   // return payload;
 }
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 export async function saveChat(_chat: Chat) {
   // const session = await auth();
   // if (session?.user) {
@@ -157,10 +184,18 @@ export async function saveChat(_chat: Chat) {
   // }
 }
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/suspicious/useAwait: <explanation>
 export async function refreshHistory(path: string) {
   redirect(path);
 }
+
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
 
 export async function getMissingKeys() {
   const keysRequired = ["OPENAI_API_KEY"];

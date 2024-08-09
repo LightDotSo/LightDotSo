@@ -18,14 +18,26 @@ import { SidebarItems } from "@/components/sidebar-items";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { type ReactNode, cache } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SidebarListProps {
   userId?: string;
   children?: ReactNode;
 }
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 const loadChats = cache(async (userId?: string) => {
   return await getChats(userId);
 });
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export async function SidebarList({ userId }: SidebarListProps) {
   const chats = (await loadChats(userId)) ?? [];

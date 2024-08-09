@@ -23,11 +23,19 @@ import { useAIState } from "ai/rsc";
 import { useRouter } from "next/navigation";
 import { type ComponentProps, useEffect, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export interface ChatProps extends ComponentProps<"div"> {
   initialMessages?: Message[];
   id?: string;
   missingKeys: string[];
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Chat({ id, className, missingKeys }: ChatProps) {
   const router = useRouter();

@@ -33,6 +33,10 @@ import { Button } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SidebarActionsProps {
   chat: Chat;
   removeChatAction: (args: {
@@ -41,6 +45,10 @@ interface SidebarActionsProps {
   }) => ServerActionResult<void>;
   shareChatAction: (id: string) => ServerActionResult<Chat>;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function SidebarActions({
   chat,

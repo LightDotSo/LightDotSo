@@ -23,6 +23,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function SignupForm() {
   const router = useRouter();
@@ -95,6 +99,10 @@ export default function SignupForm() {
     </form>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 function LoginButton() {
   const { pending } = useFormStatus();

@@ -14,17 +14,24 @@
 
 "use client";
 
-import type { Message } from "ai";
-
 import { IconCheck, IconCopy } from "@/components/icons";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
+import type { Message } from "ai";
 import type { ComponentProps } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface ChatMessageActionsProps extends ComponentProps<"div"> {
   message: Message;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ChatMessageActions({
   message,

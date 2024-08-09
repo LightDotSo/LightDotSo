@@ -15,19 +15,26 @@
 // Inspired by Chatbot-UI and modified to fit the needs of this project
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
 
-import type { Message } from "ai";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-
 import { ChatMessageActions } from "@/components/chat-message-actions";
 import { CodeBlock } from "@/components/codeblock";
 import { IconOpenAI, IconUser } from "@/components/icons";
 import { MemoizedReactMarkdown } from "@/components/markdown";
 import { cn } from "@lightdotso/utils";
+import type { Message } from "ai";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 export interface ChatMessageProps {
   message: Message;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
   return (

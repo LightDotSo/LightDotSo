@@ -32,10 +32,18 @@ import { Button } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ClearHistoryProps {
   isEnabled: boolean;
   clearChatsAction: () => ServerActionResult<void>;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ClearHistory({
   isEnabled = false,

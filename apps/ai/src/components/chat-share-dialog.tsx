@@ -30,11 +30,19 @@ import { Button } from "@lightdotso/ui";
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { useCallback, useTransition } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ChatShareDialogProps extends DialogProps {
   chat: Pick<Chat, "id" | "title" | "messages">;
   shareChatAction: (id: string) => ServerActionResult<Chat>;
   onCopy: () => void;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ChatShareDialog({
   chat,

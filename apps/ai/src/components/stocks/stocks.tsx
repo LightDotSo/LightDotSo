@@ -17,11 +17,19 @@
 import type { AI } from "@/lib/chat/actions";
 import { useActions, useUIState } from "ai/rsc";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface Stock {
   symbol: string;
   price: number;
   delta: number;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Stocks({ props: stocks }: { props: Stock[] }) {
   const [, setMessages] = useUIState<typeof AI>();

@@ -18,10 +18,18 @@ import { IconArrowDown } from "@/components/icons";
 import { ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ButtonScrollToBottomProps extends ButtonIconProps {
   isAtBottom: boolean;
   scrollToBottom: () => void;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ButtonScrollToBottom({
   className,

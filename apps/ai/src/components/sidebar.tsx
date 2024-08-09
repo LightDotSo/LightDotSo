@@ -18,7 +18,15 @@ import { useSidebar } from "@/lib/hooks/use-sidebar";
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export interface SidebarProps extends ComponentProps<"div"> {}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Sidebar({ className, children }: SidebarProps) {
   const { isSidebarOpen, isLoading } = useSidebar();

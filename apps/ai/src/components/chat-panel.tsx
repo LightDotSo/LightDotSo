@@ -25,6 +25,10 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { UserMessage } from "./stocks/message";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export interface ChatPanelProps {
   id?: string;
   title?: string;
@@ -33,6 +37,10 @@ export interface ChatPanelProps {
   isAtBottom: boolean;
   scrollToBottom: () => void;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function ChatPanel({
   id,

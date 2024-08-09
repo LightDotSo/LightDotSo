@@ -14,11 +14,14 @@
 
 "use client";
 
+import type { AI } from "@/lib/chat/actions";
 import { formatNumber } from "@/lib/utils";
 import { useAIState, useActions, useUIState } from "ai/rsc";
 import { type ChangeEvent, type ReactNode, useId, useState } from "react";
 
-import type { AI } from "@/lib/chat/actions";
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface Purchase {
   numberOfShares?: number;
@@ -26,6 +29,10 @@ interface Purchase {
   price: number;
   status: "requires_action" | "completed" | "expired";
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function Purchase({
   props: { numberOfShares, symbol, price, status = "expired" },

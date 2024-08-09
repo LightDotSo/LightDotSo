@@ -17,6 +17,10 @@
 import { cn } from "@lightdotso/utils";
 import { type ComponentProps, useId } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 function IconNextChat({
   className,
   inverted,
@@ -508,6 +512,10 @@ function IconChevronUpDown({ className, ...props }: ComponentProps<"svg">) {
     </svg>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
 export {
   IconEdit,

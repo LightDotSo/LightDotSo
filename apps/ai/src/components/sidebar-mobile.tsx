@@ -20,9 +20,17 @@ import { Sheet, SheetContent, SheetTrigger } from "@lightdotso/ui";
 import { Button } from "@lightdotso/ui";
 import type { ReactNode } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SidebarMobileProps {
   children: ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function SidebarMobile({ children }: SidebarMobileProps) {
   return (

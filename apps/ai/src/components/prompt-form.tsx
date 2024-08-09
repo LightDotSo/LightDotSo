@@ -14,10 +14,6 @@
 
 "use client";
 
-import Textarea from "react-textarea-autosize";
-
-import { useActions, useUIState } from "ai/rsc";
-
 import { IconArrowElbow, IconPlus } from "@/components/icons";
 import type { AI } from "@/lib/chat/actions";
 import { useEnterSubmit } from "@/lib/hooks/use-enter-submit";
@@ -27,10 +23,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@lightdotso/ui";
+import { useActions, useUIState } from "ai/rsc";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import Textarea from "react-textarea-autosize";
 import { UserMessage } from "./stocks/message";
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function PromptForm({
   input,
