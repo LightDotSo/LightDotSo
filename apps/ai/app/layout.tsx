@@ -26,6 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import "@lightdotso/styles/global.css";
 import { Header } from "@/components/header";
 import { SidebarProvider } from "@/hooks/use-sidebar";
@@ -36,32 +38,32 @@ import type { ReactNode } from "react";
 // Metadata
 // -----------------------------------------------------------------------------
 
-export const metadata = {
-  metadataBase: process.env.VERCEL_URL
-    ? new URL(`https://${process.env.VERCEL_URL}`)
-    : undefined,
-  title: {
-    default: "Next.js AI Chatbot",
-    template: "%s - Next.js AI Chatbot",
-  },
-  description: "An AI-powered chatbot template built with Next.js and Vercel.",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
-};
+// export const metadata = {
+//   metadataBase: process.env.VERCEL_URL
+//     ? new URL(`https://${process.env.VERCEL_URL}`)
+//     : undefined,
+//   title: {
+//     default: "Next.js AI Chatbot",
+//     template: "%s - Next.js AI Chatbot",
+//   },
+//   description: "An AI-powered chatbot template built with Next.js and Vercel.",
+//   icons: {
+//     icon: "/favicon.ico",
+//     shortcut: "/favicon-16x16.png",
+//     apple: "/apple-touch-icon.png",
+//   },
+// };
 
 // -----------------------------------------------------------------------------
 // Viewport
 // -----------------------------------------------------------------------------
 
-export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
+// export const viewport = {
+//   themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "white" },
+//     { media: "(prefers-color-scheme: dark)", color: "black" },
+//   ],
+// };
 
 // -----------------------------------------------------------------------------
 // Props

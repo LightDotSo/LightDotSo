@@ -553,34 +553,31 @@ export const AI = createAI<AIState, UIState>({
   //   // }
   //   return;
   // },
-  // biome-ignore lint/style/useNamingConvention: <explanation>
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-  // biome-ignore lint/suspicious/useAwait: <explanation>
-  onSetAIState: async ({ state }) => {
-    // "use server";
-    // const session = await auth();
-    // if (session?.user) {
-    //   const { chatId, messages } = state;
-    //   const createdAt = new Date();
-    //   const userId = session.user.id as string;
-    //   const path = `/chat/${chatId}`;
-    //   const firstMessageContent = messages[0].content as string;
-    //   const title = firstMessageContent.substring(0, 100);
-    //   const chat: Chat = {
-    //     id: chatId,
-    //     title,
-    //     userId,
-    //     createdAt,
-    //     messages,
-    //     path,
-    //   };
-    //   await saveChat(chat);
-    // } else {
-    //   return;
-    // }
+  // onSetAIState: async ({ state }) => {
+  // "use server";
+  // const session = await auth();
+  // if (session?.user) {
+  //   const { chatId, messages } = state;
+  //   const createdAt = new Date();
+  //   const userId = session.user.id as string;
+  //   const path = `/chat/${chatId}`;
+  //   const firstMessageContent = messages[0].content as string;
+  //   const title = firstMessageContent.substring(0, 100);
+  //   const chat: Chat = {
+  //     id: chatId,
+  //     title,
+  //     userId,
+  //     createdAt,
+  //     messages,
+  //     path,
+  //   };
+  //   await saveChat(chat);
+  // } else {
+  //   return;
+  // }
 
-    return;
-  },
+  // return;
+  // },
 });
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
