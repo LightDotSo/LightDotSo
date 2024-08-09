@@ -28,7 +28,6 @@ import {
   DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
   toast,
 } from "@lightdotso/ui";
@@ -113,7 +112,7 @@ export const WalletOverviewBannerAddress: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
+    <>
       <Avatar className="size-10 sm:size-12 md:size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
@@ -189,6 +188,6 @@ export const WalletOverviewBannerAddress: FC<
           </Tooltip>
         </div>
       </div>
-    </TooltipProvider>
+    </>
   );
 };

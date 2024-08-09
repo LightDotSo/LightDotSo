@@ -18,7 +18,6 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { InfoIcon } from "lucide-react";
@@ -44,16 +43,14 @@ export const NotAvailableTestnetCard: FC<NotAvailableTestnetCardProps> = ({
   return (
     <div className="flex flex-row items-center space-x-1">
       <span className="text-sm text-text-weak">N/A</span>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <ButtonIcon disabled size="xxs" variant="link">
-              <InfoIcon className="size-3" />
-            </ButtonIcon>
-          </TooltipTrigger>
-          <TooltipContent>{entityName} not available on testnet</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ButtonIcon disabled size="xxs" variant="link">
+            <InfoIcon className="size-3" />
+          </ButtonIcon>
+        </TooltipTrigger>
+        <TooltipContent>{entityName} not available on testnet</TooltipContent>
+      </Tooltip>
     </div>
   );
 };

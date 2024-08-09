@@ -1,6 +1,7 @@
 aapt
 aarch
 abbrevation
+ABCDEFGHJKLMNPQRSTUVWXY
 abigen
 abitype
 acknowldegements
@@ -616,6 +617,7 @@ hejkq
 Helia
 helpfulerror
 heroicons
+hgetall
 hgiiquqc
 hhlu
 hhun
@@ -626,6 +628,7 @@ hkdf
 hkqawibp
 hliranhn
 hmac
+hmset
 hmzih
 hnloukld
 hoek
@@ -767,6 +770,7 @@ julswap
 JURP
 jvmargs
 jxca
+JZYLU
 Kakinoki
 katex
 kczki
@@ -1029,6 +1033,7 @@ ntjfl
 ntnfhqg
 nullthrows
 numberfield
+nums
 nuqs
 nweight
 nypm
@@ -1363,6 +1368,8 @@ shunkakinoki
 sigers
 siginfo
 SIGNIN
+signup
+Signup
 sigstore
 silius
 simplehash
@@ -1537,6 +1544,7 @@ tsbuckets
 tsconfck
 tsort
 tsscmp
+tsuid
 tsup
 tsutils
 tsyms
@@ -1685,6 +1693,7 @@ workerd
 workerpool
 worldmap
 wovd
+Wpxc
 wrappy
 xaajlafnalfnal
 xasjajfbalkfajfalalglaglagbalga
@@ -1740,6 +1749,8 @@ zksync
 ZKSYNC
 zora
 Zora
+zrange
+zrem
 zrembyscore
 zustand
 zwitch

@@ -50,7 +50,6 @@ import {
   RadioGroupItem,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { isEmpty } from "lodash";
@@ -201,151 +200,146 @@ export const NewWalletForm: FC = () => {
         <CardDescription>Select a name for your new wallet.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-10">
-        <TooltipProvider delayDuration={300}>
-          <Form {...form}>
-            <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <div className="grid gap-3">
-                    <FormLabel htmlFor="type">Type</FormLabel>
-                    <RadioGroup
-                      defaultValue={field.value}
-                      id="type"
-                      className="grid grid-cols-3 items-stretch gap-4"
-                      onValueChange={field.onChange}
-                    >
-                      <div>
-                        <Tooltip>
-                          <RadioGroupItem
-                            value="multi"
-                            id="multi"
-                            className="peer sr-only"
-                          />
-                          <TooltipTrigger asChild>
-                            <Label
-                              htmlFor="multi"
-                              className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
-                            >
-                              <BuildingLibraryIcon className="mb-3 size-6" />
-                              Multi-sig
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              A standard multi-sig wallet that requires multiple
-                              signers.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                      <div>
-                        <Tooltip>
-                          <RadioGroupItem
-                            value="personal"
-                            id="personal"
-                            className="peer sr-only"
-                          />
-                          <TooltipTrigger asChild>
-                            <Label
-                              htmlFor="personal"
-                              className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
-                            >
-                              <BanknotesIcon className="mb-3 size-6" />
-                              Personal Vault
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              Protect your personal assets using backup key
-                              signers.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                      <div>
-                        <Tooltip>
-                          <RadioGroupItem
-                            disabled
-                            value="2fa"
-                            id="2fa"
-                            className="peer sr-only"
-                          />
-                          <TooltipTrigger asChild>
-                            <Label
-                              htmlFor="2fa"
-                              className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
-                            >
-                              <ShieldExclamationIcon className="mb-3 size-6" />
-                              2FA (Coming Soon)
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Coming soon ...</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </RadioGroup>
-                    <CardDescription className="text-sm">
-                      Select the type of wallet you want to create
-                    </CardDescription>
-                  </div>
-                )}
-              />
-              <InviteCodeForm
-                name="inviteCode"
-                initialInviteCode={inviteCode}
-              />
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="name">Name</FormLabel>
-                    <div className="grid gap-3">
-                      <Input
-                        id="name"
-                        placeholder="Your Wallet Name"
-                        defaultValue={field.value}
-                        onChange={(e) => {
-                          field.onChange(e);
-                        }}
-                      />
-                    </div>
-                    <FormDescription>
-                      Enter a name for your new wallet
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div>
-                <CardDescription className="text-base text-text">
-                  By creating a new wallet, you are accepting our{" "}
-                  <a
-                    className="underline hover:text-text-weak"
-                    href={NOTION_LINKS["Terms of Service"]}
-                    target="_blank"
-                    rel="noreferrer"
+        <Form {...form}>
+          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <div className="grid gap-3">
+                  <FormLabel htmlFor="type">Type</FormLabel>
+                  <RadioGroup
+                    defaultValue={field.value}
+                    id="type"
+                    className="grid grid-cols-3 items-stretch gap-4"
+                    onValueChange={field.onChange}
                   >
-                    term and conditions
-                    <ArrowUpRight className="mb-3 ml-1 inline size-2" />
-                  </a>
-                </CardDescription>
-              </div>
-              {/* Show all errors for debugging */}
-              {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
-              <FooterButton
-                isModal={false}
-                cancelDisabled={true}
-                disabled={!isFormValid}
-                onClick={navigateToStep}
-              />
-            </form>
-          </Form>
-        </TooltipProvider>
+                    <div>
+                      <Tooltip>
+                        <RadioGroupItem
+                          value="multi"
+                          id="multi"
+                          className="peer sr-only"
+                        />
+                        <TooltipTrigger asChild>
+                          <Label
+                            htmlFor="multi"
+                            className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                          >
+                            <BuildingLibraryIcon className="mb-3 size-6" />
+                            Multi-sig
+                          </Label>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            A standard multi-sig wallet that requires multiple
+                            signers.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <div>
+                      <Tooltip>
+                        <RadioGroupItem
+                          value="personal"
+                          id="personal"
+                          className="peer sr-only"
+                        />
+                        <TooltipTrigger asChild>
+                          <Label
+                            htmlFor="personal"
+                            className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                          >
+                            <BanknotesIcon className="mb-3 size-6" />
+                            Personal Vault
+                          </Label>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            Protect your personal assets using backup key
+                            signers.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <div>
+                      <Tooltip>
+                        <RadioGroupItem
+                          disabled
+                          value="2fa"
+                          id="2fa"
+                          className="peer sr-only"
+                        />
+                        <TooltipTrigger asChild>
+                          <Label
+                            htmlFor="2fa"
+                            className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                          >
+                            <ShieldExclamationIcon className="mb-3 size-6" />
+                            2FA (Coming Soon)
+                          </Label>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Coming soon ...</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </RadioGroup>
+                  <CardDescription className="text-sm">
+                    Select the type of wallet you want to create
+                  </CardDescription>
+                </div>
+              )}
+            />
+            <InviteCodeForm name="inviteCode" initialInviteCode={inviteCode} />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <div className="grid gap-3">
+                    <Input
+                      id="name"
+                      placeholder="Your Wallet Name"
+                      defaultValue={field.value}
+                      onChange={(e) => {
+                        field.onChange(e);
+                      }}
+                    />
+                  </div>
+                  <FormDescription>
+                    Enter a name for your new wallet
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div>
+              <CardDescription className="text-base text-text">
+                By creating a new wallet, you are accepting our{" "}
+                <a
+                  className="underline hover:text-text-weak"
+                  href={NOTION_LINKS["Terms of Service"]}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  term and conditions
+                  <ArrowUpRight className="mb-3 ml-1 inline size-2" />
+                </a>
+              </CardDescription>
+            </div>
+            {/* Show all errors for debugging */}
+            {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+            {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
+            <FooterButton
+              isModal={false}
+              cancelDisabled={true}
+              disabled={!isFormValid}
+              onClick={navigateToStep}
+            />
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

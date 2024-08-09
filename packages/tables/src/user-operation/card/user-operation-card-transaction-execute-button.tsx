@@ -20,7 +20,6 @@ import {
   Button,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import type { FC } from "react";
@@ -61,40 +60,38 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            disabled={
-              isUserOperationSendLoading ||
-              isUserOperationSendDisabled ||
-              userOperation.status !== "PROPOSED"
-            }
-            isLoading={isUserOperationSendLoading}
-            variant={isUserOperationSendValid ? "default" : "outline"}
-            className="w-full"
-            onClick={handleSubmit}
-          >
-            {userOperation.status === "PROPOSED"
-              ? "Execute"
-              : userOperation.status === "PENDING"
-                ? "Pending"
-                : "Already executed"}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          {userOperation.status === "EXECUTED" ? (
-            <span>
-              Already executed on{" "}
-              {new Date(userOperation.updated_at).toLocaleDateString()}
-            </span>
-          ) : userOperation.status === "PENDING" ? (
-            <span>Transaction is pending...</span>
-          ) : (
-            <span>Execute this transaction</span>
-          )}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          disabled={
+            isUserOperationSendLoading ||
+            isUserOperationSendDisabled ||
+            userOperation.status !== "PROPOSED"
+          }
+          isLoading={isUserOperationSendLoading}
+          variant={isUserOperationSendValid ? "default" : "outline"}
+          className="w-full"
+          onClick={handleSubmit}
+        >
+          {userOperation.status === "PROPOSED"
+            ? "Execute"
+            : userOperation.status === "PENDING"
+              ? "Pending"
+              : "Already executed"}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        {userOperation.status === "EXECUTED" ? (
+          <span>
+            Already executed on{" "}
+            {new Date(userOperation.updated_at).toLocaleDateString()}
+          </span>
+        ) : userOperation.status === "PENDING" ? (
+          <span>Transaction is pending...</span>
+        ) : (
+          <span>Execute this transaction</span>
+        )}
+      </TooltipContent>
+    </Tooltip>
   );
 };

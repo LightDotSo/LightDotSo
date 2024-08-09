@@ -44,7 +44,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  TooltipProvider,
   toast,
 } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
@@ -320,50 +319,48 @@ export const ConfirmForm: FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-10">
-        <TooltipProvider delayDuration={300}>
-          <Form {...form}>
-            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-              {form.formState.errors && (
-                <pre className="font-medium text-sm text-text-destructive">
-                  {/* Print any message one line at a time */}
-                  {extractDeeperErrors(form.formState.errors).join("\n")}
-                </pre>
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors && (
+              <pre className="font-medium text-sm text-text-destructive">
+                {/* Print any message one line at a time */}
+                {extractDeeperErrors(form.formState.errors).join("\n")}
+              </pre>
+            )}
+            <FormField
+              control={form.control}
+              name="check"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      onBlur={() => {
+                        form.trigger();
+                      }}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="cursor-pointer">
+                      Confirm that the above settings are correct and that the
+                      action is irreversible.
+                    </FormLabel>
+                  </div>
+                </FormItem>
               )}
-              <FormField
-                control={form.control}
-                name="check"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onBlur={() => {
-                          form.trigger();
-                        }}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="cursor-pointer">
-                        Confirm that the above settings are correct and that the
-                        action is irreversible.
-                      </FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FooterButton
-                isModal={false}
-                disabled={!isFormValid}
-                isLoading={isLoading}
-                cancelClick={() => router.back()}
-              />
-              {/* Show all errors for debugging */}
-              {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
-              {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
-            </form>
-          </Form>
-        </TooltipProvider>
+            />
+            <FooterButton
+              isModal={false}
+              disabled={!isFormValid}
+              isLoading={isLoading}
+              cancelClick={() => router.back()}
+            />
+            {/* Show all errors for debugging */}
+            {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
+            {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

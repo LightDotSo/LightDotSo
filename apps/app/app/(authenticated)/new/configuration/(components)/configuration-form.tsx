@@ -58,7 +58,6 @@ import {
   SelectTrigger,
   SelectValue,
   Separator,
-  TooltipProvider,
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
@@ -434,263 +433,261 @@ export const ConfigurationForm: FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-10">
-        <TooltipProvider delayDuration={300}>
-          <Form {...form}>
-            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="space-y-4">
-                {fields.map((field, index) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  <div key={index}>
-                    {/* A hack to make a padding above the separator */}
-                    {type === "personal" && index === 1 && (
-                      <div className="pt-4" />
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="space-y-4">
+              {fields.map((field, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <div key={index}>
+                  {/* A hack to make a padding above the separator */}
+                  {type === "personal" && index === 1 && (
+                    <div className="pt-4" />
+                  )}
+                  {/* If the type is personal, add a separator on index 1 */}
+                  {type === "personal" && index === 1 && <Separator />}
+                  {/* A hack to make a padding below the separator */}
+                  {type === "personal" && index === 1 && (
+                    <div className="pb-6" />
+                  )}
+                  <FormLabel
+                    className={cn(
+                      type === "personal" && index > 1 && "sr-only",
+                      type !== "personal" && index !== 0 && "sr-only",
                     )}
-                    {/* If the type is personal, add a separator on index 1 */}
-                    {type === "personal" && index === 1 && <Separator />}
-                    {/* A hack to make a padding below the separator */}
-                    {type === "personal" && index === 1 && (
-                      <div className="pb-6" />
+                  >
+                    {type === "personal" && index === 0 && "Primary Key"}
+                    {type === "personal" && index === 1 && "Backup Keys"}
+                    {type !== "personal" && "Owners"}
+                  </FormLabel>
+                  <FormDescription
+                    className={cn(
+                      type === "personal" && index > 1 && "sr-only",
+                      type !== "personal" && index !== 0 && "sr-only",
+                      index === 0 && "mb-6",
                     )}
-                    <FormLabel
-                      className={cn(
-                        type === "personal" && index > 1 && "sr-only",
-                        type !== "personal" && index !== 0 && "sr-only",
-                      )}
-                    >
-                      {type === "personal" && index === 0 && "Primary Key"}
-                      {type === "personal" && index === 1 && "Backup Keys"}
-                      {type !== "personal" && "Owners"}
-                    </FormLabel>
-                    <FormDescription
-                      className={cn(
-                        type === "personal" && index > 1 && "sr-only",
-                        type !== "personal" && index !== 0 && "sr-only",
-                        index === 0 && "mb-6",
-                      )}
-                    >
-                      Add the owner and their corresponding weight.
-                    </FormDescription>
-                    <FormItem
-                      key={field.id}
-                      className="grid grid-cols-8 gap-4 space-y-0"
-                    >
-                      <FormField
-                        control={form.control}
-                        name={`owners.${index}.addressOrEns`}
-                        render={({ field }) => (
-                          <div className="col-span-6 space-y-2">
-                            <Label htmlFor="address">Address or ENS</Label>
-                            <div className="flex items-center space-x-3">
-                              <div className="relative inline-block w-full">
-                                <Input
-                                  id="address"
-                                  className="pl-12"
-                                  {...field}
-                                  placeholder="Your address or ENS name"
-                                  onBlur={(e) => {
-                                    // Validate the address
-                                    if (!e.target.value) {
-                                      // Clear the value of key address
-                                      form.setValue(
-                                        `owners.${index}.address`,
-                                        "0x",
-                                      );
+                  >
+                    Add the owner and their corresponding weight.
+                  </FormDescription>
+                  <FormItem
+                    key={field.id}
+                    className="grid grid-cols-8 gap-4 space-y-0"
+                  >
+                    <FormField
+                      control={form.control}
+                      name={`owners.${index}.addressOrEns`}
+                      render={({ field }) => (
+                        <div className="col-span-6 space-y-2">
+                          <Label htmlFor="address">Address or ENS</Label>
+                          <div className="flex items-center space-x-3">
+                            <div className="relative inline-block w-full">
+                              <Input
+                                id="address"
+                                className="pl-12"
+                                {...field}
+                                placeholder="Your address or ENS name"
+                                onBlur={(e) => {
+                                  // Validate the address
+                                  if (!e.target.value) {
+                                    // Clear the value of key address
+                                    form.setValue(
+                                      `owners.${index}.address`,
+                                      "0x",
+                                    );
+                                  }
+                                  const address = e.target.value;
+
+                                  validateAddress(address, index);
+                                }}
+                                onChange={(e) => {
+                                  // Update the field value
+                                  field.onChange(e.target.value || "");
+
+                                  // Validate the address
+                                  const address = e.target.value;
+
+                                  if (address) {
+                                    debouncedValidateAddress(address, index);
+                                  }
+                                }}
+                              />
+                              <div className="absolute inset-y-0 left-3 flex items-center">
+                                <Avatar className="size-6">
+                                  {/* If the address is valid, try resolving an ens Avatar */}
+                                  <PlaceholderOrb
+                                    address={
+                                      // If the address is a valid address
+                                      field?.value && isAddress(field.value)
+                                        ? field?.value
+                                        : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
                                     }
-                                    const address = e.target.value;
-
-                                    validateAddress(address, index);
-                                  }}
-                                  onChange={(e) => {
-                                    // Update the field value
-                                    field.onChange(e.target.value || "");
-
-                                    // Validate the address
-                                    const address = e.target.value;
-
-                                    if (address) {
-                                      debouncedValidateAddress(address, index);
-                                    }
-                                  }}
-                                />
-                                <div className="absolute inset-y-0 left-3 flex items-center">
-                                  <Avatar className="size-6">
-                                    {/* If the address is valid, try resolving an ens Avatar */}
-                                    <PlaceholderOrb
-                                      address={
-                                        // If the address is a valid address
-                                        field?.value && isAddress(field.value)
-                                          ? field?.value
-                                          : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                      }
-                                      className={cn(
-                                        // If the field is not valid, add opacity
-                                        form.formState.errors.owners?.[index]
-                                          ?.addressOrEns
-                                          ? "opacity-50"
-                                          : "opacity-100",
-                                      )}
-                                    />
-                                  </Avatar>
-                                </div>
+                                    className={cn(
+                                      // If the field is not valid, add opacity
+                                      form.formState.errors.owners?.[index]
+                                        ?.addressOrEns
+                                        ? "opacity-50"
+                                        : "opacity-100",
+                                    )}
+                                  />
+                                </Avatar>
                               </div>
                             </div>
+                          </div>
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+                    <FormField
+                      key={field.id}
+                      control={form.control}
+                      name={`owners.${index}.weight`}
+                      render={({ field }) => (
+                        <FormControl>
+                          <div className="col-span-1 space-y-2">
+                            <Label htmlFor="weight">Weight</Label>
+                            <Select
+                              defaultValue={field.value.toString()}
+                              onValueChange={(value) => {
+                                field.onChange(Number.parseInt(value));
+                                form.trigger(`owners.${index}.weight`);
+                                form.trigger("threshold");
+                              }}
+                              onOpenChange={() => {
+                                form.trigger(`owners.${index}.weight`);
+                                form.trigger("threshold");
+                              }}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="w-24">
+                                  <SelectValue placeholder="Select your wallet threshold" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="max-h-60">
+                                {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
+                                  (_, i) => (
+                                    <SelectItem
+                                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                                      key={i}
+                                      value={(i + 1).toString()}
+                                    >
+                                      {i + 1}
+                                    </SelectItem>
+                                  ),
+                                )}
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </div>
-                        )}
-                      />
-                      <FormField
-                        key={field.id}
-                        control={form.control}
-                        name={`owners.${index}.weight`}
-                        render={({ field }) => (
-                          <FormControl>
-                            <div className="col-span-1 space-y-2">
-                              <Label htmlFor="weight">Weight</Label>
-                              <Select
-                                defaultValue={field.value.toString()}
-                                onValueChange={(value) => {
-                                  field.onChange(Number.parseInt(value));
-                                  form.trigger(`owners.${index}.weight`);
-                                  form.trigger("threshold");
-                                }}
-                                onOpenChange={() => {
-                                  form.trigger(`owners.${index}.weight`);
-                                  form.trigger("threshold");
-                                }}
-                              >
-                                <FormControl>
-                                  <SelectTrigger className="w-24">
-                                    <SelectValue placeholder="Select your wallet threshold" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className="max-h-60">
-                                  {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
-                                    (_, i) => (
-                                      <SelectItem
-                                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                        key={i}
-                                        value={(i + 1).toString()}
-                                      >
-                                        {i + 1}
-                                      </SelectItem>
-                                    ),
-                                  )}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </div>
-                          </FormControl>
-                        )}
-                      />
-                      <div
-                        className={cn(
-                          "col-span-1 flex h-full flex-col items-center",
-                          // If there is error, justify center, else end
-                          form.formState.errors.owners?.[index]?.addressOrEns
-                            ? "justify-center"
-                            : "justify-end",
-                        )}
+                        </FormControl>
+                      )}
+                    />
+                    <div
+                      className={cn(
+                        "col-span-1 flex h-full flex-col items-center",
+                        // If there is error, justify center, else end
+                        form.formState.errors.owners?.[index]?.addressOrEns
+                          ? "justify-center"
+                          : "justify-end",
+                      )}
+                    >
+                      <ButtonIcon
+                        disabled={fields.length < 2}
+                        variant="outline"
+                        className="mt-1.5 rounded-full"
+                        onClick={() => {
+                          remove(index);
+                        }}
                       >
-                        <ButtonIcon
-                          disabled={fields.length < 2}
-                          variant="outline"
-                          className="mt-1.5 rounded-full"
-                          onClick={() => {
-                            remove(index);
-                          }}
-                        >
-                          <Trash2Icon className="size-5" />
-                        </ButtonIcon>
-                      </div>
-                    </FormItem>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="mt-6"
-                  onClick={() => {
-                    append({ addressOrEns: "", weight: 1 });
-                  }}
-                >
-                  <UserPlus2 className="mr-2 size-5" />
-                  {type === "personal" && "Add Backup Key"}
-                  {type !== "personal" && "Add New Owner"}
-                </Button>
-              </div>
-              <FormField
-                control={form.control}
-                name="threshold"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="threshold">Threshold</FormLabel>
-                    <div className="grid gap-3">
-                      <FormControl>
-                        <Select
-                          defaultValue={field.value.toString()}
-                          onOpenChange={() => {
-                            form.trigger("threshold");
-                          }}
-                          onValueChange={(value) => {
-                            field.onChange(Number.parseInt(value));
-                            form.trigger("threshold");
-                          }}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="w-24">
-                              <SelectValue placeholder="Select your wallet threshold" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
-                              (_, i) => (
-                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                <SelectItem key={i} value={(i + 1).toString()}>
-                                  {i + 1}
-                                </SelectItem>
-                              ),
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                        <Trash2Icon className="size-5" />
+                      </ButtonIcon>
                     </div>
-                    <FormDescription>
-                      Enter a threshold for your new wallet
-                    </FormDescription>
-                    <FormMessage />
-                    {form.formState.errors && (
-                      <p className="font-medium text-sm text-text-destructive">
-                        {/* Print any message one line at a time */}
-                        {Object.entries(form.formState.errors)
-                          .filter(
-                            ([key]) =>
-                              !(
-                                key.startsWith("threshold") ||
-                                key.startsWith("owners")
-                              ),
-                          )
-                          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                          .map(([_key, error]: [string, any]) => error.message)
-                          .join("\n")}
-                      </p>
-                    )}
-                    {/* Show all errors for debugging */}
-                    {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
                   </FormItem>
-                )}
-              />
-              <FooterButton
-                isModal={false}
-                disabled={!isFormValid}
-                cancelClick={() => router.back()}
-                onClick={navigateToStep}
-              />
-            </form>
-          </Form>
-        </TooltipProvider>
+                </div>
+              ))}
+            </div>
+            <div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-6"
+                onClick={() => {
+                  append({ addressOrEns: "", weight: 1 });
+                }}
+              >
+                <UserPlus2 className="mr-2 size-5" />
+                {type === "personal" && "Add Backup Key"}
+                {type !== "personal" && "Add New Owner"}
+              </Button>
+            </div>
+            <FormField
+              control={form.control}
+              name="threshold"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="threshold">Threshold</FormLabel>
+                  <div className="grid gap-3">
+                    <FormControl>
+                      <Select
+                        defaultValue={field.value.toString()}
+                        onOpenChange={() => {
+                          form.trigger("threshold");
+                        }}
+                        onValueChange={(value) => {
+                          field.onChange(Number.parseInt(value));
+                          form.trigger("threshold");
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-24">
+                            <SelectValue placeholder="Select your wallet threshold" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
+                            (_, i) => (
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              <SelectItem key={i} value={(i + 1).toString()}>
+                                {i + 1}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <FormDescription>
+                    Enter a threshold for your new wallet
+                  </FormDescription>
+                  <FormMessage />
+                  {form.formState.errors && (
+                    <p className="font-medium text-sm text-text-destructive">
+                      {/* Print any message one line at a time */}
+                      {Object.entries(form.formState.errors)
+                        .filter(
+                          ([key]) =>
+                            !(
+                              key.startsWith("threshold") ||
+                              key.startsWith("owners")
+                            ),
+                        )
+                        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                        .map(([_key, error]: [string, any]) => error.message)
+                        .join("\n")}
+                    </p>
+                  )}
+                  {/* Show all errors for debugging */}
+                  {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+                </FormItem>
+              )}
+            />
+            <FooterButton
+              isModal={false}
+              disabled={!isFormValid}
+              cancelClick={() => router.back()}
+              onClick={navigateToStep}
+            />
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

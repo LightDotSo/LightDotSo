@@ -93,7 +93,7 @@ const ListItem = forwardRef<ElementRef<"a">, ComponentPropsWithoutRef<"a">>(
             {...props}
           >
             <div className="font-medium text-sm leading-none">{title}</div>
-            <p className="line-clamp-2 text-muted-foreground text-sm leading-snug">
+            <p className="line-clamp-2 text-sm text-text-weak leading-snug">
               {children}
             </p>
           </a>
@@ -129,7 +129,7 @@ export const Menu: FC<GridProps> = ({ className }) => {
                     <div className="mt-4 mb-2 font-medium text-lg">
                       shadcn/ui
                     </div>
-                    <p className="text-muted-foreground text-sm leading-tight">
+                    <p className="text-sm text-text-weak leading-tight">
                       Beautifully designed components built with Radix UI and
                       Tailwind CSS.
                     </p>

@@ -18,7 +18,6 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -49,33 +48,31 @@ export const InvokeButton: FC<InvokeButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span>
-            <ButtonIcon
-              size="sm"
-              className={cn(isLoading && "text-text-weaker")}
-              disabled={isLoading || isDisabled}
-              variant="shadow"
-              onClick={onClick}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center space-x-1 duration-&lsqb;50ms&rsqb;">
-                  <div className="size-1 animate-bounce rounded-full bg-background-primary [animation-delay:-300ms]" />
-                  <div className="size-1 animate-bounce rounded-full bg-background-primary-weak [animation-delay:-150ms]" />
-                  <div className="size-1 animate-bounce rounded-full bg-background-primary" />
-                </div>
-              ) : (
-                <RefreshCcw className="size-4" />
-              )}
-            </ButtonIcon>
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Refresh</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span>
+          <ButtonIcon
+            size="sm"
+            className={cn(isLoading && "text-text-weaker")}
+            disabled={isLoading || isDisabled}
+            variant="shadow"
+            onClick={onClick}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center space-x-1 duration-&lsqb;50ms&rsqb;">
+                <div className="size-1 animate-bounce rounded-full bg-background-primary [animation-delay:-300ms]" />
+                <div className="size-1 animate-bounce rounded-full bg-background-primary-weak [animation-delay:-150ms]" />
+                <div className="size-1 animate-bounce rounded-full bg-background-primary" />
+              </div>
+            ) : (
+              <RefreshCcw className="size-4" />
+            )}
+          </ButtonIcon>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Refresh</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };

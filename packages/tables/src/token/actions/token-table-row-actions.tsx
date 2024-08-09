@@ -21,7 +21,6 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { Send, Shuffle } from "lucide-react";
@@ -62,39 +61,37 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   }
 
   return (
-    <TooltipProvider>
-      <div className="flex items-center justify-end gap-x-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span>
-              <ButtonIcon disabled size="sm" variant="shadow">
-                <Shuffle className="size-4" />
-                <span className="sr-only">Open swap modal</span>
-              </ButtonIcon>
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Swap {symbol}</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span>
-              <ButtonIcon asChild size="sm" variant="shadow">
-                <Link
-                  href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
-                >
-                  <Send className="size-4" />
-                  <span className="sr-only">Open send modal</span>
-                </Link>
-              </ButtonIcon>
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Send {symbol}</p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
-    </TooltipProvider>
+    <div className="flex items-center justify-end gap-x-2">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>
+            <ButtonIcon disabled size="sm" variant="shadow">
+              <Shuffle className="size-4" />
+              <span className="sr-only">Open swap modal</span>
+            </ButtonIcon>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Swap {symbol}</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>
+            <ButtonIcon asChild size="sm" variant="shadow">
+              <Link
+                href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
+              >
+                <Send className="size-4" />
+                <span className="sr-only">Open send modal</span>
+              </Link>
+            </ButtonIcon>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Send {symbol}</p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
   );
 };

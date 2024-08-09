@@ -1,0 +1,24 @@
+ignores:
+  - "@babel/core"
+  - "@lightdotso/tsconfig"
+  - "@types/react"
+  - "@types/react-dom"
+  - "@types/node"
+  - typescript
+  - "@babel/core"
+  - "@types/node"
+  - autoprefixer
+  - postcss
+  - tailwindcss
+  - typescript
+  - critters
+  - "@lightdotso/styles"
+  - "@next/bundle-analyzer"
+  - "@sentry/integrations"
+  - "@lightdotso/const"
+  - "@lightdotso/elements"
+  - "@lightdotso/svg"
+  - "geist"
+  - "lucide-react"
+  - "react-intersection-observer"
+  - "viem"

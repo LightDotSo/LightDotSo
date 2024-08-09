@@ -19,7 +19,6 @@ import {
   Avatar,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, shortenAddress } from "@lightdotso/utils";
@@ -49,28 +48,26 @@ export const AddressCard: FC<ChainCardProps> = ({ address, className }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <div className={cn("flex items-center text-ellipsis", className)}>
-          <Avatar className="mr-3 size-7">
-            <PlaceholderOrb address={address} />
-          </Avatar>
-          {ens && <span className="mr-3">{ens}</span>}
-          {!ens && shortenAddress(address)}
-          {ens && (
-            <>
-              <TooltipTrigger asChild>
-                <span className="text-text-weak text-xs">
-                  {shortenAddress(address)}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{address}</p>
-              </TooltipContent>
-            </>
-          )}
-        </div>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <div className={cn("flex items-center text-ellipsis", className)}>
+        <Avatar className="mr-3 size-7">
+          <PlaceholderOrb address={address} />
+        </Avatar>
+        {ens && <span className="mr-3">{ens}</span>}
+        {!ens && shortenAddress(address)}
+        {ens && (
+          <>
+            <TooltipTrigger asChild>
+              <span className="text-text-weak text-xs">
+                {shortenAddress(address)}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{address}</p>
+            </TooltipContent>
+          </>
+        )}
+      </div>
+    </Tooltip>
   );
 };
