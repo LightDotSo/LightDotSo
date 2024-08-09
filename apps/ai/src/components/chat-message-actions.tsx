@@ -18,7 +18,7 @@ import type { Message } from "ai";
 
 import { IconCheck, IconCopy } from "@/components/icons";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
-import { Button } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps } from "react";
 
@@ -48,10 +48,10 @@ export function ChatMessageActions({
       )}
       {...props}
     >
-      <Button variant="ghost" size="icon" onClick={onCopy}>
+      <ButtonIcon variant="ghost" onClick={onCopy}>
         {isCopied ? <IconCheck /> : <IconCopy />}
         <span className="sr-only">Copy message</span>
-      </Button>
+      </ButtonIcon>
     </div>
   );
 }

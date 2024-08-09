@@ -13,7 +13,9 @@
 // limitations under the License.
 
 "use server";
+
 import { ResultCode } from "@/lib/utils";
+import { z } from "zod";
 
 export async function getUser(_email: string) {
   // const user = await kv.hgetall<User>(`user:${email}`);
@@ -25,6 +27,7 @@ interface Result {
   resultCode: ResultCode;
 }
 
+// biome-ignore lint/suspicious/useAwait: <explanation>
 export async function authenticate(
   _prevState: Result | undefined,
   formData: FormData,
@@ -44,11 +47,11 @@ export async function authenticate(
       });
 
     if (parsedCredentials.success) {
-      await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+      // await signIn("credentials", {
+      //   email,
+      //   password,
+      //   redirect: false,
+      // });
 
       return {
         type: "success",
@@ -59,20 +62,20 @@ export async function authenticate(
       type: "error",
       resultCode: ResultCode.InvalidCredentials,
     };
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return {
-            type: "error",
-            resultCode: ResultCode.InvalidCredentials,
-          };
-        default:
-          return {
-            type: "error",
-            resultCode: ResultCode.UnknownError,
-          };
-      }
-    }
+  } catch (_error) {
+    // if (error instanceof AuthError) {
+    //   switch (error.type) {
+    //     case "CredentialsSignin":
+    //       return {
+    //         type: "error",
+    //         resultCode: ResultCode.InvalidCredentials,
+    //       };
+    //     default:
+    //       return {
+    //         type: "error",
+    //         resultCode: ResultCode.UnknownError,
+    //       };
+    //   }
+    // }
   }
 }

@@ -14,6 +14,7 @@
 
 "use client";
 
+import { CodeBlock } from "@/components/codeblock";
 import { IconOpenAI, IconUser } from "@/components/icons";
 import { useStreamableText } from "@/lib/hooks/use-streamable-text";
 import { cn } from "@lightdotso/utils";
@@ -22,7 +23,6 @@ import type { ReactNode } from "react";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import { MemoizedReactMarkdown } from "../markdown";
-import { CodeBlock } from "@/components/codeblock";
 import { spinner } from "./spinner";
 
 // Different types of message bubbles.
