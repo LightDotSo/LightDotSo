@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import packageJson from "./package.json" assert { type: "json" };
+
 // ---------------------------------------------------------------------------
 // Next Config
 // ---------------------------------------------------------------------------
@@ -19,6 +21,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: "/changelog",
+  env: {
+    NEXT_PUBLIC_APP_VERSION: `@lightdotso/changelog@${packageJson.version}`,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

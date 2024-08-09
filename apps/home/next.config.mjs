@@ -14,6 +14,7 @@
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
+import packageJson from "./package.json" assert { type: "json" };
 
 // ---------------------------------------------------------------------------
 // Next Config
@@ -22,6 +23,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_APP_VERSION: `@lightdotso/home@${packageJson.version}`,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -50,6 +54,8 @@ const nextConfig = {
   },
   outputFileTracing: true,
   transpilePackages: [
+    "@lightdotso/const",
+    "@lightdotso/elements",
     "@lightdotso/svg",
     "@lightdotso/templates",
     "@lightdotso/ui",
