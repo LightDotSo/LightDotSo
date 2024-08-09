@@ -35,6 +35,7 @@ import {
 import type { ReactNode } from "react";
 import { z } from "zod";
 
+// biome-ignore lint/suspicious/useAwait: <explanation>
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   "use server";
 
@@ -97,6 +98,7 @@ async function confirmPurchase(symbol: string, price: number, amount: number) {
   });
 
   return {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     purchasingUI: purchasing.value,
     newMessage: {
       id: nanoid(),
@@ -123,7 +125,7 @@ async function submitUserMessage(content: string) {
   });
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>;
-  let textNode: undefined | React.ReactNode;
+  let textNode: undefined | ReactNode;
 
   const result = await streamUI({
     model: openai("gpt-3.5-turbo"),
@@ -144,6 +146,7 @@ async function submitUserMessage(content: string) {
     
     Besides that, you can also chat with users and do some calculations if needed.`,
     messages: [
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       ...aiState.get().messages.map((message: any) => ({
         role: message.role,
         content: message.content,
@@ -483,11 +486,13 @@ async function submitUserMessage(content: string) {
   };
 }
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export type AIState = {
   chatId: string;
   messages: Message[];
 };
 
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export type UIState = {
   id: string;
   display: ReactNode;
@@ -498,9 +503,12 @@ export const AI = createAI<AIState, UIState>({
     submitUserMessage,
     confirmPurchase,
   },
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   initialUIState: [],
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   initialAIState: { chatId: nanoid(), messages: [] },
   // biome-ignore lint/style/useNamingConvention: <explanation>
+  // biome-ignore lint/suspicious/useAwait: <explanation>
   onGetUIState: async () => {
     // "use server";
 
@@ -554,6 +562,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
       id: `${aiState.chatId}-${index}`,
       display:
         message.role === "tool" ? (
+          // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
           message.content.map((tool) => {
             return tool.toolName === "listStocks" ? (
               // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>

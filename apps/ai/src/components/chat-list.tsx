@@ -38,7 +38,7 @@ export function ChatList({ messages, session, isShared }: ChatList) {
               <ExclamationTriangleIcon />
             </div>
             <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
-              <p className="text-muted-foreground leading-normal">
+              <p className="text-text-weak leading-normal">
                 Please{" "}
                 <Link href="/login" className="underline">
                   log in

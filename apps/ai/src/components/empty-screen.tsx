@@ -21,7 +21,7 @@ export function EmptyScreen() {
         <h1 className="font-semibold text-lg">
           Welcome to Next.js AI Chatbot!
         </h1>
-        <p className="text-muted-foreground leading-normal">
+        <p className="text-text-weak leading-normal">
           This is an open source AI chatbot app template built with{" "}
           <ExternalLink href="https://nextjs.org">Next.js</ExternalLink>, the{" "}
           <ExternalLink href="https://sdk.vercel.ai">
@@ -33,7 +33,7 @@ export function EmptyScreen() {
           </ExternalLink>
           .
         </p>
-        <p className="text-muted-foreground leading-normal">
+        <p className="text-text-weak leading-normal">
           It uses{" "}
           <ExternalLink href="https://vercel.com/blog/ai-sdk-3-generative-ui">
             React Server Components

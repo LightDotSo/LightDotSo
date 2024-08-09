@@ -38,7 +38,7 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="pl-0">
-            <div className="flex size-7 shrink-0 select-none items-center justify-center rounded-full bg-muted/50 font-medium text-muted-foreground text-xs uppercase">
+            <div className="flex size-7 shrink-0 select-none items-center justify-center rounded-full bg-muted/50 font-medium text-text-weak text-xs uppercase">
               {getUserInitials(user.email)}
             </div>
             <span className="ml-2 hidden md:block">{user.email}</span>

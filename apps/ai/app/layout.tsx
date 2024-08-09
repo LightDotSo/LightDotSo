@@ -12,13 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 import "@/app/globals.css";
 import { Header } from "@/components/header";
-import { Providers } from "@/components/providers";
-import { Toaster } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { Root } from "@lightdotso/templates";
 import type { ReactNode } from "react";
 
 export const metadata = {
@@ -50,27 +46,11 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "font-sans antialiased",
-          GeistSans.variable,
-          GeistMono.variable,
-        )}
-      >
-        <Toaster />
-        <Providers
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex flex-1 flex-col bg-muted/50">{children}</main>
-          </div>
-        </Providers>
-      </body>
-    </html>
+    <Root>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex flex-1 flex-col bg-muted/50">{children}</main>
+      </div>
+    </Root>
   );
 }

@@ -72,9 +72,7 @@ export function ChatShareDialog({
         </DialogHeader>
         <div className="space-y-1 rounded-md border p-4 text-sm">
           <div className="font-medium">{chat.title}</div>
-          <div className="text-muted-foreground">
-            {chat.messages.length} messages
-          </div>
+          <div className="text-text-weak">{chat.messages.length} messages</div>
         </div>
         <DialogFooter className="items-center">
           <Button

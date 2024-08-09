@@ -47,7 +47,7 @@ export default async function SharePage(_params: SharePageProps) {
   //         <div className="mx-auto max-w-2xl">
   //           <div className="md:-mx-8 space-y-1">
   //             <h1 className="font-bold text-2xl">{chat.title}</h1>
-  //             <div className="text-muted-foreground text-sm">
+  //             <div className="text-text-weak text-sm">
   //               {formatDate(chat.createdAt)} · {chat.messages.length} messages
   //             </div>
   //           </div>

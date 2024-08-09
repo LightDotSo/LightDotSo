@@ -37,7 +37,7 @@ async function UserOrLogin() {
         </Link>
       )} */}
       <div className="flex items-center">
-        <IconSeparator className="size-6 text-muted-foreground/50" />
+        <IconSeparator className="size-6 text-text-weak/50" />
         {/* {session?.user ? (
           <UserMenu user={session.user} />
         ) : (

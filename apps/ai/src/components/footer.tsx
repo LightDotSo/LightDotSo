@@ -20,7 +20,7 @@ export function FooterText({ className, ...props }: ComponentProps<"p">) {
   return (
     <p
       className={cn(
-        "px-2 text-center text-muted-foreground text-xs leading-normal",
+        "px-2 text-center text-text-weak text-xs leading-normal",
         className,
       )}
       {...props}
