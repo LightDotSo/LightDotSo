@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export const useLocalStorage = <T>(
   key: string,
   initialValue: T,

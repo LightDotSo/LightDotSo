@@ -126,7 +126,7 @@
     "**/target/**",
     "**/tools/**",
     "**/wiki/**",
-    "!**/src/lib/**"
+    "!apps/ai/src/lib/**"
   ],
   "license": "LICENSE.header",
   "defaultFormat": {

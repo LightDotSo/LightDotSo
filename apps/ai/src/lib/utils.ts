@@ -1,5 +1,9 @@
 import { customAlphabet } from "nanoid";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
   7,

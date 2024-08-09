@@ -1,6 +1,10 @@
 import { type StreamableValue, readStreamableValue } from "ai/rsc";
 import { useEffect, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export const useStreamableText = (
   content: string | StreamableValue<string>,
 ) => {

@@ -8,7 +8,15 @@ import {
   useState,
 } from "react";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const LOCAL_STORAGE_KEY = "sidebar";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 interface SidebarContext {
   isSidebarOpen: boolean;
@@ -16,7 +24,15 @@ interface SidebarContext {
   isLoading: boolean;
 }
 
+// -----------------------------------------------------------------------------
+// Context
+// -----------------------------------------------------------------------------
+
 const SidebarContext = createContext<SidebarContext | undefined>(undefined);
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export function useSidebar() {
   const context = useContext(SidebarContext);
@@ -29,6 +45,10 @@ export function useSidebar() {
 interface SidebarProviderProps {
   children: ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function SidebarProvider({ children }: SidebarProviderProps) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);

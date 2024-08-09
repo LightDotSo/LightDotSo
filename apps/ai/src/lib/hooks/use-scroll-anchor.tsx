@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export const useScrollAnchor = () => {
   const messagesRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);

@@ -33,6 +33,10 @@ import {
 import type { ReactNode } from "react";
 import { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Action
+// -----------------------------------------------------------------------------
+
 function confirmPurchase(symbol: string, price: number, amount: number) {
   "use server";
 
@@ -504,23 +508,21 @@ export const AI = createAI<AIState, UIState>({
   initialUIState: [],
   // biome-ignore lint/style/useNamingConvention: <explanation>
   initialAIState: { chatId: nanoid(), messages: [] },
-  // biome-ignore lint/style/useNamingConvention: <explanation>
-  // biome-ignore lint/suspicious/useAwait: <explanation>
-  onGetUIState: async () => {
-    // "use server";
+  // onGetUIState: async () => {
+  //   "use server";
 
-    // if (session?.user) {
-    //   const aiState = getAIState();
+  //   // if (session?.user) {
+  //   //   const aiState = getAIState();
 
-    //   if (aiState) {
-    //     const uiState = getUIStateFromAIState(aiState);
-    //     return uiState;
-    //   }
-    // } else {
-    //   return;
-    // }
-    return;
-  },
+  //   //   if (aiState) {
+  //   //     const uiState = getUIStateFromAIState(aiState);
+  //   //     return uiState;
+  //   //   }
+  //   // } else {
+  //   //   return;
+  //   // }
+  //   return;
+  // },
   // biome-ignore lint/style/useNamingConvention: <explanation>
   // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   // biome-ignore lint/suspicious/useAwait: <explanation>

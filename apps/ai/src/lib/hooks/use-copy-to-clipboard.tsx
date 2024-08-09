@@ -2,10 +2,18 @@
 
 import { useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export interface useCopyToClipboardProps {
   timeout?: number;
 }
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export function useCopyToClipboard({
   timeout = 2000,
