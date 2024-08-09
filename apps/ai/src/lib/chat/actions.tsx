@@ -35,8 +35,7 @@ import {
 import type { ReactNode } from "react";
 import { z } from "zod";
 
-// biome-ignore lint/suspicious/useAwait: <explanation>
-async function confirmPurchase(symbol: string, price: number, amount: number) {
+function confirmPurchase(symbol: string, price: number, amount: number) {
   "use server";
 
   const aiState = getMutableAIState<typeof AI>();

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import type { Session } from "@/lib/types";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
