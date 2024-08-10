@@ -84,10 +84,3 @@ export default async function SharePage(_params: SharePageProps) {
   //   </>
   // );
 }
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const runtime = "edge";
-export const preferredRegion = "home";
