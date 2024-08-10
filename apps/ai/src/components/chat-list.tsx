@@ -27,7 +27,6 @@
 // limitations under the License.
 
 import type { UIState } from "@/chat/actions";
-import type { Session } from "@/types";
 import { Separator } from "@lightdotso/ui";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -38,7 +37,7 @@ import Link from "next/link";
 
 export interface ChatList {
   messages: UIState;
-  session?: Session;
+  // session?: Session;
   isShared: boolean;
 }
 
@@ -46,14 +45,14 @@ export interface ChatList {
 // Component
 // -----------------------------------------------------------------------------
 
-export function ChatList({ messages, session, isShared }: ChatList) {
+export function ChatList({ messages, isShared }: ChatList) {
   if (!messages.length) {
     return null;
   }
 
   return (
     <div className="relative mx-auto max-w-2xl px-4">
-      {isShared || session ? null : (
+      {isShared ? null : (
         <>
           <div className="group md:-ml-12 relative mb-4 flex items-start">
             <div className="flex size-[25px] shrink-0 select-none items-center justify-center rounded-md border bg-background shadow-sm">
@@ -76,7 +75,6 @@ export function ChatList({ messages, session, isShared }: ChatList) {
           <Separator className="my-4" />
         </>
       )}
-
       {messages.map((message, index) => (
         <div key={message.id}>
           {message.display}

@@ -231,6 +231,8 @@ async function submitUserMessage(content: string) {
           ],
         });
       } else {
+        console.warn("Updating text stream");
+        console.info(delta);
         textStream.update(delta);
       }
 

@@ -28,13 +28,14 @@
 
 "use client";
 
+import { ChatList } from "@/components/chat-list";
 import { ChatPanel } from "@/components/chat-panel";
 import { EmptyScreen } from "@/components/empty-screen";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useScrollAnchor } from "@/hooks/use-scroll-anchor";
 import type { Message } from "@/types";
 import { cn } from "@lightdotso/utils";
-import { useAIState } from "ai/rsc";
+import { useAIState, useUIState } from "ai/rsc";
 import { useRouter } from "next/navigation";
 import { type ComponentProps, useEffect, useState } from "react";
 
@@ -55,9 +56,8 @@ export function Chat({ id, className }: ChatProps) {
   const router = useRouter();
   // const path = usePathname();
   const [input, setInput] = useState("");
-  // const [messages] = useUIState();
+  const [messages] = useUIState();
   const [aiState] = useAIState();
-
   const [_, setNewChatId] = useLocalStorage("newChatId", id);
 
   // useEffect(() => {
@@ -91,12 +91,11 @@ export function Chat({ id, className }: ChatProps) {
         className={cn("pt-4 pb-[200px] md:pt-10", className)}
         ref={messagesRef}
       >
-        <EmptyScreen />
-        {/* {messages.length ? (
-          <ChatList messages={messages} isShared={false} session={session} />
+        {messages.length ? (
+          <ChatList messages={messages} isShared={false} />
         ) : (
           <EmptyScreen />
-        )} */}
+        )}
         <div className="h-px w-full" ref={visibilityRef} />
       </div>
       <ChatPanel
