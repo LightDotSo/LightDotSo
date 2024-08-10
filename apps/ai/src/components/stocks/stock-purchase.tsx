@@ -37,7 +37,7 @@ import { type ChangeEvent, type ReactNode, useId, useState } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-interface Purchase {
+export interface Purchase {
   numberOfShares?: number;
   symbol: string;
   price: number;

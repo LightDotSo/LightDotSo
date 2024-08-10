@@ -35,7 +35,7 @@ import { useActions, useUIState } from "ai/rsc";
 // Props
 // -----------------------------------------------------------------------------
 
-interface Stock {
+export interface Stock {
   symbol: string;
   price: number;
   delta: number;

@@ -27,7 +27,6 @@
 // limitations under the License.
 
 import "server-only";
-
 import {
   BotCard,
   BotMessage,
@@ -38,10 +37,12 @@ import {
 } from "@/components/stocks";
 // import { auth } from "@/auth";
 import { Events } from "@/components/stocks/events";
+import type { Event as EventType } from "@/components/stocks/events";
 import { EventsSkeleton } from "@/components/stocks/events-skeleton";
 import { SpinnerMessage, UserMessage } from "@/components/stocks/message";
+import type { Purchase as PurchaseType } from "@/components/stocks/stock-purchase";
 import { StockSkeleton } from "@/components/stocks/stock-skeleton";
-import { Stocks } from "@/components/stocks/stocks";
+import { type Stock as StockType, Stocks } from "@/components/stocks/stocks";
 import { StocksSkeleton } from "@/components/stocks/stocks-skeleton";
 import type { Chat, Message } from "@/types";
 import {
@@ -50,7 +51,8 @@ import {
   runAsyncFnWithoutBlocking,
   sleep,
 } from "@/utils";
-import { openai } from "@ai-sdk/openai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { Client } from "@langchain/langgraph-sdk";
 import {
   createAI,
   createStreamableUI,
@@ -141,6 +143,24 @@ async function confirmPurchase(symbol: string, price: number, amount: number) {
 async function submitUserMessage(content: string) {
   "use server";
 
+  const client = new Client({
+    apiUrl: process.env.LANGGRAPH_CLOUD_API_URL,
+    defaultHeaders: {
+      "X-API-KEY": process.env.LANGGRAPH_CLOUD_API_KEY,
+    },
+  });
+
+  const assistants = await client.assistants.search({
+    metadata: null,
+    offset: 0,
+    limit: 1,
+  });
+
+  // We don't do any persisting, so we can just grab the first assistant
+  const agent = assistants[0];
+
+  console.info(agent);
+
   const aiState = getMutableAIState<typeof AI>();
 
   aiState.update({
@@ -157,6 +177,11 @@ async function submitUserMessage(content: string) {
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>;
   let textNode: undefined | ReactNode;
+
+  const openai = createOpenAI({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    baseURL: "https://openrouter.ai/api/v1",
+  });
 
   const result = await streamUI({
     model: openai("gpt-3.5-turbo"),
@@ -185,6 +210,8 @@ async function submitUserMessage(content: string) {
       })),
     ],
     text: ({ content, done, delta }) => {
+      console.info(content);
+
       if (!textStream) {
         textStream = createStreamableValue("");
         textNode = <BotMessage content={textStream.value} />;
@@ -593,27 +620,22 @@ export const getUIStateFromAIState = (aiState: Chat) => {
             return tool.toolName === "listStocks" ? (
               // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
               <BotCard>
-                {/* TODO: Infer types based on the tool result*/}
-                {/* @ts-expect-error */}
-                <Stocks props={tool.result} />
+                <Stocks props={tool.result as StockType[]} />
               </BotCard>
             ) : tool.toolName === "showStockPrice" ? (
               // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
               <BotCard>
-                {/* @ts-expect-error */}
-                <Stock props={tool.result} />
+                <Stock props={tool.result as StockType} />
               </BotCard>
             ) : tool.toolName === "showStockPurchase" ? (
               // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
               <BotCard>
-                {/* @ts-expect-error */}
-                <Purchase props={tool.result} />
+                <Purchase props={tool.result as PurchaseType} />
               </BotCard>
             ) : tool.toolName === "getEvents" ? (
               // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
               <BotCard>
-                {/* @ts-expect-error */}
-                <Events props={tool.result} />
+                <Events props={tool.result as EventType[]} />
               </BotCard>
             ) : null;
           })

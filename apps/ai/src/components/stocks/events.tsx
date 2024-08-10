@@ -32,7 +32,7 @@ import { format, parseISO } from "date-fns";
 // Types
 // -----------------------------------------------------------------------------
 
-interface Event {
+export interface Event {
   date: string;
   headline: string;
   description: string;
