@@ -68,13 +68,11 @@ export async function handleSubmitUserMessage({
     },
   };
 
-  for await (const event of await client.runs.stream(threadId, assistantId, {
+  for await (const event of client.runs.stream(threadId, assistantId, {
     input: inputs,
     streamMode: ["debug", "messages"],
   })) {
     console.info("event", event);
-    console.info("chunk", event.data?.data?.chunk);
-    console.info("output", event.data?.data?.output);
 
     let started = false;
 
@@ -90,8 +88,8 @@ export async function handleSubmitUserMessage({
       if (msg.tool_calls && msg.tool_calls.length > 0) {
         console.info(msg.tool_calls);
       } else if (typeof msg.content === "string") {
-        console.info("msg.content", msg.content);
         textStream.update(msg.content);
+        messageStream.update(<BotMessage content={textStream.value} />);
       }
     }
   }
