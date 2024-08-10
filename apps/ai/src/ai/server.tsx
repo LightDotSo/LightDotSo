@@ -62,7 +62,6 @@ export function streamRunnableUI<RunInput, RunOutput>(
   const [lastEvent, resolve] = withResolvers<string>();
   let shouldRecordLastEvent = true;
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   (async () => {
     let lastEventValue: StreamEvent | null = null;
 
