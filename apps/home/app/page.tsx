@@ -27,7 +27,7 @@ import { Unified } from "./(components)/unified";
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
+export default function Page() {
   return (
     <div>
       <Spiral />
