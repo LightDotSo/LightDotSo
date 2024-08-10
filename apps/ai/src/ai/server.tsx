@@ -79,11 +79,11 @@ export function streamRunnableUI<RunInput, RunOutput>(
     })) {
       console.info("streamEvent", streamEvent);
 
-      // if (streamEvent.event === "on_chain_stream") {
-      //   console.info("Chunk", streamEvent.data.chunk);
-      //   const content = streamEvent.data.chunk;
-      //   ui.update(JSON.stringify(content));
-      // }
+      if (streamEvent.event === "on_chain_stream") {
+        console.info("Chunk", streamEvent.data.chunk);
+        const content = streamEvent.data.chunk;
+        ui.update(JSON.stringify(content));
+      }
 
       if (
         streamEvent.name === STREAM_UI_RUN_NAME &&
@@ -123,5 +123,5 @@ export function streamRunnableUI<RunInput, RunOutput>(
     ui.done();
   })();
 
-  return { ui: ui.value, lastEvent };
+  return { display: ui.value, lastEvent };
 }

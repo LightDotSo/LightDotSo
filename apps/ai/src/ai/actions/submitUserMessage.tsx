@@ -13,21 +13,15 @@
 // limitations under the License.
 
 import { type AI, client } from "@/ai/client";
-import { handleSubmitUserMessage } from "@/ai/handlers/handleSubmitUserMessage";
-import type { UIState } from "@/ai/types";
-import {
-  createStreamableUI,
-  createStreamableValue,
-  getMutableAIState,
-} from "ai/rsc";
+import { LAMBDA_STREAM_WRAPPER_NAME, streamRunnableUI } from "@/ai/server";
+import { RunnableLambda } from "@langchain/core/runnables";
+import { getMutableAIState } from "ai/rsc";
 
 // -----------------------------------------------------------------------------
 // Action
 // -----------------------------------------------------------------------------
 
-export async function submitUserMessage(
-  content: string,
-): Promise<UIState[number]> {
+export async function submitUserMessage(content: string) {
   "use server";
 
   // Get the current state of the AI
@@ -54,34 +48,34 @@ export async function submitUserMessage(
   }
   console.info("threadId", threadId);
 
-  const textStream = createStreamableValue("");
-  const messageStream = createStreamableUI(null);
-  const uiStream = createStreamableUI();
+  const assistants = await client.assistants.search({
+    metadata: null,
+    offset: 0,
+    limit: 1,
+  });
 
-  handleSubmitUserMessage({
-    content,
-    aiState,
-    textStream,
-    messageStream,
-    uiStream,
-  })
-    .then(() => {
-      // Close streams
-      messageStream.done();
-      textStream.done();
-      uiStream.done();
+  // We don't do any persisting, so we can just grab the first assistant
+  const agent = assistants[0];
+  const assistantId = agent.assistant_id;
 
-      aiState.done(aiState.get());
-    })
-    .catch((error) => {
-      console.error(error);
-      messageStream.done();
-      textStream.done();
-      uiStream.done();
-    });
-
-  return {
-    id: threadId,
-    display: messageStream.value,
+  const inputs = {
+    messages: {
+      role: "user",
+      content: content,
+    },
   };
+
+  const streamEventsRunnable = RunnableLambda.from(async function* (input: {
+    messages: { role: string; content: string };
+  }) {
+    const streamResponse = client.runs.stream(threadId, assistantId, {
+      streamMode: ["events", "messages"],
+      input,
+    });
+    for await (const event of streamResponse) {
+      yield event.data;
+    }
+  }).withConfig({ runName: LAMBDA_STREAM_WRAPPER_NAME });
+
+  return streamRunnableUI(streamEventsRunnable, inputs);
 }

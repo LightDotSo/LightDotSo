@@ -73,7 +73,7 @@
     "@biomejs/biome": "^1.8.3",
     "@headlessui/react": "0.0.0-insiders.03c22b4",
     "dprint": "^0.47.2",
-    "next": "15.0.0-canary.110",
+    "next": "15.0.0-canary.111",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
@@ -162,6 +162,9 @@
   "pnpm": {
     "overrides": {
       "@headlessui/react": "$@headlessui/react",
+      "next": "$next",
+      "react": "$react",
+      "react-dom": "$react-dom",
       "react-is": "$react-is",
       "recharts": "$recharts",
       "solc": "$solc"
