@@ -28,7 +28,7 @@
 
 "use client";
 
-import type { Chat } from "@/types";
+import type { Chat } from "@/ai/types";
 
 // -----------------------------------------------------------------------------
 // Props

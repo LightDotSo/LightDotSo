@@ -26,7 +26,7 @@ import { getUIStateFromAIState } from "./utils";
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export type AIAction = (content: string) => Promise<{
-  id: string;
+  lastEvent: Promise<string>;
   display: ReactNode;
 }>;
 

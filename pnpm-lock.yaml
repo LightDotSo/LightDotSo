@@ -280,8 +280,8 @@ importers:
         specifier: ^7.25.2
         version: 7.25.2
       '@langchain/core':
-        specifier: ^0.2.22
-        version: 0.2.22
+        specifier: ^0.2.23
+        version: 0.2.23
       '@langchain/langgraph':
         specifier: ^0.0.33
         version: 0.0.33
@@ -6765,8 +6765,8 @@ packages:
     resolution: {integrity: sha512-ribfPYfHb+Uw3b27Eiw6NPqjhIhTpVFzEWLwyc/1Xp+DCdwRRyIlAUODX+9bPARF6aQtUu1+/PHzdNvRzcs/+Q==}
     engines: {node: '>= 12'}
 
-  '@langchain/core@0.2.22':
-    resolution: {integrity: sha512-mElDcRSIbZ8uCvavPBpfFBuMRhiPKGMfLXkz+AmYp9rXNH4eGFZJ0Ghn33lYQcwzulzXHfhXxMs63g63UDcUaQ==}
+  '@langchain/core@0.2.23':
+    resolution: {integrity: sha512-elPg6WpAkxWEIGC9u38F2anbzqfYYEy32lJdsd9dtChcHSFmFLlXqa+SnpO3R772gUuJmcu+Pd+fCvmRFy029w==}
     engines: {node: '>=18'}
 
   '@langchain/langgraph-sdk@0.0.4':
@@ -26427,13 +26427,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@langchain/core@0.2.22':
+  '@langchain/core@0.2.23':
     dependencies:
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.12
-      langsmith: 0.1.41(@langchain/core@0.2.22)
+      langsmith: 0.1.41(@langchain/core@0.2.23)
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -26454,7 +26454,7 @@ snapshots:
 
   '@langchain/langgraph@0.0.33':
     dependencies:
-      '@langchain/core': 0.2.22
+      '@langchain/core': 0.2.23
       uuid: 10.0.0
       zod: 3.23.8
     transitivePeerDependencies:
@@ -40250,7 +40250,7 @@ snapshots:
 
   kysely@0.27.4: {}
 
-  langsmith@0.1.41(@langchain/core@0.2.22):
+  langsmith@0.1.41(@langchain/core@0.2.23):
     dependencies:
       '@types/uuid': 9.0.8
       commander: 10.0.1
@@ -40259,7 +40259,7 @@ snapshots:
       semver: 7.6.3
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.2.22
+      '@langchain/core': 0.2.23
 
   latest-version@7.0.0:
     dependencies:

@@ -22,3 +22,5 @@ ignores:
   - "lucide-react"
   - "react-intersection-observer"
   - "viem"
+  - "@ai-sdk/openai"
+  - "react-is"

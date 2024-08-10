@@ -151,6 +151,7 @@ export function ChatPanel({
                     // open={shareDialogOpen}
                     // onOpenChange={setShareDialogOpen}
                     onCopy={() => setShareDialogOpen(false)}
+                    // @ts-expect-error
                     shareChatAction={shareChat}
                     chat={{
                       id,

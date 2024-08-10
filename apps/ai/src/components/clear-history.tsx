@@ -28,8 +28,8 @@
 
 "use client";
 
+import type { ServerActionResult } from "@/ai/types";
 import { IconSpinner } from "@/components/icons";
-import type { ServerActionResult } from "@/types";
 import { toast } from "@lightdotso/ui";
 import {
   AlertDialog,
