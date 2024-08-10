@@ -162,9 +162,6 @@
   "pnpm": {
     "overrides": {
       "@headlessui/react": "$@headlessui/react",
-      "next": "$next",
-      "react": "$react",
-      "react-dom": "$react-dom",
       "react-is": "$react-is",
       "recharts": "$recharts",
       "solc": "$solc"
