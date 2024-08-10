@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { type AI, client } from "@/ai/client";
-import { LAMBDA_STREAM_WRAPPER_NAME, streamRunnableUI } from "@/ai/server";
+import { botMessageHandler } from "@/ai/handlers/botMessage";
+import { streamRunnableUI } from "@/ai/server";
 import { RunnableLambda } from "@langchain/core/runnables";
 import { getMutableAIState } from "ai/rsc";
 
@@ -75,7 +76,9 @@ export async function submitUserMessage(content: string) {
     for await (const event of streamResponse) {
       yield event.data;
     }
-  }).withConfig({ runName: LAMBDA_STREAM_WRAPPER_NAME });
+  });
 
-  return streamRunnableUI(streamEventsRunnable, inputs);
+  return streamRunnableUI(streamEventsRunnable, inputs, {
+    eventHandlers: [botMessageHandler],
+  });
 }
