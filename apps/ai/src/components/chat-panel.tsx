@@ -26,8 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { AI } from "@/ai/client";
 import { shareChat } from "@/app/actions";
-import type { AI } from "@/chat/actions";
 import { ButtonScrollToBottom } from "@/components/button-scroll-to-bottom";
 import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { FooterText } from "@/components/footer";
@@ -97,7 +97,7 @@ export function ChatPanel({
     <div className="fixed inset-x-0 bottom-0 w-full animate-in bg-gradient-to-b from-0% from-muted/30 to-50% to-muted/30 duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10% dark:from-background/10 dark:to-background/80">
       <ButtonScrollToBottom
         isAtBottom={isAtBottom}
-        scrollToBottom={scrollToBottom}
+        scrollToBottomAction={scrollToBottom}
       />
       <div className="mx-auto sm:max-w-2xl sm:px-4">
         <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
@@ -135,7 +135,6 @@ export function ChatPanel({
               </div>
             ))}
         </div>
-
         {messages?.length >= 2 ? (
           <div className="flex h-12 items-center justify-center">
             <div className="flex space-x-2">
@@ -152,7 +151,6 @@ export function ChatPanel({
                     // open={shareDialogOpen}
                     // onOpenChange={setShareDialogOpen}
                     onCopy={() => setShareDialogOpen(false)}
-                    // @ts-expect-error
                     shareChatAction={shareChat}
                     chat={{
                       id,
@@ -165,9 +163,8 @@ export function ChatPanel({
             </div>
           </div>
         ) : null}
-
         <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
-          <PromptForm input={input} setInput={setInput} />
+          <PromptForm input={input} setInputAction={setInput} />
           <FooterText className="hidden sm:block" />
         </div>
       </div>

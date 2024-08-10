@@ -40,8 +40,8 @@
     "@storybook/react": "^8.2.8",
     "@tanstack/react-table": "^8.20.1",
     "@tremor/react": "^3.17.4",
-    "lucide-react": "^0.426.0",
-    "next": "15.0.0-canary.110",
+    "lucide-react": "^0.427.0",
+    "next": "15.0.0-canary.111",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.1.0",
+    "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

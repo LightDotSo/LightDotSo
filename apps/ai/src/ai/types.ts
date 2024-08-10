@@ -27,13 +27,15 @@
 // limitations under the License.
 
 import type { CoreMessage } from "ai";
+import type { createStreamableUI, createStreamableValue } from "ai/rsc";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
 export type Message = CoreMessage & {
-  id: string;
+  threadId: string;
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -54,22 +56,30 @@ export type ServerActionResult<Result> = Promise<
     }
 >;
 
-export interface Session {
-  user: {
-    id: string;
-    email: string;
-  };
-}
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export type AIState = {
+  threadId: string | null;
+  messages: Message[];
+};
 
-export interface AuthResult {
-  type: string;
-  message: string;
-}
+export type ValueOrUpdater<T> = T | ((current: T) => T);
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export interface User extends Record<string, any> {
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export type _MutableAIState<AIState> = {
+  get: () => AIState;
+  update: (newState: ValueOrUpdater<AIState>) => void;
+  done: ((newState: AIState) => void) | (() => void);
+};
+
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export type MutableAIState = _MutableAIState<AIState>;
+
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export type UIState = {
   id: string;
-  email: string;
-  password: string;
-  salt: string;
-}
+  display: ReactNode;
+}[];
+
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export type StreamableUI = ReturnType<typeof createStreamableUI>;
+export type StreamableValue<T> = ReturnType<typeof createStreamableValue<T>>;

@@ -51,6 +51,11 @@ const nextConfig = {
       },
     ],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   outputFileTracing: true,
   transpilePackages: [
     "@lightdotso/const",

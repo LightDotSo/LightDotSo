@@ -28,14 +28,14 @@
 
 "use client";
 
-import type { AI } from "@/chat/actions";
+import type { AI } from "@/ai/client";
 import { useActions, useUIState } from "ai/rsc";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface Stock {
+export interface Stock {
   symbol: string;
   price: number;
   delta: number;

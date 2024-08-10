@@ -206,14 +206,3 @@ export async function saveChat(_chat: Chat) {
 export async function refreshHistory(path: string) {
   redirect(path);
 }
-
-// -----------------------------------------------------------------------------
-// Action
-// -----------------------------------------------------------------------------
-
-export async function getMissingKeys() {
-  const keysRequired = ["OPENAI_API_KEY"];
-  return keysRequired
-    .map((key) => (process.env[key] ? "" : key))
-    .filter((key) => key !== "");
-}
