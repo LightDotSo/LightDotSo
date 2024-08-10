@@ -28,12 +28,11 @@
 
 "use client";
 
+import type { Message } from "@/ai/types";
 import { ChatList } from "@/components/chat-list";
 import { ChatPanel } from "@/components/chat-panel";
 import { EmptyScreen } from "@/components/empty-screen";
-import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useScrollAnchor } from "@/hooks/use-scroll-anchor";
-import type { Message } from "@/types";
 import { cn } from "@lightdotso/utils";
 import { useAIState, useUIState } from "ai/rsc";
 import { useRouter } from "next/navigation";
@@ -45,20 +44,20 @@ import { type ComponentProps, useEffect, useState } from "react";
 
 export interface ChatProps extends ComponentProps<"div"> {
   initialMessages?: Message[];
-  id?: string;
+  threadId?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function Chat({ id, className }: ChatProps) {
+export function Chat({ threadId, className }: ChatProps) {
   const router = useRouter();
   // const path = usePathname();
   const [input, setInput] = useState("");
   const [messages] = useUIState();
   const [aiState] = useAIState();
-  const [_, setNewChatId] = useLocalStorage("newChatId", id);
+  // const [_, setNewChatId] = useLocalStorage("newChatId", threadId);
 
   // useEffect(() => {
   //   if (session?.user) {
@@ -75,9 +74,9 @@ export function Chat({ id, className }: ChatProps) {
     }
   }, [aiState.messages, router]);
 
-  useEffect(() => {
-    setNewChatId(id);
-  });
+  // useEffect(() => {
+  //   setNewChatId(threadId);
+  // });
 
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
     useScrollAnchor();
@@ -99,7 +98,7 @@ export function Chat({ id, className }: ChatProps) {
         <div className="h-px w-full" ref={visibilityRef} />
       </div>
       <ChatPanel
-        id={id}
+        id={threadId}
         input={input}
         setInput={setInput}
         isAtBottom={isAtBottom}

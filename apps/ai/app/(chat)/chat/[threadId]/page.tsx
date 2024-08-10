@@ -26,7 +26,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AI } from "@/chat/actions";
+import { AI } from "@/ai/client";
 import { Chat } from "@/components/chat";
 import type { Metadata } from "next";
 
@@ -36,7 +36,7 @@ import type { Metadata } from "next";
 
 export interface ChatPageProps {
   params: {
-    id: string;
+    threadId: string;
   };
 }
 
@@ -66,7 +66,7 @@ export async function generateMetadata(
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function ChatPage(_params: ChatPageProps) {
+export default async function ChatPage({ threadId }: ChatPageProps) {
   // const session = (await auth()) as Session;
 
   // if (!session?.user) {
@@ -85,8 +85,8 @@ export default async function ChatPage(_params: ChatPageProps) {
   // }
 
   return (
-    <AI initialAIState={{ chatId: "id", messages: [] }}>
-      <Chat id={"id"} />
+    <AI initialAIState={{ threadId: threadId, messages: [] }}>
+      <Chat id={threadId} />
     </AI>
   );
 }

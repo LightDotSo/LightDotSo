@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Message } from "@/types";
-import { nanoid } from "@/utils";
+import type { AIState, UIState } from "@/ai/types";
+import type { MutableAIState, StreamableUI, StreamableValue } from "@/ai/types";
+import { Client } from "@langchain/langgraph-sdk";
 import { createAI, getAIState } from "ai/rsc";
 import type { ReactNode } from "react";
 import { submitUserMessage } from "./actions/submitUserMessage";
 import { getUIStateFromAIState } from "./utils";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const actions: AIActions = {
-  submitUserMessage,
-};
 
 // -----------------------------------------------------------------------------
 // Types
@@ -38,21 +31,26 @@ export type AIAction = (content: string) => Promise<{
 }>;
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
+export interface AIActionParams {
+  content: string;
+  aiState: MutableAIState;
+  textStream: StreamableValue<string>;
+  messageStream: StreamableUI;
+  uiStream: StreamableUI;
+}
+
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export type AIActions = {
   submitUserMessage: AIAction;
 };
 
-// biome-ignore lint/style/useNamingConvention: <explanation>
-export type AIState = {
-  chatId: string;
-  messages: Message[];
-};
+// ----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/useNamingConvention: <explanation>
-export type UIState = {
-  id: string;
-  display: ReactNode;
-}[];
+const actions: AIActions = {
+  submitUserMessage,
+};
 
 // -----------------------------------------------------------------------------
 // AI
@@ -63,7 +61,7 @@ export const AI = createAI<AIState, UIState>({
   // biome-ignore lint/style/useNamingConvention: <explanation>
   initialUIState: [],
   // biome-ignore lint/style/useNamingConvention: <explanation>
-  initialAIState: { chatId: nanoid(), messages: [] },
+  initialAIState: { threadId: null, messages: [] },
   // biome-ignore lint/style/useNamingConvention: <explanation>
   onGetUIState: async () => {
     "use server";
@@ -80,3 +78,14 @@ export const AI = createAI<AIState, UIState>({
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export type AI = typeof AI;
+
+// -----------------------------------------------------------------------------
+// Client
+// -----------------------------------------------------------------------------
+
+export const client = new Client({
+  apiUrl: process.env.LANGGRAPH_CLOUD_API_URL,
+  defaultHeaders: {
+    "X-API-KEY": process.env.LANGGRAPH_CLOUD_API_KEY,
+  },
+});

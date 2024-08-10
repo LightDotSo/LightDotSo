@@ -28,7 +28,7 @@
 
 "use client";
 
-import type { AI } from "@/chat/actions";
+import type { AI } from "@/ai/client";
 import { formatNumber } from "@/utils";
 import { useAIState, useActions, useUIState } from "ai/rsc";
 import { type ChangeEvent, type ReactNode, useId, useState } from "react";

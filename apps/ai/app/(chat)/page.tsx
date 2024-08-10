@@ -26,9 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AI } from "@/chat/actions";
+import { AI } from "@/ai/client";
 import { Chat } from "@/components/chat";
-import { nanoid } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -43,11 +42,9 @@ export const metadata = {
 // -----------------------------------------------------------------------------
 
 export default async function IndexPage() {
-  const id = nanoid();
-
   return (
-    <AI initialAIState={{ chatId: id, messages: [] }}>
-      <Chat id={id} />
+    <AI initialAIState={{ threadId: null, messages: [] }}>
+      <Chat />
     </AI>
   );
 }

@@ -26,8 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { AI } from "@/ai/client";
 import { shareChat } from "@/app/actions";
-import type { AI } from "@/chat/actions";
 import { ButtonScrollToBottom } from "@/components/button-scroll-to-bottom";
 import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { FooterText } from "@/components/footer";
