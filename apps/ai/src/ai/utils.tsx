@@ -27,13 +27,13 @@
 // limitations under the License.
 
 import "server-only";
+import type { AIState } from "@/ai/types";
 import { BotCard, BotMessage, Purchase, Stock } from "@/components/stocks";
 import { Events } from "@/components/stocks/events";
 import type { Event as EventType } from "@/components/stocks/events";
 import { UserMessage } from "@/components/stocks/message";
 import type { Purchase as PurchaseType } from "@/components/stocks/stock-purchase";
 import { type Stock as StockType, Stocks } from "@/components/stocks/stocks";
-import type { AIState } from "./client";
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -44,7 +44,7 @@ export const getUIStateFromAIState = (aiState: AIState) => {
   return aiState.messages
     .filter((message) => message.role !== "system")
     .map((message, index) => ({
-      id: `${aiState.chatId}-${index}`,
+      id: `${aiState.threadId}-${index}`,
       display:
         message.role === "tool" ? (
           // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>

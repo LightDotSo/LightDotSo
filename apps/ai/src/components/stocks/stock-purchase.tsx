@@ -73,14 +73,13 @@ export function Purchase({
     const message = {
       role: "system" as const,
       content: `[User has changed to purchase ${newValue} shares of ${name}. Total cost: $${(newValue * price).toFixed(2)}]`,
-
       // Identifier of this UI component, so we don't insert it many times.
-      id,
+      threadId: id,
     };
 
     // If last history state is already this info, update it. This is to avoid
     // adding every slider change to the history.
-    if (aiState.messages[aiState.messages.length - 1]?.id === id) {
+    if (aiState.messages[aiState.messages.length - 1]?.threadId === id) {
       setAiState({
         ...aiState,
         messages: [...aiState.messages.slice(0, -1), message],

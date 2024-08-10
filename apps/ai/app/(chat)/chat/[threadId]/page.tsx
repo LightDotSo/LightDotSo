@@ -66,7 +66,9 @@ export async function generateMetadata(
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function ChatPage({ threadId }: ChatPageProps) {
+export default async function ChatPage({
+  params: { threadId },
+}: ChatPageProps) {
   // const session = (await auth()) as Session;
 
   // if (!session?.user) {
