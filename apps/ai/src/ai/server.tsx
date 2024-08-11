@@ -13,15 +13,14 @@
 // limitations under the License.
 
 import "server-only";
-import { BotMessage } from "@/components/stocks";
 import type { Runnable } from "@langchain/core/runnables";
 import type { StreamEvent } from "@langchain/core/tracers/log_stream";
 import type { CompiledStateGraph } from "@langchain/langgraph";
-import { createStreamableUI, createStreamableValue } from "ai/rsc";
-import { isValidElement } from "react";
+import { createStreamableUI, type createStreamableValue } from "ai/rsc";
 
-const STREAM_UI_RUN_NAME = "stream_runnable_ui";
-export const LAMBDA_STREAM_WRAPPER_NAME = "lambda_stream_wrapper";
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export type RunUICallbacks = Record<
@@ -35,6 +34,10 @@ export type EventHandlerFields = {
 export type EventHandler =
   | ((event: StreamEvent, fields: EventHandlerFields) => void)
   | ((event: StreamEvent, fields: EventHandlerFields) => Promise<void>);
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 /**
  * Polyfill to emulate the upcoming Promise.withResolvers
@@ -53,17 +56,24 @@ export function withResolvers<T>() {
   return [innerPromise, resolve, reject] as const;
 }
 
+// -----------------------------------------------------------------------------
+// Server
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export function streamRunnableUI<RunInput, RunOutput>(
   runnable:
     | Runnable<RunInput, RunOutput>
     | CompiledStateGraph<RunInput, Partial<RunInput>>,
   inputs: RunInput,
+  options: {
+    eventHandlers: EventHandler[];
+  },
 ) {
   const ui = createStreamableUI();
   const [lastEvent, resolve] = withResolvers<string>();
+  let shouldRecordLastEvent = true;
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   (async () => {
     let lastEventValue: StreamEvent | null = null;
 
@@ -77,46 +87,31 @@ export function streamRunnableUI<RunInput, RunOutput>(
     ).streamEvents(inputs, {
       version: "v1",
     })) {
-      console.info("streamEvent", streamEvent);
+      // Handle the event with the event handlers
+      for await (const handler of options.eventHandlers) {
+        await handler(streamEvent, {
+          ui,
+          callbacks,
+        });
+      }
 
-      if (streamEvent.event === "on_chain_stream") {
-        console.info("Chunk", streamEvent.data.chunk);
-        const content = streamEvent.data.chunk;
-        ui.update(JSON.stringify(content));
+      if (shouldRecordLastEvent) {
+        lastEventValue = streamEvent;
       }
 
       if (
-        streamEvent.name === STREAM_UI_RUN_NAME &&
-        streamEvent.event === "on_chain_end"
+        streamEvent.data.chunk?.name === "LangGraph" &&
+        streamEvent.data.chunk?.event === "on_chain_end"
       ) {
-        if (isValidElement(streamEvent.data.output.value)) {
-          ui.append(streamEvent.data.output.value);
-        }
+        shouldRecordLastEvent = false;
       }
-
-      const [kind, type] = streamEvent.event.split("_").slice(1);
-      if (type === "stream" && kind !== "chain") {
-        const chunk = streamEvent.data.chunk;
-        if ("text" in chunk && typeof chunk.text === "string") {
-          if (!callbacks[streamEvent.run_id]) {
-            // the createStreamableValue / useStreamableValue is preferred
-            // as the stream events are updated immediately in the UI
-            // rather than being batched by React via createStreamableUI
-            const textStream = createStreamableValue();
-            ui.append(<BotMessage content={textStream.value} />);
-            callbacks[streamEvent.run_id] = textStream;
-          }
-
-          callbacks[streamEvent.run_id].append(chunk.text);
-        }
-      }
-
-      lastEventValue = streamEvent;
     }
 
     // resolve the promise, which will be sent
     // to the client thanks to RSC
-    resolve(lastEventValue?.data.output);
+    resolve(
+      lastEventValue?.data.output || lastEventValue?.data.chunk?.data?.output,
+    );
 
     // biome-ignore lint/complexity/noForEach: <explanation>
     Object.values(callbacks).forEach((cb) => cb.done());
