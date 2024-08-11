@@ -33,7 +33,7 @@ export const botMessageHandler = (
 
   if (streamEvent.event === "on_chain_end") {
     if (isValidElement(streamEvent.data.output.value)) {
-      ui.append(streamEvent.data.output.value);
+      ui.update(streamEvent.data.output.value);
     }
   }
 
@@ -44,7 +44,7 @@ export const botMessageHandler = (
       chunk.event === "on_chat_model_stream"
     ) {
       const chunkText = chunk.data.chunk.content;
-      console.info("chunkText", chunkText);
+      // console.info("chunkText", chunkText);
 
       if (!callbacks[streamEvent.run_id]) {
         // the createStreamableValue / useStreamableValue is preferred
