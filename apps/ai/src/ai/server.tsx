@@ -18,6 +18,10 @@ import type { StreamEvent } from "@langchain/core/tracers/log_stream";
 import type { CompiledStateGraph } from "@langchain/langgraph";
 import { createStreamableUI, type createStreamableValue } from "ai/rsc";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export type RunUICallbacks = Record<
   string,
@@ -30,6 +34,10 @@ export type EventHandlerFields = {
 export type EventHandler =
   | ((event: StreamEvent, fields: EventHandlerFields) => void)
   | ((event: StreamEvent, fields: EventHandlerFields) => Promise<void>);
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 /**
  * Polyfill to emulate the upcoming Promise.withResolvers
@@ -47,6 +55,10 @@ export function withResolvers<T>() {
   // @ts-expect-error
   return [innerPromise, resolve, reject] as const;
 }
+
+// -----------------------------------------------------------------------------
+// Server
+// -----------------------------------------------------------------------------
 
 // biome-ignore lint/style/useNamingConvention: <explanation>
 export function streamRunnableUI<RunInput, RunOutput>(

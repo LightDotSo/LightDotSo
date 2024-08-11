@@ -16,7 +16,6 @@ import type { EventHandlerFields } from "@/ai/server";
 import { BotMessage } from "@/components/stocks/message";
 import type { StreamEvent } from "@langchain/core/tracers/log_stream";
 import { createStreamableValue } from "ai/rsc";
-import { isValidElement } from "react";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -26,16 +25,12 @@ export const botMessageHandler = (
   streamEvent: StreamEvent,
   fields: EventHandlerFields,
 ) => {
+  console.info("streamEvent", streamEvent);
+
   // Handle the event
   const chunk = streamEvent.data.chunk;
   const ui = fields.ui;
   const callbacks = fields.callbacks;
-
-  if (streamEvent.event === "on_chain_end") {
-    if (isValidElement(streamEvent.data.output.value)) {
-      ui.update(streamEvent.data.output.value);
-    }
-  }
 
   if (streamEvent.event === "on_chain_stream") {
     if (
@@ -55,7 +50,9 @@ export const botMessageHandler = (
         callbacks[streamEvent.run_id] = textStream;
       }
 
-      callbacks[streamEvent.run_id].update(chunkText);
+      if (callbacks[streamEvent.run_id]) {
+        callbacks[streamEvent.run_id].update(chunkText);
+      }
     }
   }
 };

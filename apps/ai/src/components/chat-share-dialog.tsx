@@ -26,8 +26,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
 import type { Chat, ServerActionResult } from "@/ai/types";
 import { IconSpinner } from "@/components/icons";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
