@@ -982,8 +982,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(@content-collections/core@0.6.4(typescript@5.5.4))(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))
       '@fumadocs/content-collections':
-        specifier: ^1.1.1
-        version: 1.1.1(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(fumadocs-core@13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))
+        specifier: ^1.1.2
+        version: 1.1.2(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(fumadocs-core@13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))
       '@lightdotso/templates':
         specifier: workspace:*
         version: link:../../packages/templates
@@ -997,14 +997,14 @@ importers:
         specifier: ^8.25.0
         version: 8.25.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(webpack@5.93.0(@swc/core@1.7.10(@swc/helpers@0.5.12))(esbuild@0.19.12))
       fumadocs-core:
-        specifier: ^13.2.1
-        version: 13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
+        specifier: ^13.2.2
+        version: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       fumadocs-openapi:
-        specifier: ^3.3.0
-        version: 3.3.0
+        specifier: ^5.2.0
+        version: 5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       fumadocs-ui:
-        specifier: ^13.2.1
-        version: 13.2.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        specifier: ^13.2.2
+        version: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       next:
         specifier: 15.0.0-canary.111
         version: 15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -6421,12 +6421,12 @@ packages:
   '@formatjs/intl-localematcher@0.5.4':
     resolution: {integrity: sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==}
 
-  '@fumadocs/content-collections@1.1.1':
-    resolution: {integrity: sha512-wgCT91oVdDZ9+6J0fJ3vKEkGiqkkT2F758uXLXOgBPnMA4R/2+93672P1vByBSFQq1mOKND8DHXZb9oxiPqDwQ==}
+  '@fumadocs/content-collections@1.1.2':
+    resolution: {integrity: sha512-NkzCyGZnxee4HW5foys1KYsV1l7l1GSdg5fHZWdZ0uqCOmVhdd1L2Wg9qC07KUgYW9zwEU3hSekqaP/COK1jxw==}
     peerDependencies:
       '@content-collections/core': 0.x.x
       '@content-collections/mdx': 0.x.x
-      fumadocs-core: 13.x.x
+      fumadocs-core: ^13.2.1
 
   '@goldskycom/cli@9.4.0':
     resolution: {integrity: sha512-TWf3fqh3/rUd/SJm5+vMBDdcMiYLeUoxOC2DPORPnllix8wW+3xPbyjVrm0UhAUHyacrwk1aVsbzbux9c4MKXA==}
@@ -15105,18 +15105,22 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fumadocs-core@13.2.1:
-    resolution: {integrity: sha512-LznUA5HKjWUDv6V97wlUcsl6ZooexRIQOkrRDaRvuc/K1M4c49j7MKTu8FYQxJF441qXuljMLTS9X+cPxbagtw==}
+  fumadocs-core@13.2.2:
+    resolution: {integrity: sha512-qG31vguI8vc4ZY+L5lnWNchZi6HfKnZ7/NBAQEFM2vezsl1jSc7bKLa874scTWwQlCYUzthmRkJapRG/tESFMw==}
     peerDependencies:
       next: 15.0.0-canary.111
       react: 19.0.0-rc-187dd6a7-20240806
       react-dom: 19.0.0-rc-187dd6a7-20240806
 
-  fumadocs-openapi@3.3.0:
-    resolution: {integrity: sha512-a6G1+FoBA4kH2HnjlgwmPpO9z4itrKPRENkVqxJPsOCwpCKdHZc6Tpwogo9CXvEifGqjAvyTbhNPy0N3+YmHLg==}
+  fumadocs-openapi@5.2.0:
+    resolution: {integrity: sha512-xoUQ6dExKsW3OQd1TYCbrdKMlPdoR3llt1vu887L5Uf5MRgCV+YDTQ5PGF0ywrrRfGINDmQCtdWO3Gu13f1E5g==}
+    peerDependencies:
+      next: 15.0.0-canary.111
+      react: 19.0.0-rc-187dd6a7-20240806
+      react-dom: 19.0.0-rc-187dd6a7-20240806
 
-  fumadocs-ui@13.2.1:
-    resolution: {integrity: sha512-kurxcBvm+vp0YSNwBUyBYz4cZDtTVF/6+ZgG5qIcw/2dVIVhT6eCC3t5e3zhYGEj2Aj7Wvl567AmI6QlUKwSlg==}
+  fumadocs-ui@13.2.2:
+    resolution: {integrity: sha512-ye+DQT4aye8v2eBcrj1Zb5ZscMaFwnrZIkwT+5QXhlEb6UWYqworv1FSwJWl7xOd5ZxHjx/wHG6zK+M/SFT6UA==}
     peerDependencies:
       next: 15.0.0-canary.111
       react: 19.0.0-rc-187dd6a7-20240806
@@ -16749,8 +16753,8 @@ packages:
   json-schema-to-ts@1.6.4:
     resolution: {integrity: sha512-pR4yQ9DHz6itqswtHCm26mw45FSNfQ9rEQjosaZErhn5J3J2sIViQiz8rDaezjKAhFGpmsoczYVBgGHzFw/stA==}
 
-  json-schema-to-typescript@14.1.0:
-    resolution: {integrity: sha512-VIeAFQkn88gFh26MSHWG4uX7TjK/arTw0NVLMZn6vX1WrSF+P6xu5MyEdovu+9PJ0uiS5gm0wzwQvYW9eSq1uw==}
+  json-schema-to-typescript@15.0.0:
+    resolution: {integrity: sha512-gOX3cJB4eL1ztMc3WUh569ubRcKnr8MnYk++6+/WaaN4bufGHSR6EcbUbvLZgirPQOfvni5SSGkRx0pYloYU8A==}
     engines: {node: '>=16.0.0'}
     hasBin: true
 
@@ -25883,11 +25887,11 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@fumadocs/content-collections@1.1.1(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(fumadocs-core@13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))':
+  '@fumadocs/content-collections@1.1.2(@content-collections/core@0.6.4(typescript@5.5.4))(@content-collections/mdx@0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(fumadocs-core@13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))':
     dependencies:
       '@content-collections/core': 0.6.4(typescript@5.5.4)
       '@content-collections/mdx': 0.1.3(@content-collections/core@0.6.4(typescript@5.5.4))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
-      fumadocs-core: 13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
+      fumadocs-core: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
 
   '@goldskycom/cli@9.4.0':
     dependencies:
@@ -38021,7 +38025,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fumadocs-core@13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806):
+  fumadocs-core@13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.4
       '@shikijs/rehype': 1.12.1
@@ -38046,15 +38050,36 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  fumadocs-openapi@3.3.0:
+  fumadocs-openapi@5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
       '@apidevtools/json-schema-ref-parser': 11.7.0
+      '@mdx-js/mdx': 3.0.1
+      '@radix-ui/react-select': 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.3)(react@19.0.0-rc-187dd6a7-20240806)
+      '@types/mdx': 2.0.13
+      class-variance-authority: 0.7.0
       fast-glob: 3.3.2
+      fumadocs-core: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
+      fumadocs-ui: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+      github-slugger: 2.0.0
       js-yaml: 4.1.0
-      json-schema-to-typescript: 14.1.0
+      json-schema-to-typescript: 15.0.0
+      lucide-react: 0.427.0(react@19.0.0-rc-187dd6a7-20240806)
+      next: 15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       openapi-sampler: 1.5.1
+      react: 19.0.0-rc-187dd6a7-20240806
+      react-dom: 19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806)
+      react-hook-form: 7.52.2(react@19.0.0-rc-187dd6a7-20240806)
+      remark: 15.0.1
+      shiki: 1.12.1
+      swr: 2.2.5(react@19.0.0-rc-187dd6a7-20240806)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+      - supports-color
+      - tailwindcss
 
-  fumadocs-ui@13.2.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
+  fumadocs-ui@13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
       '@radix-ui/react-accordion': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@radix-ui/react-collapsible': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -38066,7 +38091,7 @@ snapshots:
       '@tailwindcss/typography': 0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       class-variance-authority: 0.7.0
       cmdk: 1.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
-      fumadocs-core: 13.2.1(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
+      fumadocs-core: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       lucide-react: 0.427.0(react@19.0.0-rc-187dd6a7-20240806)
       next: 15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       next-themes: 0.3.0(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -40106,7 +40131,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       ts-toolbelt: 6.15.5
 
-  json-schema-to-typescript@14.1.0:
+  json-schema-to-typescript@15.0.0:
     dependencies:
       '@apidevtools/json-schema-ref-parser': 11.7.0
       '@types/json-schema': 7.0.15
