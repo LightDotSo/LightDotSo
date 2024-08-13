@@ -38,7 +38,7 @@
     "@upstash/ratelimit": "^2.0.1",
     "@upstash/redis": "^1.34.0",
     "critters": "^0.0.24",
-    "inngest": "^3.22.2",
+    "inngest": "^3.22.3",
     "next": "15.0.0-canary.111",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",

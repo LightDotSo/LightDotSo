@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "abitype": "^1.0.6",
-    "viem": "^2.19.3",
+    "viem": "^2.19.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {

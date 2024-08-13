@@ -334,25 +334,7 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "https://bundler.biconomy.io/api/v2/1/".to_string());
-        m.insert(10, "https://bundler.biconomy.io/api/v2/10/".to_string());
-        m.insert(56, "https://bundler.biconomy.io/api/v2/56/".to_string());
-        m.insert(100, "https://bundler.biconomy.io/api/v2/100/".to_string());
-        m.insert(137, "https://bundler.biconomy.io/api/v2/137/".to_string());
-        m.insert(169, "https://bundler.biconomy.io/api/v2/169/".to_string());
-        m.insert(204, "https://bundler.biconomy.io/api/v2/204/".to_string());
-        m.insert(592, "https://bundler.biconomy.io/api/v2/592/".to_string());
-        m.insert(1101, "https://bundler.biconomy.io/api/v2/1101/".to_string());
-        m.insert(1116, "https://bundler.biconomy.io/api/v2/1116/".to_string());
         m.insert(1329, "https://bundler.biconomy.io/api/v2/1329/".to_string());
-        m.insert(5000, "https://bundler.biconomy.io/api/v2/5000/".to_string());
-        m.insert(8453, "https://bundler.biconomy.io/api/v2/8453/".to_string());
-        m.insert(9980, "https://bundler.biconomy.io/api/v2/9980/".to_string());
-        m.insert(42161, "https://bundler.biconomy.io/api/v2/42161/".to_string());
-        m.insert(42170, "https://bundler.biconomy.io/api/v2/42170/".to_string());
-        m.insert(43114, "https://bundler.biconomy.io/api/v2/43114/".to_string());
-        m.insert(59144, "https://bundler.biconomy.io/api/v2/59144/".to_string());
-        m.insert(81457, "https://bundler.biconomy.io/api/v2/81457/".to_string());
 
         // Testnet
         m.insert(10200, "https://bundler.biconomy.io/api/v2/10200/".to_string());

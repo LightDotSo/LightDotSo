@@ -38,14 +38,14 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@storybook/react": "^8.2.8",
+    "@storybook/react": "^8.2.9",
     "@tanstack/react-virtual": "^3.8.6",
     "lucide-react": "^0.427.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.52.2",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.19.3",
+    "viem": "^2.19.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {

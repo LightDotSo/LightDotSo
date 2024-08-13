@@ -153,6 +153,55 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     console.info("baseMaxFeePerGas", baseMaxFeePerGas);
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
 
+    // If gas estimation is available, return the gas estimation
+    if (gasEstimation) {
+      // Get the estimated max fee per gas
+      const estimatedGas = gasEstimation[gasSpeed];
+
+      // Parse the Hex to BigInt
+      const gasEstimationMaxFeePerGas = fromHex(
+        estimatedGas.maxFeePerGas as Hex,
+        {
+          to: "bigint",
+        },
+      );
+      const gasEstimationMaxPriorityFeePerGas = fromHex(
+        estimatedGas.maxPriorityFeePerGas as Hex,
+        { to: "bigint" },
+      );
+
+      console.info("gasEstimationMaxFeePerGas", gasEstimationMaxFeePerGas);
+      console.info(
+        "gasEstimationMaxPriorityFeePerGas",
+        gasEstimationMaxPriorityFeePerGas,
+      );
+
+      if (chainId === polygon.id || chainId === polygonAmoy.id) {
+        const polygonBaseMaxPriorityFeePerGas = BigInt(77500000000);
+
+        return [
+          // Return the larger of the `baseMaxFeePerGas` and `gasEstimationMaxFeePerGas`
+          // and the base priority fee per gas
+          baseMaxFeePerGas &&
+          baseMaxFeePerGas > gasEstimationMaxFeePerGas &&
+          baseMaxFeePerGas > polygonBaseMaxPriorityFeePerGas
+            ? baseMaxFeePerGas
+            : gasEstimationMaxFeePerGas > polygonBaseMaxPriorityFeePerGas
+              ? gasEstimationMaxFeePerGas
+              : polygonBaseMaxPriorityFeePerGas,
+          // Do the same for the `baseMaxPriorityFeePerGas`
+          baseMaxPriorityFeePerGas &&
+          baseMaxPriorityFeePerGas > gasEstimationMaxPriorityFeePerGas &&
+          baseMaxPriorityFeePerGas > polygonBaseMaxPriorityFeePerGas
+            ? baseMaxPriorityFeePerGas
+            : gasEstimationMaxPriorityFeePerGas >
+                polygonBaseMaxPriorityFeePerGas
+              ? gasEstimationMaxPriorityFeePerGas
+              : polygonBaseMaxPriorityFeePerGas,
+        ];
+      }
+    }
+
     // For scroll, the maxFeePerGas and maxPriorityFeePerGas are the same
     if (chainId === scroll.id || chainId === scrollSepolia.id) {
       // Return the larger of the `baseMaxFeePerGas` and `baseMaxPriorityFeePerGas`
@@ -236,20 +285,6 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
     if (baseMaxFeePerGas && baseMaxPriorityFeePerGas) {
       return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
-    }
-
-    // If gas estimation is available, return the gas estimation
-    if (gasEstimation) {
-      // Get the estimated max fee per gas
-      const estimatedGas = gasEstimation[gasSpeed];
-
-      // Parse the Hex to BigInt
-      return [
-        fromHex(estimatedGas.maxFeePerGas as Hex, {
-          to: "bigint",
-        }),
-        fromHex(estimatedGas.maxPriorityFeePerGas as Hex, { to: "bigint" }),
-      ];
     }
 
     // Return null if no gas estimation is available

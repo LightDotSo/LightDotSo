@@ -26,7 +26,7 @@
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.2.0",
     "typescript": "^5.5.4",
-    "viem": "^2.19.3"
+    "viem": "^2.19.4"
   },
   "publishConfig": {
     "access": "public"

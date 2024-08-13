@@ -43,12 +43,12 @@
     "lucide-react": "^0.427.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.52.2",
-    "viem": "^2.19.3",
+    "viem": "^2.19.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.2.8",
+    "@storybook/react": "^8.2.9",
     "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

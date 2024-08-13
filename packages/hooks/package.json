@@ -42,7 +42,7 @@
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
     "siwe": "^2.3.2",
-    "viem": "^2.19.3"
+    "viem": "^2.19.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
