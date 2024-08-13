@@ -27,7 +27,7 @@
     "@lightdotso/const": "workspace:*",
     "@wagmi/core": "^2.13.4",
     "connectkit": "^1.8.2",
-    "viem": "^2.19.3",
+    "viem": "^2.19.4",
     "wagmi": "^2.12.5"
   },
   "devDependencies": {

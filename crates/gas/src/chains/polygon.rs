@@ -57,7 +57,7 @@ pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimationParams
 
     let url = match chain_id {
         137 => "https://gasstation.polygon.technology/v2",
-        80001 => "https://gasstation-testnet.polygon.technology/v2",
+        80002 => "https://gasstation-testnet.polygon.technology/v2",
         _ => return Err(eyre!("Unsupported chain ID")),
     };
 

@@ -33,6 +33,7 @@ impl GasApi {
 
         // Return if some
         if let Some(params) = estimation {
+            info!("Using pre-configured gas estimation for chain {}", chain_id);
             return Ok(create_gas_estimation(&params));
         }
 
@@ -159,8 +160,8 @@ async fn get_estimation(chain_id: u64) -> Option<GasEstimationParams> {
         //     Ok(res) => Some(res),
         //     Err(_) => None,
         // },
-        // Match either 137 or 80001
-        137 | 80001 => match polygon_gas_estimation(chain_id).await {
+        // Match either 137 or 80002
+        137 | 80002 => match polygon_gas_estimation(chain_id).await {
             Ok(res) => Some(res),
             Err(_) => None,
         },

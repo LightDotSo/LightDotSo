@@ -165,11 +165,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
       "name": "gas_requestGasEstimation local",
-      "url": "http://localhost:3000",
+      "url": "[::]:3000",
       "method": "POST",
       "sortNum": 11250,
       "created": "2023-09-28T15:33:43.927Z",
-      "modified": "2023-10-27T15:21:42.992Z",
+      "modified": "2024-08-13T12:42:57.103Z",
       "headers": [
         {
           "name": "accept",
@@ -180,7 +180,6 @@
           "value": "application/json"
         }
       ],
-      "params": [],
       "body": {
         "type": "json",
         "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
