@@ -29,7 +29,7 @@
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.2.0",
     "typescript": "^5.5.4",
-    "wrangler": "^3.70.0"
+    "wrangler": "^3.71.0"
   },
   "publishConfig": {
     "access": "public"
