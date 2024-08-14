@@ -46,10 +46,10 @@ contract LightDAG {
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract
-    string public constant NAME = "LightWalletFactory";
+    string public constant NAME = "LightDAG";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.3.0";
+    string public constant VERSION = "0.1.0";
 
     // -------------------------------------------------------------------------
     // Constant
