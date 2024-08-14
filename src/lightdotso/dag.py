@@ -16,9 +16,8 @@ from graphviz import Digraph
 
 
 class Task:
-    def __init__(self, name, func, dependencies=None, condition=None, fallback=None):
+    def __init__(self, name, dependencies=None, condition=None, fallback=None):
         self.name = name
-        self.func = func
         self.dependencies = dependencies if dependencies else []
         self.condition = condition
         self.fallback = fallback
@@ -42,7 +41,7 @@ class Task:
             self.success = False
             if self.fallback:
                 print(f"Running fallback for {self.name}...")
-                self.fallback.run()
+                self.fallback
 
     def is_ready(self):
         return all(dep.completed for dep in self.dependencies)
@@ -75,12 +74,6 @@ def visualize_dag(tasks):
     return dot
 
 
-def task_func():
-    print("Processing task...")
-    if random.choice([True, False]):
-        raise Exception("Simulated task failure.")
-
-
 def fallback_func():
     print("Fallback executed.")
 
@@ -89,14 +82,17 @@ def condition_for_task3():
     return random.choice([True, False])  # Randomly returns True or False
 
 
-task1 = Task("Task1", task_func)
+task1 = Task(
+    "Task1",
+)
 task2 = Task(
     "Task2",
-    task_func,
     dependencies=[task1],
-    fallback=Task("Fallback_Task2", fallback_func),
+    fallback=Task(
+        "Fallback_Task2",
+    ),
 )
-task3 = Task("Task3", task_func, dependencies=[task2], condition=condition_for_task3)
+task3 = Task("Task3", dependencies=[task2], condition=condition_for_task3)
 
 tasks = [task1, task2, task3]
 
