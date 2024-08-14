@@ -28,30 +28,19 @@ contract LightDAG {
     struct Operation {
         bytes32 hash;
         bytes32[] dependencies;
-        bytes[] memory conditionData,
+        bytes[] conditionData;
         bytes32 fallbackOperation;
     }
 
-    function addOperation(
-        bytes32 hash,
-        bytes32[] memory dependencies,
-        bytes[] memory conditionData,
-        bytes32[] memory salts,
-        bytes32 fallbackOperation
-    ) public {
-        require(conditionData.length == salts.length, "Data and salts length mismatch");
+    struct OperationRoot {
+        bytes32 root;
+        Operation[] operations;
+    }
 
-        // Call the condition contracts w/ multicall to get the condition results
-        IConditionChecker[] memory conditionContracts = new IConditionChecker[](conditionData.length);
+    function addOperationRoot(OperationRoot memory operationRoot) public {
+        // Add operation root to the LightDAG
 
-
-        // Store the operation with the deployed condition contracts
-        operations[hash] = Operation({
-            hash: hash,
-            dependencies: dependencies,
-            completed: false,
-            conditionContracts: conditionContracts,
-            fallbackOperation: fallbackOperation
-        });
+        // Check if the operation root is valid
+        require(operationRoot.root != bytes32(0), "LightDAG: Operation root is empty");
     }
 }
