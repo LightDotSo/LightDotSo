@@ -1,5 +1,18 @@
-from graphviz import Digraph
+# Copyright 2023-2024 LightDotSo.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import random
+from graphviz import Digraph
 
 
 class Task:
@@ -72,6 +85,10 @@ def fallback_func():
     print("Fallback executed.")
 
 
+def condition_for_task3():
+    return random.choice([True, False])  # Randomly returns True or False
+
+
 task1 = Task("Task1", task_func)
 task2 = Task(
     "Task2",
@@ -79,9 +96,9 @@ task2 = Task(
     dependencies=[task1],
     fallback=Task("Fallback_Task2", fallback_func),
 )
-task3 = Task("Task3", task_func, dependencies=[task2])
+task3 = Task("Task3", task_func, dependencies=[task2], condition=condition_for_task3)
 
 tasks = [task1, task2, task3]
 
 dot = visualize_dag(tasks)
-dot.render("task_graph", view=True)
+dot.render("tmp", view=True)  # This line saves and opens the graph
