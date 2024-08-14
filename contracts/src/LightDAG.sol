@@ -23,6 +23,9 @@ interface IConditionChecker {
 /// @title LightDAG
 /// @author @shunkakinoki
 /// @notice LightDAG is an implementation contract for Light Protocol.
+/// This is the version 0.1.0 contract for Light Protocol.
+/// @dev The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.
+/// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightDAG {
     struct Task {
         bytes32 hash;
