@@ -363,6 +363,7 @@ cygpath
 CYGPATTERN
 cytoscape
 dagre
+dagrs
 Daian
 damerau
 danielqsj
