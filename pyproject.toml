@@ -17,7 +17,8 @@
     "langserve[all]>=0.0.39",
     "langchain-community>=0.0.13",
     "gunicorn>=21.2.0",
-  ]
+    "graphviz>=0.20.3",
+]
 
   [project.scripts]
     hello = "lightdotso:hello"

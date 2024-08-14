@@ -5,171 +5,489 @@
 #   pre: false
 #   features: []
 #   all-features: false
+#   with-sources: false
+#   generate-hashes: false
 
 -e file:.
 aiohttp==3.9.1
+    # via langchain
+    # via langchain-community
+    # via web3
 aiosignal==1.3.1
+    # via aiohttp
 annotated-types==0.6.0
+    # via pydantic
 anyio==4.2.0
+    # via httpx
+    # via jupyter-server
+    # via langchain-core
+    # via openai
+    # via sse-starlette
+    # via starlette
 appnope==0.1.3
+    # via ipykernel
 argon2-cffi==23.1.0
+    # via jupyter-server
 argon2-cffi-bindings==21.2.0
+    # via argon2-cffi
 arrow==1.3.0
+    # via isoduration
 asttokens==2.4.1
+    # via stack-data
 async-lru==2.0.4
+    # via jupyterlab
 attrs==23.1.0
+    # via aiohttp
+    # via jsonschema
+    # via referencing
 autopep8==2.0.4
+    # via nbqa
 babel==2.14.0
+    # via jupyterlab-server
 beautifulsoup4==4.12.2
+    # via nbconvert
 bitarray==2.8.5
+    # via eth-account
 bleach==6.1.0
+    # via nbconvert
 cbor2==5.5.1
+    # via crytic-compile
 certifi==2023.11.17
+    # via httpcore
+    # via httpx
+    # via requests
 cffi==1.16.0
+    # via argon2-cffi-bindings
+    # via cryptography
+    # via pynacl
 charset-normalizer==3.3.2
+    # via requests
 click==8.1.7
+    # via uvicorn
 comm==0.2.1
+    # via ipykernel
 cryptography==41.0.7
+    # via pyopenssl
 crytic-compile==0.3.5
+    # via halmos
+    # via slither-analyzer
 cytoolz==0.12.2
+    # via eth-utils
 dataclasses-json==0.6.3
+    # via langchain
+    # via langchain-community
 debugpy==1.8.0
+    # via ipykernel
 decorator==5.1.1
+    # via ipython
 defusedxml==0.7.1
+    # via nbconvert
 distro==1.9.0
+    # via openai
 eth-abi==4.2.1
+    # via eth-account
+    # via slither-analyzer
+    # via web3
 eth-account==0.10.0
+    # via web3
 eth-hash==0.5.2
+    # via eth-utils
+    # via web3
 eth-keyfile==0.7.0
+    # via eth-account
 eth-keys==0.4.0
+    # via eth-account
+    # via eth-keyfile
 eth-rlp==1.0.0
+    # via eth-account
 eth-typing==3.5.2
+    # via eth-abi
+    # via eth-keys
+    # via eth-utils
+    # via slither-analyzer
+    # via web3
 eth-utils==2.3.1
+    # via eth-abi
+    # via eth-account
+    # via eth-keyfile
+    # via eth-keys
+    # via eth-rlp
+    # via rlp
+    # via slither-analyzer
+    # via web3
 executing==2.0.1
+    # via stack-data
 fastapi==0.109.0
+    # via langserve
+    # via sse-starlette
 fastjsonschema==2.19.1
+    # via nbformat
 fqdn==1.5.1
+    # via jsonschema
 frozenlist==1.4.1
+    # via aiohttp
+    # via aiosignal
+graphviz==0.20.3
+    # via lightdotso
 gunicorn==21.2.0
+    # via lightdotso
 h11==0.14.0
+    # via httpcore
+    # via uvicorn
 halmos==0.0.8
+    # via lightdotso
 hexbytes==0.3.1
+    # via eth-account
+    # via eth-rlp
+    # via web3
 httpcore==1.0.2
+    # via httpx
 httpx==0.26.0
+    # via langserve
+    # via openai
 httpx-sse==0.4.0
+    # via langserve
 idna==3.6
+    # via anyio
+    # via httpx
+    # via jsonschema
+    # via requests
+    # via yarl
 ipykernel==6.28.0
+    # via jupyterlab
 ipython==8.20.0
+    # via ipykernel
+    # via nbqa
 isoduration==20.11.0
+    # via jsonschema
 jedi==0.19.1
+    # via ipython
 jinja2==3.1.2
+    # via jupyter-server
+    # via jupyterlab
+    # via jupyterlab-server
+    # via nbconvert
 json5==0.9.14
+    # via jupyterlab-server
 jsonpatch==1.33
+    # via langchain
+    # via langchain-core
 jsonpointer==2.4
+    # via jsonpatch
+    # via jsonschema
 jsonschema==4.20.0
+    # via jupyter-events
+    # via jupyterlab-server
+    # via nbformat
+    # via web3
 jsonschema-specifications==2023.11.2
+    # via jsonschema
 jupyter-client==8.6.0
+    # via ipykernel
+    # via jupyter-server
+    # via nbclient
 jupyter-core==5.7.1
+    # via ipykernel
+    # via jupyter-client
+    # via jupyter-server
+    # via jupyterlab
+    # via nbclient
+    # via nbconvert
+    # via nbformat
 jupyter-events==0.9.0
+    # via jupyter-server
 jupyter-lsp==2.2.1
+    # via jupyterlab
 jupyter-server==2.12.2
+    # via jupyter-lsp
+    # via jupyterlab
+    # via jupyterlab-server
+    # via notebook
+    # via notebook-shim
 jupyter-server-terminals==0.5.1
+    # via jupyter-server
 jupyterlab==4.0.10
+    # via notebook
 jupyterlab-pygments==0.3.0
+    # via nbconvert
 jupyterlab-server==2.25.2
+    # via jupyterlab
+    # via notebook
 langchain==0.1.0
+    # via langserve
+    # via lightdotso
 langchain-community==0.0.13
+    # via langchain
+    # via lightdotso
 langchain-core==0.1.12
+    # via langchain
+    # via langchain-community
 langserve==0.0.39
+    # via lightdotso
 langsmith==0.0.78
+    # via langchain
+    # via langchain-community
+    # via langchain-core
+    # via lightdotso
 lru-dict==1.2.0
+    # via web3
 markupsafe==2.1.3
+    # via jinja2
+    # via nbconvert
 marshmallow==3.20.1
+    # via dataclasses-json
 matplotlib-inline==0.1.6
+    # via ipykernel
+    # via ipython
 mistune==3.0.2
+    # via nbconvert
 multidict==6.0.4
+    # via aiohttp
+    # via yarl
 mypy-extensions==1.0.0
+    # via typing-inspect
 nbclient==0.9.0
+    # via nbconvert
 nbconvert==7.14.0
+    # via jupyter-server
 nbformat==5.9.2
+    # via jupyter-server
+    # via nbclient
+    # via nbconvert
 nbqa==1.7.1
 ndg-httpsclient==0.5.1
+    # via pusher
 nest-asyncio==1.5.8
+    # via ipykernel
 notebook==7.0.6
 notebook-shim==0.2.3
+    # via jupyterlab
+    # via notebook
 numpy==1.26.3
+    # via langchain
+    # via langchain-community
 openai==1.7.0
+    # via lightdotso
 orjson==3.9.12
+    # via langserve
 overrides==7.4.0
+    # via jupyter-server
 packaging==23.2
+    # via gunicorn
+    # via ipykernel
+    # via jupyter-server
+    # via jupyterlab
+    # via jupyterlab-server
+    # via langchain-core
+    # via marshmallow
+    # via nbconvert
+    # via slither-analyzer
+    # via solc-select
 pandocfilters==1.5.0
+    # via nbconvert
 parsimonious==0.9.0
+    # via eth-abi
 parso==0.8.3
+    # via jedi
 pexpect==4.9.0
+    # via ipython
 platformdirs==4.1.0
+    # via jupyter-core
 prettytable==3.9.0
+    # via slither-analyzer
 prometheus-client==0.19.0
+    # via jupyter-server
 prompt-toolkit==3.0.43
+    # via ipython
 protobuf==4.25.1
+    # via web3
 psutil==5.9.7
+    # via ipykernel
 ptyprocess==0.7.0
+    # via pexpect
+    # via terminado
 pure-eval==0.2.2
+    # via stack-data
 pusher==3.3.2
+    # via lightdotso
 pyasn1==0.5.1
+    # via ndg-httpsclient
+    # via pusher
 pycodestyle==2.11.1
+    # via autopep8
 pycparser==2.21
+    # via cffi
 pycryptodome==3.19.0
+    # via crytic-compile
+    # via eth-hash
+    # via eth-keyfile
+    # via slither-analyzer
+    # via solc-select
 pydantic==2.5.3
+    # via fastapi
+    # via langchain
+    # via langchain-core
+    # via langserve
+    # via langsmith
+    # via openai
 pydantic-core==2.14.6
+    # via pydantic
 pygments==2.17.2
+    # via ipython
+    # via nbconvert
 pynacl==1.5.0
+    # via pusher
 pyopenssl==23.3.0
+    # via ndg-httpsclient
+    # via pusher
 python-dateutil==2.8.2
+    # via arrow
+    # via jupyter-client
 python-dotenv==1.0.0
+    # via lightdotso
 python-json-logger==2.0.7
+    # via jupyter-events
 pyunormalize==15.1.0
+    # via web3
 pyyaml==6.0.1
+    # via jupyter-events
+    # via langchain
+    # via langchain-community
+    # via langchain-core
 pyzmq==25.1.2
+    # via ipykernel
+    # via jupyter-client
+    # via jupyter-server
 referencing==0.32.0
+    # via jsonschema
+    # via jsonschema-specifications
+    # via jupyter-events
 regex==2023.10.3
+    # via parsimonious
 requests==2.31.0
+    # via jupyterlab-server
+    # via langchain
+    # via langchain-community
+    # via langchain-core
+    # via langsmith
+    # via pusher
+    # via web3
 rfc3339-validator==0.1.4
+    # via jsonschema
+    # via jupyter-events
 rfc3986-validator==0.1.1
+    # via jsonschema
+    # via jupyter-events
 rlp==4.0.0
+    # via eth-account
+    # via eth-rlp
 rpds-py==0.15.2
+    # via jsonschema
+    # via referencing
 send2trash==1.8.2
-six==1.16.0
-slither-analyzer==0.9.6
-sniffio==1.3.0
-solc-select==1.0.4
-soupsieve==2.5
-sqlalchemy==2.0.25
-sse-starlette==1.8.2
-stack-data==0.6.3
-starlette==0.35.1
-tenacity==8.2.3
-terminado==0.18.0
-tinycss2==1.2.1
-tokenize-rt==5.2.0
-toml==0.10.2
-tomli==2.0.1
-toolz==0.12.0
-tornado==6.4
-tqdm==4.66.1
-traitlets==5.14.1
-types-python-dateutil==2.8.19.20240106
-typing-extensions==4.9.0
-typing-inspect==0.9.0
-uri-template==1.3.0
-urllib3==2.1.0
-uvicorn==0.26.0
-wcwidth==0.2.12
-web3==6.12.0
-webcolors==1.13
-webencodings==0.5.1
-websocket-client==1.7.0
-websockets==12.0
-yarl==1.9.4
-z3-solver==4.12.4.0
-# The following packages are considered to be unsafe in a requirements file:
+    # via jupyter-server
 setuptools==69.0.2
+    # via lightdotso
+six==1.16.0
+    # via asttokens
+    # via bleach
+    # via pusher
+    # via python-dateutil
+    # via rfc3339-validator
+slither-analyzer==0.9.6
+    # via lightdotso
+sniffio==1.3.0
+    # via anyio
+    # via httpx
+    # via openai
+solc-select==1.0.4
+    # via crytic-compile
+soupsieve==2.5
+    # via beautifulsoup4
+sqlalchemy==2.0.25
+    # via langchain
+    # via langchain-community
+sse-starlette==1.8.2
+    # via langserve
+stack-data==0.6.3
+    # via ipython
+starlette==0.35.1
+    # via fastapi
+    # via sse-starlette
+tenacity==8.2.3
+    # via langchain
+    # via langchain-community
+    # via langchain-core
+terminado==0.18.0
+    # via jupyter-server
+    # via jupyter-server-terminals
+tinycss2==1.2.1
+    # via nbconvert
+tokenize-rt==5.2.0
+    # via nbqa
+toml==0.10.2
+    # via crytic-compile
+tomli==2.0.1
+    # via nbqa
+toolz==0.12.0
+    # via cytoolz
+tornado==6.4
+    # via ipykernel
+    # via jupyter-client
+    # via jupyter-server
+    # via jupyterlab
+    # via notebook
+    # via terminado
+tqdm==4.66.1
+    # via openai
+traitlets==5.14.1
+    # via comm
+    # via ipykernel
+    # via ipython
+    # via jupyter-client
+    # via jupyter-core
+    # via jupyter-events
+    # via jupyter-server
+    # via jupyterlab
+    # via matplotlib-inline
+    # via nbclient
+    # via nbconvert
+    # via nbformat
+types-python-dateutil==2.8.19.20240106
+    # via arrow
+typing-extensions==4.9.0
+    # via eth-typing
+    # via fastapi
+    # via openai
+    # via pydantic
+    # via pydantic-core
+    # via sqlalchemy
+    # via typing-inspect
+    # via web3
+typing-inspect==0.9.0
+    # via dataclasses-json
+uri-template==1.3.0
+    # via jsonschema
+urllib3==2.1.0
+    # via pusher
+    # via requests
+uvicorn==0.26.0
+    # via sse-starlette
+wcwidth==0.2.12
+    # via prettytable
+    # via prompt-toolkit
+web3==6.12.0
+    # via slither-analyzer
+webcolors==1.13
+    # via jsonschema
+webencodings==0.5.1
+    # via bleach
+    # via tinycss2
+websocket-client==1.7.0
+    # via jupyter-server
+websockets==12.0
+    # via web3
+yarl==1.9.4
+    # via aiohttp
+z3-solver==4.12.4.0
+    # via halmos

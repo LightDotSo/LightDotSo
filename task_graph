@@ -1,0 +1,10 @@
+// The Task Graph
+digraph {
+	Task1
+	Task2
+	Task1 -> Task2 [label=dependency]
+	Fallback_Task2
+	Task2 -> Fallback_Task2 [label=fallback style=dashed]
+	Task3
+	Task2 -> Task3 [label=dependency]
+}
