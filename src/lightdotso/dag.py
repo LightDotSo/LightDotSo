@@ -14,6 +14,7 @@
 
 import random
 from graphviz import Digraph
+import yaml
 
 
 class Task:
@@ -51,28 +52,29 @@ class Task:
         if self.name not in added_nodes:
             graph.node(self.name)
             added_nodes.add(self.name)
+
         for dep in self.dependencies:
-            if dep.name not in added_nodes:
-                dep.add_to_graph(graph, added_nodes)
-            graph.edge(dep.name, self.name, label="dependency")
+            dep.add_to_graph(graph, added_nodes)
+
+            if (dep.name, self.name) not in added_nodes:
+                graph.edge(dep.name, self.name, label="dependency")
+                added_nodes.add((dep.name, self.name))
+
         if self.condition:
-            cond_node = self.name + "_cond"
+            cond_node = f"{self.name}_cond"
             if cond_node not in added_nodes:
                 graph.node(cond_node, label="Condition", shape="diamond")
                 added_nodes.add(cond_node)
-            graph.edge(cond_node, self.name, label="condition true")
+            if (cond_node, self.name) not in added_nodes:
+                graph.edge(cond_node, self.name, label="condition true")
+                added_nodes.add((cond_node, self.name))
+
         if self.fallback:
-            if self.fallback.name not in added_nodes:
-                self.fallback.add_to_graph(graph, added_nodes)
-            graph.edge(self.name, self.fallback.name, label="fallback", style="dashed")
-
-
-def visualize_dag(tasks):
-    dot = Digraph(comment="The Task Graph")
-    added_nodes = set()
-    for task in tasks:
-        task.add_to_graph(dot, added_nodes)
-    return dot
+            self.fallback.add_to_graph(graph, added_nodes)
+            fallback_node = self.fallback.name
+            if (self.name, fallback_node) not in added_nodes:
+                graph.edge(self.name, fallback_node, label="fallback", style="dashed")
+                added_nodes.add((self.name, fallback_node))
 
 
 def fallback_func():
@@ -83,19 +85,52 @@ def condition_for_task3():
     return random.choice([True, False])  # Randomly returns True or False
 
 
-task1 = Task(
-    "Task1",
-)
-task2 = Task(
-    "Task2",
-    dependencies=[task1],
-    fallback=Task(
-        "Fallback_Task2",
-    ),
-)
-task3 = Task("Task3", dependencies=[task2], condition=condition_for_task3)
+def parse_condition(condition_name):
+    # Example condition parsing
+    if condition_name == "random_condition":
+        return lambda: random.choice([True, False])
+    return lambda: True
 
-tasks = [task1, task2, task3]
 
+def load_tasks_from_yaml(file_path):
+    with open(file_path, "r") as file:
+        config = yaml.safe_load(file)
+    tasks = {}
+    for task_id, task_info in config["dag"].items():
+        condition = (
+            parse_condition(task_info.get("condition"))
+            if "condition" in task_info
+            else None
+        )
+        new_task = Task(
+            name=task_info["name"],
+            dependencies=[],  # Dependencies will be linked later
+            condition=condition,
+            fallback=None,  # Placeholder, will be linked later
+        )
+        tasks[task_id] = new_task
+
+    # Assign dependencies and fallbacks
+    for task_id, task_info in config["dag"].items():
+        task = tasks[task_id]
+        task.dependencies = [
+            tasks[dep] for dep in task_info.get("after", []) if dep in tasks
+        ]
+        if "fallback" in task_info:
+            task.fallback = tasks[task_info["fallback"]]
+
+    return list(tasks.values())
+
+
+def visualize_dag(tasks):
+    dot = Digraph(comment="The Task Graph")
+    added_nodes = set()
+    for task in tasks:
+        task.add_to_graph(dot, added_nodes)
+    return dot
+
+
+# Example usage
+tasks = load_tasks_from_yaml("tasks/sample_dag.yaml")
 dot = visualize_dag(tasks)
-dot.render("tmp", view=True)  # This line saves and opens the graph
+dot.render("tmp", view=True)

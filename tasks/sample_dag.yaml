@@ -1,0 +1,41 @@
+# Copyright 2023-2024 LightDotSo.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+dag:
+  Task1:
+    name: "Task 1"
+    after: ["Task2"]  # Dependencies
+    condition: "random_condition"  # Condition identifier or script
+    fallback: "Task1Fallback"  # Fallback task identifier
+
+  Task2:
+    name: "Task 2"
+    after: ["Task3", "Task4"]
+
+  Task3:
+    name: "Task 3"
+    # No dependencies for this task
+
+  Task4:
+    name: "Task 4"
+    after: ["Task3"]
+    fallback: "Task4Fallback"
+
+  Task1Fallback:
+    name: "Task 1 Fallback"
+    # This is a fallback task, potentially with its own dependencies or conditions
+
+  Task4Fallback:
+    name: "Task 4 Fallback"
+    # This is another fallback task
