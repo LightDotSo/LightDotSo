@@ -55,7 +55,7 @@ contract LightDAG {
     // Constant
     // -------------------------------------------------------------------------
 
-    function addOperationRoot(OperationRoot memory operationRoot) pure {
+    function addOperationRoot(OperationRoot memory operationRoot) public pure {
         // Check if the operation root is valid
         require(operationRoot.root != bytes32(0), "LightDAG: Operation root is empty");
     }
