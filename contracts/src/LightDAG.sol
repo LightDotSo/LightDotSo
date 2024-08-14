@@ -25,10 +25,14 @@ pragma solidity ^0.8.18;
 /// @dev The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightDAG {
+    // -------------------------------------------------------------------------
+    // Types
+    // -------------------------------------------------------------------------
+
     struct Operation {
         bytes32 hash;
-        bytes32[] dependencies;
         bytes[] conditionData;
+        bytes32[] dependencies;
         bytes32 fallbackOperation;
     }
 
@@ -37,9 +41,21 @@ contract LightDAG {
         Operation[] operations;
     }
 
-    function addOperationRoot(OperationRoot memory operationRoot) public {
-        // Add operation root to the LightDAG
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
 
+    /// @notice The name for this contract
+    string public constant NAME = "LightWalletFactory";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.3.0";
+
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    function addOperationRoot(OperationRoot memory operationRoot) pure {
         // Check if the operation root is valid
         require(operationRoot.root != bytes32(0), "LightDAG: Operation root is empty");
     }
