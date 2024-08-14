@@ -13,6 +13,7 @@
 // limitations under the License.
 
 pub mod constants;
+pub mod dag;
 pub mod entrypoint;
 pub mod erc1271;
 pub mod light_wallet;

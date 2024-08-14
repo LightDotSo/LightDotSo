@@ -1,0 +1,55 @@
+[
+  {
+    "type": "function",
+    "name": "NAME",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "VERSION",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "addOperationRoot",
+    "inputs": [
+      {
+        "name": "operationRoot",
+        "type": "tuple",
+        "internalType": "struct LightDAG.OperationRoot",
+        "components": [
+          { "name": "root", "type": "bytes32", "internalType": "bytes32" },
+          {
+            "name": "operations",
+            "type": "tuple[]",
+            "internalType": "struct LightDAG.Operation[]",
+            "components": [
+              { "name": "hash", "type": "bytes32", "internalType": "bytes32" },
+              {
+                "name": "conditionData",
+                "type": "bytes[]",
+                "internalType": "bytes[]"
+              },
+              {
+                "name": "dependencies",
+                "type": "bytes32[]",
+                "internalType": "bytes32[]"
+              },
+              {
+                "name": "fallbackOperation",
+                "type": "bytes32",
+                "internalType": "bytes32"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "pure"
+  }
+]

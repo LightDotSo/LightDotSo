@@ -1517,6 +1517,7 @@ toidentifier
 Tokena
 Tokenaddress
 tokengroup
+Tokenizable
 tokenlist
 Tokenmap
 Tokenprices
