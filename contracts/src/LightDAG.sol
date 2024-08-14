@@ -14,11 +14,9 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+import {IConditionChecker} from "@/contracts/interfaces/IConditionChecker.sol";
 
-interface IConditionChecker {
-    function checkCondition(bytes calldata data) external returns (bool);
-}
+pragma solidity ^0.8.18;
 
 /// @title LightDAG
 /// @author @shunkakinoki
@@ -27,22 +25,14 @@ interface IConditionChecker {
 /// @dev The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightDAG {
-    struct Task {
+    struct Operation {
         bytes32 hash;
         bytes32[] dependencies;
-        bool completed;
-        address[] conditionContracts;
+        bytes[] memory conditionData,
         bytes32 fallbackOperation;
     }
 
-    mapping(bytes32 => Task) public tasks;
-
-    function deployConditionChecker(bytes memory data, bytes32 salt) public returns (address) {
-        bytes memory bytecode = abi.encodePacked(type(ConditionChecker).creationCode, abi.encode(data));
-        return address(0).deploy(bytecode, salt);
-    }
-
-    function addTask(
+    function addOperation(
         bytes32 hash,
         bytes32[] memory dependencies,
         bytes[] memory conditionData,
@@ -51,13 +41,12 @@ contract LightDAG {
     ) public {
         require(conditionData.length == salts.length, "Data and salts length mismatch");
 
-        address[] memory conditionContracts = new address[](conditionData.length);
-        for (uint256 i = 0; i < conditionData.length; i++) {
-            conditionContracts[i] = deployConditionChecker(conditionData[i], salts[i]);
-        }
+        // Call the condition contracts w/ multicall to get the condition results
+        IConditionChecker[] memory conditionContracts = new IConditionChecker[](conditionData.length);
 
-        // Store the task with the deployed condition contracts
-        tasks[hash] = Task({
+
+        // Store the operation with the deployed condition contracts
+        operations[hash] = Operation({
             hash: hash,
             dependencies: dependencies,
             completed: false,

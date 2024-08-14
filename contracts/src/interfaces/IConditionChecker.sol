@@ -14,17 +14,14 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
+// Interface for IConditionChecker
+
 pragma solidity ^0.8.18;
 
-import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
-
-// LightPaymaster -- VerifyingPaymaster for Light
-contract LightPaymaster is VerifyingPaymaster {
+interface IConditionChecker {
     // -------------------------------------------------------------------------
-    // Constructor
+    // Actions
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
-        _transferOwnership(tx.origin);
-    }
+    function checkCondition(bytes calldata data) external returns (bool);
 }
