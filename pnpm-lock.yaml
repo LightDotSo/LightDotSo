@@ -229,8 +229,8 @@ importers:
         specifier: ^2.10.0
         version: 2.10.0
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)
@@ -422,8 +422,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -579,7 +579,7 @@ importers:
         version: 8.20.1(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       '@types/lodash':
         specifier: ^4.17.7
         version: 4.17.7
@@ -711,8 +711,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -727,8 +727,8 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       wrangler:
-        specifier: ^3.70.0
-        version: 3.70.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        specifier: ^3.71.0
+        version: 3.71.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   apps/blog:
     dependencies:
@@ -808,8 +808,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-187dd6a7-20240806)
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -905,8 +905,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-187dd6a7-20240806)
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -958,8 +958,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1001,10 +1001,10 @@ importers:
         version: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       fumadocs-openapi:
         specifier: ^5.2.0
-        version: 5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       fumadocs-ui:
         specifier: ^13.2.2
-        version: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       next:
         specifier: 15.0.0-canary.111
         version: 15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -1049,8 +1049,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1206,8 +1206,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1307,8 +1307,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1395,8 +1395,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1435,8 +1435,8 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       wrangler:
-        specifier: ^3.70.0
-        version: 3.70.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        specifier: ^3.71.0
+        version: 3.71.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   apps/inngest:
     dependencies:
@@ -1529,8 +1529,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1636,8 +1636,8 @@ importers:
         specifier: ^4.0.13
         version: 4.0.13(react@19.0.0-rc-187dd6a7-20240806)
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1683,8 +1683,8 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       wrangler:
-        specifier: ^3.70.0
-        version: 3.70.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        specifier: ^3.71.0
+        version: 3.71.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   apps/storybook:
     dependencies:
@@ -1738,7 +1738,7 @@ importers:
         version: 8.20.1(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       esbuild:
         specifier: ^0.17.3
         version: 0.17.19
@@ -1873,8 +1873,8 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(storybook@8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1990,25 +1990,25 @@ importers:
     dependencies:
       '@headlessui/tailwindcss':
         specifier: ^0.2.1
-        version: 0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 0.2.1(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 0.4.2(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       '@tailwindcss/forms':
         specifier: ^0.5.7
-        version: 0.5.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       '@tailwindcss/typography':
         specifier: ^0.5.14
-        version: 0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 0.5.14(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       tailwind-config-viewer:
         specifier: ^2.0.4
-        version: 2.0.4(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 2.0.4(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 1.0.7(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
 
   configurations/tsconfig: {}
 
@@ -2834,8 +2834,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -3307,7 +3307,7 @@ importers:
         version: 8.20.1(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@tremor/react':
         specifier: ^3.17.4
-        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       lucide-react:
         specifier: ^0.427.0
         version: 0.427.0(react@19.0.0-rc-187dd6a7-20240806)
@@ -3685,7 +3685,7 @@ importers:
         version: 2.2.1
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+        version: 1.0.7(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       vaul:
         specifier: ^0.9.1
         version: 0.9.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -3733,8 +3733,8 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -21318,8 +21318,8 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@3.4.9:
-    resolution: {integrity: sha512-1SEOvRr6sSdV5IDf9iC+NU4dhwdqzF4zKKq3sAbasUWHEM6lsMhX+eNN5gkPx1BvLFEnZQEUFbXnGj8Qlp83Pg==}
+  tailwindcss@3.4.10:
+    resolution: {integrity: sha512-KWZkVPm7yJRhdu4SRSl9d4AK2wM3a50UsvgHZO7xY77NQr2V+fIrEuoDGQcbvswWvFGbS2f6e+jC/6WJm1Dl0w==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -22679,8 +22679,8 @@ packages:
   workerpool@6.5.1:
     resolution: {integrity: sha512-Fs4dNYcsdpYSAfVxhnl1L5zTksjvOJxtC5hzMNl+1t9B8hTJTdKDyZ5ju7ztgPy+ft9tBFXoOlDNiOT9WUXZlA==}
 
-  wrangler@3.70.0:
-    resolution: {integrity: sha512-aMtCEXmH02SIxbxOFGGuJ8ZemmG9W+IcNRh5D4qIKgzSxqy0mt9mRoPNPSv1geGB2/8YAyeLGPf+tB4lxz+ssg==}
+  wrangler@3.71.0:
+    resolution: {integrity: sha512-WHWBmU2z0p1hRtSIIP5HEeoR+6aNpuZR82HMXAwpfeiyijjfkMyt/TUs8gvIOKC3x3+ETQQIdVeX2al5KtrIxQ==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -25964,9 +25964,9 @@ snapshots:
       react: 19.0.0-rc-187dd6a7-20240806
       react-dom: 19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806)
 
-  '@headlessui/tailwindcss@0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
+  '@headlessui/tailwindcss@0.2.1(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
     dependencies:
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
 
   '@heroicons/react@2.1.5(react@19.0.0-rc-187dd6a7-20240806)':
     dependencies:
@@ -31803,22 +31803,22 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
     dependencies:
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
 
-  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
+  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
 
-  '@tailwindcss/typography@0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
+  '@tailwindcss/typography@0.5.14(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
 
   '@tanstack/query-core@5.51.21': {}
 
@@ -32061,11 +32061,11 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@tremor/react@3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
+  '@tremor/react@3.17.4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))':
     dependencies:
       '@floating-ui/react': 0.19.2(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@headlessui/react': 0.0.0-insiders.03c22b4(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
-      '@headlessui/tailwindcss': 0.2.1(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+      '@headlessui/tailwindcss': 0.2.1(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       date-fns: 3.6.0
       react: 19.0.0-rc-187dd6a7-20240806
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@19.0.0-rc-187dd6a7-20240806)
@@ -38050,7 +38050,7 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  fumadocs-openapi@5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
+  fumadocs-openapi@5.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
       '@apidevtools/json-schema-ref-parser': 11.7.0
       '@mdx-js/mdx': 3.0.1
@@ -38060,7 +38060,7 @@ snapshots:
       class-variance-authority: 0.7.0
       fast-glob: 3.3.2
       fumadocs-core: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
-      fumadocs-ui: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+      fumadocs-ui: 13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       github-slugger: 2.0.0
       js-yaml: 4.1.0
       json-schema-to-typescript: 15.0.0
@@ -38079,7 +38079,7 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  fumadocs-ui@13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
+  fumadocs-ui@13.2.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
       '@radix-ui/react-accordion': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@radix-ui/react-collapsible': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -38088,7 +38088,7 @@ snapshots:
       '@radix-ui/react-popover': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@radix-ui/react-scroll-area': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       '@radix-ui/react-tabs': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
-      '@tailwindcss/typography': 0.5.14(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
+      '@tailwindcss/typography': 0.5.14(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)))
       class-variance-authority: 0.7.0
       cmdk: 1.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
       fumadocs-core: 13.2.2(@types/react@18.3.3)(next@15.0.0-canary.111(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.0)(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806))(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)
@@ -39373,7 +39373,7 @@ snapshots:
       any-signal: 2.1.2
       blob-to-it: 1.0.4
       browser-readablestream-to-it: 1.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.6(supports-color@8.1.1)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@2.7.0(encoding@0.1.13))
       ipfs-unixfs: 6.0.9
@@ -46051,7 +46051,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  tailwind-config-viewer@2.0.4(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
+  tailwind-config-viewer@2.0.4(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
       '@koa/router': 12.0.1
       commander: 6.2.1
@@ -46061,7 +46061,7 @@ snapshots:
       open: 7.4.2
       portfinder: 1.0.32
       replace-in-file: 6.3.5
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
     transitivePeerDependencies:
       - supports-color
 
@@ -46069,11 +46069,11 @@ snapshots:
 
   tailwind-merge@2.5.2: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))):
     dependencies:
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
 
-  tailwindcss@3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)):
+  tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -47432,7 +47432,7 @@ snapshots:
       remark-parse: 11.0.0
       serve-static: 1.15.0
       shiki: 1.12.1
-      tailwindcss: 3.4.9(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@swc/core@1.7.10(@swc/helpers@0.5.12))(@types/node@22.2.0)(typescript@5.5.4))
       toml: 3.0.0
       twoslash: 0.2.9(typescript@5.5.4)
       ua-parser-js: 1.0.38
@@ -47859,7 +47859,7 @@ snapshots:
 
   workerpool@6.5.1: {}
 
-  wrangler@3.70.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  wrangler@3.71.0(@cloudflare/workers-types@4.20240806.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@cloudflare/workers-shared': 0.1.0
