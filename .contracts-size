@@ -6,11 +6,11 @@
 | ECDSA                        |       86 |     24,490 |
 | ECDSAKernelFactory           |    1,160 |     23,416 |
 | ECDSAValidator               |    2,655 |     21,921 |
-| Enum                         |       86 |     24,490 |
 | EIP1967Proxy                 |      136 |     24,440 |
 | ERC1967Proxy                 |      833 |     23,743 |
 | ERC4337Utils                 |       86 |     24,490 |
 | EntryPoint                   |   18,050 |      6,526 |
+| Enum                         |       86 |     24,490 |
 | Exec                         |       86 |     24,490 |
 | ISignatureValidatorConstants |       63 |     24,513 |
 | ImmutableProxy               |    3,424 |     21,152 |

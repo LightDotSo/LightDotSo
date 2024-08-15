@@ -2,9 +2,9 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
-+ ➡ LightDAG
-+| Name | Type | Slot | Offset | Bytes | Contract |
-+|------|------|------|--------|-------|----------|
+ ➡ LightDAG
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
 =======================
  ➡ LightPaymaster
 | Name        | Type                        | Slot | Offset | Bytes | Contract                                        |
