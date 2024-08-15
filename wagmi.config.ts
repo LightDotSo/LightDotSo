@@ -11,6 +11,7 @@ export default defineConfig({
       },
       include: [
         "EntryPoint.sol/**",
+        "LightDAG.sol/**",
         "LightPaymaster.sol/**",
         "LightVerifyingPaymaster.sol/**",
         "LightWallet.sol/**",

@@ -12,14 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod constants;
-pub mod dag;
-pub mod entrypoint;
-pub mod erc1271;
-pub mod light_wallet;
-pub mod paymaster;
-pub mod provider;
-pub mod tracer;
-pub mod types;
-pub mod user_operation;
-pub mod utils;
+// SPDX-License-Identifier: Apache-2.0
+
+// Interface for IConditionChecker
+
+pragma solidity ^0.8.18;
+
+interface IConditionChecker {
+    // -------------------------------------------------------------------------
+    // Actions
+    // -------------------------------------------------------------------------
+
+    function checkCondition(bytes calldata data) external returns (bool);
+}

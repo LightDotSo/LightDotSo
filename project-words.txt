@@ -363,6 +363,7 @@ cygpath
 CYGPATTERN
 cytoscape
 dagre
+dagrs
 Daian
 damerau
 danielqsj
@@ -1516,6 +1517,7 @@ toidentifier
 Tokena
 Tokenaddress
 tokengroup
+Tokenizable
 tokenlist
 Tokenmap
 Tokenprices

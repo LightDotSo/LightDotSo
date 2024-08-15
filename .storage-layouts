@@ -2,6 +2,10 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
+ ➡ LightDAG
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightPaymaster
 | Name        | Type                        | Slot | Offset | Bytes | Contract                                        |
 |-------------|-----------------------------|------|--------|-------|-------------------------------------------------|
@@ -36,6 +40,10 @@
 |-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------------------------|
 | _owner      | address                     | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
 | senderNonce | mapping(address => uint256) | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
+=======================
+ ➡ IConditionChecker
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
 =======================
  ➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |

@@ -809,6 +809,66 @@ export const entryPointAbi = [
 ] as const;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LightDAG
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const lightDagAbi = [
+  {
+    type: "function",
+    inputs: [],
+    name: "NAME",
+    outputs: [{ name: "", internalType: "string", type: "string" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    inputs: [],
+    name: "VERSION",
+    outputs: [{ name: "", internalType: "string", type: "string" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    inputs: [
+      {
+        name: "operationRoot",
+        internalType: "struct LightDAG.OperationRoot",
+        type: "tuple",
+        components: [
+          { name: "root", internalType: "bytes32", type: "bytes32" },
+          {
+            name: "operations",
+            internalType: "struct LightDAG.Operation[]",
+            type: "tuple[]",
+            components: [
+              { name: "hash", internalType: "bytes32", type: "bytes32" },
+              {
+                name: "conditionData",
+                internalType: "bytes[]",
+                type: "bytes[]",
+              },
+              {
+                name: "dependencies",
+                internalType: "bytes32[]",
+                type: "bytes32[]",
+              },
+              {
+                name: "fallbackOperation",
+                internalType: "bytes32",
+                type: "bytes32",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    name: "addOperationRoot",
+    outputs: [],
+    stateMutability: "pure",
+  },
+] as const;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LightPaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2202,6 +2262,38 @@ export const useWatchEntryPointWithdrawnEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: entryPointAbi,
     eventName: "Withdrawn",
+  });
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightDagAbi}__
+ */
+export const useReadLightDag = /*#__PURE__*/ createUseReadContract({
+  abi: lightDagAbi,
+});
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightDagAbi}__ and `functionName` set to `"NAME"`
+ */
+export const useReadLightDagName = /*#__PURE__*/ createUseReadContract({
+  abi: lightDagAbi,
+  functionName: "NAME",
+});
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightDagAbi}__ and `functionName` set to `"VERSION"`
+ */
+export const useReadLightDagVersion = /*#__PURE__*/ createUseReadContract({
+  abi: lightDagAbi,
+  functionName: "VERSION",
+});
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightDagAbi}__ and `functionName` set to `"addOperationRoot"`
+ */
+export const useReadLightDagAddOperationRoot =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightDagAbi,
+    functionName: "addOperationRoot",
   });
 
 /**

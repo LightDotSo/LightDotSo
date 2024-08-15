@@ -10,6 +10,7 @@
 | ERC1967Proxy                 |      833 |     23,743 |
 | ERC4337Utils                 |       86 |     24,490 |
 | EntryPoint                   |   18,050 |      6,526 |
+| Enum                         |       86 |     24,490 |
 | Exec                         |       86 |     24,490 |
 | ISignatureValidatorConstants |       63 |     24,513 |
 | ImmutableProxy               |    3,424 |     21,152 |
@@ -19,6 +20,7 @@
 | LibBytes                     |       86 |     24,490 |
 | LibBytesPointer              |       86 |     24,490 |
 | LibOptim                     |       86 |     24,490 |
+| LightDAG                     |    1,542 |     23,034 |
 | LightPaymaster               |    5,533 |     19,043 |
 | LightVerifyingPaymaster      |    5,533 |     19,043 |
 | LightWallet                  |   13,265 |     11,311 |
@@ -34,8 +36,8 @@
 | ModuleStorage                |       86 |     24,490 |
 | NonceManager                 |      657 |     23,919 |
 | SafeMath                     |       86 |     24,490 |
-| SafeProxy                    |      161 |     24,415 |
-| SafeProxyFactory             |    2,393 |     22,183 |
+| SafeProxy                    |      172 |     24,404 |
+| SafeProxyFactory             |    2,404 |     22,172 |
 | SenderCreator                |      531 |     24,045 |
 | SequenceBaseSig              |       86 |     24,490 |
 | SequenceDynamicSig           |       86 |     24,490 |
