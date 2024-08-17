@@ -1,5 +1,31 @@
 # @lightdotso/contracts
 
+## 3.1.7
+
+### Patch Changes
+
+- [#1988](https://github.com/LightDotSo/LightDotSo/pull/1988) [`c3094da`](https://github.com/LightDotSo/LightDotSo/commit/c3094da987c25900b16e0e860aff8cc8f08b1e73) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update lib deps
+
+- [#1980](https://github.com/LightDotSo/LightDotSo/pull/1980) [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add paymaster
+
+- [#2125](https://github.com/LightDotSo/LightDotSo/pull/2125) [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Cspell settings rn
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2195](https://github.com/LightDotSo/LightDotSo/pull/2195) [`a49d019`](https://github.com/LightDotSo/LightDotSo/commit/a49d0199055aceee82e6a450ddd5838d7512da6b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changest
+
+- [#2242](https://github.com/LightDotSo/LightDotSo/pull/2242) [`8cf6bb0`](https://github.com/LightDotSo/LightDotSo/commit/8cf6bb047730da1b0cea25895a65371a55ee7288) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add contracts wagmi
+
+- [#2189](https://github.com/LightDotSo/LightDotSo/pull/2189) [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to biome
+
+- [#2111](https://github.com/LightDotSo/LightDotSo/pull/2111) [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ADd swap changes
+
+- [#2031](https://github.com/LightDotSo/LightDotSo/pull/2031) [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update cargo sh
+
+- Updated dependencies [[`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`6829ec0`](https://github.com/LightDotSo/LightDotSo/commit/6829ec0e80c1ddb3034619cc87de7099f6ccb4b9), [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3), [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`6f4b641`](https://github.com/LightDotSo/LightDotSo/commit/6f4b64150707460e266c575bee13d1c7f94acbb2), [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5), [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`a49d019`](https://github.com/LightDotSo/LightDotSo/commit/a49d0199055aceee82e6a450ddd5838d7512da6b), [`8cf6bb0`](https://github.com/LightDotSo/LightDotSo/commit/8cf6bb047730da1b0cea25895a65371a55ee7288), [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f), [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886), [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094), [`a9539aa`](https://github.com/LightDotSo/LightDotSo/commit/a9539aa62b515f5081389637e13a4c73417b0514), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`37e6877`](https://github.com/LightDotSo/LightDotSo/commit/37e687752cf6622cd05555fb72da0b66f1a7c58f), [`43a4c25`](https://github.com/LightDotSo/LightDotSo/commit/43a4c255004d50c22618159af4258ea6efa850de), [`0fa9288`](https://github.com/LightDotSo/LightDotSo/commit/0fa9288ab29b995c81fda0fe069023cc1ac2f378), [`d399c54`](https://github.com/LightDotSo/LightDotSo/commit/d399c54044b8ad51497830394046c83747b549b8), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04)]:
+  - @lightdotso/sequence@0.0.6
+  - @lightdotso/wagmi@3.1.7
+
 ## 3.1.6
 
 ### Patch Changes

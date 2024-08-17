@@ -1,5 +1,62 @@
 # @lightdotso/crates
 
+## 3.1.6
+
+### Patch Changes
+
+- [#2176](https://github.com/LightDotSo/LightDotSo/pull/2176) [`d0411ab`](https://github.com/LightDotSo/LightDotSo/commit/d0411ab2118dc05fdc261b6934addc0ff64b0bf2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add polling logs
+
+- [#2203](https://github.com/LightDotSo/LightDotSo/pull/2203) [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add kysley
+
+- [#2087](https://github.com/LightDotSo/LightDotSo/pull/2087) [`296d259`](https://github.com/LightDotSo/LightDotSo/commit/296d259512953e87732738a1eba637e6939c0bb2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add api bop
+
+- [#2042](https://github.com/LightDotSo/LightDotSo/pull/2042) [`0bdb084`](https://github.com/LightDotSo/LightDotSo/commit/0bdb0845f000f6750aebfde81bb3b7c73be88457) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add rpc hooks
+
+- [#1980](https://github.com/LightDotSo/LightDotSo/pull/1980) [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add paymaster
+
+- [#2203](https://github.com/LightDotSo/LightDotSo/pull/2203) [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light changeset
+
+- [#2136](https://github.com/LightDotSo/LightDotSo/pull/2136) [`e952375`](https://github.com/LightDotSo/LightDotSo/commit/e9523758c113c1d771b65990035aaba1bb9a575f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light chain
+
+- [#1966](https://github.com/LightDotSo/LightDotSo/pull/1966) [`70b538f`](https://github.com/LightDotSo/LightDotSo/commit/70b538fa919e48ba068d24801520d7290c033d61) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix const chains
+
+- [#2030](https://github.com/LightDotSo/LightDotSo/pull/2030) [`c1e5553`](https://github.com/LightDotSo/LightDotSo/commit/c1e55535bef17f2caf8aeb35a125c0f7333b361d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pop observability
+
+- [#2125](https://github.com/LightDotSo/LightDotSo/pull/2125) [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Cspell settings rn
+
+- [#2090](https://github.com/LightDotSo/LightDotSo/pull/2090) [`67a48a0`](https://github.com/LightDotSo/LightDotSo/commit/67a48a0ddf62a702cc9a13826fa0e818d49b6860) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add feature crates
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2157](https://github.com/LightDotSo/LightDotSo/pull/2157) [`ad26924`](https://github.com/LightDotSo/LightDotSo/commit/ad26924a767389a3fe9d38e6b3d3a017ff908884) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - fix crates api
+
+- [#2242](https://github.com/LightDotSo/LightDotSo/pull/2242) [`8cf6bb0`](https://github.com/LightDotSo/LightDotSo/commit/8cf6bb047730da1b0cea25895a65371a55ee7288) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add contracts wagmi
+
+- [#2189](https://github.com/LightDotSo/LightDotSo/pull/2189) [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to biome
+
+- [#2186](https://github.com/LightDotSo/LightDotSo/pull/2186) [`759e9a7`](https://github.com/LightDotSo/LightDotSo/commit/759e9a7cd6671adec7bf54dcb8c20db17b4c88fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add thirdweb crates
+
+- [#2111](https://github.com/LightDotSo/LightDotSo/pull/2111) [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ADd swap changes
+
+- [#2181](https://github.com/LightDotSo/LightDotSo/pull/2181) [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add hooks
+
+- [#2032](https://github.com/LightDotSo/LightDotSo/pull/2032) [`ff3d1ee`](https://github.com/LightDotSo/LightDotSo/commit/ff3d1ee926016f30378a4fc2d1aad02904bce465) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix pop dm
+
+- [#2239](https://github.com/LightDotSo/LightDotSo/pull/2239) [`a9539aa`](https://github.com/LightDotSo/LightDotSo/commit/a9539aa62b515f5081389637e13a4c73417b0514) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Gas for polygon
+
+- [#2199](https://github.com/LightDotSo/LightDotSo/pull/2199) [`598b465`](https://github.com/LightDotSo/LightDotSo/commit/598b4656a5c99076cefeccdbb28d18739cfe99f2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add bop uop
+
+- [#2187](https://github.com/LightDotSo/LightDotSo/pull/2187) [`498bb54`](https://github.com/LightDotSo/LightDotSo/commit/498bb5406c2ede3a3f4378289254a06c6c912f9b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- [#2123](https://github.com/LightDotSo/LightDotSo/pull/2123) [`816375b`](https://github.com/LightDotSo/LightDotSo/commit/816375b2bf06fd20d97abee08d030be4fec54c33) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add node impl
+
+- [#2121](https://github.com/LightDotSo/LightDotSo/pull/2121) [`bebaa90`](https://github.com/LightDotSo/LightDotSo/commit/bebaa90cbd893af94b91f6ff8211589b6725814a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add hook dialog
+
+- [#2031](https://github.com/LightDotSo/LightDotSo/pull/2031) [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update cargo sh
+
+- Updated dependencies [[`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`369a70a`](https://github.com/LightDotSo/LightDotSo/commit/369a70ab05fd6a80c1a9aefa3501a46e4c48f2bb), [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f), [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886), [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`37e6877`](https://github.com/LightDotSo/LightDotSo/commit/37e687752cf6622cd05555fb72da0b66f1a7c58f), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04)]:
+  - @lightdotso/prisma@3.1.6
+
 ## 3.1.5
 
 ### Patch Changes

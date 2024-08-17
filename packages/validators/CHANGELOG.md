@@ -1,5 +1,52 @@
 # @lightdotso/validators
 
+## 0.0.6
+
+### Patch Changes
+
+- [#2203](https://github.com/LightDotSo/LightDotSo/pull/2203) [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add kysley
+
+- [#2024](https://github.com/LightDotSo/LightDotSo/pull/2024) [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm json
+
+- [#1990](https://github.com/LightDotSo/LightDotSo/pull/1990) [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update pnpm
+
+- [#1986](https://github.com/LightDotSo/LightDotSo/pull/1986) [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - UPdate packages
+
+- [#1989](https://github.com/LightDotSo/LightDotSo/pull/1989) [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add packages
+
+- [#2203](https://github.com/LightDotSo/LightDotSo/pull/2203) [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light changeset
+
+- [#1997](https://github.com/LightDotSo/LightDotSo/pull/1997) [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update token modal
+
+- [#2125](https://github.com/LightDotSo/LightDotSo/pull/2125) [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Cspell settings rn
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2189](https://github.com/LightDotSo/LightDotSo/pull/2189) [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to biome
+
+- [#2111](https://github.com/LightDotSo/LightDotSo/pull/2111) [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ADd swap changes
+
+- [#2181](https://github.com/LightDotSo/LightDotSo/pull/2181) [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add hooks
+
+- [#2239](https://github.com/LightDotSo/LightDotSo/pull/2239) [`a9539aa`](https://github.com/LightDotSo/LightDotSo/commit/a9539aa62b515f5081389637e13a4c73417b0514) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Gas for polygon
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ini chore update
+
+- [#2135](https://github.com/LightDotSo/LightDotSo/pull/2135) [`37e6877`](https://github.com/LightDotSo/LightDotSo/commit/37e687752cf6622cd05555fb72da0b66f1a7c58f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Bump deps
+
+- [#2131](https://github.com/LightDotSo/LightDotSo/pull/2131) [`43a4c25`](https://github.com/LightDotSo/LightDotSo/commit/43a4c255004d50c22618159af4258ea6efa850de) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add token image
+
+- [#2046](https://github.com/LightDotSo/LightDotSo/pull/2046) [`0fa9288`](https://github.com/LightDotSo/LightDotSo/commit/0fa9288ab29b995c81fda0fe069023cc1ac2f378) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ncu upgrade path
+
+- [#2164](https://github.com/LightDotSo/LightDotSo/pull/2164) [`d399c54`](https://github.com/LightDotSo/LightDotSo/commit/d399c54044b8ad51497830394046c83747b549b8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update dep ncu
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
+- [#2031](https://github.com/LightDotSo/LightDotSo/pull/2031) [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update cargo sh
+
+- Updated dependencies [[`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f), [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886), [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`37e6877`](https://github.com/LightDotSo/LightDotSo/commit/37e687752cf6622cd05555fb72da0b66f1a7c58f), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04)]:
+  - @lightdotso/regexs@0.0.5
+
 ## 0.0.5
 
 ### Patch Changes

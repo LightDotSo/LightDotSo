@@ -1,5 +1,0 @@
----
-"@lightdotso/ai": patch
----
-
-handler

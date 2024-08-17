@@ -1,5 +1,20 @@
 # @lightdotso/android
 
+## 3.0.7
+
+### Patch Changes
+
+- [#2125](https://github.com/LightDotSo/LightDotSo/pull/2125) [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Cspell settings rn
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2111](https://github.com/LightDotSo/LightDotSo/pull/2111) [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ADd swap changes
+
+- [#2031](https://github.com/LightDotSo/LightDotSo/pull/2031) [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update cargo sh
+
+- Updated dependencies [[`d0411ab`](https://github.com/LightDotSo/LightDotSo/commit/d0411ab2118dc05fdc261b6934addc0ff64b0bf2), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`296d259`](https://github.com/LightDotSo/LightDotSo/commit/296d259512953e87732738a1eba637e6939c0bb2), [`0bdb084`](https://github.com/LightDotSo/LightDotSo/commit/0bdb0845f000f6750aebfde81bb3b7c73be88457), [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`e952375`](https://github.com/LightDotSo/LightDotSo/commit/e9523758c113c1d771b65990035aaba1bb9a575f), [`70b538f`](https://github.com/LightDotSo/LightDotSo/commit/70b538fa919e48ba068d24801520d7290c033d61), [`c1e5553`](https://github.com/LightDotSo/LightDotSo/commit/c1e55535bef17f2caf8aeb35a125c0f7333b361d), [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a), [`67a48a0`](https://github.com/LightDotSo/LightDotSo/commit/67a48a0ddf62a702cc9a13826fa0e818d49b6860), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`ad26924`](https://github.com/LightDotSo/LightDotSo/commit/ad26924a767389a3fe9d38e6b3d3a017ff908884), [`8cf6bb0`](https://github.com/LightDotSo/LightDotSo/commit/8cf6bb047730da1b0cea25895a65371a55ee7288), [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f), [`759e9a7`](https://github.com/LightDotSo/LightDotSo/commit/759e9a7cd6671adec7bf54dcb8c20db17b4c88fc), [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886), [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094), [`ff3d1ee`](https://github.com/LightDotSo/LightDotSo/commit/ff3d1ee926016f30378a4fc2d1aad02904bce465), [`a9539aa`](https://github.com/LightDotSo/LightDotSo/commit/a9539aa62b515f5081389637e13a4c73417b0514), [`598b465`](https://github.com/LightDotSo/LightDotSo/commit/598b4656a5c99076cefeccdbb28d18739cfe99f2), [`498bb54`](https://github.com/LightDotSo/LightDotSo/commit/498bb5406c2ede3a3f4378289254a06c6c912f9b), [`816375b`](https://github.com/LightDotSo/LightDotSo/commit/816375b2bf06fd20d97abee08d030be4fec54c33), [`bebaa90`](https://github.com/LightDotSo/LightDotSo/commit/bebaa90cbd893af94b91f6ff8211589b6725814a), [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04)]:
+  - @lightdotso/crates@3.1.6
+
 ## 3.0.6
 
 ### Patch Changes
