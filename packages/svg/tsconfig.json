@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "declaration": false,
-    "declarationMap": false
+    "outDir": "./dist"
   },
   "exclude": ["dist", "build", "node_modules"],
   "extends": "@lightdotso/tsconfig/react.json",
