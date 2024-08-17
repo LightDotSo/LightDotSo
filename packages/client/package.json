@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/client",
   "version": "3.1.6",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -41,14 +41,14 @@
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "graphql-request": "^6.1.0",
-    "neverthrow": "^7.0.0",
+    "neverthrow": "^7.0.1",
     "openapi-fetch": "^0.9.7",
-    "type-fest": "^4.24.0",
+    "type-fest": "^4.25.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "openapi-typescript": "^7.3.0",
     "typescript": "^5.5.4"
   },

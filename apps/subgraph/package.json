@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/subgraph",
   "version": "3.1.6",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.5.4",
