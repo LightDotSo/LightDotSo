@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/kysely",
   "version": "3.1.5",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -18,12 +18,12 @@
   "dependencies": {
     "@lightdotso/prisma": "workspace:*",
     "kysely": "^0.27.4",
-    "kysely-planetscale": "^1.4.0",
+    "kysely-planetscale": "^1.5.0",
     "postgres": "^3.4.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

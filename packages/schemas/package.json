@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/schemas",
   "version": "3.1.6",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -24,12 +24,12 @@
   },
   "dependencies": {
     "abitype": "^1.0.6",
-    "viem": "^2.19.4",
+    "viem": "^2.19.6",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "@types/react": "^18.3.3",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",

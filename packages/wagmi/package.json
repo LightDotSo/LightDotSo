@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/wagmi",
   "version": "3.1.6",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -27,12 +27,12 @@
     "@lightdotso/const": "workspace:*",
     "@wagmi/core": "^2.13.4",
     "connectkit": "^1.8.2",
-    "viem": "^2.19.4",
+    "viem": "^2.19.6",
     "wagmi": "^2.12.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {
