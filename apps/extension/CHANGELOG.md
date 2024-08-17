@@ -1,5 +1,34 @@
 # @lightdotso/extension
 
+## 3.1.6
+
+### Patch Changes
+
+- [#2024](https://github.com/LightDotSo/LightDotSo/pull/2024) [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm json
+
+- [#1986](https://github.com/LightDotSo/LightDotSo/pull/1986) [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - UPdate packages
+
+- [#2125](https://github.com/LightDotSo/LightDotSo/pull/2125) [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Cspell settings rn
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2189](https://github.com/LightDotSo/LightDotSo/pull/2189) [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to biome
+
+- [#2111](https://github.com/LightDotSo/LightDotSo/pull/2111) [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ADd swap changes
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ini chore update
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
+- [#2031](https://github.com/LightDotSo/LightDotSo/pull/2031) [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update cargo sh
+
+- Updated dependencies [[`e099916`](https://github.com/LightDotSo/LightDotSo/commit/e09991614056233cc71e47cb51ef7527a4ed378d), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`1a3ccb2`](https://github.com/LightDotSo/LightDotSo/commit/1a3ccb27f539521b1ed4c69a24e6238006e8b9ed), [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5), [`522c302`](https://github.com/LightDotSo/LightDotSo/commit/522c3020401de572851c7e6aae183fc8c09cf51a), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`a49d019`](https://github.com/LightDotSo/LightDotSo/commit/a49d0199055aceee82e6a450ddd5838d7512da6b), [`2cc456c`](https://github.com/LightDotSo/LightDotSo/commit/2cc456c1a05467eb4dae6ae21d2a6a32b56bc4dc), [`df964d7`](https://github.com/LightDotSo/LightDotSo/commit/df964d7bb52851d87044c91fbc99edc1fc5ced5f), [`737428d`](https://github.com/LightDotSo/LightDotSo/commit/737428de6b577267bc81807284b2ee50b5f8f886), [`efad015`](https://github.com/LightDotSo/LightDotSo/commit/efad0152e8ab0cde4ed7c6dd0eba226e5ef89094), [`c95864f`](https://github.com/LightDotSo/LightDotSo/commit/c95864fb3d8086d9007c3c78b2968629f921f452), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`37e6877`](https://github.com/LightDotSo/LightDotSo/commit/37e687752cf6622cd05555fb72da0b66f1a7c58f), [`fee57b8`](https://github.com/LightDotSo/LightDotSo/commit/fee57b8c79dd2e421f70fab20497b04a5de171d9), [`43a4c25`](https://github.com/LightDotSo/LightDotSo/commit/43a4c255004d50c22618159af4258ea6efa850de), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`d2b46ee`](https://github.com/LightDotSo/LightDotSo/commit/d2b46eebd970671843312884c00d67b12f28cf04)]:
+  - @lightdotso/popup@3.1.6
+  - @lightdotso/background@3.1.6
+  - @lightdotso/content@3.1.6
+  - @lightdotso/inpage@3.1.6
+  - @lightdotso/resources@3.0.4
+
 ## 3.1.5
 
 ### Patch Changes
