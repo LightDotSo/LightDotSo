@@ -1,5 +1,15 @@
 # @lightdotso/sdk
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/wagmi@3.1.8
+  - @lightdotso/const@3.1.7
+  - @lightdotso/schemas@3.1.7
+  - @lightdotso/types@0.0.7
+
 ## 0.0.2
 
 ### Patch Changes

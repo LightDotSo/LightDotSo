@@ -1,5 +1,28 @@
 # @lightdotso/web
 
+## 3.2.8
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/query-keys@0.1.8
+  - @lightdotso/templates@0.0.8
+  - @lightdotso/services@0.0.9
+  - @lightdotso/states@0.0.8
+  - @lightdotso/tables@0.1.8
+  - @lightdotso/query@0.1.8
+  - @lightdotso/nuqs@0.0.8
+  - @lightdotso/ui@3.1.8
+  - @lightdotso/client@3.1.8
+  - @lightdotso/data@0.1.7
+  - @lightdotso/kysely@3.1.6
+  - @lightdotso/prisma@3.1.6
+  - @lightdotso/params@0.1.8
+  - @lightdotso/stores@0.1.8
+  - @lightdotso/types@0.0.7
+  - @lightdotso/utils@3.1.8
+  - @lightdotso/validators@0.0.6
+
 ## 3.2.7
 
 ### Patch Changes
