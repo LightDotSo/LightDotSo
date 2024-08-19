@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
@@ -23,7 +21,6 @@ import { TokensList } from "@/components/token/tokens-list";
 import { TransactionsList } from "@/components/transaction/transactions-list";
 import { OverviewSubCategory, TITLES } from "@/const";
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
-import { useIsDemoPathname } from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -41,19 +38,17 @@ const initialItems = Object.keys(TITLES.Overview.subcategories).filter(
 
 export type OverviewListProps = {
   address: Address;
+  isDemo?: boolean;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewList: FC<OverviewListProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isDemo = useIsDemoPathname();
-
+export const OverviewList: FC<OverviewListProps> = ({
+  address,
+  isDemo = false,
+}) => {
   // ---------------------------------------------------------------------------
   // Component Mapping
   // ---------------------------------------------------------------------------

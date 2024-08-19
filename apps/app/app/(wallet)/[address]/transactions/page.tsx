@@ -26,7 +26,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
+  params: { address: string; isDemo?: boolean };
 };
 
 // -----------------------------------------------------------------------------
@@ -121,7 +121,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OverviewList address={params.address as Address} />
+      <OverviewList
+        address={params.address as Address}
+        isDemo={params.isDemo}
+      />
     </HydrationBoundary>
   );
 }
