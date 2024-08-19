@@ -14,7 +14,10 @@
 
 import { verifyUserId } from "@/auth";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getActivities, getActivitiesCount } from "@lightdotso/services";
+import {
+  getCachedActivities,
+  getCachedActivitiesCount,
+} from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -56,14 +59,14 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const activitiesPromise = getActivities({
+  const activitiesPromise = getCachedActivities({
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
 
-  const activitiesCountPromise = getActivitiesCount({
+  const activitiesCountPromise = getCachedActivitiesCount({
     address: params.address as Address,
     user_id: userId,
   });

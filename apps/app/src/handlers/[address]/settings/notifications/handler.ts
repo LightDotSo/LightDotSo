@@ -14,7 +14,7 @@
 
 import { verifyUserId } from "@/auth";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
-import { getWalletNotificationSettings } from "@lightdotso/services";
+import { getCachedWalletNotificationSettings } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -45,7 +45,7 @@ export const handler = async (params: { address: string }) => {
 
   const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const walletNotificationsPromise = getWalletNotificationSettings({
+  const walletNotificationsPromise = getCachedWalletNotificationSettings({
     address: params.address as Address,
     user_id: userId,
   });

@@ -17,7 +17,7 @@ import {
   getWallets as getClientWallets,
 } from "@lightdotso/client";
 import type { WalletListParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -54,4 +54,4 @@ export const getWallets = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedWallets = unstable_cache(getWallets);
+export const getCachedWallets = cache(getWallets);

@@ -17,7 +17,7 @@ import {
   getUserOperationMerkle as getClientUserOperationMerkle,
 } from "@lightdotso/client";
 import type { UserOperationMerkleGetParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,6 +48,4 @@ export const getUserOperationMerkle = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedUserOperationMerkle = unstable_cache(
-  getUserOperationMerkle,
-);
+export const getCachedUserOperationMerkle = cache(getUserOperationMerkle);

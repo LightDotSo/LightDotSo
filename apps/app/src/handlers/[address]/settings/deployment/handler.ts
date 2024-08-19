@@ -14,8 +14,8 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import {
-  getUserOperations,
-  getUserOperationsCount,
+  getCachedUserOperations,
+  getCachedUserOperationsCount,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -41,7 +41,7 @@ export const handler = async (params: { address: string }) => {
 
   const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const userOperationsPromise = getUserOperations({
+  const userOperationsPromise = getCachedUserOperations({
     address: params.address as Address,
     status: "history",
     order: "asc",
@@ -50,7 +50,7 @@ export const handler = async (params: { address: string }) => {
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const userOperationsCountPromise = getUserOperationsCount({
+  const userOperationsCountPromise = getCachedUserOperationsCount({
     address: params.address as Address,
     status: "history",
     is_testnet: walletSettings.is_enabled_testnet,

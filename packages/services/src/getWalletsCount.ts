@@ -17,7 +17,7 @@ import {
   getWalletsCount as getClientWalletsCount,
 } from "@lightdotso/client";
 import type { WalletListCountParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -52,4 +52,4 @@ export const getWalletsCount = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedWalletsCount = unstable_cache(getWalletsCount);
+export const getCachedWalletsCount = cache(getWalletsCount);

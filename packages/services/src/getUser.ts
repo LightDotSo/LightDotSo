@@ -17,7 +17,7 @@ import {
   getUser as getClientUser,
 } from "@lightdotso/client";
 import type { UserParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -43,4 +43,4 @@ export const getUser = async (params: UserParams): GetUserResponse => {
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedUser = unstable_cache(getUser);
+export const getCachedUser = cache(getUser);

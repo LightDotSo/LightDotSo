@@ -15,11 +15,11 @@
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import {
-  getNftValuation,
-  getNfts,
-  getPortfolio,
-  getTokens,
-  getTransactions,
+  getCachedNftValuation,
+  getCachedNfts,
+  getCachedPortfolio,
+  getCachedTokens,
+  getCachedTransactions,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
@@ -44,7 +44,7 @@ export const handler = async (params: { address: string }) => {
 
   const { walletSettings } = await addressHandler(params);
 
-  const tokensPromise = getTokens({
+  const tokensPromise = getCachedTokens({
     address: params.address as Address,
     offset: 0,
     limit: OVERVIEW_ROW_COUNT,
@@ -53,20 +53,22 @@ export const handler = async (params: { address: string }) => {
     chain_ids: null,
   });
 
-  const portfolioPromise = getPortfolio({ address: params.address as Address });
+  const portfolioPromise = getCachedPortfolio({
+    address: params.address as Address,
+  });
 
-  const nftsPromise = getNfts({
+  const nftsPromise = getCachedNfts({
     address: params.address as Address,
     limit: SIMPLEHASH_MAX_COUNT,
     is_testnet: walletSettings.is_enabled_testnet,
     cursor: null,
   });
 
-  const nftValuationPromise = getNftValuation({
+  const nftValuationPromise = getCachedNftValuation({
     address: params.address as Address,
   });
 
-  const transactionsPromise = getTransactions({
+  const transactionsPromise = getCachedTransactions({
     address: params.address as Address,
     offset: 0,
     limit: OVERVIEW_ROW_COUNT,

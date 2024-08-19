@@ -17,7 +17,7 @@ import {
   getActivities as getClientActivities,
 } from "@lightdotso/client";
 import type { ActivityListParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -54,4 +54,4 @@ export const getActivities = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedActivities = unstable_cache(getActivities);
+export const getCachedActivities = cache(getActivities);

@@ -15,9 +15,9 @@
 import { verifyUserId } from "@/auth";
 import { addressParser, paginationParser } from "@lightdotso/nuqs";
 import {
-  getNotifications,
-  getNotificationsCount,
-  getUser,
+  getCachedNotifications,
+  getCachedNotificationsCount,
+  getCachedUser,
 } from "@lightdotso/services";
 import { Result } from "neverthrow";
 
@@ -49,19 +49,19 @@ export const handler = async (searchParams: {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const userPromise = getUser({
+  const userPromise = getCachedUser({
     address: undefined,
     user_id: userId,
   });
 
-  const notificationsPromise = getNotifications({
+  const notificationsPromise = getCachedNotifications({
     address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
 
-  const notificationsCountPromise = getNotificationsCount({
+  const notificationsCountPromise = getCachedNotificationsCount({
     address: null,
     user_id: userId,
   });

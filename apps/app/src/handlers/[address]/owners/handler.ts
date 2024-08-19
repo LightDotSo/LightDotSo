@@ -14,7 +14,7 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getConfiguration } from "@lightdotso/services";
+import { getCachedConfiguration } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
@@ -51,7 +51,9 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const res = await getConfiguration({ address: params.address as Address });
+  const res = await getCachedConfiguration({
+    address: params.address as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Parse

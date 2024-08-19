@@ -17,7 +17,7 @@ import {
   getNftValuation as getClientNftValuation,
 } from "@lightdotso/client";
 import type { NftValuationParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -43,4 +43,4 @@ export const getNftValuation = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedNftValuation = unstable_cache(getNftValuation);
+export const getCachedNftValuation = cache(getNftValuation);

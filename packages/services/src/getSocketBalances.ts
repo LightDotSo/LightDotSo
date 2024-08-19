@@ -17,7 +17,7 @@ import {
   getSocketBalances as getClientSocketBalances,
 } from "@lightdotso/client";
 import type { SocketBalanceParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -52,4 +52,4 @@ export const getSocketBalances = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedSocketBalances = unstable_cache(getSocketBalances);
+export const getCachedSocketBalances = cache(getSocketBalances);

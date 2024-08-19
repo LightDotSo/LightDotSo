@@ -17,7 +17,7 @@ import {
   getTokens as getClientTokens,
 } from "@lightdotso/client";
 import type { TokenListParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -55,4 +55,4 @@ export const getTokens = async (params: TokenListParams): GetTokensResponse => {
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedTokens = unstable_cache(getTokens);
+export const getCachedTokens = cache(getTokens);

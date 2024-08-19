@@ -17,7 +17,7 @@ import {
   getUserOperations as getClientUserOperations,
 } from "@lightdotso/client";
 import type { UserOperationListParams } from "@lightdotso/params";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -56,4 +56,4 @@ export const getUserOperations = async (
 // Cache
 // -----------------------------------------------------------------------------
 
-export const getCachedUserOperations = unstable_cache(getUserOperations);
+export const getCachedUserOperations = cache(getUserOperations);

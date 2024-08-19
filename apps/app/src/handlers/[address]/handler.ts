@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {
+  getCachedConfiguration,
   getCachedWallet,
-  getConfiguration,
-  getWalletSettings,
+  getCachedWalletSettings,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -41,11 +41,11 @@ export const handler = async (params: { address: string }) => {
 
   const walletPromise = getCachedWallet({ address: params.address as Address });
 
-  const configPromise = getConfiguration({
+  const configPromise = getCachedConfiguration({
     address: params.address as Address,
   });
 
-  const walletSettingsPromise = getWalletSettings({
+  const walletSettingsPromise = getCachedWalletSettings({
     address: params.address as Address,
   });
 

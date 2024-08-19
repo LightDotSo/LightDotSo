@@ -16,7 +16,7 @@ import { handler as rootPreloader } from "@/handlers/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { getCachedWallet, getConfiguration } from "@lightdotso/services";
+import { getCachedConfiguration, getCachedWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -66,7 +66,7 @@ export const handler = async (searchParams: {
     address: searchParams.address as Address,
   });
 
-  const configurationPromise = getConfiguration({
+  const configurationPromise = getCachedConfiguration({
     address: searchParams.address as Address,
     checkpoint: 0,
   });

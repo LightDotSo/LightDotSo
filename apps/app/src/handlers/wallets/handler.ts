@@ -14,7 +14,11 @@
 
 import { verifyUserId } from "@/auth";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getUser, getWallets, getWalletsCount } from "@lightdotso/services";
+import {
+  getCachedUser,
+  getCachedWallets,
+  getCachedWalletsCount,
+} from "@lightdotso/services";
 import { Result } from "neverthrow";
 
 // -----------------------------------------------------------------------------
@@ -40,19 +44,19 @@ export const handler = async (searchParams: { pagination?: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const userPromise = getUser({
+  const userPromise = getCachedUser({
     address: undefined,
     user_id: userId,
   });
 
-  const walletsPromise = getWallets({
+  const walletsPromise = getCachedWallets({
     address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
 
-  const walletsCountPromise = getWalletsCount({
+  const walletsCountPromise = getCachedWalletsCount({
     address: null,
     user_id: userId,
   });
