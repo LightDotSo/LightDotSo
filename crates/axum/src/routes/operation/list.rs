@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    result::AppJsonResult,
-    routes::{
-        configuration_operation::types::ConfigurationOperation,
-        user_operation::types::UserOperation,
-    },
-    state::AppState,
-};
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use const_hex::hex;
-use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{
-    chrono::{DateTime, FixedOffset},
-    raw,
+use lightdotso_prisma::{
+    configuration_operation,
+    configuration_operation::WhereParam as ConfigurationOperationWhereParam, user_operation,
+    user_operation::WhereParam as UserOperationWhereParam, ConfigurationOperationStatus,
+    UserOperationStatus,
 };
+use lightdotso_tracing::tracing::info;
+use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -44,20 +39,56 @@ use super::types::Operation;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
+    /// The offset of the first operation to return.
     pub offset: Option<i64>,
+    /// The maximum number of operations to return.
     pub limit: Option<i64>,
+    /// The address to filter by.
     pub address: Option<String>,
+    /// The chain id to filter by.
     pub chain_id: Option<i64>,
-    pub status: Option<String>,
+    /// The status to filter by.
+    #[param(inline)]
+    pub status: Option<ListQueryStatus>,
+    /// The direction to order by.
+    #[param(inline)]
+    pub order: Option<ListQueryOrder>,
+    /// The flag to indicate if the operation is a testnet operation.
     pub is_testnet: Option<bool>,
+}
+
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum ListQueryOrder {
+    Asc,
+    Desc,
+}
+
+#[derive(Clone, Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum ListQueryStatus {
+    // Custom status
+    Queued,
+    History,
+    // User operation status
+    Proposed,
+    Pending,
+    Reverted,
+    Executed,
+    Invalid,
+    // Configuration operation status
+    Confirmed,
+    Rejected,
 }
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
+/// Count of list of operations.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub struct OperationListCount {
+pub(crate) struct OperationListCount {
+    /// The count of the list of operations.
     pub count: i64,
 }
 
@@ -84,70 +115,74 @@ pub(crate) async fn v1_operation_list_handler(
     let Query(query) = list_query;
 
     info!("List operations: {:?}", query);
+    let limit = query.limit.unwrap_or(10) as usize;
 
-    let address_condition = query
-        .address
-        .as_ref()
-        .map(|addr| {
-            format!(
-                "AND (UserOperation.sender = '{}' OR ConfigurationOperation.address = '{}')",
-                addr, addr
-            )
-        })
-        .unwrap_or_default();
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
 
-    let chain_id_condition =
-        query.chain_id.map(|id| format!("AND UserOperation.chainId = {}", id)).unwrap_or_default();
+    // Construct the queries.
+    let user_op_params = construct_user_operation_list_query_params(&query);
+    let config_op_params = construct_configuration_operation_list_query_params(&query);
 
-    let status_condition = query
-        .status
-        .as_ref()
-        .map(|status| {
-            format!(
-                "AND (UserOperation.status = '{}' OR ConfigurationOperation.status = '{}')",
-                status, status
-            )
-        })
-        .unwrap_or_default();
+    // Parse the order from the pagination query.
+    let order = match query.order {
+        Some(ListQueryOrder::Asc) => Direction::Asc,
+        Some(ListQueryOrder::Desc) => Direction::Desc,
+        None => Direction::Asc,
+    };
 
-    let is_testnet_condition = query
-        .is_testnet
-        .map(|is_testnet| {
-            format!("AND UserOperation.isTestnet = {}", if is_testnet { 1 } else { 0 })
-        })
-        .unwrap_or_default();
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
-    let sql = format!(
-        "SELECT 'UserOperation' as operation_type, UserOperation.*
-         FROM UserOperation
-         WHERE 1=1 {} {} {} {}
-         UNION ALL
-         SELECT 'ConfigurationOperation' as operation_type, ConfigurationOperation.*
-         FROM ConfigurationOperation
-         WHERE 1=1 {}
-         ORDER BY created_at DESC
-         LIMIT {} OFFSET {}",
-        address_condition,
-        chain_id_condition,
-        status_condition,
-        is_testnet_condition,
-        address_condition,
-        query.limit.unwrap_or(10),
-        query.offset.unwrap_or(0)
-    );
+    // Get the user operations from the database.
+    let user_operations = state
+        .client
+        .user_operation()
+        .find_many(user_op_params)
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
+        .order_by(user_operation::created_at::order(order.clone()))
+        .exec()
+        .await?;
 
-    let result: Vec<OperationQueryReturnResult> =
-        state.client._query_raw(raw!(&sql)).exec().await?;
+    // Get the configuration operations from the database.
+    let configuration_operations = state
+        .client
+        .configuration_operation()
+        .find_many(config_op_params)
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
+        .order_by(configuration_operation::created_at::order(order))
+        .exec()
+        .await?;
 
-    let operations: Vec<Operation> = result
+    // Combine and sort results
+    let mut operations: Vec<Operation> = user_operations
         .into_iter()
-        .map(|op| match op.operation {
-            OperationData::UserOperation(uo) => Operation::UserOperation(uo.into()),
-            OperationData::ConfigurationOperation(co) => {
-                Operation::ConfigurationOperation(co.into())
-            }
-        })
+        .map(|uop| Operation::UserOperation(uop.into()))
+        .chain(
+            configuration_operations
+                .into_iter()
+                .map(|cop| Operation::ConfigurationOperation(cop.into())),
+        )
         .collect();
+
+    operations.sort_by(|a, b| {
+        let a_time = match a {
+            Operation::UserOperation(uo) => uo.clone().created_at,
+            Operation::ConfigurationOperation(co) => co.clone().created_at,
+        };
+        let b_time = match b {
+            Operation::UserOperation(uo) => uo.clone().created_at,
+            Operation::ConfigurationOperation(co) => co.clone().created_at,
+        };
+        b_time.cmp(&a_time)
+    });
+
+    operations.truncate(limit);
+
     Ok(Json::from(operations))
 }
 
@@ -167,171 +202,120 @@ pub(crate) async fn v1_operation_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<OperationListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     let Query(query) = list_query;
 
     info!("Count operations: {:?}", query);
 
-    let address_condition = query
-        .address
-        .as_ref()
-        .map(|addr| {
-            format!(
-                "AND (UserOperation.sender = '{}' OR ConfigurationOperation.address = '{}')",
-                addr, addr
-            )
-        })
-        .unwrap_or_default();
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
 
-    let chain_id_condition =
-        query.chain_id.map(|id| format!("AND UserOperation.chainId = {}", id)).unwrap_or_default();
+    // Construct the queries.
+    let user_op_params = construct_user_operation_list_query_params(&query);
+    let config_op_params = construct_configuration_operation_list_query_params(&query);
 
-    let status_condition = query
-        .status
-        .as_ref()
-        .map(|status| {
-            format!(
-                "AND (UserOperation.status = '{}' OR ConfigurationOperation.status = '{}')",
-                status, status
-            )
-        })
-        .unwrap_or_default();
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
-    let is_testnet_condition = query
-        .is_testnet
-        .map(|is_testnet| {
-            format!("AND UserOperation.isTestnet = {}", if is_testnet { 1 } else { 0 })
-        })
-        .unwrap_or_default();
+    // Get the user operations count from the database.
+    let user_op_count = state.client.user_operation().count(user_op_params).exec().await?;
 
-    let sql = format!(
-        "SELECT COUNT(*) as count FROM (
-            SELECT UserOperation.hash
-            FROM UserOperation
-            WHERE 1=1 {} {} {} {}
-            UNION ALL
-            SELECT ConfigurationOperation.id
-            FROM ConfigurationOperation
-            WHERE 1=1 {}
-        ) as combined",
-        address_condition,
-        chain_id_condition,
-        status_condition,
-        is_testnet_condition,
-        address_condition
-    );
+    // Get the configuration operations count from the database.
+    let config_op_count =
+        state.client.configuration_operation().count(config_op_params).exec().await?;
 
-    let result: Vec<CountQueryResult> = state.client._query_raw(raw!(&sql)).exec().await?;
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
-    let count = result.first().map(|r| r.count).unwrap_or(0);
-
-    Ok(Json::from(OperationListCount { count }))
+    Ok(Json::from(OperationListCount { count: user_op_count + config_op_count }))
 }
-
 // -----------------------------------------------------------------------------
-// Implementations
+// Utils
 // -----------------------------------------------------------------------------
 
-impl From<UserOperationQueryReturnResult> for UserOperation {
-    fn from(uo: UserOperationQueryReturnResult) -> Self {
-        Self {
-            hash: uo.hash,
-            sender: uo.sender,
-            nonce: uo.nonce,
-            init_code: hex::encode(uo.init_code),
-            call_data: hex::encode(uo.call_data),
-            call_gas_limit: uo.call_gas_limit,
-            verification_gas_limit: uo.verification_gas_limit,
-            pre_verification_gas: uo.pre_verification_gas,
-            max_fee_per_gas: uo.max_fee_per_gas,
-            max_priority_fee_per_gas: uo.max_priority_fee_per_gas,
-            paymaster_and_data: hex::encode(uo.paymaster_and_data),
-            chain_id: uo.chain_id,
-            status: uo.status,
-            created_at: uo.created_at.to_rfc3339(),
-            updated_at: uo.updated_at.to_rfc3339(),
-            paymaster: None,
-            paymaster_operation: None,
-            signatures: vec![],
-            transaction: None,
-            interpretation: None,
+/// Constructs a query for user operation.
+fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<UserOperationWhereParam> {
+    let mut query_exp = match &query.address {
+        Some(address) => vec![user_operation::sender::equals(address.to_string())],
+        None => vec![],
+    };
+
+    if let Some(status) = &query.status {
+        match status {
+            ListQueryStatus::Proposed => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Proposed))
+            }
+            ListQueryStatus::Queued => query_exp.push(or![
+                user_operation::status::equals(UserOperationStatus::Pending),
+                user_operation::status::equals(UserOperationStatus::Proposed)
+            ]),
+            ListQueryStatus::History => query_exp.push(or![
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::status::equals(UserOperationStatus::Reverted),
+            ]),
+            ListQueryStatus::Pending => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Pending))
+            }
+            ListQueryStatus::Executed => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Executed))
+            }
+            ListQueryStatus::Reverted => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Reverted))
+            }
+            ListQueryStatus::Invalid => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Invalid))
+            }
+            _ => {} // Other statuses don't apply to user operations
         }
     }
+
+    if let Some(chain_id) = &query.chain_id {
+        query_exp.push(user_operation::chain_id::equals(*chain_id));
+    }
+
+    match &query.is_testnet {
+        Some(false) | None => query_exp.push(user_operation::is_testnet::equals(false)),
+        _ => (),
+    }
+
+    query_exp
 }
 
-impl From<ConfigurationOperationQueryReturnResult> for ConfigurationOperation {
-    fn from(co: ConfigurationOperationQueryReturnResult) -> Self {
-        Self {
-            id: co.id,
-            checkpoint: co.checkpoint,
-            image_hash: co.image_hash,
-            threshold: co.threshold,
-            status: co.status,
+/// Constructs a query for configuration operation.
+fn construct_configuration_operation_list_query_params(
+    query: &ListQuery,
+) -> Vec<ConfigurationOperationWhereParam> {
+    let mut query_exp = match &query.address {
+        Some(address) => vec![configuration_operation::address::equals(address.to_string())],
+        None => vec![],
+    };
+
+    if let Some(status) = &query.status {
+        match status {
+            ListQueryStatus::Proposed => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Proposed,
+            )),
+            ListQueryStatus::Pending => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Pending,
+            )),
+            ListQueryStatus::Confirmed => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Confirmed,
+            )),
+            ListQueryStatus::Rejected => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Rejected,
+            )),
+            ListQueryStatus::Invalid => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Invalid,
+            )),
+            _ => {} // Other statuses don't apply to configuration operations
         }
     }
-}
 
-// -----------------------------------------------------------------------------
-// Query Result Types
-// -----------------------------------------------------------------------------
-
-#[derive(Debug, Deserialize)]
-pub struct OperationQueryReturnResult {
-    pub operation_type: String,
-    #[serde(flatten)]
-    pub operation: OperationData,
-}
-
-#[allow(clippy::large_enum_variant)]
-#[derive(Debug, Deserialize)]
-#[serde(untagged)]
-pub enum OperationData {
-    UserOperation(UserOperationQueryReturnResult),
-    ConfigurationOperation(ConfigurationOperationQueryReturnResult),
-}
-
-#[derive(Debug, Deserialize)]
-pub struct UserOperationQueryReturnResult {
-    pub hash: String,
-    pub sender: String,
-    pub nonce: i64,
-    pub init_code: Vec<u8>,
-    pub call_data: Vec<u8>,
-    pub call_gas_limit: i64,
-    pub verification_gas_limit: i64,
-    pub pre_verification_gas: i64,
-    pub max_fee_per_gas: i64,
-    pub max_priority_fee_per_gas: i64,
-    pub paymaster_and_data: Vec<u8>,
-    pub signature: Option<Vec<u8>>,
-    pub chain_id: i64,
-    pub transaction_hash: Option<String>,
-    pub status: String,
-    pub entry_point: String,
-    pub paymaster_id: Option<String>,
-    pub is_testnet: bool,
-    pub paymaster_operation_id: Option<String>,
-    pub created_at: DateTime<FixedOffset>,
-    pub updated_at: DateTime<FixedOffset>,
-    pub activity_id: Option<String>,
-    pub metadata_id: Option<String>,
-    pub interpretation_id: Option<String>,
-    pub user_operation_merkle_root: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ConfigurationOperationQueryReturnResult {
-    pub id: String,
-    pub created_at: DateTime<FixedOffset>,
-    pub updated_at: DateTime<FixedOffset>,
-    pub address: String,
-    pub checkpoint: i64,
-    pub image_hash: String,
-    pub threshold: i64,
-    pub status: String,
-    pub configuration_id: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-struct CountQueryResult {
-    pub count: i64,
+    query_exp
 }

@@ -34,6 +34,10 @@ pub(crate) struct ConfigurationOperation {
     pub threshold: i64,
     /// The status of the configuration operation.
     pub status: String,
+    /// The timestamp of the user operation.
+    pub created_at: String,
+    /// The timestamp updated of the user operation.
+    pub updated_at: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -49,6 +53,8 @@ impl From<configuration_operation::Data> for ConfigurationOperation {
             checkpoint: configuration_operation.checkpoint,
             threshold: configuration_operation.threshold,
             status: configuration_operation.status.to_string(),
+            created_at: configuration_operation.created_at.to_rfc3339(),
+            updated_at: configuration_operation.updated_at.to_rfc3339(),
         }
     }
 }

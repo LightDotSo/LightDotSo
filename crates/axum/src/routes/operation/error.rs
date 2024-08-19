@@ -12,26 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub(crate) mod error;
-pub(crate) mod list;
-pub(crate) mod types;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{routing::get, Router};
-
-pub(crate) use list::{
-    __path_v1_operation_list_count_handler, __path_v1_operation_list_handler,
-    v1_operation_list_count_handler, v1_operation_list_handler,
-};
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Error
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/operation/list", get(v1_operation_list_handler))
-        .route("/operation/list/count", get(v1_operation_list_count_handler))
+/// Operation operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum OperationError {
+    /// Operation query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Operation not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }

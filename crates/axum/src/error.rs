@@ -22,11 +22,11 @@ use crate::routes::{
     feedback::error::FeedbackError, interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError,
-    notification_settings::error::NotificationSettingsError, owner::error::OwnerError,
-    paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::error::PortfolioError, protocol::error::ProtocolError,
-    protocol_group::error::ProtocolGroupError, queue::error::QueueError,
-    signature::error::SignatureError, simulation::error::SimulationError,
+    notification_settings::error::NotificationSettingsError, operation::error::OperationError,
+    owner::error::OwnerError, paymaster::error::PaymasterError,
+    paymaster_operation::error::PaymasterOperationError, portfolio::error::PortfolioError,
+    protocol::error::ProtocolError, protocol_group::error::ProtocolGroupError,
+    queue::error::QueueError, signature::error::SignatureError, simulation::error::SimulationError,
     support_request::error::SupportRequestError, token::error::TokenError,
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
@@ -60,6 +60,7 @@ pub(crate) enum RouteError {
     InviteCodeError(InviteCodeError),
     NotificationError(NotificationError),
     NotificationSettingsError(NotificationSettingsError),
+    OperationError(OperationError),
     OwnerError(OwnerError),
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
@@ -250,6 +251,15 @@ impl RouteErrorStatusCodeAndMsg for NotificationSettingsError {
                 (StatusCode::BAD_REQUEST, msg.to_string())
             }
             NotificationSettingsError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for OperationError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            OperationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            OperationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -524,6 +534,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::InviteCodeError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationSettingsError(err) => err.error_status_code_and_msg(),
+            RouteError::OperationError(err) => err.error_status_code_and_msg(),
             RouteError::OwnerError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),
