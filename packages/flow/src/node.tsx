@@ -12,6 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Copyright 2024 Supabase
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// From: https://github.com/supabase-community/postgres-new/blob/24a181d78cd92bb5fee87e98945860dc7a31bc4a/apps/postgres-new/components/schema/table-node.tsx
+// License: Apache-2.0
+
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, m } from "framer-motion";
 import { DiamondIcon, Fingerprint, Hash, Key, Table2 } from "lucide-react";
