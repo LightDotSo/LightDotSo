@@ -7,3 +7,5 @@ ignores:
   - react-dom
   - "@types/react-dom"
   - react-is
+  - next
+  
