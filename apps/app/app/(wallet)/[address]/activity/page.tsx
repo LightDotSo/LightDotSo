@@ -19,6 +19,7 @@ import { preloader } from "@/preloaders/[address]/activity/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -37,6 +38,12 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
+
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
