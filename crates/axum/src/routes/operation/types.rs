@@ -24,7 +24,7 @@ use utoipa::ToSchema;
 
 /// Operation root type.
 #[derive(Serialize, Deserialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
+#[serde(tag = "type", content = "data")]
 pub enum Operation {
     UserOperation(UserOperation),
     ConfigurationOperation(ConfigurationOperation),

@@ -19,10 +19,11 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
-    configuration_operation,
-    configuration_operation::WhereParam as ConfigurationOperationWhereParam, user_operation,
-    user_operation::WhereParam as UserOperationWhereParam, ConfigurationOperationStatus,
-    UserOperationStatus,
+    asset_change,
+    configuration_operation::{self, WhereParam as ConfigurationOperationWhereParam},
+    interpretation, interpretation_action,
+    user_operation::{self, WhereParam as UserOperationWhereParam},
+    ConfigurationOperationStatus, UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
@@ -136,6 +137,13 @@ pub(crate) async fn v1_operation_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the interpretation action params.
+    let mut interpretaion_action_params = vec![];
+    if let Some(addr) = &query.address {
+        interpretaion_action_params
+            .push(or![interpretation_action::address::equals(addr.clone()),]);
+    }
+
     // Get the user operations from the database.
     let user_operations = state
         .client
@@ -143,6 +151,19 @@ pub(crate) async fn v1_operation_list_handler(
         .find_many(user_op_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
+        .with(user_operation::paymaster::fetch())
+        .with(user_operation::paymaster_operation::fetch())
+        .with(user_operation::transaction::fetch())
+        .with(user_operation::signatures::fetch(vec![]))
+        .with(
+            user_operation::interpretation::fetch()
+                .with(interpretation::actions::fetch(interpretaion_action_params))
+                .with(
+                    interpretation::asset_changes::fetch(vec![])
+                        .with(asset_change::interpretation_action::fetch())
+                        .with(asset_change::token::fetch()),
+                ),
+        )
         .order_by(user_operation::created_at::order(order.clone()))
         .exec()
         .await?;
