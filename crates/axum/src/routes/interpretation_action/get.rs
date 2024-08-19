@@ -70,7 +70,7 @@ pub(crate) async fn v1_interpretation_action_get_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpreation action from the database.
+    // Get the interpretation action from the database.
     let interpretation_action = state
         .client
         .interpretation_action()

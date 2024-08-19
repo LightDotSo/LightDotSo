@@ -148,9 +148,9 @@ pub async fn upsert_interpretation_with_actions(
     info!(?asset_tokens);
 
     // Get the corresponding interpretation actions
-    let mut interpration_action_params = vec![];
+    let mut interpretation_action_params = vec![];
     res.clone().actions.into_iter().for_each(|action| {
-        interpration_action_params.push(interpretation_action::action_address(
+        interpretation_action_params.push(interpretation_action::action_address(
             action.action_type.to_string(),
             if action.address.is_some() {
                 to_checksum(&action.address.unwrap(), None)
@@ -161,9 +161,9 @@ pub async fn upsert_interpretation_with_actions(
     });
     // Find all the matching interpretation actions
     let mut interpretation_actions = vec![];
-    for interpration_action_param in interpration_action_params {
+    for interpretation_action_param in interpretation_action_params {
         let interpretation_action =
-            db.interpretation_action().find_unique(interpration_action_param).exec().await?;
+            db.interpretation_action().find_unique(interpretation_action_param).exec().await?;
         info!(?interpretation_action);
         // Push the interpretation action to the list of interpretation actions if not None
         if let Some(interpretation_action) = interpretation_action {

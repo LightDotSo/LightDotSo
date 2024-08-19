@@ -67,8 +67,6 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PostQuery {
     /// The address of the wallet.
     pub address: String,
-    /// Whether to simulate the configuration operation.
-    pub simulate: Option<bool>,
 }
 
 // -----------------------------------------------------------------------------
@@ -279,21 +277,6 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         hash_image_bytes32(&image_hash)?,
     )?;
     info!("subdigest: {}", subdigest.to_vec().to_hex_string());
-
-    // -------------------------------------------------------------------------
-    // Return
-    // -------------------------------------------------------------------------
-
-    // If the simulate flag is set, return the wallet address.
-    if query.simulate.unwrap_or(false) {
-        return Ok(Json::from(ConfigurationOperation {
-            id: "0".to_string(),
-            image_hash: format!("{:?}", image_hash_bytes),
-            checkpoint: configuration.checkpoint + 1,
-            threshold: params.threshold as i64,
-            status: "SIMULATED".to_string(),
-        }));
-    }
 
     // -------------------------------------------------------------------------
     // DB

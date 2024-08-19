@@ -12,21 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{result::AppJsonResult, routes::user_operation::types::UserOperation, state::AppState};
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::{
-    asset_change, interpretation, interpretation_action,
-    user_operation::{self, WhereParam},
-    UserOperationStatus,
+    asset_change,
+    configuration_operation::{self, WhereParam as ConfigurationOperationWhereParam},
+    interpretation, interpretation_action,
+    user_operation::{self, WhereParam as UserOperationWhereParam},
+    ConfigurationOperationStatus, UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
+
+use super::types::Operation;
 
 // -----------------------------------------------------------------------------
 // Query
@@ -36,11 +40,11 @@ use utoipa::{IntoParams, ToSchema};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    /// The offset of the first user operation to return.
+    /// The offset of the first operation to return.
     pub offset: Option<i64>,
-    /// The maximum number of user operations to return.
+    /// The maximum number of operations to return.
     pub limit: Option<i64>,
-    /// The sender address to filter by.
+    /// The address to filter by.
     pub address: Option<String>,
     /// The chain id to filter by.
     pub chain_id: Option<i64>,
@@ -48,10 +52,9 @@ pub struct ListQuery {
     #[param(inline)]
     pub status: Option<ListQueryStatus>,
     /// The direction to order by.
-    /// Default is `asc`.
     #[param(inline)]
     pub order: Option<ListQueryOrder>,
-    /// The flag to indicate if the operation is a testnet user operation.
+    /// The flag to indicate if the operation is a testnet operation.
     pub is_testnet: Option<bool>,
 }
 
@@ -74,16 +77,19 @@ pub enum ListQueryStatus {
     Reverted,
     Executed,
     Invalid,
+    // Configuration operation status
+    Confirmed,
+    Rejected,
 }
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-/// Count of list of user operations.
+/// Count of list of operations.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct UserOperationListCount {
-    /// The count of the list of user operations..
+pub(crate) struct OperationListCount {
+    /// The count of the list of operations.
     pub count: i64,
 }
 
@@ -91,37 +97,34 @@ pub(crate) struct UserOperationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of user operations
 #[utoipa::path(
-        get,
-        path = "/user_operation/list",
-        params(
-            ListQuery
-        ),
-        responses(
-            (status = 200, description = "User operations returned successfully", body = [UserOperation]),
-            (status = 500, description = "User operation bad request", body = UserOperationError),
-        )
-    )]
+    get,
+    path = "/operation/list",
+    params(
+        ListQuery
+    ),
+    responses(
+        (status = 200, description = "Operations returned successfully", body = [Operation]),
+        (status = 500, description = "Operation bad request", body = OperationError),
+    )
+)]
 #[autometrics]
-pub(crate) async fn v1_user_operation_list_handler(
+pub(crate) async fn v1_operation_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<UserOperation>> {
-    // -------------------------------------------------------------------------
-    // Parse
-    // -------------------------------------------------------------------------
-
-    // Get the list query.
+) -> AppJsonResult<Vec<Operation>> {
     let Query(query) = list_query;
-    info!(?query);
+
+    info!("List operations: {:?}", query);
+    let limit = query.limit.unwrap_or(10) as usize;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
-    // Construct the query.
-    let query_params = construct_user_operation_list_query_params(&query);
+    // Construct the queries.
+    let user_op_params = construct_user_operation_list_query_params(&query);
+    let config_op_params = construct_configuration_operation_list_query_params(&query);
 
     // Parse the order from the pagination query.
     let order = match query.order {
@@ -145,10 +148,9 @@ pub(crate) async fn v1_user_operation_list_handler(
     let user_operations = state
         .client
         .user_operation()
-        .find_many(query_params)
+        .find_many(user_op_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
-        .order_by(user_operation::created_at::order(order))
         .with(user_operation::paymaster::fetch())
         .with(user_operation::paymaster_operation::fetch())
         .with(user_operation::transaction::fetch())
@@ -162,72 +164,104 @@ pub(crate) async fn v1_user_operation_list_handler(
                         .with(asset_change::token::fetch()),
                 ),
         )
+        .order_by(user_operation::created_at::order(order.clone()))
         .exec()
         .await?;
 
-    // -------------------------------------------------------------------------
-    // Return
-    // -------------------------------------------------------------------------
+    // Get the configuration operations from the database.
+    let configuration_operations = state
+        .client
+        .configuration_operation()
+        .find_many(config_op_params)
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
+        .order_by(configuration_operation::created_at::order(order))
+        .exec()
+        .await?;
 
-    // Change the user operations to the format that the API expects.
-    let user_operations: Vec<UserOperation> =
-        user_operations.into_iter().map(UserOperation::from).collect();
+    // Combine and sort results
+    let mut operations: Vec<Operation> = user_operations
+        .into_iter()
+        .map(|uop| Operation::UserOperation(uop.into()))
+        .chain(
+            configuration_operations
+                .into_iter()
+                .map(|cop| Operation::ConfigurationOperation(cop.into())),
+        )
+        .collect();
 
-    Ok(Json::from(user_operations))
+    operations.sort_by(|a, b| {
+        let a_time = match a {
+            Operation::UserOperation(uo) => uo.clone().created_at,
+            Operation::ConfigurationOperation(co) => co.clone().created_at,
+        };
+        let b_time = match b {
+            Operation::UserOperation(uo) => uo.clone().created_at,
+            Operation::ConfigurationOperation(co) => co.clone().created_at,
+        };
+        b_time.cmp(&a_time)
+    });
+
+    operations.truncate(limit);
+
+    Ok(Json::from(operations))
 }
 
-/// Returns a count of user operations
 #[utoipa::path(
-        get,
-        path = "/user_operation/list/count",
-        params(
-            ListQuery
-        ),
-        responses(
-            (status = 200, description = "User operation count returned successfully", body = UserOperationListCount),
-            (status = 500, description = "User operation count bad request", body = UserOperationError),
-        )
-    )]
+    get,
+    path = "/operation/list/count",
+    params(
+        ListQuery
+    ),
+    responses(
+        (status = 200, description = "Operation count returned successfully", body = OperationListCount),
+        (status = 500, description = "Operation count bad request", body = OperationError),
+    )
+)]
 #[autometrics]
-pub(crate) async fn v1_user_operation_list_count_handler(
+pub(crate) async fn v1_operation_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<UserOperationListCount> {
+) -> AppJsonResult<OperationListCount> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the list query.
     let Query(query) = list_query;
-    info!(?query);
+
+    info!("Count operations: {:?}", query);
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
-    // Construct the query.
-    let query_params = construct_user_operation_list_query_params(&query);
+    // Construct the queries.
+    let user_op_params = construct_user_operation_list_query_params(&query);
+    let config_op_params = construct_configuration_operation_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the user operations from the database.
-    let count = state.client.user_operation().count(query_params).exec().await?;
+    // Get the user operations count from the database.
+    let user_op_count = state.client.user_operation().count(user_op_params).exec().await?;
+
+    // Get the configuration operations count from the database.
+    let config_op_count =
+        state.client.configuration_operation().count(config_op_params).exec().await?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    Ok(Json::from(UserOperationListCount { count }))
+    Ok(Json::from(OperationListCount { count: user_op_count + config_op_count }))
 }
-
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
 
 /// Constructs a query for user operation.
-fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<UserOperationWhereParam> {
     let mut query_exp = match &query.address {
         Some(address) => vec![user_operation::sender::equals(address.to_string())],
         None => vec![],
@@ -258,18 +292,50 @@ fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WherePar
             ListQueryStatus::Invalid => {
                 query_exp.push(user_operation::status::equals(UserOperationStatus::Invalid))
             }
+            _ => {} // Other statuses don't apply to user operations
         }
     }
 
     if let Some(chain_id) = &query.chain_id {
         query_exp.push(user_operation::chain_id::equals(*chain_id));
-
-        return query_exp;
     }
 
     match &query.is_testnet {
         Some(false) | None => query_exp.push(user_operation::is_testnet::equals(false)),
         _ => (),
+    }
+
+    query_exp
+}
+
+/// Constructs a query for configuration operation.
+fn construct_configuration_operation_list_query_params(
+    query: &ListQuery,
+) -> Vec<ConfigurationOperationWhereParam> {
+    let mut query_exp = match &query.address {
+        Some(address) => vec![configuration_operation::address::equals(address.to_string())],
+        None => vec![],
+    };
+
+    if let Some(status) = &query.status {
+        match status {
+            ListQueryStatus::Proposed => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Proposed,
+            )),
+            ListQueryStatus::Pending => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Pending,
+            )),
+            ListQueryStatus::Confirmed => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Confirmed,
+            )),
+            ListQueryStatus::Rejected => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Rejected,
+            )),
+            ListQueryStatus::Invalid => query_exp.push(configuration_operation::status::equals(
+                ConfigurationOperationStatus::Invalid,
+            )),
+            _ => {} // Other statuses don't apply to configuration operations
+        }
     }
 
     query_exp

@@ -704,9 +704,7 @@ intepretation
 interation
 Interchain
 internmap
-interpration
-interpreation
-interpretaion
+interpretation
 interpretion
 intial
 Intokens

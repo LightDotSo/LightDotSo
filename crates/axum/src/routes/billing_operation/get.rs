@@ -70,7 +70,7 @@ pub(crate) async fn v1_billing_operation_get_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpreation action from the database.
+    // Get the interpretation action from the database.
     let billing_operation = state
         .client
         .billing_operation()

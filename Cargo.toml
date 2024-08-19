@@ -193,6 +193,7 @@
     rustc-hex = "2.1.0"
     serde = "1.0.183"
     serde_json = "1.0.104"
+    serde_yaml = "0.9"
     spki = "0.7.2"
     strum = "0.25"
     strum_macros = "0.25"

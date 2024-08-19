@@ -10,3 +10,5 @@
 
 [dependencies]
   dagrs = { git = "https://github.com/dagrs-dev/dagrs", rev = "81eb85ccf11604a47f60fa573a07df3d57fa28fb", package = "dagrs" }
+  serde = { workspace = true, features = ["derive"] }
+  serde_yaml = { workspace = true }

@@ -100,10 +100,11 @@ pub(crate) async fn v1_transaction_list_handler(
     // -------------------------------------------------------------------------
 
     // Get the interpretation action params.
-    let mut interpretaion_action_params =
+    let mut interpretation_action_params =
         vec![or![interpretation_action::address::equals("".to_string())]];
     if let Some(addr) = &query.address {
-        interpretaion_action_params.push(or![interpretation_action::address::equals(addr.clone())]);
+        interpretation_action_params
+            .push(or![interpretation_action::address::equals(addr.clone())]);
     }
 
     // Get the transactions from the database.
@@ -114,7 +115,7 @@ pub(crate) async fn v1_transaction_list_handler(
         .order_by(transaction::timestamp::order(Direction::Desc))
         .with(
             transaction::interpretation::fetch()
-                .with(interpretation::actions::fetch(interpretaion_action_params))
+                .with(interpretation::actions::fetch(interpretation_action_params))
                 .with(
                     interpretation::asset_changes::fetch(vec![])
                         .with(asset_change::interpretation_action::fetch())
