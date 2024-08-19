@@ -18,9 +18,7 @@ import type { PostgresTable } from "@gregnr/postgres-meta/base";
 import { useDebouncedValue } from "@lightdotso/hooks";
 import { useQueryUserOperations } from "@lightdotso/query";
 import {} from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
 import { uniqBy } from "lodash";
-import { Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ReactFlow, {
@@ -30,17 +28,27 @@ import ReactFlow, {
   type Edge,
   type Node,
   Position,
+  ReactFlowProvider,
   useReactFlow,
   useStore,
 } from "reactflow";
+import "reactflow/dist/style.css";
 import type { Address } from "viem";
-import { SchemaGraphLegend } from "./legend";
+import { demoPostgresTable, demoUserPostsTable } from "./demo";
 import {
   TABLE_NODE_ROW_HEIGHT,
   TABLE_NODE_WIDTH,
   TableEdge,
   TableNode,
 } from "./node";
+
+export function MerkleGraph() {
+  return (
+    <ReactFlowProvider>
+      <UserOperationMerkleGraph address="0x" />
+    </ReactFlowProvider>
+  );
+}
 
 export function UserOperationMerkleGraph({
   address,
@@ -50,12 +58,7 @@ export function UserOperationMerkleGraph({
   const { resolvedTheme } = useTheme();
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const {
-    userOperations: allUserOperations,
-    userOperationsError,
-    isUserOperationsLoading,
-    isUserOperationsError,
-  } = useQueryUserOperations({
+  const { userOperations: allUserOperations } = useQueryUserOperations({
     address: address,
     order: "asc",
     status: "executed",
@@ -73,11 +76,12 @@ export function UserOperationMerkleGraph({
     [allUserOperations],
   );
 
-  const tables: PostgresTable[] = [];
+  const tables: PostgresTable[] = [demoPostgresTable, demoUserPostsTable];
 
-  const isUserOperationsEmpty = tables && tables.length === 0;
+  const _isUserOperationsEmpty = tables && tables.length === 0;
 
   const reactFlowInstance = useReactFlow<TableNodeData>();
+
   const nodeTypes = useMemo(
     () => ({
       table: TableNode,
@@ -116,10 +120,11 @@ export function UserOperationMerkleGraph({
         }
       });
     }
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   }, [reactFlowInstance, tables, resolvedTheme, fitView, isFirstLoad]);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-md border bg-muted/50">
+    <div className="flex h-[30rem] w-full flex-col overflow-hidden rounded-md border bg-muted/50">
       <ReactFlow
         className=""
         defaultNodes={[]}
@@ -128,8 +133,8 @@ export function UserOperationMerkleGraph({
           type: "smoothstep",
           deletable: false,
           style: {
-            stroke: "hsl(var(--muted-foreground))",
-            strokeWidth: 1,
+            stroke: "hsl(var(--border))",
+            strokeWidth: 12,
             strokeDasharray: 6,
             strokeDashoffset: -12,
             // Manually create animation so that it doesn't interfere with our custom edge component
@@ -145,41 +150,9 @@ export function UserOperationMerkleGraph({
         panOnScrollSpeed={1}
       >
         <ResizeHandler onResize={() => fitView()} />
-        <Background
-          gap={32}
-          className={cn(
-            "bg-muted/5 transition-colors",
-            isUserOperationsLoading ||
-              isUserOperationsError ||
-              isUserOperationsEmpty
-              ? "text-secondary-foreground"
-              : "text-foreground",
-          )}
-          variant={BackgroundVariant.Dots}
-          size={1}
-          color="hsl(var(--muted-foreground)/.5)"
-        />
-        <div className="absolute flex h-full w-full items-center justify-center p-4 text-center font-medium">
-          {isUserOperationsLoading && (
-            <div className="flex items-center gap-4 text-primary/25">
-              <Loader className="animate-spin" size={28} />
-              <p className="text-xl">Loading schema...</p>
-            </div>
-          )}
-          {isUserOperationsError && (
-            <div className="flex gap-2 text-primary/25">
-              <p>Error loading schema from the database:</p>
-              <p>{`${userOperationsError?.message ?? "Unknown error"}`}</p>
-            </div>
-          )}
-          {isUserOperationsEmpty && (
-            <h2 className="w-[500px] font-light text-2xl text-primary/25">
-              Ask AI to create a table
-            </h2>
-          )}
-        </div>
+        <Background gap={32} variant={BackgroundVariant.Dots} size={1} />
         <Controls
-          className="[&.react-flow\_\_controls]:shadow-none [&_button:hover]:bg-background [&_button]:rounded-md [&_button]:border-none [&_button]:bg-border [&_button]:text-blue [&_svg]:fill-current"
+          className="[&.react-flow\_\_controls]:shadow-none [&_button:hover]:bg-background [&_button]:rounded-md [&_button]:border-none [&_button]:bg-border [&_button]:text-text [&_svg]:fill-current"
           showZoom={false}
           showInteractive={false}
           position="top-right"
@@ -188,7 +161,6 @@ export function UserOperationMerkleGraph({
           }}
         />
       </ReactFlow>
-      <SchemaGraphLegend />
     </div>
   );
 }

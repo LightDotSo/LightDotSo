@@ -25,6 +25,7 @@ import {
   type AppRouterInstance,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
 // import { useDarkMode } from "storybook-dark-mode";
+import "reactflow/dist/style.css";
 import "./global.css";
 
 // From: https://raw.githubusercontent.com/bendigiorgio/kiso/9de5ae4b8f9d6cab3210fdd8bbe61a5ff47243c0/src/docs/.storybook/DocContainer.tsx
@@ -91,6 +92,7 @@ const preview: Preview = {
           "component",
           "svg",
           "element",
+          "flow",
           "form",
           "modal",
           "template",

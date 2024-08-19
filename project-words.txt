@@ -527,6 +527,7 @@ finetuning
 firstmost
 fiveoutofnine
 fiveoutofnine's
+fkey
 flatmap
 flexsearch
 Flowbite's
@@ -1132,6 +1133,7 @@ pimlico
 Pimlico
 PIMLICO
 pino
+pkey
 pkgjs
 pkgr
 planetscale

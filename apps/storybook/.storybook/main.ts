@@ -18,6 +18,7 @@ const config: StorybookConfig = {
   stories: [
     "../../../packages/dialogs/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/elements/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../../../packages/flow/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/modals/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/states/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
