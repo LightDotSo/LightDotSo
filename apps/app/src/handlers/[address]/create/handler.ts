@@ -16,7 +16,7 @@ import { handler as addressHandler } from "@/handlers/[address]/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { getConfiguration, getWallet } from "@lightdotso/services";
+import { getCachedWallet, getConfiguration } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -64,7 +64,7 @@ export const handler = async (
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet({ address: params.address as Address });
+  const walletPromise = getCachedWallet({ address: params.address as Address });
 
   const configurationPromise = getConfiguration({
     address: params.address as Address,

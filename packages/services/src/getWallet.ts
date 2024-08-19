@@ -18,6 +18,7 @@ import {
 } from "@lightdotso/client";
 import type { WalletParams } from "@lightdotso/params";
 import "server-only";
+import { unstable_cache } from "next/cache";
 
 // -----------------------------------------------------------------------------
 // Pre
@@ -38,3 +39,9 @@ export const getWallet = async (params: WalletParams): GetWalletResponse => {
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedWallet = unstable_cache(getWallet);

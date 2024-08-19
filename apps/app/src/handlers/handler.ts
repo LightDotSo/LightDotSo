@@ -18,8 +18,8 @@ import type {
   WalletSettingsData,
 } from "@lightdotso/data";
 import {
+  getCachedWallet,
   getConfiguration,
-  getWallet,
   getWalletSettings,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
@@ -61,7 +61,9 @@ export const handler = async (searchParams: {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet({ address: searchParams.address as Address });
+  const walletPromise = getCachedWallet({
+    address: searchParams.address as Address,
+  });
 
   const configPromise = getConfiguration({
     address: searchParams.address as Address,
