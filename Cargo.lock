@@ -5968,6 +5968,8 @@ name = "lightdotso-dag"
 version = "0.1.0"
 dependencies = [
  "dagrs",
+ "serde",
+ "serde_yaml",
 ]
 
 [[package]]
@@ -10589,6 +10591,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_yaml"
+version = "0.9.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1bf28c79a99f70ee1f1d83d10c875d2e70618417fda01ad1785e027579d9d38"
+dependencies = [
+ "indexmap 2.1.0",
+ "itoa 1.0.9",
+ "ryu",
+ "serde",
+ "unsafe-libyaml",
+]
+
+[[package]]
 name = "serenity"
 version = "0.11.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -13108,6 +13123,12 @@ checksum = "382810877fe448991dfc7f0dd6e3ae5d58088fd0ea5e35189655f84e6814fa56"
 dependencies = [
  "void",
 ]
+
+[[package]]
+name = "unsafe-libyaml"
+version = "0.2.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "673aac59facbab8a9007c7f6108d11f63b603f7cabff99fabf650fea5c32b861"
 
 [[package]]
 name = "untrusted"

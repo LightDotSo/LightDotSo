@@ -15,6 +15,8 @@
 #![allow(clippy::unwrap_used)]
 
 use dagrs::{Action, CommandAction, Dag, DagError, Parser, Task};
+use serde::Deserialize;
+use serde_yaml::from_str;
 use std::{
     collections::HashMap,
     fmt::{Display, Formatter},
@@ -22,22 +24,49 @@ use std::{
     sync::Arc,
 };
 
+#[derive(Debug, Deserialize)]
+struct YamlConfig {
+    dag: HashMap<String, TaskInfo>,
+}
+
+#[derive(Debug, Deserialize)]
+struct TaskInfo {
+    name: String,
+    #[serde(default)]
+    after: Vec<String>,
+    #[serde(default)]
+    condition: Option<String>,
+    #[serde(default)]
+    fallback: Option<String>,
+}
+
 struct MyTask {
     tid: (String, usize),
     name: String,
     precursors: Vec<String>,
     precursors_id: Vec<usize>,
     action: Action,
+    condition: Option<String>,
+    fallback: Option<String>,
 }
 
 impl MyTask {
-    pub fn new(txt_id: &str, precursors: Vec<String>, name: String, action: CommandAction) -> Self {
+    pub fn new(
+        txt_id: &str,
+        precursors: Vec<String>,
+        name: String,
+        action: CommandAction,
+        condition: Option<String>,
+        fallback: Option<String>,
+    ) -> Self {
         Self {
             tid: (txt_id.to_owned(), dagrs::alloc_id()),
             name,
             precursors,
             precursors_id: Vec::new(),
             action: Action::Structure(Arc::new(action)),
+            condition,
+            fallback,
         }
     }
 
@@ -71,11 +100,15 @@ impl Task for MyTask {
 
 impl Display for MyTask {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{},{},{},{:?}", self.name, self.tid.0, self.tid.1, self.precursors)
+        write!(
+            f,
+            "{},{},{},{:?},condition:{:?},fallback:{:?}",
+            self.name, self.tid.0, self.tid.1, self.precursors, self.condition, self.fallback
+        )
     }
 }
 
-struct ConfigParser;
+pub struct ConfigParser;
 
 impl ConfigParser {
     fn load_file(&self, file: &str) -> Result<String, DagError> {
@@ -84,20 +117,8 @@ impl ConfigParser {
         Ok(contents)
     }
 
-    fn parse_one(&self, item: String) -> MyTask {
-        let attr: Vec<&str> = item.split(',').collect();
-
-        let pres_item = *attr.get(2).unwrap();
-        let pres = if pres_item.eq("") {
-            Vec::new()
-        } else {
-            pres_item.split(' ').map(|pre| pre.to_string()).collect()
-        };
-
-        let id = *attr.first().unwrap();
-        let name = attr.get(1).unwrap().to_string();
-        let cmd = *attr.get(3).unwrap();
-        MyTask::new(id, pres, name, CommandAction::new(cmd))
+    fn parse_yaml(&self, content: &str) -> Result<YamlConfig, DagError> {
+        from_str(content).map_err(|e| DagError::ParserError(e.to_string()))
     }
 }
 
@@ -110,36 +131,48 @@ impl Parser for ConfigParser {
         let content = self.load_file(file)?;
         self.parse_tasks_from_str(&content, specific_actions)
     }
+
     fn parse_tasks_from_str(
         &self,
         content: &str,
         _specific_actions: HashMap<String, Action>,
     ) -> Result<Vec<Box<dyn Task>>, DagError> {
-        let lines: Vec<String> = content.lines().map(|line| line.to_string()).collect();
+        let config = self.parse_yaml(content)?;
         let mut map = HashMap::new();
         let mut tasks = Vec::new();
-        lines.into_iter().for_each(|line| {
-            let task = self.parse_one(line);
+
+        for (task_id, task_info) in config.dag {
+            let task = MyTask::new(
+                &task_id,
+                task_info.after,
+                task_info.name,
+                CommandAction::new("echo Executing task"),
+                task_info.condition,
+                task_info.fallback,
+            );
             map.insert(task.str_id(), task.id());
             tasks.push(task);
-        });
+        }
 
         for task in tasks.iter_mut() {
             let mut pres = Vec::new();
             let str_pre = task.str_precursors();
             if !str_pre.is_empty() {
                 for pre in str_pre {
-                    pres.push(map[&pre[..]]);
+                    pres.push(*map.get(&pre).ok_or_else(|| {
+                        DagError::ParserError(format!("Dependency {} not found", pre))
+                    })?);
                 }
                 task.init_precursors(pres);
             }
         }
+
         Ok(tasks.into_iter().map(|task| Box::new(task) as Box<dyn Task>).collect())
     }
 }
 
 pub fn main() {
-    let file = "tests/config/custom_file_task.txt";
+    let file = "tasks/sample_dag.yaml";
     let mut dag =
         Dag::with_config_file_and_parser(file, Box::new(ConfigParser), HashMap::new()).unwrap();
     assert!(dag.start().is_ok());
