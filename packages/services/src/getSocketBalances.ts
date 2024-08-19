@@ -36,7 +36,7 @@ export const getSocketBalances = async (
 ): Promise<GetSocketBalancesResponse> => {
   return await getClientSocketBalances(
     {
-      parameters: {
+      params: {
         query: {
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           userAddress: params.address!,

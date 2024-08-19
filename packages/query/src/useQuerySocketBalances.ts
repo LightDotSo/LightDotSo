@@ -57,7 +57,7 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
 
       const res = await getSocketBalances(
         {
-          parameters: {
+          params: {
             query: {
               userAddress: params.address,
             },
