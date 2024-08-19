@@ -41,16 +41,16 @@
     "@tanstack/react-table": "^8.20.1",
     "@tremor/react": "^3.17.4",
     "lucide-react": "^0.428.0",
-    "next": "15.0.0-canary.111",
+    "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
     "recharts": "2.13.0-alpha.4",
-    "viem": "^2.19.6"
+    "viem": "^2.19.7"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"
