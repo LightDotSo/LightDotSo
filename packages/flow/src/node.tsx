@@ -220,7 +220,7 @@ function TableColumn({
               <Key
                 size={16}
                 strokeWidth={2}
-                className={cn("flex-shrink-0", "text-muted-foreground")}
+                className={cn("flex-shrink-0", "text-text")}
               />
             </m.div>
           )}
@@ -271,7 +271,7 @@ function TableColumn({
               <Fingerprint
                 size={16}
                 strokeWidth={2}
-                className="flex-shrink-0 text-muted-foreground"
+                className="flex-shrink-0 text-text"
               />
             </m.div>
           )}
@@ -289,7 +289,7 @@ function TableColumn({
               <Hash
                 size={16}
                 strokeWidth={2}
-                className="flex-shrink-0 text-muted-foreground"
+                className="flex-shrink-0 text-text"
               />
             </m.div>
           )}
@@ -313,7 +313,7 @@ function TableColumn({
         <AnimatePresence mode="popLayout">
           <m.span
             key={column.format}
-            className="inline-flex justify-end px-4 font-mono text-[0.8rem] text-muted-foreground"
+            className="inline-flex justify-end px-4 font-mono text-[0.8rem] text-text"
             variants={inOutTop}
             initial="hidden"
             animate="show"

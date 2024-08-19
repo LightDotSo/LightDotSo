@@ -141,7 +141,7 @@ export function UserOperationMerkleGraph({
   }, [reactFlowInstance, tables, resolvedTheme, fitView, isFirstLoad]);
 
   return (
-    <div className="flex h-[30rem] w-full flex-col overflow-hidden rounded-md border bg-muted/50">
+    <div className="flex h-[30rem] w-full flex-col overflow-hidden rounded-md border bg-background/50">
       <ReactFlow
         className=""
         defaultNodes={[]}
@@ -150,8 +150,8 @@ export function UserOperationMerkleGraph({
           type: "smoothstep",
           deletable: false,
           style: {
-            stroke: "hsl(var(--border))",
-            strokeWidth: 12,
+            stroke: "hsl(var(--border-strong))",
+            strokeWidth: 1,
             strokeDasharray: 6,
             strokeDashoffset: -12,
             // Manually create animation so that it doesn't interfere with our custom edge component

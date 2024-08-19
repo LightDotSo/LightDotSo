@@ -94,7 +94,7 @@ export function ChatPanel({
   ];
 
   return (
-    <div className="fixed inset-x-0 bottom-0 w-full animate-in bg-gradient-to-b from-0% from-muted/30 to-50% to-muted/30 duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10% dark:from-background/10 dark:to-background/80">
+    <div className="fixed inset-x-0 bottom-0 w-full animate-in bg-gradient-to-b from-0% from-background/30 to-50% to-background/30 duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10% dark:from-background/10 dark:to-background/80">
       <ButtonScrollToBottom
         isAtBottom={isAtBottom}
         scrollToBottomAction={scrollToBottom}
