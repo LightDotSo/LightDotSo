@@ -65,45 +65,45 @@ pub(crate) enum UserOperationSuccess {
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperation {
     /// The chain id of the user operation.
-    chain_id: i64,
+    pub chain_id: i64,
     /// The hash of the user operation.
-    hash: String,
+    pub hash: String,
     /// The sender of the user operation.
-    sender: String,
+    pub sender: String,
     /// The nonce of the user operation.
-    nonce: i64,
+    pub nonce: i64,
     /// The init code of the user operation.
-    init_code: String,
+    pub init_code: String,
     /// The call data of the user operation.
-    call_data: String,
+    pub call_data: String,
     /// The call gas of the user operation.
-    call_gas_limit: i64,
+    pub call_gas_limit: i64,
     /// The verification gas of the user operation.
-    verification_gas_limit: i64,
+    pub verification_gas_limit: i64,
     /// The pre verification gas of the user operation.
-    pre_verification_gas: i64,
+    pub pre_verification_gas: i64,
     /// The maximum fee per gas of the user operation.
-    max_fee_per_gas: i64,
+    pub max_fee_per_gas: i64,
     /// The maximum priority fee per gas of the user operation.
-    max_priority_fee_per_gas: i64,
+    pub max_priority_fee_per_gas: i64,
     /// The paymaster and data of the user operation.
-    paymaster_and_data: String,
+    pub paymaster_and_data: String,
     /// The status of the user operation.
-    status: String,
+    pub status: String,
     /// The paymaster of the user operation.
-    paymaster: Option<Paymaster>,
+    pub paymaster: Option<Paymaster>,
     /// The paymaster operation of the user operation.
-    paymaster_operation: Option<PaymasterOperation>,
+    pub paymaster_operation: Option<PaymasterOperation>,
     /// The signatures of the user operation.
-    signatures: Vec<Signature>,
+    pub signatures: Vec<Signature>,
     /// The transaction of the user operation.
-    transaction: Option<Transaction>,
+    pub transaction: Option<Transaction>,
     /// The interpretation of the transaction.
-    interpretation: Option<Interpretation>,
+    pub interpretation: Option<Interpretation>,
     /// The timestamp of the user operation.
-    created_at: String,
+    pub created_at: String,
     /// The timestamp updated of the user operation.
-    updated_at: String,
+    pub updated_at: String,
 }
 
 /// Implement From<user_operation::Data> for User operation.

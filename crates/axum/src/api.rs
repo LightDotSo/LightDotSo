@@ -36,9 +36,9 @@ use crate::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
         configuration_operation, configuration_operation_owner, configuration_operation_signature,
         feedback, health, interpretation, interpretation_action, invite_code, notification,
-        notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, queue, signature, simulation, support_request, token, token_group,
-        token_price, transaction, user, user_notification_settings, user_operation,
+        notification_settings, operation, owner, paymaster, paymaster_operation, portfolio,
+        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        token_group, token_price, transaction, user, user_notification_settings, user_operation,
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
     },
@@ -140,6 +140,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification_settings::list::NotificationSettingsListCount),
         schemas(notification_settings::types::NotificationSettings),
         schemas(notification_settings::types::NotificationSettingsUpdate),
+        schemas(operation::list::OperationListCount),
+        schemas(operation::types::Operation),
         schemas(owner::error::OwnerError),
         schemas(owner::types::Owner),
         schemas(paymaster::error::PaymasterError),
@@ -275,6 +277,8 @@ use utoipa_swagger_ui::SwaggerUi;
         notification_settings::v1_notification_settings_get_handler,
         notification_settings::v1_notification_settings_list_handler,
         notification_settings::v1_notification_settings_list_count_handler,
+        operation::v1_operation_list_handler,
+        operation::v1_operation_list_count_handler,
         owner::v1_owner_get_handler,
         owner::v1_owner_list_handler,
         paymaster::v1_paymaster_get_handler,
@@ -364,6 +368,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
         (name = "notification_settings", description = "Notification Settings API"),
+        (name = "operation", description = "Operation API"),
         (name = "owner", description = "Owner API"),
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
@@ -506,6 +511,7 @@ pub async fn start_api_server() -> Result<()> {
         // .merge(metrics::router())
         .merge(notification::router())
         .merge(notification_settings::router())
+        .merge(operation::router())
         .merge(owner::router())
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
