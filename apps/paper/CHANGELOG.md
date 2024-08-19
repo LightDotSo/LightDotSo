@@ -1,5 +1,12 @@
 # @lightdotso/paper
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/tsconfig@3.1.5
+
 ## 0.0.3
 
 ### Patch Changes

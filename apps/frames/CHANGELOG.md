@@ -1,5 +1,12 @@
 # @lightdotso/frames
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/services@0.0.9
+
 ## 0.0.6
 
 ### Patch Changes

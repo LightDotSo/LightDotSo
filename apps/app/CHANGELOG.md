@@ -1,5 +1,41 @@
 # @lightdotso/app
 
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/query-keys@0.1.8
+  - @lightdotso/templates@0.0.8
+  - @lightdotso/elements@0.0.8
+  - @lightdotso/services@0.0.9
+  - @lightdotso/dialogs@0.0.3
+  - @lightdotso/modals@0.0.8
+  - @lightdotso/states@0.0.8
+  - @lightdotso/tables@0.1.8
+  - @lightdotso/forms@0.0.8
+  - @lightdotso/hooks@0.0.9
+  - @lightdotso/query@0.1.8
+  - @lightdotso/wagmi@3.1.8
+  - @lightdotso/nuqs@0.0.8
+  - @lightdotso/svg@0.0.9
+  - @lightdotso/ui@3.1.8
+  - @lightdotso/client@3.1.8
+  - @lightdotso/data@0.1.7
+  - @lightdotso/kysely@3.1.6
+  - @lightdotso/prisma@3.1.6
+  - @lightdotso/const@3.1.7
+  - @lightdotso/msw@0.0.8
+  - @lightdotso/params@0.1.8
+  - @lightdotso/pusher@0.0.5
+  - @lightdotso/redis@0.0.5
+  - @lightdotso/schemas@3.1.7
+  - @lightdotso/sequence@0.0.6
+  - @lightdotso/stores@0.1.8
+  - @lightdotso/types@0.0.7
+  - @lightdotso/utils@3.1.8
+  - @lightdotso/validators@0.0.6
+
 ## 3.2.6
 
 ### Patch Changes

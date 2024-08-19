@@ -1,5 +1,26 @@
 # @lightdotso/hooks
 
+## 0.0.9
+
+### Patch Changes
+
+- [#2245](https://github.com/LightDotSo/LightDotSo/pull/2245) [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix changeset release
+
+- [#2245](https://github.com/LightDotSo/LightDotSo/pull/2245) [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add features
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/query@0.1.8
+  - @lightdotso/wagmi@3.1.8
+  - @lightdotso/nuqs@0.0.8
+  - @lightdotso/ui@3.1.8
+  - @lightdotso/client@3.1.8
+  - @lightdotso/data@0.1.7
+  - @lightdotso/params@0.1.8
+  - @lightdotso/schemas@3.1.7
+  - @lightdotso/sequence@0.0.6
+  - @lightdotso/stores@0.1.8
+  - @lightdotso/types@0.0.7
+
 ## 0.0.8
 
 ### Patch Changes

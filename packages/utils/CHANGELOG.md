@@ -1,5 +1,13 @@
 # @lightdotso/utils
 
+## 3.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/const@3.1.7
+  - @lightdotso/types@0.0.7
+
 ## 3.1.7
 
 ### Patch Changes

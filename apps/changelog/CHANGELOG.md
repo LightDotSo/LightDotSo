@@ -1,5 +1,17 @@
 # @lightdotso/changelog
 
+## 3.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/templates@0.0.8
+  - @lightdotso/elements@0.0.8
+  - @lightdotso/ui@3.1.8
+  - @lightdotso/const@3.1.7
+  - @lightdotso/types@0.0.7
+  - @lightdotso/utils@3.1.8
+
 ## 3.1.6
 
 ### Patch Changes

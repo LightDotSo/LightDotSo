@@ -1,5 +1,24 @@
 # @lightdotso/storybook
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3), [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/templates@0.0.8
+  - @lightdotso/elements@0.0.8
+  - @lightdotso/dialogs@0.0.3
+  - @lightdotso/modals@0.0.8
+  - @lightdotso/states@0.0.8
+  - @lightdotso/tables@0.1.8
+  - @lightdotso/forms@0.0.8
+  - @lightdotso/wagmi@3.1.8
+  - @lightdotso/svg@0.0.9
+  - @lightdotso/ui@3.1.8
+  - @lightdotso/const@3.1.7
+  - @lightdotso/demo@0.0.9
+  - @lightdotso/msw@0.0.8
+
 ## 0.0.8
 
 ### Patch Changes

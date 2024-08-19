@@ -1,5 +1,13 @@
 # @lightdotso/params
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3)]:
+  - @lightdotso/data@0.1.7
+  - @lightdotso/schemas@3.1.7
+
 ## 0.1.7
 
 ### Patch Changes

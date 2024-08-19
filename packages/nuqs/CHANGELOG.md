@@ -1,5 +1,17 @@
 # @lightdotso/nuqs
 
+## 0.0.8
+
+### Patch Changes
+
+- [#2245](https://github.com/LightDotSo/LightDotSo/pull/2245) [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix changeset release
+
+- [#2245](https://github.com/LightDotSo/LightDotSo/pull/2245) [`fec2a06`](https://github.com/LightDotSo/LightDotSo/commit/fec2a06e5f86ef75d44f81dbb0c42f2956c262c3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add features
+
+- Updated dependencies []:
+  - @lightdotso/const@3.1.7
+  - @lightdotso/schemas@3.1.7
+
 ## 0.0.7
 
 ### Patch Changes
