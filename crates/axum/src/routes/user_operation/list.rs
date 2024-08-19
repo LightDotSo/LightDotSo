@@ -135,9 +135,9 @@ pub(crate) async fn v1_user_operation_list_handler(
     // -------------------------------------------------------------------------
 
     // Get the interpretation action params.
-    let mut interpretaion_action_params = vec![];
+    let mut interpretation_action_params = vec![];
     if let Some(addr) = &query.address {
-        interpretaion_action_params
+        interpretation_action_params
             .push(or![interpretation_action::address::equals(addr.clone()),]);
     }
 
@@ -155,7 +155,7 @@ pub(crate) async fn v1_user_operation_list_handler(
         .with(user_operation::signatures::fetch(vec![]))
         .with(
             user_operation::interpretation::fetch()
-                .with(interpretation::actions::fetch(interpretaion_action_params))
+                .with(interpretation::actions::fetch(interpretation_action_params))
                 .with(
                     interpretation::asset_changes::fetch(vec![])
                         .with(asset_change::interpretation_action::fetch())
