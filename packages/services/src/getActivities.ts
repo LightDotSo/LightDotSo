@@ -17,6 +17,7 @@ import {
   getActivities as getClientActivities,
 } from "@lightdotso/client";
 import type { ActivityListParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,9 @@ export const getActivities = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedActivities = unstable_cache(getActivities);

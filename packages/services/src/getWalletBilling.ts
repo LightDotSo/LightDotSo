@@ -17,6 +17,7 @@ import {
   getWalletBilling as getClientWalletBilling,
 } from "@lightdotso/client";
 import type { WalletBillingParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -40,3 +41,9 @@ export const getWalletBilling = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedWalletBilling = unstable_cache(getWalletBilling);

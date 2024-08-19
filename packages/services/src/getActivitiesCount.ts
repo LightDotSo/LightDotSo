@@ -17,6 +17,7 @@ import {
   getActivitiesCount as getClientActivitiesCount,
 } from "@lightdotso/client";
 import type { ActivityListCountParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -46,3 +47,9 @@ export const getActivitiesCount = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedActivitiesCount = unstable_cache(getActivitiesCount);

@@ -17,6 +17,7 @@ import {
   getTransactions as getClientTransactions,
 } from "@lightdotso/client";
 import type { TransactionListParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,9 @@ export const getTransactions = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedTransactions = unstable_cache(getTransactions);

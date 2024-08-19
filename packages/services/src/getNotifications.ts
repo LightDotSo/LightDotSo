@@ -17,6 +17,7 @@ import {
   getNotifications as getClientNotifications,
 } from "@lightdotso/client";
 import type { WalletListParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,9 @@ export const getNotifications = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedNotifications = unstable_cache(getNotifications);

@@ -17,6 +17,7 @@ import {
   getNftsByOwner as getClientNftsByOwner,
 } from "@lightdotso/client";
 import type { NftListParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -45,3 +46,9 @@ export const getNfts = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedNfts = unstable_cache(getNfts);

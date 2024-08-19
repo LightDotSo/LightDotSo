@@ -17,6 +17,7 @@ import {
   getUserOperationNonce as getClientUserOperationNonce,
 } from "@lightdotso/client";
 import type { UserOperationNonceParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -46,3 +47,11 @@ export const getUserOperationNonce = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedUserOperationNonce = unstable_cache(
+  getUserOperationNonce,
+);

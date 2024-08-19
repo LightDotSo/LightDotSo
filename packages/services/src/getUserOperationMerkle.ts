@@ -17,6 +17,7 @@ import {
   getUserOperationMerkle as getClientUserOperationMerkle,
 } from "@lightdotso/client";
 import type { UserOperationMerkleGetParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -42,3 +43,11 @@ export const getUserOperationMerkle = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedUserOperationMerkle = unstable_cache(
+  getUserOperationMerkle,
+);

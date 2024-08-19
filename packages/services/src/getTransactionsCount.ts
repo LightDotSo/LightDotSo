@@ -17,6 +17,7 @@ import {
   getTransactionsCount as getClientTransactionsCount,
 } from "@lightdotso/client";
 import type { TransactionListCountParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,9 @@ export const getTransactionsCount = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedTransactionsCount = unstable_cache(getTransactionsCount);

@@ -17,6 +17,7 @@ import {
   getNotificationsCount as getClientNotificationsCount,
 } from "@lightdotso/client";
 import type { NotificationListCountParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,11 @@ export const getNotificationsCount = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedNotificationsCount = unstable_cache(
+  getNotificationsCount,
+);

@@ -17,6 +17,7 @@ import {
   getWalletFeatures as getClientWalletFeatures,
 } from "@lightdotso/client";
 import type { WalletFeaturesParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -40,3 +41,9 @@ export const getWalletFeatures = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedWalletFeatures = unstable_cache(getWalletFeatures);

@@ -17,6 +17,7 @@ import {
   getConfiguration as getClientConfiguration,
 } from "@lightdotso/client";
 import type { ConfigurationParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -40,3 +41,9 @@ export const getConfiguration = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedConfiguration = unstable_cache(getConfiguration);

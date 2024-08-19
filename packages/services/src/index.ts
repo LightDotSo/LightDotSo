@@ -12,63 +12,114 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { preloadGetActivities, getActivities } from "./getActivities";
+export {
+  preloadGetActivities,
+  getActivities,
+  getCachedActivities,
+} from "./getActivities";
 export {
   preloadGetActivitiesCount,
   getActivitiesCount,
+  getCachedActivitiesCount,
 } from "./getActivitiesCount";
-export { preloadGetConfiguration, getConfiguration } from "./getConfiguration";
-export { preloadGetPortfolio, getPortfolio } from "./getPortfolio";
+export {
+  preloadGetConfiguration,
+  getConfiguration,
+  getCachedConfiguration,
+} from "./getConfiguration";
+export {
+  preloadGetPortfolio,
+  getPortfolio,
+  getCachedPortfolio,
+} from "./getPortfolio";
 export { getQueryClient } from "./getQueryClient";
-export { preloadGetNfts, getNfts } from "./getNfts";
-export { preloadGetNftValuation, getNftValuation } from "./getNftValuation";
-export { preloadGetNotifications, getNotifications } from "./getNotifications";
+export { preloadGetNfts, getNfts, getCachedNfts } from "./getNfts";
+export {
+  preloadGetNftValuation,
+  getNftValuation,
+  getCachedNftValuation,
+} from "./getNftValuation";
+export {
+  preloadGetNotifications,
+  getNotifications,
+  getCachedNotifications,
+} from "./getNotifications";
 export {
   preloadGetNotificationsCount,
   getNotificationsCount,
+  getCachedNotificationsCount,
 } from "./getNotificationsCount";
 export {
   preloadGetSocketBalances,
   getSocketBalances,
+  getCachedSocketBalances,
 } from "./getSocketBalances";
-export { preloadGetTokens, getTokens } from "./getTokens";
-export { preloadGetTokensCount, getTokensCount } from "./getTokensCount";
-export { preloadGetTransactions, getTransactions } from "./getTransactions";
-export { preloadGetUser, getUser } from "./getUser";
+export { preloadGetTokens, getTokens, getCachedTokens } from "./getTokens";
+export {
+  preloadGetTokensCount,
+  getTokensCount,
+  getCachedTokensCount,
+} from "./getTokensCount";
+export {
+  preloadGetTransactions,
+  getTransactions,
+  getCachedTransactions,
+} from "./getTransactions";
+export { preloadGetUser, getUser, getCachedUser } from "./getUser";
 export {
   preloadGetTransactionsCount,
   getTransactionsCount,
+  getCachedTransactionsCount,
 } from "./getTransactionsCount";
-export { preloadGetUserOperation, getUserOperation } from "./getUserOperation";
+export {
+  preloadGetUserOperation,
+  getUserOperation,
+  getCachedUserOperation,
+} from "./getUserOperation";
 export {
   preloadGetUserOperationMerkle,
   getUserOperationMerkle,
+  getCachedUserOperationMerkle,
 } from "./getUserOperationMerkle";
 export {
   preloadGetUserOperationNonce,
   getUserOperationNonce,
+  getCachedUserOperationNonce,
 } from "./getUserOperationNonce";
 export {
   preloadGetUserOperations,
   getUserOperations,
+  getCachedUserOperations,
 } from "./getUserOperations";
 export {
   preloadGetUserOperationsCount,
   getUserOperationsCount,
+  getCachedUserOperationsCount,
 } from "./getUserOperationsCount";
 export { preloadGetWallet, getWallet, getCachedWallet } from "./getWallet";
-export { preloadGetWallets, getWallets } from "./getWallets";
-export { preloadGetWalletBilling, getWalletBilling } from "./getWalletBilling";
-export { preloadGetWalletsCount, getWalletsCount } from "./getWalletsCount";
+export { preloadGetWallets, getWallets, getCachedWallets } from "./getWallets";
+export {
+  preloadGetWalletBilling,
+  getWalletBilling,
+  getCachedWalletBilling,
+} from "./getWalletBilling";
+export {
+  preloadGetWalletsCount,
+  getWalletsCount,
+  getCachedWalletsCount,
+} from "./getWalletsCount";
 export {
   preloadGetWalletFeatures,
   getWalletFeatures,
+  getCachedWalletFeatures,
 } from "./getWalletFeatures";
 export {
   preloadGetWalletNotificationSettings,
   getWalletNotificationSettings,
+  getCachedWalletNotificationSettings,
 } from "./getWalletNotificationSettings";
 export {
   preloadGetWalletSettings,
   getWalletSettings,
+  getCachedWalletSettings,
 } from "./getWalletSettings";

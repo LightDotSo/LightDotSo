@@ -17,6 +17,7 @@ import {
   getPortfolio as getClientPortfolio,
 } from "@lightdotso/client";
 import type { PortfolioParams } from "@lightdotso/params";
+import { unstable_cache } from "next/cache";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -40,3 +41,9 @@ export const getPortfolio = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedPortfolio = unstable_cache(getPortfolio);
