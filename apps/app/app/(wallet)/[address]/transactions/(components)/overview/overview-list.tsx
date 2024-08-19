@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
 import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
-import { useIsDemoPathname } from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -27,19 +24,17 @@ import type { Address } from "viem";
 
 export type OverviewListProps = {
   address: Address;
+  isDemo?: boolean;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewList: FC<OverviewListProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isDemo = useIsDemoPathname();
-
+export const OverviewList: FC<OverviewListProps> = ({
+  address,
+  isDemo = false,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { cursorParser, paginationParser } from "@lightdotso/nuqs";
-import { getNftValuation, getNfts } from "@lightdotso/services";
+import { getCachedNftValuation, getCachedNfts } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -54,14 +54,14 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const nftsPromise = getNfts({
+  const nftsPromise = getCachedNfts({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
     limit: paginationState.pageSize,
     cursor: null,
   });
 
-  const nftValuationPromise = getNftValuation({
+  const nftValuationPromise = getCachedNftValuation({
     address: params.address as Address,
   });
 

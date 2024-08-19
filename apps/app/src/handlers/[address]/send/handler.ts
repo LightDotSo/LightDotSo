@@ -14,7 +14,7 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { transfersParser } from "@lightdotso/nuqs";
-import { getNfts, getTokens } from "@lightdotso/services";
+import { getCachedNfts, getCachedTokens } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
@@ -49,14 +49,14 @@ export const handler = async (
 
   const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const nftsPromise = getNfts({
+  const nftsPromise = getCachedNfts({
     address: params.address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: walletSettings.is_enabled_testnet,
     cursor: null,
   });
 
-  const tokensPromise = getTokens({
+  const tokensPromise = getCachedTokens({
     address: params.address as Address,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,

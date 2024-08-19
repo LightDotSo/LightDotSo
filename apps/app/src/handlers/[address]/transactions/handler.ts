@@ -15,8 +15,8 @@
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import {
-  getUserOperations,
-  getUserOperationsCount,
+  getCachedUserOperations,
+  getCachedUserOperationsCount,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -42,13 +42,13 @@ export const handler = async (params: { address: string }) => {
 
   const { walletSettings } = await addressHandler(params);
 
-  const userOperationsCountPromise = getUserOperationsCount({
+  const userOperationsCountPromise = getCachedUserOperationsCount({
     address: params.address as Address,
     status: null,
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const queuedUserOperationsPromise = getUserOperations({
+  const queuedUserOperationsPromise = getCachedUserOperations({
     address: params.address as Address,
     status: "queued",
     offset: 0,
@@ -56,13 +56,13 @@ export const handler = async (params: { address: string }) => {
     order: "asc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
-  const queuedUserOperationsCountPromise = getUserOperationsCount({
+  const queuedUserOperationsCountPromise = getCachedUserOperationsCount({
     address: params.address as Address,
     status: "queued",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const historyUserOperationsPromise = getUserOperations({
+  const historyUserOperationsPromise = getCachedUserOperations({
     address: params.address as Address,
     status: "history",
     offset: 0,
@@ -70,7 +70,7 @@ export const handler = async (params: { address: string }) => {
     order: "desc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
-  const historyUserOperationsCountPromise = getUserOperationsCount({
+  const historyUserOperationsCountPromise = getCachedUserOperationsCount({
     address: params.address as Address,
     status: "history",
     is_testnet: walletSettings.is_enabled_testnet,

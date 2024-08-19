@@ -17,6 +17,7 @@ import {
   getTokensCount as getClientTokensCount,
 } from "@lightdotso/client";
 import type { TokenListCountParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -44,3 +45,9 @@ export const getTokensCount = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedTokensCount = cache(getTokensCount);

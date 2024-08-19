@@ -14,7 +14,11 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getPortfolio, getTokens, getTokensCount } from "@lightdotso/services";
+import {
+  getCachedPortfolio,
+  getCachedTokens,
+  getCachedTokensCount,
+} from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -52,7 +56,7 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const tokensPromise = getTokens({
+  const tokensPromise = getCachedTokens({
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
@@ -61,13 +65,15 @@ export const handler = async (
     chain_ids: null,
   });
 
-  const tokensCountPromise = getTokensCount({
+  const tokensCountPromise = getCachedTokensCount({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
     chain_ids: null,
   });
 
-  const portfolioPromise = getPortfolio({ address: params.address as Address });
+  const portfolioPromise = getCachedPortfolio({
+    address: params.address as Address,
+  });
 
   const [tokens, tokensCount, portfolio] = await Promise.all([
     tokensPromise,

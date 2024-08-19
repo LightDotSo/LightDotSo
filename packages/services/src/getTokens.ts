@@ -17,6 +17,7 @@ import {
   getTokens as getClientTokens,
 } from "@lightdotso/client";
 import type { TokenListParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -49,3 +50,9 @@ export const getTokens = async (params: TokenListParams): GetTokensResponse => {
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedTokens = cache(getTokens);

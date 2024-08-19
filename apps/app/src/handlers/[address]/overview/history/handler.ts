@@ -14,7 +14,10 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getTransactions, getTransactionsCount } from "@lightdotso/services";
+import {
+  getCachedTransactions,
+  getCachedTransactionsCount,
+} from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -52,14 +55,14 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const transactionsPromise = getTransactions({
+  const transactionsPromise = getCachedTransactions({
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const transactionsCountPromise = getTransactionsCount({
+  const transactionsCountPromise = getCachedTransactionsCount({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
   });

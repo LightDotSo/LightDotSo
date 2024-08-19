@@ -17,6 +17,7 @@ import {
   getUserOperationsCount as getClientUserOperationsCount,
 } from "@lightdotso/client";
 import type { UserOperationListCountParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -49,3 +50,9 @@ export const getUserOperationsCount = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedUserOperationsCount = cache(getUserOperationsCount);

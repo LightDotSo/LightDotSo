@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { UserOperationTimeline } from "@lightdotso/elements";
 import { useCopy, useIsDemoPathname } from "@lightdotso/hooks";

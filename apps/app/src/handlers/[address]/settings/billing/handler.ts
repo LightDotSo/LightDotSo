@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
-import { getWalletBilling } from "@lightdotso/services";
+import { getCachedWalletBilling } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -38,7 +38,7 @@ export const handler = async (params: { address: string }) => {
 
   const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const walletBillingPromise = getWalletBilling({
+  const walletBillingPromise = getCachedWalletBilling({
     address: params.address as Address,
   });
 

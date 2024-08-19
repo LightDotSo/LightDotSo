@@ -15,8 +15,8 @@
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
 import {
-  getUserOperations,
-  getUserOperationsCount,
+  getCachedUserOperations,
+  getCachedUserOperationsCount,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
@@ -55,7 +55,7 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const userOperationsPromise = getUserOperations({
+  const userOperationsPromise = getCachedUserOperations({
     address: params.address as Address,
     status: "history",
     offset: paginationState.pageIndex * paginationState.pageSize,
@@ -64,7 +64,7 @@ export const handler = async (
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const userOperationsCountPromise = getUserOperationsCount({
+  const userOperationsCountPromise = getCachedUserOperationsCount({
     address: params.address as Address,
     status: "history",
     is_testnet: walletSettings.is_enabled_testnet,

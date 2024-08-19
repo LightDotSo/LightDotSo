@@ -26,6 +26,7 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@tanstack/react-query": "^5.51.23",
+    "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",

@@ -17,6 +17,7 @@ import {
   getUser as getClientUser,
 } from "@lightdotso/client";
 import type { UserParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -37,3 +38,9 @@ export const getUser = async (params: UserParams): GetUserResponse => {
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedUser = cache(getUser);

@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
 import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
 import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -34,6 +31,7 @@ import type { Address } from "viem";
 
 interface WalletOverviewBannerProps {
   address: Address;
+  isDemo?: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -42,13 +40,8 @@ interface WalletOverviewBannerProps {
 
 export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   address,
+  isDemo = false,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const isDemo = useIsDemoPathname();
-
   // ---------------------------------------------------------------------------
   // Component
   // ---------------------------------------------------------------------------

@@ -17,6 +17,7 @@ import {
   getActivities as getClientActivities,
 } from "@lightdotso/client";
 import type { ActivityListParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -48,3 +49,9 @@ export const getActivities = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedActivities = cache(getActivities);

@@ -17,6 +17,7 @@ import {
   getNftValuation as getClientNftValuation,
 } from "@lightdotso/client";
 import type { NftValuationParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -37,3 +38,9 @@ export const getNftValuation = async (
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return await getClientNftValuation(params.address!, "admin");
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedNftValuation = cache(getNftValuation);

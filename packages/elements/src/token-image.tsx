@@ -153,7 +153,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
         `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
         `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
         typeof token.symbol === "string" && token.symbol
-          ? `https://raw.githubusercontent.com/0xa3k5/web3icons/main/packages/core/src/svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`
+          ? `https://raw.githubusercontent.com/0xa3k5/token-icons/main/packages/core/src/raw-svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`
           : null,
       ].filter((url) => url !== null) as string[],
     [tokenChainId, tokenAddress, token.symbol],

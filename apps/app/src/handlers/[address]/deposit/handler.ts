@@ -14,7 +14,7 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { transferParser } from "@lightdotso/nuqs";
-import { getNfts, getSocketBalances } from "@lightdotso/services";
+import { getCachedNfts } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
@@ -49,21 +49,14 @@ export const handler = async (
 
   const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const nftsPromise = getNfts({
+  const nftsPromise = getCachedNfts({
     address: params.address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: walletSettings.is_enabled_testnet,
     cursor: null,
   });
 
-  const socketBalancesPromise = getSocketBalances({
-    address: params.address as Address,
-  });
-
-  const [nftsRes, socketBalancesRes] = await Promise.all([
-    nftsPromise,
-    socketBalancesPromise,
-  ]);
+  const [nftsRes] = await Promise.all([nftsPromise]);
 
   // ---------------------------------------------------------------------------
   // Parse
@@ -74,7 +67,7 @@ export const handler = async (
     wallet: wallet,
     config: config,
     walletSettings: walletSettings,
-    balances: socketBalancesRes.unwrapOr([]),
+    balances: [],
     nfts: nftsRes.unwrapOr([]),
   };
 };

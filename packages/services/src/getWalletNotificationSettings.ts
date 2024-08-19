@@ -17,6 +17,7 @@ import {
   getWalletNotificationSettings as getClientWalletSettings,
 } from "@lightdotso/client";
 import type { WalletSettingsParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -42,3 +43,11 @@ export const getWalletNotificationSettings = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedWalletNotificationSettings = cache(
+  getWalletNotificationSettings,
+);

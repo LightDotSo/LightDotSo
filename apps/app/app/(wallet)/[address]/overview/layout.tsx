@@ -45,6 +45,7 @@ type OverviewLayoutProps = {
   nav: ReactNode;
   params: {
     address: string;
+    isDemo?: boolean;
   };
 };
 
@@ -64,7 +65,10 @@ export default function OverviewLayout({
   return (
     <>
       <LargeLayerWrapper>
-        <WalletOverviewBanner address={params.address as Address} />
+        <WalletOverviewBanner
+          address={params.address as Address}
+          isDemo={params.isDemo}
+        />
       </LargeLayerWrapper>
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>

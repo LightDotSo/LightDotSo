@@ -17,6 +17,7 @@ import {
   getUserOperations as getClientUserOperations,
 } from "@lightdotso/client";
 import type { UserOperationListParams } from "@lightdotso/params";
+import { cache } from "react";
 import "server-only";
 
 // -----------------------------------------------------------------------------
@@ -50,3 +51,9 @@ export const getUserOperations = async (
     "admin",
   );
 };
+
+// -----------------------------------------------------------------------------
+// Cache
+// -----------------------------------------------------------------------------
+
+export const getCachedUserOperations = cache(getUserOperations);
