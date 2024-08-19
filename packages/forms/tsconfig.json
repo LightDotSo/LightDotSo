@@ -2,8 +2,6 @@
   "compilerOptions": {
     "outDir": "./dist",
     "target": "ESNext",
-    "declaration": false,
-    "declarationMap": false,
     "resolveJsonModule": true
   },
   "exclude": ["dist", "build", "node_modules"],

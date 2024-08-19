@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { UserOperationMerkleData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationMerkleParams =
+  paths["/user_operation_merkle/get"]["get"]["parameters"];
+
+export type GetUserOperationMerkleResponse = Promise<
+  Result<
+    UserOperationMerkleData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +44,10 @@ export const getUserOperationMerkle = async (
   {
     params,
   }: {
-    params: {
-      query: { root: string };
-    };
+    params: GetUserOperationMerkleParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationMerkleResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

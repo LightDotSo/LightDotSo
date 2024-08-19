@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { WalletCountData, WalletData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletParams = paths["/wallet/get"]["get"]["parameters"];
+
+export type GetWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +44,10 @@ export const getWallet = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; chain_id?: number | null | undefined };
-    };
+    params: GetWalletParams;
   },
   clientType?: ClientType,
-) => {
+): GetWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -42,23 +60,36 @@ export const getWallet = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletsParams = paths["/wallet/list"]["get"]["parameters"];
+
+export type GetWalletsResponse = Promise<
+  Result<
+    WalletData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getWallets = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            owner?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetWalletsParams;
   },
   clientType?: ClientType,
-) => {
+): GetWalletsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -71,20 +102,34 @@ export const getWallets = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletsCountParams =
+  paths["/wallet/list/count"]["get"]["parameters"];
+
+export type GetWalletsCountResponse = Promise<
+  Result<
+    WalletCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getWalletsCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            owner?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetWalletsCountParams;
   },
   clientType?: ClientType,
 ) => {
@@ -101,6 +146,27 @@ export const getWalletsCount = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostWalletParams = paths["/wallet/create"]["post"]["parameters"];
+
+export type PostWalletBody =
+  paths["/wallet/create"]["post"]["requestBody"]["content"]["application/json"];
+
+export type PostWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
@@ -109,22 +175,11 @@ export const createWallet = async (
     params,
     body,
   }: {
-    params: {
-      query?: { simulate?: boolean | null | undefined } | undefined;
-    };
-    body: {
-      name: string;
-      owners: {
-        address: string;
-        weight: number;
-      }[];
-      salt: string;
-      threshold: number;
-      invite_code: string;
-    };
+    params: PostWalletParams;
+    body: PostWalletBody;
   },
   clientType?: ClientType,
-) => {
+): PostWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -139,6 +194,27 @@ export const createWallet = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutWalletParams = paths["/wallet/update"]["put"]["parameters"];
+
+export type PutWalletBody =
+  paths["/wallet/update"]["put"]["requestBody"]["content"]["application/json"];
+
+export type PutWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------
 
@@ -147,15 +223,11 @@ export const updateWallet = async (
     params,
     body,
   }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      name: string;
-    };
+    params: PutWalletParams;
+    body: PutWalletBody;
   },
   clientType?: ClientType,
-) => {
+): PutWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

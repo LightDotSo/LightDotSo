@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "@lightdotso/regexs": "workspace:*",
-    "viem": "^2.19.6"
+    "viem": "^2.19.7"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

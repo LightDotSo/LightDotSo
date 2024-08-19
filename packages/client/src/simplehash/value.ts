@@ -12,19 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { NftValuationData } from "@lightdotso/data";
 import {
   nftWalletValuationsSchema,
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
-import { ResultAsync } from "neverthrow";
+import { type Result, ResultAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSimplehashClient } from "../client";
 import { zodFetch } from "../zod";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNftValuationResponse = Promise<
+  Result<
+    NftValuationData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getNftValuation = async (
   address: string,
   clientType?: ClientType,
-) => {
+): Promise<GetNftValuationResponse> => {
   const chains = simplehashMainnetChainSchema.options.join(",");
 
   const headers: HeadersInit = {

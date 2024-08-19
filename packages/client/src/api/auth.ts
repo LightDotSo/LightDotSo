@@ -12,16 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { NonceData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export type GetNonceParams = {};
+
+export type GetNonceResponse = Promise<
+  Result<
+    NonceData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const getNonce = async (params?: {}, clientType?: ClientType) => {
+export const getNonce = async (
+  params?: GetNonceParams,
+  clientType?: ClientType,
+): GetNonceResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -49,11 +72,32 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 };
 
 // -----------------------------------------------------------------------------
-// POST
+// Types
 // -----------------------------------------------------------------------------
 
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const authLogout = async (params?: {}, clientType?: ClientType) => {
+export type PostAuthLogoutParams = {};
+
+export type PostAuthLogoutResponse = Promise<
+  Result<
+    { Logout: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
+export const authLogout = async (
+  params?: PostAuthLogoutParams,
+  clientType?: ClientType,
+): PostAuthLogoutResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -66,21 +110,41 @@ export const authLogout = async (params?: {}, clientType?: ClientType) => {
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostAuthVerifyParams = paths["/auth/verify"]["post"]["parameters"];
+
+export type PostAuthVerifyBody =
+  paths["/auth/verify"]["post"]["requestBody"]["content"]["application/json"];
+
+export type PostAuthVerifyResponse = Promise<
+  Result<
+    { nonce: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const authVerify = async (
   {
     params,
     body,
   }: {
-    params: {
-      query: { user_address: string };
-    };
-    body: {
-      message: string;
-      signature: string;
-    };
+    params: PostAuthVerifyParams;
+    body: PostAuthVerifyBody;
   },
   clientType?: ClientType,
-) => {
+): PostAuthVerifyResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

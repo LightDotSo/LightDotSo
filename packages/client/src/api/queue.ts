@@ -12,9 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueResponse = Promise<
+  Result<
+    { Queued: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { RateLimitExceeded: string }
+    | { ProviderError: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueuePortfolioParams =
+  paths["/queue/portfolio"]["post"]["parameters"];
 
 // -----------------------------------------------------------------------------
 // POST
@@ -24,12 +48,10 @@ export const createQueuePortfolio = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: PostQueuePortfolioParams;
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -42,16 +64,24 @@ export const createQueuePortfolio = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueTokenParams = paths["/queue/token"]["post"]["parameters"];
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const createQueueToken = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: PostQueueTokenParams;
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -64,19 +94,25 @@ export const createQueueToken = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueInterpretationParams =
+  paths["/queue/interpretation"]["post"]["parameters"];
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const createQueueInterpretation = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        transaction_hash?: string | null;
-        user_operation_hash?: string | null;
-      };
-    };
+    params: PostQueueInterpretationParams;
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -89,19 +125,25 @@ export const createQueueInterpretation = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueTransactionParams =
+  paths["/queue/transaction"]["post"]["parameters"];
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const createQueueTransaction = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        chain_id: number;
-        hash: string;
-      };
-    };
+    params: PostQueueTransactionParams;
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -114,18 +156,25 @@ export const createQueueTransaction = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueUserOperationParams =
+  paths["/queue/user_operation"]["post"]["parameters"];
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const createQueueUserOperation = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        hash: string;
-      };
-    };
+    params: PostQueueUserOperationParams;
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

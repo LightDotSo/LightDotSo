@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
+import {
+  type GetUserOperationResponse,
+  getUserOperation as getClientUserOperation,
+} from "@lightdotso/client";
 import type { UserOperationGetParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetUserOperation = (params: UserOperationGetParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUserOperation = async (params: UserOperationGetParams) => {
+export const getUserOperation = async (
+  params: UserOperationGetParams,
+): GetUserOperationResponse => {
   return await getClientUserOperation(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { user_operation_hash: params.hash! } } },

@@ -28,7 +28,7 @@ import { forwardRef } from "react";
 // Components
 // -----------------------------------------------------------------------------
 
-const MenubarMenu = MenubarPrimitive.Menu;
+const MenubarMenu: typeof MenubarPrimitive.Menu = MenubarPrimitive.Menu;
 
 const MenubarGroup = MenubarPrimitive.Group;
 

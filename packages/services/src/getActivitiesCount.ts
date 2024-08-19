@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getActivitiesCount as getClientActivitiesCount } from "@lightdotso/client";
+import {
+  type GetActivitiesCountResponse,
+  getActivitiesCount as getClientActivitiesCount,
+} from "@lightdotso/client";
 import type { ActivityListCountParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetActivitiesCount = (params: ActivityListCountParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getActivitiesCount = async (params: ActivityListCountParams) => {
+export const getActivitiesCount = async (
+  params: ActivityListCountParams,
+): Promise<GetActivitiesCountResponse> => {
   return await getClientActivitiesCount(
     {
       params: {

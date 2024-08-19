@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getNftValuation as getClientNftValuation } from "@lightdotso/client";
+import {
+  type GetNftValuationResponse,
+  getNftValuation as getClientNftValuation,
+} from "@lightdotso/client";
 import type { NftValuationParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetNftValuation = (params: NftValuationParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNftValuation = async (params: NftValuationParams) => {
+export const getNftValuation = async (
+  params: NftValuationParams,
+): Promise<GetNftValuationResponse> => {
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return await getClientNftValuation(params.address!, "admin");
 };

@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { InviteCodeCountData, InviteCodeData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodeParams =
+  paths["/invite_code/get"]["get"]["parameters"];
+
+export type GetInviteCodeResponse = Promise<
+  Result<
+    InviteCodeData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +44,10 @@ export const getInviteCode = async (
   {
     params,
   }: {
-    params: {
-      query: { code: string };
-    };
+    params: GetInviteCodeParams;
   },
   clientType?: ClientType,
-) => {
+): GetInviteCodeResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -42,20 +60,36 @@ export const getInviteCode = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodesParams =
+  paths["/invite_code/list"]["get"]["parameters"];
+
+export type GetInviteCodesResponse = Promise<
+  Result<
+    InviteCodeData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getInviteCodes = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-      };
-    };
+    params: GetInviteCodesParams;
   },
   clientType?: ClientType,
-) => {
+): GetInviteCodesResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -68,16 +102,33 @@ export const getInviteCodes = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodesCountParams =
+  paths["/invite_code/list/count"]["get"]["parameters"];
+
+export type GetInviteCodesCountResponse = Promise<
+  Result<
+    InviteCodeCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getInviteCodesCount = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-      };
-    };
+    params: GetInviteCodesCountParams;
   },
   clientType?: ClientType,
 ) => {

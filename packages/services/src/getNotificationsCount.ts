@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getNotificationsCount as getClientNotificationsCount } from "@lightdotso/client";
+import {
+  type GetNotificationsCountResponse,
+  getNotificationsCount as getClientNotificationsCount,
+} from "@lightdotso/client";
 import type { NotificationListCountParams } from "@lightdotso/params";
 import "server-only";
 
@@ -32,7 +35,7 @@ export const preloadGetNotificationsCount = (
 
 export const getNotificationsCount = async (
   params: NotificationListCountParams,
-) => {
+): Promise<GetNotificationsCountResponse> => {
   return await getClientNotificationsCount(
     {
       params: {

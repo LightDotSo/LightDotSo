@@ -26,7 +26,7 @@ export type TokenPortfolioData = {
   }[];
 };
 
-export type NftPortfolioData = {
+export type NftValuationData = {
   wallets: {
     address: string;
     usd_value: number;

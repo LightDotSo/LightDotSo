@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
+import {
+  type GetUserOperationsCountResponse,
+  getUserOperationsCount as getClientUserOperationsCount,
+} from "@lightdotso/client";
 import type { UserOperationListCountParams } from "@lightdotso/params";
 import "server-only";
 
@@ -32,7 +35,7 @@ export const preloadGetUserOperationsCount = (
 
 export const getUserOperationsCount = async (
   params: UserOperationListCountParams,
-) => {
+): GetUserOperationsCountResponse => {
   return await getClientUserOperationsCount(
     {
       params: {

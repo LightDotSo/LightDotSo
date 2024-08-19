@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { getNftValuation } from "@lightdotso/client";
-import type { NftPortfolioData } from "@lightdotso/data";
+import type { NftValuationData } from "@lightdotso/data";
 import type { PortfolioParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
@@ -36,12 +36,12 @@ export const useQueryNftPortfolio = (params: PortfolioParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: NftPortfolioData | undefined = queryClient.getQueryData(
+  const currentData: NftValuationData | undefined = queryClient.getQueryData(
     queryKeys.portfolio.get({ address: params.address }).queryKey,
   );
 
   const { data: nftPortfolio, failureCount } =
-    useQuery<NftPortfolioData | null>({
+    useQuery<NftValuationData | null>({
       queryKey: queryKeys.nft_valuation.get({ address: params.address })
         .queryKey,
       queryFn: async () => {

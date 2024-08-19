@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWallets as getClientWallets } from "@lightdotso/client";
+import {
+  type GetWalletsResponse,
+  getWallets as getClientWallets,
+} from "@lightdotso/client";
 import type { WalletListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetWallets = (params: WalletListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWallets = async (params: WalletListParams) => {
+export const getWallets = async (
+  params: WalletListParams,
+): GetWalletsResponse => {
   return await getClientWallets(
     {
       params: {

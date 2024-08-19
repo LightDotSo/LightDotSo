@@ -12,9 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type {
+  UserOperationCountData,
+  UserOperationData,
+  UserOperationNonceData,
+  UserOperationSignatureData,
+} from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationParams =
+  paths["/user_operation/get"]["get"]["parameters"];
+
+export type GetUserOperationResponse = Promise<
+  Result<
+    UserOperationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +49,10 @@ export const getUserOperation = async (
   {
     params,
   }: {
-    params: {
-      query: { user_operation_hash: string };
-    };
+    params: GetUserOperationParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -42,16 +65,36 @@ export const getUserOperation = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationNonceParams =
+  paths["/user_operation/nonce"]["get"]["parameters"];
+
+export type GetUserOperationNonceResponse = Promise<
+  Result<
+    UserOperationNonceData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getUserOperationNonce = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; chain_id: number };
-    };
+    params: GetUserOperationNonceParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationNonceResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -64,19 +107,36 @@ export const getUserOperationNonce = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationSignatureParams =
+  paths["/user_operation/signature"]["get"]["parameters"];
+
+export type GetUserOperationSignatureResponse = Promise<
+  Result<
+    UserOperationSignatureData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getUserOperationSignature = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        user_operation_hash: string;
-        configuration_id?: string | null | undefined;
-      };
-    };
+    params: GetUserOperationSignatureParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationSignatureResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -89,35 +149,36 @@ export const getUserOperationSignature = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationsParams =
+  paths["/user_operation/list"]["get"]["parameters"];
+
+export type GetUserOperationsResponse = Promise<
+  Result<
+    UserOperationData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getUserOperations = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            order?: ("asc" | "desc") | null | undefined;
-            status?:
-              | (
-                  | "queued"
-                  | "pending"
-                  | "executed"
-                  | "reverted"
-                  | "history"
-                  | "invalid"
-                )
-              | null;
-            is_testnet?: boolean | null | undefined;
-            chain_id?: number | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetUserOperationsParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -130,31 +191,36 @@ export const getUserOperations = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationsCountParams =
+  paths["/user_operation/list/count"]["get"]["parameters"];
+
+export type GetUserOperationsCountResponse = Promise<
+  Result<
+    UserOperationCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getUserOperationsCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            address?: string | null | undefined;
-            status?:
-              | (
-                  | "queued"
-                  | "pending"
-                  | "executed"
-                  | "reverted"
-                  | "history"
-                  | "invalid"
-                )
-              | null;
-            is_testnet?: boolean | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetUserOperationsCountParams;
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationsCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -168,6 +234,27 @@ export const getUserOperationsCount = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostUserOperationParams =
+  paths["/user_operation/create"]["post"]["parameters"];
+
+export type PostUserOperationBody =
+  paths["/user_operation/create"]["post"]["requestBody"]["content"]["application/json"];
+
+export type PostUserOperationResponse = Promise<
+  Result<
+    UserOperationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
@@ -176,41 +263,11 @@ export const createUserOperation = async (
     params,
     body,
   }: {
-    params: {
-      query: {
-        chain_id: number;
-        is_direct_send?: boolean;
-      };
-    };
-    body: {
-      paymaster?: {
-        address: string;
-        sender: string;
-        sender_nonce: number;
-      };
-      signature: {
-        owner_id: string;
-        signature: string;
-        signature_type: number;
-      };
-      user_operation: {
-        chain_id: number;
-        call_data: string;
-        call_gas_limit: number;
-        hash: string;
-        init_code: string;
-        max_fee_per_gas: number;
-        max_priority_fee_per_gas: number;
-        nonce: number;
-        paymaster_and_data: string;
-        pre_verification_gas: number;
-        sender: string;
-        verification_gas_limit: number;
-      };
-    };
+    params: PostUserOperationParams;
+    body: PostUserOperationBody;
   },
   clientType?: ClientType,
-) => {
+): PostUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -224,47 +281,41 @@ export const createUserOperation = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostBatchUserOperationParams =
+  paths["/user_operation/create/batch"]["post"]["parameters"];
+
+export type PostBatchUserOperationBody =
+  paths["/user_operation/create/batch"]["post"]["requestBody"]["content"]["application/json"];
+
+export type PostBatchUserOperationResponse = Promise<
+  Result<
+    UserOperationData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
 export const createBatchUserOperation = async (
   {
     params,
     body,
   }: {
-    params: {
-      query: {
-        chain_id: number;
-        is_direct_send?: boolean;
-      };
-    };
-    body: {
-      paymaster?: {
-        address: string;
-        sender: string;
-        sender_nonce: number;
-      };
-      merkle_root: string;
-      signature: {
-        owner_id: string;
-        signature: string;
-        signature_type: number;
-      };
-      user_operations: {
-        chain_id: number;
-        call_data: string;
-        call_gas_limit: number;
-        hash: string;
-        init_code: string;
-        max_fee_per_gas: number;
-        max_priority_fee_per_gas: number;
-        nonce: number;
-        paymaster_and_data: string;
-        pre_verification_gas: number;
-        sender: string;
-        verification_gas_limit: number;
-      }[];
-    };
+    params: PostBatchUserOperationParams;
+    body: PostBatchUserOperationBody;
   },
   clientType?: ClientType,
-) => {
+): PostBatchUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -279,6 +330,24 @@ export const createBatchUserOperation = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutUserOperationParams =
+  paths["/user_operation/update"]["put"]["parameters"];
+
+export type PutUserOperationResponse = Promise<
+  Result<
+    { Updated: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------
 
@@ -286,12 +355,10 @@ export const updateUserOperation = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: PutUserOperationParams;
   },
   clientType?: ClientType,
-) => {
+): PutUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

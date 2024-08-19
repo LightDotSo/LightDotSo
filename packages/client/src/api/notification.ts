@@ -12,9 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { NotificationCountData, NotificationData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNotificationsParams =
+  paths["/notification/list"]["get"]["parameters"];
+
+export type GetNotificationsResponse = Promise<
+  Result<
+    NotificationData[],
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,19 +40,10 @@ export const getNotifications = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetNotificationsParams;
   },
   clientType?: ClientType,
-) => {
+): GetNotificationsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -49,20 +56,29 @@ export const getNotifications = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNotificationsCountParams =
+  paths["/notification/list"]["get"]["parameters"];
+
+export type GetNotificationsCountResponse = Promise<
+  Result<
+    NotificationCountData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getNotificationsCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetNotificationsCountParams;
   },
   clientType?: ClientType,
 ) => {
@@ -79,6 +95,28 @@ export const getNotificationsCount = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export type PostNotificationParams = {};
+
+export type PostNotificationBody =
+  paths["/notification/read"]["post"]["requestBody"]["content"]["application/json"];
+
+export type PostNotificationResponse = Promise<
+  Result<
+    number,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
@@ -87,16 +125,11 @@ export const readNotification = async (
     params,
     body,
   }: {
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
-    params: {};
-    body: {
-      notifications: {
-        id: string;
-      }[];
-    };
+    params: PostNotificationParams;
+    body: PostNotificationBody;
   },
   clientType?: ClientType,
-) => {
+): PostNotificationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

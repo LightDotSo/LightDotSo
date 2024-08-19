@@ -85,7 +85,7 @@ export const useQueryLifiQuote = (params: LifiQuoteParams) => {
 
       const res = await getLifiQuote(
         {
-          parameters: {
+          params: {
             query: {
               fromChain: params.fromChain.toString(),
               toChain: params.toChain.toString(),

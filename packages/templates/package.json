@@ -44,20 +44,20 @@
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.3.28",
     "lucide-react": "^0.428.0",
-    "next": "15.0.0-canary.111",
+    "next": "15.0.0-canary.120",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.52.2",
     "react-icons": "^5.3.0",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.19.6",
+    "viem": "^2.19.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.9",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

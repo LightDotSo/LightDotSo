@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { TokenGroupData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokenGroupParams =
+  paths["/token/group/get"]["get"]["parameters"];
+
+export type GetTokenGroupResponse = Promise<
+  Result<
+    TokenGroupData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +44,10 @@ export const getTokenGroup = async (
   {
     params,
   }: {
-    params: {
-      query: { id: string };
-    };
+    params: GetTokenGroupParams;
   },
   clientType?: ClientType,
-) => {
+): GetTokenGroupResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

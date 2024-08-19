@@ -12,9 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { TokenCountData, TokenData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokenParams = paths["/token/get"]["get"]["parameters"];
+
+export type GetTokenResponse = Promise<
+  Result<
+    TokenData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,9 +39,7 @@ export const getToken = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; chain_id: number; wallet?: string | null };
-    };
+    params: GetTokenParams;
   },
   clientType?: ClientType,
 ) => {
@@ -42,24 +55,35 @@ export const getToken = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokensParams = paths["/token/list"]["get"]["parameters"];
+
+export type GetTokensResponse = Promise<
+  Result<
+    TokenData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getTokens = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-        is_group_only?: boolean | null | undefined;
-        is_testnet?: boolean | null | undefined;
-        group?: boolean | null | undefined;
-        chain_ids?: string | null | undefined;
-      };
-    };
+    params: GetTokensParams;
   },
   clientType?: ClientType,
-) => {
+): GetTokensResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -72,22 +96,36 @@ export const getTokens = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokensCountParams =
+  paths["/token/list/count"]["get"]["parameters"];
+
+export type GetTokensCountResponse = Promise<
+  Result<
+    TokenCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getTokensCount = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-        is_testnet?: boolean | null | undefined;
-        chain_ids?: string | null | undefined;
-      };
-    };
+    params: GetTokensCountParams;
   },
   clientType?: ClientType,
-) => {
+): GetTokensCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

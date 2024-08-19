@@ -12,23 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { SocketBalancePageData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSocketClient } from "../client";
+import type { paths } from "../types/socket/v2";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetSocketBalancesParams =
+  paths["/v2/balances"]["get"]["parameters"];
+
+export type GetSocketBalancesResponse = Promise<
+  Result<
+    SocketBalancePageData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 // -----------------------------------------------------------------------------
 // GET
 // -----------------------------------------------------------------------------
 
 export const getSocketBalances = async (
   {
-    parameters,
+    params,
   }: {
-    parameters: {
-      query: {
-        userAddress: string;
-      };
-    };
+    params: GetSocketBalancesParams;
   },
   clientType?: ClientType,
 ) => {
@@ -36,7 +47,7 @@ export const getSocketBalances = async (
 
   return ResultAsync.fromPromise(
     client.GET("/v2/balances", {
-      params: parameters,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

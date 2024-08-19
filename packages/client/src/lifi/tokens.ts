@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { LifiTokensPageData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getLifiClient } from "../client";
+import type { paths } from "../types/lifi/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetLifiTokensParams = paths["/tokens"]["get"]["parameters"];
+
+export type GetLifiTokensResponse = Promise<
+  Result<LifiTokensPageData, Error | unknown | undefined>
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -22,18 +34,18 @@ import { getLifiClient } from "../client";
 
 export const getLifiTokens = async (
   {
-    parameters,
+    params,
   }: {
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
-    parameters: {};
+    params: GetLifiTokensParams;
   },
   clientType?: ClientType,
-) => {
+): GetLifiTokensResponse => {
   const client = getLifiClient(clientType);
 
+  // @ts-expect-error
   return ResultAsync.fromPromise(
     client.GET("/tokens", {
-      params: parameters,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

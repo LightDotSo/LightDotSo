@@ -48,7 +48,7 @@ export const useQueryLifiTokens = () => {
     queryFn: async () => {
       const res = await getLifiTokens(
         {
-          parameters: {},
+          params: {},
         },
         clientType,
       );

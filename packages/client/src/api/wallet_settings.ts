@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { WalletSettingsData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletSettingsParams =
+  paths["/wallet/settings/get"]["get"]["parameters"];
+
+export type GetWalletSettingsResponse = Promise<
+  Result<
+    WalletSettingsData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +44,10 @@ export const getWalletSettings = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: GetWalletSettingsParams;
   },
   clientType?: ClientType,
-) => {
+): GetWalletSettingsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -43,6 +61,27 @@ export const getWalletSettings = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutWalletSettingsParams =
+  paths["/wallet/settings/update"]["put"]["parameters"];
+
+export type PutWalletSettingsBody =
+  paths["/wallet/settings/update"]["put"]["requestBody"]["content"]["application/json"];
+
+export type PutWalletSettingsResponse = Promise<
+  Result<
+    WalletSettingsData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------
 
@@ -51,18 +90,11 @@ export const updateWalletSettings = async (
     params,
     body,
   }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      wallet_settings: {
-        is_enabled_dev?: boolean | null | undefined;
-        is_enabled_testnet?: boolean | null | undefined;
-      };
-    };
+    params: PutWalletSettingsParams;
+    body: PutWalletSettingsBody;
   },
   clientType?: ClientType,
-) => {
+): PutWalletSettingsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

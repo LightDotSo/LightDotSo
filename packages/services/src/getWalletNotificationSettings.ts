@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWalletNotificationSettings as getClientWalletSettings } from "@lightdotso/client";
+import {
+  type GetWalletNotificationSettingsResponse,
+  getWalletNotificationSettings as getClientWalletSettings,
+} from "@lightdotso/client";
 import type { WalletSettingsParams } from "@lightdotso/params";
 import "server-only";
 
@@ -32,7 +35,7 @@ export const preloadGetWalletNotificationSettings = (
 
 export const getWalletNotificationSettings = async (
   params: WalletSettingsParams,
-) => {
+): GetWalletNotificationSettingsResponse => {
   return await getClientWalletSettings(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },

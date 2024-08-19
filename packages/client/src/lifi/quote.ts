@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { LifiQuotePageData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getLifiClient } from "../client";
+import type { paths } from "../types/lifi/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetLifiQuoteParams = paths["/quote"]["get"]["parameters"];
+
+export type GetLifiQuoteResponse = Promise<
+  Result<LifiQuotePageData, Error | unknown | undefined>
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -22,27 +34,18 @@ import { getLifiClient } from "../client";
 
 export const getLifiQuote = async (
   {
-    parameters,
+    params,
   }: {
-    parameters: {
-      query: {
-        fromChain: string;
-        toChain: string;
-        fromToken: string;
-        toToken: string;
-        fromAddress: string;
-        toAddress?: string | undefined;
-        fromAmount: string;
-      };
-    };
+    params: GetLifiQuoteParams;
   },
   clientType?: ClientType,
-) => {
+): GetLifiQuoteResponse => {
   const client = getLifiClient(clientType);
 
+  // @ts-expect-error
   return ResultAsync.fromPromise(
     client.GET("/quote", {
-      params: parameters,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

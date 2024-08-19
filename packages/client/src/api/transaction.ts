@@ -12,9 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { TransactionCountData, TransactionData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTransactionsParams =
+  paths["/transaction/list"]["get"]["parameters"];
+
+export type GetTransactionsResponse = Promise<
+  Result<
+    TransactionData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,16 +44,7 @@ export const getTransactions = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            is_testnet?: boolean | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetTransactionsParams;
   },
   clientType?: ClientType,
 ) => {
@@ -49,23 +60,36 @@ export const getTransactions = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTransactionsCountParams =
+  paths["/transaction/list/count"]["get"]["parameters"];
+
+export type GetTransactionCountResponse = Promise<
+  Result<
+    TransactionCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getTransactionsCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            is_testnet?: boolean | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetTransactionsCountParams;
   },
   clientType?: ClientType,
-) => {
+): GetTransactionCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

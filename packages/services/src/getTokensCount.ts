@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getTokensCount as getClientTokensCount } from "@lightdotso/client";
+import {
+  type GetTokensCountResponse,
+  getTokensCount as getClientTokensCount,
+} from "@lightdotso/client";
 import type { TokenListCountParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetTokensCount = (params: TokenListCountParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTokensCount = async (params: TokenListCountParams) => {
+export const getTokensCount = async (
+  params: TokenListCountParams,
+): GetTokensCountResponse => {
   return await getClientTokensCount(
     {
       params: {

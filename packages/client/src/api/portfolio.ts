@@ -12,9 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { TokenPortfolioData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetPortfolioParams = paths["/portfolio/get"]["get"]["parameters"];
+
+export type GetPortfolioResponse = Promise<
+  Result<
+    TokenPortfolioData,
+    Error | { BadRequest: string } | { Conflict: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -24,12 +39,10 @@ export const getPortfolio = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: GetPortfolioParams;
   },
   clientType?: ClientType,
-) => {
+): Promise<GetPortfolioResponse> => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

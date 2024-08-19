@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getTokens as getClientTokens } from "@lightdotso/client";
+import {
+  type GetTokensResponse,
+  getTokens as getClientTokens,
+} from "@lightdotso/client";
 import type { TokenListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,7 @@ export const preloadGetTokens = (params: TokenListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTokens = async (params: TokenListParams) => {
+export const getTokens = async (params: TokenListParams): GetTokensResponse => {
   return await getClientTokens(
     {
       params: {
