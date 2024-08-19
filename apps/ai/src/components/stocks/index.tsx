@@ -39,10 +39,14 @@ export { BotCard, BotMessage, SystemMessage } from "./message";
 // Component
 // -----------------------------------------------------------------------------
 
-const Stock = dynamic(() => import("./stock").then((mod) => mod.Stock), {
-  ssr: false,
-  loading: () => <StockSkeleton />,
-});
+// @ts-expect-error
+const Stock = dynamic<typeof Stock>(
+  () => import("./stock").then((mod) => mod.Stock),
+  {
+    ssr: false,
+    loading: () => <StockSkeleton />,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component
