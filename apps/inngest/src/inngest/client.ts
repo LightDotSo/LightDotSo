@@ -31,7 +31,7 @@ const eventsMap = {
 // -----------------------------------------------------------------------------
 
 // Create a client to send and receive events
-export const inngest: Inngest = new Inngest({
+export const inngest = new Inngest({
   id: "Light",
   middleware: [
     prismaMiddleware,

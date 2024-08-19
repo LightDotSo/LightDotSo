@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { prisma } from "@lightdotso/prisma";
+import { type PrismaClient, prisma } from "@lightdotso/prisma";
 import { InngestMiddleware } from "inngest";
 
 // -----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ export const prismaMiddleware = new InngestMiddleware({
       transformInput: (_ctx) => ({
         // Anything passed via `ctx` will be merged with the function's arguments
         ctx: {
-          prisma: prisma,
+          prisma: prisma as PrismaClient,
         },
       }),
     }),
