@@ -50,7 +50,9 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
 
   const {
     data: userOperations,
+    error: userOperationsError,
     isLoading: isUserOperationsLoading,
+    isError: isUserOperationsError,
     refetch: refetchUserOperations,
     failureCount,
   } = useQuery<UserOperationData[] | null>({
@@ -101,6 +103,8 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
 
   return {
     userOperations: userOperations,
+    userOperationsError: userOperationsError,
+    isUserOperationsError: isUserOperationsError,
     isUserOperationsLoading: isUserOperationsLoading,
     refetchUserOperations: refetchUserOperations,
   };

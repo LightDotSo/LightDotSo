@@ -262,7 +262,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
             <div className="-ml-1 -mr-2 relative">
               <div
                 className={cn(
-                  "-mt-2 pointer-events-none absolute top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
+                  "-mt-2 pointer-events-none absolute top-1 left-0 h-14 w-full bg-gradient-to-b from-background to-transparent transition-opacity duration-500",
                   scrollIsAtTop ? "opacity-0" : "opacity-100",
                 )}
               />

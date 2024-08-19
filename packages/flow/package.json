@@ -1,0 +1,57 @@
+{
+  "name": "@lightdotso/flow",
+  "version": "0.0.0",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "LightDotSo",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./src/index.ts",
+  "files": ["dist/**", "src/**"],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "^1.1.4",
+    "@gregnr/postgres-meta": "^0.82.0-dev.2",
+    "@lightdotso/data": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/query": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
+    "framer-motion": "^11.3.28",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.428.0",
+    "next-themes": "^0.3.0",
+    "react": "19.0.0-rc-187dd6a7-20240806",
+    "react-dom": "19.0.0-rc-187dd6a7-20240806",
+    "react-is": "19.0.0-rc-187dd6a7-20240806",
+    "reactflow": "^11.11.4",
+    "viem": "^2.19.7"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^8.2.9",
+    "@types/lodash": "^4.17.7",
+    "@types/node": "^22.4.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}

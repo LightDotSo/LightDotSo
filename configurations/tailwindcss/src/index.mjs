@@ -43,6 +43,7 @@ export default {
     "../../apps/storybook/.storybook/**/*.{ts,tsx}",
     "../../packages/dialogs/src/**/*.{ts,tsx}",
     "../../packages/elements/src/**/*.{ts,tsx}",
+    "../../packages/flow/src/**/*.{ts,tsx}",
     "../../packages/modals/src/**/*.{ts,tsx}",
     "../../packages/states/src/**/*.{ts,tsx}",
     "../../packages/svg/src/**/*.{ts,tsx}",
