@@ -42,6 +42,7 @@ export const getLifiQuote = async (
 ): GetLifiQuoteResponse => {
   const client = getLifiClient(clientType);
 
+  // @ts-expect-error
   return ResultAsync.fromPromise(
     client.GET("/quote", {
       params: params,
