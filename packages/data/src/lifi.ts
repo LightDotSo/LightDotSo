@@ -137,19 +137,21 @@ export type LifiQuotePageData = {
     };
   };
   integrator?: string;
-  execution?: {
-    status?: string;
-    process?: {
-      id?: string;
-      startedAt?: number;
-      message?: string;
-      status?: string;
-      txHash?: string;
-      txLink?: string;
-      doneAt?: number;
-    }[];
-  };
-  transactionRequest?: LifiTransactionRequest;
+  execution?:
+    | {
+        status?: string;
+        process?: {
+          id?: string;
+          startedAt?: number;
+          message?: string;
+          status?: string;
+          txHash?: string;
+          txLink?: string;
+          doneAt?: number;
+        }[];
+      }
+    | unknown;
+  transactionRequest?: LifiTransactionRequest | unknown;
 };
 
 export type LifiTokensPageData = {

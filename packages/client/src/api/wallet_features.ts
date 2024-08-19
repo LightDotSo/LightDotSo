@@ -16,10 +16,14 @@ import type { WalletFeaturesData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetWalletFeaturesParams =
+  paths["/wallet/features/get"]["get"]["parameters"];
 
 export type GetWalletFeaturesResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getWalletFeatures = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: GetWalletFeaturesParams;
   },
   clientType?: ClientType,
 ): GetWalletFeaturesResponse => {
@@ -61,6 +63,12 @@ export const getWalletFeatures = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PutWalletFeaturesParams =
+  paths["/wallet/features/update"]["put"]["parameters"];
+
+export type PutWalletFeaturesBody =
+  paths["/wallet/features/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletFeaturesResponse = Promise<
   Result<
@@ -82,14 +90,8 @@ export const updateWalletFeatures = async (
     params,
     body,
   }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      wallet_features: {
-        is_enabled_ai?: boolean | null | undefined;
-      };
-    };
+    params: PutWalletFeaturesParams;
+    body: PutWalletFeaturesBody;
   },
   clientType?: ClientType,
 ): PutWalletFeaturesResponse => {

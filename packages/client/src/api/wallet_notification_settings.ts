@@ -16,10 +16,14 @@ import type { WalletNotificationSettingsData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetWalletNotificationSettingsParams =
+  paths["/wallet/notification/settings/get"]["get"]["parameters"];
 
 export type GetWalletNotificationSettingsResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getWalletNotificationSettings = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; user_id?: string | null | undefined };
-    };
+    params: GetWalletNotificationSettingsParams;
   },
   clientType?: ClientType,
 ): GetWalletNotificationSettingsResponse => {
@@ -61,6 +63,12 @@ export const getWalletNotificationSettings = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PutWalletNotificationSettingsParams =
+  paths["/wallet/notification/settings/update"]["put"]["parameters"];
+
+export type PutWalletNotificationSettingsBody =
+  paths["/wallet/notification/settings/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletNotificationSettingsResponse = Promise<
   Result<
@@ -82,14 +90,8 @@ export const updateWalletNotificationSettings = async (
     params,
     body,
   }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      wallet_notification_settings: {
-        settings?: { key: string; value: boolean }[] | null | undefined;
-      };
-    };
+    params: PutWalletNotificationSettingsParams;
+    body: PutWalletNotificationSettingsBody;
   },
   clientType?: ClientType,
 ): PutWalletNotificationSettingsResponse => {

@@ -16,10 +16,13 @@ import type { UserData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetUserParams = paths["/user/get"]["get"]["parameters"];
 
 export type GetUserResponse = Promise<
   Result<
@@ -36,12 +39,7 @@ export const getUser = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        address?: string | null | undefined;
-        user_id?: string | null | undefined;
-      };
-    };
+    params: GetUserParams;
   },
   clientType?: ClientType,
 ) => {

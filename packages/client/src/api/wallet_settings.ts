@@ -16,10 +16,14 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetWalletSettingsParams =
+  paths["/wallet/settings/get"]["get"]["parameters"];
 
 export type GetWalletSettingsResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getWalletSettings = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: GetWalletSettingsParams;
   },
   clientType?: ClientType,
 ): GetWalletSettingsResponse => {
@@ -61,6 +63,12 @@ export const getWalletSettings = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PutWalletSettingsParams =
+  paths["/wallet/settings/update"]["put"]["parameters"];
+
+export type PutWalletNotificationSettingsBody =
+  paths["/wallet/settings/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletSettingsResponse = Promise<
   Result<
@@ -82,15 +90,8 @@ export const updateWalletSettings = async (
     params,
     body,
   }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      wallet_settings: {
-        is_enabled_dev?: boolean | null | undefined;
-        is_enabled_testnet?: boolean | null | undefined;
-      };
-    };
+    params: PutWalletSettingsParams;
+    body: PutWalletNotificationSettingsBody;
   },
   clientType?: ClientType,
 ): PutWalletSettingsResponse => {

@@ -16,10 +16,14 @@ import type { UserOperationMerkleData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetUserOperationMerkleParams =
+  paths["/user_operation_merkle/get"]["get"]["parameters"];
 
 export type GetUserOperationMerkleResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getUserOperationMerkle = async (
   {
     params,
   }: {
-    params: {
-      query: { root: string };
-    };
+    params: GetUserOperationMerkleParams;
   },
   clientType?: ClientType,
 ): GetUserOperationMerkleResponse => {
