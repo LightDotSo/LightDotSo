@@ -67,7 +67,7 @@ export const getWalletSettings = async (
 export type PutWalletSettingsParams =
   paths["/wallet/settings/update"]["put"]["parameters"];
 
-export type PutWalletNotificationSettingsBody =
+export type PutWalletSettingsBody =
   paths["/wallet/settings/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletSettingsResponse = Promise<
@@ -91,7 +91,7 @@ export const updateWalletSettings = async (
     body,
   }: {
     params: PutWalletSettingsParams;
-    body: PutWalletNotificationSettingsBody;
+    body: PutWalletSettingsBody;
   },
   clientType?: ClientType,
 ): PutWalletSettingsResponse => {
