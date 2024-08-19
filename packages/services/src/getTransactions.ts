@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getTransactions as getClientTransactions } from "@lightdotso/client";
+import {
+  type GetTransactionsResponse,
+  getTransactions as getClientTransactions,
+} from "@lightdotso/client";
 import type { TransactionListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetTransactions = (params: TransactionListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTransactions = async (params: TransactionListParams) => {
+export const getTransactions = async (
+  params: TransactionListParams,
+): GetTransactionsResponse => {
   return await getClientTransactions(
     {
       params: {

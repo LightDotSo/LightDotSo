@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { ActivityCountData, ActivityData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetActivitiesResponse = Promise<
+  Result<
+    ActivityData[],
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -36,7 +48,7 @@ export const getActivities = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetActivitiesResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -48,6 +60,17 @@ export const getActivities = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetActivitiesCountResponse = Promise<
+  Result<
+    ActivityCountData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 export const getActivitiesCount = async (
   {
@@ -63,7 +86,7 @@ export const getActivitiesCount = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetActivitiesCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

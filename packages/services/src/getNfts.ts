@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getNftsByOwner as getClientNftsByOwner } from "@lightdotso/client";
+import {
+  type GetNftsResponse,
+  getNftsByOwner as getClientNftsByOwner,
+} from "@lightdotso/client";
 import type { NftListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetNfts = (params: NftListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNfts = async (params: NftListParams) => {
+export const getNfts = async (
+  params: NftListParams,
+): Promise<GetNftsResponse> => {
   return await getClientNftsByOwner(
     {
       // biome-ignore lint/style/noNonNullAssertion: <explanation>

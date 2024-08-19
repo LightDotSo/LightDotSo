@@ -12,9 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { ConfigurationOperationData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostConfigurationOperationResponse = Promise<
+  Result<
+    ConfigurationOperationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST
@@ -44,7 +61,7 @@ export const createConfigurationOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostConfigurationOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

@@ -12,9 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { WalletBillingData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletBillingResponse = Promise<
+  Result<
+    WalletBillingData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -29,7 +45,7 @@ export const getWalletBilling = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetWalletBillingResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

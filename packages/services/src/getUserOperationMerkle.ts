@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationMerkle as getClientUserOperationMerkle } from "@lightdotso/client";
+import {
+  type GetUserOperationMerkleResponse,
+  getUserOperationMerkle as getClientUserOperationMerkle,
+} from "@lightdotso/client";
 import type { UserOperationMerkleGetParams } from "@lightdotso/params";
 import "server-only";
 
@@ -32,7 +35,7 @@ export const preloadGetUserOperationMerkle = (
 
 export const getUserOperationMerkle = async (
   params: UserOperationMerkleGetParams,
-) => {
+): GetUserOperationMerkleResponse => {
   return await getClientUserOperationMerkle(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { root: params.root! } } },

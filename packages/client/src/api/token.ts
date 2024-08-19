@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { TokenCountData, TokenData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokenResponse = Promise<
+  Result<
+    TokenData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -42,6 +54,25 @@ export const getToken = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokensResponse = Promise<
+  Result<
+    TokenData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getTokens = async (
   {
     params,
@@ -59,7 +90,7 @@ export const getTokens = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetTokensResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -71,6 +102,25 @@ export const getTokens = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetTokensCountResponse = Promise<
+  Result<
+    TokenCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getTokensCount = async (
   {
@@ -87,7 +137,7 @@ export const getTokensCount = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetTokensCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

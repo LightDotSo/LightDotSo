@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWalletsCount as getClientWalletsCount } from "@lightdotso/client";
+import {
+  type GetWalletsCountResponse,
+  getWalletsCount as getClientWalletsCount,
+} from "@lightdotso/client";
 import type { WalletListCountParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetWalletsCount = (params: WalletListCountParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWalletsCount = async (params: WalletListCountParams) => {
+export const getWalletsCount = async (
+  params: WalletListCountParams,
+): GetWalletsCountResponse => {
   return await getClientWalletsCount(
     {
       params: {

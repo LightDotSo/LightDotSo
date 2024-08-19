@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { NotificationCountData, NotificationData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNotificationsResponse = Promise<
+  Result<
+    NotificationData[],
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -36,7 +48,7 @@ export const getNotifications = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetNotificationsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -48,6 +60,21 @@ export const getNotifications = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNotificationsCountResponse = Promise<
+  Result<
+    NotificationCountData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getNotificationsCount = async (
   {

@@ -12,9 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostQueueResponse = Promise<
+  Result<
+    { Queued: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { RateLimitExceeded: string }
+    | { ProviderError: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST
@@ -29,7 +45,7 @@ export const createQueuePortfolio = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -51,7 +67,7 @@ export const createQueueToken = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -76,7 +92,7 @@ export const createQueueInterpretation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -101,7 +117,7 @@ export const createQueueTransaction = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -125,7 +141,7 @@ export const createQueueUserOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostQueueResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

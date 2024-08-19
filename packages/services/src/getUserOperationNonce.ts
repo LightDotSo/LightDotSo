@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUserOperationNonce as getClientUserOperationNonce } from "@lightdotso/client";
+import {
+  type GetUserOperationNonceResponse,
+  getUserOperationNonce as getClientUserOperationNonce,
+} from "@lightdotso/client";
 import type { UserOperationNonceParams } from "@lightdotso/params";
 import "server-only";
 
@@ -32,7 +35,7 @@ export const preloadGetUserOperationNonce = (
 
 export const getUserOperationNonce = async (
   params: UserOperationNonceParams,
-) => {
+): GetUserOperationNonceResponse => {
   return await getClientUserOperationNonce(
     {
       params: {

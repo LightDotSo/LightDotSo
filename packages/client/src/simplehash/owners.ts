@@ -12,15 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { NftDataPage } from "@lightdotso/data";
 import {
   nftsByOwnerSchema,
   simplehashChainSchema,
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
-import { ResultAsync } from "neverthrow";
+import { type Result, ResultAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSimplehashClient } from "../client";
 import { zodFetch } from "../zod";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNftsResponse = Promise<
+  Result<
+    NftDataPage,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getNftsByOwner = async (
   {
@@ -37,7 +53,7 @@ export const getNftsByOwner = async (
     spamScore?: number | null;
   },
   clientType?: ClientType,
-) => {
+): GetNftsResponse => {
   const chains = isTestnet
     ? simplehashChainSchema.options.join(",")
     : simplehashMainnetChainSchema.options.join(",");

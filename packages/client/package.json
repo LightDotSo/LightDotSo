@@ -36,6 +36,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/data": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",

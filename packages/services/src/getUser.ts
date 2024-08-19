@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getUser as getClientUser } from "@lightdotso/client";
+import {
+  type GetUserResponse,
+  getUser as getClientUser,
+} from "@lightdotso/client";
 import type { UserParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,7 @@ export const preloadGetUser = (params: UserParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUser = async (params: UserParams) => {
+export const getUser = async (params: UserParams): GetUserResponse => {
   return await getClientUser(
     { params: { query: { address: params.address, user_id: params.user_id } } },
     "admin",

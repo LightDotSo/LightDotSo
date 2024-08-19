@@ -12,9 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { SimulationData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostSimulationResponse = Promise<
+  Result<
+    SimulationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { RateLimitExceeded: string }
+    | { ProviderError: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST

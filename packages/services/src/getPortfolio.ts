@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getPortfolio as getClientPortfolio } from "@lightdotso/client";
+import {
+  type GetPortfolioResponse,
+  getPortfolio as getClientPortfolio,
+} from "@lightdotso/client";
 import type { PortfolioParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetPortfolio = (params: PortfolioParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getPortfolio = async (params: PortfolioParams) => {
+export const getPortfolio = async (
+  params: PortfolioParams,
+): Promise<GetPortfolioResponse> => {
   return await getClientPortfolio(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },

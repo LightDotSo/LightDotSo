@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWallet as getClientWallet } from "@lightdotso/client";
+import {
+  type GetWalletResponse,
+  getWallet as getClientWallet,
+} from "@lightdotso/client";
 import type { WalletParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,7 @@ export const preloadGetWallet = (params: WalletParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWallet = async (params: WalletParams) => {
+export const getWallet = async (params: WalletParams): GetWalletResponse => {
   return await getClientWallet(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },

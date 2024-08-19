@@ -12,16 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { NonceData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetNonceResponse = Promise<
+  Result<
+    NonceData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const getNonce = async (params?: {}, clientType?: ClientType) => {
+export const getNonce = async (
+  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  params?: {},
+  clientType?: ClientType,
+): GetNonceResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -49,11 +69,30 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostAuthLogoutResponse = Promise<
+  Result<
+    { Logout: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const authLogout = async (params?: {}, clientType?: ClientType) => {
+export const authLogout = async (
+  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  params?: {},
+  clientType?: ClientType,
+): PostAuthLogoutResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -65,6 +104,26 @@ export const authLogout = async (params?: {}, clientType?: ClientType) => {
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostAuthVerifyResponse = Promise<
+  Result<
+    { nonce: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
 
 export const authVerify = async (
   {
@@ -80,7 +139,7 @@ export const authVerify = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostAuthVerifyResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

@@ -12,15 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { UserOperationData } from "./userOperation";
-import type { UserOperationMerkleProofData } from "./userOperationMerkleProof";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type UserOperationMerkleData = {
-  root: string;
-  user_operations: UserOperationData[];
-  proofs: UserOperationMerkleProofData[];
+export type NonceData = {
+  nonce: string;
 };

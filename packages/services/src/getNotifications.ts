@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getNotifications as getClientNotifications } from "@lightdotso/client";
+import {
+  type GetNotificationsResponse,
+  getNotifications as getClientNotifications,
+} from "@lightdotso/client";
 import type { WalletListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetNotifications = (params: WalletListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNotifications = async (params: WalletListParams) => {
+export const getNotifications = async (
+  params: WalletListParams,
+): Promise<GetNotificationsResponse> => {
   return await getClientNotifications(
     {
       params: {

@@ -12,9 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { FeedbackData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostFeedbackResponse = Promise<
+  Result<
+    FeedbackData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { InternalError: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST
@@ -32,7 +49,7 @@ export const createFeedback = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostFeedbackResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

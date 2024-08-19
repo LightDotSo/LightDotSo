@@ -12,9 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { WalletCountData, WalletData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -29,7 +46,7 @@ export const getWallet = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -41,6 +58,26 @@ export const getWallet = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletsResponse = Promise<
+  Result<
+    WalletData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getWallets = async (
   {
@@ -58,7 +95,7 @@ export const getWallets = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetWalletsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -70,6 +107,26 @@ export const getWallets = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletsCountResponse = Promise<
+  Result<
+    WalletCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getWalletsCount = async (
   {
@@ -101,6 +158,22 @@ export const getWalletsCount = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
@@ -124,7 +197,7 @@ export const createWallet = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -137,6 +210,22 @@ export const createWallet = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutWalletResponse = Promise<
+  Result<
+    WalletData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Conflict: string }
+    | { InvalidConfiguration: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // PUT
@@ -155,7 +244,7 @@ export const updateWallet = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PutWalletResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

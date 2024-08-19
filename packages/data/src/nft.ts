@@ -129,8 +129,8 @@ export type NftData = {
 };
 
 export type NftDataPage = {
-  next_cursor: string | null;
-  next: string | null;
+  next_cursor?: string | null | undefined;
+  next?: string | null | undefined;
   nfts: NftData[];
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   previous?: any;

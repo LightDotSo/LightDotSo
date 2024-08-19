@@ -12,9 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { PaymasterOperationData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetPaymasterOperationResponse = Promise<
+  Result<
+    PaymasterOperationData,
+    Error | { BadRequest: string } | { NotFound: string } | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -34,7 +46,7 @@ export const getPaymasterOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetPaymasterOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

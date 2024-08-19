@@ -12,9 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { InviteCodeCountData, InviteCodeData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodeResponse = Promise<
+  Result<
+    InviteCodeData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -29,7 +45,7 @@ export const getInviteCode = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetInviteCodeResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -41,6 +57,25 @@ export const getInviteCode = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodesResponse = Promise<
+  Result<
+    InviteCodeData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getInviteCodes = async (
   {
@@ -55,7 +90,7 @@ export const getInviteCodes = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetInviteCodesResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -67,6 +102,25 @@ export const getInviteCodes = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetInviteCodesCountResponse = Promise<
+  Result<
+    InviteCodeCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getInviteCodesCount = async (
   {

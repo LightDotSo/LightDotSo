@@ -12,9 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type { WalletFeaturesData } from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetWalletFeaturesResponse = Promise<
+  Result<
+    WalletFeaturesData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -29,7 +45,7 @@ export const getWalletFeatures = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetWalletFeaturesResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -41,6 +57,21 @@ export const getWalletFeatures = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutWalletFeaturesResponse = Promise<
+  Result<
+    WalletFeaturesData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // PUT
@@ -61,7 +92,7 @@ export const updateWalletFeatures = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PutWalletFeaturesResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

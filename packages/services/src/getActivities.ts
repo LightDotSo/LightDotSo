@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getActivities as getClientActivities } from "@lightdotso/client";
+import {
+  type GetActivitiesResponse,
+  getActivities as getClientActivities,
+} from "@lightdotso/client";
 import type { ActivityListParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetActivities = (params: ActivityListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getActivities = async (params: ActivityListParams) => {
+export const getActivities = async (
+  params: ActivityListParams,
+): Promise<GetActivitiesResponse> => {
   return await getClientActivities(
     {
       params: {

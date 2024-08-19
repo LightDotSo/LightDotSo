@@ -12,9 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import type {
+  UserOperationCountData,
+  UserOperationData,
+  UserOperationNonceData,
+  UserOperationSignatureData,
+} from "@lightdotso/data";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationResponse = Promise<
+  Result<
+    UserOperationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // GET
@@ -29,7 +50,7 @@ export const getUserOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -42,6 +63,25 @@ export const getUserOperation = async (
   });
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationNonceResponse = Promise<
+  Result<
+    UserOperationNonceData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getUserOperationNonce = async (
   {
     params,
@@ -51,7 +91,7 @@ export const getUserOperationNonce = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationNonceResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -63,6 +103,25 @@ export const getUserOperationNonce = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationSignatureResponse = Promise<
+  Result<
+    UserOperationSignatureData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getUserOperationSignature = async (
   {
@@ -76,7 +135,7 @@ export const getUserOperationSignature = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationSignatureResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -88,6 +147,25 @@ export const getUserOperationSignature = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationsResponse = Promise<
+  Result<
+    UserOperationData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getUserOperations = async (
   {
@@ -117,7 +195,7 @@ export const getUserOperations = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationsResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -129,6 +207,25 @@ export const getUserOperations = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type GetUserOperationsCountResponse = Promise<
+  Result<
+    UserOperationCountData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
 
 export const getUserOperationsCount = async (
   {
@@ -154,7 +251,7 @@ export const getUserOperationsCount = async (
     };
   },
   clientType?: ClientType,
-) => {
+): GetUserOperationsCountResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -166,6 +263,21 @@ export const getUserOperationsCount = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostUserOperationResponse = Promise<
+  Result<
+    UserOperationData,
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST
@@ -210,7 +322,7 @@ export const createUserOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -223,6 +335,25 @@ export const createUserOperation = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostBatchUserOperationResponse = Promise<
+  Result<
+    UserOperationData[],
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
 
 export const createBatchUserOperation = async (
   {
@@ -264,7 +395,7 @@ export const createBatchUserOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostBatchUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -279,6 +410,21 @@ export const createBatchUserOperation = async (
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PutUserOperationResponse = Promise<
+  Result<
+    { Updated: string },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { Unauthorized: string }
+    | undefined
+  >
+>;
+
+// -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------
 
@@ -291,7 +437,7 @@ export const updateUserOperation = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PutUserOperationResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

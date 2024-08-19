@@ -12,9 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type PostSignatureResponse = Promise<
+  Result<
+    {
+      created_at: string;
+      owner_id: string;
+      signature: string;
+      signature_type: number;
+    },
+    | Error
+    | { BadRequest: string }
+    | { NotFound: string }
+    | { RateLimitExceeded: string }
+    | { ProviderError: string }
+    | undefined
+  >
+>;
 
 // -----------------------------------------------------------------------------
 // POST
@@ -40,7 +61,7 @@ export const createSignature = async (
     };
   },
   clientType?: ClientType,
-) => {
+): PostSignatureResponse => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(

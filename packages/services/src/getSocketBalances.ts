@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getSocketBalances as getClientSocketBalances } from "@lightdotso/client";
+import {
+  type GetSocketBalancesResponse,
+  getSocketBalances as getClientSocketBalances,
+} from "@lightdotso/client";
 import type { SocketBalanceParams } from "@lightdotso/params";
 import "server-only";
 
@@ -28,7 +31,9 @@ export const preloadGetSocketBalances = (params: SocketBalanceParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getSocketBalances = async (params: SocketBalanceParams) => {
+export const getSocketBalances = async (
+  params: SocketBalanceParams,
+): Promise<GetSocketBalancesResponse> => {
   return await getClientSocketBalances(
     {
       parameters: {
