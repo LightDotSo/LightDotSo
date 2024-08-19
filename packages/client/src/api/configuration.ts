@@ -16,10 +16,14 @@ import type { ConfigurationData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetConfigurationParams =
+  paths["/configuration/get"]["get"]["parameters"];
 
 export type GetConfigurationResponse = Promise<
   Result<
@@ -36,13 +40,7 @@ export const getConfiguration = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        address: string;
-        image_hash?: string | null;
-        checkpoint?: number | null;
-      };
-    };
+    params: GetConfigurationParams;
   },
   clientType?: ClientType,
 ): GetConfigurationResponse => {

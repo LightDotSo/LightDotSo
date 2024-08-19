@@ -16,10 +16,14 @@ import type { PaymasterOperationData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetPaymasterOperationParams =
+  paths["/paymaster_operation/get"]["get"]["parameters"];
 
 export type GetPaymasterOperationResponse = Promise<
   Result<
@@ -36,14 +40,7 @@ export const getPaymasterOperation = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        address: string;
-        chain_id: number;
-        valid_until: number;
-        valid_after: number;
-      };
-    };
+    params: GetPaymasterOperationParams;
   },
   clientType?: ClientType,
 ): GetPaymasterOperationResponse => {

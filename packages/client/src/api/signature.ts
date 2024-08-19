@@ -15,10 +15,17 @@
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PostSignatureParams =
+  paths["/signature/create"]["post"]["parameters"];
+
+export type PostSignatureBody =
+  paths["/signature/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostSignatureResponse = Promise<
   Result<
@@ -46,19 +53,8 @@ export const createSignature = async (
     params,
     body,
   }: {
-    params: {
-      query: {
-        user_operation_hash: string;
-        procedure?: "Offchain" | "Onchain" | "Erc1271" | null | undefined;
-      };
-    };
-    body: {
-      signature: {
-        owner_id: string;
-        signature: string;
-        signature_type: number;
-      };
-    };
+    params: PostSignatureParams;
+    body: PostSignatureBody;
   },
   clientType?: ClientType,
 ): PostSignatureResponse => {

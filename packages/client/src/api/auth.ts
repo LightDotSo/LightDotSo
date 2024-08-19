@@ -16,10 +16,14 @@ import type { NonceData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export type GetNonceParams = {};
 
 export type GetNonceResponse = Promise<
   Result<
@@ -38,8 +42,7 @@ export type GetNonceResponse = Promise<
 // -----------------------------------------------------------------------------
 
 export const getNonce = async (
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  params?: {},
+  params?: GetNonceParams,
   clientType?: ClientType,
 ): GetNonceResponse => {
   const client = getClient(clientType);
@@ -72,6 +75,9 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 // Types
 // -----------------------------------------------------------------------------
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export type PostAuthLogoutParams = {};
+
 export type PostAuthLogoutResponse = Promise<
   Result<
     { Logout: string },
@@ -89,8 +95,7 @@ export type PostAuthLogoutResponse = Promise<
 // -----------------------------------------------------------------------------
 
 export const authLogout = async (
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  params?: {},
+  params?: PostAuthLogoutParams,
   clientType?: ClientType,
 ): PostAuthLogoutResponse => {
   const client = getClient(clientType);
@@ -108,6 +113,11 @@ export const authLogout = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PostAuthVerifyParams = paths["/auth/verify"]["post"]["parameters"];
+
+export type PostAuthVerifyBody =
+  paths["/auth/verify"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostAuthVerifyResponse = Promise<
   Result<
@@ -130,13 +140,8 @@ export const authVerify = async (
     params,
     body,
   }: {
-    params: {
-      query: { user_address: string };
-    };
-    body: {
-      message: string;
-      signature: string;
-    };
+    params: PostAuthVerifyParams;
+    body: PostAuthVerifyBody;
   },
   clientType?: ClientType,
 ): PostAuthVerifyResponse => {

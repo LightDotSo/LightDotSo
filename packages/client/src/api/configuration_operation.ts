@@ -16,10 +16,17 @@ import type { ConfigurationOperationData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PostConfigurationOperationParams =
+  paths["/configuration_operation/create"]["post"]["parameters"];
+
+export type PostConfigurationOperationBody =
+  paths["/configuration_operation/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostConfigurationOperationResponse = Promise<
   Result<
@@ -42,23 +49,8 @@ export const createConfigurationOperation = async (
     params,
     body,
   }: {
-    params: {
-      query: {
-        address: string;
-        simulate: boolean | undefined;
-      };
-    };
-    body: {
-      owners: {
-        address: string;
-        weight: number;
-      }[];
-      signature: {
-        owner_id: string;
-        signature: string;
-      };
-      threshold: number;
-    };
+    params: PostConfigurationOperationParams;
+    body: PostConfigurationOperationBody;
   },
   clientType?: ClientType,
 ): PostConfigurationOperationResponse => {

@@ -16,10 +16,14 @@ import type { InviteCodeCountData, InviteCodeData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetInviteCodeParams =
+  paths["/invite_code/get"]["get"]["parameters"];
 
 export type GetInviteCodeResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getInviteCode = async (
   {
     params,
   }: {
-    params: {
-      query: { code: string };
-    };
+    params: GetInviteCodeParams;
   },
   clientType?: ClientType,
 ): GetInviteCodeResponse => {
@@ -61,6 +63,9 @@ export const getInviteCode = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetInviteCodesParams =
+  paths["/invite_code/list"]["get"]["parameters"];
 
 export type GetInviteCodesResponse = Promise<
   Result<
@@ -81,13 +86,7 @@ export const getInviteCodes = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-      };
-    };
+    params: GetInviteCodesParams;
   },
   clientType?: ClientType,
 ): GetInviteCodesResponse => {
@@ -106,6 +105,9 @@ export const getInviteCodes = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetInviteCodesCountParams =
+  paths["/invite_code/list/count"]["get"]["parameters"];
 
 export type GetInviteCodesCountResponse = Promise<
   Result<
@@ -126,12 +128,7 @@ export const getInviteCodesCount = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-      };
-    };
+    params: GetInviteCodesCountParams;
   },
   clientType?: ClientType,
 ) => {

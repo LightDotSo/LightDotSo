@@ -16,10 +16,13 @@ import type { ActivityCountData, ActivityData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetActivitiesParams = paths["/activity/list"]["get"]["parameters"];
 
 export type GetActivitiesResponse = Promise<
   Result<
@@ -36,16 +39,7 @@ export const getActivities = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetActivitiesParams;
   },
   clientType?: ClientType,
 ): GetActivitiesResponse => {
@@ -65,6 +59,9 @@ export const getActivities = async (
 // Types
 // -----------------------------------------------------------------------------
 
+export type GetActivitiesCountParams =
+  paths["/activity/list/count"]["get"]["parameters"];
+
 export type GetActivitiesCountResponse = Promise<
   Result<
     ActivityCountData,
@@ -72,18 +69,15 @@ export type GetActivitiesCountResponse = Promise<
   >
 >;
 
+// -----------------------------------------------------------------------------
+// GET
+// -----------------------------------------------------------------------------
+
 export const getActivitiesCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            address?: string | null | undefined;
-            user_id?: string | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetActivitiesCountParams;
   },
   clientType?: ClientType,
 ): GetActivitiesCountResponse => {

@@ -16,10 +16,14 @@ import type { FeedbackData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PostFeedbackBody =
+  paths["/feedback/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostFeedbackResponse = Promise<
   Result<
@@ -41,12 +45,7 @@ export const createFeedback = async (
   {
     body,
   }: {
-    body: {
-      feedback: {
-        emoji: string;
-        text: string;
-      };
-    };
+    body: PostFeedbackBody;
   },
   clientType?: ClientType,
 ): PostFeedbackResponse => {

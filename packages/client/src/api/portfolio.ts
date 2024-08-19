@@ -16,10 +16,13 @@ import type { TokenPortfolioData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetPortfolioParams = paths["/portfolio/get"]["get"]["parameters"];
 
 export type GetPortfolioResponse = Promise<
   Result<
@@ -36,9 +39,7 @@ export const getPortfolio = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string };
-    };
+    params: GetPortfolioParams;
   },
   clientType?: ClientType,
 ): Promise<GetPortfolioResponse> => {

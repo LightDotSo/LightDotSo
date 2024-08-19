@@ -16,10 +16,14 @@ import type { SimulationData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type PostSimulationBody =
+  paths["/simulation/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostSimulationResponse = Promise<
   Result<
@@ -41,13 +45,7 @@ export const createSimulation = async (
   {
     body,
   }: {
-    body: {
-      chain_id: number;
-      sender: string;
-      nonce: number;
-      call_data: string;
-      init_code: string;
-    };
+    body: PostSimulationBody;
   },
   clientType?: ClientType,
 ) => {
