@@ -363,6 +363,7 @@ cygpath
 CYGPATTERN
 cytoscape
 dagre
+dagrejs
 dagrs
 Daian
 damerau
@@ -585,6 +586,7 @@ graphcache
 graphemer
 graphprotocol
 grbk
+gregnr
 gridlist
 groupby
 gsist

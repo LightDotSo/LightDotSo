@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "moduleResolution": "Bundler"
+  },
+  "exclude": ["dist", "build", "node_modules"],
+  "extends": "@lightdotso/tsconfig/react.json",
+  "include": ["."]
+}
