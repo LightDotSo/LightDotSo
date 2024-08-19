@@ -14,6 +14,7 @@
 
 import { cn } from "@lightdotso/utils";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import Link, { type LinkProps } from "next/link";
 import { forwardRef } from "react";
 import type { ComponentProps } from "react";
 import type { ButtonProps } from "./button";
@@ -50,7 +51,8 @@ PaginationItem.displayName = "PaginationItem";
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
-  ComponentProps<"a">;
+  ComponentProps<"a"> &
+  LinkProps;
 
 const PaginationLink = ({
   className,
@@ -58,8 +60,7 @@ const PaginationLink = ({
   size,
   ...props
 }: PaginationLinkProps) => (
-  // eslint-disable-next-line jsx-a11y/anchor-has-content
-  <a
+  <Link
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
