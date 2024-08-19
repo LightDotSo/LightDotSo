@@ -16,10 +16,13 @@ import type { TokenCountData, TokenData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTokenParams = paths["/token/get"]["get"]["parameters"];
 
 export type GetTokenResponse = Promise<
   Result<
@@ -36,9 +39,7 @@ export const getToken = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; chain_id: number; wallet?: string | null };
-    };
+    params: GetTokenParams;
   },
   clientType?: ClientType,
 ) => {
@@ -57,6 +58,8 @@ export const getToken = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTokensParams = paths["/token/list"]["get"]["parameters"];
 
 export type GetTokensResponse = Promise<
   Result<
@@ -77,17 +80,7 @@ export const getTokens = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-        is_group_only?: boolean | null | undefined;
-        is_testnet?: boolean | null | undefined;
-        group?: boolean | null | undefined;
-        chain_ids?: string | null | undefined;
-      };
-    };
+    params: GetTokensParams;
   },
   clientType?: ClientType,
 ): GetTokensResponse => {
@@ -106,6 +99,9 @@ export const getTokens = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTokensCountParams =
+  paths["/token/list/count"]["get"]["parameters"];
 
 export type GetTokensCountResponse = Promise<
   Result<
@@ -126,15 +122,7 @@ export const getTokensCount = async (
   {
     params,
   }: {
-    params: {
-      query: {
-        offset?: number | null | undefined;
-        limit?: number | null | undefined;
-        address: string;
-        is_testnet?: boolean | null | undefined;
-        chain_ids?: string | null | undefined;
-      };
-    };
+    params: GetTokensCountParams;
   },
   clientType?: ClientType,
 ): GetTokensCountResponse => {

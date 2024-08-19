@@ -16,10 +16,14 @@ import type { TokenGroupData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTokenGroupParams =
+  paths["/token/group/get"]["get"]["parameters"];
 
 export type GetTokenGroupResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getTokenGroup = async (
   {
     params,
   }: {
-    params: {
-      query: { id: string };
-    };
+    params: GetTokenGroupParams;
   },
   clientType?: ClientType,
 ): GetTokenGroupResponse => {

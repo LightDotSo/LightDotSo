@@ -16,10 +16,14 @@ import type { TransactionCountData, TransactionData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTransactionsParams =
+  paths["/transaction/list"]["get"]["parameters"];
 
 export type GetTransactionsResponse = Promise<
   Result<
@@ -40,16 +44,7 @@ export const getTransactions = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            is_testnet?: boolean | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetTransactionsParams;
   },
   clientType?: ClientType,
 ) => {
@@ -68,6 +63,9 @@ export const getTransactions = async (
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTransactionsCountParams =
+  paths["/transaction/list/count"]["get"]["parameters"];
 
 export type GetTransactionCountResponse = Promise<
   Result<
@@ -88,16 +86,7 @@ export const getTransactionsCount = async (
   {
     params,
   }: {
-    params: {
-      query?:
-        | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
-            address?: string | null | undefined;
-            is_testnet?: boolean | null | undefined;
-          }
-        | undefined;
-    };
+    params: GetTransactionsCountParams;
   },
   clientType?: ClientType,
 ): GetTransactionCountResponse => {

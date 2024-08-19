@@ -16,10 +16,14 @@ import type { TokenPriceData } from "@lightdotso/data";
 import { type Result, ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
+import type { paths } from "../types/api/v1";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
+
+export type GetTokenPriceParams =
+  paths["/token_price/get"]["get"]["parameters"];
 
 export type GetTokenPriceResponse = Promise<
   Result<
@@ -40,9 +44,7 @@ export const getTokenPrice = async (
   {
     params,
   }: {
-    params: {
-      query: { address: string; chain_id: number };
-    };
+    params: GetTokenPriceParams;
   },
   clientType?: ClientType,
 ): GetTokenPriceResponse => {
