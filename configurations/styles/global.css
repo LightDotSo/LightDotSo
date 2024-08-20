@@ -180,6 +180,7 @@
     --text-inverse: 0 0% 100%;
     --text-inverse-weak: 0 0% 93%;
     --text-inverse-weaker: 0 0% 78%;
+    --text-inverse-weaker: 0 0% 78%;
     --text-inverse-weakest: 0 0% 52%;
     --text-link: 214 98% 44%;
     --text-link-strong: 231 100% 27%;
@@ -195,7 +196,7 @@
     --text-link-destructive-weak: 0 79% 83%;
     --text-link-destructive-weaker: 0 88% 90%;
     --text-link-destructive-weakest: 0 100% 99%;
-    --text-pink: 322 65% 55%;
+    --text-pink-strongest: 323 65% 86%;
     --text-pink-weak: 323 60% 72%;
     --text-pink-weaker: 323 65% 86%;
     --text-pink-weakest: 323 100% 98%;
@@ -206,7 +207,18 @@
     --text-primary-weak: 209 100% 80%;
     --text-primary-weaker: 210 100% 94%;
     --text-primary-weakest: 210 100% 98%;
-    --text-purple: 272 51% 54%;
+    --text-purple-weak: 272 60% 74%;
+    --text-purple-weaker: 275 65% 88%;
+    --text-purple-weakest: 276 100% 99%;
+    --text-success: 151 55% 42%;
+    --text-success-weak: 151 40% 54%;
+    --text-success-weaker: 142 40% 79%;
+    --text-success-weakest: 136 73% 94%;
+    --text-warning: 13 71% 32%;
+    --text-warning-strong: 13 71% 32%;
+    --text-warning-weak: 25 100% 83%;
+    --text-warning-weaker: 26 100% 92%;
+    --text-warning-weakest: 24 83% 98%;
     --text-purple-weak: 272 60% 74%;
     --text-purple-weaker: 275 65% 88%;
     --text-purple-weakest: 276 100% 99%;
