@@ -42,7 +42,9 @@ export default async function Page() {
     <ul className="grid grid-cols-3 gap-8">
       {blogs.map((blog) => (
         <li key={blog.slug} className="group col-span-1">
-          <a href={`/blog/${blog.slug}`}>
+          <a
+            href={`${process.env.VERCEL_ENV === "production" ? "/blog/" : "/"}${blog.slug}`}
+          >
             <div className="aspect-h-9 aspect-w-16 cursor-pointer overflow-hidden rounded-sm transition duration-300 group-hover:opacity-80">
               <NextImage
                 placeholder="blur"

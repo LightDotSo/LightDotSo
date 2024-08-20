@@ -40,7 +40,11 @@ export default async function Page() {
     <ul className="text-lg hover:underline">
       {proposals.map((proposal) => (
         <li key={proposal.slug}>
-          <a href={`/proposals/${proposal.slug}`}>{proposal.entry.title}</a>
+          <a
+            href={`${process.env.VERCEL_ENV === "production" ? "/proposals/" : "/"}${proposal.slug}`}
+          >
+            {proposal.entry.title}
+          </a>
         </li>
       ))}
     </ul>
