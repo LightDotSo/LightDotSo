@@ -1,6 +1,6 @@
 {
   "markdown": {},
-  "includes": ["**/*.md"],
+  "includes": ["**/*.mdx"],
   "excludes": [],
   "plugins": ["https://plugins.dprint.dev/markdown-0.17.1.wasm"]
 }

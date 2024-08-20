@@ -14,7 +14,7 @@
 
 import "@lightdotso/styles/keystatic.css";
 import { createReader } from "@keystatic/core/reader";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink, NextImage } from "@lightdotso/elements";
 import {
   BannerSection,
   BaseLayerWrapper,
@@ -112,6 +112,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
               {getMDXComponent(code)({
                 components: {
                   a: ExternalLink,
+                  Image: NextImage,
                 },
               })}
             </div>
