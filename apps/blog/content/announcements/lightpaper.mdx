@@ -1,0 +1,55 @@
+---
+date: 2024-05-24
+title: Introducing Lightpaper
+ogp:
+  src: https://assets.light.so/blog/announcements/lightpaper.png
+---
+
+# Introducing Light: a new approach to tackle EVM UX fragmentation.
+
+<Image className="rounded-md" src="https://assets.light.so/blog/announcements/lightpaper.png" alt="Introducing Light" width={1200} height={630} />
+
+Fragmentation of UX is one of the biggest problems that crypto faces right now
+
+In the future, I believe users will interact with crypto through intents to achieve any desired outcome with a single click abstracting away all complexity
+
+Here's the specs:
+
+[https://paper.light.so](https://paper.light.so)
+
+### 1. Light Architecture
+
+<Image className="rounded-md" src="https://assets.light.so/blog/announcements/lightpaper/light-architecture.png" alt="Light Architecture" width={1200} height={630} />
+
+At the core of the protocol is the Light Layer - a "thin" layer designed to facilitate cross-chain transactions for achieving any desired outcome: automatically routing authorized assets/transactions filled by off-chain actors guaranteeing the best execution on the user's behalf.
+
+It sits a layer below other interoperability protocols and facilitates user-defined intents / solver-filled transactions so that the friction is invisible, and is responsible for clearing and settlement of off-chain actors beneath.
+
+
+### 2. Intents
+
+Not all intents are equal.
+
+There are different granularity of intents (from generalized to RFQs), and not all are executable by off-chain actors, and can be asynchronous or conditional.
+
+Therefore, there needs to be a different authorization flows depending on each use case.
+
+<Image className="rounded-md" src="https://assets.light.so/blog/announcements/lightpaper/light-user-flow.png" alt="Light User Flow" width={1200} height={630} />
+
+The end goal is to be holistic and not be opinionated in any way, supporting all tx formats and arbitrary function calls across chains - through "programmatic atomicity", it achieves each execution step while ensuring the necessary authorization of assets or conditions are met.
+
+However, realistically speaking, this is extremely hard to achieve user adoption - from a client / interface-side perspective, most wallets right now require multiple prompts for signing N signatures or authorizations.
+
+This is a bottleneck for adoption for any kind of generalized system, as there will likely to be little order-flow for such a new and different approach - the current authorization flow is not fit to the current standards meaning high cost of barrier.
+
+### 3. Light Layer
+
+Light aims to overcome this through aiming for an "end-to-end" solution where we provide a full stack "chain abstraction" experience and GTM w/ flagship products + distribute modular SDKs in order to achieve an ideal seamless experience for the end user for a unified experience.
+
+<Image className="rounded-md" src="https://assets.light.so/blog/announcements/lightpaper/light-layer.png" alt="Light Layer" width={1200} height={630} />
+
+At the end of the day, users want convenience and usability -  I believe there to be an "invisible" middleware that automatically facilitates cross-domain txs - the "Visa" of crypto, where authorization is specialized, but settlement is routed through for any desired execution
+
+---
+
+Originally posted here: [https://x.com/shunkakinoki/status/1786426534569574701](https://x.com/shunkakinoki/status/1786426534569574701)

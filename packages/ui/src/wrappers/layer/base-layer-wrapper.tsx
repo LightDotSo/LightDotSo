@@ -25,7 +25,9 @@ const baseLayerWrapperVariants = cva([], {
   variants: {
     size: {
       default: "max-w-7xl",
+      md: "max-w-6xl",
       sm: "max-w-5xl",
+      ss: "max-w-4xl",
       xs: "max-w-2xl",
       xxs: "max-w-lg",
     },

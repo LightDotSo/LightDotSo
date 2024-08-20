@@ -43,15 +43,15 @@ export default async function Page() {
       {blogs.map((blog) => (
         <li key={blog.slug} className="group col-span-1">
           <a href={`/blog/${blog.slug}`}>
-            <NextImage
-              placeholder="blur"
-              className="rounded-sm group-hover:opacity-80"
-              src={blog.entry.ogp.src}
-              alt={blog.entry.title}
-              width={1200}
-              height={630}
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-            />
+            <div className="aspect-h-9 aspect-w-16 cursor-pointer overflow-hidden rounded-sm transition duration-300 group-hover:opacity-80">
+              <NextImage
+                placeholder="blur"
+                src={blog.entry.ogp.src}
+                alt={blog.entry.title}
+                width={1200}
+                height={630}
+              />
+            </div>
             <div className="mt-2 font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
               {blog.entry.title}
             </div>
