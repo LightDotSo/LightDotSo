@@ -901,8 +901,6 @@ MAGICVALUE
 makeerror
 manypkg
 mapbox
-markdoc
-Markdoc
 marko
 marky
 matchall

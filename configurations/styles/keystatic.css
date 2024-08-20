@@ -65,7 +65,3 @@
 .keystatic blockquote > p {
   @apply max-w-screen-md mx-0 my-auto text-2xl font-bold;
 }
-
-.keystatic img {
-  @apply w-full relative mx-auto py-3 rounded-sm;
-}

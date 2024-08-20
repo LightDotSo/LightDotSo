@@ -28,7 +28,7 @@
     "@wagmi/core": "^2.13.4",
     "connectkit": "^1.8.2",
     "viem": "^2.19.7",
-    "wagmi": "^2.12.5"
+    "wagmi": "^2.12.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
