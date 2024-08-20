@@ -1,0 +1,23 @@
+[
+  {
+    "appName": "ArDrive-CLI",
+    "appVersion": "2.0.6",
+    "arFS": "0.11",
+    "contentType": "application/json",
+    "driveId": "85363f63-fe22-4b75-a3ce-9f5be65bfce6",
+    "entityType": "file",
+    "name": "end-of-tweet.png",
+    "txId": "tJ-H02hNRDZJ6Eb4TKECtj2V-P-rzxx4iRmDIpRllmU",
+    "unixTime": 1724161512,
+    "size": 280471,
+    "lastModifiedDate": 1724161291262,
+    "dataTxId": "AN4pWP-5b6zajtLMsZbDx4_3APVONDoBWETXtkQ05wY",
+    "dataContentType": "image/png",
+    "parentFolderId": "9ec2caf0-353c-4f93-a8e1-774a1d696253",
+    "entityId": "04241a1c-9073-4aa1-ad7a-164b5893b155",
+    "fileId": "04241a1c-9073-4aa1-ad7a-164b5893b155",
+    "path": "/LightDotSo/social/end-of-tweet.png",
+    "txIdPath": "/_vUuuegV4pyTF3lUhw65iwoXzcr3NANrFATt7qtNu7A/Nb2jI6nmT4PmevV8RflW-prAlLdnYqUykjkxt_qxGU0/tJ-H02hNRDZJ6Eb4TKECtj2V-P-rzxx4iRmDIpRllmU",
+    "entityIdPath": "/e64326f2-d457-4dd8-85cb-27e1b9f3969b/9ec2caf0-353c-4f93-a8e1-774a1d696253/04241a1c-9073-4aa1-ad7a-164b5893b155"
+  }
+]
