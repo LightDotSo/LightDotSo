@@ -14,6 +14,7 @@
 
 import "@lightdotso/styles/keystatic.css";
 import { createReader } from "@keystatic/core/reader";
+import { ExternalLink } from "@lightdotso/elements";
 import {
   BannerSection,
   BaseLayerWrapper,
@@ -109,7 +110,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
           <BasicPageWrapper>
             <div className="keystatic">
               {getMDXComponent(code)({
-                components: {},
+                components: {
+                  a: ExternalLink,
+                },
               })}
             </div>
           </BasicPageWrapper>

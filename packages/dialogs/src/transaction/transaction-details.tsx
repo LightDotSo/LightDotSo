@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { ExternalLink } from "@lightdotso/elements";
 import { useUserOperationsProgress } from "@lightdotso/hooks";
 import { ChainLogo } from "@lightdotso/svg";
 import {
@@ -26,7 +27,6 @@ import {
   shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
-import { ArrowUpRight } from "lucide-react";
 import type { FC } from "react";
 import { isAddress } from "viem";
 
@@ -60,17 +60,9 @@ export const TransactionDetailInfo: FC<TransactionDetailInfoProps> = ({
       </div>
       <div className="group flex items-center space-x-1.5 text-text">
         {href ? (
-          <>
-            <a
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              className="group-hover:underline"
-            >
-              {value}
-            </a>
-            <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
-          </>
+          <ExternalLink href={href} className="group-hover:underline">
+            {value}
+          </ExternalLink>
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>{value}</>

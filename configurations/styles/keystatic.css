@@ -58,10 +58,18 @@
   @apply px-4 py-2 font-serif leading-relaxed;
 }
 
+.keystatic hr {
+  @apply my-8;
+}
+
 .keystatic blockquote {
   @apply p-3 mx-16 my-auto font-serif text-xl italic;
 }
 
 .keystatic blockquote > p {
   @apply max-w-screen-md mx-0 my-auto text-2xl font-bold;
+}
+
+.keystatic img {
+  @apply mx-auto my-16;
 }

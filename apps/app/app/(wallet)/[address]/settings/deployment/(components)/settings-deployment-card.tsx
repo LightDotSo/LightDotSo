@@ -21,6 +21,7 @@ import {
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
+import { ExternalLink } from "@lightdotso/elements";
 import { useProxyImplementationAddress } from "@lightdotso/hooks";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
@@ -249,14 +250,12 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         {deployedOp?.transaction?.hash && (
           <div className="flex items-center gap-2">
             Tx:{" "}
-            <a
+            <ExternalLink
               className="text-sm text-text-weak hover:underline"
-              target="_blank"
-              rel="noreferrer"
               href={`${getEtherscanUrl(chain)}/tx/${deployedOp.transaction?.hash}`}
             >
               {shortenBytes32(deployedOp.transaction?.hash)}
-            </a>
+            </ExternalLink>
           </div>
         )}
         {!deployedOp && (

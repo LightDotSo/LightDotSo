@@ -15,7 +15,7 @@
 "use client";
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { UserOperationTimeline } from "@lightdotso/elements";
+import { ExternalLink, UserOperationTimeline } from "@lightdotso/elements";
 import { useCopy, useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
@@ -39,7 +39,7 @@ import {
 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-import { ArrowUpRight, CopyCheckIcon, ShareIcon } from "lucide-react";
+import { CopyCheckIcon, ShareIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import { Fragment, useCallback, useMemo } from "react";
@@ -205,17 +205,12 @@ export const UserOperationCardTransaction: FC<
                       </div>
                       <div className="group flex items-center space-x-1.5 text-text">
                         {item.href ? (
-                          <>
-                            <a
-                              href={item.href}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="group-hover:underline"
-                            >
-                              {item.value}
-                            </a>
-                            <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
-                          </>
+                          <ExternalLink
+                            href={item.href}
+                            className="group-hover:underline"
+                          >
+                            {item.value}
+                          </ExternalLink>
                         ) : (
                           // eslint-disable-next-line react/jsx-no-useless-fragment
                           <>{item.value}</>

@@ -15,6 +15,7 @@
 "use client";
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
+import { ExternalLink } from "@lightdotso/elements";
 import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
@@ -28,7 +29,6 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { type FC, useMemo } from "react";
 
@@ -175,15 +175,12 @@ export const RootContext: FC = () => {
                 <div className="mt-1.5 text-sm text-text-weak">
                   We&apos;re currently in private beta. Get on waitlist here if
                   you don&apos;t have an invite code yet.&nbsp;
-                  <a
+                  <ExternalLink
                     className="underline hover:text-text-weaker"
                     href={INTERNAL_LINKS.Waitlist}
-                    target="_blank"
-                    rel="noreferrer"
                   >
                     Waitlist
-                    <ArrowUpRight className="mb-3 ml-1 inline size-2" />
-                  </a>
+                  </ExternalLink>
                 </div>
               </div>
             )}

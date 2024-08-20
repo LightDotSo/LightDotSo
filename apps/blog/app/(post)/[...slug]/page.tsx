@@ -14,13 +14,14 @@
 
 import "@lightdotso/styles/keystatic.css";
 import { createReader } from "@keystatic/core/reader";
-import { NextImage } from "@lightdotso/elements";
+import { ExternalLink, NextImage } from "@lightdotso/elements";
 import {
   BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   HStackFull,
 } from "@lightdotso/ui";
+import { refineDateFormat } from "@lightdotso/utils";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import type { Metadata } from "next";
@@ -104,13 +105,17 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection size="sm" title={blog.title}>
+    <BannerSection
+      size="sm"
+      title={blog.title}
+      description={`Published on ${refineDateFormat(new Date(blog.date))}`}
+    >
       <HStackFull>
         <BaseLayerWrapper size="sm">
           <BasicPageWrapper>
             <div className="keystatic">
               {getMDXComponent(code)({
-                components: { Image: NextImage },
+                components: { a: ExternalLink, Image: NextImage },
               })}
             </div>
           </BasicPageWrapper>
