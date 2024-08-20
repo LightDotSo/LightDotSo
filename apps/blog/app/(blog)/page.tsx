@@ -50,7 +50,6 @@ export default async function Page() {
                 alt={blog.entry.title}
                 width={1200}
                 height={630}
-                style={{ width: "100%", height: "auto", objectFit: "cover" }}
               />
             </div>
             <div className="mt-2 font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
