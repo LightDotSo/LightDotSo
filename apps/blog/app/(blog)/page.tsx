@@ -39,7 +39,7 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul className="grid grid-cols-3 gap-8">
+    <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
       {blogs.map((blog) => (
         <li key={blog.slug} className="group col-span-1">
           <a
