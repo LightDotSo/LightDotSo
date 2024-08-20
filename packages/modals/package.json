@@ -39,7 +39,7 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^8.2.9",
-    "@tanstack/react-virtual": "^3.9.0",
+    "@tanstack/react-virtual": "^3.10.1",
     "lucide-react": "^0.428.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",

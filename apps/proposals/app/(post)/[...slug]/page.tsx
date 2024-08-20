@@ -20,10 +20,10 @@ import {
   BasicPageWrapper,
   HStackFull,
 } from "@lightdotso/ui";
-import Markdoc from "@markdoc/markdoc";
+import { bundleMDX } from "mdx-bundler";
+import { getMDXComponent } from "mdx-bundler/client";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import React from "react";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -83,22 +83,20 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.posts.read(params.slug.join("/"));
+  const proposal = await reader.collections.posts.read(params.slug.join("/"), {
+    resolveLinkedFiles: true,
+  });
   if (!proposal) {
     return notFound();
   }
 
   // ---------------------------------------------------------------------------
-  // Markdoc
+  // MDX
   // ---------------------------------------------------------------------------
 
-  const { node } = await proposal.content();
-  const errors = Markdoc.validate(node);
-  if (errors.length) {
-    console.error(errors);
-    throw new Error("Invalid content");
-  }
-  const renderable = Markdoc.transform(node);
+  const { code } = await bundleMDX({
+    source: proposal.content,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -110,7 +108,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         <BaseLayerWrapper size="sm">
           <BasicPageWrapper>
             <div className="keystatic">
-              {Markdoc.renderers.react(renderable, React)}
+              {getMDXComponent(code)({
+                components: {},
+              })}
             </div>
           </BasicPageWrapper>
         </BaseLayerWrapper>

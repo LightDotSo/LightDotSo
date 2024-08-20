@@ -17,7 +17,7 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
         ogp: fields.cloudImage({ label: "OGP" }),
-        content: fields.markdoc({ label: "Content", extension: "md" }),
+        content: fields.mdx({ label: "Content" }),
       },
     }),
   },

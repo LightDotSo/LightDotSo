@@ -23,7 +23,7 @@ export default config({
           label: "OGP",
           validation: { isRequired: true },
         }),
-        content: fields.markdoc({ label: "Content", extension: "md" }),
+        content: fields.mdx({ label: "Content" }),
       },
     }),
   },
