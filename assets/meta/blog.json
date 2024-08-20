@@ -1,0 +1,19 @@
+[
+  {
+    "appName": "ArDrive-CLI",
+    "appVersion": "2.0.6",
+    "arFS": "0.11",
+    "contentType": "application/json",
+    "driveId": "85363f63-fe22-4b75-a3ce-9f5be65bfce6",
+    "entityType": "folder",
+    "name": "announcements",
+    "txId": "GEBiuCNOBDAgVlDd5HOapEZDm4I7D-n5HTsHHZU3vME",
+    "unixTime": 1724142316,
+    "parentFolderId": "d63c3f8d-cfb6-4744-a977-e2ba63823da5",
+    "entityId": "c1c81266-8b70-49d1-8cf7-0e44bfc871a8",
+    "folderId": "c1c81266-8b70-49d1-8cf7-0e44bfc871a8",
+    "path": "/LightDotSo/blog/announcements",
+    "txIdPath": "/_vUuuegV4pyTF3lUhw65iwoXzcr3NANrFATt7qtNu7A/BeGgHjOsy3L_oxxDKRugkpOL1f__f4zGEu1ScEG2X-w/GEBiuCNOBDAgVlDd5HOapEZDm4I7D-n5HTsHHZU3vME",
+    "entityIdPath": "/e64326f2-d457-4dd8-85cb-27e1b9f3969b/d63c3f8d-cfb6-4744-a977-e2ba63823da5/c1c81266-8b70-49d1-8cf7-0e44bfc871a8"
+  }
+]
