@@ -1,10 +1,10 @@
 module.exports = {
   "*": ["pnpm run license:cmd add"],
   "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": ["pnpm biome:cmd"],
-  "*.{md,mdx}": ["pnpm dprint fmt"],
+  // "*.{md,mdx}": ["pnpm dprint fmt"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
-    // "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
+    "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
   ],
   "*.{py,ipynb}": ["pnpm run ruff:lint:cmd", "pnpm run ruff:fmt:cmd"],
   "*.sol": [

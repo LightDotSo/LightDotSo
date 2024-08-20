@@ -15,6 +15,7 @@
 export { ActionLogo } from "./action-logo";
 export { AssetChange } from "./asset-change";
 export { ChainStack } from "./chain-stack";
+export { ExternalLink } from "./external-link";
 export { EmptyState } from "./empty-state";
 export { EnsAddress } from "./ens-address";
 export { InvokeButton } from "./invoke-button";

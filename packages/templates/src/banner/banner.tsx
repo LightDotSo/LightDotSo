@@ -16,6 +16,7 @@
 
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
+import { ExternalLink } from "@lightdotso/elements";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
 import { ButtonIcon } from "@lightdotso/ui";
@@ -24,7 +25,6 @@ import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { type VariantProps, cva } from "class-variance-authority";
 import {
   AlertTriangleIcon,
-  ArrowUpRight,
   BoltIcon,
   GamepadIcon,
   Undo2Icon,
@@ -177,30 +177,24 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         </Link>
       )}
       {kind === "outage" && (
-        <a
+        <ExternalLink
           className="inline-flex items-center text-sm hover:underline"
           href={INTERNAL_LINKS.Status}
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Learn More
-          <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
-        </a>
+        </ExternalLink>
       )}
       {(betaKind === "beta" ||
         betaKind === "betaWarning" ||
         kind === "demo") && (
         <>
           <span className="hidden md:inline-flex">&middot;</span>{" "}
-          <a
+          <ExternalLink
             className="inline-flex items-center text-sm hover:underline"
             href={INTERNAL_LINKS.Waitlist}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             Waitlist
-            <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
-          </a>
+          </ExternalLink>
         </>
       )}
       <div className="flex flex-1 justify-end">

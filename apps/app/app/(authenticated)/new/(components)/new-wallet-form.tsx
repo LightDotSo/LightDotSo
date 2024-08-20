@@ -22,6 +22,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NOTION_LINKS } from "@lightdotso/const";
+import { ExternalLink } from "@lightdotso/elements";
 import { InviteCodeForm } from "@lightdotso/forms";
 import {
   useInviteCodeQueryState,
@@ -53,7 +54,6 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { isEmpty } from "lodash";
-import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC } from "react";
@@ -318,15 +318,12 @@ export const NewWalletForm: FC = () => {
             <div>
               <CardDescription className="text-base text-text">
                 By creating a new wallet, you are accepting our{" "}
-                <a
+                <ExternalLink
                   className="underline hover:text-text-weak"
                   href={NOTION_LINKS["Terms of Service"]}
-                  target="_blank"
-                  rel="noreferrer"
                 >
                   term and conditions
-                  <ArrowUpRight className="mb-3 ml-1 inline size-2" />
-                </a>
+                </ExternalLink>
               </CardDescription>
             </div>
             {/* Show all errors for debugging */}
