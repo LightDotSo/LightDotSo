@@ -1,6 +1,0 @@
-.DS_Store
-.gitignore
-copy.sh
-sync.sh
-README.md
-exclude.txt

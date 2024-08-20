@@ -14,4 +14,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-rclone sync r2:assets ./ -P
+rclone sync r2:assets ./ -P --exclude exclude.txt --exclude .gitignore --exclude copy.sh --exclude sync.sh
