@@ -106,12 +106,12 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
   return (
     <BannerSection
-      size="sm"
+      size="ss"
       title={blog.title}
       description={`Published on ${refineDateFormat(new Date(blog.date))}`}
     >
       <HStackFull>
-        <BaseLayerWrapper size="sm">
+        <BaseLayerWrapper size="ss">
           <BasicPageWrapper>
             <div className="keystatic">
               {getMDXComponent(code)({
