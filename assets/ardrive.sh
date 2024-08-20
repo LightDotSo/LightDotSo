@@ -21,3 +21,4 @@ pnpm ardrive upload-file --local-path "$GIT_DIR/assets/blog" --parent-folder-id 
 pnpm ardrive upload-file --local-path "$GIT_DIR/assets/changelog" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
 pnpm ardrive upload-file --local-path "$GIT_DIR/assets/paper" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
 pnpm ardrive upload-file --local-path "$GIT_DIR/assets/proposals" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
+pnpm ardrive upload-file --local-path "$GIT_DIR/assets/social" --parent-folder-id "e64326f2-d457-4dd8-85cb-27e1b9f3969b" -w "$GIT_DIR/assets/wallet.json"
