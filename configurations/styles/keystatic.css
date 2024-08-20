@@ -11,27 +11,27 @@
 }
 
 .keystatic h1 {
-  @apply my-8 text-6xl font-semibold tracking-tight;
+  @apply my-8 text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight ;
 }
 
 .keystatic h2 {
-  @apply my-6 text-4xl font-semibold leading-tight;
+  @apply my-6 text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight;
 }
 
 .keystatic h3 {
-  @apply my-5 text-2xl font-semibold leading-snug;
+  @apply my-5 text-xl sm:text-2xl md:text-3xl font-semibold leading-snug;
 }
 
 .keystatic h4 {
-  @apply my-4 text-2xl;
+  @apply my-4 text-xl sm:text-2xl md:text-3xl;
 }
 
 .keystatic h5 {
-  @apply my-3 text-3xl font-light;
+  @apply my-3 text-xl sm:text-2xl md:text-3xl font-light;
 }
 
 .keystatic h6 {
-  @apply my-3 text-xl font-thin;
+  @apply my-3 text-lg sm:text-xl md:text-2xl font-thin;
 }
 
 .keystatic ul {

@@ -216,6 +216,7 @@
     --text-icon-inverse: 224 17% 60%;
     --text-icon-success: 144 79% 21%;
     --text-icon-warning: 13 71% 32%;
+    --text-icon-weak: 0 0% 56%;
     --text-icon-weaker: 0 0% 56%;
     --text-icon-weakest: 0 0% 78%;
     --text-indigo: 226 70% 55%;
@@ -491,11 +492,15 @@
     --text-error-weaker: 0 79% 63%;
     --text-error-weakest: 0 79% 63%;
     --text-icon: 0 0% 93%;
+    --text-icon-strong: 0 0% 93%;
+    --text-icon-stronger: 0 0% 93%;
+    --text-icon-strongest: 0 0% 93%;
     --text-icon-error: 0 79% 63%;
     --text-icon-info: 209 100% 61%;
     --text-icon-inverse: 224 17% 60%;
     --text-icon-success: 144 65% 52%;
     --text-icon-warning: 26 100% 74%;
+    --text-icon-weak: 0 0% 44%;
     --text-icon-weaker: 0 0% 44%;
     --text-icon-weakest: 0 0% 16%;
     --text-indigo: 226 70% 55%;
