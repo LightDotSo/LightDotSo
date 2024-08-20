@@ -42,7 +42,9 @@ export default async function Page() {
     <ul className="space-y-6">
       {changelogs.map((changelog) => (
         <li key={changelog.slug} className="group">
-          <a href={`/changelog/${changelog.slug}`}>
+          <a
+            href={`${process.env.VERCEL_ENV === "production" ? "/changelog/" : "/"}${changelog.slug}`}
+          >
             <NextImage
               placeholder="blur"
               className="rounded-sm group-hover:opacity-80"

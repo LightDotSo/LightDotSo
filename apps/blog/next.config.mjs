@@ -20,7 +20,8 @@ import packageJson from "./package.json" assert { type: "json" };
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/blog",
+  basePath:
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "/blog" : undefined,
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/blog@${packageJson.version}`,
   },
