@@ -9,6 +9,7 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@/app/*": ["./app/*"],
       "@/public/*": ["./public/*"]
     },
     "target": "es2020"

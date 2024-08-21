@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Chains } from "@/app/(sections)/chains";
-import { Cta } from "@/app/(sections)/cta";
-import { Features } from "@/app/(sections)/features";
-import { Hero } from "@/app/(sections)/hero";
-import { Introduction } from "@/app/(sections)/introduction";
-import { Unified } from "@/app/(sections)/unified";
-import { Header } from "@/components/header";
+import { LightHorizontalLogo } from "@lightdotso/svg";
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
+import { Menu } from "./menu";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Page() {
+export const Header: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <div>
-      <Header />
-      <Hero />
-      <Introduction />
-      <Unified />
-      <Features />
-      <Chains />
-      <Cta />
+    <div className="mx-auto flex max-w-3xl items-center justify-between">
+      <LightHorizontalLogo className="size-20" />
+      <div className="relative z-10">
+        <Menu />
+      </div>
+      <Button asChild>
+        <a href="/">Launch App</a>
+      </Button>
     </div>
   );
-}
+};
