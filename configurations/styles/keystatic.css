@@ -71,5 +71,5 @@
 }
 
 .keystatic img {
-  @apply mx-auto my-16;
+  @apply mx-auto my-16 rounded-md;
 }

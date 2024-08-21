@@ -14,7 +14,7 @@
 
 import "@lightdotso/styles/keystatic.css";
 import { createReader } from "@keystatic/core/reader";
-import { NextImage } from "@lightdotso/elements";
+import { ExternalLink, NextImage } from "@lightdotso/elements";
 import {
   BannerSection,
   BaseLayerWrapper,
@@ -114,7 +114,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
           <BasicPageWrapper className={minimalHeightWrapper}>
             <div className="keystatic">
               {getMDXComponent(code)({
-                components: { Image: NextImage },
+                components: { a: ExternalLink, Image: NextImage },
               })}
             </div>
           </BasicPageWrapper>
