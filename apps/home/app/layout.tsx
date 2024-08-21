@@ -14,7 +14,9 @@
 
 import "@lightdotso/styles/global.css";
 import { Footer, Root } from "@lightdotso/templates";
-import { ThemeProvider } from "@lightdotso/ui";
+import { ThemeProvider, Web3Provider } from "@lightdotso/ui";
+import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
+import { headers } from "next/headers";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -30,12 +32,19 @@ interface RootLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const initialState = cookieToInitialState(
+    wagmiConfig,
+    headers().get("cookie"),
+  );
+
   return (
     <Root>
-      {children}
-      <ThemeProvider attribute="class" forcedTheme="dark">
-        <Footer />
-      </ThemeProvider>
+      <Web3Provider initialState={initialState}>
+        {children}
+        <ThemeProvider attribute="class" forcedTheme="dark">
+          <Footer />
+        </ThemeProvider>
+      </Web3Provider>
     </Root>
   );
 }

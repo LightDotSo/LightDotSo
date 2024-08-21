@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "chai": "^5.1.1",
-    "envio": "^2.0.1",
+    "envio": "^2.1.0",
     "ethers": "^6.13.2"
   },
   "devDependencies": {

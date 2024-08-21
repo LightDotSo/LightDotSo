@@ -62,7 +62,7 @@ export const Spiral: FC = () => {
       }}
     >
       <img
-        className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover"
+        className="pointer-events-none size-full animate-spin-slow select-none object-cover"
         src={
           process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
             ? "/home/spiral.svg"

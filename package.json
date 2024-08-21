@@ -129,7 +129,7 @@
     "esbuild": "^0.23.1",
     "execa": "^9.3.1",
     "git-cz": "^4.9.0",
-    "hardhat": "^2.22.8",
+    "hardhat": "^2.22.9",
     "husky": "^9.1.5",
     "inngest-cli": "^0.29.5",
     "license-check-and-add": "^4.0.5",

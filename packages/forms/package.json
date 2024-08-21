@@ -40,7 +40,7 @@
     "@types/lodash": "^4.17.7",
     "abitype": "^1.0.6",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.428.0",
+    "lucide-react": "^0.429.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.52.2",
     "viem": "^2.19.8",

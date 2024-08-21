@@ -20,6 +20,46 @@ import { NextImage } from "@lightdotso/elements";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const Unified: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger p-4 pt-20">
+      <div className="m-auto w-full w-full max-w-5xl border-border-strong border-t">
+        <div className="mt-8">
+          <SectionPill title="Features" description="Upgraded" />
+        </div>
+        <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+          An Unified Crypto Experience.
+        </h1>
+      </div>
+      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
+        <UnifiedCard
+          title="Gasless"
+          description="No need to bridge, or refuel across chains. Select any asset you own across chains to pay for gas."
+          imageUrl="https://assets.light.so/home/gasless.png"
+        />
+        <UnifiedCard
+          title="All Chains. One Click."
+          description="A single smart wallet will work across all chains without security compromise."
+          imageUrl="https://assets.light.so/home/all-chains.png"
+        />
+        <UnifiedCard
+          title="Programmable Execution"
+          description="One signature, batch execute across chains. No need for multiple clicks, it all works with one single signature."
+          imageUrl="https://assets.light.so/home/programmable-execution.png"
+        />
+      </MagicContainer>
+    </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -59,45 +99,5 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
         style={{ width: "100%", height: "auto", objectFit: "cover" }}
       />
     </MagicCard>
-  );
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const Unified: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger pt-20">
-      <div className="m-auto w-full w-full max-w-5xl border-border-strong border-t">
-        <div className="mt-8">
-          <SectionPill title="Features" description="Upgraded" />
-        </div>
-        <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
-          An Unified Crypto Experience.
-        </h1>
-      </div>
-      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-3 gap-5">
-        <UnifiedCard
-          title="Gasless"
-          description="No need to bridge, or refuel across chains. Select any asset you own across chains to pay for gas."
-          imageUrl="https://assets.light.so/home/gasless.png"
-        />
-        <UnifiedCard
-          title="All Chains. One Click."
-          description="A single smart wallet will work across all chains without security compromise."
-          imageUrl="https://assets.light.so/home/all-chains.png"
-        />
-        <UnifiedCard
-          title="Programmable Execution"
-          description="One signature, batch execute across chains. No need for multiple clicks, it all works with one single signature."
-          imageUrl="https://assets.light.so/home/programmable-execution.png"
-        />
-      </MagicContainer>
-    </div>
   );
 };

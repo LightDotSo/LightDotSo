@@ -48,6 +48,27 @@ export interface FeatureList {
 }
 
 // -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const Features: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger p-4 pt-8 pb-20">
+      <MagicContainer className="mt-5 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
+        <FeatureCardList featureList={COLLABORATION_FEATURE_LIST} />
+        <FeatureCardList featureList={SEAMLESS_FEATURE_LIST} />
+        <FeatureCardList featureList={VISUALIZE_FEATURE_LIST} />
+        <FeatureCardList featureList={SECURITY_FEATURE_LIST} />
+      </MagicContainer>
+    </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -256,26 +277,5 @@ export const FeatureCardList: FC<FeatureCardListProps> = ({ featureList }) => {
         ))}
       </div>
     </MagicCard>
-  );
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const Features: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger pt-8 pb-20">
-      <MagicContainer className="mt-5 grid w-full max-w-5xl grid-cols-2 gap-4">
-        <FeatureCardList featureList={COLLABORATION_FEATURE_LIST} />
-        <FeatureCardList featureList={SEAMLESS_FEATURE_LIST} />
-        <FeatureCardList featureList={VISUALIZE_FEATURE_LIST} />
-        <FeatureCardList featureList={SECURITY_FEATURE_LIST} />
-      </MagicContainer>
-    </div>
   );
 };

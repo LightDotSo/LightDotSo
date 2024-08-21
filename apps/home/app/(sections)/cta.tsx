@@ -27,7 +27,7 @@ export const Cta: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center py-20">
+    <div className="relative z-10 flex flex-col items-center justify-center px-2 py-20">
       <div className="m-auto w-full max-w-5xl p-4">
         <LightAppLogo className="size-30" />
         <div className="mt-8">
