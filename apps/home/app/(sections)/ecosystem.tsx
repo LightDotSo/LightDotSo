@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MagicCard } from "@/components/magic-card";
 import { MagicContainer } from "@/components/magic-container";
 import { SectionPill } from "@/components/section-pill";
-import { MAINNET_CHAINS } from "@lightdotso/const";
+import { ECOSYSTEM_CHAINS, type EcosystemChain } from "@/const/ecosystem";
+import { ExternalLink } from "@lightdotso/elements";
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
-import type { Chain } from "viem/chains";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 export interface ChainCardProps {
-  chain: Chain;
+  chain: EcosystemChain;
 }
 
 // -----------------------------------------------------------------------------
@@ -37,17 +36,37 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   // Render
   // ---------------------------------------------------------------------------
 
+  // return (
+  //   <MagicCard
+  //     backgroundColor="bg-background-weak"
+  //     className="col-span-1 w-full p-4"
+  //   >
+  //     <ChainLogo chainId={chain.id} size="lg" />
+  //     <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
+  //       {chain?.name}
+  //     </p>
+  //     <p className="text-text-weak tracking-tighter">{chain?.description}</p>
+  //   </MagicCard>
+  // );
+
   return (
-    <MagicCard
-      backgroundColor="bg-background-weak"
-      className="col-span-1 w-full p-4"
-    >
-      <ChainLogo chainId={chain.id} size="lg" />
-      <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
-        {chain?.name}
-      </p>
-      <p className="text-text-weak tracking-tighter">{chain?.name}</p>
-    </MagicCard>
+    <div className="col-span-1 flex h-full w-full flex-col p-4">
+      <div>
+        <ChainLogo chainId={chain.id} size="lg" />
+        <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
+          {chain?.name}
+        </p>
+        <p className="text-text-weak tracking-tighter">{chain?.description}</p>
+      </div>
+      <div className="mt-auto pt-4">
+        <ExternalLink
+          className="text-text underline hover:text-text-weak"
+          href={chain?.websiteUrl}
+        >
+          See details
+        </ExternalLink>
+      </div>
+    </div>
   );
 };
 
@@ -71,7 +90,7 @@ export const Ecosystem: FC = () => {
         </h1>
       </div>
       <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-4 gap-5">
-        {MAINNET_CHAINS.slice(0, 20).map((chain) => (
+        {ECOSYSTEM_CHAINS.slice(0, 20).map((chain) => (
           <ChainCard key={chain.id} chain={chain} />
         ))}
       </MagicContainer>
