@@ -15,3 +15,4 @@ ignores:
   - next-themes
   - "@sentry/integrations"
   - "~"
+  - "lucide-react"
