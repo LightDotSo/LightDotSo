@@ -12,30 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Cta } from "@/app/(sections)/cta";
-import { Ecosystem } from "@/app/(sections)/ecosystem";
-import { Features } from "@/app/(sections)/features";
-import { Hero } from "@/app/(sections)/hero";
-import { Introduction } from "@/app/(sections)/introduction";
-import { Swap } from "@/app/(sections)/swap";
-import { Unified } from "@/app/(sections)/unified";
-import { Header } from "@/components/header";
+"use client";
+
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Page() {
+export const Spark: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <div>
-      <Header />
-      <Hero />
-      <Swap />
-      <Introduction />
-      <Unified />
-      <Features />
-      <Ecosystem />
-      <Cta />
+    <div className="-z-50 absolute animate-slow-spin overflow-hidden p-4">
+      <img
+        className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover blur-lg"
+        src="https://assets.light.so/home/spark.png"
+        alt="Spark"
+      />
     </div>
   );
-}
+};

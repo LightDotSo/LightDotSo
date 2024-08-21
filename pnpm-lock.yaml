@@ -1324,6 +1324,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../../packages/const
+      '@lightdotso/dialogs':
+        specifier: workspace:*
+        version: link:../../packages/dialogs
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../../packages/elements
@@ -1339,6 +1342,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../../packages/wagmi
       '@next/bundle-analyzer':
         specifier: 15.0.0-canary.120
         version: 15.0.0-canary.120(bufferutil@4.0.8)(utf-8-validate@5.0.10)
