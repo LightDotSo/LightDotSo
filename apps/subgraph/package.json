@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.1",
+    "@types/node": "^22.4.2",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.5.4",

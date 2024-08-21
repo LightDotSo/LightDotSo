@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightLogo } from "@lightdotso/svg";
+import { BetaVersion } from "@/components/beta-version";
 import { Button } from "@lightdotso/ui";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
@@ -21,34 +21,36 @@ import type { FC } from "react";
 // Component
 // -----------------------------------------------------------------------------
 
-export const Cta: FC = () => {
+export const Hero: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 mt-10 flex flex-col items-center justify-center">
-      <div className="m-auto w-full w-full max-w-5xl p-4">
-        <LightLogo className="size-16" />
-        <div className="mt-8">
-          <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-5xl">
-            Experience Now
-          </h1>
-          <span className="mt-4 block">
-            Try our latest beta and shape our app with your feedback!
-          </span>
+    <div className="relative my-8 flex flex-col items-center justify-center">
+      <div className="m-auto w-full max-w-3xl">
+        <div className="mb-8">
+          <BetaVersion />
         </div>
+        <h1 className="font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
+          <span className="mb-2 block">EVM chain abstraction</span>
+          <span className="mb-2 block">protocol unifying all</span>
+          <span className="mb-2 block">chains as one.</span>
+        </h1>
         <div className="py-8">
-          <Button asChild className="rounded-lg ">
+          <Button asChild size="lg" className="rounded-lg px-6 py-5">
             <a href="/">
-              <Compass className="mr-2 size-4" />
-              Start Now
+              <Compass className="mr-2 size-6" /> Explore Now
             </a>
           </Button>
-          <Button asChild variant="outline" className="ml-4 rounded-lg">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="ml-4 rounded-lg px-6 py-5"
+          >
             <a href="/demo/overview">
-              <Gamepad className="mr-2 size-4" />
-              Open Demo
+              <Gamepad className="mr-2 size-6" /> Start Demo
             </a>
           </Button>
         </div>

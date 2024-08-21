@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Ref: https://magicui.design/docs/components/magic-card// From: https://github.com/mayankyadav1711/services-collegpt/blob/main/src/components/magicui/magic-card.tsx
+// Ref: https://magicui.design/docs/components/magic-card/
+// From: https://github.com/mayankyadav1711/services-collegpt/blob/main/src/components/magicui/magic-card.tsx
 // License: MIT
 
 "use client";

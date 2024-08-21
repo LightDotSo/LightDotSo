@@ -12,30 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import { Footer, Root } from "@lightdotso/templates";
-import { ThemeProvider } from "@lightdotso/ui";
-import type { ReactNode } from "react";
+import { LightHorizontalLogo } from "@lightdotso/svg";
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
+import { Menu } from "./menu";
 
 // -----------------------------------------------------------------------------
-// Props
+// Component
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+export const Header: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <Root>
-      {children}
-      <ThemeProvider attribute="class" forcedTheme="dark">
-        <Footer />
-      </ThemeProvider>
-    </Root>
+    <div className="mx-auto flex max-w-3xl items-center justify-between">
+      <LightHorizontalLogo className="size-20" />
+      <div className="relative z-10">
+        <Menu />
+      </div>
+      <Button asChild>
+        <a href="/">Launch App</a>
+      </Button>
+    </div>
   );
-}
+};

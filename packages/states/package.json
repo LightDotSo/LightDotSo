@@ -29,16 +29,16 @@
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.51.24",
+    "@tanstack/react-query": "^5.52.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.19.7"
+    "viem": "^2.19.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.1",
-    "@types/react": "^18.3.3",
+    "@types/node": "^22.4.2",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"
   },

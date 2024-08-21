@@ -14,11 +14,14 @@
 
 "use client";
 
-import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import type { Tab } from "@lightdotso/types";
-import { TwitterLogoIcon } from "@radix-ui/react-icons";
+import {
+  DiscordLogoIcon,
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { FileTextIcon, HomeIcon } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
@@ -27,22 +30,22 @@ import type { RefAttributes } from "react";
 
 export const CHANGELOG_TABS: Tab[] = [
   {
-    label: "Home",
-    id: "changelog",
-    href: "/",
+    label: "Discord",
+    id: "discord",
+    href: SOCIAL_LINKS.Discord,
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <FileTextIcon {...props} />,
+    ) => <DiscordLogoIcon {...props} />,
   },
   {
-    label: "App",
-    id: "app",
-    href: INTERNAL_LINKS.Home,
+    label: "Github",
+    id: "github",
+    href: SOCIAL_LINKS.Github,
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <HomeIcon {...props} />,
+    ) => <GitHubLogoIcon {...props} />,
   },
   {
     label: "X",

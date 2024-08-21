@@ -14,10 +14,14 @@
 
 "use client";
 
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import type { Tab } from "@lightdotso/types";
-import { DashboardIcon } from "@radix-ui/react-icons";
+import {
+  DiscordLogoIcon,
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ArrowUpRightFromSquare } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
@@ -26,21 +30,30 @@ import type { RefAttributes } from "react";
 
 export const BLOG_TABS: Tab[] = [
   {
-    label: "Home",
-    id: "blog",
-    href: "/",
+    label: "Discord",
+    id: "discord",
+    href: SOCIAL_LINKS.Discord,
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <DashboardIcon {...props} />,
+    ) => <DiscordLogoIcon {...props} />,
   },
   {
-    label: "App",
-    id: "app",
-    href: "https://light.so",
+    label: "Github",
+    id: "github",
+    href: SOCIAL_LINKS.Github,
     icon: (
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <ArrowUpRightFromSquare {...props} />,
+    ) => <GitHubLogoIcon {...props} />,
+  },
+  {
+    label: "X",
+    id: "x",
+    href: SOCIAL_LINKS.Twitter,
+    icon: (
+      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <TwitterLogoIcon {...props} />,
   },
 ];

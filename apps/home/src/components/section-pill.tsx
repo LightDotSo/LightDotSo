@@ -12,30 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import { Footer, Root } from "@lightdotso/templates";
-import { ThemeProvider } from "@lightdotso/ui";
-import type { ReactNode } from "react";
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+type SectionPillProps = {
+  title: string;
+  description?: string;
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <Root>
-      {children}
-      <ThemeProvider attribute="class" forcedTheme="dark">
-        <Footer />
-      </ThemeProvider>
-    </Root>
+    <div className="flex items-center gap-1.5 text-thin text-xl">
+      {title}
+      {description && <Button size="xs">{description}</Button>}
+    </div>
   );
-}
+};
