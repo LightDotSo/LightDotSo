@@ -51,7 +51,7 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
         width="142.5"
         height="142.5"
         rx="35.25"
-        stroke="white"
+        stroke="currentColor"
         stroke-width="1.5"
       />
       <rect
@@ -60,12 +60,12 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
         width="130.5"
         height="130.5"
         rx="29.25"
-        stroke="white"
+        stroke="currentColor"
         stroke-opacity="0.2"
         stroke-width="1.5"
       />
       <g clip-path="url(#clip0_11874_12891)">
-        <mask id="path-6-inside-1_11874_12891" fill="white">
+        <mask id="path-6-inside-1_11874_12891" fill="currentColor">
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"
@@ -90,7 +90,7 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
         width="106.5"
         height="106.5"
         rx="53.25"
-        stroke="white"
+        stroke="currentColor"
         stroke-opacity="0.2"
         stroke-width="1.5"
       />
@@ -103,8 +103,8 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
           y2="71.9996"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stop-color="currentColor" />
+          <stop offset="1" stop-color="currentColor" stop-opacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_11874_12891"
@@ -114,11 +114,18 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
           y2="71.9996"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stop-color="currentColor" />
+          <stop offset="1" stop-color="currentColor" stop-opacity="0" />
         </linearGradient>
         <clipPath id="clip0_11874_12891">
-          <rect x="18" y="18" width="108" height="108" rx="54" fill="white" />
+          <rect
+            x="18"
+            y="18"
+            width="108"
+            height="108"
+            rx="54"
+            fill="currentColor"
+          />
         </clipPath>
       </defs>
     </svg>
