@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Chains } from "@/app/(sections)/chains";
 import { Cta } from "@/app/(sections)/cta";
+import { Ecosystem } from "@/app/(sections)/ecosystem";
 import { Features } from "@/app/(sections)/features";
 import { Hero } from "@/app/(sections)/hero";
 import { Introduction } from "@/app/(sections)/introduction";
@@ -32,7 +32,7 @@ export default function Page() {
       <Introduction />
       <Unified />
       <Features />
-      <Chains />
+      <Ecosystem />
       <Cta />
     </div>
   );
