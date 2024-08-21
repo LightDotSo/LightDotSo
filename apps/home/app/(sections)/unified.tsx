@@ -14,6 +14,8 @@
 
 import { MagicCard } from "@/components/magic-card";
 import { MagicContainer } from "@/components/magic-container";
+<div className="mt-8 text-thin">Features</div>;
+import { SectionPill } from "@/components/section-pill";
 import { NextImage } from "@lightdotso/elements";
 import type { FC } from "react";
 
@@ -72,7 +74,9 @@ export const Unified: FC = () => {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger pt-20">
       <div className="m-auto w-full w-full max-w-5xl border-border-strong border-t">
-        <div className="mt-8 text-thin">Features</div>
+        <div className="mt-8">
+          <SectionPill title="Features" description="Upgraded" />
+        </div>
         <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
           An Unified Crypto Experience.
         </h1>

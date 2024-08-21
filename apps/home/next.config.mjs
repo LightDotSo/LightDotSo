@@ -14,6 +14,7 @@
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
+import rootPackageJson from "../../package.json" assert { type: "json" };
 import packageJson from "./package.json" assert { type: "json" };
 
 // ---------------------------------------------------------------------------
@@ -26,6 +27,7 @@ const nextConfig = {
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "/home" : undefined,
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/home@${packageJson.version}`,
+    NEXT_PUBLIC_LIGHT_VERSION: `v${rootPackageJson.version}`,
   },
   eslint: {
     ignoreDuringBuilds: true,

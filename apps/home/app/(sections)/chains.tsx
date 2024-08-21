@@ -14,6 +14,7 @@
 
 import { MagicCard } from "@/components/magic-card";
 import { MagicContainer } from "@/components/magic-container";
+import { SectionPill } from "@/components/section-pill";
 import { MAINNET_CHAINS } from "@lightdotso/const";
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
@@ -62,7 +63,9 @@ export const Chains: FC = () => {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center py-20">
       <div className="m-auto w-full max-w-5xl border-border-strong border-t">
-        <div className="mt-8 text-text text-thin">Ecosystem</div>
+        <div className="mt-8">
+          <SectionPill title="Ecosystem" description="Chains" />
+        </div>
         <h1 className="mt-8 font-medium text-4xl text-text-strong leading-8 tracking-tight md:leading-10 lg:text-6xl">
           Light brings all chains as one.
         </h1>

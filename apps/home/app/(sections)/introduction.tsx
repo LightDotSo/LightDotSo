@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { Grid } from "@/components/grid";
+import { SectionPill } from "@/components/section-pill";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -27,7 +28,9 @@ export const Introduction: FC = () => {
   return (
     <div className="relative z-10 flex h-screen flex-col items-center justify-center">
       <div className="m-auto max-w-3xl border-t">
-        <div className="mt-8 text-thin">Introduction</div>
+        <div className="mt-8 text-thin">
+          <SectionPill title="Introduction" description="Public Beta" />
+        </div>
         <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
           Use Ethereum as One.
         </h1>

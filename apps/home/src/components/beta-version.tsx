@@ -32,12 +32,12 @@ export const BetaVersion: FC = () => {
         <Button asChild size="xs">
           <a
             className="text-text-weak"
-            href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
+            href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_LIGHT_VERSION}`}
             target="_blank"
             rel="noreferrer"
           >
             v
-            {process.env.NEXT_PUBLIC_APP_VERSION?.match(
+            {process.env.NEXT_PUBLIC_LIGHT_VERSION?.match(
               /(\d+\.\d+\.\d+)/,
             )?.[0] ?? "0.0.0"}
           </a>
