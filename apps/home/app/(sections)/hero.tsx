@@ -27,18 +27,22 @@ export const Hero: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative my-8 flex flex-col items-center justify-center">
+    <div className="relative my-8 flex flex-col items-center justify-center px-2">
       <div className="m-auto w-full max-w-3xl">
         <div className="mb-8">
           <BetaVersion />
         </div>
         <h1 className="font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
-          <span className="mb-2 block">EVM chain abstraction</span>
-          <span className="mb-2 block">protocol unifying all</span>
-          <span className="mb-2 block">chains as one.</span>
+          <span className="mb-2 inline md:block">EVM chain abstraction </span>
+          <span className="mb-2 inline md:block">protocol unifying all </span>
+          <span className="mb-2 inline md:block">chains as one.</span>
         </h1>
-        <div className="py-8">
-          <Button asChild size="lg" className="rounded-lg px-6 py-5">
+        <div className="flex flex-col items-center justify-start gap-4 py-8 sm:flex-row">
+          <Button
+            asChild
+            size="lg"
+            className="w-full rounded-lg px-6 py-5 sm:w-auto"
+          >
             <a href="/">
               <Compass className="mr-2 size-6" /> Explore Now
             </a>
@@ -47,7 +51,7 @@ export const Hero: FC = () => {
             asChild
             size="lg"
             variant="outline"
-            className="ml-4 rounded-lg px-6 py-5"
+            className="w-full rounded-lg px-6 py-5 sm:w-auto"
           >
             <a href="/demo/overview">
               <Gamepad className="mr-2 size-6" /> Start Demo

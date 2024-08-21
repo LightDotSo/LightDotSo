@@ -82,7 +82,7 @@ export const Ecosystem: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center py-20">
+    <div className="relative z-10 flex flex-col items-center justify-center px-2 py-20">
       <div className="m-auto w-full max-w-5xl border-border-strong border-t">
         <div className="mt-8">
           <SectionPill title="Ecosystem" description="Chains" />
@@ -91,7 +91,7 @@ export const Ecosystem: FC = () => {
           Light brings all chains as one.
         </h1>
       </div>
-      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-4 gap-5">
+      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-2 gap-5 md:grid-cols-4">
         {ECOSYSTEM_CHAINS.slice(0, 20).map((chain) => (
           <ChainCard key={chain.id} chain={chain} />
         ))}

@@ -29,19 +29,19 @@ export const Swap: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 m-4 flex flex-col items-center justify-center overflow-hidden rounded-md bg-background-stronger py-28">
+    <div className="relative z-10 m-4 flex flex-col items-center justify-center overflow-hidden rounded-md bg-background-stronger py-16 md:py-28">
       <Spark />
       <div className="m-auto w-full max-w-5xl p-6">
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between md:flex-row">
           <div className="flex-col">
             <div className="mt-8">
               <SectionPill title="Swap" description="New" />
             </div>
             <div className="mt-8">
-              <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-5xl">
-                <span className="mb-2 block">All chains.</span>
-                <span className="mb-2 block">All tokens.</span>
-                <span className="mb-2 block">One click.</span>
+              <h1 className="font-medium text-3xl leading-8 tracking-tight sm:text-4xl md:leading-10 lg:text-5xl">
+                <span className="mb-2 inline md:block">All chains. </span>
+                <span className="mb-2 inline md:block">All tokens. </span>
+                <span className="mb-2 inline md:block">One click.</span>
               </h1>
               <span className="mt-4 block">
                 Instantly swap accross all chains in one click.
