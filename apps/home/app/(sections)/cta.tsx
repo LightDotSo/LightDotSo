@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightLogo } from "@lightdotso/svg";
+import { LightAppLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
@@ -27,9 +27,9 @@ export const Cta: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-body py-20">
-      <div className="m-auto w-full w-full max-w-5xl p-4">
-        <LightLogo className="size-16" />
+    <div className="relative z-10 flex flex-col items-center justify-center py-20">
+      <div className="m-auto w-full max-w-5xl p-4">
+        <LightAppLogo className="size-30" />
         <div className="mt-8">
           <h1 className="font-medium text-2xl leading-8 tracking-tight md:leading-10 lg:text-5xl">
             Experience Now

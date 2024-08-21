@@ -56,7 +56,9 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
         <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
           {chain?.name}
         </p>
-        <p className="text-text-weak tracking-tighter">{chain?.description}</p>
+        <p className="mt-3 text-text-weak tracking-tighter">
+          {chain?.description}
+        </p>
       </div>
       <div className="mt-auto pt-4">
         <ExternalLink
