@@ -15,13 +15,11 @@
 import "reactflow/dist/style.css";
 import "./global.css";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
-import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 import {
   INITIAL_VIEWPORTS,
   MINIMAL_VIEWPORTS,
 } from "@storybook/addon-viewport";
 import type { Preview } from "@storybook/react";
-import { ThemeProvider } from "@storybook/theming";
 import { themes } from "@storybook/theming";
 import { useEffect } from "react";
 import { useDarkMode } from "./useDarkMode";
@@ -68,26 +66,15 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
   );
 };
 
-const THEME = {
-  typography: {
-    fonts: {
-      base: "Arial, sans-serif",
-      mono: "Courier, monospace",
-    },
-  },
-};
+export const decorators = [
+  (Story) => (
+    <div style={{}}>
+      <Story />
+    </div>
+  ),
+];
 
 const preview: Preview = {
-  decorators: [
-    withThemeFromJSXProvider({
-      themes: {
-        dark: THEME,
-        light: THEME,
-      },
-      defaultTheme: "dark",
-      Provider: ThemeProvider,
-    }),
-  ],
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -101,11 +88,6 @@ const preview: Preview = {
       lightClass: "light",
       stylePreview: true,
     },
-    decorators: [
-      (story) => {
-        return <>{story()}</>;
-      },
-    ],
     nextjs: {
       appDirectory: true,
     },
