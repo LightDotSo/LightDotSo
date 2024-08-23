@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import "@lightdotso/styles/global.css";
+import { Root } from "@lightdotso/templates";
 import "reactflow/dist/style.css";
-import "./global.css";
+import { Web3Provider } from "@lightdotso/ui";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
@@ -21,6 +23,10 @@ import {
 } from "@storybook/addon-viewport";
 import type { Preview } from "@storybook/react";
 import { themes } from "@storybook/theming";
+import {
+  AppRouterContext,
+  type AppRouterInstance,
+} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useEffect } from "react";
 import { useDarkMode } from "./useDarkMode";
 // import { mswLoader } from "msw-storybook-addon";
@@ -68,9 +74,13 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
 
 export const decorators = [
   (Story) => (
-    <div style={{}}>
-      <Story />
-    </div>
+    <AppRouterContext.Provider value={{} as AppRouterInstance}>
+      <Root>
+        <Web3Provider>
+          <Story />
+        </Web3Provider>
+      </Root>
+    </AppRouterContext.Provider>
   ),
 ];
 
