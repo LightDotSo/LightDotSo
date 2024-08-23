@@ -178,7 +178,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       {kind === "outage" && (
         <ExternalLink
-          className="inline-flex items-center text-sm hover:underline"
+          className="inline-flex flex-initial items-center text-sm text-warning hover:text-warning-strong hover:underline"
           href={INTERNAL_LINKS.Status}
         >
           Learn More
@@ -190,7 +190,14 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         <>
           <span className="hidden md:inline-flex">&middot;</span>{" "}
           <ExternalLink
-            className="inline-flex items-center text-sm hover:underline"
+            className={cn(
+              "inline-flex flex-initial items-center text-sm hover:underline",
+              betaKind === "beta"
+                ? "text-info hover:text-info-strong"
+                : betaKind === "betaWarning"
+                  ? "text-warning hover:text-warning-strong"
+                  : "text-purple hover:text-purple-strong",
+            )}
             href={INTERNAL_LINKS.Waitlist}
           >
             Waitlist

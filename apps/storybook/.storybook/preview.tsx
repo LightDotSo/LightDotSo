@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import "./storybook.css";
 import "@lightdotso/styles/global.css";
-import { Root } from "@lightdotso/templates";
 import "reactflow/dist/style.css";
-import { Web3Provider } from "@lightdotso/ui";
+import { ReactQueryProvider } from "@lightdotso/ui";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
@@ -75,11 +75,9 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
 export const decorators = [
   (Story) => (
     <AppRouterContext.Provider value={{} as AppRouterInstance}>
-      <Root>
-        <Web3Provider>
-          <Story />
-        </Web3Provider>
-      </Root>
+      <ReactQueryProvider>
+        <Story />
+      </ReactQueryProvider>
     </AppRouterContext.Provider>
   ),
 ];
