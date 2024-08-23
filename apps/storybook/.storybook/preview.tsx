@@ -22,25 +22,50 @@ import {
 } from "@storybook/addon-viewport";
 import type { Preview } from "@storybook/react";
 import { ThemeProvider } from "@storybook/theming";
+import { themes } from "@storybook/theming";
+import { useEffect } from "react";
+import { useDarkMode } from "./useDarkMode";
 // import { mswLoader } from "msw-storybook-addon";
 
 // From: https://raw.githubusercontent.com/bendigiorgio/kiso/9de5ae4b8f9d6cab3210fdd8bbe61a5ff47243c0/src/docs/.storybook/DocContainer.tsx
 // License: MIT
 
 export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  // useEffect(() => {
-  //   const { darkClass, lightClass } =
-  //     // @ts-ignore
-  //     context.store.projectAnnotations.parameters.darkMode;
-  //   const [addClass, removeClass] = dark
-  //     ? [darkClass, lightClass]
-  //     : [lightClass, darkClass];
-  //   document.body.classList.remove(removeClass);
-  //   document.body.classList.add(addClass);
-  // }, [dark]);
+  // ---------------------------------------------------------------------------
+  // Theme Hooks
+  // ---------------------------------------------------------------------------
 
-  return <BaseContainer context={context}>{children}</BaseContainer>;
+  const isDark = useDarkMode();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const { darkClass, lightClass } =
+      // @ts-ignore
+      context.store.projectAnnotations.parameters.darkMode;
+    const [addClass, removeClass] = isDark
+      ? [darkClass, lightClass]
+      : [lightClass, darkClass];
+    document.body.classList.remove(removeClass);
+    document.body.classList.add(addClass);
+  }, [isDark]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <BaseContainer
+      context={context}
+      theme={isDark ? themes.dark : themes.light}
+    >
+      {children}
+    </BaseContainer>
+  );
 };
 
 const THEME = {
