@@ -32,3 +32,4 @@ ignores:
   - "@tanstack/react-query-next-experimental"
   - superjson
   - react-is
+  - "@storybook/theming"

@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import {
-  CHAINS,
+  CHAINS_HISTORICAL,
   CHAIN_ID_LABELS,
-  DEPRECATED_CHAINS,
   MAINNET_CHAINS,
   SIMPLEHASH_CHAIN_ID_MAPPING,
   TESTNET_CHAINS,
@@ -29,9 +28,9 @@ import { mainnet } from "viem/chains";
 // -----------------------------------------------------------------------------
 
 export function getChainWithChainId(chainId: number): Chain {
-  // Extract chain from CHAINS and DEPRECATED_CHAINS
+  // Get chain from historical chains
   const maybeChain = extractChain({
-    chains: [...CHAINS, ...DEPRECATED_CHAINS],
+    chains: CHAINS_HISTORICAL as readonly Chain[],
     id: chainId,
   });
   // Return chain if found

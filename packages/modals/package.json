@@ -39,18 +39,18 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^8.2.9",
-    "@tanstack/react-virtual": "^3.10.1",
-    "lucide-react": "^0.429.0",
+    "@tanstack/react-virtual": "^3.10.4",
+    "lucide-react": "^0.435.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.52.2",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.19.8",
+    "viem": "^2.20.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.2",
+    "@types/node": "^22.5.0",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

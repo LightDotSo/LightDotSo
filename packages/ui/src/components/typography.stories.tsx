@@ -40,7 +40,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta = {
-  title: "theme/Typography",
+  title: "typography/Typography",
   tags: ["autodocs"],
   argTypes: {},
 };

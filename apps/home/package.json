@@ -34,18 +34,18 @@
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.26.0",
     "critters": "^0.0.24",
-    "framer-motion": "^11.3.29",
-    "lucide-react": "^0.429.0",
+    "framer-motion": "^11.3.30",
+    "lucide-react": "^0.435.0",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.19.8"
+    "viem": "^2.20.0"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.4.2",
+    "@types/node": "^22.5.0",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",

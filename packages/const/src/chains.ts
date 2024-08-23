@@ -124,3 +124,4 @@ export const LIGHT_CHAIN: Chain = {
 // -----------------------------------------------------------------------------
 
 export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS] as const;
+export const CHAINS_HISTORICAL = [...CHAINS, ...DEPRECATED_CHAINS] as const;
