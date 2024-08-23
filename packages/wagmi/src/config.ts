@@ -14,7 +14,7 @@
 
 import { CHAINS } from "@lightdotso/const";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createClient } from "viem";
+import { type Chain, createClient } from "viem";
 import { http, cookieStorage, createConfig, createStorage } from "wagmi";
 import {
   coinbaseWallet,
@@ -36,7 +36,7 @@ export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
 // Set up wagmi config
 export const wagmiConfig = createConfig({
-  chains: CHAINS,
+  chains: CHAINS as readonly [Chain, ...Chain[]],
   // client({ chain }) {
   //   return createClient({
   //     chain,
