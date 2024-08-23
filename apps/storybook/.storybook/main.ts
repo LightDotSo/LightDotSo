@@ -26,6 +26,7 @@ const config: StorybookConfig = {
     "../../../packages/tables/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/templates/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../../../packages/ui/src/colors/**/*.@(js|jsx|ts|tsx|mdx)",
   ],
   addons: [
     "@storybook/addon-viewport",

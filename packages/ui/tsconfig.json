@@ -7,6 +7,6 @@
     },
     "incremental": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/colors/color.mdx"],
   "exclude": ["node_modules"]
 }
