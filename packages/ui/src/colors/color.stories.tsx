@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ColorItem, ColorPalette } from "@storybook/blocks";
+import { ColorPalette } from "@storybook/blocks";
 import type { Meta } from "@storybook/react";
 
 // -----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ export default meta;
 export const Base = {
   render: (_args) => (
     <ColorPalette>
-      <ColorItem
+      <ColorPalette
         title="background"
         subtitle=""
         colors={{
