@@ -1,5 +1,11 @@
 # @lightdotso/ui
 
+## 3.1.11
+
+### Patch Changes
+
+- [#2272](https://github.com/LightDotSo/LightDotSo/pull/2272) [`7fa8e05`](https://github.com/LightDotSo/LightDotSo/commit/7fa8e0562f0fe315255b4c05c080b858120001c2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - add ui
+
 ## 3.1.10
 
 ### Patch Changes

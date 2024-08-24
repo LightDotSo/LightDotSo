@@ -1,5 +1,16 @@
 # @lightdotso/web
 
+## 3.2.11
+
+### Patch Changes
+
+- Updated dependencies [[`7fa8e05`](https://github.com/LightDotSo/LightDotSo/commit/7fa8e0562f0fe315255b4c05c080b858120001c2)]:
+  - @lightdotso/ui@3.1.11
+  - @lightdotso/query@0.1.11
+  - @lightdotso/tables@0.1.11
+  - @lightdotso/templates@0.0.11
+  - @lightdotso/states@0.0.11
+
 ## 3.2.10
 
 ### Patch Changes

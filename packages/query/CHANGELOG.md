@@ -1,5 +1,12 @@
 # @lightdotso/query
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`7fa8e05`](https://github.com/LightDotSo/LightDotSo/commit/7fa8e0562f0fe315255b4c05c080b858120001c2)]:
+  - @lightdotso/ui@3.1.11
+
 ## 0.1.10
 
 ### Patch Changes
