@@ -4,6 +4,11 @@
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
     "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
       "./components/accordion": {
         "import": "./dist/esm/components/ui/accordion.mjs",
         "require": "./dist/cjs/components/ui/accordion.js",
