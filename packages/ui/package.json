@@ -101,6 +101,7 @@
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.17.3",
     "postcss": "^8.4.41",
     "shadcn-ui": "^0.8.0",
     "sonner": "^1.5.0",
@@ -111,7 +112,9 @@
     "vite": "^5.4.2"
   },
   "peerDependencies": {
-    "esbuild": "^0.17.3"
+    "react": "19.0.0-rc-187dd6a7-20240806",
+    "react-dom": "19.0.0-rc-187dd6a7-20240806",
+    "react-is": "19.0.0-rc-187dd6a7-20240806"
   },
   "publishConfig": {
     "access": "public"
