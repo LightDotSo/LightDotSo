@@ -20,7 +20,7 @@ import { cn } from "@lightdotso/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ComponentProps } from "react";
 import { DayPicker } from "react-day-picker";
-import { buttonVariants } from "../button/button";
+import { buttonVariants } from "../button";
 
 export type CalendarProps = ComponentProps<typeof DayPicker>;
 

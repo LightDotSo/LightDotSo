@@ -22,7 +22,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { badgeVariants } from "../badge/badge";
+import { badgeVariants } from "../badge";
 
 // -----------------------------------------------------------------------------
 // Styles

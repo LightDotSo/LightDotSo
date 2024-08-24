@@ -24,7 +24,7 @@ import type {
   HTMLAttributes,
 } from "react";
 import { forwardRef } from "react";
-import { buttonVariants } from "../button/button";
+import { buttonVariants } from "../button";
 
 // -----------------------------------------------------------------------------
 // Components

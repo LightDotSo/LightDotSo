@@ -22,7 +22,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import type { ButtonHTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { buttonVariants } from "../button/button";
+import { buttonVariants } from "../button";
 
 // -----------------------------------------------------------------------------
 // Styles
