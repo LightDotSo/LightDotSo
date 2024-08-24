@@ -1,5 +1,12 @@
 # @lightdotso/docs
 
+## 3.1.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/templates@0.0.10
+
 ## 3.1.9
 
 ### Patch Changes
