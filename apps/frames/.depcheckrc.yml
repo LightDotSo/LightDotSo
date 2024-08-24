@@ -17,4 +17,5 @@ ignores:
   - "@coinbase/onchainkit"
   - "@lightdotso/services"
   - "@vercel/og"
+  - viem
   - "@sentry/integrations"

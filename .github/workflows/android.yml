@@ -36,6 +36,8 @@ jobs:
         uses: mkroening/rust-toolchain-toml@main
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
+      - name: Android Install
+        uses: android-actions/setup-android@v3
       - name: Gradle Lint
         run: |
           ./gradlew lint
@@ -56,6 +58,8 @@ jobs:
         uses: mkroening/rust-toolchain-toml@main
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
+      - name: Android Install
+        uses: android-actions/setup-android@v3
       - name: Gradle Build
         run: |
           ./gradlew assembleDebug --stacktrace

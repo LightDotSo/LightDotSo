@@ -31,7 +31,7 @@
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.13.7"
+    "viem": "^2.20.0"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
