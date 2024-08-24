@@ -51,6 +51,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Android Install
         uses: android-actions/setup-android@v3
+        continue-on-error: true
       - name: Export Play Store Key
         run: |
           echo $PLAY_STORE_JSON_KEY > play_store_key.json
