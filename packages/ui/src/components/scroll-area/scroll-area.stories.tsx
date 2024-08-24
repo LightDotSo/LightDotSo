@@ -14,7 +14,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { Fragment } from "react";
-import { Separator } from "../separator/separator";
+import { Separator } from "../separator";
 import { ScrollArea } from "./scroll-area";
 
 // -----------------------------------------------------------------------------

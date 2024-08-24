@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Card, CardContent } from "../card/card";
+import { Card, CardContent } from "../card";
 import {
   Carousel,
   CarouselContent,
