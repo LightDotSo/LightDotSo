@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Label } from "../label/label";
+import { Label } from "../label";
 import { Switch } from "./switch";
 
 // -----------------------------------------------------------------------------

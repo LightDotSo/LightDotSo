@@ -14,7 +14,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { Plus } from "lucide-react";
-import { ButtonIcon } from "../button-icon/button-icon";
+import { ButtonIcon } from "../button-icon";
 import {
   Tooltip,
   TooltipArrow,

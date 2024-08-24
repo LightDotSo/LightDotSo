@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "../button/button";
+import { Button } from "../button";
 import { Input } from "../input/input";
-import { Label } from "../label/label";
+import { Label } from "../label";
 import {
   Dialog,
   DialogContent,

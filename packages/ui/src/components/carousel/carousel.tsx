@@ -33,7 +33,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Button } from "../button/button";
+import { Button } from "../button";
 
 // -----------------------------------------------------------------------------
 // Types

@@ -14,7 +14,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { ChevronsUpDown } from "lucide-react";
-import { Button } from "../button/button";
+import { Button } from "../button";
 import {
   Collapsible,
   CollapsibleContent,

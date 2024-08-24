@@ -25,7 +25,7 @@ import type {
 import { createContext, forwardRef, useContext, useId } from "react";
 import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
-import { Label } from "../label/label";
+import { Label } from "../label";
 
 // -----------------------------------------------------------------------------
 // Components

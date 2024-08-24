@@ -14,7 +14,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Button } from "../button/button";
+import { Button } from "../button";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "./number";
 

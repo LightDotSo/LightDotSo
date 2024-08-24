@@ -16,7 +16,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { ReactNode } from "react";
 import type { ExternalToast } from "sonner";
 import { toast } from "sonner";
-import { Button } from "../button/button";
+import { Button } from "../button";
 import { toastMinimalIntentStyles, toastMinimalLoadingStyles } from "./toast";
 
 // -----------------------------------------------------------------------------
