@@ -38,8 +38,8 @@ export {
 } from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
 export { BadgeIcon } from "./components/badge-icon";
-export { Button, buttonVariants } from "./components/button/button";
-export type { ButtonProps } from "./components/button/button";
+export { Button, buttonVariants } from "./components/button";
+export type { ButtonProps } from "./components/button";
 export { ButtonGroup } from "./components/button-group";
 export { ButtonIcon } from "./components/button-icon";
 export type { ButtonIconProps } from "./components/button-icon";
