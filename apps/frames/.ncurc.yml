@@ -3,4 +3,3 @@ reject:
   - "@coinbase/onchainkit"
   - "@lightdotso/services"
   - "@vercel/og"
-  - viem
