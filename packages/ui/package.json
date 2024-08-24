@@ -17,7 +17,7 @@
   "files": ["dist/**", "src/**"],
   "scripts": {
     "add": "shadcn-ui add",
-    "build": "tsup",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup",
     "diff": "shadcn-ui diff",
     "prepack": "clean-package",
     "postpack": "clean-package restore"
@@ -119,5 +119,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "clean-package": "../../clean-package.config.json"
+  "clean-package": "./clean-package.config.json"
 }

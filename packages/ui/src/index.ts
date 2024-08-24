@@ -31,7 +31,11 @@ export {
 } from "./components/alert-dialog";
 export { Alert, AlertTitle, AlertDescription } from "./components/alert";
 export { AspectRatio } from "./components/aspect-ratio";
-export { Avatar, AvatarImage, AvatarFallback } from "./components/avatar";
+export {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
 export { BadgeIcon } from "./components/badge-icon";
 export { Button, buttonVariants } from "./components/button";
@@ -149,7 +153,6 @@ export {
 } from "./components/hover-card";
 export { Input } from "./components/input";
 export { Label } from "./components/label";
-export { OTP } from "./components/otp";
 export {
   Menubar,
   MenubarMenu,
@@ -180,6 +183,7 @@ export {
   NavigationMenuViewport,
 } from "./components/navigation-menu";
 export { Number } from "./components/number";
+export { OTP } from "./components/otp/otp";
 export {
   Pagination,
   PaginationContent,
@@ -189,9 +193,16 @@ export {
   PaginationNext,
   PaginationPrevious,
 } from "./components/pagination";
-export { Popover, PopoverTrigger, PopoverContent } from "./components/popover";
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "./components/popover";
 export { Progress } from "./components/progress";
-export { RadioGroup, RadioGroupItem } from "./components/radio-group";
+export {
+  RadioGroup,
+  RadioGroupItem,
+} from "./components/radio-group";
 export {
   ResizablePanelGroup,
   ResizablePanel,
@@ -232,6 +243,13 @@ export {
   TableCell,
   TableCaption,
 } from "./components/table";
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "./components/tabs";
+export { Textarea } from "./components/textarea";
 export { TimeAgo } from "./components/time-ago";
 export {
   Timeline,
@@ -242,8 +260,6 @@ export {
   TimelineBody,
   TimelineTime,
 } from "./components/timeline";
-export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
-export { Textarea } from "./components/textarea";
 export {
   toast,
   toastMinimalLoadingStyles,
@@ -251,14 +267,17 @@ export {
   Toaster,
 } from "./components/toast";
 export { Toggle, toggleVariants } from "./components/toggle";
-export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
+export {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "./components/toggle-group";
 export {
   Tooltip,
   TooltipArrow,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from "./components/tooltip";
+} from "./components/tooltip/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { ReactQueryProvider } from "./providers/react-query";

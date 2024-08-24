@@ -7,8 +7,9 @@ export default defineConfig({
   dts: true,
   treeshake: true,
   splitting: true,
-  entry: ["src/index.ts"],
+  entry: ["src/index.ts", "src/components/**/index.ts"],
   format: ["cjs", "esm"],
+  external: ["react", "react-dom"],
   minify: isProduction,
   sourcemap: true,
 });
