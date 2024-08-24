@@ -13,11 +13,6 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
-  "exports": {
-    "./components/button": {
-      "import": "./src/components/button"
-    }
-  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {
