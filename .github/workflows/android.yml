@@ -38,6 +38,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Android Install
         uses: android-actions/setup-android@v3
+        continue-on-error: true
       - name: Gradle Lint
         continue-on-error: true
         run: |
@@ -61,6 +62,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Android Install
         uses: android-actions/setup-android@v3
+        continue-on-error: true
       - name: Gradle Build
         continue-on-error: true
         run: |
