@@ -15,7 +15,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Settings2 } from "lucide-react";
 import { Button } from "../button";
-import { Input } from "../input/input";
+import { Input } from "../input";
 import { Label } from "../label";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 

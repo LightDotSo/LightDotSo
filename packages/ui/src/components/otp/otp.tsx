@@ -25,7 +25,7 @@ import type {
   KeyboardEvent,
 } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Input } from "../input/input";
+import { Input } from "../input";
 
 // -----------------------------------------------------------------------------
 // Types

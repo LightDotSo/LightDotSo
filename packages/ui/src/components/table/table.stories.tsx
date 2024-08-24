@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import {
   Table,
   TableBody,

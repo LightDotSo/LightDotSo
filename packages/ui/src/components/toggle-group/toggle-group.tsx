@@ -19,7 +19,7 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import type { VariantProps } from "class-variance-authority";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { createContext, forwardRef, useContext } from "react";
-import { toggleVariants } from "../toggle/toggle";
+import { toggleVariants } from "../toggle";
 
 // -----------------------------------------------------------------------------
 // Hooks

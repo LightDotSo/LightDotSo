@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Input } from "../input/input";
+import { Input } from "../input";
 import {
   Form,
   FormControl,
