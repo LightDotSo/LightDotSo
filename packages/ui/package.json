@@ -119,5 +119,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "clean-package": "../../clean-package.config.json"
+  "clean-package": "./clean-package.config.json"
 }
