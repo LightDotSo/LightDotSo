@@ -33,3 +33,4 @@ ignores:
   - superjson
   - react-is
   - "@storybook/theming"
+  - esbuild
