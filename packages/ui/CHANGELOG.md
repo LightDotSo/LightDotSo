@@ -1,5 +1,11 @@
 # @lightdotso/ui
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2270](https://github.com/LightDotSo/LightDotSo/pull/2270) [`f9cc573`](https://github.com/LightDotSo/LightDotSo/commit/f9cc57389b79757e1b6e2024633f2f94a27ae416) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tsup ui
+
 ## 3.1.9
 
 ### Patch Changes

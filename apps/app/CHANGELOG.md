@@ -1,5 +1,21 @@
 # @lightdotso/app
 
+## 3.2.9
+
+### Patch Changes
+
+- Updated dependencies [[`f9cc573`](https://github.com/LightDotSo/LightDotSo/commit/f9cc57389b79757e1b6e2024633f2f94a27ae416)]:
+  - @lightdotso/ui@3.1.10
+  - @lightdotso/dialogs@0.0.5
+  - @lightdotso/elements@0.0.10
+  - @lightdotso/forms@0.0.10
+  - @lightdotso/hooks@0.0.11
+  - @lightdotso/modals@0.0.10
+  - @lightdotso/query@0.1.10
+  - @lightdotso/tables@0.1.10
+  - @lightdotso/templates@0.0.10
+  - @lightdotso/states@0.0.10
+
 ## 3.2.8
 
 ### Patch Changes
