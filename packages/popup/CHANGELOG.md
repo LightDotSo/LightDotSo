@@ -1,5 +1,13 @@
 # @lightdotso/popup
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2262](https://github.com/LightDotSo/LightDotSo/pull/2262) [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add assets link
+
+- [#2264](https://github.com/LightDotSo/LightDotSo/pull/2264) [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
 ## 3.1.6
 
 ### Patch Changes

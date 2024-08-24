@@ -1,5 +1,23 @@
 # @lightdotso/ui
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2262](https://github.com/LightDotSo/LightDotSo/pull/2262) [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add assets link
+
+- [#2255](https://github.com/LightDotSo/LightDotSo/pull/2255) [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add MDX component
+
+- Updated dependencies [[`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908), [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62), [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6)]:
+  - @lightdotso/stores@0.1.9
+  - @lightdotso/const@3.1.8
+  - @lightdotso/types@0.0.8
+  - @lightdotso/utils@3.1.9
+  - @lightdotso/wagmi@3.1.9
+  - @lightdotso/data@0.1.8
+  - @lightdotso/demo@0.0.10
+  - @lightdotso/svg@0.0.10
+
 ## 3.1.8
 
 ### Patch Changes

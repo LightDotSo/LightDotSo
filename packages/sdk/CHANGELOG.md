@@ -1,5 +1,19 @@
 # @lightdotso/sdk
 
+## 0.0.4
+
+### Patch Changes
+
+- [#2262](https://github.com/LightDotSo/LightDotSo/pull/2262) [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add assets link
+
+- [#2264](https://github.com/LightDotSo/LightDotSo/pull/2264) [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
+- Updated dependencies [[`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908), [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62), [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6)]:
+  - @lightdotso/schemas@3.1.8
+  - @lightdotso/const@3.1.8
+  - @lightdotso/types@0.0.8
+  - @lightdotso/wagmi@3.1.9
+
 ## 0.0.3
 
 ### Patch Changes

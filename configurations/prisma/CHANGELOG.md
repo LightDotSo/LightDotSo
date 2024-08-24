@@ -1,5 +1,11 @@
 # @lightdotso/prisma
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2262](https://github.com/LightDotSo/LightDotSo/pull/2262) [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add assets link
+
 ## 3.1.6
 
 ### Patch Changes

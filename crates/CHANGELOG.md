@@ -1,5 +1,14 @@
 # @lightdotso/crates
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2254](https://github.com/LightDotSo/LightDotSo/pull/2254) [`f959940`](https://github.com/LightDotSo/LightDotSo/commit/f95994098663af1e90699b0daf05b48b2108e2bf) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add api operation crate
+
+- Updated dependencies [[`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908)]:
+  - @lightdotso/prisma@3.1.7
+
 ## 3.1.6
 
 ### Patch Changes

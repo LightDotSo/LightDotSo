@@ -1,5 +1,13 @@
 # @lightdotso/tailwindcss
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2252](https://github.com/LightDotSo/LightDotSo/pull/2252) [`f0866ed`](https://github.com/LightDotSo/LightDotSo/commit/f0866eda64ca23c2e524bb0db94727ce5f5412ff) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add flow pkg
+
+- [#2255](https://github.com/LightDotSo/LightDotSo/pull/2255) [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add MDX component
+
 ## 3.1.6
 
 ### Patch Changes

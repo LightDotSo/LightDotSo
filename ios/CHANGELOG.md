@@ -1,5 +1,13 @@
 # @lightdotso/ios
 
+## 3.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`f959940`](https://github.com/LightDotSo/LightDotSo/commit/f95994098663af1e90699b0daf05b48b2108e2bf)]:
+  - @lightdotso/crates@3.1.7
+  - @lightdotso/extension@3.1.7
+
 ## 3.0.7
 
 ### Patch Changes

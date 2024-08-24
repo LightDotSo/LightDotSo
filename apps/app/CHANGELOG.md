@@ -1,5 +1,52 @@
 # @lightdotso/app
 
+## 3.2.8
+
+### Patch Changes
+
+- [#2252](https://github.com/LightDotSo/LightDotSo/pull/2252) [`f0866ed`](https://github.com/LightDotSo/LightDotSo/commit/f0866eda64ca23c2e524bb0db94727ce5f5412ff) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add flow pkg
+
+- [#2262](https://github.com/LightDotSo/LightDotSo/pull/2262) [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add assets link
+
+- [#2249](https://github.com/LightDotSo/LightDotSo/pull/2249) [`bf57541`](https://github.com/LightDotSo/LightDotSo/commit/bf575412eb08dbb06411a655f167a2bb24537586) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add params hook
+
+- [#2255](https://github.com/LightDotSo/LightDotSo/pull/2255) [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add MDX component
+
+- [#2264](https://github.com/LightDotSo/LightDotSo/pull/2264) [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
+- Updated dependencies [[`f0866ed`](https://github.com/LightDotSo/LightDotSo/commit/f0866eda64ca23c2e524bb0db94727ce5f5412ff), [`3a1573e`](https://github.com/LightDotSo/LightDotSo/commit/3a1573edefcf2ac7f237a9eea624444b88018908), [`bf57541`](https://github.com/LightDotSo/LightDotSo/commit/bf575412eb08dbb06411a655f167a2bb24537586), [`9b3c98a`](https://github.com/LightDotSo/LightDotSo/commit/9b3c98ad0b3bb71978bae4eb5e4f01e66b4e5d62), [`3d43c5a`](https://github.com/LightDotSo/LightDotSo/commit/3d43c5a9b53f8380aceb81ee88cea74cdc7226b6)]:
+  - @lightdotso/query@0.1.9
+  - @lightdotso/kysely@3.1.7
+  - @lightdotso/prisma@3.1.7
+  - @lightdotso/styles@3.0.5
+  - @lightdotso/query-keys@0.1.9
+  - @lightdotso/validators@0.0.7
+  - @lightdotso/templates@0.0.9
+  - @lightdotso/elements@0.0.9
+  - @lightdotso/sequence@0.0.7
+  - @lightdotso/services@0.0.10
+  - @lightdotso/dialogs@0.0.4
+  - @lightdotso/schemas@3.1.8
+  - @lightdotso/client@3.1.9
+  - @lightdotso/modals@0.0.9
+  - @lightdotso/params@0.1.9
+  - @lightdotso/pusher@0.0.6
+  - @lightdotso/states@0.0.9
+  - @lightdotso/stores@0.1.9
+  - @lightdotso/tables@0.1.9
+  - @lightdotso/const@3.1.8
+  - @lightdotso/forms@0.0.9
+  - @lightdotso/hooks@0.0.10
+  - @lightdotso/redis@0.0.6
+  - @lightdotso/types@0.0.8
+  - @lightdotso/utils@3.1.9
+  - @lightdotso/wagmi@3.1.9
+  - @lightdotso/data@0.1.8
+  - @lightdotso/nuqs@0.0.9
+  - @lightdotso/msw@0.0.9
+  - @lightdotso/svg@0.0.10
+  - @lightdotso/ui@3.1.9
+
 ## 3.2.7
 
 ### Patch Changes
