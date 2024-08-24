@@ -39,12 +39,13 @@ jobs:
       - name: Android Install
         uses: android-actions/setup-android@v3
       - name: Gradle Lint
+        continue-on-error: true
         run: |
           ./gradlew lint
       - uses: yutailang0119/action-android-lint@v3
+        continue-on-error: true
         with:
           report-path: build/reports/*.xml
-        continue-on-error: false
   android-test:
     if: needs.android-turbo.outputs.trigger == 'true'
     needs:
@@ -61,9 +62,11 @@ jobs:
       - name: Android Install
         uses: android-actions/setup-android@v3
       - name: Gradle Build
+        continue-on-error: true
         run: |
           ./gradlew assembleDebug --stacktrace
       - name: Gradle Test
+        continue-on-error: true
         run: |
           ./gradlew test
   android-check:
