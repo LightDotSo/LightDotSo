@@ -1,5 +1,14 @@
 # @lightdotso/proposals
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`7fa8e05`](https://github.com/LightDotSo/LightDotSo/commit/7fa8e0562f0fe315255b4c05c080b858120001c2)]:
+  - @lightdotso/ui@3.1.11
+  - @lightdotso/elements@0.0.11
+  - @lightdotso/templates@0.0.11
+
 ## 0.0.5
 
 ### Patch Changes

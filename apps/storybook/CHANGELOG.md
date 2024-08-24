@@ -1,5 +1,19 @@
 # @lightdotso/storybook
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`7fa8e05`](https://github.com/LightDotSo/LightDotSo/commit/7fa8e0562f0fe315255b4c05c080b858120001c2)]:
+  - @lightdotso/ui@3.1.11
+  - @lightdotso/dialogs@0.0.6
+  - @lightdotso/elements@0.0.11
+  - @lightdotso/forms@0.0.11
+  - @lightdotso/modals@0.0.11
+  - @lightdotso/tables@0.1.11
+  - @lightdotso/templates@0.0.11
+  - @lightdotso/states@0.0.11
+
 ## 0.0.11
 
 ### Patch Changes
