@@ -1,5 +1,20 @@
 # @lightdotso/web
 
+## 3.2.12
+
+### Patch Changes
+
+- [#2274](https://github.com/LightDotSo/LightDotSo/pull/2274) [`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tsup config
+
+- Updated dependencies [[`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52)]:
+  - @lightdotso/templates@0.0.12
+  - @lightdotso/stores@0.1.10
+  - @lightdotso/tables@0.1.12
+  - @lightdotso/nuqs@0.0.10
+  - @lightdotso/ui@3.1.12
+  - @lightdotso/query@0.1.12
+  - @lightdotso/states@0.0.12
+
 ## 3.2.11
 
 ### Patch Changes

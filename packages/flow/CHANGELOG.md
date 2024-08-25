@@ -1,5 +1,14 @@
 # @lightdotso/flow
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52)]:
+  - @lightdotso/ui@3.1.12
+  - @lightdotso/hooks@0.0.13
+  - @lightdotso/query@0.1.12
+
 ## 0.0.3
 
 ### Patch Changes
