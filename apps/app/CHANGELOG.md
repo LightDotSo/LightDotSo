@@ -1,5 +1,25 @@
 # @lightdotso/app
 
+## 3.2.11
+
+### Patch Changes
+
+- [#2274](https://github.com/LightDotSo/LightDotSo/pull/2274) [`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tsup config
+
+- Updated dependencies [[`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52)]:
+  - @lightdotso/templates@0.0.12
+  - @lightdotso/stores@0.1.10
+  - @lightdotso/tables@0.1.12
+  - @lightdotso/nuqs@0.0.10
+  - @lightdotso/ui@3.1.12
+  - @lightdotso/dialogs@0.0.7
+  - @lightdotso/modals@0.0.12
+  - @lightdotso/forms@0.0.12
+  - @lightdotso/hooks@0.0.13
+  - @lightdotso/query@0.1.12
+  - @lightdotso/states@0.0.12
+  - @lightdotso/elements@0.0.12
+
 ## 3.2.10
 
 ### Patch Changes

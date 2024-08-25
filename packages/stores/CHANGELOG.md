@@ -1,5 +1,11 @@
 # @lightdotso/stores
 
+## 0.1.10
+
+### Patch Changes
+
+- [#2274](https://github.com/LightDotSo/LightDotSo/pull/2274) [`55005fd`](https://github.com/LightDotSo/LightDotSo/commit/55005fda6e4ea09696d34a9f2590712cbe296c52) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tsup config
+
 ## 0.1.9
 
 ### Patch Changes
