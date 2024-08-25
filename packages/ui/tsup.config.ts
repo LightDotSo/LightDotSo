@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig({
   clean: true,
-  dts: true,
+  dts: false,
   treeshake: true,
   splitting: true,
   entry: ["src/index.ts", "src/components/**/index.ts"],
