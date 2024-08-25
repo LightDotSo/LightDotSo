@@ -28,7 +28,7 @@
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "@tanstack/react-table": "^8.20.1",
+    "@tanstack/react-table": "^8.20.5",
     "@types/lodash": "^4.17.7",
     "lodash": "^4.17.21",
     "react": "19.0.0-rc-187dd6a7-20240806",

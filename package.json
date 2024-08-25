@@ -101,7 +101,7 @@
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.0.2",
     "@playwright/test": "^1.46.1",
-    "@swc/core": "^1.7.14",
+    "@swc/core": "^1.7.18",
     "@taplo/cli": "^0.7.0",
     "@thunderclient/cli": "^1.16.3",
     "@types/dotenv": "^8.2.0",

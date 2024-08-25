@@ -25,7 +25,7 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
-    "@tanstack/react-table": "^8.20.1",
+    "@tanstack/react-table": "^8.20.5",
     "nuqs": "^1.17.8",
     "viem": "^2.20.0"
   },
