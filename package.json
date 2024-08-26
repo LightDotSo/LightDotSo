@@ -64,6 +64,7 @@
     "taplo:fix": "taplo format *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "taplo:lint": "taplo lint *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "tsc": "tsc --noEmit",
+    "turbo:build": "dotenv -- turbo run build",
     "vitest": "vitest --run",
     "vitest:coverage": "vitest --coverage",
     "vitest:typecheck": "vitest typecheck",

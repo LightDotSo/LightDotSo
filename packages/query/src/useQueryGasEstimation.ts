@@ -40,7 +40,7 @@ export const useQueryGasEstimation = (params: { chainId: number }) => {
     isLoading: isGasEstimationLoading,
     error: gasEstimationError,
   } = useQuery<GasEstimationResponse>({
-    retry: 10,
+    retry: 1,
     queryKey: queryKeys.rpc.get_gas_estimation({
       chainId: params.chainId,
     }).queryKey,
