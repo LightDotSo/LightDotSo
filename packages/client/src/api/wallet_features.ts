@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { WalletFeaturesData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetWalletFeaturesParams =
   paths["/wallet/features/get"]["get"]["parameters"];
 
 export type GetWalletFeaturesResponse = Promise<
-  Result<
+  ResultAsync<
     WalletFeaturesData,
     | Error
     | { BadRequest: string }
@@ -71,7 +71,7 @@ export type PutWalletFeaturesBody =
   paths["/wallet/features/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletFeaturesResponse = Promise<
-  Result<
+  ResultAsync<
     WalletFeaturesData,
     | Error
     | { BadRequest: string }

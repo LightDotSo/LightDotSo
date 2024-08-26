@@ -14,11 +14,14 @@
 
 import {
   type GetConfigurationResponse,
+  convertNeverThrowToPromise,
   getConfiguration as getClientConfiguration,
 } from "@lightdotso/client";
 import type { ConfigurationParams } from "@lightdotso/params";
+import { backOff } from "exponential-backoff";
 import { cache } from "react";
 import "server-only";
+import type { ConfigurationData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Pre
@@ -39,6 +42,18 @@ export const getConfiguration = async (
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Backoff
+// -----------------------------------------------------------------------------
+
+export const getConfigurationWithBackoff = async (
+  params: ConfigurationParams,
+): Promise<ConfigurationData> => {
+  return await backOff(() =>
+    convertNeverThrowToPromise(getConfiguration(params)),
   );
 };
 

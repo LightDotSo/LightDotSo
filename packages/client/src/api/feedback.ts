@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { FeedbackData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type PostFeedbackBody =
   paths["/feedback/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostFeedbackResponse = Promise<
-  Result<
+  ResultAsync<
     FeedbackData,
     | Error
     | { BadRequest: string }

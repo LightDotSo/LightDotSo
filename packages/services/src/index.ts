@@ -25,6 +25,7 @@ export {
 export {
   preloadGetConfiguration,
   getConfiguration,
+  getConfigurationWithBackoff,
   getCachedConfiguration,
 } from "./getConfiguration";
 export {
@@ -96,7 +97,12 @@ export {
   getUserOperationsCount,
   getCachedUserOperationsCount,
 } from "./getUserOperationsCount";
-export { preloadGetWallet, getWallet, getCachedWallet } from "./getWallet";
+export {
+  preloadGetWallet,
+  getWallet,
+  getWalletWithBackoff,
+  getCachedWallet,
+} from "./getWallet";
 export { preloadGetWallets, getWallets, getCachedWallets } from "./getWallets";
 export {
   preloadGetWalletBilling,
@@ -121,5 +127,6 @@ export {
 export {
   preloadGetWalletSettings,
   getWalletSettings,
+  getWalletSettingsWithBackoff,
   getCachedWalletSettings,
 } from "./getWalletSettings";

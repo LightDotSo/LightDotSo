@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { ConfigurationOperationData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -29,7 +29,7 @@ export type PostConfigurationOperationBody =
   paths["/configuration_operation/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostConfigurationOperationResponse = Promise<
-  Result<
+  ResultAsync<
     ConfigurationOperationData,
     | Error
     | { BadRequest: string }

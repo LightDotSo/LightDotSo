@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { UserOperationMerkleData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetUserOperationMerkleParams =
   paths["/user_operation_merkle/get"]["get"]["parameters"];
 
 export type GetUserOperationMerkleResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationMerkleData,
     | Error
     | { BadRequest: string }

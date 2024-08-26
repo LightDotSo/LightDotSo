@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { WalletSettingsData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetWalletSettingsParams =
   paths["/wallet/settings/get"]["get"]["parameters"];
 
 export type GetWalletSettingsResponse = Promise<
-  Result<
+  ResultAsync<
     WalletSettingsData,
     | Error
     | { BadRequest: string }
@@ -71,7 +71,7 @@ export type PutWalletSettingsBody =
   paths["/wallet/settings/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletSettingsResponse = Promise<
-  Result<
+  ResultAsync<
     WalletSettingsData,
     | Error
     | { BadRequest: string }

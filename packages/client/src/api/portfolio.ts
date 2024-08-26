@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { TokenPortfolioData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -25,7 +25,7 @@ import type { paths } from "../types/api/v1";
 export type GetPortfolioParams = paths["/portfolio/get"]["get"]["parameters"];
 
 export type GetPortfolioResponse = Promise<
-  Result<
+  ResultAsync<
     TokenPortfolioData,
     Error | { BadRequest: string } | { Conflict: string } | undefined
   >

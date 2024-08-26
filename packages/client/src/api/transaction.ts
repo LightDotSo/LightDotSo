@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { TransactionCountData, TransactionData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetTransactionsParams =
   paths["/transaction/list"]["get"]["parameters"];
 
 export type GetTransactionsResponse = Promise<
-  Result<
+  ResultAsync<
     TransactionData[],
     | Error
     | { BadRequest: string }
@@ -68,7 +68,7 @@ export type GetTransactionsCountParams =
   paths["/transaction/list/count"]["get"]["parameters"];
 
 export type GetTransactionCountResponse = Promise<
-  Result<
+  ResultAsync<
     TransactionCountData,
     | Error
     | { BadRequest: string }

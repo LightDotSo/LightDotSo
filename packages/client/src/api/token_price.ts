@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { TokenPriceData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetTokenPriceParams =
   paths["/token_price/get"]["get"]["parameters"];
 
 export type GetTokenPriceResponse = Promise<
-  Result<
+  ResultAsync<
     TokenPriceData,
     | Error
     | { BadRequest: string }

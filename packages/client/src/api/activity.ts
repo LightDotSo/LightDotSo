@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { ActivityCountData, ActivityData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -25,7 +25,7 @@ import type { paths } from "../types/api/v1";
 export type GetActivitiesParams = paths["/activity/list"]["get"]["parameters"];
 
 export type GetActivitiesResponse = Promise<
-  Result<
+  ResultAsync<
     ActivityData[],
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
@@ -63,7 +63,7 @@ export type GetActivitiesCountParams =
   paths["/activity/list/count"]["get"]["parameters"];
 
 export type GetActivitiesCountResponse = Promise<
-  Result<
+  ResultAsync<
     ActivityCountData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
