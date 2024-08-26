@@ -13,6 +13,9 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
+  "exports": {
+    "./*": "./src/*"
+  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {
