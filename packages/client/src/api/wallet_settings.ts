@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { WalletSettingsData } from "@lightdotso/data";
-import { ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, errAsync, okAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -56,7 +56,7 @@ export const getWalletSettings = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
 
@@ -104,6 +104,6 @@ export const updateWalletSettings = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
