@@ -40,7 +40,7 @@
     "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^8.2.9",
     "@tanstack/react-virtual": "^3.10.4",
-    "lucide-react": "^0.435.0",
+    "lucide-react": "^0.436.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-hook-form": "^7.53.0",

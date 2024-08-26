@@ -159,7 +159,7 @@
     "vitest": "^2.0.5",
     "vitest-solidity-coverage": "^0.1.13"
   },
-  "packageManager": "pnpm@9.8.0",
+  "packageManager": "pnpm@9.9.0",
   "pnpm": {
     "overrides": {
       "@headlessui/react": "$@headlessui/react",

@@ -28,7 +28,7 @@
     "ethers": "^6.13.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.17",
+    "@types/chai": "^4.3.18",
     "@types/mocha": "^10.0.7",
     "@types/node": "^22.5.0",
     "mocha": "^10.7.3",

@@ -35,7 +35,7 @@
     "@sentry/nextjs": "^8.26.0",
     "critters": "^0.0.24",
     "framer-motion": "^11.3.30",
-    "lucide-react": "^0.435.0",
+    "lucide-react": "^0.436.0",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",

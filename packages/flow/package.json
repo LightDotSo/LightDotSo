@@ -33,7 +33,7 @@
     "@lightdotso/utils": "workspace:*",
     "framer-motion": "^11.3.30",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.435.0",
+    "lucide-react": "^0.436.0",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
