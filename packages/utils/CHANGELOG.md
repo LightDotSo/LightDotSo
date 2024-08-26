@@ -1,5 +1,11 @@
 # @lightdotso/utils
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2282](https://github.com/LightDotSo/LightDotSo/pull/2282) [`9604a94`](https://github.com/LightDotSo/LightDotSo/commit/9604a9485b844824f48c2d45af3b9585bd307f17) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add exports elements
+
 ## 3.1.9
 
 ### Patch Changes
