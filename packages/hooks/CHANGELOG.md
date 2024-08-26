@@ -1,5 +1,13 @@
 # @lightdotso/hooks
 
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`96a0558`](https://github.com/LightDotSo/LightDotSo/commit/96a055861881a94506ca880f1900436a0a6bc61c)]:
+  - @lightdotso/ui@3.1.13
+  - @lightdotso/query@0.1.13
+
 ## 0.0.13
 
 ### Patch Changes

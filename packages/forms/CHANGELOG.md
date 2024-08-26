@@ -1,5 +1,17 @@
 # @lightdotso/forms
 
+## 0.0.13
+
+### Patch Changes
+
+- [#2276](https://github.com/LightDotSo/LightDotSo/pull/2276) [`96a0558`](https://github.com/LightDotSo/LightDotSo/commit/96a055861881a94506ca880f1900436a0a6bc61c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add lightdotso pkgs
+
+- Updated dependencies [[`96a0558`](https://github.com/LightDotSo/LightDotSo/commit/96a055861881a94506ca880f1900436a0a6bc61c)]:
+  - @lightdotso/elements@0.0.13
+  - @lightdotso/ui@3.1.13
+  - @lightdotso/hooks@0.0.14
+  - @lightdotso/query@0.1.13
+
 ## 0.0.12
 
 ### Patch Changes

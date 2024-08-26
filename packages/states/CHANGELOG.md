@@ -1,5 +1,13 @@
 # @lightdotso/states
 
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/hooks@0.0.14
+  - @lightdotso/query@0.1.13
+
 ## 0.0.12
 
 ### Patch Changes
