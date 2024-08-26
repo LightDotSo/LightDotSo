@@ -26,7 +26,7 @@ import {
 import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import type { Address } from "viem";
-import { PlaceholderOrb } from "./placeholder-orb";
+import { PlaceholderOrb } from "../placeholder-orb";
 
 // -----------------------------------------------------------------------------
 // Wrapper

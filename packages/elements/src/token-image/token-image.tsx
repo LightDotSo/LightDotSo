@@ -23,7 +23,7 @@ import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { type VariantProps, cva } from "class-variance-authority";
 import { type FC, memo, useEffect, useMemo, useState } from "react";
-import { NextImage } from "./next-image";
+import { NextImage } from "../next-image/next-image";
 
 // -----------------------------------------------------------------------------
 // Const

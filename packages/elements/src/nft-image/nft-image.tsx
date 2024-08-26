@@ -20,7 +20,7 @@ import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
 import { type FC, useState } from "react";
 import { Blurhash } from "react-blurhash";
-import { NextImage } from "./next-image";
+import { NextImage } from "../next-image/next-image";
 
 // -----------------------------------------------------------------------------
 // Props
