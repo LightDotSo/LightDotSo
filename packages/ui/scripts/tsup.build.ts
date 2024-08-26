@@ -9,7 +9,6 @@ import { build } from "tsup";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-// @ts-ignore
 async function buildStage({ entry }) {
   try {
     await build({
@@ -31,7 +30,7 @@ async function buildStage({ entry }) {
 }
 
 export async function buildAllStages() {
-  const files = glob.sync("src/*/**/index.ts");
+  const files = glob.sync("src/components/**/index.ts");
   const chunkSize = 3;
   const chunks = _.chunk(files, chunkSize);
   // await buildStage({ clean:true, entry: chunks[0] });
