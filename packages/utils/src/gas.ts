@@ -15,6 +15,10 @@
 import { GAS_SPEED_BUMP } from "@lightdotso/const";
 import type { GasSpeed } from "@lightdotso/types";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export function getGasSpeedBumpAmount(gasSpeed: GasSpeed): number {
   switch (gasSpeed) {
     case "low":
