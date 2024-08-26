@@ -1,5 +1,12 @@
 # @lightdotso/stores
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`9604a94`](https://github.com/LightDotSo/LightDotSo/commit/9604a9485b844824f48c2d45af3b9585bd307f17)]:
+  - @lightdotso/utils@3.1.10
+
 ## 0.1.10
 
 ### Patch Changes

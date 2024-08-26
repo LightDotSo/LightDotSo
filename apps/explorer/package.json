@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/explorer",
-  "version": "3.2.13",
-  "private": false,
+  "version": "3.2.14",
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
