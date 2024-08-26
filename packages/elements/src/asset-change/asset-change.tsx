@@ -15,7 +15,7 @@
 import type { AssetChangeData } from "@lightdotso/data";
 import { refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
-import { TokenImage } from "./token-image";
+import { TokenImage } from "../token-image/token-image";
 
 // -----------------------------------------------------------------------------
 // Props
