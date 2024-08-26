@@ -22,8 +22,7 @@ import {
 } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
-import { shortenBytes32 } from "@lightdotso/utils";
-import { getEtherscanUrlWithChainId } from "@lightdotso/utils/src/etherscan";
+import { getEtherscanUrlWithChainId, shortenBytes32 } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { type FC, useMemo } from "react";
 

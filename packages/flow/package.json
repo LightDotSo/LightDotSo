@@ -15,6 +15,7 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*"
   },
   "main": "./src/index.ts",

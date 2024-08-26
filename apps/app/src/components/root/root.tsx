@@ -43,53 +43,47 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
 });
 
 const AddressModal = dynamic(
-  () => import("@lightdotso/modals/src/address/address-modal"),
+  () => import("@lightdotso/modals/address/address-modal"),
   {
     ssr: false,
   },
 );
 
-const AuthModal = dynamic(
-  () => import("@lightdotso/modals/src/auth/auth-modal"),
-  {
-    ssr: false,
-  },
-);
+const AuthModal = dynamic(() => import("@lightdotso/modals/auth/auth-modal"), {
+  ssr: false,
+});
 
-const CartModal = dynamic(
-  () => import("@lightdotso/modals/src/cart/cart-modal"),
-  {
-    ssr: false,
-  },
-);
+const CartModal = dynamic(() => import("@lightdotso/modals/cart/cart-modal"), {
+  ssr: false,
+});
 
 const ChainModal = dynamic(
-  () => import("@lightdotso/modals/src/chain/chain-modal"),
+  () => import("@lightdotso/modals/chain/chain-modal"),
   {
     ssr: false,
   },
 );
 
 const ConnectModal = dynamic(
-  () => import("@lightdotso/modals/src/connect/connect-modal"),
+  () => import("@lightdotso/modals/connect/connect-modal"),
   {
     ssr: false,
   },
 );
 
 const OwnerModal = dynamic(
-  () => import("@lightdotso/modals/src/owner/owner-modal"),
+  () => import("@lightdotso/modals/owner/owner-modal"),
   {
     ssr: false,
   },
 );
 
-const NftModal = dynamic(() => import("@lightdotso/modals/src/nft/nft-modal"), {
+const NftModal = dynamic(() => import("@lightdotso/modals/nft/nft-modal"), {
   ssr: false,
 });
 
 const TokenModal = dynamic(
-  () => import("@lightdotso/modals/src/token/token-modal"),
+  () => import("@lightdotso/modals/token/token-modal"),
   {
     ssr: false,
   },

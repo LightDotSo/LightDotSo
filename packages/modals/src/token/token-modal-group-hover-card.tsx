@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { TokenImage } from "@lightdotso/elements";
-import { useTokenAmounts } from "@lightdotso/hooks/src/useTokenAmounts";
+import { useTokenAmounts } from "@lightdotso/hooks";
 import { useQueryTokenGroup } from "@lightdotso/query";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@lightdotso/ui";
 import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";

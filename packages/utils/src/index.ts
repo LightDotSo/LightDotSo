@@ -15,6 +15,7 @@
 export {
   getChainWithChainId,
   getChainNameWithChainId,
+  getChainLabelById,
   getChainBySimplehashChainName,
   getChainIdBySimplehashChainName,
   isTestnet,
