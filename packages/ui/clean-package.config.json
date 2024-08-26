@@ -1,7 +1,7 @@
 {
   "replace": {
     "main": "dist/index.js",
-    "module": "dist/index/index.mjs",
+    "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
     "exports": {
       ".": {
