@@ -14,9 +14,12 @@
 
 import {
   type GetWalletSettingsResponse,
+  convertNeverThrowToPromise,
   getWalletSettings as getClientWalletSettings,
 } from "@lightdotso/client";
+import type { WalletSettingsData } from "@lightdotso/data";
 import type { WalletSettingsParams } from "@lightdotso/params";
+import { backOff } from "exponential-backoff";
 import { cache } from "react";
 import "server-only";
 
@@ -39,6 +42,18 @@ export const getWalletSettings = async (
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { address: params.address! } } },
     "admin",
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Backoff
+// -----------------------------------------------------------------------------
+
+export const getWalletSettingsWithBackoff = async (
+  params: WalletSettingsParams,
+): Promise<WalletSettingsData> => {
+  return await backOff(() =>
+    convertNeverThrowToPromise(getWalletSettings(params)),
   );
 };
 

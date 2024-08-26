@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { SocketBalancePageData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSocketClient } from "../client";
 import type { paths } from "../types/socket/v2";
@@ -26,7 +26,7 @@ export type GetSocketBalancesParams =
   paths["/v2/balances"]["get"]["parameters"];
 
 export type GetSocketBalancesResponse = Promise<
-  Result<
+  ResultAsync<
     SocketBalancePageData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >

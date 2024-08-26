@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import type { ConfigurationData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
+import { convertNeverThrowToPromise } from "../utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -26,7 +27,7 @@ export type GetConfigurationParams =
   paths["/configuration/get"]["get"]["parameters"];
 
 export type GetConfigurationResponse = Promise<
-  Result<
+  ResultAsync<
     ConfigurationData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
@@ -55,3 +56,6 @@ export const getConfiguration = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+export const getConfigurationWithPromise = (params: GetConfigurationParams) =>
+  convertNeverThrowToPromise(getConfiguration({ params }));

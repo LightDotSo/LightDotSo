@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { PaymasterOperationData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetPaymasterOperationParams =
   paths["/paymaster_operation/get"]["get"]["parameters"];
 
 export type GetPaymasterOperationResponse = Promise<
-  Result<
+  ResultAsync<
     PaymasterOperationData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >

@@ -13,12 +13,11 @@
 // limitations under the License.
 
 import {
-  getCachedConfiguration,
-  getCachedWallet,
-  getCachedWalletSettings,
+  getConfigurationWithBackoff,
+  getWalletSettingsWithBackoff,
+  getWalletWithBackoff,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
-import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 
@@ -39,13 +38,15 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getCachedWallet({ address: params.address as Address });
-
-  const configPromise = getCachedConfiguration({
+  const walletPromise = getWalletWithBackoff({
     address: params.address as Address,
   });
 
-  const walletSettingsPromise = getCachedWalletSettings({
+  const configPromise = getConfigurationWithBackoff({
+    address: params.address as Address,
+  });
+
+  const walletSettingsPromise = getWalletSettingsWithBackoff({
     address: params.address as Address,
   });
 
@@ -59,21 +60,9 @@ export const handler = async (params: { address: string }) => {
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([wallet, config]);
-
-  return res.match(
-    ([wallet, config]) => {
-      return {
-        wallet: wallet,
-        config: config,
-        walletSettings: walletSettings.unwrapOr({
-          is_enabled_dev: false,
-          is_enabled_testnet: false,
-        }),
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  return {
+    wallet: wallet,
+    config: config,
+    walletSettings: walletSettings,
+  };
 };

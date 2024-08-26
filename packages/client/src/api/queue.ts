@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -22,7 +22,7 @@ import type { paths } from "../types/api/v1";
 // -----------------------------------------------------------------------------
 
 export type PostQueueResponse = Promise<
-  Result<
+  ResultAsync<
     { Queued: string },
     | Error
     | { BadRequest: string }

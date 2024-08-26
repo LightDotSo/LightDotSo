@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { NotificationCountData, NotificationData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetNotificationsParams =
   paths["/notification/list"]["get"]["parameters"];
 
 export type GetNotificationsResponse = Promise<
-  Result<
+  ResultAsync<
     NotificationData[],
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
@@ -64,7 +64,7 @@ export type GetNotificationsCountParams =
   paths["/notification/list"]["get"]["parameters"];
 
 export type GetNotificationsCountResponse = Promise<
-  Result<
+  ResultAsync<
     NotificationCountData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
@@ -105,7 +105,7 @@ export type PostNotificationBody =
   paths["/notification/read"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostNotificationResponse = Promise<
-  Result<
+  ResultAsync<
     number,
     | Error
     | { BadRequest: string }

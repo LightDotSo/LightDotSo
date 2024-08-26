@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { LifiQuotePageData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getLifiClient } from "../client";
 import type { paths } from "../types/lifi/v1";
@@ -25,7 +25,7 @@ import type { paths } from "../types/lifi/v1";
 export type GetLifiQuoteParams = paths["/quote"]["get"]["parameters"];
 
 export type GetLifiQuoteResponse = Promise<
-  Result<LifiQuotePageData, Error | unknown | undefined>
+  ResultAsync<LifiQuotePageData, Error | unknown | undefined>
 >;
 
 // -----------------------------------------------------------------------------

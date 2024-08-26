@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { InviteCodeCountData, InviteCodeData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ export type GetInviteCodeParams =
   paths["/invite_code/get"]["get"]["parameters"];
 
 export type GetInviteCodeResponse = Promise<
-  Result<
+  ResultAsync<
     InviteCodeData,
     | Error
     | { BadRequest: string }
@@ -68,7 +68,7 @@ export type GetInviteCodesParams =
   paths["/invite_code/list"]["get"]["parameters"];
 
 export type GetInviteCodesResponse = Promise<
-  Result<
+  ResultAsync<
     InviteCodeData[],
     | Error
     | { BadRequest: string }
@@ -110,7 +110,7 @@ export type GetInviteCodesCountParams =
   paths["/invite_code/list/count"]["get"]["parameters"];
 
 export type GetInviteCodesCountResponse = Promise<
-  Result<
+  ResultAsync<
     InviteCodeCountData,
     | Error
     | { BadRequest: string }

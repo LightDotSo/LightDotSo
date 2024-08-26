@@ -17,7 +17,7 @@ import {
   nftWalletValuationsSchema,
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
-import { type Result, ResultAsync } from "neverthrow";
+import { ResultAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSimplehashClient } from "../client";
 import { zodFetch } from "../zod";
@@ -27,7 +27,7 @@ import { zodFetch } from "../zod";
 // -----------------------------------------------------------------------------
 
 export type GetNftValuationResponse = Promise<
-  Result<
+  ResultAsync<
     NftValuationData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >

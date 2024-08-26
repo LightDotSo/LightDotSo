@@ -14,9 +14,12 @@
 
 import {
   type GetWalletResponse,
+  convertNeverThrowToPromise,
   getWallet as getClientWallet,
 } from "@lightdotso/client";
+import type { WalletData } from "@lightdotso/data";
 import type { WalletParams } from "@lightdotso/params";
+import { backOff } from "exponential-backoff";
 import { cache } from "react";
 import "server-only";
 
@@ -38,6 +41,16 @@ export const getWallet = async (params: WalletParams): GetWalletResponse => {
     { params: { query: { address: params.address! } } },
     "admin",
   );
+};
+
+// -----------------------------------------------------------------------------
+// Backoff
+// -----------------------------------------------------------------------------
+
+export const getWalletWithBackoff = async (
+  params: WalletParams,
+): Promise<WalletData> => {
+  return await backOff(() => convertNeverThrowToPromise(getWallet(params)));
 };
 
 // -----------------------------------------------------------------------------

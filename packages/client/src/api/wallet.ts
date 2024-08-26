@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { WalletCountData, WalletData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -25,7 +25,7 @@ import type { paths } from "../types/api/v1";
 export type GetWalletParams = paths["/wallet/get"]["get"]["parameters"];
 
 export type GetWalletResponse = Promise<
-  Result<
+  ResultAsync<
     WalletData,
     | Error
     | { BadRequest: string }
@@ -67,7 +67,7 @@ export const getWallet = async (
 export type GetWalletsParams = paths["/wallet/list"]["get"]["parameters"];
 
 export type GetWalletsResponse = Promise<
-  Result<
+  ResultAsync<
     WalletData[],
     | Error
     | { BadRequest: string }
@@ -110,7 +110,7 @@ export type GetWalletsCountParams =
   paths["/wallet/list/count"]["get"]["parameters"];
 
 export type GetWalletsCountResponse = Promise<
-  Result<
+  ResultAsync<
     WalletCountData,
     | Error
     | { BadRequest: string }
@@ -155,7 +155,7 @@ export type PostWalletBody =
   paths["/wallet/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostWalletResponse = Promise<
-  Result<
+  ResultAsync<
     WalletData,
     | Error
     | { BadRequest: string }
@@ -203,7 +203,7 @@ export type PutWalletBody =
   paths["/wallet/update"]["put"]["requestBody"]["content"]["application/json"];
 
 export type PutWalletResponse = Promise<
-  Result<
+  ResultAsync<
     WalletData,
     | Error
     | { BadRequest: string }

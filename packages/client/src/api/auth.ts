@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { NonceData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -26,7 +26,7 @@ import type { paths } from "../types/api/v1";
 export type GetNonceParams = {};
 
 export type GetNonceResponse = Promise<
-  Result<
+  ResultAsync<
     NonceData,
     | Error
     | { BadRequest: string }
@@ -79,7 +79,7 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 export type PostAuthLogoutParams = {};
 
 export type PostAuthLogoutResponse = Promise<
-  Result<
+  ResultAsync<
     { Logout: string },
     | Error
     | { BadRequest: string }
@@ -120,7 +120,7 @@ export type PostAuthVerifyBody =
   paths["/auth/verify"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostAuthVerifyResponse = Promise<
-  Result<
+  ResultAsync<
     { nonce: string },
     | Error
     | { BadRequest: string }

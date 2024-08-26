@@ -18,7 +18,7 @@ import type {
   UserOperationNonceData,
   UserOperationSignatureData,
 } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -31,7 +31,7 @@ export type GetUserOperationParams =
   paths["/user_operation/get"]["get"]["parameters"];
 
 export type GetUserOperationResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationData,
     | Error
     | { BadRequest: string }
@@ -73,7 +73,7 @@ export type GetUserOperationNonceParams =
   paths["/user_operation/nonce"]["get"]["parameters"];
 
 export type GetUserOperationNonceResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationNonceData,
     | Error
     | { BadRequest: string }
@@ -115,7 +115,7 @@ export type GetUserOperationSignatureParams =
   paths["/user_operation/signature"]["get"]["parameters"];
 
 export type GetUserOperationSignatureResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationSignatureData,
     | Error
     | { BadRequest: string }
@@ -157,7 +157,7 @@ export type GetUserOperationsParams =
   paths["/user_operation/list"]["get"]["parameters"];
 
 export type GetUserOperationsResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationData[],
     | Error
     | { BadRequest: string }
@@ -199,7 +199,7 @@ export type GetUserOperationsCountParams =
   paths["/user_operation/list/count"]["get"]["parameters"];
 
 export type GetUserOperationsCountResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationCountData,
     | Error
     | { BadRequest: string }
@@ -244,7 +244,7 @@ export type PostUserOperationBody =
   paths["/user_operation/create"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostUserOperationResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationData,
     | Error
     | { BadRequest: string }
@@ -292,7 +292,7 @@ export type PostBatchUserOperationBody =
   paths["/user_operation/create/batch"]["post"]["requestBody"]["content"]["application/json"];
 
 export type PostBatchUserOperationResponse = Promise<
-  Result<
+  ResultAsync<
     UserOperationData[],
     | Error
     | { BadRequest: string }
@@ -337,7 +337,7 @@ export type PutUserOperationParams =
   paths["/user_operation/update"]["put"]["parameters"];
 
 export type PutUserOperationResponse = Promise<
-  Result<
+  ResultAsync<
     { Updated: string },
     | Error
     | { BadRequest: string }

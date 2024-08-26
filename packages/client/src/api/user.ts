@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { UserData } from "@lightdotso/data";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -25,7 +25,7 @@ import type { paths } from "../types/api/v1";
 export type GetUserParams = paths["/user/get"]["get"]["parameters"];
 
 export type GetUserResponse = Promise<
-  Result<
+  ResultAsync<
     UserData,
     Error | { BadRequest: string } | { NotFound: string } | undefined
   >
