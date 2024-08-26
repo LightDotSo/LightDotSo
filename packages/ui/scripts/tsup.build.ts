@@ -16,7 +16,7 @@ async function buildStage({ entry }) {
       dts: true,
       treeshake: true,
       splitting: true,
-      outDir: "dist",
+      outDir: "dist/components",
       entry,
       format: ["cjs", "esm"],
       external: ["react", "react-dom"],

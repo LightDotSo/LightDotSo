@@ -22,7 +22,7 @@
     "@hono-rate-limiter/cloudflare": "^0.1.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
-    "hono": "^4.5.8",
+    "hono": "^4.5.9",
     "hono-rate-limiter": "^0.4.0"
   },
   "devDependencies": {

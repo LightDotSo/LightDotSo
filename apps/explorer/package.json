@@ -52,7 +52,7 @@
     "@tanstack/react-query-next-experimental": "^5.52.1",
     "@tanstack/react-table": "^8.20.5",
     "kysely-postgres-js": "^2.0.0",
-    "lucide-react": "^0.435.0",
+    "lucide-react": "^0.436.0",
     "neverthrow": "^7.0.1",
     "next": "15.0.0-canary.120",
     "postgres": "^3.4.4",
