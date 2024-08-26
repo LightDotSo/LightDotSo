@@ -1,0 +1,69 @@
+{
+  "replace": {
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index/index.mjs",
+        "require": "./dist/index/index.js",
+        "types": "./dist/index/index.d.ts"
+      },
+      "./action-logo": {
+        "import": "./dist/action-logo/index.mjs",
+        "require": "./dist/action-logo/index.js",
+        "types": "./dist/action-logo/index.d.ts"
+      },
+      "./asset-change": {
+        "import": "./dist/asset-change/index.mjs",
+        "require": "./dist/asset-change/index.js",
+        "types": "./dist/asset-change/index.d.ts"
+      },
+      "./chain-stack": {
+        "import": "./dist/chain-stack/index.mjs",
+        "require": "./dist/chain-stack/index.js",
+        "types": "./dist/chain-stack/index.d.ts"
+      },
+      "./empty-state": {
+        "import": "./dist/empty-state/index.mjs",
+        "require": "./dist/empty-state/index.js",
+        "types": "./dist/empty-state/index.d.ts"
+      },
+      "./external-link": {
+        "import": "./dist/external-link/index.mjs",
+        "require": "./dist/external-link/index.js",
+        "types": "./dist/external-link/index.d.ts"
+      },
+      "./invoke-button": {
+        "import": "./dist/invoke-button/index.mjs",
+        "require": "./dist/invoke-button/index.js",
+        "types": "./dist/invoke-button/index.d.ts"
+      },
+      "./next-image": {
+        "import": "./dist/ens-address/index.mjs",
+        "require": "./dist/ens-address/index.js",
+        "types": "./dist/ens-address/index.d.ts"
+      },
+      "./nft-image": {
+        "import": "./dist/nft-image/index.mjs",
+        "require": "./dist/nft-image/index.js",
+        "types": "./dist/nft-image/index.d.ts"
+      },
+      "./placeholder-orb": {
+        "import": "./dist/placeholder-orb/index.mjs",
+        "require": "./dist/placeholder-orb/index.js",
+        "types": "./dist/placeholder-orb/index.d.ts"
+      },
+      "./token-image": {
+        "import": "./dist/token-image/index.mjs",
+        "require": "./dist/token-image/index.js",
+        "types": "./dist/token-image/index.d.ts"
+      },
+      "./user-operation-timeline": {
+        "import": "./dist/user-operation-timeline/index.mjs",
+        "require": "./dist/user-operation-timeline/index.js",
+        "types": "./dist/user-operation-timeline/index.d.ts"
+      }
+    }
+  }
+}

@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const camelCaseToCapitalizedWords = (input: string): string => {
   // Split the string at each point where a lowercase letter is followed by an uppercase letter
   const words = input.split(/(?=[A-Z])/);

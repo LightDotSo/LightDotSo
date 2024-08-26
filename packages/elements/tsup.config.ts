@@ -5,8 +5,11 @@ const isProduction = process.env.NODE_ENV === "production";
 export default defineConfig({
   clean: true,
   dts: true,
-  entry: ["src/index.ts", "src/*/index.ts"],
+  treeshake: true,
+  splitting: true,
+  entry: ["src/index.ts"],
   format: ["cjs", "esm"],
+  external: ["react", "react-dom"],
   minify: isProduction,
   sourcemap: true,
 });
