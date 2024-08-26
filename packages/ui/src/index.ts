@@ -280,12 +280,9 @@ export {
 } from "./components/tooltip/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
-export { ReactQueryProvider } from "./providers/react-query";
-export { ThemeProvider } from "./providers/theme-provider";
-export { Web3Provider } from "./providers/web3-provider";
-export { BannerSection } from "./sections/banner-section";
-export { StateInfoSection } from "./sections/state-info-section";
-export { HStackFull } from "./stacks/h-stack-full";
+export { ReactQueryProvider, ThemeProvider, Web3Provider } from "./providers";
+export { BannerSection, StateInfoSection } from "./sections";
+export { HStackFull } from "./stacks";
 export {
   baseWidthWrapper,
   baseHeightWrapper,
