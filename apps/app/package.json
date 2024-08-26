@@ -14,7 +14,7 @@
   "author": "LightDotSo",
   "scripts": {
     "analyze": "cross-env ANALYZE=true next build || exit 0",
-    "build": "next build || exit 0",
+    "build": "dotenv -- next build || exit 0",
     "dev": "next dev --turbo --port 3001",
     "lint": "next lint || exit 0",
     "msw:init": "msw init public",

@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@lightdotso/modals/*": ["./../modals/src/*"]
+    }
   },
   "exclude": ["dist", "build", "node_modules"],
   "extends": "@lightdotso/tsconfig/react.json",

@@ -13,7 +13,7 @@
 
 ## EVM chain abstraction protocol unifying all chains as one.
 
-![](./assets/github.png)
+![](https://assets.light.so/social/github.png)
 
 - Same address, one wallet, all chains.
 - Use any supported EVM chain under the same wallet configuration without ever worrying about having to bridge or refuel gas.

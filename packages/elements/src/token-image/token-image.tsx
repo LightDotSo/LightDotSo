@@ -19,8 +19,7 @@
 import type { TokenData } from "@lightdotso/data";
 import { ChainLogo } from "@lightdotso/svg";
 import { Skeleton } from "@lightdotso/ui";
-import { cn, shortenName } from "@lightdotso/utils";
-import { getChainLabelById } from "@lightdotso/utils/src/chain";
+import { cn, getChainLabelById, shortenName } from "@lightdotso/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import { type FC, memo, useEffect, useMemo, useState } from "react";
 import { NextImage } from "../next-image/next-image";

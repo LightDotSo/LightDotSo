@@ -10,7 +10,8 @@
     "paths": {
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"],
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "@lightdotso/modals/*": ["./../../packages/modals/src/*"]
     },
     "target": "es2020"
   },
