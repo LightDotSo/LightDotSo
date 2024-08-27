@@ -194,7 +194,7 @@ export const ConfirmForm: FC = () => {
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           { params: { query: { address: formAddress! } } },
           clientType,
-        ).then((res) => res._unsafeUnwrap()),
+        ).then((res) => res.safeUnwrap()),
       )
         .then((res) => {
           toast.dismiss(loadingToast);
