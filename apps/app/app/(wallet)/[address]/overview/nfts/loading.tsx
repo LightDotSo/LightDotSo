@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
+import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
+import { PortfolioSection } from "@/components/section/portfolio-section";
+import { nftListData } from "@lightdotso/demo";
+import { DataTablePagination } from "@lightdotso/templates";
+import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -20,5 +24,13 @@ import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/ove
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  <OverviewList isLoading address={null} />;
+  <>
+    <PortfolioSection title="Total Token Value">
+      <Skeleton className="h-10 w-8" />
+    </PortfolioSection>
+    <TableSectionWrapper>
+      <DataTable isLoading data={nftListData.nfts} columns={[]} />
+    </TableSectionWrapper>
+    <DataTablePagination isLoading table={null} />
+  </>;
 }

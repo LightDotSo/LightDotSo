@@ -12,13 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
-
-// -----------------------------------------------------------------------------
-// Loading
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
-  <OverviewList isLoading address={null} />;
-}
+// biome-ignore lint/performance/noBarrelFile: <explanation>
+export { default } from "@/app/(wallet)/[address]/overview/tokens/loading";
