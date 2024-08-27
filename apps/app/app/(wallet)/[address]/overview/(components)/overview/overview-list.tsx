@@ -95,7 +95,7 @@ const initialItems = Object.keys(TITLES.Overview.subcategories).filter(
 // -----------------------------------------------------------------------------
 
 export type OverviewListProps = {
-  address: Address;
+  address: Address | null;
   isDemo?: boolean;
   isLoading?: boolean;
 };
@@ -115,7 +115,7 @@ export const OverviewList: FC<OverviewListProps> = ({
 
   // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToComponent = (itemId: string): JSX.Element => {
-    if (isLoading) {
+    if (isLoading || !address) {
       return <OverviewListItemSkeleton />;
     }
 
@@ -136,7 +136,7 @@ export const OverviewList: FC<OverviewListProps> = ({
 
   // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToNav = (itemId: string): JSX.Element => {
-    if (isLoading) {
+    if (isLoading || !address) {
       return <OverviewListPortfolioSkeleton />;
     }
 
