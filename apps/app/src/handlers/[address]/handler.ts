@@ -42,7 +42,7 @@ export const handler = async (params: { address: string }) => {
     address: params.address as Address,
   });
 
-  const configPromise = getConfigurationWithBackoff({
+  const configurationPromise = getConfigurationWithBackoff({
     address: params.address as Address,
   });
 
@@ -50,9 +50,9 @@ export const handler = async (params: { address: string }) => {
     address: params.address as Address,
   });
 
-  const [wallet, config, walletSettings] = await Promise.all([
+  const [wallet, configuration, walletSettings] = await Promise.all([
     walletPromise,
-    configPromise,
+    configurationPromise,
     walletSettingsPromise,
   ]);
 
@@ -62,7 +62,7 @@ export const handler = async (params: { address: string }) => {
 
   return {
     wallet: wallet,
-    config: config,
+    configuration: configuration,
     walletSettings: walletSettings,
   };
 };

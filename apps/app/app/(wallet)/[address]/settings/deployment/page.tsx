@@ -45,7 +45,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings, userOperations } =
+  const { wallet, configuration, walletSettings, userOperations } =
     await handler(params);
 
   // ---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ export default async function Page({ params }: PageProps) {
             key={chain.id}
             chain={JSON.stringify(chain)}
             address={params.address as Address}
-            image_hash={config.image_hash as Hex}
+            image_hash={configuration.image_hash as Hex}
             salt={wallet.salt as Hex}
           />
         ))}

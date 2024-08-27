@@ -65,7 +65,7 @@ export const handler = async (searchParams: {
     address: searchParams.address as Address,
   });
 
-  const configPromise = getCachedConfiguration({
+  const configurationPromise = getCachedConfiguration({
     address: searchParams.address as Address,
   });
 
@@ -73,9 +73,9 @@ export const handler = async (searchParams: {
     address: searchParams.address as Address,
   });
 
-  const [wallet, config, walletSettings] = await Promise.all([
+  const [wallet, configuration, walletSettings] = await Promise.all([
     walletPromise,
-    configPromise,
+    configurationPromise,
     walletSettingsPromise,
   ]);
 
@@ -83,13 +83,13 @@ export const handler = async (searchParams: {
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([wallet, config]);
+  const res = Result.combineWithAllErrors([wallet, configuration]);
 
   return res.match(
-    ([wallet, config]) => {
+    ([wallet, configuration]) => {
       return {
         wallet: wallet as WalletData | null,
-        config: config as ConfigurationData | null,
+        config: configuration as ConfigurationData | null,
         walletSettings: walletSettings.unwrapOr({
           is_enabled_dev: false,
           is_enabled_testnet: false,

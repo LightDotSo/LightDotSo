@@ -36,7 +36,8 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings } = await addressHandler(params);
+  const { wallet, configuration, walletSettings } =
+    await addressHandler(params);
 
   const walletBillingPromise = getCachedWalletBilling({
     address: params.address as Address,
@@ -55,7 +56,7 @@ export const handler = async (params: { address: string }) => {
     ([walletBilling]) => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         walletBilling: walletBilling,
       };
@@ -63,7 +64,7 @@ export const handler = async (params: { address: string }) => {
     () => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         walletBilling: {
           id: "",
