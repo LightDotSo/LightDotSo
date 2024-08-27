@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { DataTablePagination } from "@lightdotso/templates";
 import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
-import { DataTable } from "./(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Loading
