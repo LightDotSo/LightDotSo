@@ -12,18 +12,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import {
   Button,
+  Skeleton,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@lightdotso/ui";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+const WalletOverviewBannerAddressSkeleton = () => (
+  <Skeleton className="h-8 w-full" />
+);
+
+const WalletOverviewBannerSparklineSkeleton = () => (
+  <Skeleton className="h-8 w-12" />
+);
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const WalletOverviewBannerAddress = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address"
+    ).then((mod) => mod.WalletOverviewBannerAddress),
+  { loading: () => <WalletOverviewBannerAddressSkeleton />, ssr: false },
+);
+
+const WalletOverviewBannerSparkline = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline"
+    ).then((mod) => mod.WalletOverviewBannerSparkline),
+  { loading: () => <WalletOverviewBannerSparklineSkeleton />, ssr: false },
+);
 
 // -----------------------------------------------------------------------------
 // Props
