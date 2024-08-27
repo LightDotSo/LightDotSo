@@ -451,6 +451,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
+      '@lightdotso/demo':
+        specifier: workspace:*
+        version: link:../../packages/demo
       '@lightdotso/dialogs':
         specifier: workspace:*
         version: link:../../packages/dialogs
