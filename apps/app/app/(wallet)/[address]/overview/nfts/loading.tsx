@@ -15,7 +15,7 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { nftListData } from "@lightdotso/demo";
-import { DataTablePagination } from "@lightdotso/templates";
+import { DataTablePaginationSkeleton } from "@lightdotso/templates";
 import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ export default function Loading() {
       <TableSectionWrapper>
         <DataTable isLoading data={nftListData.nfts} columns={[]} />
       </TableSectionWrapper>
-      <DataTablePagination isLoading table={null} />
+      <DataTablePaginationSkeleton />
     </>
   );
 }

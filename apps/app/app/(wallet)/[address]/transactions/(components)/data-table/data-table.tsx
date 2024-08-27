@@ -30,7 +30,7 @@ interface DataTableProps {
   isDefaultOpen?: boolean;
   isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
-  address: Address;
+  address: Address | null;
   isTestnet: boolean;
   data: UserOperationData[];
   pageCount: number;
