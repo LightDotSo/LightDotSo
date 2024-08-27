@@ -19,6 +19,7 @@ import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -112,11 +113,15 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <OverviewList
-        address={params.address as Address}
-        isDemo={params.isDemo}
-      />
-    </HydrationBoundary>
+    <Suspense
+      fallback={<OverviewList isLoading address={params.address as Address} />}
+    >
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <OverviewList
+          address={params.address as Address}
+          isDemo={params.isDemo}
+        />
+      </HydrationBoundary>
+    </Suspense>
   );
 }
