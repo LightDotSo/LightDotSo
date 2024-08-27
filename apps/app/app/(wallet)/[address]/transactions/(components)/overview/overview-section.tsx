@@ -18,7 +18,7 @@ import {
   useQueryUserOperations,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { Button } from "@lightdotso/ui";
+import { Button, Skeleton } from "@lightdotso/ui";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -85,6 +85,31 @@ export const OverviewSection = ({
               See All
               <ChevronRightIcon className="ml-2 size-3" />
             </Link>
+          </Button>
+        </div>
+      </div>
+      {children}
+    </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const OverviewSectionSkeleton = ({
+  children,
+}: { children: ReactNode }) => {
+  return (
+    <div className="space-y-4">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center">
+          <Skeleton className="h-7 w-40" />
+        </div>
+        <div className="flex items-center space-x-3">
+          <Button size="sm" variant="outline" disabled>
+            See All
+            <ChevronRightIcon className="ml-2 size-3" />
           </Button>
         </div>
       </div>

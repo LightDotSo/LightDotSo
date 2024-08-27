@@ -13,4 +13,7 @@
 // limitations under the License.
 
 export { BannerSection } from "./banner-section";
-export { StateInfoSection } from "./state-info-section";
+export {
+  StateInfoSection,
+  StateInfoSectionSkeleton,
+} from "./state-info-section";

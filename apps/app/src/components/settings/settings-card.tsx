@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
   Separator,
+  Skeleton,
 } from "@lightdotso/ui";
 import type { FC, ReactNode } from "react";
 
@@ -73,6 +74,36 @@ export const SettingsCard: FC<SettingsCardProps> = ({
           {footerContent}
         </CardFooter>
       )}
+    </Card>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const SettingsCardSkeleton: FC = () => {
+  return (
+    <Card>
+      <CardHeader className="p-4">
+        <CardTitle>
+          <div className="flex items-center gap-1.5">
+            <Skeleton className="h-6 w-6 rounded-full" />
+            <Skeleton className="h-6 w-40" />
+          </div>
+        </CardTitle>
+        <CardDescription>
+          <Skeleton className="h-4 w-60" />
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 pt-0">
+        <Skeleton className="h-20 w-full" />
+      </CardContent>
+      <Separator />
+      <CardFooter className="flex w-full items-center justify-end space-x-2 px-4 py-2">
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-20" />
+      </CardFooter>
     </Card>
   );
 };
