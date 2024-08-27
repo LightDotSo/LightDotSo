@@ -20,6 +20,7 @@ export {
   DataTableColumnHeader,
   DataTableFacetedFilter,
   DataTablePagination,
+  DataTablePaginationSkeleton,
   DataTableViewOptions,
 } from "./data-table";
 export { FeedbackComboDialog } from "./feedback-combo-dialog";

@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
+import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -20,5 +21,9 @@ import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/ove
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  return <OverviewList isLoading address={null} />;
+  return (
+    <TableSectionWrapper>
+      <DataTable isLoading data={[]} columns={[]} />
+    </TableSectionWrapper>
+  );
 }

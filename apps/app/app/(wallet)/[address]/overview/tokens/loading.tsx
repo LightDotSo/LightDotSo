@@ -14,7 +14,7 @@
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
-import { DataTablePagination } from "@lightdotso/templates";
+import { DataTablePaginationSkeleton } from "@lightdotso/templates";
 import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ export default function Loading() {
       <TableSectionWrapper>
         <DataTable isLoading pageCount={0} data={[]} columns={[]} />
       </TableSectionWrapper>
-      <DataTablePagination isLoading table={null} />
+      <DataTablePaginationSkeleton />
     </>
   );
 }

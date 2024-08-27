@@ -14,6 +14,7 @@
 
 import type { UserOperationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
+import getJsonData from "./get.json";
 import listJsonData from "./list.json";
 
 export const userOperationCreateData: UserOperation = {
@@ -33,4 +34,5 @@ export const userOperationCreateData: UserOperation = {
   paymasterAndData: "0x",
   signature: "0x",
 };
+export const userOperationGetData = getJsonData as UserOperationData;
 export const userOperationListData = listJsonData as UserOperationData[];
