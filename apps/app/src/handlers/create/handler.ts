@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { handler as rootPreloader } from "@/handlers/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { getCachedConfiguration, getCachedWallet } from "@lightdotso/services";
+import {} from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
-import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -62,37 +61,9 @@ export const handler = async (searchParams: {
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getCachedWallet({
+  const { configuration } = await addressHandler({
     address: searchParams.address as Address,
   });
-
-  const configurationPromise = getCachedConfiguration({
-    address: searchParams.address as Address,
-    checkpoint: 0,
-  });
-
-  const [walletRes, configurationRes] = await Promise.all([
-    walletPromise,
-    configurationPromise,
-  ]);
-
-  const walletAndConfigRes = Result.combineWithAllErrors([
-    walletRes,
-    configurationRes,
-  ]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { configuration } = walletAndConfigRes.match(
-    ([wallet, configuration]) => {
-      return {
-        wallet: wallet,
-        configuration: configuration,
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
 
   // ---------------------------------------------------------------------------
   // Return

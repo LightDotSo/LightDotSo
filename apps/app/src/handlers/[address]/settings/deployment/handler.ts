@@ -39,7 +39,8 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings } = await addressHandler(params);
+  const { wallet, configuration, walletSettings } =
+    await addressHandler(params);
 
   const userOperationsPromise = getCachedUserOperations({
     address: params.address as Address,
@@ -74,7 +75,7 @@ export const handler = async (params: { address: string }) => {
     ([userOperations, userOperationsCount]) => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         userOperations: userOperations,
         userOperationsCount: userOperationsCount,
@@ -83,7 +84,7 @@ export const handler = async (params: { address: string }) => {
     () => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         userOperations: [],
         userOperationsCount: { count: 0 },

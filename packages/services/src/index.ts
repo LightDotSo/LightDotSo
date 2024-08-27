@@ -75,6 +75,7 @@ export {
 export {
   preloadGetUserOperation,
   getUserOperation,
+  getUserOperationWithBackoff,
   getCachedUserOperation,
 } from "./getUserOperation";
 export {

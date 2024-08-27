@@ -16,14 +16,8 @@ import { handler as addressHandler } from "@/handlers/[address]/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { getCachedConfiguration, getCachedWallet } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
-import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
-import type {
-  Address,
-  // Hex
-} from "viem";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -38,12 +32,6 @@ export const handler = async (
   configuration: ConfigurationData;
   userOperations: Partial<UserOperation>[] | null;
 }> => {
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  await addressHandler(params);
-
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
@@ -64,35 +52,7 @@ export const handler = async (
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getCachedWallet({ address: params.address as Address });
-
-  const configurationPromise = getCachedConfiguration({
-    address: params.address as Address,
-    checkpoint: 0,
-  });
-
-  const [walletRes, configurationRes] = await Promise.all([
-    walletPromise,
-    configurationPromise,
-  ]);
-
-  const walletAndConfigRes = Result.combineWithAllErrors([
-    walletRes,
-    configurationRes,
-  ]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { configuration } = walletAndConfigRes.match(
-    ([wallet, configuration]) => {
-      return {
-        wallet: wallet,
-        configuration: configuration,
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  const { configuration } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Return

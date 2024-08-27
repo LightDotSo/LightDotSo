@@ -47,7 +47,8 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings } = await addressHandler(params);
+  const { wallet, configuration, walletSettings } =
+    await addressHandler(params);
 
   const nftsPromise = getCachedNfts({
     address: params.address as Address,
@@ -65,7 +66,7 @@ export const handler = async (
   return {
     transfer: transfer,
     wallet: wallet,
-    config: config,
+    config: configuration,
     walletSettings: walletSettings,
     balances: [],
     nfts: nftsRes.unwrapOr([]),

@@ -14,9 +14,12 @@
 
 import {
   type GetUserOperationResponse,
+  convertNeverThrowToPromise,
   getUserOperation as getClientUserOperation,
 } from "@lightdotso/client";
+import type { UserOperationData } from "@lightdotso/data";
 import type { UserOperationGetParams } from "@lightdotso/params";
+import { backOff } from "exponential-backoff";
 import { cache } from "react";
 import "server-only";
 
@@ -39,6 +42,18 @@ export const getUserOperation = async (
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     { params: { query: { user_operation_hash: params.hash! } } },
     "admin",
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Backoff
+// -----------------------------------------------------------------------------
+
+export const getUserOperationWithBackoff = async (
+  params: UserOperationGetParams,
+): Promise<UserOperationData> => {
+  return await backOff(() =>
+    convertNeverThrowToPromise(getUserOperation(params)),
   );
 };
 

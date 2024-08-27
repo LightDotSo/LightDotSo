@@ -15,7 +15,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getWallet } from "@lightdotso/client";
+import { convertNeverThrowToPromise, getWallet } from "@lightdotso/client";
 import {
   useInviteCodeQueryState,
   useNameQueryState,
@@ -190,11 +190,13 @@ export const ConfirmForm: FC = () => {
 
       // Once the form is submitted, navigate to the next step w/ backoff
       backOff(() =>
-        getWallet(
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          { params: { query: { address: formAddress! } } },
-          clientType,
-        ).then((res) => res._unsafeUnwrap()),
+        convertNeverThrowToPromise(
+          getWallet(
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            { params: { query: { address: formAddress! } } },
+            clientType,
+          ),
+        ),
       )
         .then((res) => {
           toast.dismiss(loadingToast);

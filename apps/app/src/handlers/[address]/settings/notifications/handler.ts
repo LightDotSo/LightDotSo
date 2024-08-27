@@ -43,7 +43,8 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings } = await addressHandler(params);
+  const { wallet, configuration, walletSettings } =
+    await addressHandler(params);
 
   const walletNotificationsPromise = getCachedWalletNotificationSettings({
     address: params.address as Address,
@@ -63,7 +64,7 @@ export const handler = async (params: { address: string }) => {
     ([walletNotifications]) => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         walletNotifications: walletNotifications,
       };
@@ -71,7 +72,7 @@ export const handler = async (params: { address: string }) => {
     () => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
         walletSettings: walletSettings,
         walletNotifications: {
           id: "",

@@ -14,15 +14,71 @@
 
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
-import { NftPortfolio } from "@/components/nft/nft-portfolio";
-import { NftsList } from "@/components/nft/nfts-list";
-import { TokenPortfolio } from "@/components/token/token-portfolio";
-import { TokensList } from "@/components/token/tokens-list";
-import { TransactionsList } from "@/components/transaction/transactions-list";
 import { OverviewSubCategory, TITLES } from "@/const";
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { Skeleton } from "@lightdotso/ui";
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+const OverviewListItemSkeleton = () => <Skeleton className="h-64 w-full" />;
+
+const OverviewListPortfolioSkeleton = () => <Skeleton className="h-4 w-8" />;
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const TokensList = dynamic(
+  () => import("@/components/token/tokens-list").then((mod) => mod.TokensList),
+  {
+    loading: () => <OverviewListItemSkeleton />,
+    ssr: false,
+  },
+);
+
+const TokenPortfolio = dynamic(
+  () =>
+    import("@/components/token/token-portfolio").then(
+      (mod) => mod.TokenPortfolio,
+    ),
+  {
+    loading: () => <OverviewListPortfolioSkeleton />,
+    ssr: false,
+  },
+);
+
+const NftsList = dynamic(
+  () => import("@/components/nft/nfts-list").then((mod) => mod.NftsList),
+  {
+    loading: () => <OverviewListItemSkeleton />,
+    ssr: false,
+  },
+);
+
+const NftPortfolio = dynamic(
+  () =>
+    import("@/components/nft/nft-portfolio").then((mod) => mod.NftPortfolio),
+  {
+    loading: () => <OverviewListPortfolioSkeleton />,
+    ssr: false,
+  },
+);
+
+const TransactionsList = dynamic(
+  () =>
+    import("@/components/transaction/transactions-list").then(
+      (mod) => mod.TransactionsList,
+    ),
+  {
+    loading: () => <OverviewListItemSkeleton />,
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Const

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, errAsync, okAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getClient } from "../client";
 import type { paths } from "../types/api/v1";
@@ -60,7 +60,7 @@ export const createQueuePortfolio = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
 
@@ -90,7 +90,7 @@ export const createQueueToken = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
 
@@ -121,7 +121,7 @@ export const createQueueInterpretation = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
 
@@ -152,7 +152,7 @@ export const createQueueTransaction = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };
 
@@ -183,6 +183,6 @@ export const createQueueUserOperation = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };

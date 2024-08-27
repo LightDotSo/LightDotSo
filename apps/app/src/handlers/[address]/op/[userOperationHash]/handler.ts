@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
-import { getCachedUserOperation } from "@lightdotso/services";
+import { getUserOperationWithBackoff } from "@lightdotso/services";
 import {
   validateAddress,
   validateUserOperationHash,
@@ -33,7 +33,7 @@ export const handler = async (params: {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config, walletSettings } = await addressHandler(params);
+  const { configuration, walletSettings } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Validators
@@ -51,7 +51,7 @@ export const handler = async (params: {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const userOperation = await getCachedUserOperation({
+  const userOperation = await getUserOperationWithBackoff({
     hash: params.userOperationHash as Hex,
   });
 
@@ -59,16 +59,9 @@ export const handler = async (params: {
   // Parse
   // ---------------------------------------------------------------------------
 
-  return userOperation.match(
-    (userOperation) => {
-      return {
-        config: config,
-        userOperation: userOperation,
-        walletSettings: walletSettings,
-      };
-    },
-    () => {
-      notFound();
-    },
-  );
+  return {
+    configuration: configuration,
+    userOperation: userOperation,
+    walletSettings: walletSettings,
+  };
 };

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { LifiQuotePageData } from "@lightdotso/data";
-import { ResultAsync, err, ok } from "neverthrow";
+import { ResultAsync, errAsync, okAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getLifiClient } from "../client";
 import type { paths } from "../types/lifi/v1";
@@ -49,6 +49,6 @@ export const getLifiQuote = async (
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
+    return response.status === 200 && data ? okAsync(data) : errAsync(error);
   });
 };

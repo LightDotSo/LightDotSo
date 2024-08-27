@@ -14,10 +14,8 @@
 
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 import { paginationParser } from "@lightdotso/nuqs";
-import { getCachedConfiguration } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -49,26 +47,15 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await addressHandler(params);
-
-  const res = await getCachedConfiguration({
-    address: params.address as Address,
-  });
+  const { walletSettings, configuration } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  return res.match(
-    (configuration) => {
-      return {
-        paginationState: paginationState,
-        configuration: configuration,
-        walletSettings: walletSettings,
-      };
-    },
-    () => {
-      notFound();
-    },
-  );
+  return {
+    paginationState: paginationState,
+    configuration: configuration,
+    walletSettings: walletSettings,
+  };
 };
