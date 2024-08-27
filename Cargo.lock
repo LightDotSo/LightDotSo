@@ -6753,8 +6753,6 @@ dependencies = [
  "alloy",
  "async-trait",
  "clap 4.4.0",
- "ethers 2.0.8",
- "ethers 2.0.9",
  "eyre",
  "jsonrpsee",
  "lightdotso-contracts",

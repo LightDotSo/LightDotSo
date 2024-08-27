@@ -28,7 +28,7 @@
 
 use crate::entrypoint::EntryPoint::{ExecutionResult, FailedOp};
 use alloy::{sol, sol_types::SolError};
-use ethers::{abi::AbiDecode, contract::ContractError, providers::Middleware, types::Bytes};
+use ethers::{contract::ContractError, providers::Middleware, types::Bytes};
 
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.

@@ -74,6 +74,18 @@ impl From<serde_json::Error> for JsonRpcError {
     }
 }
 
+/// Convert a [alloy provider error](alloy::providers::ProviderError) to a
+/// [JsonRpcError](JsonRpcError).
+impl From<alloy::transports::TransportError> for JsonRpcError {
+    fn from(err: alloy::transports::TransportError) -> Self {
+        JsonRpcError(ErrorObject::owned(
+            INTERNAL_ERROR_CODE,
+            format!("Provider error: {:?}", err),
+            None::<bool>,
+        ))
+    }
+}
+
 /// Convert a [ethers provider error](reqwest::Error) to a [JsonRpcError](JsonRpcError).
 impl From<ethers::providers::ProviderError> for JsonRpcError {
     fn from(err: ethers::providers::ProviderError) -> Self {
