@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import {
   Button,

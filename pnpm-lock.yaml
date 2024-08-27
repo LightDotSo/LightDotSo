@@ -3959,6 +3959,55 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
+  packages/widget:
+    dependencies:
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      react:
+        specifier: 19.0.0-rc-187dd6a7-20240806
+        version: 19.0.0-rc-187dd6a7-20240806
+      react-dom:
+        specifier: 19.0.0-rc-187dd6a7-20240806
+        version: 19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806)
+      react-is:
+        specifier: 19.0.0-rc-187dd6a7-20240806
+        version: 19.0.0-rc-187dd6a7-20240806
+    devDependencies:
+      '@lightdotso/styles':
+        specifier: workspace:*
+        version: link:../../configurations/styles
+      '@lightdotso/tailwindcss':
+        specifier: workspace:*
+        version: link:../../configurations/tailwindcss
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@storybook/react':
+        specifier: ^8.2.9
+        version: 8.2.9(react-dom@19.0.0-rc-187dd6a7-20240806(react@19.0.0-rc-187dd6a7-20240806))(react@19.0.0-rc-187dd6a7-20240806)(storybook@8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2))(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.5.4)
+      '@types/node':
+        specifier: ^22.5.0
+        version: 22.5.0
+      '@types/react':
+        specifier: ^18.3.4
+        version: 18.3.4
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.41)
+      postcss:
+        specifier: ^8.4.41
+        version: 8.4.41
+      tailwindcss:
+        specifier: ^3.4.10
+        version: 3.4.10(ts-node@10.9.2(@swc/core@1.7.18(@swc/helpers@0.5.12))(@types/node@22.5.0)(typescript@5.5.4))
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+
   pods: {}
 
 packages:
