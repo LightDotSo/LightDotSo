@@ -24,13 +24,15 @@ import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  <>
-    <PortfolioSection title="Total Token Value">
-      <Skeleton className="h-10 w-8" />
-    </PortfolioSection>
-    <TableSectionWrapper>
-      <DataTable isLoading data={nftListData.nfts} columns={[]} />
-    </TableSectionWrapper>
-    <DataTablePagination isLoading table={null} />
-  </>;
+  return (
+    <>
+      <PortfolioSection title="Total Token Value">
+        <Skeleton className="h-10 w-8" />
+      </PortfolioSection>
+      <TableSectionWrapper>
+        <DataTable isLoading data={nftListData.nfts} columns={[]} />
+      </TableSectionWrapper>
+      <DataTablePagination isLoading table={null} />
+    </>
+  );
 }

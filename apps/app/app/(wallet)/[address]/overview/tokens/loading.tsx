@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { DataTablePagination } from "@lightdotso/templates";
 import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
+import { DataTable } from "./(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -23,13 +23,15 @@ import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  <>
-    <PortfolioSection title="Total Token Value">
-      <Skeleton className="h-10 w-8" />
-    </PortfolioSection>
-    <TableSectionWrapper>
-      <DataTable isLoading pageCount={0} data={[]} columns={[]} />
-    </TableSectionWrapper>
-    <DataTablePagination isLoading table={null} />
-  </>;
+  return (
+    <>
+      <PortfolioSection title="Total Token Value">
+        <Skeleton className="h-10 w-8" />
+      </PortfolioSection>
+      <TableSectionWrapper>
+        <DataTable isLoading pageCount={0} data={[]} columns={[]} />
+      </TableSectionWrapper>
+      <DataTablePagination isLoading table={null} />
+    </>
+  );
 }
