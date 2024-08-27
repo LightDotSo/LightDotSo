@@ -22,10 +22,12 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  <>
-    <TableSectionWrapper>
-      <DataTable isLoading pageCount={0} data={[]} columns={[]} />
-    </TableSectionWrapper>
-    <DataTablePagination isLoading table={null} />
-  </>;
+  return (
+    <>
+      <TableSectionWrapper>
+        <DataTable isLoading pageCount={0} data={[]} columns={[]} />
+      </TableSectionWrapper>
+      <DataTablePagination isLoading table={null} />
+    </>
+  );
 }
