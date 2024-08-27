@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
   ethers = { workspace = true }

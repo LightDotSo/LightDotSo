@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   ethers = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }

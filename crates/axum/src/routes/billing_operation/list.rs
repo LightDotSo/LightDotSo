@@ -24,7 +24,7 @@ use axum::{
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use ethers_main::types::H160;
+use alloy::primitives::Address;
 use lightdotso_prisma::{
     billing_operation::{self, WhereParam},
     paymaster_operation,

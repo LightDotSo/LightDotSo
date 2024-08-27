@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::{
-    contract::abigen,
-    providers::{Http, Provider},
-    types::Address,
-};
-use eyre::Result;
-
 use crate::provider::get_provider;
+use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
+use eyre::Result;
+use ERC1271::ERC1271Instance;
 
-abigen!(ERC1271, "abi/ERC1271.json",);
+sol!(
+    #[sol(rpc)]
+    ERC1271,
+    "abi/ERC1271.json"
+);
 
 pub async fn get_erc_1271_wallet(
     chain_id: u64,
     wallet_address: Address,
-) -> Result<ERC1271<Provider<Http>>> {
+) -> Result<ERC1271Instance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
     let provider = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = ERC1271::new(wallet_address, provider.into());
+    let contract = ERC1271::new(wallet_address, provider);
 
     // Return the contract.
     Ok(contract)
@@ -54,6 +54,6 @@ mod tests {
 
         // If you want to test the details of the resulting contract:
         let contract = res.unwrap();
-        assert_eq!(contract.address(), wallet_address);
+        assert_eq!(contract.address().to_checksum(None), wallet_address.to_checksum(None));
     }
 }

@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::{
-    contract::abigen,
-    providers::{Http, Provider},
-    types::Address,
-};
+use crate::{constants::ALCHEMY_V060_GAS_MANAGER_ADDRESS, provider::get_provider};
+use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
 use eyre::{eyre, Context, Result};
 use prisma_client_rust::chrono::NaiveDateTime;
 use std::convert::TryInto;
+use LightPaymaster::LightPaymasterInstance;
 
-use crate::{constants::ALCHEMY_V060_GAS_MANAGER_ADDRESS, provider::get_provider};
-
-abigen!(LightPaymaster, "abi/LightPaymaster.json",);
+sol!(
+    #[sol(rpc)]
+    LightPaymaster,
+    "abi/LightPaymaster.json"
+);
 
 pub async fn get_paymaster(
     chain_id: u64,
     verifying_paymaster_address: Address,
-) -> Result<LightPaymaster<Provider<Http>>> {
+) -> Result<LightPaymasterInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
     let provider = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = LightPaymaster::new(verifying_paymaster_address, provider.into());
+    let contract = LightPaymaster::new(verifying_paymaster_address, provider);
 
     // Return the contract.
     Ok(contract)
@@ -106,7 +106,10 @@ mod tests {
 
         // If you want to test the details of the resulting contract:
         let contract = res.unwrap();
-        assert_eq!(contract.address(), verifying_paymaster_address);
+        assert_eq!(
+            contract.address().to_checksum(None),
+            verifying_paymaster_address.to_checksum(None)
+        );
     }
 
     #[test]
@@ -119,7 +122,7 @@ mod tests {
             decode_paymaster_and_data(expected_msg)?;
 
         // Expected result.
-        let expected_verifying_paymaster_address =
+        let expected_verifying_paymaster_address: Address =
             "0x0DCd1Bf9A1b36cE34237eEaFef220931846BCD82".parse().unwrap();
         let expected_valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
         let expected_valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();

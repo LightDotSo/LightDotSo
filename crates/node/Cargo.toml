@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   backon = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive", "env"] }

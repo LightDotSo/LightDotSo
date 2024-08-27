@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::{
-    contract::abigen,
-    providers::{Http, Provider},
-    types::Address,
-};
-use eyre::Result;
-
 use crate::provider::get_provider;
+use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
+use eyre::Result;
+use LightWallet::LightWalletInstance;
 
-abigen!(LightWallet, "abi/LightWallet.json",);
+sol!(
+    #[sol(rpc)]
+    LightWallet,
+    "abi/LightWallet.json"
+);
 
 pub async fn get_light_wallet(
     chain_id: u64,
     wallet_address: Address,
-) -> Result<LightWallet<Provider<Http>>> {
+) -> Result<LightWalletInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
     let provider = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = LightWallet::new(wallet_address, provider.into());
+    let contract = LightWallet::new(wallet_address, provider);
 
     // Return the contract.
     Ok(contract)

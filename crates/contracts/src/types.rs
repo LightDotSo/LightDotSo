@@ -14,10 +14,11 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::entrypoint::entry_point::UserOperation as EntryPointUserOperation;
-use ethers::{
-    types::{Address, Bytes, Log, Transaction, TransactionReceipt, H256, U256},
-    utils::hex,
+use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
+use alloy::{
+    hex,
+    primitives::{Address, Bytes, Log, B256, U256},
+    rpc::types::{Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
@@ -32,7 +33,7 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     /// The chain id of the chain this operation was sent to
     pub chain_id: i64,
     /// The hash of the user operation
-    pub hash: H256,
+    pub hash: B256,
     /// The entry point address this operation was sent to
     pub entry_point: Address,
     /// Sender of the user operation
@@ -135,14 +136,14 @@ impl From<UserOperation> for EntryPointUserOperation {
         Self {
             sender: user_operation.sender,
             nonce: user_operation.nonce,
-            init_code: user_operation.init_code,
-            call_data: user_operation.call_data,
-            call_gas_limit: user_operation.call_gas_limit,
-            verification_gas_limit: user_operation.verification_gas_limit,
-            pre_verification_gas: user_operation.pre_verification_gas,
-            max_fee_per_gas: user_operation.max_fee_per_gas,
-            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-            paymaster_and_data: user_operation.paymaster_and_data,
+            initCode: user_operation.init_code,
+            callData: user_operation.call_data,
+            callGasLimit: user_operation.call_gas_limit,
+            verificationGasLimit: user_operation.verification_gas_limit,
+            preVerificationGas: user_operation.pre_verification_gas,
+            maxFeePerGas: user_operation.max_fee_per_gas,
+            maxPriorityFeePerGas: user_operation.max_priority_fee_per_gas,
+            paymasterAndData: user_operation.paymaster_and_data,
             signature: user_operation.signature,
         }
     }
@@ -170,14 +171,14 @@ impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
             sender: user_operation.sender.parse().unwrap(),
-            nonce: user_operation.nonce.into(),
+            nonce: U256::from(user_operation.nonce),
             init_code: user_operation.init_code.into(),
             call_data: user_operation.call_data.into(),
-            call_gas_limit: user_operation.call_gas_limit.into(),
-            verification_gas_limit: user_operation.verification_gas_limit.into(),
-            pre_verification_gas: user_operation.pre_verification_gas.into(),
-            max_fee_per_gas: user_operation.max_fee_per_gas.into(),
-            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.into(),
+            call_gas_limit: U256::from(user_operation.call_gas_limit),
+            verification_gas_limit: U256::from(user_operation.verification_gas_limit),
+            pre_verification_gas: U256::from(user_operation.pre_verification_gas),
+            max_fee_per_gas: U256::from(user_operation.max_fee_per_gas),
+            max_priority_fee_per_gas: U256::from(user_operation.max_priority_fee_per_gas),
             paymaster_and_data: user_operation.paymaster_and_data.into(),
             signature: user_operation.signature.unwrap_or_default().into(),
         }
@@ -252,7 +253,7 @@ impl fmt::Debug for UserOperationConstruct {
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationReceipt {
     #[serde(rename = "userOpHash")]
-    pub user_operation_hash: H256,
+    pub user_operation_hash: B256,
     pub sender: Address,
     pub nonce: U256,
     #[serde(skip_serializing_if = "Option::is_none")]

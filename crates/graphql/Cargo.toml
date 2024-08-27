@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
   cynic-codegen = { version = "3.2.2" }
   ethers = { workspace = true }

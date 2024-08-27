@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::Address;
+use alloy::primitives::Address;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 use lightdotso_contracts::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
 

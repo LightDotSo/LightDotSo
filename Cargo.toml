@@ -69,7 +69,7 @@
   opt-level = 2
 
   [workspace.dependencies]
-    alloy-core = "0.7.7"
+    alloy = { version = "0.2.1", features = ["full"] }
     anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
     anyhow = "1.0.70"
     async-stream = "0.3.5"
@@ -202,7 +202,7 @@
     tauri-build = { version = "1.4", features = [] }
     thiserror = "1.0.40"
     time = "0.3.30"
-    tokio = { version = "1", features = ["full"] }
+    tokio = { version = "1.39.3", features = ["full"] }
     tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
     tower = { version = "0.4.12" }
     tower-cookies = "0.9.0"

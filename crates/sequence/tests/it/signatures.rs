@@ -26,7 +26,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::Address;
+use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_sequence::{
