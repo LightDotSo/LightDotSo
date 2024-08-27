@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
+import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
+import {
+  OverviewSection,
+  OverviewSectionSkeleton,
+} from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import type { FC } from "react";
@@ -23,8 +27,9 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type OverviewListProps = {
-  address: Address;
+  address: Address | null;
   isDemo?: boolean;
+  isLoading?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -34,10 +39,38 @@ export type OverviewListProps = {
 export const OverviewList: FC<OverviewListProps> = ({
   address,
   isDemo = false,
+  isLoading = false,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (isLoading || !address) {
+    return (
+      <>
+        <OverviewSectionSkeleton>
+          <DataTable
+            isLoading
+            address={null}
+            data={[]}
+            pageCount={0}
+            columns={[]}
+            isTestnet={false}
+          />
+        </OverviewSectionSkeleton>
+        <OverviewSectionSkeleton>
+          <DataTable
+            isLoading
+            address={null}
+            data={[]}
+            pageCount={0}
+            columns={[]}
+            isTestnet={false}
+          />
+        </OverviewSectionSkeleton>
+      </>
+    );
+  }
 
   return (
     <>

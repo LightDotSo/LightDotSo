@@ -35,7 +35,6 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  Skeleton,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {
@@ -47,7 +46,7 @@ import {
 } from "@radix-ui/react-icons";
 import { HomeIcon, WalletIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ComponentPropsWithoutRef, FC, UIEvent } from "react";
 import type { Address } from "viem";
 import { getAddress } from "viem";
@@ -71,11 +70,7 @@ export const WalletSwitcher: FC<WalletSwitcherProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Suspense fallback={<Skeleton className="mx-2 h-8 w-32" />}>
-      <WalletSwitcherButton className={className} />
-    </Suspense>
-  );
+  return <WalletSwitcherButton className={className} />;
 };
 
 // -----------------------------------------------------------------------------

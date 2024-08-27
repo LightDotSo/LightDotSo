@@ -16,6 +16,7 @@
 
 import { cn } from "@lightdotso/utils";
 import type { HTMLAttributes, ReactNode } from "react";
+import { Skeleton } from "../components/skeleton";
 import { baseHeightWrapper } from "../wrappers/base";
 
 // -----------------------------------------------------------------------------
@@ -54,7 +55,24 @@ function StateInfoSection({
 }
 
 // -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+function StateInfoSectionSkeleton() {
+  return (
+    <div className={cn("text-center", baseHeightWrapper)}>
+      <Skeleton className="mx-auto h-12 w-12 rounded-full" />
+      <Skeleton className="mx-auto mt-2 h-6 w-48 md:mt-4" />
+      <Skeleton className="mx-auto mt-1 h-4 w-64" />
+      <div className="mt-6 flex justify-center p-4">
+        <Skeleton className="h-10 w-32" />
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------
 
-export { StateInfoSection };
+export { StateInfoSection, StateInfoSectionSkeleton };

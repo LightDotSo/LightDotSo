@@ -281,7 +281,11 @@ export {
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { ReactQueryProvider, ThemeProvider, Web3Provider } from "./providers";
-export { BannerSection, StateInfoSection } from "./sections";
+export {
+  BannerSection,
+  StateInfoSection,
+  StateInfoSectionSkeleton,
+} from "./sections";
 export { HStackFull } from "./stacks";
 export {
   baseWidthWrapper,
@@ -304,6 +308,7 @@ export {
   SettingsPageWrapper,
 } from "./wrappers/page";
 export {
+  BaseSectionWrapper,
   DialogSectionWrapper,
   SettingsSectionWrapper,
   TableSectionWrapper,
