@@ -15,7 +15,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
