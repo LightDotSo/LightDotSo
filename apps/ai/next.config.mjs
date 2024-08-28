@@ -31,15 +31,6 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.light.so",
-        port: "",
-      },
-    ],
-  },
   logging: {
     fetches: {
       fullUrl: true,

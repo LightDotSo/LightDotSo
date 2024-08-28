@@ -35,7 +35,6 @@ const nextConfig = {
   },
   experimental: {
     esmExternals: true,
-    // From: https://github.com/vercel/next.js/issues/42641
   },
   logging: {
     fetches: {
