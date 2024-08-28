@@ -18,8 +18,8 @@
 "use client";
 
 import { NavApp } from "@/components/nav/nav-app";
+import { NavLogo } from "@/components/nav/nav-logo";
 import { NavTabs } from "@/components/nav/nav-tabs";
-import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
 import { ConnectButton } from "@lightdotso/templates";
@@ -65,7 +65,7 @@ export const Nav: FC<NavProps> = ({ children }) => {
         <div className="overflow-y-visible border-b border-b-border py-2">
           <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
             <div className="flex items-center">
-              <RootLogo />
+              <NavLogo />
               <span className="mr-1 ml-2 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
