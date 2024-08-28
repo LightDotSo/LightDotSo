@@ -14,33 +14,31 @@
 
 import { AppBanner } from "@/components/app-banner";
 import { Nav } from "@/components/nav/nav";
-import { WalletState } from "@/components/state/wallet-state";
-import { WssState } from "@/components/wss/wss-state";
-import {
-  AuthState,
-  FormState,
-  QueueState,
-  UserOperationState,
-} from "@lightdotso/states";
-import {
-  Footer,
-  Root as LightRoot,
-  ProgressTransaction,
-  ProgressUserOperation,
-} from "@lightdotso/templates";
-import { Toaster, Web3Provider } from "@lightdotso/ui";
-import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
+import { Footer, Root as LightRoot } from "@lightdotso/templates";
 import dynamic from "next/dynamic";
-import { headers } from "next/headers";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Dynamic
 // -----------------------------------------------------------------------------
 
+const Web3Provider = dynamic(
+  () => import("@lightdotso/ui").then((mod) => mod.Web3Provider),
+  {
+    ssr: false,
+  },
+);
+
 const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
+
+const Toaster = dynamic(
+  () => import("@lightdotso/ui").then((mod) => mod.Toaster),
+  {
+    ssr: false,
+  },
+);
 
 const AddressModal = dynamic(
   () => import("@lightdotso/modals/address/address-modal"),
@@ -89,6 +87,61 @@ const TokenModal = dynamic(
   },
 );
 
+const ProgressTransaction = dynamic(
+  () => import("@lightdotso/templates").then((mod) => mod.ProgressTransaction),
+  {
+    ssr: false,
+  },
+);
+
+const ProgressUserOperation = dynamic(
+  () =>
+    import("@lightdotso/templates").then((mod) => mod.ProgressUserOperation),
+  {
+    ssr: false,
+  },
+);
+
+const AuthState = dynamic(
+  () => import("@lightdotso/states").then((mod) => mod.AuthState),
+  {
+    ssr: false,
+  },
+);
+
+const FormState = dynamic(
+  () => import("@lightdotso/states").then((mod) => mod.FormState),
+  {
+    ssr: false,
+  },
+);
+
+const QueueState = dynamic(() =>
+  import("@lightdotso/states").then((mod) => mod.QueueState),
+);
+
+const UserOperationState = dynamic(
+  () => import("@lightdotso/states").then((mod) => mod.UserOperationState),
+  {
+    ssr: false,
+  },
+);
+
+const WalletState = dynamic(
+  () =>
+    import("@/components/state/wallet-state").then((mod) => mod.WalletState),
+  {
+    ssr: false,
+  },
+);
+
+const WssState = dynamic(
+  () => import("@/components/wss/wss-state").then((mod) => mod.WssState),
+  {
+    ssr: false,
+  },
+);
+
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
@@ -102,18 +155,13 @@ interface RootProps {
 // -----------------------------------------------------------------------------
 
 export const Root: FC<RootProps> = ({ children }) => {
-  const initialState = cookieToInitialState(
-    wagmiConfig,
-    headers().get("cookie"),
-  );
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <LightRoot>
-      <Web3Provider initialState={initialState}>
+      <Web3Provider>
         {/* Banner */}
         <AppBanner />
         {/* Layout */}

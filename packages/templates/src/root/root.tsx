@@ -17,7 +17,6 @@ import {
   ReactQueryProvider,
   TailwindIndicator,
   ThemeProvider,
-  Toaster,
   TooltipProvider,
   VercelToolbar,
 } from "@lightdotso/ui";
@@ -62,7 +61,6 @@ export const Root: FC<RootProps> = ({ children }) => {
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
             <TooltipProvider>{children}</TooltipProvider>
-            <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>
         <FormDevTools />

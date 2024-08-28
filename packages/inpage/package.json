@@ -23,10 +23,10 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "events": "^3.3.0",
-    "isutf8": "^4.0.0"
+    "isutf8": "^4.0.1"
   },
   "devDependencies": {
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

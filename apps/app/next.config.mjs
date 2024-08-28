@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
 import packageJson from "./package.json" assert { type: "json" };
 
@@ -32,16 +31,7 @@ const nextConfig = {
   },
   experimental: {
     ppr: "incremental",
-    outputFileTracingExcludes: {
-      "*": [
-        "./node_modules/@swc/core-linux-x64-gnu",
-        "./node_modules/@swc/core-linux-x64-musl",
-        "./node_modules/esbuild-linux-64/bin",
-        "./node_modules/webpack/lib",
-        "./node_modules/rollup",
-        "./node_modules/terser",
-      ],
-    },
+    optimizePackageImports: ["@radix-ui/react-icons"],
   },
   images: {
     remotePatterns: [
@@ -58,7 +48,16 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-  outputFileTracing: true,
+  outputFileTracingExcludes: {
+    "*": [
+      "./node_modules/@swc/core-linux-x64-gnu",
+      "./node_modules/@swc/core-linux-x64-musl",
+      "./node_modules/esbuild-linux-64/bin",
+      "./node_modules/webpack/lib",
+      "./node_modules/rollup",
+      "./node_modules/terser",
+    ],
+  },
   rewrites: async () => {
     return [
       {
@@ -98,64 +97,6 @@ const nextConfig = {
         destination: "https://proposals.light.so/proposals/:path*",
       },
     ];
-  },
-  transpilePackages: [
-    "@lightdotso/client",
-    "@lightdotso/const",
-    "@lightdotso/data",
-    "@lightdotso/dialogs",
-    "@lightdotso/elements",
-    "@lightdotso/forms",
-    "@lightdotso/hooks",
-    "@lightdotso/kysely",
-    "@lightdotso/modals",
-    "@lightdotso/msw",
-    "@lightdotso/nuqs",
-    "@lightdotso/params",
-    "@lightdotso/prisma",
-    "@lightdotso/query",
-    "@lightdotso/query-keys",
-    "@lightdotso/schemas",
-    "@lightdotso/services",
-    "@lightdotso/states",
-    "@lightdotso/stores",
-    "@lightdotso/styles",
-    "@lightdotso/svg",
-    "@lightdotso/tables",
-    "@lightdotso/templates",
-    "@lightdotso/types",
-    "@lightdotso/ui",
-    "@lightdotso/utils",
-    "@lightdotso/validators",
-    "@lightdotso/wagmi",
-  ],
-  webpack: (config, { isServer }) => {
-    config.resolve.fallback = { fs: false };
-
-    // config.externals.push("react");
-
-    if (isServer) {
-      config.plugins = [...config.plugins, new PrismaPlugin()];
-    }
-
-    // config.resolve.alias["react"] = path.resolve(__dirname, ".", "node_modules", "react");
-
-    config.externals.push(
-      "async_hooks",
-      "pino-pretty",
-      "lokijs",
-      "encoding",
-      "net",
-    );
-
-    config.resolve.fallback = { fs: false, net: false, tls: false };
-
-    // This is only intended to pass CI and should be skiped in your app
-    if (config.name === "server") {
-      config.optimization.concatenateModules = false;
-    }
-
-    return config;
   },
 };
 

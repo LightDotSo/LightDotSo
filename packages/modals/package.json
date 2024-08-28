@@ -43,7 +43,7 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^8.2.9",
-    "@tanstack/react-virtual": "^3.10.4",
+    "@tanstack/react-virtual": "^3.10.5",
     "lucide-react": "^0.436.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"
