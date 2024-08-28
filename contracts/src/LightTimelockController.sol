@@ -43,24 +43,22 @@ contract LightTimelockController is TimelockController {
 
     address public immutable proposer;
 
-    bytes32 public constant APPROVER_ROLE = keccak256("APPROVER_ROLE");
-
     mapping(bytes32 => bool) public executedProposals;
 
     // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
-    constructor(uint256 _minDelay, address _proposer, address _approver)
+    constructor(uint256 _minDelay, address _proposer, address _executor)
         TimelockController(_minDelay, new address[](0), new address[](0), address(0))
     {
         proposer = _proposer;
 
         _setupRole(PROPOSER_ROLE, _proposer);
-        _setupRole(APPROVER_ROLE, _approver);
+        _setupRole(EXECUTOR_ROLE, _executor);
 
         _setRoleAdmin(PROPOSER_ROLE, PROPOSER_ROLE);
-        _setRoleAdmin(APPROVER_ROLE, APPROVER_ROLE);
+        _setRoleAdmin(EXECUTOR_ROLE, EXECUTOR_ROLE);
 
         _grantRole(TIMELOCK_ADMIN_ROLE, address(this));
         _grantRole(PROPOSER_ROLE, address(this));
@@ -78,7 +76,7 @@ contract LightTimelockController is TimelockController {
         bytes32 predecessor,
         bytes32 salt,
         uint256 delay
-    ) public onlyRole(APPROVER_ROLE) {
+    ) public onlyRole(PROPOSER_ROLE) {
         // Check the merkle proof
         bytes32 leaf = keccak256(abi.encodePacked(target, value, keccak256(data), predecessor, salt, delay));
         require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Invalid Merkle proof");
@@ -100,7 +98,7 @@ contract LightTimelockController is TimelockController {
         payable
         virtual
         override
-        onlyRole(APPROVER_ROLE)
+        onlyRole(EXECUTOR_ROLE)
     {
         // Check if the proposal is already executed
         bytes32 proposalId = hashOperation(target, value, data, predecessor, salt);
@@ -117,7 +115,7 @@ contract LightTimelockController is TimelockController {
         bytes[] calldata payloads,
         bytes32 predecessor,
         bytes32 salt
-    ) public payable virtual override onlyRole(APPROVER_ROLE) {
+    ) public payable virtual override onlyRole(EXECUTOR_ROLE) {
         // Check if the proposal is already executed
         bytes32 proposalId = hashOperationBatch(targets, values, payloads, predecessor, salt);
         require(!executedProposals[proposalId], "Proposal already executed");
