@@ -84,8 +84,8 @@ contract LightTimelockController is TimelockController {
         bytes32 leaf = keccak256(abi.encodePacked(target, value, keccak256(data), predecessor, salt, delay));
         require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Invalid Merkle proof");
 
-        // Call `isValidSignature` on the proposer to validate the signature
-        bytes4 isValidSignature = ILightWallet(proposer).isValidSignature(leaf, signature);
+        // Call `isValidSignature` on the proposer to validate the merkleRoot
+        bytes4 isValidSignature = ILightWallet(proposer).isValidSignature(merkleRoot, signature);
         require(isValidSignature == 0x1626ba7e, "Invalid signature");
 
         // Check if the proposal is already executed
