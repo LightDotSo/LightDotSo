@@ -17,7 +17,7 @@
 import type { NotificationData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { NotificationTable } from "@lightdotso/tables";
+import { NotificationTable } from "@lightdotso/tables/notification";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

@@ -17,7 +17,7 @@
 import type { WalletData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { WalletTable } from "@lightdotso/tables";
+import { WalletTable } from "@lightdotso/tables/wallet";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

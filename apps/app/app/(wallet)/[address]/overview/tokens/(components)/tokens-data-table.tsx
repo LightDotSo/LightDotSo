@@ -21,7 +21,7 @@ import {
   useQueryTokensCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { tokenColumns } from "@lightdotso/tables";
+import { tokenColumns } from "@lightdotso/tables/token";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";

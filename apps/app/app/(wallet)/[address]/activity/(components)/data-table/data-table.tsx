@@ -17,7 +17,7 @@
 import type { ActivityData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { ActivityTable } from "@lightdotso/tables";
+import { ActivityTable } from "@lightdotso/tables/activity";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

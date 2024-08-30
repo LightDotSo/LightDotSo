@@ -20,7 +20,10 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
-import { TransactionTable, transactionColumns } from "@lightdotso/tables";
+import {
+  TransactionTable,
+  transactionColumns,
+} from "@lightdotso/tables/transaction";
 import type { FC } from "react";
 import type { Address } from "viem";
 

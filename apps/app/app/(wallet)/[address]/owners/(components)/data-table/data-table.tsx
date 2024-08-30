@@ -17,7 +17,7 @@
 import type { OwnerData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { OwnerTable } from "@lightdotso/tables";
+import { OwnerTable } from "@lightdotso/tables/owner";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

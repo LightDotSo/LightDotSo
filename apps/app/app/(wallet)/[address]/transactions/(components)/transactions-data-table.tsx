@@ -21,7 +21,7 @@ import {
   useQueryUserOperationsCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { userOperationColumns } from "@lightdotso/tables";
+import { userOperationColumns } from "@lightdotso/tables/user-operation";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";
 

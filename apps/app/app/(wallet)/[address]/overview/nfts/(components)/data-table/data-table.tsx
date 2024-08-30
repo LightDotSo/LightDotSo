@@ -18,7 +18,7 @@ import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import type { NftData } from "@lightdotso/data";
 import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { NftTable } from "@lightdotso/tables";
+import { NftTable } from "@lightdotso/tables/nft";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

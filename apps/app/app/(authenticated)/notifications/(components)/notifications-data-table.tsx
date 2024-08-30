@@ -24,7 +24,7 @@ import {
   useQueryNotificationsCount,
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { notificationColumns } from "@lightdotso/tables";
+import { notificationColumns } from "@lightdotso/tables/notification";
 import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";

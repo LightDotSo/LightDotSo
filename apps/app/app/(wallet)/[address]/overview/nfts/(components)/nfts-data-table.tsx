@@ -18,7 +18,7 @@ import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/d
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
-import { nftColumns } from "@lightdotso/tables";
+import { nftColumns } from "@lightdotso/tables/nft";
 import { type FC, useEffect } from "react";
 import type { Address } from "viem";
 
