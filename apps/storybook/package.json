@@ -37,7 +37,7 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
-    "@tremor/react": "^3.17.4",
+    "@tremor/react": "^3.18.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
