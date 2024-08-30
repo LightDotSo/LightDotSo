@@ -13,6 +13,10 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*/index.ts"
+  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {

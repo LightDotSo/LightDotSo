@@ -21,7 +21,18 @@ import dynamic from "next/dynamic";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Dynamic
+// Dynamic UI
+// -----------------------------------------------------------------------------
+
+const Toaster = dynamic(
+  () => import("@lightdotso/ui/components/toast").then((mod) => mod.Toaster),
+  {
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Dynamic Modals
 // -----------------------------------------------------------------------------
 
 const AddressModal = dynamic(
@@ -81,12 +92,70 @@ const TokenModal = dynamic(
 );
 
 // -----------------------------------------------------------------------------
+// Dynamic States
+// -----------------------------------------------------------------------------
+
+const AuthState = dynamic(
+  () => import("@lightdotso/states/auth").then((mod) => mod.AuthState),
+  {
+    ssr: false,
+  },
+);
+
+const FormState = dynamic(
+  () => import("@lightdotso/states/form").then((mod) => mod.FormState),
+  {
+    ssr: false,
+  },
+);
+
+const QueueState = dynamic(
+  () => import("@lightdotso/states/queue").then((mod) => mod.QueueState),
+  {
+    ssr: false,
+  },
+);
+
+const UserOperationState = dynamic(() =>
+  import("@lightdotso/states/user-operation").then(
+    (mod) => mod.UserOperationState,
+  ),
+);
+
+// -----------------------------------------------------------------------------
+// Dynamic Templates
+// -----------------------------------------------------------------------------
+
+const ProgressTransaction = dynamic(
+  () =>
+    import("@lightdotso/templates/progress-transaction").then(
+      (mod) => mod.ProgressTransaction,
+    ),
+  {
+    ssr: false,
+  },
+);
+
+const ProgressUserOperation = dynamic(
+  () =>
+    import("@lightdotso/templates/progress-user-operation").then(
+      (mod) => mod.ProgressUserOperation,
+    ),
+  {
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const RootWrapper: FC = () => {
   return (
     <>
+      {/* UI */}
+      <Toaster />
+      {/* Modals */}
       <AddressModal />
       <AuthModal />
       <CartModal />
@@ -95,6 +164,14 @@ export const RootWrapper: FC = () => {
       <OwnerModal />
       <NftModal />
       <TokenModal />
+      {/* States */}
+      <AuthState />
+      <FormState />
+      <QueueState />
+      <UserOperationState />
+      {/* Templates */}
+      <ProgressTransaction />
+      <ProgressUserOperation />
     </>
   );
 };

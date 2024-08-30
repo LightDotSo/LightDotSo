@@ -14,34 +14,14 @@
 
 import { AppBanner } from "@/components/app-banner";
 import { Nav } from "@/components/nav/nav";
-import { WalletState } from "@/components/state/wallet-state";
-import { WssState } from "@/components/wss/wss-state";
 import { Root as LightRoot } from "@lightdotso/roots/root";
-import {
-  AuthState,
-  FormState,
-  QueueState,
-  UserOperationState,
-} from "@lightdotso/states";
-import {
-  Footer,
-  ProgressTransaction,
-  ProgressUserOperation,
-} from "@lightdotso/templates";
-import { Toaster, Web3Provider } from "@lightdotso/ui";
-import { wagmiConfig } from "@lightdotso/wagmi";
+import { Footer } from "@lightdotso/templates/footer";
+import { Web3Provider } from "@lightdotso/ui/providers/web3";
+import { wagmiConfig } from "@lightdotso/wagmi/config";
 import { cookieToInitialState } from "@lightdotso/wagmi/wagmi";
-import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import type { FC, ReactNode } from "react";
-
-// -----------------------------------------------------------------------------
-// Dynamic
-// -----------------------------------------------------------------------------
-
-const CommandK = dynamic(() => import("@/components/command-k"), {
-  ssr: false,
-});
+import { RootWrapper } from "./root-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -73,20 +53,8 @@ export const Root: FC<RootProps> = ({ children }) => {
         {/* Layout */}
         <Nav>{children}</Nav>
         <Footer />
-        {/* Utility Functions */}
-        <CommandK />
-        <Toaster />
-        {/* Modals */}
-        {/* Templates */}
-        <ProgressTransaction />
-        <ProgressUserOperation />
-        {/* States */}
-        <AuthState />
-        <FormState />
-        <QueueState />
-        <UserOperationState />
-        <WalletState />
-        <WssState />
+        {/* UI */}
+        <RootWrapper />
       </Web3Provider>
     </LightRoot>
   );

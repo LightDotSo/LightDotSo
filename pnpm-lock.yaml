@@ -3125,6 +3125,12 @@ importers:
       '@lightdotso/modals':
         specifier: workspace:*
         version: link:../modals
+      '@lightdotso/states':
+        specifier: workspace:*
+        version: link:../states
+      '@lightdotso/templates':
+        specifier: workspace:*
+        version: link:../templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui

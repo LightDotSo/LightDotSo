@@ -29,6 +29,8 @@
   "dependencies": {
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/modals": "workspace:*",
+    "@lightdotso/states": "workspace:*",
+    "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "next": "15.0.0-canary.120",
