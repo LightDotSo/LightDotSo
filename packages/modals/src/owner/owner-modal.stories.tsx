@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { useAuth, useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
@@ -51,7 +49,6 @@ export const Base: Story = {
     useEffect(() => {
       setAddress("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
       showOwnerModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <OwnerModal />;

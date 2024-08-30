@@ -14,12 +14,12 @@
 
 "use client";
 
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { InfoIcon } from "lucide-react";
 import type { FC } from "react";
 

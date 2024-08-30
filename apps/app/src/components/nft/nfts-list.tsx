@@ -17,7 +17,7 @@
 import type { NftData } from "@lightdotso/data";
 import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
-import { NftTable } from "@lightdotso/tables";
+import { NftTable } from "@lightdotso/tables/nft";
 import type { FC } from "react";
 import type { Address } from "viem";
 

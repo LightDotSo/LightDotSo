@@ -37,9 +37,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
         hostname: "assets.light.so",
-        port: "",
+        protocol: "https",
+        pathname: "**",
       },
     ],
   },

@@ -16,9 +16,9 @@
 
 import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { shortenAddress } from "@lightdotso/utils";
-import { ConnectKitButton } from "@lightdotso/wagmi";
+import { ConnectKitButton } from "@lightdotso/wagmi/connectkit";
 import { Wallet } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";

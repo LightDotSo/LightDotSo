@@ -17,7 +17,7 @@ import type { WalletData } from "@lightdotso/data";
 import type { WalletCreateBodyParams, WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
     failureCount,
   } = useMutation({
     mutationKey: queryKeys.wallet.create._def,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     mutationFn: async (body: WalletCreateBodyParams) => {
       const loadingToast = toast.loading("Creating wallet...");
 

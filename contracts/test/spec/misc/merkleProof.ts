@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// eslint-disable no-console
-
 import {
   SimpleMerkleTree,
   StandardMerkleTree,
@@ -81,7 +79,7 @@ test("simple merkle tree", () => {
 
   const _proof = standardTree.getProof(0);
 
-  const _standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
+  const _standardTreeRoot = standardTree.root.toString();
 
   const _simpleTree = SimpleMerkleTree.of(leaves);
 });
@@ -102,7 +100,7 @@ test("simple nested merkle tree", () => {
 
   // const proof = tree.getProof(leaves[0]);
 
-  const _root = tree.getHexRoot(); // eslint-disable-next-line no-console
+  const _root = tree.getHexRoot();
 
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
@@ -111,7 +109,7 @@ test("simple nested merkle tree", () => {
 
   const _proof = standardTree.getProof(0);
 
-  const _standardTreeRoot = standardTree.root.toString(); // eslint-disable-next-line no-console
+  const _standardTreeRoot = standardTree.root.toString();
 
   const _simpleTree = SimpleMerkleTree.of(leaves);
 });
@@ -151,7 +149,7 @@ test("simple deep nested merkle tree", () => {
     // isBitcoinTree: true,
   });
 
-  const _root = tree.getHexRoot(); // eslint-disable-next-line no-console
+  const _root = tree.getHexRoot();
 
   // const standardTree = StandardMerkleTree.of(
   //   [merkleHashes],

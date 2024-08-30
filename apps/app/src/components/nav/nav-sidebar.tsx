@@ -14,7 +14,7 @@
 
 "use client";
 
-import { buttonVariants } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

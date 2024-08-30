@@ -24,8 +24,11 @@ import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
   DataTableViewOptions,
-} from "@lightdotso/templates";
-import { Button, Label, Switch, ToolbarSectionWrapper } from "@lightdotso/ui";
+} from "@lightdotso/templates/data-table";
+import { Button } from "@lightdotso/ui/components/button";
+import { Label } from "@lightdotso/ui/components/label";
+import { Switch } from "@lightdotso/ui/components/switch";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { getChainNameWithChainId } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";

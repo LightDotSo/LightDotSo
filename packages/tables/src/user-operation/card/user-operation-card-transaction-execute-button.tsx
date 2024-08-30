@@ -16,12 +16,12 @@
 
 import type { UserOperationData } from "@lightdotso/data";
 import { useUserOperationSend } from "@lightdotso/hooks";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
 

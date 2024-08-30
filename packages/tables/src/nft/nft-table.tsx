@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import type { NftData } from "@lightdotso/data";
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableRow,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/table";
 import type {
   ColumnDef,
   Table as ReactTable,
@@ -121,50 +121,19 @@ export const NftTable: FC<NftTableProps> = ({
     }
   }, [
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("name"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("name")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("name")
-      ?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("name")?.getCanHide(),
+    table?.getColumn("name")?.getIsVisible(),
     table?.getColumn("description"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("description")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("description")
-      ?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("description")?.getCanHide(),
+    table?.getColumn("description")?.getIsVisible(),
     table?.getColumn("spam_score"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("spam_score")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("spam_score")
-      ?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("spam_score")?.getCanHide(),
+    table?.getColumn("spam_score")?.getIsVisible(),
     table?.getColumn("chain"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain")
-      ?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain")
-      ?.getIsVisible(),
+    table?.getColumn("chain")?.getFacetedUniqueValues(),
+    table?.getColumn("chain")?.getCanHide(),
+    table?.getColumn("chain")?.getIsVisible(),
     setNftTable,
   ]);
 

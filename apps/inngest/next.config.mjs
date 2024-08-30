@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
 
 // ---------------------------------------------------------------------------
@@ -25,31 +24,16 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     instrumentationHook: true,
-    // From: https://github.com/vercel/next.js/issues/42641
-    outputFileTracingExcludes: {
-      "*": [
-        "./node_modules/@swc/core-linux-x64-gnu",
-        "./node_modules/@swc/core-linux-x64-musl",
-        "./node_modules/esbuild-linux-64/bin",
-        "./node_modules/webpack/lib",
-        "./node_modules/rollup",
-        "./node_modules/terser",
-      ],
-    },
   },
-  outputFileTracing: true,
-  transpilePackages: ["@lightdotso/prisma"],
-  webpack: (config, { isServer }) => {
-    config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
-
-    if (isServer) {
-      config.plugins = [...config.plugins, new PrismaPlugin()];
-      // config.externals = ["react", ...config.externals];
-    }
-
-    config.resolve.fallback = { fs: false, net: false, tls: false };
-
-    return config;
+  outputFileTracingExcludes: {
+    "*": [
+      "./node_modules/@swc/core-linux-x64-gnu",
+      "./node_modules/@swc/core-linux-x64-musl",
+      "./node_modules/esbuild-linux-64/bin",
+      "./node_modules/webpack/lib",
+      "./node_modules/rollup",
+      "./node_modules/terser",
+    ],
   },
 };
 

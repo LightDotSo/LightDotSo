@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BadgeIcon, ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
+import { BadgeIcon } from "@lightdotso/ui/components/badge-icon";
+import {
+  ButtonIcon,
+  type ButtonIconProps,
+} from "@lightdotso/ui/components/button-icon";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

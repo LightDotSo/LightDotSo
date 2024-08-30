@@ -18,9 +18,9 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormRef } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui/components/button";
+import { Checkbox } from "@lightdotso/ui/components/checkbox";
 import {
-  Button,
-  Checkbox,
   Form,
   FormControl,
   FormDescription,
@@ -28,11 +28,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+} from "@lightdotso/ui/components/form";
+import {
   RadioGroup,
   RadioGroupItem,
-  Switch,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/radio-group";
+import { Switch } from "@lightdotso/ui/components/switch";
+import { toast } from "@lightdotso/ui/components/toast";
 import Link from "next/link";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";

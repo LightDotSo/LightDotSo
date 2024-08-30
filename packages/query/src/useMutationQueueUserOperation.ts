@@ -19,7 +19,10 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
+import {
+  toast,
+  toastMinimalLoadingStyles,
+} from "@lightdotso/ui/components/toast";
 import { useMutation } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------

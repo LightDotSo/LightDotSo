@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Support } from "@lightdotso/templates";
+import { Support } from "@lightdotso/templates/support";
+import { BaseSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -24,8 +25,8 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="rounded-md border border-border bg-background">
+    <BaseSectionWrapper>
       <Support />
-    </div>
+    </BaseSectionWrapper>
   );
 }

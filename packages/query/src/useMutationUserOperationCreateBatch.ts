@@ -22,7 +22,7 @@ import type {
 import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import {
   // useQueryClient,
   useMutation,
@@ -38,7 +38,6 @@ import {
 // -----------------------------------------------------------------------------
 
 export const useMutationUserOperationCreateBatch = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _params: UserOperationParams,
 ) => {
   // ---------------------------------------------------------------------------

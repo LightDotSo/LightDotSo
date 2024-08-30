@@ -31,8 +31,12 @@
 import type { Chat } from "@/ai/types";
 import { IconMessage, IconUsers } from "@/components/icons";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@lightdotso/ui";
-import { buttonVariants } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui/components/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@lightdotso/ui/components/tooltip";
 import { cn } from "@lightdotso/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";

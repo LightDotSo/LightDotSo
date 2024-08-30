@@ -14,9 +14,8 @@
 
 import { MagicCard } from "@/components/magic-card";
 import { MagicContainer } from "@/components/magic-container";
-<div className="mt-8 text-thin">Features</div>;
 import { SectionPill } from "@/components/section-pill";
-import { NextImage } from "@lightdotso/elements";
+import { NextImage } from "@lightdotso/elements/next-image";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

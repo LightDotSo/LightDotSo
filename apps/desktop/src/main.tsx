@@ -17,7 +17,6 @@ import reactDom from "react-dom/client";
 import App from "./App";
 import "./styles.css";
 
-// eslint-disable-next-line import/no-named-as-default-member
 reactDom.createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
     <App />

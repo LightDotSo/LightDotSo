@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useUserOperationsProgress } from "@lightdotso/hooks";
 import { ChainLogo } from "@lightdotso/svg";
 import {
@@ -20,7 +20,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/accordion";
 import {
   camelCaseToCapitalizedWords,
   getChainWithChainId,
@@ -64,7 +64,6 @@ export const TransactionDetailInfo: FC<TransactionDetailInfoProps> = ({
             {value}
           </ExternalLink>
         ) : (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
           <>{value}</>
         )}
       </div>

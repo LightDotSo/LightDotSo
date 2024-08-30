@@ -30,7 +30,6 @@
 
 import type { ServerActionResult } from "@/ai/types";
 import { IconSpinner } from "@/components/icons";
-import { toast } from "@lightdotso/ui";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,8 +40,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@lightdotso/ui";
-import { Button } from "@lightdotso/ui";
+} from "@lightdotso/ui/components/alert-dialog";
+import { Button } from "@lightdotso/ui/components/button";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 

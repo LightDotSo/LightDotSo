@@ -15,7 +15,8 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { ChainStack, TokenImage } from "@lightdotso/elements";
+import { ChainStack } from "@lightdotso/elements/chain-stack";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import {
   type QuoteParams,
   useDebouncedValue,
@@ -34,19 +35,19 @@ import {
   useUserOperations,
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { TokenGroup } from "@lightdotso/templates";
+import { TokenGroup } from "@lightdotso/templates/token-group";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
-  ButtonIcon,
-  FormField,
-  Input,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/accordion";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import { FormField } from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
 import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
-import { serialize } from "@lightdotso/wagmi";
+import { serialize } from "@lightdotso/wagmi/wagmi";
 import { ArrowDown, ChevronDown, WalletIcon } from "lucide-react";
 import { type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -160,7 +161,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       from: fromSwapQueryState ?? undefined,
       to: toSwapQueryState ?? undefined,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------
@@ -200,7 +200,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
@@ -250,7 +249,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   useEffect(() => {
     resetQuotes();
     resetExecutionParams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

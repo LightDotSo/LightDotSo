@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { BetaVersion } from "@/components/beta-version";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
 

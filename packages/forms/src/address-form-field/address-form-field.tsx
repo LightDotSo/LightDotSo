@@ -15,8 +15,12 @@
 "use client";
 
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
-import { EnsAddress, PlaceholderOrb } from "@lightdotso/elements";
-import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
+import { EnsAddress } from "@lightdotso/elements/ens-address";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { FormField, FormMessage } from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
 import { cn } from "@lightdotso/utils";
 import { type FC, type InputHTMLAttributes, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -73,8 +77,6 @@ export const AddressFormField: FC<AddressFormFieldProps> = ({
 
     // Set the span left position based on the length of the input
     setSpanLeft(charLength * 7 + 120);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedName, name, methods]);
 
   // ---------------------------------------------------------------------------

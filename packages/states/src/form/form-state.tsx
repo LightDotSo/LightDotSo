@@ -21,7 +21,7 @@ import {
   useUserOperationsSendState,
 } from "@lightdotso/hooks";
 import { useFormRef } from "@lightdotso/stores";
-import { useAccount } from "@lightdotso/wagmi";
+import { useAccount } from "@lightdotso/wagmi/wagmi";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 

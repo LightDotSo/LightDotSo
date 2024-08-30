@@ -31,12 +31,12 @@
 import type { AI } from "@/ai/client";
 import { IconArrowElbow, IconPlus } from "@/components/icons";
 import { useEnterSubmit } from "@/hooks/use-enter-submit";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { useActions, useUIState } from "ai/rsc";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";

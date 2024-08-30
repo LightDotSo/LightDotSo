@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { SOCIAL_LINKS, Social } from "@lightdotso/const";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 

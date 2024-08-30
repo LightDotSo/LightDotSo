@@ -18,9 +18,9 @@ import deleteCookiesAction from "@/actions/deleteCookiesAction";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { ConnectButton } from "@lightdotso/templates";
+import { ConnectButton } from "@lightdotso/templates/connect-button";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -35,15 +35,15 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
+import { toast } from "@lightdotso/ui/components/toast";
 import { shortenAddress } from "@lightdotso/utils";
+import { useModal } from "@lightdotso/wagmi/connectkit";
 import {
   cookieStorage,
   createStorage,
   useDisconnect,
-  useModal,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { Wallet } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";

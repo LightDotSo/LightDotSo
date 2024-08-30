@@ -15,7 +15,7 @@
 "use client";
 
 import type { InterpretationData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/elements";
+import { AssetChange } from "@lightdotso/elements/asset-change";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 

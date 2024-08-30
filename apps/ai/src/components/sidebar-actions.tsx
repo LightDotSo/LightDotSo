@@ -31,8 +31,6 @@
 import type { Chat, ServerActionResult } from "@/ai/types";
 import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { IconShare, IconSpinner, IconTrash } from "@/components/icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@lightdotso/ui";
-import { toast } from "@lightdotso/ui";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,8 +40,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@lightdotso/ui";
-import { Button } from "@lightdotso/ui";
+} from "@lightdotso/ui/components/alert-dialog";
+import { Button } from "@lightdotso/ui/components/button";
+import { toast } from "@lightdotso/ui/components/toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@lightdotso/ui/components/tooltip";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 

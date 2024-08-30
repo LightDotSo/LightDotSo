@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "typescript": "^5.5.4",
-    "wrangler": "^3.72.2"
+    "wrangler": "^3.72.3"
   },
   "publishConfig": {
     "access": "public"

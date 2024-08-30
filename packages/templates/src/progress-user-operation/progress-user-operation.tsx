@@ -19,7 +19,7 @@ import {
   useQueryUserOperations,
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { type FC, useEffect, useState } from "react";
 import type { Hex } from "viem";
 
@@ -141,7 +141,6 @@ export const ProgressUserOperation: FC = () => {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingUserOperations, isPendingUserOperationsLoading]);
 
   // ---------------------------------------------------------------------------

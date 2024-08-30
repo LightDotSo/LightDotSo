@@ -20,7 +20,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
 import { useTheme } from "next-themes";
 import type { FC, SVGProps } from "react";
 import { FaMoon, FaRegLightbulb, FaSun } from "react-icons/fa";

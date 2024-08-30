@@ -17,7 +17,7 @@
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 

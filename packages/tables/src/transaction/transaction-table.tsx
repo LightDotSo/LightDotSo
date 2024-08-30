@@ -13,17 +13,17 @@
 // limitations under the License.
 
 import type { TransactionData } from "@lightdotso/data";
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/table";
 import { cn } from "@lightdotso/utils";
 import type {
   ColumnDef,
@@ -124,31 +124,15 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   }, [
     isLoading,
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain_id"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getIsVisible(),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("chain_id")?.getCanHide(),
+    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table?.getColumn("chain_id")?.getIsVisible(),
     // table?.getColumn("sparkline"),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("sparkline")?.getIsVisible(),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("price"),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("price")?.getIsVisible(),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("actions"),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table?.getColumn("actions")?.getIsVisible(),
     setTransactionTable,
   ]);

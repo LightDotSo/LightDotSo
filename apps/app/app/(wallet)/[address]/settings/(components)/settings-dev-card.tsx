@@ -24,8 +24,8 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Form,
   FormControl,
   FormDescription,
@@ -33,8 +33,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Switch,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/form";
+import { Switch } from "@lightdotso/ui/components/switch";
 import { type FC, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -107,7 +107,6 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
     return {
       enabled: walletSettings?.is_enabled_dev ?? false,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletSettings, key]);
 
   // ---------------------------------------------------------------------------

@@ -21,3 +21,5 @@ ignores:
   - "@upstash/ratelimit"
   - "@upstash/redis"
   - "@sentry/integrations"
+  - "@prisma/nextjs-monorepo-workaround-plugin"
+

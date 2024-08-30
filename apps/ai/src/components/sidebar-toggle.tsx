@@ -30,7 +30,7 @@
 
 import { IconSidebar } from "@/components/icons";
 import { useSidebar } from "@/hooks/use-sidebar";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 
 // -----------------------------------------------------------------------------
 // Component

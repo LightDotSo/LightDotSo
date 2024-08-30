@@ -22,10 +22,12 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTrigger,
+} from "@lightdotso/ui/components/drawer";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/popover";
 import { cn } from "@lightdotso/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import type { FC, ReactNode } from "react";

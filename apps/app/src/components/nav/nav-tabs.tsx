@@ -17,7 +17,7 @@
 
 import { useBaseSlug, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
-import { Badge } from "@lightdotso/ui";
+import { Badge } from "@lightdotso/ui/components/badge";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -124,7 +124,6 @@ export const NavTabs: FC<NavTabsProps> = ({
     <nav
       ref={navRef}
       className="relative z-0 mt-2 mb-1.5 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={(_e) => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {

@@ -50,7 +50,6 @@ export const useAppGroup = (): AppGroup => {
     }
 
     return getAppGroup(pathname);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   // ---------------------------------------------------------------------------

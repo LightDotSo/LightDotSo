@@ -1,10 +1,10 @@
 {
+  "extends": "@lightdotso/tsconfig/react.json",
   "compilerOptions": {
     "target": "ESNext",
     "outDir": "./dist",
     "resolveJsonModule": true
   },
   "exclude": ["dist", "build", "node_modules"],
-  "extends": "@lightdotso/tsconfig/react.json",
   "include": ["."]
 }

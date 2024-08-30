@@ -15,7 +15,7 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
 
@@ -44,7 +44,6 @@ export const ModalInterceptionFooter: FC = () => {
   const onDismiss = useCallback(() => {
     hideNotificationsModal();
     router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

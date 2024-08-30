@@ -14,17 +14,17 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonGroup } from "@lightdotso/ui/components/button-group";
+import { Label } from "@lightdotso/ui/components/label";
 import {
-  Button,
-  ButtonGroup,
-  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  ToolbarSectionWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -123,7 +123,6 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
     items.forEach((item) => {
       router.prefetch(`${address ? `/${address}` : ""}${item.href}`);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

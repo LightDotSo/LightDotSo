@@ -17,12 +17,12 @@
 import type { TokenData } from "@lightdotso/data";
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { Send, Shuffle } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";

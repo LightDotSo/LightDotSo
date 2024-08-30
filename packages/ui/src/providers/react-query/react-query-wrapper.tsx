@@ -14,57 +14,58 @@
 
 "use client";
 
-import { useAppGroup } from "@/hooks";
-import { useAuth } from "@lightdotso/stores";
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { FC } from "react";
+import { useSettings } from "@lightdotso/stores";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const ReactQueryDevtoolsProduction = dynamic(
+  () =>
+    // @ts-ignore
+    import("@tanstack/react-query-devtools/production").then((d) => ({
+      default: d.ReactQueryDevtools,
+    })),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
+export const ReactQueryWrapper = () => {
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Only set once on initial render
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
+      setIsQueryDevToolsOpen(true);
+    }
+  }, []);
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const appGroup = useAppGroup();
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
+  const { isQueryDevToolsOpen, setIsQueryDevToolsOpen } = useSettings();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Link
-      href={
-        typeof address === "undefined" || appGroup === "authenticated"
-          ? "/"
-          : appGroup === "unauthenticated" || appGroup === "demo"
-            ? "/"
-            : appGroup === "action"
-              ? "/swap"
-              : // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}/overview`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
+    <>
+      {isQueryDevToolsOpen && (
+        <div className="hidden lg:block">
+          <ReactQueryDevtoolsProduction />
+        </div>
+      )}
+    </>
   );
 };

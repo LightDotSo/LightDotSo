@@ -22,7 +22,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NOTION_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { InviteCodeForm } from "@lightdotso/forms";
 import {
   useInviteCodeQueryState,
@@ -32,27 +32,33 @@ import {
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+} from "@lightdotso/ui/components/card";
+import {
   Form,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   RadioGroup,
   RadioGroupItem,
+} from "@lightdotso/ui/components/radio-group";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
@@ -140,7 +146,6 @@ export const NewWalletForm: FC = () => {
       }
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
@@ -162,7 +167,6 @@ export const NewWalletForm: FC = () => {
     url.searchParams.set("inviteCode", inviteCode);
     url.searchParams.set("type", type);
     router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, inviteCode, type]);
 
   const onSubmit = useCallback(
@@ -181,8 +185,6 @@ export const NewWalletForm: FC = () => {
   useEffect(() => {
     // Set the form values from the default values
     setFormValues(defaultValues);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

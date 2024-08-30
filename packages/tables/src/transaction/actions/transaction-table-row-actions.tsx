@@ -16,13 +16,13 @@
 
 import type { TransactionData } from "@lightdotso/data";
 import { useMutationQueueInterpretation } from "@lightdotso/query";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
 import { getEtherscanUrlWithChainId } from "@lightdotso/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";

@@ -15,7 +15,7 @@
 import { MagicContainer } from "@/components/magic-container";
 import { SectionPill } from "@/components/section-pill";
 import { ECOSYSTEM_CHAINS, type EcosystemChain } from "@/const/ecosystem";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
 

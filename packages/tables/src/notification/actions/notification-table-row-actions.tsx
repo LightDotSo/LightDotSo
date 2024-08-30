@@ -15,14 +15,14 @@
 "use client";
 
 import type { NotificationData } from "@lightdotso/data";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
 

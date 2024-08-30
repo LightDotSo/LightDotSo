@@ -14,7 +14,7 @@
 
 "use client";
 
-import { InvokeButton } from "@lightdotso/elements";
+import { InvokeButton } from "@lightdotso/elements/invoke-button";
 import { useUserOperationSend } from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";

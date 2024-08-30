@@ -30,14 +30,14 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "events": "^3.3.0",
-    "isutf8": "^4.0.0",
+    "isutf8": "^4.0.1",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806"
   },
   "devDependencies": {
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",

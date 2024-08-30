@@ -28,9 +28,8 @@
 
 // import { auth } from "@/auth";
 import { IconGitHub, IconSeparator, IconVercel } from "@/components/icons";
-import { buttonVariants } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
-import { Suspense } from "react";
 
 // -----------------------------------------------------------------------------
 // Action
@@ -69,9 +68,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 flex h-16 w-full shrink-0 items-center justify-between border-b bg-gradient-to-b from-background/10 via-background/50 to-background/80 px-4 backdrop-blur-xl">
       <div className="flex items-center">
-        <Suspense fallback={<div className="flex-1 overflow-auto" />}>
-          <UserOrLogin />
-        </Suspense>
+        <UserOrLogin />
       </div>
       <div className="flex items-center justify-end space-x-2">
         <a

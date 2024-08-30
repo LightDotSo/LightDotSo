@@ -281,31 +281,36 @@ export {
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { ReactQueryProvider, ThemeProvider, Web3Provider } from "./providers";
-export { BannerSection, StateInfoSection } from "./sections";
+export {
+  BannerSection,
+  StateInfoSection,
+  StateInfoSectionSkeleton,
+} from "./sections";
 export { HStackFull } from "./stacks";
 export {
   baseWidthWrapper,
   baseHeightWrapper,
   minimalHeightWrapper,
   minimalWidthWrapper,
-} from "./wrappers/base";
+} from "./wrappers";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,
   MiddleLayerWrapper,
-} from "./wrappers/layer";
+} from "./wrappers";
 export type {
   BaseLayerWrapperProps,
   MiddleLayerWrapperProps,
-} from "./wrappers/layer";
+} from "./wrappers";
 export {
   BasicPageWrapper,
   MinimalPageWrapper,
   SettingsPageWrapper,
-} from "./wrappers/page";
+} from "./wrappers";
 export {
+  BaseSectionWrapper,
   DialogSectionWrapper,
   SettingsSectionWrapper,
   TableSectionWrapper,
   ToolbarSectionWrapper,
-} from "./wrappers/section";
+} from "./wrappers";

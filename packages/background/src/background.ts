@@ -13,7 +13,6 @@
 // limitations under the License.
 
 browser.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-  // eslint-disable-next-line no-console
   console.warn("Received request: ", request);
 
   if (request.greeting === "hello") {

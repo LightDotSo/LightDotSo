@@ -21,8 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import { useMutationWalletUpdate, useQueryWallet } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Form,
   FormControl,
   FormDescription,
@@ -30,8 +30,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
@@ -117,7 +117,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     return {
       name: wallet?.name,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, key]);
 
   // ---------------------------------------------------------------------------

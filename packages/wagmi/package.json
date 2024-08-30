@@ -13,6 +13,12 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config.ts",
+    "./connectkit": "./src/connectkit.ts",
+    "./wagmi": "./src/wagmi.ts"
+  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {
@@ -27,12 +33,12 @@
     "@lightdotso/const": "workspace:*",
     "@wagmi/core": "^2.13.4",
     "connectkit": "^1.8.2",
-    "viem": "^2.20.0",
+    "viem": "^2.21.0",
     "wagmi": "^2.12.7"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

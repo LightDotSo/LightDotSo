@@ -35,49 +35,23 @@ const nextConfig = {
   },
   experimental: {
     esmExternals: true,
-    // From: https://github.com/vercel/next.js/issues/42641
-    outputFileTracingExcludes: {
-      "*": [
-        "./node_modules/@swc/core-linux-x64-gnu",
-        "./node_modules/@swc/core-linux-x64-musl",
-        "./node_modules/esbuild-linux-64/bin",
-        "./node_modules/webpack/lib",
-        "./node_modules/rollup",
-        "./node_modules/terser",
-      ],
-    },
+    ppr: "incremental",
+    optimizePackageImports: ["@radix-ui/react-icons"],
   },
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
-  outputFileTracing: true,
-  transpilePackages: [
-    "@lightdotso/client",
-    "@lightdotso/data",
-    "@lightdotso/hooks",
-    "@lightdotso/kysely",
-    "@lightdotso/nuqs",
-    "@lightdotso/params",
-    "@lightdotso/prisma",
-    "@lightdotso/query",
-    "@lightdotso/query-keys",
-    "@lightdotso/services",
-    "@lightdotso/stores",
-    "@lightdotso/styles",
-    "@lightdotso/svg",
-    "@lightdotso/tables",
-    "@lightdotso/types",
-    "@lightdotso/ui",
-    "@lightdotso/utils",
-    "@lightdotso/validators",
-  ],
-  webpack: (config) => {
-    config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
-    config.resolve.fallback = { fs: false, net: false, tls: false };
-
-    return config;
+  outputFileTracingExcludes: {
+    "*": [
+      "./node_modules/@swc/core-linux-x64-gnu",
+      "./node_modules/@swc/core-linux-x64-musl",
+      "./node_modules/esbuild-linux-64/bin",
+      "./node_modules/webpack/lib",
+      "./node_modules/rollup",
+      "./node_modules/terser",
+    ],
   },
 };
 

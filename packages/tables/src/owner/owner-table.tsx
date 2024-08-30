@@ -13,17 +13,17 @@
 // limitations under the License.
 
 import type { OwnerData } from "@lightdotso/data";
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/table";
 import type {
   ColumnDef,
   Table as ReactTable,
@@ -120,24 +120,11 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     }
   }, [
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("address")
-      ?.getFilterValue(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("address")?.getFilterValue(),
     table?.getColumn("weight"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("weight")
-      ?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("weight")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("weight")
-      ?.getIsVisible(),
+    table?.getColumn("weight")?.getFacetedUniqueValues(),
+    table?.getColumn("weight")?.getCanHide(),
+    table?.getColumn("weight")?.getIsVisible(),
     setOwnerTable,
   ]);
 

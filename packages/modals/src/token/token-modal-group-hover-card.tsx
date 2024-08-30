@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import { useTokenAmounts } from "@lightdotso/hooks";
 import { useQueryTokenGroup } from "@lightdotso/query";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@lightdotso/ui";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@lightdotso/ui/components/hover-card";
 import { getChainNameWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import type { FC, ReactNode } from "react";
 

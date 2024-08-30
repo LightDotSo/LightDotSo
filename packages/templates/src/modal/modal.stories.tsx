@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import {
+  DialogDescription,
+  DialogTitle,
+} from "@lightdotso/ui/components/dialog";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Modal } from "./modal";
 

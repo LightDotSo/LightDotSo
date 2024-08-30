@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useStorageAt } from "@lightdotso/wagmi";
+import { useStorageAt } from "@lightdotso/wagmi/wagmi";
 import { useMemo } from "react";
 import { type Address, getAddress } from "viem";
 

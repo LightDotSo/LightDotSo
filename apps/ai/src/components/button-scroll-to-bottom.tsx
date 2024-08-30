@@ -29,7 +29,10 @@
 "use client";
 
 import { IconArrowDown } from "@/components/icons";
-import { ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
+import {
+  ButtonIcon,
+  type ButtonIconProps,
+} from "@lightdotso/ui/components/button-icon";
 import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------

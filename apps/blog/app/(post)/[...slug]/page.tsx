@@ -14,13 +14,11 @@
 
 import "@lightdotso/styles/keystatic.css";
 import { createReader } from "@keystatic/core/reader";
-import { ExternalLink, NextImage } from "@lightdotso/elements";
-import {
-  BannerSection,
-  BaseLayerWrapper,
-  BasicPageWrapper,
-  HStackFull,
-} from "@lightdotso/ui";
+import { ExternalLink } from "@lightdotso/elements/external-link";
+import { NextImage } from "@lightdotso/elements/next-image";
+import { BannerSection } from "@lightdotso/ui/sections";
+import { HStackFull } from "@lightdotso/ui/stacks";
+import { BaseLayerWrapper, BasicPageWrapper } from "@lightdotso/ui/wrappers";
 import { refineDateFormat } from "@lightdotso/utils";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Badge } from "@lightdotso/ui/components/badge";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Badge,
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -22,11 +22,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+} from "@lightdotso/ui/components/command";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Separator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/popover";
+import { Separator } from "@lightdotso/ui/components/separator";
 import { cn } from "@lightdotso/utils";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";

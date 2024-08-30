@@ -25,6 +25,38 @@ export const metadata: Metadata = {
     template: "Light Demo | %s",
     default: "Light Demo",
   },
+  description:
+    "Light Demo - A demo of the Light app for showcasing features and design.",
+  openGraph: {
+    title: "Light Demo",
+    description:
+      "Light Demo - A demo of the Light app for showcasing features and design.",
+    url: "/demo",
+    siteName: "Light Demo",
+    images: [
+      {
+        url: "https://assets.light.so/social/demo.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Light Demo",
+    description:
+      "Light Demo - A demo of the Light app for showcasing features and design.",
+    creator: "@LightDotSo",
+    images: [
+      {
+        url: "https://assets.light.so/social/demo.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 // -----------------------------------------------------------------------------

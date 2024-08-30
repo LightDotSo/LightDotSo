@@ -13,6 +13,10 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*/index.ts"
+  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {
@@ -29,15 +33,15 @@
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.52.1",
+    "@tanstack/react-query": "^5.52.3",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.20.0"
+    "viem": "^2.21.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

@@ -249,7 +249,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         }
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, type]);
 
   // Disable hide all modals background when the interception modal is opened
@@ -262,7 +261,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
 
     hideAllModalsBackground();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

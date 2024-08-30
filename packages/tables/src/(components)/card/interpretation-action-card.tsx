@@ -16,7 +16,7 @@
 
 import { ACTION_LABELS, Action } from "@lightdotso/const";
 import type { InterpretationData } from "@lightdotso/data";
-import { ActionLogo } from "@lightdotso/elements";
+import { ActionLogo } from "@lightdotso/elements/action-logo";
 import { cn } from "@lightdotso/utils";
 import { type FC, useMemo } from "react";
 

@@ -17,7 +17,6 @@ import { handler as rootPreloader } from "@/handlers/handler";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import {} from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import type { Address } from "viem";
 
