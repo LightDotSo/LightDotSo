@@ -12,5 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// biome-ignore lint/performance/noBarrelFile: <explanation>
-export { default } from "@/app/(wallet)/[address]/overview/loading";
+import { WalletOverviewBannerSkeleton } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
+import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { TITLES } from "@/const";
+import { InvokeButtonSkeleton } from "@lightdotso/elements/invoke-button";
+import {
+  BaseLayerWrapper,
+  LargeLayerWrapper,
+  MiddleLayerWrapper,
+  MinimalPageWrapper,
+} from "@lightdotso/ui/wrappers";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Overview.title,
+  description: TITLES.Overview.description,
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type OverviewLayoutProps = {
+  children: ReactNode;
+};
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default function Loading({ children }: OverviewLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <>
+      <LargeLayerWrapper>
+        <WalletOverviewBannerSkeleton />
+      </LargeLayerWrapper>
+      <MiddleLayerWrapper>
+        <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+          <InvokeButtonSkeleton />
+        </LinkButtonGroup>
+      </MiddleLayerWrapper>
+      <BaseLayerWrapper>
+        <MinimalPageWrapper>{children}</MinimalPageWrapper>
+      </BaseLayerWrapper>
+    </>
+  );
+}

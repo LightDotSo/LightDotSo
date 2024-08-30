@@ -15,6 +15,7 @@
 "use client";
 
 import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
   Tooltip,
   TooltipContent,
@@ -76,3 +77,13 @@ export const InvokeButton: FC<InvokeButtonProps> = ({
     </Tooltip>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const InvokeButtonSkeleton = () => (
+  <ButtonIcon size="sm" variant="shadow" disabled>
+    <Skeleton className="size-4" />
+  </ButtonIcon>
+);
