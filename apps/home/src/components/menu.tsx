@@ -22,7 +22,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/navigation-menu";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, FC } from "react";

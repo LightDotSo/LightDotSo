@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { FormDevTools } from "@lightdotso/forms";
 import { TooltipProvider } from "@lightdotso/ui/components/tooltip";
-import { ReactQueryProvider, ThemeProvider } from "@lightdotso/ui/providers";
+import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
+import { ThemeProvider } from "@lightdotso/ui/providers/theme";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
+import { RootWrapper } from "./root-wrapper";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -58,9 +59,7 @@ export const Root: FC<RootProps> = ({ children }) => {
             <TooltipProvider>{children}</TooltipProvider>
           </ReactQueryProvider>
         </ThemeProvider>
-        <FormDevTools />
-        {/* <TailwindIndicator /> */}
-        {/* <VercelToolbar /> */}
+        <RootWrapper />
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

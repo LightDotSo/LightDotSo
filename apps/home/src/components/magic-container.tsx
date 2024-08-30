@@ -19,7 +19,6 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import {} from "framer-motion";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
 // -----------------------------------------------------------------------------

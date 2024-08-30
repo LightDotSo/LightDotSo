@@ -13,8 +13,6 @@
 // limitations under the License.
 
 "use client";
-
-import { useSettings } from "@lightdotso/stores";
 import { hashFn } from "@lightdotso/wagmi";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
@@ -24,21 +22,10 @@ import {
 } from "@tanstack/react-query";
 // import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import dynamic from "next/dynamic";
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { ReactQueryWrapper } from "./react-query-wrapper";
 // import superjson from "superjson";
-
-// -----------------------------------------------------------------------------
-// Dynamic
-// -----------------------------------------------------------------------------
-
-const ReactQueryDevtoolsProduction = dynamic(() =>
-  // @ts-ignore
-  import("@tanstack/react-query-devtools/production").then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
-);
 
 // -----------------------------------------------------------------------------
 // Props
@@ -60,23 +47,8 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   const [queryClient, setQueryClient] = useState<QueryClient | null>(null);
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isQueryDevToolsOpen, setIsQueryDevToolsOpen } = useSettings();
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Only set once on initial render
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
-      setIsQueryDevToolsOpen(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const client = new QueryClient({
@@ -118,17 +90,15 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   // Opt-in for non-blocking way to prefetch data, rather than a complex waterfall strategy w/ streaming
   // Ideally, `useQuery` should be coupled with `useSuspenseQuery` to allow for prefetch `use`, but okay for now
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      {/* <ReactQueryStreamedHydration transformer={superjson}>
+    <>
+      <QueryClientProvider client={queryClient}>
         {children}
-      </ReactQueryStreamedHydration> */}
-      {isQueryDevToolsOpen && (
-        <div className="hidden lg:block">
-          <ReactQueryDevtoolsProduction />
-        </div>
-      )}
-    </QueryClientProvider>
+        {/* <ReactQueryStreamedHydration transformer={superjson}>
+        {children}
+        </ReactQueryStreamedHydration> */}
+      </QueryClientProvider>
+      <ReactQueryWrapper />
+    </>
   );
 };
 

@@ -12,6 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { ReactQueryProvider } from "./react-query";
 export { ThemeProvider } from "./theme";
-export { Web3Provider } from "./web3";

@@ -61,3 +61,10 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const experimental_ppr = true;
+export const revalidate = 300;

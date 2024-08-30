@@ -12,31 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button } from "@lightdotso/ui/components/button";
+"use client";
+
+// From: https://github.com/vercel/next.js/issues/49454
+// Wrap `next/dynamic` in `use client` to avoid Next.js server-side rendering
+
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Props
+// Dynamic
 // -----------------------------------------------------------------------------
 
-type SectionPillProps = {
-  title: string;
-  description?: string;
-};
+const FormDevTools = dynamic(
+  () =>
+    import("@lightdotso/forms/form-dev-tools").then((d) => ({
+      default: d.FormDevTools,
+    })),
+  {
+    ssr: false,
+  },
+);
+
+const TailwindIndicator = dynamic(
+  () =>
+    import("@lightdotso/ui/dev").then((d) => ({
+      default: d.TailwindIndicator,
+    })),
+  {
+    ssr: false,
+  },
+);
+
+const VercelToolbar = dynamic(
+  () =>
+    import("@lightdotso/ui/dev").then((d) => ({
+      default: d.VercelToolbar,
+    })),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
+export const RootWrapper: FC = () => {
   return (
-    <div className="flex items-center gap-1.5 text-thin text-xl">
-      {title}
-      {description && <Button size="xs">{description}</Button>}
-    </div>
+    <>
+      <FormDevTools />
+      <TailwindIndicator />
+      <VercelToolbar />
+    </>
   );
 };

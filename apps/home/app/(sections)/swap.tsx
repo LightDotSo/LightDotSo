@@ -14,8 +14,8 @@
 
 import { SectionPill } from "@/components/section-pill";
 import { Spark } from "@/components/spark";
-import { SwapDialog } from "@lightdotso/dialogs";
-import { Button } from "@lightdotso/ui";
+import { SwapDialog } from "@lightdotso/dialogs/swap";
+import { Button } from "@lightdotso/ui/components/button";
 import { ArrowRight } from "lucide-react";
 import type { FC } from "react";
 

@@ -16,7 +16,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*/index.ts",
-    "./components/*": "./src/components/*/index.ts"
+    "./components/*": "./src/components/*/index.ts",
+    "./providers/*": "./src/providers/*/index.ts"
   },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],

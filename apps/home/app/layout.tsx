@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import { Footer, Root } from "@lightdotso/templates";
-import { ThemeProvider, Web3Provider } from "@lightdotso/ui";
+import { Footer } from "@lightdotso/templates/footer";
+import { Root } from "@lightdotso/templates/root";
+import { Web3Provider } from "@lightdotso/ui/providers/web3";
 import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
 import { headers } from "next/headers";
 import type { ReactNode } from "react";
@@ -41,9 +42,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <Root>
       <Web3Provider initialState={initialState}>
         {children}
-        <ThemeProvider attribute="class" forcedTheme="dark">
-          <Footer />
-        </ThemeProvider>
+        <Footer />
       </Web3Provider>
     </Root>
   );
