@@ -46,21 +46,25 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Avatar,
-  Button,
-  ButtonIcon,
+} from "@lightdotso/ui/components/accordion";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { isEmpty } from "lodash";

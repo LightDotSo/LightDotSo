@@ -20,11 +20,13 @@ import {
   Command,
   CommandInput,
   CommandList,
+} from "@lightdotso/ui/components/command";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 
 // -----------------------------------------------------------------------------
 // Component

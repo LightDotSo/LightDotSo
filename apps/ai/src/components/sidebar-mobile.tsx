@@ -30,8 +30,12 @@
 
 import { IconSidebar } from "@/components/icons";
 import { Sidebar } from "@/components/sidebar";
-import { Sheet, SheetContent, SheetTrigger } from "@lightdotso/ui";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@lightdotso/ui/components/sheet";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

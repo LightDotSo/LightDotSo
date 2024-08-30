@@ -16,7 +16,7 @@
 
 import { useIsMounted } from "@lightdotso/hooks";
 import { useAuth, useComboDialogs } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { Megaphone } from "lucide-react";
 import type { FC } from "react";
 import { ComboDialog } from "../combo-dialog";

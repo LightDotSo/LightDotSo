@@ -17,7 +17,7 @@
 import { getNonce } from "@lightdotso/client";
 import { useMutationAuthVerify } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useAccount, useSignMessage } from "@lightdotso/wagmi/wagmi";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";

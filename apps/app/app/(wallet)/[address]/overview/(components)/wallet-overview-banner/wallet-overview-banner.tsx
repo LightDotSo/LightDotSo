@@ -15,13 +15,13 @@
 "use client";
 
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { Button } from "@lightdotso/ui/components/button";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
-  Button,
-  Skeleton,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { FC } from "react";

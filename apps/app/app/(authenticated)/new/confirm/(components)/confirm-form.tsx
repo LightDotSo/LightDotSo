@@ -38,14 +38,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Checkbox,
+} from "@lightdotso/ui/components/card";
+import { Checkbox } from "@lightdotso/ui/components/checkbox";
+import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/form";
+import { toast } from "@lightdotso/ui/components/toast";
 import { publicClient } from "@lightdotso/wagmi";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";

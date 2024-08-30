@@ -38,21 +38,23 @@ import {
   ModalSwiper,
   useIsInsideModal,
 } from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui/components/button";
+import { Checkbox } from "@lightdotso/ui/components/checkbox";
 import {
-  Button,
-  Checkbox,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
+import { toast } from "@lightdotso/ui/components/toast";
 import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { usePathname } from "next/navigation";
 import { type FC, useEffect, useMemo, useState } from "react";

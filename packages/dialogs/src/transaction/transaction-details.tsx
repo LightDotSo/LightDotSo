@@ -20,7 +20,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/accordion";
 import {
   camelCaseToCapitalizedWords,
   getChainWithChainId,

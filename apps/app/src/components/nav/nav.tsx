@@ -23,7 +23,7 @@ import { NavTabs } from "@/components/nav/nav-tabs";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
 import { ConnectButton } from "@lightdotso/templates";
-import { baseWidthWrapper } from "@lightdotso/ui";
+import { baseWidthWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import { useMemo } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";

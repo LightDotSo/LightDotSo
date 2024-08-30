@@ -17,7 +17,7 @@ import { NftImage } from "@lightdotso/elements/nft-image";
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import {
   cn,
   getChainBySimplehashChainName,

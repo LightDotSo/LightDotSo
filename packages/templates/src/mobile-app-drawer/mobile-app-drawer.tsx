@@ -14,10 +14,10 @@
 
 import { useBaseSlug } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
+import { Badge } from "@lightdotso/ui/components/badge";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  Badge,
-  Button,
-  ButtonIcon,
   Drawer,
   DrawerBody,
   DrawerClose,
@@ -25,7 +25,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/drawer";
 import { AlignRight, ArrowUpRight, XIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";

@@ -19,7 +19,7 @@ import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets, useQueryWalletsCount } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { walletColumns } from "@lightdotso/tables";
-import { TableSectionWrapper } from "@lightdotso/ui";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";
 

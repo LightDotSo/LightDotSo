@@ -22,7 +22,7 @@ import type {
 import { queryKeys } from "@lightdotso/query-keys";
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import {
   // useQueryClient,
   useMutation,

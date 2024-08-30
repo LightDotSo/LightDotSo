@@ -39,20 +39,26 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+} from "@lightdotso/ui/components/card";
+import {
   Form,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   RadioGroup,
   RadioGroupItem,
+} from "@lightdotso/ui/components/radio-group";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";

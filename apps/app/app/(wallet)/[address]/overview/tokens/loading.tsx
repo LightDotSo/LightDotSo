@@ -15,7 +15,8 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { DataTablePaginationSkeleton } from "@lightdotso/templates";
-import { Skeleton, TableSectionWrapper } from "@lightdotso/ui";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading

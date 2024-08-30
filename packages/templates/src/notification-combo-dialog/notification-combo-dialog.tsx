@@ -20,13 +20,13 @@ import {
   useQueryNotificationsCount,
 } from "@lightdotso/query";
 import { useAuth, useComboDialogs } from "@lightdotso/stores";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  ButtonIcon,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 import { BellIcon, Settings2 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";

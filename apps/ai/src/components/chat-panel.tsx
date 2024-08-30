@@ -33,7 +33,7 @@ import { ChatShareDialog } from "@/components/chat-share-dialog";
 import { FooterText } from "@/components/footer";
 import { IconShare } from "@/components/icons";
 import { PromptForm } from "@/components/prompt-form";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { useAIState, useActions, useUIState } from "ai/rsc";
 import { nanoid } from "nanoid";
 import { useState } from "react";

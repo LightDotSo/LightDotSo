@@ -19,7 +19,12 @@ import {
   useQueryUserOperationsCount,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@lightdotso/ui/components/table";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------

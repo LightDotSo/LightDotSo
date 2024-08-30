@@ -17,7 +17,7 @@
 
 import { useBaseSlug, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
-import { Badge } from "@lightdotso/ui";
+import { Badge } from "@lightdotso/ui/components/badge";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";

@@ -22,7 +22,7 @@ import {
   DataTableFacetedFilter,
   DataTableViewOptions,
 } from "@lightdotso/templates";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";

@@ -18,7 +18,7 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 import { TITLES } from "@/const";
 import { useQueryWalletNotificationSettings } from "@lightdotso/query";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import type { FC } from "react";
 import type { Address } from "viem";
 

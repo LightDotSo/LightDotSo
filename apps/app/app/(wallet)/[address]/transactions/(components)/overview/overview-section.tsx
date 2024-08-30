@@ -18,7 +18,8 @@ import {
   useQueryUserOperations,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { Button, Skeleton } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";

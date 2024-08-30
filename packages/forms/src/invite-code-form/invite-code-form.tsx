@@ -26,8 +26,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  OTP,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/form";
+import { OTP } from "@lightdotso/ui/components/otp";
 import {
   type FC,
   type InputHTMLAttributes,

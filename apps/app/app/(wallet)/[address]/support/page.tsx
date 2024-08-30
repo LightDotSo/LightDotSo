@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Support } from "@lightdotso/templates";
-import { BaseSectionWrapper } from "@lightdotso/ui";
+import { BaseSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Page

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { baseWidthWrapper } from "@lightdotso/ui";
+import { baseWidthWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { FooterCopy } from "./footer-copy";

@@ -19,8 +19,8 @@ import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ConnectButton } from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -35,8 +35,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
+import { toast } from "@lightdotso/ui/components/toast";
 import { shortenAddress } from "@lightdotso/utils";
 import { useModal } from "@lightdotso/wagmi/connectkit";
 import {

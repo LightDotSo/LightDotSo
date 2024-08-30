@@ -19,7 +19,7 @@ import type {
   WalletSettingsParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------

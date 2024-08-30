@@ -27,15 +27,14 @@ import {
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal, TokenGroup } from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import { Command, CommandGroup } from "@lightdotso/ui/components/command";
 import {
-  Button,
-  ButtonIcon,
-  Command,
-  CommandGroup,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { SparklesIcon } from "lucide-react";

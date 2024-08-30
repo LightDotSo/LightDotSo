@@ -15,8 +15,8 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  ButtonIcon,
   Dialog,
   DialogBody,
   DialogContent,
@@ -24,15 +24,19 @@ import {
   DialogHeader,
   DialogOverlay,
   DialogPortal,
+} from "@lightdotso/ui/components/dialog";
+import {
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerFooter,
+} from "@lightdotso/ui/components/drawer";
+import {
   Sheet,
   SheetContent,
   SheetHeader,
-  Skeleton,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/sheet";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { cn } from "@lightdotso/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import { X } from "lucide-react";

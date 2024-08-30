@@ -21,7 +21,9 @@ import {
   DataTableFacetedFilter,
   DataTableViewOptions,
 } from "@lightdotso/templates";
-import { Button, Input, ToolbarSectionWrapper } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import { Input } from "@lightdotso/ui/components/input";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";

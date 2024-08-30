@@ -27,7 +27,7 @@
 // limitations under the License.
 
 import type { UIState } from "@/ai/types";
-import { Separator } from "@lightdotso/ui";
+import { Separator } from "@lightdotso/ui/components/separator";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 

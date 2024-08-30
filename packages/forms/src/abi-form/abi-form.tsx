@@ -25,15 +25,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Textarea } from "@lightdotso/ui/components/textarea";
 import type { Abi, AbiFunction, AbiParameter } from "abitype";
 import {
   SolidityAddress,

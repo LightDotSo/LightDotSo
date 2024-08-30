@@ -27,8 +27,8 @@ import {
   CommandGroup,
   CommandItem,
   CommandList,
-  Form,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import { Form } from "@lightdotso/ui/components/form";
 import { cn } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
 import { useEnsAddress } from "@lightdotso/wagmi/wagmi";

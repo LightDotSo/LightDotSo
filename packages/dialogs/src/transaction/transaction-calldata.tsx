@@ -18,8 +18,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Textarea,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/accordion";
+import { Textarea } from "@lightdotso/ui/components/textarea";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

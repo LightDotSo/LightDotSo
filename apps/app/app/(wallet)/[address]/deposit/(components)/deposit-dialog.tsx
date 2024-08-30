@@ -39,20 +39,22 @@ import {
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Form,
   FormControl,
   FormField,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
+import { toast } from "@lightdotso/ui/components/toast";
 import { getChainWithChainId } from "@lightdotso/utils";
 import { useModal } from "@lightdotso/wagmi/connectkit";
 import {

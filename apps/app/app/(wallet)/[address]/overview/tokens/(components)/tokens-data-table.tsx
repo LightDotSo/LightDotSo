@@ -22,7 +22,7 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { tokenColumns } from "@lightdotso/tables";
-import { TableSectionWrapper } from "@lightdotso/ui";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";
 

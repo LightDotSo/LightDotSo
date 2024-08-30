@@ -18,20 +18,22 @@ import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { ExternalLink } from "@lightdotso/elements/external-link";
 import { UserOperationTimeline } from "@lightdotso/elements/user-operation-timeline";
 import { useCopy, useIsDemoPathname } from "@lightdotso/hooks";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+} from "@lightdotso/ui/components/card";
+import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-  Progress,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/collapsible";
+import { Progress } from "@lightdotso/ui/components/progress";
+import { toast } from "@lightdotso/ui/components/toast";
 import {
   cn,
   getChainWithChainId,

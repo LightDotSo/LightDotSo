@@ -13,14 +13,14 @@
 // limitations under the License.
 
 import { ConnectButton } from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/card";
 import { Gamepad, Wallet } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";

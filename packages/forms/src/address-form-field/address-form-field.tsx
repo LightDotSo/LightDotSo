@@ -17,7 +17,10 @@
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { EnsAddress } from "@lightdotso/elements/ens-address";
 import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
-import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { FormField, FormMessage } from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
 import { cn } from "@lightdotso/utils";
 import { type FC, type InputHTMLAttributes, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";

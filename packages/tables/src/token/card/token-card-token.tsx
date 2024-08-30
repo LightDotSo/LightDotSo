@@ -16,7 +16,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements/token-image";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { ChevronRightIcon } from "lucide-react";
 import type { FC } from "react";

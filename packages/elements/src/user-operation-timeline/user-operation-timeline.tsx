@@ -13,16 +13,16 @@
 // limitations under the License.
 
 import type { UserOperationData } from "@lightdotso/data";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { TimeAgo } from "@lightdotso/ui/components/time-ago";
 import {
-  Avatar,
-  TimeAgo,
   Timeline,
   TimelineBody,
   TimelineContent,
   TimelineItem,
   TimelinePoint,
   TimelineTitle,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/timeline";
 import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import type { Address } from "viem";

@@ -14,7 +14,7 @@
 
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import { MAINNET_CHAINS } from "@lightdotso/const";
-import { SettingsSectionWrapper } from "@lightdotso/ui";
+import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading

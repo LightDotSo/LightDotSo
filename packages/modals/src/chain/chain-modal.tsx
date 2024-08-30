@@ -25,11 +25,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+} from "@lightdotso/ui/components/command";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 import { useMemo } from "react";
 import type { Address } from "viem";
 

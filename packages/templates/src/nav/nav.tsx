@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Tab } from "@lightdotso/types";
-import { BaseLayerWrapper } from "@lightdotso/ui";
+import { BaseLayerWrapper } from "@lightdotso/ui/wrappers";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavLocation } from "./nav-location";
 import { NavLogo } from "./nav-logo";

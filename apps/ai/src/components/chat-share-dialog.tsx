@@ -29,7 +29,7 @@
 import type { Chat, ServerActionResult } from "@/ai/types";
 import { IconSpinner } from "@/components/icons";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { toast } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -37,8 +37,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@lightdotso/ui";
-import { Button } from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dialog";
+import { toast } from "@lightdotso/ui/components/toast";
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { useCallback, useTransition } from "react";
 

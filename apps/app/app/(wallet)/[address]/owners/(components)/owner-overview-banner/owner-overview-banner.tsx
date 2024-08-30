@@ -17,12 +17,12 @@
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { PencilIcon } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";

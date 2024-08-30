@@ -17,20 +17,22 @@
 import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import { useCopy } from "@lightdotso/hooks";
 import { useQueryWallet } from "@lightdotso/query";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  Avatar,
-  ButtonIcon,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
+} from "@lightdotso/ui/components/dropdown-menu";
+import { toast } from "@lightdotso/ui/components/toast";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi/wagmi";
 import {

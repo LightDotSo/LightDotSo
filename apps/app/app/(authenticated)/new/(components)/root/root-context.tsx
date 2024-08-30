@@ -22,11 +22,13 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Badge,
+} from "@lightdotso/ui/components/accordion";
+import { Badge } from "@lightdotso/ui/components/badge";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { shortenAddress } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import { PAGINATION_SIZES } from "@lightdotso/const";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Skeleton,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

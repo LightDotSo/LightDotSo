@@ -17,7 +17,11 @@
 import { useSignInWithSiwe } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
-import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import {
+  DialogDescription,
+  DialogTitle,
+} from "@lightdotso/ui/components/dialog";
 import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------

@@ -15,12 +15,12 @@
 "use client";
 
 import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
+import { Avatar } from "@lightdotso/ui/components/avatar";
 import {
-  Avatar,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { cn, shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi/wagmi";
 import type { FC } from "react";

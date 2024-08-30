@@ -14,14 +14,14 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";

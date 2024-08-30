@@ -34,15 +34,17 @@ import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormConfigurationSchema, newFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  Avatar,
-  Button,
-  ButtonIcon,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+} from "@lightdotso/ui/components/card";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -50,15 +52,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Separator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Separator } from "@lightdotso/ui/components/separator";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
 import { isEmpty } from "lodash";

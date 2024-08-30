@@ -14,7 +14,7 @@
 
 "use client";
 
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 

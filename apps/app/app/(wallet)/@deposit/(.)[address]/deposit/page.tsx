@@ -15,7 +15,10 @@
 import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/deposit/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
 import { ModalInterception } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import {
+  DialogDescription,
+  DialogTitle,
+} from "@lightdotso/ui/components/dialog";
 
 // -----------------------------------------------------------------------------
 // Props

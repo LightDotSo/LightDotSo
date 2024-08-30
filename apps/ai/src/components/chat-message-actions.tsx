@@ -30,7 +30,7 @@
 
 import { IconCheck, IconCopy } from "@/components/icons";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { cn } from "@lightdotso/utils";
 import type { Message } from "ai";
 import type { ComponentProps } from "react";

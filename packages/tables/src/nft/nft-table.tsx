@@ -15,13 +15,13 @@
 import type { NftData } from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableRow,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/table";
 import type {
   ColumnDef,
   Table as ReactTable,

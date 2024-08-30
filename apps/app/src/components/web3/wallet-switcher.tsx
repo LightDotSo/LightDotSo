@@ -24,10 +24,9 @@ import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ComboDialog } from "@lightdotso/templates";
-import type { PopoverTrigger } from "@lightdotso/ui";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Avatar,
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -35,7 +34,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import type { PopoverTrigger } from "@lightdotso/ui/components/popover";
 import { cn } from "@lightdotso/utils";
 import {
   CaretSortIcon,

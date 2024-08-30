@@ -30,7 +30,7 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { calculateInitCode } from "@lightdotso/sequence";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import {
   findContractAddressByAddress,
   getEtherscanUrl,

@@ -33,7 +33,7 @@
 
 import { IconCheck, IconCopy, IconDownload } from "@/components/icons";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { type FC, memo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
