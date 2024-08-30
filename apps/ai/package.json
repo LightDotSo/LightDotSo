@@ -29,7 +29,6 @@
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/roots": "workspace:*",
     "@lightdotso/svg": "workspace:*",
-    "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@next/bundle-analyzer": "15.0.0-canary.120",

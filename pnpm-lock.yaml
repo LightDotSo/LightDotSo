@@ -300,9 +300,6 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
-      '@lightdotso/templates':
-        specifier: workspace:*
-        version: link:../../packages/templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
