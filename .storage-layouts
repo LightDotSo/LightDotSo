@@ -12,6 +12,23 @@
 | _owner      | address                     | 0    | 0      | 20    | contracts/src/LightPaymaster.sol:LightPaymaster |
 | senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
+ ➡ LightTimelockController
+| Name          | Type                                                         | Slot | Offset | Bytes | Contract                                                          |
+|---------------|--------------------------------------------------------------|------|--------|-------|-------------------------------------------------------------------|
+| _initialized  | uint8                                                        | 0    | 0      | 1     | contracts/src/LightTimelockController.sol:LightTimelockController |
+| _initializing | bool                                                         | 0    | 1      | 1     | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[50]                                                  | 1    | 0      | 1600  | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[50]                                                  | 51   | 0      | 1600  | contracts/src/LightTimelockController.sol:LightTimelockController |
+| _roles        | mapping(bytes32 => struct AccessControlUpgradeable.RoleData) | 101  | 0      | 32    | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[49]                                                  | 102  | 0      | 1568  | contracts/src/LightTimelockController.sol:LightTimelockController |
+| _timestamps   | mapping(bytes32 => uint256)                                  | 151  | 0      | 32    | contracts/src/LightTimelockController.sol:LightTimelockController |
+| _minDelay     | uint256                                                      | 152  | 0      | 32    | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[48]                                                  | 153  | 0      | 1536  | contracts/src/LightTimelockController.sol:LightTimelockController |
+=======================
+ ➡ LightTimelockControllerFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightWallet
 | Name          | Type  | Slot | Offset | Bytes | Contract                                  |
 |---------------|-------|------|--------|-------|-------------------------------------------|
