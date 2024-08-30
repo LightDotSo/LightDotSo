@@ -51,6 +51,10 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
         _disableInitializers();
     }
 
+    /// @notice Initialize the timelock controller
+    /// @param lightWallet The address of the light wallet
+    /// @param lightProtocolController The address of the light protocol controller
+    /// @dev This function is called by the factory contract
     function initialize(address lightWallet, address lightProtocolController) public initializer {
         // Initialize the timelock controller
         __TimelockController_init(
@@ -68,7 +72,9 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     // Utils
     // -------------------------------------------------------------------------
 
-    // Helper function to create a single-element address array
+    /// @notice Helper function to create a single-element address array
+    /// @param element The address to create the array
+    /// @return The single-element address array
     function _singletonArray(address element) private pure returns (address[] memory) {
         address[] memory array = new address[](1);
         array[0] = element;
