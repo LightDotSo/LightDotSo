@@ -14,7 +14,7 @@
 
 import { ModalInterceptionFooter } from "@/app/(wallet)/@send/(.)[address]/send/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/send/page";
-import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterception } from "@lightdotso/templates/modal-interception";
 
 // -----------------------------------------------------------------------------
 // Props

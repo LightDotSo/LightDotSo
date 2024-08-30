@@ -23,7 +23,7 @@ import { useIsMounted } from "@lightdotso/hooks";
 import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { ComboDialog } from "@lightdotso/templates";
+import { ComboDialog } from "@lightdotso/templates/combo-dialog";
 import { Avatar } from "@lightdotso/ui/components/avatar";
 import { Button } from "@lightdotso/ui/components/button";
 import {

@@ -32,7 +32,7 @@ import {
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import {
   Card,
   CardContent,

@@ -14,7 +14,7 @@
 
 import { ModalInterceptionFooter } from "@/app/(wallet)/@create/(.)[address]/create/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/create/page";
-import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterception } from "@lightdotso/templates/modal-interception";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------

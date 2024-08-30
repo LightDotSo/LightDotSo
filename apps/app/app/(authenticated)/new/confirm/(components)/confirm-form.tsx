@@ -31,7 +31,7 @@ import {
   newFormStoreSchema,
 } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import {
   Card,
   CardContent,

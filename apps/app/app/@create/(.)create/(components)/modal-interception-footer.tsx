@@ -16,7 +16,7 @@
 
 import { useUserOperationsCreate } from "@lightdotso/hooks";
 import { useFormRef, useModals, useUserOperations } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
 import type { Address } from "viem";

@@ -20,7 +20,8 @@ import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { address, addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { FooterButton, Modal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandEmpty,

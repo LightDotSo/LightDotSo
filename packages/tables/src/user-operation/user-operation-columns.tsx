@@ -15,7 +15,7 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { DataTableColumnHeader } from "@lightdotso/templates";
+import { DataTableColumnHeader } from "@lightdotso/templates/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { UserOperationTableRowActions } from "./actions";
 import {

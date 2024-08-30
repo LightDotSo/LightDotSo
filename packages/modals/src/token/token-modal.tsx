@@ -26,7 +26,8 @@ import {
 } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Modal, TokenGroup } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
+import { TokenGroup } from "@lightdotso/templates/token-group";
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { Command, CommandGroup } from "@lightdotso/ui/components/command";

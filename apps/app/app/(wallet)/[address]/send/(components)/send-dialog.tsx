@@ -40,7 +40,8 @@ import type {
 } from "@lightdotso/schemas";
 import { useFormRef, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { useIsInsideModal } from "@lightdotso/templates/modal";
 import {
   Accordion,
   AccordionContent,

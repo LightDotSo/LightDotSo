@@ -18,7 +18,7 @@ import deleteCookiesAction from "@/actions/deleteCookiesAction";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { ConnectButton } from "@lightdotso/templates";
+import { ConnectButton } from "@lightdotso/templates/connect-button";
 import { Button } from "@lightdotso/ui/components/button";
 import {
   DropdownMenu,

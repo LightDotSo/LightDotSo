@@ -15,7 +15,7 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { nftListData } from "@lightdotso/demo";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates";
+import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 

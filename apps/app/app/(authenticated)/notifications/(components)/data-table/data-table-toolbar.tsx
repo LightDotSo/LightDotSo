@@ -16,7 +16,7 @@
 
 import type { NotificationData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { DataTableViewOptions } from "@lightdotso/templates";
+import { DataTableViewOptions } from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { Input } from "@lightdotso/ui/components/input";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";

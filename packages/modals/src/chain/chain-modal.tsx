@@ -19,7 +19,7 @@ import { useChainQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Modal } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandInput,

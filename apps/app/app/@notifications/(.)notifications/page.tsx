@@ -14,7 +14,7 @@
 
 import OriginalPage from "@/app/(authenticated)/notifications/page";
 import { ModalInterceptionFooter } from "@/app/@notifications/(.)notifications/(components)/modal-interception-footer";
-import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterception } from "@lightdotso/templates/modal-interception";
 
 // -----------------------------------------------------------------------------
 // Props

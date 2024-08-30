@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ConnectButton } from "@lightdotso/templates";
+import { ConnectButton } from "@lightdotso/templates/connect-button";
 import { Button } from "@lightdotso/ui/components/button";
 import {
   Card,

@@ -21,7 +21,7 @@ import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
   DataTableViewOptions,
-} from "@lightdotso/templates";
+} from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { Cross2Icon } from "@radix-ui/react-icons";

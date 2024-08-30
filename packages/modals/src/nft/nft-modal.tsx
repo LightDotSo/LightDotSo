@@ -19,7 +19,7 @@ import { NftImage } from "@lightdotso/elements/nft-image";
 import { useMediaQuery } from "@lightdotso/hooks";
 import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------

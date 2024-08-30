@@ -32,12 +32,10 @@ import {
   useUserOperations,
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import {
-  FooterButton,
-  Loading,
-  ModalSwiper,
-  useIsInsideModal,
-} from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { Loading } from "@lightdotso/templates/loading";
+import { useIsInsideModal } from "@lightdotso/templates/modal";
+import { ModalSwiper } from "@lightdotso/templates/modal-swiper";
 import { Button } from "@lightdotso/ui/components/button";
 import { Checkbox } from "@lightdotso/ui/components/checkbox";
 import {

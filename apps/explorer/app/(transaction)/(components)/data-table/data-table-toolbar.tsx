@@ -24,7 +24,7 @@ import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
   DataTableViewOptions,
-} from "@lightdotso/templates";
+} from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { Label } from "@lightdotso/ui/components/label";
 import { Switch } from "@lightdotso/ui/components/switch";

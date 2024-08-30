@@ -20,7 +20,7 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useComboDialogs } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { ComboDialog } from "@lightdotso/templates";
+import { ComboDialog } from "@lightdotso/templates/combo-dialog";
 import { Button } from "@lightdotso/ui/components/button";
 import {
   Command,

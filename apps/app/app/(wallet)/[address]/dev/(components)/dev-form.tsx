@@ -24,7 +24,8 @@ import type { devFormSchema } from "@lightdotso/schemas";
 import { abi } from "@lightdotso/schemas";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { useIsInsideModal } from "@lightdotso/templates/modal";
 import { Button } from "@lightdotso/ui/components/button";
 import {
   Card,

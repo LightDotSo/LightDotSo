@@ -33,7 +33,7 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormConfigurationSchema, newFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import { Avatar } from "@lightdotso/ui/components/avatar";
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonIcon } from "@lightdotso/ui/components/button-icon";

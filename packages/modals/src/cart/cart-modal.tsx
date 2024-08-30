@@ -15,7 +15,7 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandInput,

@@ -26,6 +26,7 @@
     "@keystatic/next": "^5.0.1",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/types": "workspace:*",

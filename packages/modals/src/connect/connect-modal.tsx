@@ -15,7 +15,8 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { ConnectButton, Modal } from "@lightdotso/templates";
+import { ConnectButton } from "@lightdotso/templates/connect-button";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   DialogDescription,
   DialogTitle,

@@ -16,7 +16,8 @@
 
 import { OwnerForm } from "@lightdotso/forms";
 import { useFormRef, useModals } from "@lightdotso/stores";
-import { FooterButton, Modal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { Modal } from "@lightdotso/templates/modal";
 
 // -----------------------------------------------------------------------------
 // Component
