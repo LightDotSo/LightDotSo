@@ -15,7 +15,6 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { nftListData } from "@lightdotso/demo";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
@@ -23,8 +22,7 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <>
       <PortfolioSection title="Total Token Value">
@@ -33,7 +31,13 @@ export default function Loading() {
       <TableSectionWrapper>
         <DataTable isLoading data={nftListData.nfts} columns={[]} />
       </TableSectionWrapper>
-      <DataTablePaginationSkeleton />
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

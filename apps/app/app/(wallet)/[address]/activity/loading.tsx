@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -21,9 +20,5 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  return (
-    <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} pageCount={1} />
-    </TableSectionWrapper>
-  );
+  return <DataTable isLoading data={[]} columns={[]} pageCount={1} />;
 }

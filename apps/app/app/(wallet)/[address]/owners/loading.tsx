@@ -19,11 +19,17 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <TableSectionWrapper>
       <DataTable isLoading data={[]} columns={[]} />
     </TableSectionWrapper>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

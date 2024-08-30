@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ActivityDataTable } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table";
-import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
+import { Loader } from "@/app/(wallet)/[address]/activity/loader";
 import { handler } from "@/handlers/[address]/activity/handler";
 import { preloader } from "@/preloaders/[address]/activity/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -26,7 +25,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-interface PageProps {
+export interface PageProps {
   params: { address: Address };
   searchParams: {
     pagination?: string;
@@ -87,8 +86,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ActivityDataTable address={params.address as Address} />
-      <ActivityDataTablePagination />
+      <Loader params={params} searchParams={searchParams} />
     </HydrationBoundary>
   );
 }

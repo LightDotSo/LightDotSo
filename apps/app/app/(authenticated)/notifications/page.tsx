@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { NotificationsDataTable } from "@/app/(authenticated)/notifications/(components)/notifications-data-table";
 import { NotificationsDataTablePagination } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-pagination";
 import { NotificationsDataTableToolbar } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-toolbar";
+import { Loader } from "@/app/(authenticated)/notifications/loader";
 import { handler } from "@/handlers/notifications/handler";
 import { preloader } from "@/preloaders/notifications/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -87,7 +87,7 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <NotificationsDataTableToolbar />
-      <NotificationsDataTable />
+      <Loader />
       <NotificationsDataTablePagination />
     </HydrationBoundary>
   );

@@ -13,21 +13,18 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
-  return (
-    <>
-      <TableSectionWrapper>
-        <DataTable isLoading pageCount={0} data={[]} columns={[]} />
-      </TableSectionWrapper>
-      <DataTablePaginationSkeleton />
-    </>
-  );
+export function Loading() {
+  return <DataTable isLoading pageCount={0} data={[]} columns={[]} />;
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

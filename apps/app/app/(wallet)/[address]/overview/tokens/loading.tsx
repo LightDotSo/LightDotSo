@@ -14,7 +14,6 @@
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
@@ -22,8 +21,7 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <>
       <PortfolioSection title="Total Token Value">
@@ -32,7 +30,13 @@ export default function Loading() {
       <TableSectionWrapper>
         <DataTable isLoading pageCount={0} data={[]} columns={[]} />
       </TableSectionWrapper>
-      <DataTablePaginationSkeleton />
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

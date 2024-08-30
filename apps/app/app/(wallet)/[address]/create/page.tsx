@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
+import { Loader } from "@/app/(wallet)/[address]/create/loader";
 import { handler } from "@/handlers/[address]/create/handler";
 import { preloader } from "@/preloaders/[address]/create/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string };
   searchParams: {
     userOperations?: string;
@@ -75,7 +75,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CreateDialog address={params.address as Address} />
+      <Loader params={params} searchParams={searchParams} />
     </HydrationBoundary>
   );
 }

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Loader } from "@/app/(action)/send/loader";
 import { TITLES } from "@/const";
-import { SwapDialog } from "@lightdotso/dialogs";
 import type { Metadata } from "next";
 
 // -----------------------------------------------------------------------------
@@ -37,5 +37,5 @@ export default async function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <SwapDialog />;
+  return <Loader />;
 }

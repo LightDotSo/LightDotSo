@@ -18,7 +18,13 @@ import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/ove
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return <OverviewList isLoading address={null} />;
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

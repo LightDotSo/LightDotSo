@@ -12,4 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { InvokeButton } from "./invoke-button";
+export { InvokeButton, InvokeButtonSkeleton } from "./invoke-button";

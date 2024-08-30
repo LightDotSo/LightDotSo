@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DevForm } from "@/app/(wallet)/[address]/dev/(components)/dev-form";
+import { Loader } from "@/app/(wallet)/[address]/dev/loader";
 import { handler } from "@/handlers/[address]/dev/handler";
 import { preloader } from "@/preloaders/[address]/dev/preloader";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string };
 };
 
@@ -40,12 +39,11 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-  const { walletSettings } = await handler(params);
+  await handler(params);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <DevForm address={params.address as Address} />;
+  return <Loader params={params} />;
 }

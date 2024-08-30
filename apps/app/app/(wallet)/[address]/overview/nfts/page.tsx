@@ -28,7 +28,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-interface PageProps {
+export interface PageProps {
   params: { address: Address };
   searchParams: {
     cursor?: string;
