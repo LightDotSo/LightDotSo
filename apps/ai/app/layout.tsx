@@ -56,12 +56,12 @@ import type { ReactNode } from "react";
 // Viewport
 // -----------------------------------------------------------------------------
 
-// export const viewport = {
-//   themeColor: [
-//     { media: "(prefers-color-scheme: light)", color: "white" },
-//     { media: "(prefers-color-scheme: dark)", color: "black" },
-//   ],
-// };
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
 // -----------------------------------------------------------------------------
 // Props

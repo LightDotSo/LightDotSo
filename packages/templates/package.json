@@ -33,7 +33,6 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
-    "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/stores": "workspace:*",
