@@ -12,16 +12,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SettingsDevCard } from "@/app/(wallet)/[address]/settings/(components)/settings-dev-card";
-import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
-import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
+"use client";
+
 import { handler } from "@/handlers/[address]/settings/handler";
 import { preloader } from "@/preloaders/[address]/settings/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const SettingsNameCard = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/settings/(components)/settings-name-card"
+    ).then((mod) => mod.SettingsNameCard),
+  {
+    ssr: false,
+  },
+);
+
+const SettingsDevCard = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/settings/(components)/settings-dev-card"
+    ).then((mod) => mod.SettingsDevCard),
+  {
+    ssr: false,
+  },
+);
+
+const SettingsTestnetCard = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card"
+    ).then((mod) => mod.SettingsTestnetCard),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Props

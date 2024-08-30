@@ -84,6 +84,13 @@ const TokenModal = dynamic(
 // Dynamic States
 // -----------------------------------------------------------------------------
 
+const AuthState = dynamic(
+  () => import("@lightdotso/states/auth").then((mod) => mod.AuthState),
+  {
+    ssr: false,
+  },
+);
+
 const FormState = dynamic(
   () => import("@lightdotso/states/form").then((mod) => mod.FormState),
   {
@@ -149,6 +156,7 @@ export const LightRootWrapper: FC = () => {
       <NftModal />
       <TokenModal />
       {/* States */}
+      <AuthState />
       <FormState />
       <QueueState />
       <UserOperationState />
