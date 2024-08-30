@@ -57,6 +57,10 @@ export function Loader({
   salt,
   is_enabled_testnet,
 }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Internal Variables
+  // ---------------------------------------------------------------------------
+
   const walletChains = is_enabled_testnet ? CHAINS : MAINNET_CHAINS;
 
   // ---------------------------------------------------------------------------

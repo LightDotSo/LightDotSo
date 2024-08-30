@@ -15,7 +15,8 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/deposit/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/deposit/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/deposit/page";
+import type { Transfer } from "@lightdotso/schemas";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +34,14 @@ const DepositDialog = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  transfer: Transfer | null;
+} & OriginalPageProps;
 
 // -----------------------------------------------------------------------------
 // Loader

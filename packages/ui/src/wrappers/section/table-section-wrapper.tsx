@@ -12,34 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { cn } from "@lightdotso/utils";
-import type { ReactNode } from "react";
+import {
+  BaseSectionWrapper,
+  type BaseSectionWrapperProps,
+} from "./base-section-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface TableSectionWrapperProps {
-  children: ReactNode;
-  className?: string;
-}
+type TableSectionWrapperProps = BaseSectionWrapperProps;
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export function TableSectionWrapper({
-  children,
-  className,
-}: TableSectionWrapperProps) {
-  return (
-    <div
-      className={cn(
-        "rounded-md border border-border bg-background p-4",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-}
+export const TableSectionWrapper = BaseSectionWrapper;

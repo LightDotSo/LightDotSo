@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DepositDialog } from "@/app/(wallet)/[address]/deposit/(components)/deposit-dialog";
+import { Loader } from "@/app/(wallet)/[address]/deposit/loader";
 import { handler } from "@/handlers/[address]/deposit/handler";
 import { preloader } from "@/preloaders/[address]/deposit/preloader";
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
@@ -86,10 +86,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DepositDialog
-        address={params.address as Address}
-        initialTransfer={transfer ?? undefined}
-      />
+      <Loader params={params} searchParams={searchParams} transfer={transfer} />
     </HydrationBoundary>
   );
 }
