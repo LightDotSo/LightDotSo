@@ -17,6 +17,7 @@
 import { useQueryNftPortfolio } from "@lightdotso/query";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui/components/number";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -67,3 +68,9 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
     )
   );
 };
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const NftPortfolioSkeleton = () => <Skeleton className="h-10 w-24" />;

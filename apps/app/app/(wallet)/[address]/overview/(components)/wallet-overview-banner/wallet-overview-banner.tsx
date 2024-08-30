@@ -32,11 +32,11 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 const WalletOverviewBannerAddressSkeleton = () => (
-  <Skeleton className="h-8 w-full" />
+  <Skeleton className="h-12 w-64" />
 );
 
 const WalletOverviewBannerSparklineSkeleton = () => (
-  <Skeleton className="h-8 w-12" />
+  <Skeleton className="h-24 w-64" />
 );
 
 // -----------------------------------------------------------------------------

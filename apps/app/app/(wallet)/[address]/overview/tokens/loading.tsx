@@ -14,8 +14,8 @@
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
+import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
 import { tokenColumns } from "@lightdotso/tables/token";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ export function Loading() {
   return (
     <>
       <PortfolioSection title="Total Token Value">
-        <Skeleton className="h-10 w-8" />
+        <TokenPortfolioSkeleton />
       </PortfolioSection>
       <TableSectionWrapper>
         <DataTable isLoading pageCount={0} data={[]} columns={tokenColumns} />

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
+import { NftPortfolioSkeleton } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { nftColumns } from "@lightdotso/tables/nft";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
@@ -25,8 +25,8 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 export function Loading() {
   return (
     <>
-      <PortfolioSection title="Total Token Value">
-        <Skeleton className="h-10 w-8" />
+      <PortfolioSection title="Total NFTs Value">
+        <NftPortfolioSkeleton />
       </PortfolioSection>
       <TableSectionWrapper>
         <DataTable isLoading data={[]} columns={nftColumns} />
