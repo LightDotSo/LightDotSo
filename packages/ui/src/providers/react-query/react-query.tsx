@@ -13,7 +13,8 @@
 // limitations under the License.
 
 "use client";
-import { hashFn } from "@lightdotso/wagmi";
+
+import { hashFn } from "@lightdotso/wagmi/wagmi";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
   QueryClient,

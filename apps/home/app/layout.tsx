@@ -16,8 +16,6 @@ import "@lightdotso/styles/global.css";
 import { Footer } from "@lightdotso/templates/footer";
 import { Root } from "@lightdotso/templates/root";
 import { Web3Provider } from "@lightdotso/ui/providers/web3";
-import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
-import { headers } from "next/headers";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -33,14 +31,9 @@ interface RootLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const initialState = cookieToInitialState(
-    wagmiConfig,
-    headers().get("cookie"),
-  );
-
   return (
     <Root>
-      <Web3Provider initialState={initialState}>
+      <Web3Provider>
         {children}
         <Footer />
       </Web3Provider>

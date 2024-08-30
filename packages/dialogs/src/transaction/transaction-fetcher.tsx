@@ -32,10 +32,10 @@ import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
-  useBytecode,
   useReadEntryPointGetNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
+import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import { getUserOperationHash } from "permissionless";
 import type {
   ENTRYPOINT_ADDRESS_V06,

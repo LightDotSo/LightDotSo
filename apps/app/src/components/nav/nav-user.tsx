@@ -38,12 +38,12 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
+import { useModal } from "@lightdotso/wagmi/connectkit";
 import {
   cookieStorage,
   createStorage,
   useDisconnect,
-  useModal,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { Wallet } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";

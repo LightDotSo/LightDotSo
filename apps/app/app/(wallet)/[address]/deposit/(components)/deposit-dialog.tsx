@@ -54,16 +54,16 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { getChainWithChainId } from "@lightdotso/utils";
+import { useModal } from "@lightdotso/wagmi/connectkit";
 import {
   useAccount,
   // useChainId,
-  useModal,
   useReadContract,
   useSendTransaction,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { isEmpty } from "lodash";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";

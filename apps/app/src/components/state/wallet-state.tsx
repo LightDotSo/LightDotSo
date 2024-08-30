@@ -17,7 +17,7 @@
 import { useAppGroup } from "@/hooks";
 import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useAuth } from "@lightdotso/stores";
-import { useAccount } from "@lightdotso/wagmi";
+import { useAccount } from "@lightdotso/wagmi/wagmi";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";

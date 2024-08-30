@@ -22,7 +22,7 @@ import {
 } from "@lightdotso/query";
 import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
 import { useAuth } from "@lightdotso/stores";
-import { useSignMessage } from "@lightdotso/wagmi";
+import { useSignMessage } from "@lightdotso/wagmi/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import { isAddressEqual, toBytes } from "viem";

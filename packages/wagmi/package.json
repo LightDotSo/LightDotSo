@@ -13,6 +13,12 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config.ts",
+    "./connectkit": "./src/connectkit.ts",
+    "./wagmi": "./src/wagmi.ts"
+  },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],
   "scripts": {

@@ -30,7 +30,8 @@ import {
   Form,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi";
+import { useEnsAddress } from "@lightdotso/wagmi/wagmi";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";

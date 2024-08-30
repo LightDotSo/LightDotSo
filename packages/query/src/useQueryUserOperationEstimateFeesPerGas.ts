@@ -20,7 +20,7 @@ import {
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { useMemo } from "react";
 import { type Address, type Hex, fromHex } from "viem";
 import {

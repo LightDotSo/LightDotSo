@@ -40,7 +40,8 @@ import {
   Label,
 } from "@lightdotso/ui";
 import { getChainWithChainId } from "@lightdotso/utils";
-import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
+import { lightWalletAbi } from "@lightdotso/wagmi";
+import { useBalance } from "@lightdotso/wagmi/wagmi";
 import { isEmpty } from "lodash";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";

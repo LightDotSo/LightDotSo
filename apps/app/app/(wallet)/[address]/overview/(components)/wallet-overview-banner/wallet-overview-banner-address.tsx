@@ -32,7 +32,7 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useEnsName } from "@lightdotso/wagmi";
+import { useEnsName } from "@lightdotso/wagmi/wagmi";
 import {
   ChevronDown,
   ClipboardCheck,

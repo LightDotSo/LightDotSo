@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, shortenAddress } from "@lightdotso/utils";
-import { useEnsName } from "@lightdotso/wagmi";
+import { useEnsName } from "@lightdotso/wagmi/wagmi";
 import type { FC } from "react";
 import type { Address } from "viem";
 

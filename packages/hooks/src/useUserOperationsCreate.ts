@@ -27,7 +27,7 @@ import {
   // lightWalletFactoryAbi,
   // useReadLightVerifyingPaymasterGetHash,
   // useReadLightVerifyingPaymasterSenderNonce,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";

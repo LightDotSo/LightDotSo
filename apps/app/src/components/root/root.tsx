@@ -29,7 +29,8 @@ import {
   ProgressUserOperation,
 } from "@lightdotso/templates";
 import { Toaster, Web3Provider } from "@lightdotso/ui";
-import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
+import { wagmiConfig } from "@lightdotso/wagmi";
+import { cookieToInitialState } from "@lightdotso/wagmi/wagmi";
 import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import type { FC, ReactNode } from "react";

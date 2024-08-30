@@ -18,7 +18,7 @@ import { useMutationQueueTransaction } from "@lightdotso/query";
 import { type PendingTransaction, useTransactions } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { getEtherscanUrlWithChainId } from "@lightdotso/utils";
-import { useWaitForTransactionReceipt } from "@lightdotso/wagmi";
+import { useWaitForTransactionReceipt } from "@lightdotso/wagmi/wagmi";
 import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
