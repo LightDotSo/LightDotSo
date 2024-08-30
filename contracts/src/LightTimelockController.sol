@@ -43,7 +43,7 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     uint256 public immutable MIN_DELAY = 300 seconds;
 
     // -------------------------------------------------------------------------
-    // Initializer
+    // Constructor + Functions
     // -------------------------------------------------------------------------
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -55,7 +55,7 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     /// @param lightWallet The address of the light wallet
     /// @param lightProtocolController The address of the light protocol controller
     /// @dev This function is called by the factory contract
-    function initialize(address lightWallet, address lightProtocolController) public initializer {
+    function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
         // Initialize the timelock controller
         __TimelockController_init(
             MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
