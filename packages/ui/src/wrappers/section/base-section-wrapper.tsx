@@ -19,7 +19,7 @@ import type { ReactNode } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-interface BaseSectionWrapperProps {
+export interface BaseSectionWrapperProps {
   children: ReactNode;
   className?: string;
 }

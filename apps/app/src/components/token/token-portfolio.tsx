@@ -17,6 +17,7 @@
 import { useQueryPortfolio } from "@lightdotso/query";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { Number } from "@lightdotso/ui/components/number";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -64,3 +65,9 @@ export const TokenPortfolio: FC<TokenPortfolioProps> = ({
     )
   );
 };
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const TokenPortfolioSkeleton = () => <Skeleton className="h-10 w-24" />;

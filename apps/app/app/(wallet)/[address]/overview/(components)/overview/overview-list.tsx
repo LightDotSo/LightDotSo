@@ -29,7 +29,7 @@ import type { Address } from "viem";
 
 const OverviewListItemSkeleton = () => <Skeleton className="h-64 w-full" />;
 
-const OverviewListPortfolioSkeleton = () => <Skeleton className="h-4 w-8" />;
+const OverviewListPortfolioSkeleton = () => <Skeleton className="h-6 w-16" />;
 
 // -----------------------------------------------------------------------------
 // Dynamic

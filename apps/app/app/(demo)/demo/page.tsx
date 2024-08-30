@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Loading } from "@/app/(wallet)/[address]/loading";
 import { redirect } from "next/navigation";
 
 // -----------------------------------------------------------------------------
@@ -24,4 +25,10 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   redirect("/demo/overview");
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <Loading />;
 }

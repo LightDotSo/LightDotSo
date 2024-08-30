@@ -57,6 +57,10 @@ export function Loader({
   salt,
   is_enabled_testnet,
 }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Internal Variables
+  // ---------------------------------------------------------------------------
+
   const walletChains = is_enabled_testnet ? CHAINS : MAINNET_CHAINS;
 
   // ---------------------------------------------------------------------------
@@ -69,7 +73,7 @@ export function Loader({
         <SettingsDeploymentCard
           key={chain.id}
           address={params.address as Address}
-          chain={chain.name}
+          chain={JSON.stringify(chain)}
           image_hash={image_hash}
           salt={salt}
         />

@@ -48,6 +48,15 @@ const nextConfig = {
       "./node_modules/terser",
     ],
   },
+  redirects: async () => {
+    return [
+      {
+        source: "/demo",
+        destination: "/demo/overview",
+        permanent: true,
+      },
+    ];
+  },
   rewrites: async () => {
     return [
       {
