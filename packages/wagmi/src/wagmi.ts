@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/performance/noBarrelFile: <explanation>
 export { hashFn } from "@wagmi/core/query";
 export type { State } from "wagmi";
 export {

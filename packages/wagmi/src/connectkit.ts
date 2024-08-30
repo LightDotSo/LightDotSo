@@ -12,4 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// biome-ignore lint/performance/noBarrelFile: <explanation>
 export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";

@@ -14,8 +14,9 @@
 
 import { EntrypointContract } from "../generated/src/Handlers.gen";
 
-// biome-ignore lint/correctness/noUnusedVariables: <explanation>
-EntrypointContract.UserOperationEvent.loader(({ event, context }) => {});
+// biome-ignore lint/correctness/noEmptyPattern: <explanation>
+// biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+EntrypointContract.UserOperationEvent.loader(({}) => {});
 
 EntrypointContract.UserOperationEvent.handler(({ event, context }) => {
   context.UserOp.set({
