@@ -13,13 +13,16 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
+import { walletColumns } from "@lightdotso/tables/wallet";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
 export function Loading() {
-  return <DataTable isLoading data={[]} columns={[]} pageCount={1} />;
+  return (
+    <DataTable isLoading data={[]} columns={walletColumns} pageCount={1} />
+  );
 }
 
 // -----------------------------------------------------------------------------

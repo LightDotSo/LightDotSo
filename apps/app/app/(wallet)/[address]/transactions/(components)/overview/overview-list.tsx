@@ -19,6 +19,7 @@ import {
 } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
+import { userOperationColumns } from "@lightdotso/tables/user-operation";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -54,7 +55,7 @@ export const OverviewList: FC<OverviewListProps> = ({
             address={null}
             data={[]}
             pageCount={0}
-            columns={[]}
+            columns={userOperationColumns}
             isTestnet={false}
           />
         </OverviewSectionSkeleton>
@@ -64,7 +65,7 @@ export const OverviewList: FC<OverviewListProps> = ({
             address={null}
             data={[]}
             pageCount={0}
-            columns={[]}
+            columns={userOperationColumns}
             isTestnet={false}
           />
         </OverviewSectionSkeleton>

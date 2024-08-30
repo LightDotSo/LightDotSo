@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
+import { ownerColumns } from "@lightdotso/tables/owner";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
@@ -22,7 +23,7 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 export function Loading() {
   return (
     <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} />
+      <DataTable isLoading data={[]} columns={ownerColumns} />
     </TableSectionWrapper>
   );
 }

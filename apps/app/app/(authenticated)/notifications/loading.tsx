@@ -13,13 +13,21 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
+import { notificationColumns } from "@lightdotso/tables/notification";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
 export function Loading() {
-  return <DataTable isLoading data={[]} columns={[]} pageCount={1} />;
+  return (
+    <DataTable
+      isLoading
+      data={[]}
+      columns={notificationColumns}
+      pageCount={1}
+    />
+  );
 }
 
 // -----------------------------------------------------------------------------

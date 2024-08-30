@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
+import { activityColumns } from "@lightdotso/tables/activity";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -20,5 +21,7 @@ import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-t
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
-  return <DataTable isLoading data={[]} columns={[]} pageCount={1} />;
+  return (
+    <DataTable isLoading data={[]} columns={activityColumns} pageCount={1} />
+  );
 }
