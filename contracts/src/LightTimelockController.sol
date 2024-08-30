@@ -44,14 +44,14 @@ contract LightTimelockController is TimelockController {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(address proposer, address executor)
-        TimelockController(minDelay, _singletonArray(proposer), _singletonArray(executor), address(0))
+    constructor(address lightWallet, address lightProtocolController)
+        TimelockController(minDelay, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0))
     {
-        // Register executor role to the proposer
-        _setupRole(EXECUTOR_ROLE, proposer);
+        // Register executor role to the light wallet
+        _setupRole(EXECUTOR_ROLE, lightWallet);
 
-        // Register canceler role to the executor
-        _setupRole(CANCELLER_ROLE, executor);
+        // Register canceler role to the light protocol controller
+        _setupRole(CANCELLER_ROLE, lightProtocolController);
     }
 
     // -------------------------------------------------------------------------
