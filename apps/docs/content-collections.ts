@@ -8,7 +8,7 @@ import {
 const docs = defineCollection({
   name: "docs",
   directory: "content",
-  include: "**/*.mdx",
+  include: "./content/**/*.mdx",
   schema: createDocSchema,
   transform: transformMDX,
 });
@@ -16,7 +16,7 @@ const docs = defineCollection({
 const metas = defineCollection({
   name: "meta",
   directory: "content",
-  include: "**/meta.json",
+  include: "./content/**/meta.json",
   parser: "json",
   schema: createMetaSchema,
 });

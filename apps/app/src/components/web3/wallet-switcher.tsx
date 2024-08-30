@@ -36,6 +36,7 @@ import {
   CommandSeparator,
 } from "@lightdotso/ui/components/command";
 import type { PopoverTrigger } from "@lightdotso/ui/components/popover";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { cn } from "@lightdotso/utils";
 import {
   CaretSortIcon,
@@ -180,7 +181,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
   // If the address is empty or is not mounted, don't render
   if (!(isMounted && address) || isWalletsLoading) {
-    return null;
+    return <Skeleton className="mx-2 h-8 w-24" />;
   }
 
   // If there is no wallet, render a button to create a new wallet
