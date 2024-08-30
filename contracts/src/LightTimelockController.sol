@@ -14,11 +14,11 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
+pragma solidity ^0.8.18;
+
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
-
-pragma solidity ^0.8.18;
 
 /// @title LightTimelockController
 /// @author @shunkakinoki
@@ -28,7 +28,7 @@ pragma solidity ^0.8.18;
 /// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightTimelockController is TimelockController {
     // -------------------------------------------------------------------------
-    // Constant
+    // Constants
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract
@@ -43,30 +43,29 @@ contract LightTimelockController is TimelockController {
 
     address public immutable proposer;
 
-    mapping(bytes32 => bool) public executedProposals;
-
     // -------------------------------------------------------------------------
-    // Constructor + Functions
+    // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(uint256 _minDelay, address _proposer, address _executor)
-        TimelockController(_minDelay, new address[](0), new address[](0), address(0))
+    constructor(uint256 minDelay, address _proposer, address _executor)
+        TimelockController(minDelay, new address[](0), new address[](0), address(0))
     {
         proposer = _proposer;
 
         _setupRole(PROPOSER_ROLE, _proposer);
         _setupRole(EXECUTOR_ROLE, _executor);
+        _setupRole(CANCELLER_ROLE, _executor);
 
         _setRoleAdmin(PROPOSER_ROLE, PROPOSER_ROLE);
         _setRoleAdmin(EXECUTOR_ROLE, EXECUTOR_ROLE);
-
-        _grantRole(TIMELOCK_ADMIN_ROLE, address(this));
-        _grantRole(PROPOSER_ROLE, address(this));
-        _grantRole(EXECUTOR_ROLE, address(this));
-        _grantRole(CANCELLER_ROLE, address(this));
+        _setRoleAdmin(CANCELLER_ROLE, CANCELLER_ROLE);
     }
 
-    function proposeAndSchedule(
+    // -------------------------------------------------------------------------
+    // External Functions
+    // -------------------------------------------------------------------------
+
+    function verifyAndSchedule(
         bytes32 merkleRoot,
         bytes memory signature,
         bytes32[] calldata merkleProof,
@@ -76,52 +75,13 @@ contract LightTimelockController is TimelockController {
         bytes32 predecessor,
         bytes32 salt,
         uint256 delay
-    ) public onlyRole(PROPOSER_ROLE) {
-        // Check the merkle proof
+    ) external onlyRole(PROPOSER_ROLE) {
         bytes32 leaf = keccak256(abi.encodePacked(target, value, keccak256(data), predecessor, salt, delay));
-        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Invalid Merkle proof");
+        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "LightTimelockController: Invalid Merkle proof");
 
-        // Call `isValidSignature` on the proposer to validate the merkleRoot
         bytes4 isValidSignature = ILightWallet(proposer).isValidSignature(merkleRoot, signature);
-        require(isValidSignature == 0x1626ba7e, "Invalid signature");
+        require(isValidSignature == 0x1626ba7e, "LightTimelockController: Invalid signature");
 
-        // Check if the proposal is already executed
-        bytes32 proposalId = hashOperation(target, value, data, predecessor, salt);
-        require(!executedProposals[proposalId], "Proposal already executed");
-
-        // Schedule the proposal
-        super.schedule(target, value, data, predecessor, salt, delay);
-    }
-
-    function execute(address target, uint256 value, bytes calldata data, bytes32 predecessor, bytes32 salt)
-        public
-        payable
-        virtual
-        override
-        onlyRole(EXECUTOR_ROLE)
-    {
-        // Check if the proposal is already executed
-        bytes32 proposalId = hashOperation(target, value, data, predecessor, salt);
-        require(!executedProposals[proposalId], "Proposal already executed");
-
-        // Execute the proposal
-        executedProposals[proposalId] = true;
-        super.execute(target, value, data, predecessor, salt);
-    }
-
-    function executeBatch(
-        address[] calldata targets,
-        uint256[] calldata values,
-        bytes[] calldata payloads,
-        bytes32 predecessor,
-        bytes32 salt
-    ) public payable virtual override onlyRole(EXECUTOR_ROLE) {
-        // Check if the proposal is already executed
-        bytes32 proposalId = hashOperationBatch(targets, values, payloads, predecessor, salt);
-        require(!executedProposals[proposalId], "Proposal already executed");
-
-        // Execute the proposal in batch
-        executedProposals[proposalId] = true;
-        super.executeBatch(targets, values, payloads, predecessor, salt);
+        schedule(target, value, data, predecessor, salt, delay);
     }
 }
