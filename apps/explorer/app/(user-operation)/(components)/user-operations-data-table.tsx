@@ -23,8 +23,8 @@ import {
   useQueryUserOperations,
   useQueryUserOperationsCount,
 } from "@lightdotso/query";
-import { userOperationColumns } from "@lightdotso/tables";
-import { TableSectionWrapper } from "@lightdotso/ui";
+import { userOperationColumns } from "@lightdotso/tables/user-operation";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";
 

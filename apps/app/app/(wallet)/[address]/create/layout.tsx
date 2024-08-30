@@ -13,13 +13,13 @@
 // limitations under the License.
 
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
+import { HStackFull } from "@lightdotso/ui/stacks";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   DialogSectionWrapper,
-  HStackFull,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

@@ -13,13 +13,8 @@
 // limitations under the License.
 
 import { FormDevTools } from "@lightdotso/forms";
-import {
-  ReactQueryProvider,
-  TailwindIndicator,
-  ThemeProvider,
-  TooltipProvider,
-  VercelToolbar,
-} from "@lightdotso/ui";
+import { TooltipProvider } from "@lightdotso/ui/components/tooltip";
+import { ReactQueryProvider, ThemeProvider } from "@lightdotso/ui/providers";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
@@ -64,8 +59,8 @@ export const Root: FC<RootProps> = ({ children }) => {
           </ReactQueryProvider>
         </ThemeProvider>
         <FormDevTools />
-        <TailwindIndicator />
-        <VercelToolbar />
+        {/* <TailwindIndicator /> */}
+        {/* <VercelToolbar /> */}
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

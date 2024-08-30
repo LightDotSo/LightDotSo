@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
-import { NextImage } from "@lightdotso/elements";
+import { NextImage } from "@lightdotso/elements/next-image";
 import { refineDateFormat } from "@lightdotso/utils";
 import keystaticConfig from "~/keystatic.config";
 

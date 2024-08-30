@@ -14,12 +14,9 @@
 
 import { NavSidebar } from "@/components/nav/nav-sidebar";
 import { TITLES } from "@/const";
-import {
-  BannerSection,
-  BaseLayerWrapper,
-  HStackFull,
-  SettingsPageWrapper,
-} from "@lightdotso/ui";
+import { BannerSection } from "@lightdotso/ui/sections";
+import { HStackFull } from "@lightdotso/ui/stacks";
+import { BaseLayerWrapper, SettingsPageWrapper } from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

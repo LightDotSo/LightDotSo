@@ -14,12 +14,12 @@
 
 import { TransactionsDataTableToolbar } from "@/app/(transaction)/(components)/transactions-data-table-toolbar";
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
 import {
-  BannerSection,
   BaseLayerWrapper,
   MiddleLayerWrapper,
   MinimalPageWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
