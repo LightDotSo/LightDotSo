@@ -14,6 +14,8 @@
 
 "use client";
 
+import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
+import { LightHorizontalLogo } from "@lightdotso/svg";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,46 +26,40 @@ import {
   navigationMenuTriggerStyle,
 } from "@lightdotso/ui/components/navigation-menu";
 import { cn } from "@lightdotso/utils";
-import Link from "next/link";
 import type { ComponentPropsWithoutRef, FC } from "react";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+    title: "Blog",
+    href: INTERNAL_LINKS.Blog,
+    description: "Read the Light blog.",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
+    title: "Changelog",
+    href: INTERNAL_LINKS.Changelog,
+    description: "View the Light changelog.",
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+    title: "Discord",
+    href: SOCIAL_LINKS.Discord,
+    description: "Join the Light Discord.",
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    title: "Github",
+    href: SOCIAL_LINKS.Github,
+    description: "Contribute to Light on Github.",
   },
   {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+    title: "Telegram",
+    href: SOCIAL_LINKS.Telegram,
+    description: "Join the Light Telegram.",
   },
   {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    title: "Twitter",
+    href: SOCIAL_LINKS.Twitter,
+    description: "Follow Light on Twitter.",
   },
 ];
 
@@ -87,7 +83,7 @@ const ListItem = forwardRef<ElementRef<"a">, ComponentPropsWithoutRef<"a">>(
           <a
             ref={ref}
             className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-background-strong hover:text-text-strong focus:bg-background-strong focus:text-text-strong",
               className,
             )}
             {...props}
@@ -122,36 +118,36 @@ export const Menu: FC<GridProps> = ({ className }) => {
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-background/50 to-background p-6 no-underline outline-none focus:shadow-md"
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-background/50 to-background p-6 no-underline outline-none hover:bg-background-strong focus:shadow-md"
                     href="/"
                   >
-                    {/* <Icons.logo className="h-6 w-6" /> */}
+                    <LightHorizontalLogo className="h-10 w-16" />
                     <div className="mt-4 mb-2 font-medium text-lg">
-                      shadcn/ui
+                      Light App
                     </div>
                     <p className="text-sm text-text-weak leading-tight">
-                      Beautifully designed components built with Radix UI and
-                      Tailwind CSS.
+                      Experience using Light w/ the official app. Use Ethereum
+                      as One.
                     </p>
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
+              <ListItem href={INTERNAL_LINKS.Docs} title="Documentation">
+                Learn how to use Light w/ our official product documentation.
               </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
+              <ListItem href={INTERNAL_LINKS.Governance} title="Governance">
+                Learn how to participate in Light governance.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
+              <ListItem href={INTERNAL_LINKS.Explorer} title="Explorer">
+                Interact with the Light Protocol explorer.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Official Links</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {components.map((component) => (
                 <ListItem
                   key={component.title}
@@ -165,11 +161,11 @@ export const Menu: FC<GridProps> = ({ className }) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+          <a href={INTERNAL_LINKS.Paper} target="_blank" rel="noreferrer">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
+              Paper
             </NavigationMenuLink>
-          </Link>
+          </a>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

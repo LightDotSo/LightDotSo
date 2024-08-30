@@ -16,3 +16,4 @@ ignores:
   - "@next/bundle-analyzer"
   - "@sentry/integrations"
   - "@next/bundle-analyzer"
+  - "framer-motion"

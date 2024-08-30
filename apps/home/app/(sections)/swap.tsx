@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SwapDialogLoader } from "@/app/(components)/swap-dialog-loader";
 import { SectionPill } from "@/components/section-pill";
 import { Spark } from "@/components/spark";
-import { SwapDialog } from "@lightdotso/dialogs/swap";
 import { Button } from "@lightdotso/ui/components/button";
 import { ArrowRight } from "lucide-react";
 import type { FC } from "react";
@@ -57,7 +57,7 @@ export const Swap: FC = () => {
             </div>
           </div>
           <div className="max-w-md rounded-md bg-background-body p-4">
-            <SwapDialog />
+            <SwapDialogLoader />
           </div>
         </div>
       </div>

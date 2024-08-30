@@ -12,56 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
+import { Loader } from "@/app/(wallet)/[address]/settings/loader";
 import { handler } from "@/handlers/[address]/settings/handler";
 import { preloader } from "@/preloaders/[address]/settings/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Dynamic
-// -----------------------------------------------------------------------------
-
-const SettingsNameCard = dynamic(
-  () =>
-    import(
-      "@/app/(wallet)/[address]/settings/(components)/settings-name-card"
-    ).then((mod) => mod.SettingsNameCard),
-  {
-    ssr: false,
-  },
-);
-
-const SettingsDevCard = dynamic(
-  () =>
-    import(
-      "@/app/(wallet)/[address]/settings/(components)/settings-dev-card"
-    ).then((mod) => mod.SettingsDevCard),
-  {
-    ssr: false,
-  },
-);
-
-const SettingsTestnetCard = dynamic(
-  () =>
-    import(
-      "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card"
-    ).then((mod) => mod.SettingsTestnetCard),
-  {
-    ssr: false,
-  },
-);
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string };
 };
 
@@ -100,9 +64,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        <SettingsNameCard address={params.address as Address} />
-        <SettingsDevCard address={params.address as Address} />
-        <SettingsTestnetCard address={params.address as Address} />
+        <Loader params={params} />
       </SettingsSectionWrapper>
     </HydrationBoundary>
   );
