@@ -12,15 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { test } from "vitest";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getLlama } from "../src"; // Replace with your actual file path
 
 test("getLlama", async () => {
   // Call your function with actual address
   const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _result = await getLlama(actualAddress);
 
   // Expect that status is either "success" or "stale"

@@ -27,5 +27,4 @@ export const prisma =
 
 export * from "@prisma/client";
 
-// eslint-disable-next-line import/no-unresolved
 export * from "./src/zod";

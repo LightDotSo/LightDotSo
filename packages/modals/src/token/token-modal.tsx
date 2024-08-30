@@ -16,7 +16,7 @@
 
 import { CHAINS, LIGHT_CHAIN, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import { useContainerDimensions, useDebouncedValue } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
 import {

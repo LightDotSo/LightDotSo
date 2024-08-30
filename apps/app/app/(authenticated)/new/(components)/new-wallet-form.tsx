@@ -22,7 +22,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NOTION_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { InviteCodeForm } from "@lightdotso/forms";
 import {
   useInviteCodeQueryState,
@@ -140,7 +140,6 @@ export const NewWalletForm: FC = () => {
       }
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
@@ -162,7 +161,6 @@ export const NewWalletForm: FC = () => {
     url.searchParams.set("inviteCode", inviteCode);
     url.searchParams.set("type", type);
     router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, inviteCode, type]);
 
   const onSubmit = useCallback(
@@ -181,8 +179,6 @@ export const NewWalletForm: FC = () => {
   useEffect(() => {
     // Set the form values from the default values
     setFormValues(defaultValues);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

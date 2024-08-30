@@ -15,7 +15,7 @@
 "use client";
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import {
   useQueryUserOperation,
   useQueryUserOperationMerkle,

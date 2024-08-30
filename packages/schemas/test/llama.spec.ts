@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { test } from "vitest";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import { llamaGetSchema } from "../src";
 import data from "./mocks/llama.json";
 

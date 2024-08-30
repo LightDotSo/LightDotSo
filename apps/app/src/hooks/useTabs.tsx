@@ -127,7 +127,6 @@ export function useTabs() {
     setSelectedTabIndex(indexOfInitialTab === -1 ? 0 : indexOfInitialTab);
 
     // Only run on initial render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

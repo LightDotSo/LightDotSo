@@ -15,7 +15,8 @@
 "use client";
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { ExternalLink, UserOperationTimeline } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
+import { UserOperationTimeline } from "@lightdotso/elements/user-operation-timeline";
 import { useCopy, useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
@@ -212,7 +213,6 @@ export const UserOperationCardTransaction: FC<
                             {item.value}
                           </ExternalLink>
                         ) : (
-                          // eslint-disable-next-line react/jsx-no-useless-fragment
                           <>{item.value}</>
                         )}
                       </div>
@@ -262,17 +262,14 @@ export const UserOperationCardTransaction: FC<
                         className="h-1"
                         value={
                           (userOperation.signatures.length /
-                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             // biome-ignore lint/style/noNonNullAssertion: <explanation>
                             configuration?.threshold!) *
                           100
                         }
                       />
                       <span className="ml-2">
-                        {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
                         {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
                         {userOperation.signatures.length!}/
-                        {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
                         {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
                         {configuration?.threshold!}
                       </span>

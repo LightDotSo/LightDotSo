@@ -81,7 +81,6 @@ export const UserOperationState: FC = () => {
   useEffect(() => {
     refetchPendingUserOperations();
     refetchUserOperationsCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Also refetch when the user operations send state changes
     isUserOperationsSendSuccess,

@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable @next/next/no-img-element */
-
 import type { NftData } from "@lightdotso/data";
-import { NftImage } from "@lightdotso/elements";
+import { NftImage } from "@lightdotso/elements/nft-image";
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";

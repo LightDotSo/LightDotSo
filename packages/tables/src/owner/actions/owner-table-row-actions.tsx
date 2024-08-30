@@ -77,7 +77,6 @@ export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
             Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
-        {/* eslint-disable-next-line no-constant-binary-expression */}
         {false}
       </DropdownMenu>
     </div>

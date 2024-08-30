@@ -17,7 +17,6 @@
 //@ts-expect-error
 import { LightWallet } from "@/contracts/LightWallet.sol";
 import { subdigestOf } from "@lightdotso/sequence";
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { expect, test } from "vitest";
 
 // describe("LightWallet", function () {

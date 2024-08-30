@@ -14,7 +14,7 @@
 
 "use client";
 
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import {
   useQueryUserOperationsCount,
   useQueryWalletSettings,

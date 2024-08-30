@@ -107,7 +107,6 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
     return {
       enabled: walletSettings?.is_enabled_dev ?? false,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletSettings, key]);
 
   // ---------------------------------------------------------------------------

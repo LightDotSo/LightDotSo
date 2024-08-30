@@ -18,7 +18,7 @@
 "use client";
 
 import { useAppGroup } from "@/hooks";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets } from "@lightdotso/query";
@@ -62,10 +62,7 @@ interface WalletSwitcherProps extends PopoverTriggerProps {}
 // Parent Component
 // -----------------------------------------------------------------------------
 
-export const WalletSwitcher: FC<WalletSwitcherProps> = ({
-  // eslint-disable-next-line react/prop-types
-  className,
-}) => {
+export const WalletSwitcher: FC<WalletSwitcherProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -78,7 +75,6 @@ export const WalletSwitcher: FC<WalletSwitcherProps> = ({
 // -----------------------------------------------------------------------------
 
 export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
-  // eslint-disable-next-line react/prop-types
   className,
 }) => {
   // ---------------------------------------------------------------------------

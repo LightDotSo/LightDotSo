@@ -25,7 +25,6 @@ export const userOperationsParser = createParser({
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     return operations?.map<Partial<UserOperation>>((operation) => {
       const [
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _index,
         chainId,
         hash,

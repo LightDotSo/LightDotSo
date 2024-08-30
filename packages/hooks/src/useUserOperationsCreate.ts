@@ -130,7 +130,6 @@ export const useUserOperationsCreate = ({
 
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Solely dependent on userOperations for the subdigest
     userOperations,
@@ -234,7 +233,6 @@ export const useUserOperationsCreate = ({
     setSignedData(undefined);
     setMerkleTree(undefined);
     resetUserOperations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sign the userOperation
@@ -245,7 +243,6 @@ export const useUserOperationsCreate = ({
     }
 
     signMessage({ message: { raw: toBytes(subdigest) } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subdigest]);
 
   // ---------------------------------------------------------------------------
@@ -334,8 +331,6 @@ export const useUserOperationsCreate = ({
       createUserOpBatch();
       return;
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
   // ---------------------------------------------------------------------------

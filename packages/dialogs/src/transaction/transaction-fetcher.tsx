@@ -88,7 +88,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     checkpoint: 0,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { configuration: currentConfiguration } = useQueryConfiguration({
     address: address as Address,
   });
@@ -134,7 +133,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // });
 
   // Gets the configuration for the chain w/ the image hash
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { configuration } = useQueryConfiguration({
     address: address as Address,
@@ -239,7 +238,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxPriorityFeePerGas:
         initialUserOperation?.maxPriorityFeePerGas ?? undefined,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // The wallet is required to compute the init code
     wallet,
@@ -342,7 +340,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Only gas limits and fees are required to compute the gas limits
     // The rest of the values are dependencies of the gas limits
@@ -436,7 +433,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         debouncedUserOperation?.verificationGasLimit,
       paymasterAndData: paymasterAndData ?? "0x",
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Only paymaster and data is required to compute the gas limits and paymaster
     // The rest of the values are dependencies of the paymaster and data
@@ -528,7 +524,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     // Run the async function
     fetchHashAndUpdateOperation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Sole dependency is the updated user operation w/ paymaster and data values
     finalizedUserOperation,

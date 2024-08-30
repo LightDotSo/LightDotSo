@@ -62,12 +62,10 @@ export const Base: Story = {
         return !!addr;
       });
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const validEns = useRefinement(getEns, {
       debounce: 300,
     });
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const methods = useForm({
       mode: "all",
       reValidateMode: "onBlur",

@@ -73,7 +73,6 @@ const CommandInput = forwardRef<
       "flex items-center border-b border-b-border px-3",
       wrapperClassName,
     )}
-    // eslint-disable-next-line react/no-unknown-property
     cmdk-input-wrapper=""
   >
     <MagnifyingGlassIcon className="mr-2 size-4 shrink-0 opacity-50" />

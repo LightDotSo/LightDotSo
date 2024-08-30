@@ -15,7 +15,8 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { ChainStack, TokenImage } from "@lightdotso/elements";
+import { ChainStack } from "@lightdotso/elements/chain-stack";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import {
   type QuoteParams,
   useDebouncedValue,
@@ -160,7 +161,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       from: fromSwapQueryState ?? undefined,
       to: toSwapQueryState ?? undefined,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------
@@ -200,7 +200,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
@@ -250,7 +249,6 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   useEffect(() => {
     resetQuotes();
     resetExecutionParams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSwap?.quantity, fromSwap?.address, fromSwap?.chainId]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

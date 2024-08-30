@@ -212,7 +212,6 @@ export const useUserOperationSend = ({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------

@@ -15,7 +15,7 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import { ButtonIcon } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { ChevronRightIcon } from "lucide-react";

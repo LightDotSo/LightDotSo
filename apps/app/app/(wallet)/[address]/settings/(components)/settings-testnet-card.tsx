@@ -109,7 +109,6 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     return {
       enabled: walletSettings?.is_enabled_testnet ?? false,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletSettings, key]);
 
   // ---------------------------------------------------------------------------

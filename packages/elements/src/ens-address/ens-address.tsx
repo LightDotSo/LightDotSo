@@ -43,6 +43,5 @@ export const EnsAddress: FC<EnsAddressProps> = ({ name }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{ensAddress && shortenAddress(ensAddress)}</>;
 };

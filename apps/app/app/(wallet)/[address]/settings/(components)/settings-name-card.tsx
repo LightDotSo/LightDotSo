@@ -117,7 +117,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     return {
       name: wallet?.name,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, key]);
 
   // ---------------------------------------------------------------------------

@@ -38,7 +38,6 @@ import {
 // -----------------------------------------------------------------------------
 
 export const useMutationUserOperationCreateBatch = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _params: UserOperationParams,
 ) => {
   // ---------------------------------------------------------------------------

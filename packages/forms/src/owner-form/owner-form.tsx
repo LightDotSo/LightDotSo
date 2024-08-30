@@ -19,7 +19,7 @@ import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import { useConfigurationOperationCreate } from "@lightdotso/hooks";
 import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
@@ -121,7 +121,6 @@ export const OwnerForm: FC = () => {
             ? owners
             : [defaultOwner],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialOwners, initialThreshold]);
 
   // ---------------------------------------------------------------------------
@@ -245,7 +244,6 @@ export const OwnerForm: FC = () => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // Set the form values from the URL on mount
@@ -265,8 +263,6 @@ export const OwnerForm: FC = () => {
     if (defaultValues.owners) {
       setOwners(defaultValues.owners);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   useEffect(() => {

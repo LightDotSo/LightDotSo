@@ -62,7 +62,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
 
   const onDismiss = useCallback(() => {
     router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

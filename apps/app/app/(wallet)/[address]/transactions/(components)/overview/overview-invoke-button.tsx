@@ -14,7 +14,7 @@
 
 "use client";
 
-import { InvokeButton } from "@lightdotso/elements";
+import { InvokeButton } from "@lightdotso/elements/invoke-button";
 import { useMutationUserOperationUpdate } from "@lightdotso/query";
 import type { FC } from "react";
 import type { Address } from "viem";

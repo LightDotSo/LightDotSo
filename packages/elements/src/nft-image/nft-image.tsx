@@ -14,8 +14,6 @@
 
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
 import { type FC, useState } from "react";
@@ -72,7 +70,6 @@ export const NftImage: FC<NftImageProps> = ({
         src={
           image_url ??
           previews?.image_large_url ??
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           extra_metadata?.image_original_url!
         }

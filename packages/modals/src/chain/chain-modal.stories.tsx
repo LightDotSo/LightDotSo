@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
@@ -49,7 +47,6 @@ export const Base: Story = {
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       showChainModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <ChainModal />;

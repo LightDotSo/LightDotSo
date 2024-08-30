@@ -42,7 +42,6 @@ type Story = StoryObj<typeof Number>;
 
 export const Base: Story = {
   render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = useState(300.0);
 
     return (

@@ -36,7 +36,6 @@ export const LightHorizontalLogo: FC<LightHorizontalLogoProps> = ({
       viewBox="0 0 96 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      // eslint-disable-next-line tailwindcss/no-custom-classname
       className={cn("fill-text", className)}
       {...props}
     >

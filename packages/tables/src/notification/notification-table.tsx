@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { NotificationData } from "@lightdotso/data";
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -120,26 +120,12 @@ export const NotificationTable: FC<NotificationTableProps> = ({
     }
   }, [
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("address"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("address")
-      ?.getFilterValue(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table?.getColumn("address")?.getFilterValue(),
     table?.getColumn("name"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("name")
-      ?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("name")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("name")
-      ?.getIsVisible(),
+    table?.getColumn("name")?.getFacetedUniqueValues(),
+    table?.getColumn("name")?.getCanHide(),
+    table?.getColumn("name")?.getIsVisible(),
     setNotificationTable,
   ]);
 

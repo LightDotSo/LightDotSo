@@ -43,7 +43,6 @@ export const ReactQueryWrapper = () => {
     if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
       setIsQueryDevToolsOpen(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

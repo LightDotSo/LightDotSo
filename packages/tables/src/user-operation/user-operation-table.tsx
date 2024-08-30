@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { EmptyState } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -142,28 +142,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
   }, [
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table?.getColumn("chain_id"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("chain_id")
-      ?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("status")
-      ?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table
-      ?.getColumn("status")
-      ?.getIsVisible(),
+    table?.getColumn("chain_id")?.getCanHide(),
+    table?.getColumn("chain_id")?.getIsVisible(),
+    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table?.getColumn("status")?.getCanHide(),
+    table?.getColumn("status")?.getIsVisible(),
     setUserOperationTable,
   ]);
 
@@ -172,7 +156,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     if (!table.getIsAllRowsExpanded()) {
       table.toggleAllRowsExpanded();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------
@@ -273,7 +256,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   }
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {Object.keys(groupedItems).length > 0 && configuration ? (
         <>

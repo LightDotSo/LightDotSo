@@ -20,7 +20,7 @@ import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import {
   ownerParser,
   useInviteCodeQueryState,
@@ -158,7 +158,6 @@ export const ConfigurationForm: FC = () => {
               ]
             : [defaultOwner],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultOwner]);
 
   // ---------------------------------------------------------------------------
@@ -284,7 +283,6 @@ export const ConfigurationForm: FC = () => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // Set the form values from the URL on mount
@@ -316,8 +314,6 @@ export const ConfigurationForm: FC = () => {
     if (defaultValues.owners) {
       setOwners(defaultValues.owners);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   useEffect(() => {
@@ -346,7 +342,6 @@ export const ConfigurationForm: FC = () => {
     url.searchParams.set("salt", salt ?? "");
     url.searchParams.set("owners", ownerParser.serialize(owners));
     router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type, threshold, salt, owners]);
 
   const onSubmit = useCallback(

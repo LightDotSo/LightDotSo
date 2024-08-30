@@ -87,12 +87,10 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
     );
   };
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const validInviteCode = useRefinement(getInviteCode, {
     debounce: 300,
   });
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const form = useForm({
     mode: "all",
     reValidateMode: "onBlur",
@@ -148,16 +146,12 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
     }
 
     syncWithParent();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sync w/ every invalidation
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     syncWithParent();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.formState.isValid, form.formState.errors]);
 
   // ---------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 
 "use client";
 
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import {
   Avatar,
   Tooltip,

@@ -44,7 +44,6 @@ export const ModalInterceptionFooter: FC = () => {
   const onDismiss = useCallback(() => {
     hideNotificationsModal();
     router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

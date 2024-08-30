@@ -15,7 +15,7 @@
 "use client";
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
@@ -186,7 +186,6 @@ export const RootContext: FC = () => {
             )}
             {address && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Your New Address:{" "}
                   <Tooltip>
@@ -202,7 +201,6 @@ export const RootContext: FC = () => {
             )}
             {formValues?.name && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Name:{" "}
                   <Tooltip>
@@ -218,7 +216,6 @@ export const RootContext: FC = () => {
             )}
             {formValues?.threshold && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Threshold:{" "}
                   <Tooltip>

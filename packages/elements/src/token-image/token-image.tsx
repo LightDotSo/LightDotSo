@@ -14,8 +14,6 @@
 
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import type { TokenData } from "@lightdotso/data";
 import { ChainLogo } from "@lightdotso/svg";
 import { Skeleton } from "@lightdotso/ui";

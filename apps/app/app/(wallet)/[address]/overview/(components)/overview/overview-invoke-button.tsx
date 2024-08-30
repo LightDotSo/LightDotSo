@@ -15,7 +15,7 @@
 "use client";
 
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { InvokeButton } from "@lightdotso/elements";
+import { InvokeButton } from "@lightdotso/elements/invoke-button";
 import { useMutationQueueToken } from "@lightdotso/query";
 import type { FC } from "react";
 import type { Address } from "viem";

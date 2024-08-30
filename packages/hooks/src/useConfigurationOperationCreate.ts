@@ -180,7 +180,6 @@ export const useConfigurationOperationCreate = ({
     };
 
     createConfigurationOp();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, configuration?.threshold, address, params]);
 
   // ---------------------------------------------------------------------------

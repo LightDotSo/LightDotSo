@@ -15,7 +15,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import {
   useIsMounted,
   useUserOperationsCreate,
@@ -271,7 +271,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
     resetPendingUserOperationHashes();
     resetPendingUserOperationMerkleRoot();
     setPageIndex(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   // If create is successful, reset the form
@@ -298,7 +297,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
       <div className="flex w-full items-center">
         <ModalSwiper>
           {pageIndex === 0 && (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
               <Tabs className="w-full" defaultValue="transaction">
                 <TabsList className="sticky w-full">
@@ -337,7 +335,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                         <FormField
                           control={form.control}
                           name="gas.asset.quantity"
-                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
                           render={({ field: _field }) => {
                             // Get the matching token
                             const token = tokens?.find(

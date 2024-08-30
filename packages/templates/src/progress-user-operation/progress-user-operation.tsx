@@ -141,7 +141,6 @@ export const ProgressUserOperation: FC = () => {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingUserOperations, isPendingUserOperationsLoading]);
 
   // ---------------------------------------------------------------------------

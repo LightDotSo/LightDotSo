@@ -13,12 +13,9 @@
 // limitations under the License.
 
 browser.runtime.sendMessage({ greeting: "hello" }).then((response) => {
-  // eslint-disable-next-line no-console
   console.warn("Received response: ", response);
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 browser.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
-  // eslint-disable-next-line no-console
   console.warn("Received request: ", request);
 });

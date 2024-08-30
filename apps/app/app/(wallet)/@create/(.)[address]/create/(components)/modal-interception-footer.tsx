@@ -59,7 +59,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     hideCreateModal();
     resetAll();
     router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

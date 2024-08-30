@@ -76,7 +76,6 @@ export function AddressModal() {
       return !!addr;
     });
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const validEns = useRefinement(getEns, {
     debounce: 300,
   });
@@ -85,7 +84,6 @@ export function AddressModal() {
   // Form
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const methods = useForm<AddressModalFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
@@ -161,7 +159,6 @@ export function AddressModal() {
         message: "Ens name is not valid",
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ensAddress, delayedName]);
 
   // ---------------------------------------------------------------------------

@@ -37,7 +37,7 @@ type PageProps = {
 // -----------------------------------------------------------------------------
 
 // TODO: Add implement session based search params handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders

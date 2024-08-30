@@ -129,7 +129,6 @@ export const OverviewList: FC<OverviewListProps> = ({
           <TransactionsList address={address} limit={OVERVIEW_ROW_COUNT} />
         );
       default:
-        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
   };
@@ -146,7 +145,6 @@ export const OverviewList: FC<OverviewListProps> = ({
       case OverviewSubCategory.NFTs:
         return <NftPortfolio isNeutral address={address} size="balance" />;
       default:
-        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
   };

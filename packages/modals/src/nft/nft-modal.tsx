@@ -14,7 +14,8 @@
 
 "use client";
 
-import { EmptyState, NftImage } from "@lightdotso/elements";
+import { EmptyState } from "@lightdotso/elements/empty-state";
+import { NftImage } from "@lightdotso/elements/nft-image";
 import { useMediaQuery } from "@lightdotso/hooks";
 import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
@@ -73,7 +74,6 @@ export function NftModal() {
                 nft?.collection?.spam_score < 60,
             )
             .map((nft) => (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
               // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
               <div
                 key={nft.nft_id}
