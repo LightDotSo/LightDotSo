@@ -24,7 +24,6 @@ import {
   MinimalPageWrapper,
 } from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -36,19 +35,10 @@ export const metadata: Metadata = {
 };
 
 // -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type OverviewLayoutProps = {
-  children: ReactNode;
-};
-
-// -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading({ children }: OverviewLayoutProps) {
+export function Loading() {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -64,8 +54,18 @@ export default function Loading({ children }: OverviewLayoutProps) {
         </LinkButtonGroup>
       </MiddleLayerWrapper>
       <BaseLayerWrapper>
-        <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        <MinimalPageWrapper>
+          {/* biome-ignore lint/complexity/noUselessFragments: <explanation> */}
+          <></>
+        </MinimalPageWrapper>
       </BaseLayerWrapper>
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

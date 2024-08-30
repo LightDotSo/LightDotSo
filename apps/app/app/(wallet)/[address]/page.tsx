@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Loading } from "@/app/(wallet)/[address]/loading";
 import { handler } from "@/handlers/[address]/handler";
 import { preloader } from "@/preloaders/[address]/preloader";
 import { redirect } from "next/navigation";
@@ -48,4 +49,10 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   redirect(`/${params.address}/overview`);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <Loading />;
 }

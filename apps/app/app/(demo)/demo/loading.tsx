@@ -13,4 +13,4 @@
 // limitations under the License.
 
 // biome-ignore lint/performance/noBarrelFile: <explanation>
-export { default } from "@/app/(wallet)/[address]/loading";
+export { Loading } from "@/app/(wallet)/[address]/loading";
