@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { type FC, useEffect, useMemo } from "react";
-import { ownerColumns } from "./owner-columns";
+import { ownerColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props

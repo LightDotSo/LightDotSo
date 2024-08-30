@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { transactionColumns } from "./transaction-columns";
+export { transactionColumns } from "./columns";
 export { TransactionTable } from "./transaction-table";

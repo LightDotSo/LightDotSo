@@ -42,7 +42,7 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 import { type FC, useEffect, useMemo } from "react";
-import { walletColumns } from "./wallet-columns";
+import { walletColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props

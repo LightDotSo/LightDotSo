@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { type FC, useEffect, useMemo } from "react";
-import { activityColumns } from "./activity-columns";
+import { activityColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props

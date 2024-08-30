@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { ownerColumns } from "@lightdotso/tables/owner";
+import { ownerColumns } from "@lightdotso/tables/owner/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------

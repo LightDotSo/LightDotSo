@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
-import { walletColumns } from "@lightdotso/tables/wallet";
+import { walletColumns } from "@lightdotso/tables/wallet/columns";
 
 // -----------------------------------------------------------------------------
 // Loading

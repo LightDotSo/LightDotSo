@@ -45,7 +45,7 @@ import { type FC, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
 import { UserOperationCardTransaction } from "./card";
-import { userOperationColumns } from "./user-operation-columns";
+import { userOperationColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props
