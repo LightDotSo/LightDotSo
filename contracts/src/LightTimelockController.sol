@@ -16,7 +16,9 @@
 
 pragma solidity ^0.8.18;
 
-import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+import {TimelockControllerUpgradeable} from
+    "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
@@ -26,7 +28,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// This is the version 0.1.0 contract for Light Protocol.
 /// @dev The contract is the initial implementation of a timelock controller for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightTimelockController is TimelockController {
+contract LightTimelockController is Initializable, TimelockControllerUpgradeable {
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -38,15 +40,22 @@ contract LightTimelockController is TimelockController {
     string public constant VERSION = "0.1.0";
 
     /// @notice The minimum delay for the timelock
-    uint256 public immutable minDelay = 300 seconds;
+    uint256 public immutable MIN_DELAY = 300 seconds;
 
     // -------------------------------------------------------------------------
-    // Constructor
+    // Initializer
     // -------------------------------------------------------------------------
 
-    constructor(address lightWallet, address lightProtocolController)
-        TimelockController(minDelay, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0))
-    {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(address lightWallet, address lightProtocolController) public initializer {
+        __TimelockController_init(
+            MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
+        );
+
         // Register executor role to the light wallet
         _setupRole(EXECUTOR_ROLE, lightWallet);
 
