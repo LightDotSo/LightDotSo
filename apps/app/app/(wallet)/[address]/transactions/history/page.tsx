@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
+import { Loader } from "@/app/(wallet)/[address]/transactions/history/loader";
 import { handler } from "@/handlers/[address]/transactions/history/handler";
 import { preloader } from "@/preloaders/[address]/transactions/history/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string };
   searchParams: {
     pagination?: string;
@@ -92,10 +92,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable
-        address={params.address as Address}
-        status="history"
-      />
+      <Loader params={params} searchParams={searchParams} />
       <TransactionsDataTablePagination />
     </HydrationBoundary>
   );

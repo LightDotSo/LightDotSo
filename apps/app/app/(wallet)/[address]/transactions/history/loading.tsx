@@ -18,8 +18,7 @@ import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/da
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <DataTable
       isLoading
@@ -31,3 +30,10 @@ export default function Loading() {
     />
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

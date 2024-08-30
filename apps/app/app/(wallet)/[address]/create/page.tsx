@@ -75,7 +75,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader {...{ params, searchParams }} />
+      <Loader params={params} searchParams={searchParams} />
     </HydrationBoundary>
   );
 }

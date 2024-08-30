@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Loader } from "@/app/(wallet)/[address]/swap/loader";
 import { handler } from "@/handlers/[address]/swap/handler";
 import { preloader } from "@/preloaders/[address]/swap/preloader";
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
-import { SwapDialog } from "@lightdotso/dialogs";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
@@ -88,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SwapDialog />
+      <Loader />
     </HydrationBoundary>
   );
 }

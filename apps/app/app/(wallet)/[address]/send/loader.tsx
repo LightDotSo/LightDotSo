@@ -12,19 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { Loading } from "@/app/(wallet)/[address]/send/loading";
+import type { PageProps } from "@/app/(wallet)/[address]/send/page";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
-  return <Skeleton className="h-96 w-full" />;
+const SendDialog = dynamic(
+  () =>
+    import("@/app/(wallet)/[address]/send/(components)/send-dialog").then(
+      (mod) => mod.SendDialog,
+    ),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <SendDialog address={params.address as Address} />;
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;

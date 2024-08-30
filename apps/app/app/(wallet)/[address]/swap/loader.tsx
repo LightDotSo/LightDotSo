@@ -12,19 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { Loading } from "@/app/(wallet)/[address]/swap/loading";
+import dynamic from "next/dynamic";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
-  return <Skeleton className="h-96 w-full" />;
+const SwapDialog = dynamic(
+  () => import("@lightdotso/dialogs/swap").then((mod) => mod.SwapDialog),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <SwapDialog />;
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;

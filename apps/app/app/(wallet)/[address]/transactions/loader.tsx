@@ -12,19 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
+"use client";
+
+import { Loading } from "@/app/(wallet)/[address]/transactions/loading";
+import type { PageProps } from "@/app/(wallet)/[address]/transactions/page";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
-  return <Skeleton className="h-96 w-full" />;
+const OverviewList = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list"
+    ).then((mod) => mod.OverviewList),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <OverviewList address={params.address as Address} isDemo={params.isDemo} />
+  );
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;
