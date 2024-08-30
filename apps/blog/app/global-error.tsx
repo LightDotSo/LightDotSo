@@ -27,14 +27,14 @@ import { ErrorBoundary } from "react-error-boundary";
 
 export interface GlobalErrorProps {
   error: Error & { digest?: string };
-  reset: () => void;
+  resetAction: () => void;
 }
 
 // -----------------------------------------------------------------------------
 // Error
 // -----------------------------------------------------------------------------
 
-export default function GlobalError({ error, reset }: GlobalErrorProps) {
+export default function GlobalError({ error, resetAction }: GlobalErrorProps) {
   const { reset: resetQuery } = useQueryErrorResetBoundary();
 
   // ---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               There was an error!
               <Button
                 onClick={() => {
-                  reset();
+                  resetAction();
                   resetErrorBoundary();
                 }}
               >
