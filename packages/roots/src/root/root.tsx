@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TooltipProvider } from "@lightdotso/ui/components/tooltip";
 import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { ThemeProvider } from "@lightdotso/ui/providers/theme";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
 import { RootDevWrapper } from "./root-dev-wrapper";
+import { RootProviderWrapper } from "./root-provider-wrapper";
 import { RootWrapper } from "./root-wrapper";
 
 // -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-dvh bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            <TooltipProvider>{children}</TooltipProvider>
+            <RootProviderWrapper>{children}</RootProviderWrapper>
           </ReactQueryProvider>
         </ThemeProvider>
         <RootWrapper />

@@ -33,6 +33,7 @@
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
+    "framer-motion": "^11.3.31",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
