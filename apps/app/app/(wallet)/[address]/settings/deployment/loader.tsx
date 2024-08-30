@@ -73,7 +73,7 @@ export function Loader({
         <SettingsDeploymentCard
           key={chain.id}
           address={params.address as Address}
-          chain={chain.name}
+          chain={JSON.stringify(chain)}
           image_hash={image_hash}
           salt={salt}
         />

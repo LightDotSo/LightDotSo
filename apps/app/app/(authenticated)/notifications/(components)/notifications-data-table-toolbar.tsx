@@ -16,6 +16,7 @@
 
 import { DataTableToolbar } from "@/app/(authenticated)/notifications/(components)/data-table/data-table-toolbar";
 import { useAuth, useTables } from "@lightdotso/stores";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
@@ -49,5 +50,9 @@ export const NotificationsDataTableToolbar: FC = () => {
     return null;
   }
 
-  return <DataTableToolbar table={notificationTable} />;
+  return (
+    <ToolbarSectionWrapper>
+      <DataTableToolbar table={notificationTable} />
+    </ToolbarSectionWrapper>
+  );
 };
