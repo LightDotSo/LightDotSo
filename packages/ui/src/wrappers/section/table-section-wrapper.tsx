@@ -21,7 +21,7 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type TableSectionWrapperProps = BaseSectionWrapperProps;
+export type TableSectionWrapperProps = BaseSectionWrapperProps;
 
 // -----------------------------------------------------------------------------
 // Layout
