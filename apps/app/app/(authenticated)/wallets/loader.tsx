@@ -12,36 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TITLES } from "@/const";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
+"use client";
+
+import { Loading } from "@/app/(action)/create/loading";
+import dynamic from "next/dynamic";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.WalletSettings.subcategories.Billing.title,
-  description: TITLES.WalletSettings.subcategories.Billing.description,
-};
+const WalletsDataTable = dynamic(
+  () =>
+    import(
+      "@/app/(authenticated)/wallets/(components)/wallets-data-table"
+    ).then((mod) => mod.WalletsDataTable),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
-// Props
+// Loader
 // -----------------------------------------------------------------------------
 
-interface SettingsBillingLayoutProps {
-  children: ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function Layout({ children }: SettingsBillingLayoutProps) {
+export function Loader() {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <SettingsSectionWrapper>{children}</SettingsSectionWrapper>;
+  return <WalletsDataTable />;
 }

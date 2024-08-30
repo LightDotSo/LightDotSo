@@ -13,18 +13,13 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
 export function Loading() {
-  return (
-    <TableSectionWrapper>
-      <DataTable isLoading pageCount={0} data={[]} columns={[]} />
-    </TableSectionWrapper>
-  );
+  return <DataTable isLoading pageCount={0} data={[]} columns={[]} />;
 }
 
 // -----------------------------------------------------------------------------

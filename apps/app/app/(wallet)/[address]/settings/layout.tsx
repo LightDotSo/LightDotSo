@@ -17,6 +17,7 @@ import { TITLES } from "@/const";
 import { BannerSection } from "@lightdotso/ui/sections";
 import { HStackFull } from "@lightdotso/ui/stacks";
 import { BaseLayerWrapper, SettingsPageWrapper } from "@lightdotso/ui/wrappers";
+import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -80,7 +81,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <SettingsPageWrapper
             nav={<NavSidebar baseRef items={navSidebarItems} />}
           >
-            {children}
+            <SettingsSectionWrapper>{children}</SettingsSectionWrapper>
           </SettingsPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>

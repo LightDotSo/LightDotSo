@@ -14,7 +14,6 @@
 
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import { MAINNET_CHAINS } from "@lightdotso/const";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -23,10 +22,10 @@ import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
   return (
-    <SettingsSectionWrapper>
+    <>
       {MAINNET_CHAINS.map((chain) => (
         <SettingsCardSkeleton key={chain.id} />
       ))}
-    </SettingsSectionWrapper>
+    </>
   );
 }

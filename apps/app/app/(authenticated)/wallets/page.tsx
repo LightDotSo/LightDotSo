@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
 import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
 import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
+import { Loader } from "@/app/(authenticated)/wallets/loader";
 import { handler } from "@/handlers/wallets/handler";
 import { preloader } from "@/preloaders/wallets/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -79,7 +79,7 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <WalletsDataTableToolbar />
-      <WalletsDataTable />
+      <Loader />
       <WalletsDataTablePagination />
     </HydrationBoundary>
   );
