@@ -36,8 +36,10 @@ export const LightRoot: FC<LightRootProps> = ({ children }) => {
 
   return (
     <Root>
-      <Web3Provider>{children}</Web3Provider>
-      <LightRootWrapper />
+      <Web3Provider>
+        {children}
+        <LightRootWrapper />
+      </Web3Provider>
     </Root>
   );
 };

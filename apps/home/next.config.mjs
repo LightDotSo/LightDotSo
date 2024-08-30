@@ -35,6 +35,15 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "assets.light.so",
+        protocol: "https",
+        pathname: "**",
+      },
+    ],
+  },
   outputFileTracingExcludes: {
     "*": [
       "./node_modules/@swc/core-linux-x64-gnu",

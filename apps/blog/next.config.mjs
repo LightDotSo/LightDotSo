@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import withBundleAnalyzer from "@next/bundle-analyzer";
 import packageJson from "./package.json" assert { type: "json" };
 
 // ---------------------------------------------------------------------------
@@ -41,7 +42,19 @@ const nextConfig = {
 };
 
 // -----------------------------------------------------------------------------
+// Plugins
+// -----------------------------------------------------------------------------
+
+const plugins = [
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  }),
+];
+
+// -----------------------------------------------------------------------------
 // Export
 // -----------------------------------------------------------------------------
 
-export default nextConfig;
+export default plugins.reduce((acc, next) => {
+  return next(acc);
+}, nextConfig);
