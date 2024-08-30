@@ -25,6 +25,7 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/dialogs": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",

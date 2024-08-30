@@ -1,0 +1,51 @@
+{
+  "name": "@lightdotso/roots",
+  "version": "0.0.0",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "LightDotSo",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*/index.ts"
+  },
+  "main": "./src/index.ts",
+  "files": ["dist/**", "src/**"],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lightdotso/forms": "workspace:*",
+    "@lightdotso/modals": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
+    "next": "15.0.0-canary.120",
+    "react": "19.0.0-rc-187dd6a7-20240806",
+    "react-dom": "19.0.0-rc-187dd6a7-20240806",
+    "react-is": "19.0.0-rc-187dd6a7-20240806"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^8.2.9",
+    "@types/node": "^22.5.1",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}

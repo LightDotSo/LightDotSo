@@ -30,6 +30,7 @@
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/services": "workspace:*",
     "@lightdotso/states": "workspace:*",
     "@lightdotso/stores": "workspace:*",

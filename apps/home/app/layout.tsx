@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
+import { Root } from "@lightdotso/roots/root";
 import { Footer } from "@lightdotso/templates/footer";
-import { Root } from "@lightdotso/templates/root";
 import { Web3Provider } from "@lightdotso/ui/providers/web3";
 import type { ReactNode } from "react";
 

@@ -16,6 +16,7 @@ import { AppBanner } from "@/components/app-banner";
 import { Nav } from "@/components/nav/nav";
 import { WalletState } from "@/components/state/wallet-state";
 import { WssState } from "@/components/wss/wss-state";
+import { Root as LightRoot } from "@lightdotso/roots/root";
 import {
   AuthState,
   FormState,
@@ -24,7 +25,6 @@ import {
 } from "@lightdotso/states";
 import {
   Footer,
-  Root as LightRoot,
   ProgressTransaction,
   ProgressUserOperation,
 } from "@lightdotso/templates";
@@ -42,53 +42,6 @@ import type { FC, ReactNode } from "react";
 const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
-
-const AddressModal = dynamic(
-  () => import("@lightdotso/modals/address/address-modal"),
-  {
-    ssr: false,
-  },
-);
-
-const AuthModal = dynamic(() => import("@lightdotso/modals/auth/auth-modal"), {
-  ssr: false,
-});
-
-const CartModal = dynamic(() => import("@lightdotso/modals/cart/cart-modal"), {
-  ssr: false,
-});
-
-const ChainModal = dynamic(
-  () => import("@lightdotso/modals/chain/chain-modal"),
-  {
-    ssr: false,
-  },
-);
-
-const ConnectModal = dynamic(
-  () => import("@lightdotso/modals/connect/connect-modal"),
-  {
-    ssr: false,
-  },
-);
-
-const OwnerModal = dynamic(
-  () => import("@lightdotso/modals/owner/owner-modal"),
-  {
-    ssr: false,
-  },
-);
-
-const NftModal = dynamic(() => import("@lightdotso/modals/nft/nft-modal"), {
-  ssr: false,
-});
-
-const TokenModal = dynamic(
-  () => import("@lightdotso/modals/token/token-modal"),
-  {
-    ssr: false,
-  },
-);
 
 // -----------------------------------------------------------------------------
 // Props
@@ -124,14 +77,6 @@ export const Root: FC<RootProps> = ({ children }) => {
         <CommandK />
         <Toaster />
         {/* Modals */}
-        <AddressModal />
-        <AuthModal />
-        <CartModal />
-        <ChainModal />
-        <ConnectModal />
-        <OwnerModal />
-        <NftModal />
-        <TokenModal />
         {/* Templates */}
         <ProgressTransaction />
         <ProgressUserOperation />

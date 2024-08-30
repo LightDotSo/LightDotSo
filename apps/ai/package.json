@@ -27,6 +27,7 @@
     "@langchain/langgraph-sdk": "^0.0.8",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",

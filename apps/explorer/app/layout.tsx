@@ -14,10 +14,10 @@
 
 import "@lightdotso/styles/global.css";
 import { EXPLORER_TABS } from "@/const";
+import { Root } from "@lightdotso/roots/root";
 import { Banner } from "@lightdotso/templates/banner";
 import { Footer } from "@lightdotso/templates/footer";
 import { Nav } from "@lightdotso/templates/nav";
-import { Root } from "@lightdotso/templates/root";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

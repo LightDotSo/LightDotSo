@@ -58,7 +58,7 @@ const VercelToolbar = dynamic(
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootWrapper: FC = () => {
+export const RootDevWrapper: FC = () => {
   return (
     <>
       <FormDevTools />

@@ -97,8 +97,8 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
         {/* <ReactQueryStreamedHydration transformer={superjson}>
         {children}
         </ReactQueryStreamedHydration> */}
+        <ReactQueryWrapper />
       </QueryClientProvider>
-      <ReactQueryWrapper />
     </>
   );
 };

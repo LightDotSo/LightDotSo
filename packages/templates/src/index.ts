@@ -37,6 +37,6 @@ export { ModalSwiper } from "./modal-swiper";
 export { NotificationComboDialog } from "./notification-combo-dialog";
 export { ProgressTransaction } from "./progress-transaction";
 export { ProgressUserOperation } from "./progress-user-operation";
-export { Root } from "./root";
+export { Root } from "../../roots/src/root";
 export { Support } from "./support";
 export { TokenGroup } from "./token-group";

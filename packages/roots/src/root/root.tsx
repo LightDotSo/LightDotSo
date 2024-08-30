@@ -18,6 +18,7 @@ import { ThemeProvider } from "@lightdotso/ui/providers/theme";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
+import { RootDevWrapper } from "./root-dev-wrapper";
 import { RootWrapper } from "./root-wrapper";
 
 // -----------------------------------------------------------------------------
@@ -60,6 +61,7 @@ export const Root: FC<RootProps> = ({ children }) => {
           </ReactQueryProvider>
         </ThemeProvider>
         <RootWrapper />
+        <RootDevWrapper />
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

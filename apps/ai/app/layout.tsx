@@ -29,7 +29,7 @@
 import "@lightdotso/styles/global.css";
 import { Header } from "@/components/header";
 import { SidebarProvider } from "@/hooks/use-sidebar";
-import { Root } from "@lightdotso/templates";
+import { Root } from "@lightdotso/root/root";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
