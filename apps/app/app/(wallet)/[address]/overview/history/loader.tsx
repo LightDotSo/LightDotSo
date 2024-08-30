@@ -43,9 +43,5 @@ export function Loader({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <HistoryDataTable address={params.address as Address} />
-    </>
-  );
+  return <HistoryDataTable address={params.address as Address} />;
 }

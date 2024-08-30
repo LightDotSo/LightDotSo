@@ -43,9 +43,5 @@ export function Loader({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <NftsDataTable address={params.address as Address} />
-    </>
-  );
+  return <NftsDataTable address={params.address as Address} />;
 }

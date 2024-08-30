@@ -43,9 +43,5 @@ export function Loader({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <SettingsBillingBalanceCard address={params.address as Address} />
-    </>
-  );
+  return <SettingsBillingBalanceCard address={params.address as Address} />;
 }
