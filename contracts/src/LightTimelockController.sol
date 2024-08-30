@@ -35,53 +35,33 @@ contract LightTimelockController is TimelockController {
     string public constant NAME = "LightTimelockController";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.0.1";
+    string public constant VERSION = "0.1.0";
 
-    // -------------------------------------------------------------------------
-    // Storage
-    // -------------------------------------------------------------------------
-
-    address public immutable proposer;
+    /// @notice The minimum delay for the timelock
+    uint256 public immutable minDelay = 300 seconds;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(uint256 minDelay, address _proposer, address _executor)
-        TimelockController(minDelay, new address[](0), new address[](0), address(0))
+    constructor(address proposer, address executor)
+        TimelockController(minDelay, _singletonArray(proposer), _singletonArray(executor), address(0))
     {
-        proposer = _proposer;
+        // Register executor role to the proposer
+        _setupRole(EXECUTOR_ROLE, proposer);
 
-        _setupRole(PROPOSER_ROLE, _proposer);
-        _setupRole(EXECUTOR_ROLE, _executor);
-        _setupRole(CANCELLER_ROLE, _executor);
-
-        _setRoleAdmin(PROPOSER_ROLE, PROPOSER_ROLE);
-        _setRoleAdmin(EXECUTOR_ROLE, EXECUTOR_ROLE);
-        _setRoleAdmin(CANCELLER_ROLE, CANCELLER_ROLE);
+        // Register canceler role to the executor
+        _setupRole(CANCELLER_ROLE, executor);
     }
 
     // -------------------------------------------------------------------------
-    // External Functions
+    // Utils
     // -------------------------------------------------------------------------
 
-    function verifyAndSchedule(
-        bytes32 merkleRoot,
-        bytes memory signature,
-        bytes32[] calldata merkleProof,
-        address target,
-        uint256 value,
-        bytes calldata data,
-        bytes32 predecessor,
-        bytes32 salt,
-        uint256 delay
-    ) external onlyRole(PROPOSER_ROLE) {
-        bytes32 leaf = keccak256(abi.encodePacked(target, value, keccak256(data), predecessor, salt, delay));
-        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "LightTimelockController: Invalid Merkle proof");
-
-        bytes4 isValidSignature = ILightWallet(proposer).isValidSignature(merkleRoot, signature);
-        require(isValidSignature == 0x1626ba7e, "LightTimelockController: Invalid signature");
-
-        schedule(target, value, data, predecessor, salt, delay);
+    // Helper function to create a single-element address array
+    function _singletonArray(address element) private pure returns (address[] memory) {
+        address[] memory array = new address[](1);
+        array[0] = element;
+        return array;
     }
 }
