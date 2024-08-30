@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { Loading } from "@/app/(wallet)/[address]/swap/loading";
 import dynamic from "next/dynamic";
 
