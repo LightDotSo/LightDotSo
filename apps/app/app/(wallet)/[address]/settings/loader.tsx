@@ -14,6 +14,7 @@
 
 "use client";
 
+import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 import type { PageProps } from "./page";
@@ -29,6 +30,7 @@ const SettingsNameCard = dynamic(
     ).then((mod) => mod.SettingsNameCard),
   {
     ssr: false,
+    loading: () => <SettingsCardSkeleton />,
   },
 );
 
@@ -39,6 +41,7 @@ const SettingsDevCard = dynamic(
     ).then((mod) => mod.SettingsDevCard),
   {
     ssr: false,
+    loading: () => <SettingsCardSkeleton />,
   },
 );
 
@@ -49,6 +52,7 @@ const SettingsTestnetCard = dynamic(
     ).then((mod) => mod.SettingsTestnetCard),
   {
     ssr: false,
+    loading: () => <SettingsCardSkeleton />,
   },
 );
 
