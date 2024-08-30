@@ -12,34 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { Loading } from "@/app/(authenticated)/wallets/loading";
-import dynamic from "next/dynamic";
+import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
-// Dynamic
+// Loading
 // -----------------------------------------------------------------------------
 
-const WalletsDataTable = dynamic(
-  () =>
-    import(
-      "@/app/(authenticated)/wallets/(components)/wallets-data-table"
-    ).then((mod) => mod.WalletsDataTable),
-  {
-    loading: () => <Loading />,
-    ssr: false,
-  },
-);
-
-// -----------------------------------------------------------------------------
-// Loader
-// -----------------------------------------------------------------------------
-
-export function Loader() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <WalletsDataTable />;
+export function Loading() {
+  return <DataTable isLoading data={[]} columns={[]} pageCount={1} />;
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;
