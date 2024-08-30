@@ -12,30 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(action)/send/loader";
-import { TITLES } from "@/const";
-import type { Metadata } from "next";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Loading
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Swap.title} | %s`,
-    default: TITLES.Swap.title,
-  },
-  description: TITLES.Swap.description,
-};
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <Loader />;
+export function Loading() {
+  return <Skeleton className="h-96 w-full" />;
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

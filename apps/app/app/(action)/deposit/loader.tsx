@@ -12,30 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(action)/send/loader";
-import { TITLES } from "@/const";
-import type { Metadata } from "next";
+"use client";
+
+import { Loading } from "@/app/(wallet)/[address]/deposit/loading";
+import dynamic from "next/dynamic";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Swap.title} | %s`,
-    default: TITLES.Swap.title,
+const DepositDialog = dynamic(
+  // TODO: Replace with @lightdotso/dialogs/deposit
+  () => import("@lightdotso/dialogs/swap").then((mod) => mod.SwapDialog),
+  {
+    loading: () => <Loading />,
+    ssr: false,
   },
-  description: TITLES.Swap.description,
-};
+);
 
 // -----------------------------------------------------------------------------
-// Page
+// Loader
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
+export function Loader() {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Loader />;
+  return <DepositDialog />;
 }
