@@ -13,7 +13,8 @@
       "~/*": ["./*"],
       "content-collections": ["./.content-collections/generated"]
     },
-    "target": "es2020"
+    "declaration": false,
+    "declarationMap": false
   },
   "include": [
     "content-collections.ts",
