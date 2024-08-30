@@ -116,10 +116,14 @@ const QueueState = dynamic(
   },
 );
 
-const UserOperationState = dynamic(() =>
-  import("@lightdotso/states/user-operation").then(
-    (mod) => mod.UserOperationState,
-  ),
+const UserOperationState = dynamic(
+  () =>
+    import("@lightdotso/states/user-operation").then(
+      (mod) => mod.UserOperationState,
+    ),
+  {
+    ssr: false,
+  },
 );
 
 // -----------------------------------------------------------------------------

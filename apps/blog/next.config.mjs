@@ -28,6 +28,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "assets.light.so",
+        protocol: "https",
+        pathname: "**",
+      },
+    ],
+  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };
 

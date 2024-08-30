@@ -22,11 +22,15 @@ import { useEffect } from "react";
 // Dynamic
 // -----------------------------------------------------------------------------
 
-const ReactQueryDevtoolsProduction = dynamic(() =>
-  // @ts-ignore
-  import("@tanstack/react-query-devtools/production").then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
+const ReactQueryDevtoolsProduction = dynamic(
+  () =>
+    // @ts-ignore
+    import("@tanstack/react-query-devtools/production").then((d) => ({
+      default: d.ReactQueryDevtools,
+    })),
+  {
+    ssr: false,
+  },
 );
 
 // -----------------------------------------------------------------------------
