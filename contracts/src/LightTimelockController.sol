@@ -52,6 +52,7 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     }
 
     function initialize(address lightWallet, address lightProtocolController) public initializer {
+        // Initialize the timelock controller
         __TimelockController_init(
             MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
         );
