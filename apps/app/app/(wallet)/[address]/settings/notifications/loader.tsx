@@ -12,38 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(wallet)/[address]/dev/loader";
-import { handler } from "@/handlers/[address]/dev/handler";
-import { preloader } from "@/preloaders/[address]/dev/preloader";
+"use client";
+
+import type { PageProps } from "@/app/(wallet)/[address]/settings/notifications/page";
+import { SettingsCardSkeleton } from "@/components/settings/settings-card";
+import {} from "@lightdotso/const";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export type PageProps = {
-  params: { address: string };
-};
-
+const SettingsNotificationsSettingsCard = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/settings/notifications/(components)/settings-notifications-settings-card"
+    ).then((mod) => mod.SettingsNotificationsSettingsCard),
+  {
+    loading: () => <SettingsCardSkeleton />,
+    ssr: false,
+  },
+);
 // -----------------------------------------------------------------------------
-// Page
+// Loader
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  await handler(params);
-
+export function Loader({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Loader params={params} />;
+  return (
+    <SettingsNotificationsSettingsCard address={params.address as Address} />
+  );
 }

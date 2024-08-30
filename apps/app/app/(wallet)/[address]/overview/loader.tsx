@@ -12,24 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+"use client";
+
+import { Loading } from "@/app/(wallet)/[address]/overview/loading";
+import type { PageProps } from "@/app/(wallet)/[address]/overview/page";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
+const OverviewList = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/overview/(components)/overview/overview-list"
+    ).then((mod) => mod.OverviewList),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} />
-    </TableSectionWrapper>
+    <OverviewList address={params.address as Address} isDemo={params.isDemo} />
   );
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;

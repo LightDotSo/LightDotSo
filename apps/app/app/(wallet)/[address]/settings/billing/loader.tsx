@@ -12,24 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+"use client";
+
+import type { PageProps } from "@/app/(wallet)/[address]/settings/billing/page";
+import { SettingsCardSkeleton } from "@/components/settings/settings-card";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
+const SettingsBillingBalanceCard = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card"
+    ).then((mod) => mod.SettingsBillingBalanceCard),
+  {
+    loading: () => <SettingsCardSkeleton />,
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} />
-    </TableSectionWrapper>
+    <>
+      <SettingsBillingBalanceCard address={params.address as Address} />
+    </>
   );
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;

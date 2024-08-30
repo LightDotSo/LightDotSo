@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
+import { Loader } from "@/app/(wallet)/[address]/overview/loader";
 import { handler } from "@/handlers/[address]/overview/handler";
 import { preloader } from "@/preloaders/[address]/overview/preloader";
 import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-interface PageProps {
+export interface PageProps {
   params: { address: Address; isDemo?: boolean };
 }
 
@@ -113,10 +113,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OverviewList
-        address={params.address as Address}
-        isDemo={params.isDemo}
-      />
+      <Loader params={params} />
     </HydrationBoundary>
   );
 }

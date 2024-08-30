@@ -12,19 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
-
-// -----------------------------------------------------------------------------
-// Loading
-// -----------------------------------------------------------------------------
-
-export function Loading() {
-  return <Skeleton className="h-96 w-full" />;
-}
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;
+// biome-ignore lint/performance/noBarrelFile: <explanation>
+export { default } from "@/app/(wallet)/[address]/overview/loading";

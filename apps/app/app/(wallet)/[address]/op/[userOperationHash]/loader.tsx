@@ -12,38 +12,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(wallet)/[address]/dev/loader";
-import { handler } from "@/handlers/[address]/dev/handler";
-import { preloader } from "@/preloaders/[address]/dev/preloader";
+"use client";
+
+import { Loading } from "@/app/(wallet)/[address]/op/[userOperationHash]/loading";
+import type { PageProps as OpPageProps } from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import type { WalletSettingsData } from "@lightdotso/data";
+import dynamic from "next/dynamic";
+import type { Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const OpDataTable = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-data-table"
+    ).then((mod) => mod.OpDataTable),
+  {
+    loading: () => <Loading />,
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type PageProps = {
-  params: { address: string };
+export type PageProps = OpPageProps & {
+  walletSettings: WalletSettingsData;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Loader
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  await handler(params);
-
+export function Loader({ params, walletSettings }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Loader params={params} />;
+  return (
+    <OpDataTable
+      userOperationHash={params.userOperationHash as Hex}
+      walletSettings={walletSettings}
+    />
+  );
 }

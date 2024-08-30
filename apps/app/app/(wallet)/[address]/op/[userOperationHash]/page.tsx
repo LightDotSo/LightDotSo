@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OpDataTable } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-data-table";
+import { Loader } from "@/app/(wallet)/[address]/op/[userOperationHash]/loader";
 import { handler } from "@/handlers/[address]/op/[userOperationHash]/handler";
 import { preloader } from "@/preloaders/[address]/op/[userOperationHash]/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -24,7 +24,7 @@ import type { Hex } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string; userOperationHash: string };
 };
 
@@ -64,10 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OpDataTable
-        userOperationHash={params.userOperationHash as Hex}
-        walletSettings={walletSettings}
-      />
+      <Loader {...{ params, walletSettings }} />
     </HydrationBoundary>
   );
 }

@@ -17,7 +17,6 @@ import { handler } from "@/handlers/[address]/settings/handler";
 import { preloader } from "@/preloaders/[address]/settings/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 
@@ -63,9 +62,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsSectionWrapper>
-        <Loader params={params} />
-      </SettingsSectionWrapper>
+      <Loader params={params} />
     </HydrationBoundary>
   );
 }

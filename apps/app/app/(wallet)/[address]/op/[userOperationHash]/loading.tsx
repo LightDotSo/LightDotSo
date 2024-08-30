@@ -19,8 +19,7 @@ import { userOperationGetData } from "@lightdotso/demo";
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <DataTable
       address={null}
@@ -32,3 +31,10 @@ export default function Loading() {
     />
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

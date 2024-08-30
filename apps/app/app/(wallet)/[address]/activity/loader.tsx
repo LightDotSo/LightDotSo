@@ -12,24 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+"use client";
+
+import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
+import type { PageProps } from "@/app/(wallet)/[address]/activity/page";
+import dynamic from "next/dynamic";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Dynamic
 // -----------------------------------------------------------------------------
 
-export function Loading() {
+const ActivityDataTable = dynamic(
+  () =>
+    import(
+      "@/app/(wallet)/[address]/activity/(components)/activity-data-table"
+    ).then((mod) => mod.ActivityDataTable),
+  {
+    ssr: false,
+  },
+);
+
+// -----------------------------------------------------------------------------
+// Loader
+// -----------------------------------------------------------------------------
+
+export function Loader({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} />
-    </TableSectionWrapper>
+    <>
+      <ActivityDataTable address={params.address as Address} />
+      <ActivityDataTablePagination />
+    </>
   );
 }
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;
