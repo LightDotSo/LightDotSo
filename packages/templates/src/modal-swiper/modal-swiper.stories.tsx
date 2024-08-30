@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { useModalSwiper } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ModalSwiper } from "../modal-swiper/modal-swiper";
 
@@ -41,7 +41,6 @@ type Story = StoryObj<typeof ModalSwiper>;
 
 export const Base: Story = {
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { pageIndex, setPageIndex } = useModalSwiper();
 
     return (

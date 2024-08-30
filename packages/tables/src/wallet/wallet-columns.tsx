@@ -15,7 +15,7 @@
 "use client";
 
 import type { WalletData } from "@lightdotso/data";
-import { DataTableColumnHeader } from "@lightdotso/templates";
+import { DataTableColumnHeader } from "@lightdotso/templates/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { WalletTableRowActions } from "./actions";
 import { WalletCardAddress } from "./card";

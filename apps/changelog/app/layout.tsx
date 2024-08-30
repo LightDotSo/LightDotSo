@@ -14,7 +14,9 @@
 
 import "@lightdotso/styles/global.css";
 import { CHANGELOG_TABS } from "@/const";
-import { Footer, Nav, Root } from "@lightdotso/templates";
+import { Root } from "@lightdotso/roots/root";
+import { Footer } from "@lightdotso/templates/footer";
+import { Nav } from "@lightdotso/templates/nav";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

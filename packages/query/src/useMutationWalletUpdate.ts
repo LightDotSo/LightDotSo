@@ -17,7 +17,7 @@ import type { WalletData } from "@lightdotso/data";
 import type { WalletParams, WalletUpdateBodyParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui/components/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------

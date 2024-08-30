@@ -24,7 +24,7 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   title: "Light",
   description:
-    "Light is a new type of smart wallet designed to help you explore Ethereum, and multiple EVM networks as easy as possible.",
+    "Light is an EVM chain abstraction protocol unifying all chains as one.",
   metadataBase: new URL("https://light.so"),
   openGraph: {
     title: "Light",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: "Light",
     images: [
       {
-        url: "/og.png",
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
         width: 1200,
         height: 675,
       },
@@ -46,6 +46,13 @@ export const metadata: Metadata = {
     title: "Light",
     description: "Use Ethereum as One.",
     creator: "@LightDotSo",
+    images: [
+      {
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
   },
 };
 

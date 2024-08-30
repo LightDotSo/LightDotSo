@@ -18,8 +18,8 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormRef } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Form,
   FormControl,
   FormDescription,
@@ -27,15 +27,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Textarea } from "@lightdotso/ui/components/textarea";
+import { toast } from "@lightdotso/ui/components/toast";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { type FC, useEffect } from "react";

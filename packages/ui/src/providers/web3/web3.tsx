@@ -14,14 +14,35 @@
 
 "use client";
 
-import type { State } from "@lightdotso/wagmi";
-import {
-  ConnectKitProvider,
-  WagmiProvider,
-  wagmiConfig,
-} from "@lightdotso/wagmi";
+import { wagmiConfig } from "@lightdotso/wagmi/config";
+import type { State } from "@lightdotso/wagmi/wagmi";
 import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
+const ConnectKitProvider = dynamic(
+  () =>
+    import("@lightdotso/wagmi/connectkit").then((d) => ({
+      default: d.ConnectKitProvider,
+    })),
+  {
+    ssr: false,
+  },
+);
+
+const WagmiProvider = dynamic(
+  () =>
+    import("@lightdotso/wagmi/wagmi").then((d) => ({
+      default: d.WagmiProvider,
+    })),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component

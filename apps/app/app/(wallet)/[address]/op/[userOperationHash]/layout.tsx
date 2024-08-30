@@ -15,12 +15,12 @@
 import { OpInvokeButton } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-invoke-button";
 import { TITLES } from "@/const";
 import { handler } from "@/handlers/[address]/op/[userOperationHash]/handler";
+import { BannerSection } from "@lightdotso/ui/sections";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   MiddleLayerWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address, Hex } from "viem";

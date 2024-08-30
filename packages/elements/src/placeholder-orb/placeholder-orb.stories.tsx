@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Avatar } from "@lightdotso/ui";
+import { Avatar } from "@lightdotso/ui/components/avatar";
 import type { Meta, StoryObj } from "@storybook/react";
 import { PlaceholderOrb } from "./placeholder-orb";
 

@@ -125,7 +125,6 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       url.searchParams.set("owners", ownerParser.serialize(owners));
       router.push(url.toString());
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [name, type, threshold, salt, owners],
   );
 

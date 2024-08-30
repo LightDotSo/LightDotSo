@@ -62,7 +62,6 @@ export const fetchWithResult = <T>(
       ...input[1],
       method: "POST",
       headers: {
-        // eslint-disable-next-line
         ...(input[1]?.headers || {}),
         "content-type": "application/json",
       },

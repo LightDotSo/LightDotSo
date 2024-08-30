@@ -21,7 +21,7 @@ import {
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useProxyImplementationAddress } from "@lightdotso/hooks";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
@@ -30,7 +30,7 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { calculateInitCode } from "@lightdotso/sequence";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import {
   findContractAddressByAddress,
   getEtherscanUrl,

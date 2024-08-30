@@ -18,16 +18,15 @@
 "use client";
 
 import { useAppGroup } from "@/hooks";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useAddressQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { ComboDialog } from "@lightdotso/templates";
-import type { PopoverTrigger } from "@lightdotso/ui";
+import { ComboDialog } from "@lightdotso/templates/combo-dialog";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Avatar,
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -35,7 +34,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import type { PopoverTrigger } from "@lightdotso/ui/components/popover";
 import { cn } from "@lightdotso/utils";
 import {
   CaretSortIcon,
@@ -62,10 +62,7 @@ interface WalletSwitcherProps extends PopoverTriggerProps {}
 // Parent Component
 // -----------------------------------------------------------------------------
 
-export const WalletSwitcher: FC<WalletSwitcherProps> = ({
-  // eslint-disable-next-line react/prop-types
-  className,
-}) => {
+export const WalletSwitcher: FC<WalletSwitcherProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -78,7 +75,6 @@ export const WalletSwitcher: FC<WalletSwitcherProps> = ({
 // -----------------------------------------------------------------------------
 
 export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
-  // eslint-disable-next-line react/prop-types
   className,
 }) => {
   // ---------------------------------------------------------------------------

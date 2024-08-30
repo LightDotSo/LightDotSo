@@ -22,7 +22,7 @@ import {
   LargeLayerWrapper,
   MiddleLayerWrapper,
   MinimalPageWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";

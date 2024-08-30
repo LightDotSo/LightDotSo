@@ -17,7 +17,7 @@
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { useQueryUserOperation } from "@lightdotso/query";
-import { userOperationColumns } from "@lightdotso/tables";
+import { userOperationColumns } from "@lightdotso/tables/user-operation";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
 

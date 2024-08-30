@@ -1,11 +1,5 @@
 {
   "extends": "@lightdotso/tsconfig/react.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@lightdotso/ui/*": ["src/*"]
-    }
-  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

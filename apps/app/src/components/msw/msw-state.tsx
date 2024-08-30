@@ -15,7 +15,7 @@
 "use client";
 
 import { useAppGroup } from "@/hooks";
-import type { SetupWorker } from "msw/lib/browser";
+import type { SetupWorker } from "msw/browser";
 import { useEffect, useState } from "react";
 
 // biome-ignore lint/style/useNamingConvention: <explanation>

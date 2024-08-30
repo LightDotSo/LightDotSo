@@ -16,7 +16,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import { NftImage, TokenImage } from "@lightdotso/elements";
+import { NftImage } from "@lightdotso/elements/nft-image";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import { useDelayedValue } from "@lightdotso/hooks";
 import { useTransferQueryState } from "@lightdotso/nuqs";
 import {
@@ -37,32 +38,35 @@ import {
   useTransactions,
 } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { useIsInsideModal } from "@lightdotso/templates/modal";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Form,
   FormControl,
   FormField,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
+import { toast } from "@lightdotso/ui/components/toast";
 import { getChainWithChainId } from "@lightdotso/utils";
+import { useModal } from "@lightdotso/wagmi/connectkit";
 import {
   useAccount,
   // useChainId,
-  useModal,
   useReadContract,
   useSendTransaction,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { isEmpty } from "lodash";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
@@ -189,14 +193,12 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { data } = useReadContract({
     abi: erc20Abi,
@@ -558,7 +560,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       // Hack to check if the asset address is defined
       typeof form.getValues().asset?.address !== "undefined"
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.formState]);
 
   // ---------------------------------------------------------------------------
@@ -610,7 +611,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                 <FormField
                   control={form.control}
                   name="asset.quantity"
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: _field }) => {
                     // Get the matching token
                     const token =
@@ -836,7 +836,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                 <FormField
                   control={form.control}
                   name="asset.quantity"
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: _field }) => {
                     // Get the matching nft
                     const nft =
@@ -845,7 +844,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                       transfer?.asset &&
                       transfer?.asset?.address &&
                       "tokenId" in
-                        // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                         // biome-ignore lint/style/noNonNullAssertion: <explanation>
                         transfer?.asset! &&
                       nftPage.nfts?.find(

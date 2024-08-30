@@ -15,13 +15,13 @@
 "use client";
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import {
   useQueryUserOperation,
   useQueryUserOperationMerkle,
 } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
-import { StateInfoSection } from "@lightdotso/ui";
+import { StateInfoSection } from "@lightdotso/ui/sections";
 import { getEtherscanUrlWithChainId, shortenBytes32 } from "@lightdotso/utils";
 import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { type FC, useMemo } from "react";

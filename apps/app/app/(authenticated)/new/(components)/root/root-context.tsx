@@ -15,18 +15,20 @@
 "use client";
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Badge,
+} from "@lightdotso/ui/components/accordion";
+import { Badge } from "@lightdotso/ui/components/badge";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { shortenAddress } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -186,7 +188,6 @@ export const RootContext: FC = () => {
             )}
             {address && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Your New Address:{" "}
                   <Tooltip>
@@ -202,7 +203,6 @@ export const RootContext: FC = () => {
             )}
             {formValues?.name && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Name:{" "}
                   <Tooltip>
@@ -218,7 +218,6 @@ export const RootContext: FC = () => {
             )}
             {formValues?.threshold && (
               <div className="flex justify-between">
-                {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                 <>
                   Threshold:{" "}
                   <Tooltip>

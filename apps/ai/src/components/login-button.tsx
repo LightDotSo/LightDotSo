@@ -29,7 +29,7 @@
 "use client";
 
 import { IconGitHub, IconSpinner } from "@/components/icons";
-import { Button, type ButtonProps } from "@lightdotso/ui";
+import { Button, type ButtonProps } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
 import { useState } from "react";
 

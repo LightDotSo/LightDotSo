@@ -20,17 +20,19 @@ import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { address, addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { FooterButton, Modal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandItem,
   CommandList,
-  Form,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import { Form } from "@lightdotso/ui/components/form";
 import { cn } from "@lightdotso/utils";
-import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi";
+import { useEnsAddress } from "@lightdotso/wagmi/wagmi";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -76,7 +78,6 @@ export function AddressModal() {
       return !!addr;
     });
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const validEns = useRefinement(getEns, {
     debounce: 300,
   });
@@ -85,7 +86,6 @@ export function AddressModal() {
   // Form
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const methods = useForm<AddressModalFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
@@ -161,7 +161,6 @@ export function AddressModal() {
         message: "Ens name is not valid",
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ensAddress, delayedName]);
 
   // ---------------------------------------------------------------------------

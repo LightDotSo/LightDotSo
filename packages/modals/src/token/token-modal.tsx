@@ -16,7 +16,7 @@
 
 import { CHAINS, LIGHT_CHAIN, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import { useContainerDimensions, useDebouncedValue } from "@lightdotso/hooks";
 import { useChainQueryState } from "@lightdotso/nuqs";
 import {
@@ -26,16 +26,16 @@ import {
 } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Modal, TokenGroup } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
+import { TokenGroup } from "@lightdotso/templates/token-group";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import { Command, CommandGroup } from "@lightdotso/ui/components/command";
 import {
-  Button,
-  ButtonIcon,
-  Command,
-  CommandGroup,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tooltip";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { SparklesIcon } from "lucide-react";

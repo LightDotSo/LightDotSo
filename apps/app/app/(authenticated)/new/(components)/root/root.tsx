@@ -21,11 +21,8 @@ import type { FC, ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export enum StepsEnum {
-  // eslint-disable-next-line no-unused-vars
   New = "new",
-  // eslint-disable-next-line no-unused-vars
   Configuration = "configuration",
-  // eslint-disable-next-line no-unused-vars
   Confirm = "confirm",
 }
 

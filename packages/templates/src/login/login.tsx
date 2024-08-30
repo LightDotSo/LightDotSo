@@ -15,7 +15,8 @@
 "use client";
 
 import { useAuthModal } from "@lightdotso/hooks";
-import { Button, StateInfoSection } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import { StateInfoSection } from "@lightdotso/ui/sections";
 import { UserIcon } from "lucide-react";
 import type { FC } from "react";
 

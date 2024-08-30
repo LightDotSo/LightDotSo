@@ -19,11 +19,9 @@ import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
 import { NavUser } from "@/components/nav/nav-user";
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
-import {
-  FeedbackComboDialog,
-  MobileAppDrawer,
-  NotificationComboDialog,
-} from "@lightdotso/templates";
+import { FeedbackComboDialog } from "@lightdotso/templates/feedback-combo-dialog";
+import { MobileAppDrawer } from "@lightdotso/templates/mobile-app-drawer";
+import { NotificationComboDialog } from "@lightdotso/templates/notification-combo-dialog";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
 

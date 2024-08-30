@@ -16,14 +16,14 @@
 
 import type { OwnerData } from "@lightdotso/data";
 import { useCopy } from "@lightdotso/hooks";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/dropdown-menu";
+import { toast } from "@lightdotso/ui/components/toast";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
 import { useCallback } from "react";
@@ -77,7 +77,6 @@ export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
             Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
-        {/* eslint-disable-next-line no-constant-binary-expression */}
         {false}
       </DropdownMenu>
     </div>

@@ -1,11 +1,5 @@
 {
   "extends": "@lightdotso/tsconfig/nextjs.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@lightdotso/storybook/*": ["src/*"]
-    }
-  },
   "include": [
     "./.storybook/main.ts",
     "./.storybook/preview.tsx",

@@ -16,8 +16,8 @@
 
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 import { useQueryConfiguration } from "@lightdotso/query";
-import { ownerColumns } from "@lightdotso/tables";
-import { TableSectionWrapper } from "@lightdotso/ui";
+import { ownerColumns } from "@lightdotso/tables/owner";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import type { FC } from "react";
 import type { Address } from "viem";
 

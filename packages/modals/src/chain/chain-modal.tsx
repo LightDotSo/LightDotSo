@@ -19,17 +19,19 @@ import { useChainQueryState } from "@lightdotso/nuqs";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Modal } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandInput,
   CommandItem,
   CommandList,
+} from "@lightdotso/ui/components/command";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 import { useMemo } from "react";
 import type { Address } from "viem";
 

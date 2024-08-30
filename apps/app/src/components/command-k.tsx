@@ -25,8 +25,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import { toast } from "@lightdotso/ui/components/toast";
 import {
   Calculator,
   Calendar,

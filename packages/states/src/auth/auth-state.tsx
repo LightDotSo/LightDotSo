@@ -18,7 +18,7 @@ import type { AuthSessionData, UserData } from "@lightdotso/data";
 import { useQueryAuthSession, useQueryUser } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useAccount, useEnsName } from "@lightdotso/wagmi";
+import { useAccount, useEnsName } from "@lightdotso/wagmi/wagmi";
 import { QueryObserver, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import type { FC } from "react";

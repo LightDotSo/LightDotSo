@@ -14,11 +14,8 @@
 
 import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
-import {
-  BaseLayerWrapper,
-  HStackFull,
-  MinimalPageWrapper,
-} from "@lightdotso/ui";
+import { HStackFull } from "@lightdotso/ui/stacks";
+import { BaseLayerWrapper, MinimalPageWrapper } from "@lightdotso/ui/wrappers";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

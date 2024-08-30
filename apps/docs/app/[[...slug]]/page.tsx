@@ -13,6 +13,7 @@ export default function Page({ params }: { params: { slug?: string[] } }) {
   }
 
   return (
+    // @ts-expect-error
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsBody>
         <h1>{page.data.title}</h1>

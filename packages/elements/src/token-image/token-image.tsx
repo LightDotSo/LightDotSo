@@ -14,11 +14,9 @@
 
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import type { TokenData } from "@lightdotso/data";
 import { ChainLogo } from "@lightdotso/svg";
-import { Skeleton } from "@lightdotso/ui";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { cn, getChainLabelById, shortenName } from "@lightdotso/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import { type FC, memo, useEffect, useMemo, useState } from "react";

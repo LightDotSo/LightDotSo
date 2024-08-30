@@ -8,3 +8,4 @@ ignores:
   - "@types/react-dom"
   - react-is
   - "@lightdotso/data"
+  - "@lightdotso/ui"

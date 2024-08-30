@@ -14,7 +14,7 @@
 
 "use client";
 
-import { StateInfoSection } from "@lightdotso/ui";
+import { StateInfoSection } from "@lightdotso/ui/sections";
 import { LoaderIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 

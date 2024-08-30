@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { shortenAddress } from "@lightdotso/utils";
-import { useEnsAddress } from "@lightdotso/wagmi";
+import { useEnsAddress } from "@lightdotso/wagmi/wagmi";
 import type { FC } from "react";
 import { normalize } from "viem/ens";
 
@@ -43,6 +43,5 @@ export const EnsAddress: FC<EnsAddressProps> = ({ name }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{ensAddress && shortenAddress(ensAddress)}</>;
 };

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { LightHorizontalLogo } from "@lightdotso/svg";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import type { FC } from "react";
 import { Menu } from "./menu";
 

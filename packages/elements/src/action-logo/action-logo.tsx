@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { Action } from "@lightdotso/const";
-import type { badgeVariants } from "@lightdotso/ui";
-import { BadgeIcon } from "@lightdotso/ui";
+import type { badgeVariants } from "@lightdotso/ui/components/badge";
+import { BadgeIcon } from "@lightdotso/ui/components/badge-icon";
 import type { VariantProps } from "class-variance-authority";
 import {
   ArrowDown,

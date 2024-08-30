@@ -28,7 +28,7 @@
 
 // import { auth } from "@/auth";
 import { IconGitHub, IconSeparator, IconVercel } from "@/components/icons";
-import { buttonVariants } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------

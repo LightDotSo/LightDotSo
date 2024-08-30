@@ -15,12 +15,12 @@
 import { OwnerOverviewBanner } from "@/app/(wallet)/[address]/owners/(components)/owner-overview-banner/owner-overview-banner";
 import { OwnersDataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-toolbar";
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   MiddleLayerWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

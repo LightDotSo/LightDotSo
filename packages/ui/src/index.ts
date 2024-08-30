@@ -292,25 +292,25 @@ export {
   baseHeightWrapper,
   minimalHeightWrapper,
   minimalWidthWrapper,
-} from "./wrappers/base";
+} from "./wrappers";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,
   MiddleLayerWrapper,
-} from "./wrappers/layer";
+} from "./wrappers";
 export type {
   BaseLayerWrapperProps,
   MiddleLayerWrapperProps,
-} from "./wrappers/layer";
+} from "./wrappers";
 export {
   BasicPageWrapper,
   MinimalPageWrapper,
   SettingsPageWrapper,
-} from "./wrappers/page";
+} from "./wrappers";
 export {
   BaseSectionWrapper,
   DialogSectionWrapper,
   SettingsSectionWrapper,
   TableSectionWrapper,
   ToolbarSectionWrapper,
-} from "./wrappers/section";
+} from "./wrappers";

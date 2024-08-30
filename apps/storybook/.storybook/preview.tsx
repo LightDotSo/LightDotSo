@@ -15,7 +15,7 @@
 import "./storybook.css";
 import "@lightdotso/styles/global.css";
 import "reactflow/dist/style.css";
-import { ReactQueryProvider } from "@lightdotso/ui";
+import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,

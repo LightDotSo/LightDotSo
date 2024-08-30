@@ -16,10 +16,10 @@
 
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
-import { ExternalLink } from "@lightdotso/elements";
+import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { cn } from "@lightdotso/utils";
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { type VariantProps, cva } from "class-variance-authority";

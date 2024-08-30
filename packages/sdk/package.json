@@ -27,12 +27,12 @@
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "neverthrow": "^7.0.1",
-    "viem": "^2.20.1"
+    "neverthrow": "^7.1.0",
+    "viem": "^2.21.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

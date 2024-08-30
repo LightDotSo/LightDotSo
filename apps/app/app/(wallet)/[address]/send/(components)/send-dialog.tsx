@@ -17,12 +17,10 @@
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import {
-  EnsAddress,
-  NftImage,
-  PlaceholderOrb,
-  TokenImage,
-} from "@lightdotso/elements";
+import { EnsAddress } from "@lightdotso/elements/ens-address";
+import { NftImage } from "@lightdotso/elements/nft-image";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
+import { TokenImage } from "@lightdotso/elements/token-image";
 import {
   transfersParser,
   useTransfersQueryState,
@@ -42,27 +40,32 @@ import type {
 } from "@lightdotso/schemas";
 import { useFormRef, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { useIsInsideModal } from "@lightdotso/templates/modal";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Avatar,
-  Button,
-  ButtonIcon,
+} from "@lightdotso/ui/components/accordion";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
+import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { isEmpty } from "lodash";
@@ -213,7 +216,6 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     return transfers;
     // Only set on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // The default values for the form
@@ -226,7 +228,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           ? transfers
           : defaultTransfer,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTransfer]);
 
   // ---------------------------------------------------------------------------
@@ -396,7 +397,6 @@ export const SendDialog: FC<SendDialogProps> = ({
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // Set the form values from the URL on mount
@@ -412,8 +412,6 @@ export const SendDialog: FC<SendDialogProps> = ({
     if (defaultValues.transfers) {
       setTransfers(defaultValues.transfers);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   // ---------------------------------------------------------------------------
@@ -446,7 +444,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           "address" in transfer.asset &&
           tokens?.find(
             (token) =>
-              // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
               // biome-ignore lint/style/noNonNullAssertion: <explanation>
               token.address === transfer.asset?.address! &&
               token.chain_id === transfer.chainId,
@@ -458,7 +455,6 @@ export const SendDialog: FC<SendDialogProps> = ({
 
         // Get the amount
         const amount =
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           transfer.asset?.quantity! * 10 ** token.decimals!;
 
@@ -519,7 +515,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           "address" in transfer.asset &&
           nftPage.nfts?.find(
             (nft) =>
-              // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
               // biome-ignore lint/style/noNonNullAssertion: <explanation>
               nft.contract_address === transfer.asset?.address! &&
               SIMPLEHASH_CHAIN_ID_MAPPING[
@@ -576,10 +571,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                     [
                       address,
                       transfer.address as Address,
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                       // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                       // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset.quantity!),
                       "0x",
@@ -678,7 +671,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                     [
                       address,
                       transfer.address as Address,
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                       // biome-ignore lint/style/noNonNullAssertion: <explanation>
                       BigInt(transfer.asset?.tokenId!),
                     ],
@@ -764,14 +756,12 @@ export const SendDialog: FC<SendDialogProps> = ({
           erc1155Transfers.forEach((transfer) => {
             const transfers =
               erc1155TransfersByAssetAddress.get(
-                // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                 `${
                   // biome-ignore lint/style/noNonNullAssertion: <explanation>
                   transfer.asset?.address!
                 }-${transfer.chainId}-${transfer.address}`,
               ) || [];
             erc1155TransfersByAssetAddress.set(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
               `${
                 // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 transfer.asset?.address!
@@ -783,7 +773,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           for (const [key, transfers] of erc1155TransfersByAssetAddress) {
             // If the transfer count is more than one, there is a duplicate
             if (transfers.length > 1) {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const [address, chainId, _add] = key.split("-");
               for (const transfer of transfers) {
                 // Remove the transfer from the array
@@ -799,11 +788,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                   address: address as Address,
                   quantities: transfers.map(
                     // @ts-expect-error
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                     // biome-ignore lint/style/noNonNullAssertion: <explanation>
                     (transfer) => transfer.asset?.quantity!,
                   ),
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                   tokenIds: transfers.map(
                     // @ts-expect-error
                     // biome-ignore lint/style/noNonNullAssertion: <explanation>
@@ -847,8 +834,6 @@ export const SendDialog: FC<SendDialogProps> = ({
       // Return the user operations params
       return userOperationsParams;
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers, tokens, isFormValid]);
 
   // ---------------------------------------------------------------------------
@@ -864,7 +849,6 @@ export const SendDialog: FC<SendDialogProps> = ({
     if (isFormValid && userOperationsParams) {
       setUserOperations(userOperationsParams);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, userOperationsParams]);
 
   useEffect(() => {
@@ -1576,7 +1560,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 transfers[index]?.asset
                                                   ?.address &&
                                                 "tokenId" in
-                                                  // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                                                   // biome-ignore lint/style/noNonNullAssertion: <explanation>
                                                   transfers[index]?.asset! &&
                                                 nftPage.nfts?.find(

@@ -20,9 +20,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Separator,
-  Skeleton,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/card";
+import { Separator } from "@lightdotso/ui/components/separator";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------

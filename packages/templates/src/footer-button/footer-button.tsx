@@ -14,7 +14,8 @@
 
 "use client";
 
-import { Button, ButtonIcon } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
 import type { FC, MouseEvent } from "react";

@@ -29,7 +29,7 @@
 "use client";
 
 import { IconMoon, IconSun } from "@/components/icons";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import { useTheme } from "next-themes";
 import { useTransition } from "react";
 

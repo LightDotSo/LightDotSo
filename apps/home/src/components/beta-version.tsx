@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { SOCIAL_LINKS } from "@lightdotso/const";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

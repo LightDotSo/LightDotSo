@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
-import { SettingsSectionWrapper } from "@lightdotso/ui";
+import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading

@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { useModals } from "@lightdotso/stores";
 import type { TokenModalProps } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
@@ -68,7 +66,6 @@ export const Base: Story = {
     useEffect(() => {
       setTokenModalProps(tokenModalProps);
       showTokenModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -88,7 +85,6 @@ export const Socket: Story = {
     useEffect(() => {
       setTokenModalProps({ ...tokenModalProps, type: "socket" });
       showTokenModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -111,7 +107,6 @@ export const Empty: Story = {
         address: "0x07beCa880a83b93983604157fefCC57377977300",
       });
       showTokenModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

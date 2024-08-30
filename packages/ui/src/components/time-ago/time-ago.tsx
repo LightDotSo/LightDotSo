@@ -32,10 +32,7 @@ interface TimeAgoProps {
 const TimeAgo: FC<TimeAgoProps> = ({ value }) => {
   const timeString = intlFormatDistance(value, new Date());
 
-  return (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>{timeString}</>
-  );
+  return <>{timeString}</>;
 };
 
 TimeAgo.displayName = "TimeAgo";

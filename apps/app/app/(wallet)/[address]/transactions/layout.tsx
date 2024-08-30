@@ -15,12 +15,12 @@
 import { OverviewInvokeButton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-invoke-button";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   MiddleLayerWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";

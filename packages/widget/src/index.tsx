@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 
 const Widget = () => {
   return <Button>Widget</Button>;

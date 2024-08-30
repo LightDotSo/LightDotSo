@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { LightAppLogo } from "@lightdotso/svg";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
 

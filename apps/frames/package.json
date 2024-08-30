@@ -25,19 +25,19 @@
     "@lightdotso/services": "workspace:*",
     "@next/bundle-analyzer": "15.0.0-canary.120",
     "@sentry/integrations": "^7.114.0",
-    "@sentry/nextjs": "^8.26.0",
+    "@sentry/nextjs": "^8.27.0",
     "@vercel/og": "^0.6.2",
     "critters": "^0.0.24",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "viem": "^2.20.1"
+    "viem": "^2.21.0"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",

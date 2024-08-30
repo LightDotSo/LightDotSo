@@ -32,7 +32,6 @@ test("getUserOperationReceipt", async () => {
   //   "0x1f5db705609eb03604d24aa0ea154100d638050162131952e8ea7cca69e461a3",
   // ]);
 
-  // // eslint-disable-next-line no-console
   // console.log(invalidResult);
 
   // expect(invalidResult.isErr()).toBe(true);

@@ -19,7 +19,7 @@ import {
   userOperationsParser,
 } from "@lightdotso/nuqs";
 import { useAuth, useFormRef } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback, useMemo } from "react";
 
@@ -53,7 +53,6 @@ export const ModalInterceptionFooter: FC = () => {
 
   const onDismiss = useCallback(() => {
     router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

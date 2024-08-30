@@ -18,7 +18,7 @@ import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/d
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
-import { nftColumns } from "@lightdotso/tables";
+import { nftColumns } from "@lightdotso/tables/nft";
 import { type FC, useEffect } from "react";
 import type { Address } from "viem";
 
@@ -68,7 +68,6 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
     if (nftPage?.next_cursor) {
       setCursorState(nftPage.next_cursor);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nftPage?.next_cursor, setCursorState, paginationState.pageIndex]);
 
   // Only run once on mount
@@ -76,7 +75,6 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   useEffect(() => {
     // Set the paginationSize to the `SIMPLEHASH_MAX_COUNT`
     setPaginationState((prev) => ({ ...prev, pageSize: SIMPLEHASH_MAX_COUNT }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

@@ -40,7 +40,6 @@ export const LightAppLogo: FC<LightAppLogoProps> = ({
       viewBox="0 0 144 144"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      // eslint-disable-next-line tailwindcss/no-custom-classname
       className={cn(className)}
       {...props}
     >

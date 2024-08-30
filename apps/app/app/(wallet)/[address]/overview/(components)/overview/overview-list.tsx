@@ -18,7 +18,7 @@ import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/ove
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { OverviewSubCategory, TITLES } from "@/const";
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
-import { Skeleton } from "@lightdotso/ui";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -129,7 +129,6 @@ export const OverviewList: FC<OverviewListProps> = ({
           <TransactionsList address={address} limit={OVERVIEW_ROW_COUNT} />
         );
       default:
-        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
   };
@@ -146,7 +145,6 @@ export const OverviewList: FC<OverviewListProps> = ({
       case OverviewSubCategory.NFTs:
         return <NftPortfolio isNeutral address={address} size="balance" />;
       default:
-        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
   };

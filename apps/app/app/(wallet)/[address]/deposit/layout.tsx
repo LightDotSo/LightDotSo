@@ -15,13 +15,13 @@
 import { ACTION_NAV_ITEMS } from "@/app/(wallet)/[address]/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
   DialogSectionWrapper,
   MiddleLayerWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

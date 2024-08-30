@@ -20,7 +20,7 @@ import {
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/wagmi";
 import { useMemo } from "react";
 import { type Address, type Hex, fromHex } from "viem";
 import {
@@ -60,7 +60,6 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { clientType } = useAuth();
 
@@ -102,7 +101,6 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
     // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     data: estimateGas,
@@ -121,7 +119,6 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   });
 
   // Get the max priority fee per gas, fallbacks to mainnet
-  // @eslint-disable-next-line @typescript-eslint/no-unused-vars
   // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { data: estimatedMaxPriorityFeePerGas } =
     useEstimateMaxPriorityFeePerGas({

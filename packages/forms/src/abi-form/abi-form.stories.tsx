@@ -15,7 +15,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRefinement } from "@lightdotso/hooks";
 import { addressOrEns } from "@lightdotso/schemas";
-import { Form } from "@lightdotso/ui";
+import { Form } from "@lightdotso/ui/components/form";
 import { publicClient } from "@lightdotso/wagmi";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
@@ -62,12 +62,10 @@ export const Base: Story = {
         return !!addr;
       });
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const validEns = useRefinement(getEns, {
       debounce: 300,
     });
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const methods = useForm({
       mode: "all",
       reValidateMode: "onBlur",

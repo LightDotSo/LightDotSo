@@ -24,9 +24,9 @@ import {
   useQueryNotificationsCount,
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { notificationColumns } from "@lightdotso/tables";
-import { Login } from "@lightdotso/templates";
-import { TableSectionWrapper } from "@lightdotso/ui";
+import { notificationColumns } from "@lightdotso/tables/notification";
+import { Login } from "@lightdotso/templates/login";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";

@@ -15,14 +15,14 @@
 import { ActivityDataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-toolbar";
 import { verifyUserId } from "@/auth";
 import { TITLES } from "@/const";
+import { BannerSection } from "@lightdotso/ui/sections";
+import { HStackFull } from "@lightdotso/ui/stacks";
 import {
-  BannerSection,
   BaseLayerWrapper,
   BasicPageWrapper,
-  HStackFull,
   MiddleLayerWrapper,
   MinimalPageWrapper,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

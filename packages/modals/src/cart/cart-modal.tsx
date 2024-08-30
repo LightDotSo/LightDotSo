@@ -15,16 +15,18 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
+import { Modal } from "@lightdotso/templates/modal";
 import {
   Command,
   CommandInput,
   CommandList,
+} from "@lightdotso/ui/components/command";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/tabs";
 
 // -----------------------------------------------------------------------------
 // Component

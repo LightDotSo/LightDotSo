@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { CHAINS } from "@lightdotso/const";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type Chain, createClient } from "viem";
 import { http, cookieStorage, createConfig, createStorage } from "wagmi";
 import {

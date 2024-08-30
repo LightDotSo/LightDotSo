@@ -23,6 +23,5 @@ const metas = defineCollection({
 
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineConfig({
-  // @ts-expect-error
   collections: [docs, metas],
 });

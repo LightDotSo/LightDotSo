@@ -26,9 +26,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+} from "@lightdotso/ui/components/form";
+import {
   RadioGroup,
   RadioGroupItem,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/radio-group";
 import { useTheme } from "next-themes";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -16,7 +16,7 @@
 
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { useTables } from "@lightdotso/stores";
-import { DataTablePagination } from "@lightdotso/templates";
+import { DataTablePagination } from "@lightdotso/templates/data-table";
 import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------

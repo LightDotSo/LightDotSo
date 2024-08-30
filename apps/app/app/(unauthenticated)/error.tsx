@@ -22,7 +22,7 @@ import { useEffect } from "react";
 
 interface ErrorProps {
   error: Error & { digest?: string };
-  reset: () => void;
+  resetAction: () => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ interface ErrorProps {
 // -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-export default function Error({ error, reset }: ErrorProps) {
+export default function Error({ error, resetAction }: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
@@ -47,7 +47,7 @@ export default function Error({ error, reset }: ErrorProps) {
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment
-          () => reset()
+          () => resetAction()
         }
       >
         Try again

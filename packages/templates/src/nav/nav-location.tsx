@@ -17,7 +17,7 @@
 import { INTERNAL_LINKS } from "@lightdotso/const";
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
-import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui/components/button";
 import Link from "next/link";
 import type { FC } from "react";
 import { MobileAppDrawer } from "../mobile-app-drawer";

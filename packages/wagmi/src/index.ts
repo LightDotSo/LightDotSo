@@ -12,37 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { hashFn } from "@wagmi/core/query";
-export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";
-export type { State } from "wagmi";
-export {
-  WagmiProvider,
-  useBalance,
-  useBytecode,
-  useDisconnect,
-  useEnsAddress,
-  useEnsName,
-  cookieStorage,
-  cookieToInitialState,
-  createStorage,
-  serialize,
-  useSignMessage,
-  useStorageAt,
-  useAccount,
-  useChainId,
-  useConnectors,
-  useEstimateGas,
-  useEstimateFeesPerGas,
-  useEstimateMaxPriorityFeePerGas,
-  useReadContract,
-  useReadContracts,
-  useSendTransaction,
-  useSwitchChain,
-  useConnectorClient,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
-
 export { publicClient } from "./client";
 export { projectId, wagmiConfig } from "./config";
 export {

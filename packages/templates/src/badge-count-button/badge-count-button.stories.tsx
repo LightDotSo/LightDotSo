@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Popover, PopoverTrigger } from "@lightdotso/ui";
+import { Popover, PopoverTrigger } from "@lightdotso/ui/components/popover";
 import type { Meta, StoryObj } from "@storybook/react";
 import { BellIcon } from "lucide-react";
 import { BadgeCountButton } from "./badge-count-button";

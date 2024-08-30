@@ -28,7 +28,7 @@
 
 import { IconPlus } from "@/components/icons";
 import { SidebarList } from "@/components/sidebar-list";
-import { buttonVariants } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { Suspense } from "react";

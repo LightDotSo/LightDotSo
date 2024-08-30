@@ -20,7 +20,7 @@ import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import {
   ownerParser,
   useInviteCodeQueryState,
@@ -33,16 +33,18 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormConfigurationSchema, newFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  Avatar,
-  Button,
-  ButtonIcon,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+} from "@lightdotso/ui/components/card";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -50,15 +52,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Separator,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Separator } from "@lightdotso/ui/components/separator";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
 import { isEmpty } from "lodash";
@@ -158,7 +162,6 @@ export const ConfigurationForm: FC = () => {
               ]
             : [defaultOwner],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultOwner]);
 
   // ---------------------------------------------------------------------------
@@ -284,7 +287,6 @@ export const ConfigurationForm: FC = () => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // Set the form values from the URL on mount
@@ -316,8 +318,6 @@ export const ConfigurationForm: FC = () => {
     if (defaultValues.owners) {
       setOwners(defaultValues.owners);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   useEffect(() => {
@@ -346,7 +346,6 @@ export const ConfigurationForm: FC = () => {
     url.searchParams.set("salt", salt ?? "");
     url.searchParams.set("owners", ownerParser.serialize(owners));
     router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type, threshold, salt, owners]);
 
   const onSubmit = useCallback(

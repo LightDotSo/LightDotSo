@@ -19,17 +19,17 @@ import {
   CONFIGURATION_MAX_THRESHOLD,
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import { useConfigurationOperationCreate } from "@lightdotso/hooks";
 import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
+import { Avatar } from "@lightdotso/ui/components/avatar";
+import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import {
-  Avatar,
-  Button,
-  ButtonIcon,
   Form,
   FormControl,
   FormDescription,
@@ -37,16 +37,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
+} from "@lightdotso/ui/components/form";
+import { Input } from "@lightdotso/ui/components/input";
+import { Label } from "@lightdotso/ui/components/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Separator,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/select";
+import { Separator } from "@lightdotso/ui/components/separator";
+import { toast } from "@lightdotso/ui/components/toast";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
 import { isEmpty } from "lodash";
@@ -121,7 +123,6 @@ export const OwnerForm: FC = () => {
             ? owners
             : [defaultOwner],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialOwners, initialThreshold]);
 
   // ---------------------------------------------------------------------------
@@ -245,7 +246,6 @@ export const OwnerForm: FC = () => {
       return;
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
   // Set the form values from the URL on mount
@@ -265,8 +265,6 @@ export const OwnerForm: FC = () => {
     if (defaultValues.owners) {
       setOwners(defaultValues.owners);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   useEffect(() => {

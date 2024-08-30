@@ -34,7 +34,6 @@ import type { PostgresTable } from "@gregnr/postgres-meta/base";
 // import { useTablesQuery } from "~/data/tables/tables-query";
 import { useDebouncedValue } from "@lightdotso/hooks";
 import { useQueryUserOperations } from "@lightdotso/query";
-import {} from "@lightdotso/ui";
 import { uniqBy } from "lodash";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useState } from "react";

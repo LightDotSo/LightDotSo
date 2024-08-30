@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable jsx-a11y/heading-has-content, react/display-name */
-
 import { cn } from "@lightdotso/utils";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";

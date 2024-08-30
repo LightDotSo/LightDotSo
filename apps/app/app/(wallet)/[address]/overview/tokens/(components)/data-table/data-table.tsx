@@ -17,7 +17,7 @@
 import type { TokenData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
-import { TokenTable } from "@lightdotso/tables";
+import { TokenTable } from "@lightdotso/tables/token";
 import type { ColumnDef } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------

@@ -20,16 +20,16 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useComboDialogs } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { ComboDialog } from "@lightdotso/templates";
+import { ComboDialog } from "@lightdotso/templates/combo-dialog";
+import { Button } from "@lightdotso/ui/components/button";
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  ScrollArea,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/command";
+import { ScrollArea } from "@lightdotso/ui/components/scroll-area";
 import { getEtherscanUrl } from "@lightdotso/utils";
 import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo } from "react";

@@ -31,21 +31,23 @@ import {
   newFormStoreSchema,
 } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates/footer-button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  Checkbox,
+} from "@lightdotso/ui/components/card";
+import { Checkbox } from "@lightdotso/ui/components/checkbox";
+import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  toast,
-} from "@lightdotso/ui";
+} from "@lightdotso/ui/components/form";
+import { toast } from "@lightdotso/ui/components/toast";
 import { publicClient } from "@lightdotso/wagmi";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
@@ -153,69 +155,65 @@ export const ConfirmForm: FC = () => {
 
   // Create a function to submit the form
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const onSubmit = useCallback(
-    async () => {
-      if (!formAddress) {
-        toast.error("Form address is not set. Please try again.");
-        return;
-      }
+  const onSubmit = useCallback(async () => {
+    if (!formAddress) {
+      toast.error("Form address is not set. Please try again.");
+      return;
+    }
 
-      // Set the loading state
-      setIsLoading(true);
+    // Set the loading state
+    setIsLoading(true);
 
-      // Set the form values
-      await mutate({
-        address: address as Address,
-        simulate: false,
-        name: form.getValues("name"),
-        threshold: form.getValues("threshold"),
-        owners: form.getValues("owners").map((owner) => ({
+    // Set the form values
+    await mutate({
+      address: address as Address,
+      simulate: false,
+      name: form.getValues("name"),
+      threshold: form.getValues("threshold"),
+      owners: form.getValues("owners").map((owner) => ({
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        weight: owner.weight!,
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        address: owner.address!,
+      })),
+      // biome-ignore lint/style/useNamingConvention: <explanation>
+      invite_code: form.getValues("inviteCode"),
+      salt: form.getValues("salt"),
+    });
+
+    if (isWalletCreateError) {
+      setIsLoading(false);
+      // If there is an error, return
+      return;
+    }
+
+    const loadingToast = toast.loading("Navigating to new wallet...");
+
+    // Once the form is submitted, navigate to the next step w/ backoff
+    backOff(() =>
+      convertNeverThrowToPromise(
+        getWallet(
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          weight: owner.weight!,
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          address: owner.address!,
-        })),
-        // biome-ignore lint/style/useNamingConvention: <explanation>
-        invite_code: form.getValues("inviteCode"),
-        salt: form.getValues("salt"),
-      });
-
-      if (isWalletCreateError) {
-        setIsLoading(false);
-        // If there is an error, return
-        return;
-      }
-
-      const loadingToast = toast.loading("Navigating to new wallet...");
-
-      // Once the form is submitted, navigate to the next step w/ backoff
-      backOff(() =>
-        convertNeverThrowToPromise(
-          getWallet(
-            // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            { params: { query: { address: formAddress! } } },
-            clientType,
-          ),
+          { params: { query: { address: formAddress! } } },
+          clientType,
         ),
-      )
-        .then((res) => {
-          toast.dismiss(loadingToast);
+      ),
+    )
+      .then((res) => {
+        toast.dismiss(loadingToast);
 
-          if (res) {
-            router.push(`/${formAddress}`);
-          } else {
-            toast.error("There was a problem with your request.");
-            router.push("/");
-          }
-        })
-        .catch(() => {
-          toast.error("There was a problem with your request while creating.");
+        if (res) {
+          router.push(`/${formAddress}`);
+        } else {
+          toast.error("There was a problem with your request.");
           router.push("/");
-        });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setFormValues, formAddress],
-  );
+        }
+      })
+      .catch(() => {
+        toast.error("There was a problem with your request while creating.");
+        router.push("/");
+      });
+  }, [setFormValues, formAddress]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -265,8 +263,6 @@ export const ConfirmForm: FC = () => {
       setFormValues({ ...defaultValues, owners: newOwners });
     }
     fetchEnsNametoAddress();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

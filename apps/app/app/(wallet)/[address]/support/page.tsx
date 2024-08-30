@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Support } from "@lightdotso/templates";
-import { BaseSectionWrapper } from "@lightdotso/ui";
+import { Support } from "@lightdotso/templates/support";
+import { BaseSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Page
