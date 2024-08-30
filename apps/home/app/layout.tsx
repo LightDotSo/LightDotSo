@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import "@lightdotso/styles/global.css";
-import { Root } from "@lightdotso/roots/root";
+import { LightRoot } from "@lightdotso/roots/light";
 import { Footer } from "@lightdotso/templates/footer";
-import { Web3Provider } from "@lightdotso/ui/providers/web3";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -32,11 +31,9 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <Root>
-      <Web3Provider>
-        {children}
-        <Footer />
-      </Web3Provider>
-    </Root>
+    <LightRoot>
+      {children}
+      <Footer />
+    </LightRoot>
   );
 }

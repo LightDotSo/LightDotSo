@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AppBanner } from "@/components/app-banner";
-import { Nav } from "@/components/nav/nav";
-import { LightRoot } from "@lightdotso/roots/light";
-import { Footer } from "@lightdotso/templates/footer";
+import { Web3Provider } from "@lightdotso/ui/providers/web3";
 import type { FC, ReactNode } from "react";
-import { RootWrapper } from "./root-wrapper";
+import { Root } from "../root";
+import { LightRootWrapper } from "./light-root-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootProps {
+interface LightRootProps {
   children: ReactNode;
 }
 
@@ -31,20 +29,15 @@ interface RootProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Root: FC<RootProps> = ({ children }) => {
+export const LightRoot: FC<LightRootProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <LightRoot>
-      {/* Banner */}
-      <AppBanner />
-      {/* Layout */}
-      <Nav>{children}</Nav>
-      <Footer />
-      {/* UI */}
-      <RootWrapper />
-    </LightRoot>
+    <Root>
+      <Web3Provider>{children}</Web3Provider>
+      <LightRootWrapper />
+    </Root>
   );
 };
