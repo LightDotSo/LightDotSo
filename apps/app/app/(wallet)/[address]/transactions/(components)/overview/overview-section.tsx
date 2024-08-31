@@ -19,7 +19,6 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui/components/button";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -99,13 +98,17 @@ export const OverviewSection = ({
 // -----------------------------------------------------------------------------
 
 export const OverviewSectionSkeleton = ({
+  title,
   children,
-}: { children: ReactNode }) => {
+}: {
+  title: string;
+  children: ReactNode;
+}) => {
   return (
     <div className="space-y-4">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
-          <Skeleton className="h-7 w-40" />
+          <div className="font-semibold text-text-primary text-xl">{title}</div>
         </div>
         <div className="flex items-center space-x-3">
           <Button size="sm" variant="outline" disabled>

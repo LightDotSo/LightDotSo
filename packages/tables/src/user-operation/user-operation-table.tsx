@@ -63,6 +63,7 @@ type UserOperationTableProps = {
     TableOptions<UserOperationData>,
     "data" | "columns" | "getCoreRowModel"
   >;
+  tableType?: "table" | "card";
   columns?: ColumnDef<UserOperationData>[];
   setUserOperationTable?: (tableObject: ReactTable<UserOperationData>) => void;
 };
@@ -81,6 +82,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   address,
   isTestnet,
   columns = userOperationColumns,
+  tableType = "table",
   setUserOperationTable,
 }) => {
   // ---------------------------------------------------------------------------
@@ -172,7 +174,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (address === null) {
+  if (address === null || tableType === "table") {
     return (
       <Table>
         <TableHeader>
@@ -278,6 +280,29 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             </div>
           ))}
         </>
+      ) : delayedIsLoading ? (
+        <div>
+          {Array(pageSize)
+            .fill(null)
+            .map((_, index) => (
+              <div
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+                className={cn(index % 3 === 2 && "mb-4")}
+              >
+                {index % 3 === 0 && (
+                  <div className="mb-2 text-text-weak">
+                    <Skeleton className="h-6 w-24" />
+                  </div>
+                )}
+                <div className="rounded-md border border-border bg-background">
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              </div>
+            ))}
+        </div>
       ) : (
         <Table>
           <TableBody>

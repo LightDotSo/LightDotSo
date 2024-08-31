@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { OverviewList } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
+
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
