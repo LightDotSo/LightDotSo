@@ -36,7 +36,15 @@ export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
   return (
     <div className="flex items-center gap-1.5 text-thin text-xl">
       {title}
-      {description && <Button size="xs">{description}</Button>}
+      {description && (
+        <Button
+          disabled
+          size="sm"
+          className="disabled:opacity-100 disabled:ring-0"
+        >
+          {description}
+        </Button>
+      )}
     </div>
   );
 };

@@ -29,7 +29,7 @@ export const Swap: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 m-4 flex flex-col items-center justify-center overflow-hidden rounded-md bg-background-stronger py-16 md:py-28">
+    <div className="relative z-10 m-auto flex max-w-[1536px] flex-col items-center justify-center overflow-hidden rounded-md bg-background-stronger py-16 md:py-28">
       <Spark />
       <div className="m-auto w-full max-w-5xl p-6">
         <div className="flex flex-col justify-between md:flex-row">
@@ -48,7 +48,7 @@ export const Swap: FC = () => {
               </span>
             </div>
             <div className="py-8">
-              <Button asChild variant="outline" className="rounded-xl">
+              <Button asChild className="rounded-xl" size="lg">
                 <a href="/swap">
                   Try it out
                   <ArrowRight className="ml-2 size-4" />
@@ -56,7 +56,7 @@ export const Swap: FC = () => {
               </Button>
             </div>
           </div>
-          <div className="max-w-md rounded-md bg-background-body p-4">
+          <div className="max-w-md rounded-xl bg-background-body p-4">
             <SwapDialogLoader />
           </div>
         </div>
