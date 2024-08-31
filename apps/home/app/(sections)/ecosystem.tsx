@@ -52,11 +52,11 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   return (
     <div className="col-span-1 flex h-full w-full flex-col p-4">
       <div>
-        <ChainLogo chainId={chain.id} size="lg" />
-        <p className="mt-2 font-bold font-normal text-lg text-text-stronger sm:text-xl">
+        <ChainLogo chainId={chain.id} size="2xl" />
+        <p className="mt-4 font-bold font-normal text-lg text-text-stronger sm:text-xl">
           {chain?.name}
         </p>
-        <p className="mt-3 text-text-weak tracking-tighter">
+        <p className="mt-4 text-text-weak tracking-tighter">
           {chain?.description}
         </p>
       </div>

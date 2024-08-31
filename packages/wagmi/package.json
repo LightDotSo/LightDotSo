@@ -33,8 +33,8 @@
     "@lightdotso/const": "workspace:*",
     "@wagmi/core": "^2.13.4",
     "connectkit": "^1.8.2",
-    "viem": "^2.21.0",
-    "wagmi": "^2.12.7"
+    "viem": "^2.21.1",
+    "wagmi": "^2.12.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

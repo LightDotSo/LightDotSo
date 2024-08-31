@@ -47,6 +47,7 @@ export function Loader({ params }: PageProps) {
     <TransactionsDataTable
       address={params.address as Address}
       status="queued"
+      tableType="card"
     />
   );
 }

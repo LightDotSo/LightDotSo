@@ -54,6 +54,8 @@ const chainLogoVariants = cva([], {
       default: "size-6",
       sm: "size-4",
       lg: "size-8",
+      xl: "size-10",
+      "2xl": "size-12",
     },
   },
   defaultVariants: {
@@ -67,6 +69,8 @@ const testnetChainLogoVariants = cva([], {
       default: "size-3 text-[6px]",
       sm: "size-2 text-[4px]",
       lg: "size-4 text-[8px]",
+      xl: "size-5 text-[10px]",
+      "2xl": "size-6 text-[12px]",
     },
   },
   defaultVariants: {
