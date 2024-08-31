@@ -17,7 +17,46 @@ import { BLOG_TABS } from "@/const";
 import { Root } from "@lightdotso/roots/root";
 import { Footer } from "@lightdotso/templates/footer";
 import { Nav } from "@lightdotso/templates/nav";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: "Light Blog",
+  description: "Light Blog - Use Ethereum as One.",
+  metadataBase: new URL("https://light.so"),
+  openGraph: {
+    title: "Light Blog",
+    description: "Light Blog - Use Ethereum as One.",
+    url: "/",
+    siteName: "Light Blog",
+    images: [
+      {
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Light Blog",
+    description: "Light Blog - Use Ethereum as One.",
+    creator: "@LightDotSo",
+    images: [
+      {
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props
