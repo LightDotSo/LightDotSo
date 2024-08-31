@@ -20,7 +20,7 @@ import {
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { DEMO_WALLET_ADDRESS } from "@/const";
-import { userOperationColumns } from "@lightdotso/tables/user-operation";
+import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 import type { FC } from "react";
 import type { Address } from "viem";
 

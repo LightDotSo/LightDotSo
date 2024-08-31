@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
+import { Loader } from "@/app/(wallet)/[address]/transactions/loader";
 import { handler } from "@/handlers/[address]/transactions/handler";
 import { preloader } from "@/preloaders/[address]/transactions/preloader";
 import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
@@ -121,10 +121,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OverviewList
-        address={params.address as Address}
-        isDemo={params.isDemo}
-      />
+      <Loader params={params} />
     </HydrationBoundary>
   );
 }

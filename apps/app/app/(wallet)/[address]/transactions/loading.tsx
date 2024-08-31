@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
+import { OverviewListSkeleton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
 export function Loading() {
-  return <OverviewList isLoading address={null} />;
+  return <OverviewListSkeleton />;
 }
 
 // -----------------------------------------------------------------------------
