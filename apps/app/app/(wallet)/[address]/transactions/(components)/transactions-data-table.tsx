@@ -32,7 +32,7 @@ import type { Address } from "viem";
 interface TransactionsDataTableProps {
   address: Address;
   status: "queued" | "history";
-  tableType: "table" | "card";
+  tableType?: "table" | "card";
 }
 
 // -----------------------------------------------------------------------------
