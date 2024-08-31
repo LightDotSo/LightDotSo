@@ -32,6 +32,7 @@ import type { Address } from "viem";
 interface TransactionsDataTableProps {
   address: Address;
   status: "queued" | "history";
+  tableType?: "table" | "card";
 }
 
 // -----------------------------------------------------------------------------
@@ -41,6 +42,7 @@ interface TransactionsDataTableProps {
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
+  tableType,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -109,6 +111,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       isTestnet={walletSettings?.is_enabled_testnet ?? false}
       columns={userOperationColumns}
       pageCount={pageCount ?? 0}
+      tableType={tableType}
     />
   );
 };

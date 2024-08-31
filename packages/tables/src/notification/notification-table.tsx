@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { type FC, useEffect, useMemo } from "react";
-import { notificationColumns } from "./notification-columns";
+import { notificationColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props

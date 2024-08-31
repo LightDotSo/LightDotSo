@@ -15,7 +15,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./*": "./src/*/index.ts"
+    "./*": "./src/*/index.ts",
+    "./*/columns": "./src/*/columns.tsx"
   },
   "main": "./src/index.ts",
   "files": ["dist/**", "src/**"],

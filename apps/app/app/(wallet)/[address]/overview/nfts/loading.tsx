@@ -15,7 +15,7 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import { NftPortfolioSkeleton } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
-import { nftColumns } from "@lightdotso/tables/nft";
+import { nftColumns } from "@lightdotso/tables/nft/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------

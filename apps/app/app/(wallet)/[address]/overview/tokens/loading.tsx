@@ -15,7 +15,7 @@
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
-import { tokenColumns } from "@lightdotso/tables/token";
+import { tokenColumns } from "@lightdotso/tables/token/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------

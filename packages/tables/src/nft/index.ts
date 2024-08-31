@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { nftColumns } from "./nft-columns";
+export { nftColumns } from "./columns";
 export { NftTable } from "./nft-table";

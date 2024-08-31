@@ -32,6 +32,7 @@ interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
   address: Address | null;
   isTestnet: boolean;
+  tableType?: "table" | "card";
   data: UserOperationData[];
   pageCount: number;
 }
@@ -48,6 +49,7 @@ export function DataTable({
   isTestnet,
   data,
   pageCount,
+  tableType = "table",
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -114,6 +116,7 @@ export function DataTable({
       data={data}
       configuration={configuration ?? undefined}
       tableOptions={tableOptions}
+      tableType={tableType}
       setUserOperationTable={setUserOperationTable}
     />
   );

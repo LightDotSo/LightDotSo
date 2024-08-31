@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
-import { notificationColumns } from "@lightdotso/tables/notification";
+import { notificationColumns } from "@lightdotso/tables/notification/columns";
 
 // -----------------------------------------------------------------------------
 // Loading

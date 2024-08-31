@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { userOperationColumns } from "./user-operation-columns";
+export { userOperationColumns } from "./columns";
 export { UserOperationTable } from "./user-operation-table";

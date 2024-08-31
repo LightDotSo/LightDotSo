@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { tokenColumns } from "./token-columns";
+export { tokenColumns } from "./columns";
 export { TokenTable } from "./token-table";
