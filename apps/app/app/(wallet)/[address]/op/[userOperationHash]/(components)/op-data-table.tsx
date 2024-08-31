@@ -62,6 +62,7 @@ export const OpDataTable: FC<OpDataTableProps> = ({
       data={userOperation ? [userOperation] : []}
       address={userOperation.sender as Address}
       columns={userOperationColumns}
+      tableType="card"
       pageCount={1}
     />
   );
