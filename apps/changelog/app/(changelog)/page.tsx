@@ -32,14 +32,16 @@ export default async function Page() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelogs = await reader.collections.posts.all();
+  const changelogs = (await reader.collections.posts.all()).sort((a, b) => {
+    return new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime();
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <ul className="space-y-6">
+    <ul className="space-y-6 md:space-y-12">
       {changelogs.map((changelog) => (
         <li key={changelog.slug} className="group">
           <a
@@ -47,11 +49,11 @@ export default async function Page() {
           >
             <NextImage
               placeholder="blur"
-              className="rounded-sm group-hover:opacity-80"
+              className="rounded-sm border border-border group-hover:opacity-80"
               src={changelog.entry.ogp.src}
               alt={changelog.entry.title}
-              width={1200}
-              height={630}
+              width={1920}
+              height={1080}
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
             <div className="mt-4 flex items-center justify-between">
