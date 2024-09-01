@@ -41,7 +41,6 @@ export function MagicCard({
   children,
   className,
   size = 600,
-  backgroundColor,
   borderColor = "hsl(0 0% 98%)",
   ...props
 }: MagicCardProps) {
@@ -68,7 +67,9 @@ export function MagicCard({
     >
       <div className="z-10">{children}</div>
       <div
-        className={cn("-z-20 absolute inset-[1px] rounded-md", backgroundColor)}
+        className={cn(
+          "-z-20 absolute inset-[1px] rounded-md bg-white dark:bg-black",
+        )}
       />
     </div>
   );

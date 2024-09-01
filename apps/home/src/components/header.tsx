@@ -27,7 +27,7 @@ export const Header: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto flex max-w-3xl items-center justify-between px-2">
+    <div className="mx-auto flex max-w-5xl items-center justify-between px-2">
       <LightHorizontalLogo className="size-20 shrink-0" />
       <div className="relative z-10 hidden sm:block">
         <Menu />

@@ -82,12 +82,15 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <MagicCard backgroundColor="bg-black" className="col-span-1 w-full">
+    <MagicCard
+      backgroundColor="bg-white dark:bg-black"
+      className="col-span-1 w-full"
+    >
       <div className="absolute top-0 right-0 left-0 p-4">
-        <p className="font-bold font-normal text-white text-xl sm:text-3xl">
+        <p className="font-bold font-normal text-text text-xl sm:text-3xl">
           {title}
         </p>
-        <p className="mt-2 text-gray-300 tracking-tighter">{description}</p>
+        <p className="mt-2 text-text-weak">{description}</p>
       </div>
       <NextImage
         className="relative mt-12 w-full"

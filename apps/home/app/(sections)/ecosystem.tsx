@@ -50,7 +50,7 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
   // );
 
   return (
-    <div className="col-span-1 flex h-full w-full flex-col p-4">
+    <div className="col-span-1 flex h-full w-full flex-col">
       <div>
         <ChainLogo chainId={chain.id} size="2xl" />
         <p className="mt-4 font-bold font-normal text-lg text-text-stronger sm:text-xl">
@@ -62,6 +62,7 @@ export const ChainCard: FC<ChainCardProps> = ({ chain }) => {
       </div>
       <div className="mt-auto pt-4">
         <ExternalLink
+          noIcon
           className="text-text underline hover:text-text-weak"
           href={chain?.websiteUrl}
         >
@@ -91,7 +92,7 @@ export const Ecosystem: FC = () => {
           Light brings all chains as one.
         </h1>
       </div>
-      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-2 gap-5 md:grid-cols-4">
+      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-2 gap-12 md:grid-cols-4">
         {ECOSYSTEM_CHAINS.slice(0, 20).map((chain) => (
           <ChainCard key={chain.id} chain={chain} />
         ))}
