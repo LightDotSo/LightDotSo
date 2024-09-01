@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export interface PageProps {
   searchParams: {
-    isIntro?: boolean;
+    intro?: boolean;
   };
 }
 
@@ -51,7 +51,7 @@ export default async function Page({ searchParams }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (searchParams.isIntro) {
+  if (searchParams.intro) {
     return (
       <IntroLayout>
         <LinkButtonGroup items={ACTION_NAV_ITEMS} />
