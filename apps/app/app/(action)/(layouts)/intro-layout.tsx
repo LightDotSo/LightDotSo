@@ -12,42 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { HStackFull } from "@lightdotso/ui/stacks";
+import { Floating } from "@/app/(action)/(components)/floating";
+import { Cta } from "@lightdotso/home/cta";
+import { Ecosystem } from "@lightdotso/home/ecosystem";
+import { Features } from "@lightdotso/home/features";
+import { Introduction } from "@lightdotso/home/introduction";
+import { Unified } from "@lightdotso/home/unified";
 import type { ReactNode } from "react";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface RootLayoutProps {
-  children: ReactNode;
-}
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export const IntroLayout = ({ children }: { children: ReactNode }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <HStackFull>
-      {/* <BaseLayerWrapper size="xxs"> */}
-      {/* <MinimalPageWrapper className="p-2" isScreen> */}
-      {/* <LinkButtonGroup items={ACTION_NAV_ITEMS} /> */}
-      {/* <div className="flex w-full justify-center">{children}</div> */}
-      {children}
-      {/* </MinimalPageWrapper> */}
-      {/* </BaseLayerWrapper> */}
-    </HStackFull>
+    <>
+      <Floating>{children}</Floating>
+      <Introduction />
+      <Unified />
+      <Features />
+      <Ecosystem />
+      <Cta />
+    </>
   );
-}
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const experimental_ppr = true;
-export const revalidate = 300;
+};

@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BaseLayout } from "@/app/(action)/(layouts)/base-layout";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { BaseLayerWrapper, MinimalPageWrapper } from "@lightdotso/ui/wrappers";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Loading
+// Layout
 // -----------------------------------------------------------------------------
 
-export function Loading() {
+export const BaseLayout = ({ children }: { children: ReactNode }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <BaseLayout>
-      <Skeleton className="h-96 w-full" />
-    </BaseLayout>
+    <BaseLayerWrapper size="xxs">
+      <MinimalPageWrapper className="p-2" isScreen>
+        {children}
+      </MinimalPageWrapper>
+    </BaseLayerWrapper>
   );
-}
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default Loading;
+};

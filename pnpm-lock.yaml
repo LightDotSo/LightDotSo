@@ -463,6 +463,9 @@ importers:
       '@lightdotso/forms':
         specifier: workspace:*
         version: link:../../packages/forms
+      '@lightdotso/home':
+        specifier: workspace:*
+        version: link:../home
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks

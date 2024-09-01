@@ -33,6 +33,15 @@ const nextConfig = {
     ppr: "incremental",
     optimizePackageImports: ["@radix-ui/react-icons"],
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "assets.light.so",
+        protocol: "https",
+        pathname: "**",
+      },
+    ],
+  },
   logging: {
     fetches: {
       fullUrl: true,
