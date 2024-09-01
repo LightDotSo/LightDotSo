@@ -14,6 +14,7 @@
 
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
 import { transactionColumns } from "@lightdotso/tables/transaction/columns";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -21,7 +22,14 @@ import { transactionColumns } from "@lightdotso/tables/transaction/columns";
 
 export function Loading() {
   return (
-    <DataTable isLoading pageCount={0} data={[]} columns={transactionColumns} />
+    <TableSectionWrapper>
+      <DataTable
+        isLoading
+        pageCount={0}
+        data={[]}
+        columns={transactionColumns}
+      />
+    </TableSectionWrapper>
   );
 }
 

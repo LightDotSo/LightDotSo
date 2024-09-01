@@ -28,6 +28,7 @@ export function Loading() {
       pageCount={0}
       columns={userOperationColumns}
       isTestnet={false}
+      tableType="card"
     />
   );
 }
