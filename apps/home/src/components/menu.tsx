@@ -26,40 +26,63 @@ import {
   navigationMenuTriggerStyle,
 } from "@lightdotso/ui/components/navigation-menu";
 import { cn } from "@lightdotso/utils";
-import type { ComponentPropsWithoutRef, FC } from "react";
+import {
+  DiscordLogoIcon,
+  FileTextIcon,
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
+import { CompassIcon, FileAxis3D, ScaleIcon } from "lucide-react";
+import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
+import { FaTelegram } from "react-icons/fa";
 
-const components: { title: string; href: string; description: string }[] = [
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+const components: {
+  title: string;
+  href: string;
+  description: string;
+  icon: ReactNode;
+}[] = [
   {
     title: "Blog",
     href: INTERNAL_LINKS.Blog,
     description: "Read the Light blog.",
+    icon: <FileTextIcon className="h-5 w-5" />,
   },
   {
     title: "Changelog",
     href: INTERNAL_LINKS.Changelog,
     description: "View the Light changelog.",
+    icon: <FileAxis3D className="h-5 w-5" />,
   },
   {
     title: "Discord",
     href: SOCIAL_LINKS.Discord,
     description: "Join the Light Discord.",
+    icon: <DiscordLogoIcon className="h-5 w-5" />,
   },
   {
     title: "Github",
     href: SOCIAL_LINKS.Github,
     description: "Contribute to Light on Github.",
+    icon: <GitHubLogoIcon className="h-5 w-5" />,
   },
   {
     title: "Telegram",
     href: SOCIAL_LINKS.Telegram,
     description: "Join the Light Telegram.",
+    icon: <FaTelegram className="h-5 w-5" />,
   },
   {
     title: "Twitter",
     href: SOCIAL_LINKS.Twitter,
     description: "Follow Light on Twitter.",
+    icon: <TwitterLogoIcon className="h-5 w-5" />,
   },
 ];
 
@@ -75,29 +98,33 @@ interface GridProps {
 // Component
 // -----------------------------------------------------------------------------
 
-const ListItem = forwardRef<ElementRef<"a">, ComponentPropsWithoutRef<"a">>(
-  ({ className, title, children, ...props }, ref) => {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-            ref={ref}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-background-strong hover:text-text-strong focus:bg-background-strong focus:text-text-strong",
-              className,
-            )}
-            {...props}
-          >
+const ListItem = forwardRef<
+  ElementRef<"a">,
+  ComponentPropsWithoutRef<"a"> & { icon?: ReactNode }
+>(({ className, title, children, icon, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-background-strong hover:text-text-strong focus:bg-background-strong focus:text-text-strong",
+            className,
+          )}
+          {...props}
+        >
+          <div className="flex items-center space-x-2">
+            {icon}
             <div className="font-medium text-sm leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm text-text-weak leading-snug">
-              {children}
-            </p>
-          </a>
-        </NavigationMenuLink>
-      </li>
-    );
-  },
-);
+          </div>
+          <p className="line-clamp-2 text-sm text-text-weak leading-snug">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
 ListItem.displayName = "ListItem";
 
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
@@ -132,13 +159,25 @@ export const Menu: FC<GridProps> = ({ className }) => {
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href={INTERNAL_LINKS.Docs} title="Documentation">
+              <ListItem
+                href={INTERNAL_LINKS.Docs}
+                title="Documentation"
+                icon={<FileTextIcon className="h-5 w-5" />}
+              >
                 Learn how to use Light w/ our official product documentation.
               </ListItem>
-              <ListItem href={INTERNAL_LINKS.Governance} title="Governance">
+              <ListItem
+                href={INTERNAL_LINKS.Governance}
+                title="Governance"
+                icon={<ScaleIcon className="h-5 w-5" />}
+              >
                 Learn how to participate in Light governance.
               </ListItem>
-              <ListItem href={INTERNAL_LINKS.Explorer} title="Explorer">
+              <ListItem
+                href={INTERNAL_LINKS.Explorer}
+                title="Explorer"
+                icon={<CompassIcon className="h-5 w-5" />}
+              >
                 Interact with the Light Protocol explorer.
               </ListItem>
             </ul>
@@ -153,6 +192,7 @@ export const Menu: FC<GridProps> = ({ className }) => {
                   key={component.title}
                   title={component.title}
                   href={component.href}
+                  icon={component.icon}
                 >
                   {component.description}
                 </ListItem>

@@ -6,3 +6,4 @@ reject:
   - embla-carousel-react
   - cmdk
   - react-day-picker
+  - postcss

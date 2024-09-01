@@ -16,7 +16,7 @@ import { SwapDialogLoader } from "@/app/(components)/swap-dialog-loader";
 import { SectionPill } from "@/components/section-pill";
 import { Spark } from "@/components/spark";
 import { Button } from "@lightdotso/ui/components/button";
-import { ArrowRight } from "lucide-react";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -48,10 +48,15 @@ export const Swap: FC = () => {
               </span>
             </div>
             <div className="py-8">
-              <Button asChild className="rounded-xl" size="lg">
+              <Button
+                asChild
+                className="rounded-full px-4"
+                size="lg"
+                variant="shadow"
+              >
                 <a href="/swap">
                   Try it out
-                  <ArrowRight className="ml-2 size-4" />
+                  <ChevronRightIcon className="ml-2 size-4" />
                 </a>
               </Button>
             </div>
