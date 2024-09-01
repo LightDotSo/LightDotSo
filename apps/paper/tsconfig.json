@@ -16,5 +16,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "vocs.config.mjs"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
