@@ -30,6 +30,7 @@ import "@lightdotso/styles/global.css";
 import { Header } from "@/components/header";
 import { SidebarProvider } from "@/hooks/use-sidebar";
 import { Root } from "@lightdotso/roots/root";
+import type { Viewport } from "next";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -56,7 +57,7 @@ import type { ReactNode } from "react";
 // Viewport
 // -----------------------------------------------------------------------------
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },

@@ -17,7 +17,7 @@ import { BLOG_TABS } from "@/const";
 import { Root } from "@lightdotso/roots/root";
 import { Footer } from "@lightdotso/templates/footer";
 import { Nav } from "@lightdotso/templates/nav";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -56,6 +56,17 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+// -----------------------------------------------------------------------------
+// Viewport
+// -----------------------------------------------------------------------------
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 };
 
 // -----------------------------------------------------------------------------
