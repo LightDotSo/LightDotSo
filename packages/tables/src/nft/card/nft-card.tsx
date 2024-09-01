@@ -18,6 +18,7 @@ import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui/components/button";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
   cn,
   getChainBySimplehashChainName,
@@ -111,6 +112,31 @@ export const NftCard: FC<NftCardProps> = ({
             Send
           </Link>
         </Button>
+      </div>
+    </li>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const NftCardSkeleton: FC = () => {
+  return (
+    <li
+      className={cn(
+        "group relative col-span-1 flex flex-col overflow-hidden rounded-md bg-background",
+        "border border-border",
+      )}
+    >
+      <Skeleton className="aspect-square h-40 w-full rounded-t-md" />
+      <div className="flex flex-col space-y-3 px-3 py-4">
+        <div className="flex items-center">
+          <Skeleton className="mr-1.5 size-4 rounded-full" />
+          <Skeleton className="h-3 w-20" />
+        </div>
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-1/2" />
       </div>
     </li>
   );

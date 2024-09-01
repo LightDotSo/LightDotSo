@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 
 // -----------------------------------------------------------------------------
@@ -23,7 +24,7 @@ export function Loading() {
   return (
     <DataTable
       isLoading
-      address={null}
+      address={DEMO_WALLET_ADDRESS}
       data={[]}
       pageCount={0}
       columns={userOperationColumns}

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20240821.1",
-    "@hono-rate-limiter/cloudflare": "^0.1.2",
+    "@hono-rate-limiter/cloudflare": "^0.2.0",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "hono": "^4.5.10",
