@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
+import { NotificationTable } from "@lightdotso/tables/notification";
 import { notificationColumns } from "@lightdotso/tables/notification/columns";
 
 // -----------------------------------------------------------------------------
@@ -21,11 +21,11 @@ import { notificationColumns } from "@lightdotso/tables/notification/columns";
 
 export function Loading() {
   return (
-    <DataTable
+    <NotificationTable
       isLoading
       data={[]}
       columns={notificationColumns}
-      pageCount={1}
+      pageSize={10}
     />
   );
 }

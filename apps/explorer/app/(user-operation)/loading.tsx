@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PortfolioSection } from "@/components/section/portfolio-section";
-import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
-import { TokenTable } from "@lightdotso/tables/token";
-import { tokenColumns } from "@lightdotso/tables/token/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+"use client";
+
+import { UserOperationTable } from "@lightdotso/tables/user-operation";
+import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -24,14 +23,14 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 export function Loading() {
   return (
-    <>
-      <PortfolioSection title="Total Token Value">
-        <TokenPortfolioSkeleton />
-      </PortfolioSection>
-      <TableSectionWrapper>
-        <TokenTable isLoading data={[]} columns={tokenColumns} pageSize={10} />
-      </TableSectionWrapper>
-    </>
+    <UserOperationTable
+      isLoading
+      data={[]}
+      address={null}
+      isTestnet={false}
+      columns={userOperationColumns}
+      pageSize={10}
+    />
   );
 }
 

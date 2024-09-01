@@ -27,6 +27,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 interface DataTableProps {
   isLoading: boolean;
   columns: ColumnDef<TokenData>[];
+  pageSize?: number;
   data: TokenData[];
   pageCount: number;
 }
@@ -39,6 +40,7 @@ export function DataTable({
   isLoading,
   columns,
   data,
+  pageSize,
   pageCount,
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
@@ -94,7 +96,7 @@ export function DataTable({
   return (
     <TokenTable
       isLoading={isLoading}
-      pageSize={paginationState.pageSize}
+      pageSize={pageSize ?? paginationState.pageSize}
       columns={columns}
       data={data}
       tableOptions={tableOptions}
