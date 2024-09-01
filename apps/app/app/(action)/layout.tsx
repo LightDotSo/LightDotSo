@@ -32,17 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <HStackFull>
-      {/* <BaseLayerWrapper size="xxs"> */}
-      {/* <MinimalPageWrapper className="p-2" isScreen> */}
-      {/* <LinkButtonGroup items={ACTION_NAV_ITEMS} /> */}
-      {/* <div className="flex w-full justify-center">{children}</div> */}
-      {children}
-      {/* </MinimalPageWrapper> */}
-      {/* </BaseLayerWrapper> */}
-    </HStackFull>
-  );
+  return <HStackFull>{children}</HStackFull>;
 }
 
 // -----------------------------------------------------------------------------

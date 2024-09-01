@@ -132,10 +132,13 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
     <>
       <div className="sm:hidden">
         <Drawer shouldScaleBackground>
-          <DrawerTrigger>
-            <Button variant="outline">
-              <ChevronDownIcon className="mr-2 h-4 w-4" />
+          <DrawerTrigger asChild>
+            <Button
+              className="flex w-full justify-between bg-background-body"
+              variant="outline"
+            >
               <span>{id ? id.charAt(0).toUpperCase() + id.slice(1) : ""}</span>
+              <ChevronDownIcon className="h-4 w-4" />
             </Button>
           </DrawerTrigger>
           <DrawerContent>
@@ -145,6 +148,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
                   <Button
                     variant="link"
                     key={item.id}
+                    size="lg"
                     onClick={() => {
                       router.push(
                         `${address ? `/${address}` : ""}${item.href}`,
