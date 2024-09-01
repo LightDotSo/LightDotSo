@@ -138,7 +138,7 @@
     "npm-check-updates": "^17.1.0",
     "npm-package-json-lint": "^8.0.0",
     "npm-package-json-lint-config-default": "^7.0.1",
-    "postcss": "^8.4.42",
+    "postcss": "^8.4.41",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
