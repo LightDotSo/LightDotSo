@@ -15,6 +15,11 @@
 import { FloatingIcon } from "@/app/(action)/(components)/floating-icon";
 import { BaseLayout } from "@/app/(action)/(layouts)/base-layout";
 import { MAINNET_CHAINS } from "@lightdotso/const";
+import { Cta } from "@lightdotso/home/cta";
+import { Ecosystem } from "@lightdotso/home/ecosystem";
+import { Features } from "@lightdotso/home/features";
+import { Introduction } from "@lightdotso/home/introduction";
+import { Unified } from "@lightdotso/home/unified";
 import { shuffleArray } from "@lightdotso/utils";
 import type { ReactNode } from "react";
 import type { Chain } from "viem";
@@ -102,6 +107,11 @@ export const IntroLayout = ({ children }: { children: ReactNode }) => {
           />
         </div>
       </div>
+      <Introduction />
+      <Unified />
+      <Features />
+      <Ecosystem />
+      <Cta />
     </>
   );
 };

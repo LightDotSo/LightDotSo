@@ -33,6 +33,7 @@
     "@lightdotso/dialogs": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/forms": "workspace:*",
+    "@lightdotso/home": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/modals": "workspace:*",

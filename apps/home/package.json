@@ -12,6 +12,13 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "exports": {
+    "./introduction": "./app/(sections)/introduction.tsx",
+    "./unified": "./app/(sections)/unified.tsx",
+    "./features": "./app/(sections)/features.tsx",
+    "./ecosystem": "./app/(sections)/ecosystem.tsx",
+    "./cta": "./app/(sections)/cta.tsx"
+  },
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "build": "next build",
