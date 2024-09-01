@@ -16,7 +16,6 @@
 
 import { TransactionTable } from "@lightdotso/tables/transaction";
 import { transactionColumns } from "@lightdotso/tables/transaction/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -24,14 +23,14 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 export function Loading() {
   return (
-    <TableSectionWrapper>
+    <>
       <TransactionTable
         isLoading
         data={[]}
         columns={transactionColumns}
         pageSize={10}
       />
-    </TableSectionWrapper>
+    </>
   );
 }
 

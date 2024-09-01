@@ -16,6 +16,7 @@
 
 import { ActivityTable } from "@lightdotso/tables/activity";
 import { activityColumns } from "@lightdotso/tables/activity/columns";
+import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -24,11 +25,13 @@ import { activityColumns } from "@lightdotso/tables/activity/columns";
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
   return (
-    <ActivityTable
-      isLoading
-      data={[]}
-      columns={activityColumns}
-      pageSize={10}
-    />
+    <TableSectionWrapper>
+      <ActivityTable
+        isLoading
+        data={[]}
+        columns={activityColumns}
+        pageSize={10}
+      />
+    </TableSectionWrapper>
   );
 }
