@@ -146,7 +146,7 @@ export const Menu: FC<GridProps> = ({ className }) => {
                 <NavigationMenuLink asChild>
                   <a
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-background/50 to-background p-6 no-underline outline-none hover:bg-background-strong focus:shadow-md"
-                    href="/"
+                    href={INTERNAL_LINKS.App}
                   >
                     <LightHorizontalLogo className="h-10 w-16" />
                     <div className="mt-4 mb-2 font-medium text-lg">
