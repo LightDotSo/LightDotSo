@@ -110,7 +110,7 @@ jobs:
         run: |
           forge install
       - name: Run Test
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_seconds: 300
           max_attempts: 3
@@ -120,7 +120,7 @@ jobs:
         env:
           FOUNDRY_PROFILE: local
       - name: Check Gas Snapshots
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_seconds: 300
           max_attempts: 3
@@ -133,7 +133,7 @@ jobs:
         run: |
           forge coverage --report lcov
       - name: Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
@@ -172,7 +172,7 @@ jobs:
         run: |
           forge install
       - name: Run Fork
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_seconds: 300
           max_attempts: 3
@@ -182,7 +182,7 @@ jobs:
         env:
           NETWORK_NAME: ${{ matrix.network }}
       - name: Run Script Fork
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_seconds: 300
           max_attempts: 3
@@ -337,7 +337,7 @@ jobs:
         with:
           version: nightly
       - name: Run Slither
-        uses: crytic/slither-action@v0.3.0
+        uses: crytic/slither-action@v0.4.0
         continue-on-error: true
         id: slither
         with:

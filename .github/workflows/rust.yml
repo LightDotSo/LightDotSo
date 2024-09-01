@@ -101,7 +101,7 @@ jobs:
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.5
         with:
           version: "v0.5.2"
       - if: matrix.workspace || matrix.check
