@@ -75,7 +75,7 @@ export const FooterList: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul className="grid grid-cols-2 gap-3 gap-y-4 md:flex md:flex-row md:justify-between">
+    <ul className="grid grid-cols-2 gap-3 gap-y-4 lg:flex lg:flex-row lg:justify-between">
       <FooterListItem items={NAVIGATION_LINKS.resources} />
       <FooterListItem items={NAVIGATION_LINKS.company} />
       <FooterListItem items={NAVIGATION_LINKS.legal} />

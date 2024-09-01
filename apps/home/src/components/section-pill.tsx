@@ -40,7 +40,7 @@ export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
         <Button
           disabled
           size="sm"
-          className="disabled:cursor-default disabled:opacity-100 disabled:ring-0"
+          className="border-none disabled:cursor-default disabled:opacity-100 disabled:ring-0"
         >
           {description}
         </Button>
