@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MagicContainer } from "@/components/magic-container";
-import { SectionPill } from "@/components/section-pill";
-import { ECOSYSTEM_CHAINS, type EcosystemChain } from "@/const/ecosystem";
 import { ExternalLink } from "@lightdotso/elements/external-link";
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
+import { MagicContainer } from "../../src/components/magic-container";
+import { SectionPill } from "../../src/components/section-pill";
+import {
+  ECOSYSTEM_CHAINS,
+  type EcosystemChain,
+} from "../../src/const/ecosystem";
 
 // -----------------------------------------------------------------------------
 // Props

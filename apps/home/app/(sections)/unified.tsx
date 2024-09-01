@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SectionPill } from "@/components/section-pill";
 import { NextImage } from "@lightdotso/elements/next-image";
 import type { FC } from "react";
+import { SectionPill } from "../../src/components/section-pill";
 
 // -----------------------------------------------------------------------------
 // Component

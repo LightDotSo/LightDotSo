@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BetaVersion } from "@/components/beta-version";
 import { Button } from "@lightdotso/ui/components/button";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
+import { BetaVersion } from "../../src/components/beta-version";
 
 // -----------------------------------------------------------------------------
 // Component
