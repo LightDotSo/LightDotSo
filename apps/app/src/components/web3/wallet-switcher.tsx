@@ -180,7 +180,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // If the address is empty or is not mounted, don't render
-  if (!(isMounted && address) || isWalletsLoading) {
+  if (!(isMounted && address)) {
+    return null;
+  }
+
+  // If the address is empty or is not mounted, don't render
+  if (isWalletsLoading) {
     return <Skeleton className="mx-2 h-8 w-24" />;
   }
 

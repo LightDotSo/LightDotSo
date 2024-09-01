@@ -138,7 +138,7 @@ export const OverviewList: FC<OverviewListProps> = ({
           return (
             <NftTable
               isLoading
-              pageSize={0}
+              pageSize={OVERVIEW_ROW_COUNT}
               limit={OVERVIEW_ROW_COUNT}
               data={[]}
               columns={nftColumns}

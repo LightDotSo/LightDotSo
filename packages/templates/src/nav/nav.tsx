@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui/components/button";
 import { BaseLayerWrapper } from "@lightdotso/ui/wrappers";
@@ -44,15 +45,7 @@ export const Nav: FC<NavProps> = ({ children, tabs }) => {
                 <div className="flex flex-row-reverse items-center gap-2 md:flex-row">
                   <NavLocation tabs={tabs} />
                   <Button className="shrink-0" asChild>
-                    <a
-                      href={`https://light.so${
-                        process.env.VERCEL_PROJECT_PRODUCTION_URL
-                          ? `?ref=${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-                          : ""
-                      }`}
-                    >
-                      Launch App
-                    </a>
+                    <a href={INTERNAL_LINKS.App}>Launch App</a>
                   </Button>
                 </div>
               </div>
