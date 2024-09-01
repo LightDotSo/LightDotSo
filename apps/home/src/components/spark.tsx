@@ -13,6 +13,7 @@
 // limitations under the License.
 
 "use client";
+
 import { NextImage } from "@lightdotso/elements/next-image";
 import type { FC } from "react";
 

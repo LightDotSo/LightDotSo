@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SwapDialogLoader } from "@/app/(components)/swap-dialog-loader";
-import { SectionPill } from "@/components/section-pill";
-import { Spark } from "@/components/spark";
 import { Button } from "@lightdotso/ui/components/button";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import type { FC } from "react";
+import { SwapDialogLoader } from "../(components)/swap-dialog-loader";
+import { SectionPill } from "../../src/components/section-pill";
+import { Spark } from "../../src/components/spark";
 
 // -----------------------------------------------------------------------------
 // Component

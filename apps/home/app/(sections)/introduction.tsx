@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Grid } from "@/components/grid";
-import { SectionPill } from "@/components/section-pill";
 import type { FC } from "react";
+import { Grid } from "../../src/components/grid";
+import { SectionPill } from "../../src/components/section-pill";
 
 // -----------------------------------------------------------------------------
 // Component
