@@ -22,7 +22,6 @@ import {
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { transactionColumns } from "@lightdotso/tables/transaction";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useMemo } from "react";
 import type { Address } from "viem";
 
@@ -96,13 +95,11 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <TableSectionWrapper>
-      <DataTable
-        isLoading={isLoading}
-        data={transactions ?? []}
-        columns={transactionColumns}
-        pageCount={pageCount ?? 0}
-      />
-    </TableSectionWrapper>
+    <DataTable
+      isLoading={isLoading}
+      data={transactions ?? []}
+      columns={transactionColumns}
+      pageCount={pageCount ?? 0}
+    />
   );
 };

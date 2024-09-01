@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
+import { useAuth } from "@lightdotso/stores";
 import { ConnectButton } from "@lightdotso/templates/connect-button";
 import { Button } from "@lightdotso/ui/components/button";
 import {
@@ -21,7 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@lightdotso/ui/components/card";
-import { Gamepad, Wallet } from "lucide-react";
+import { Gamepad, PlayCircleIcon, Wallet } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 
@@ -31,27 +34,55 @@ import type { FC } from "react";
 
 export const RootWelcomeCards: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <div className="grid w-full gap-4 md:grid-cols-2">
-      <Card className="col-span-1 p-4">
-        <CardHeader>
-          <div>
-            <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
-              <Wallet className="size-5 text-border-warning" />
-            </span>
-          </div>
-          <CardTitle>Connect to Light</CardTitle>
-          <CardDescription>
-            Connect your wallet to Light to get started.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-4">
-          <ConnectButton />
-        </CardContent>
-      </Card>
+      {address ? (
+        <Card className="col-span-1 p-4">
+          <CardHeader>
+            <div>
+              <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
+                <Wallet className="size-5 text-border-warning" />
+              </span>
+            </div>
+            <CardTitle>Connect to Light</CardTitle>
+            <CardDescription>
+              Connect your wallet to Light to get started.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <ConnectButton />
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="col-span-1 p-4">
+          <CardHeader>
+            <div>
+              <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
+                <PlayCircleIcon className="size-5 text-border-warning" />
+              </span>
+            </div>
+            <CardTitle>Swap</CardTitle>
+            <CardDescription>Swap tokens on Light.</CardDescription>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <Button asChild size="default" variant="outline">
+              <Link href="/swap">
+                <PlayCircleIcon className="mr-2 size-4" />
+                Swap
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
       <Card className="col-span-1 p-4">
         <CardHeader>
           <div>

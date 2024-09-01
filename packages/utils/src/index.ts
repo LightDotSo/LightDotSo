@@ -27,5 +27,6 @@ export { debounce } from "./debounce";
 export { getEtherscanUrl, getEtherscanUrlWithChainId } from "./etherscan";
 export { getGasSpeedBumpAmount } from "./gas";
 export { refineNumberFormat } from "./number";
+export { shuffleArray } from "./shuffle";
 export { shortenAddress, shortenBytes32, shortenName } from "./shorten";
 export { camelCaseToCapitalizedWords } from "./word";

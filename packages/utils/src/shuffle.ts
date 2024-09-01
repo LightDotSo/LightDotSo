@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  ChainLogo,
-  chainLogoVariants,
-  testnetChainLogoVariants,
-  chainLogoConfig,
-} from "./chain";
-export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";
+export const shuffleArray = <T>(array: T[]): T[] => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
