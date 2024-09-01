@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { OwnerTable } from "@lightdotso/tables/owner";
 import { ownerColumns } from "@lightdotso/tables/owner/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";

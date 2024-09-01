@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { NotificationTable } from "@lightdotso/tables/notification";
 import { notificationColumns } from "@lightdotso/tables/notification/columns";
 

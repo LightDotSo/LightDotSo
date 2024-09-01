@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
 import { TokenTable } from "@lightdotso/tables/token";

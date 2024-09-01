@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { DEMO_WALLET_ADDRESS } from "@/const";
 import { UserOperationTable } from "@lightdotso/tables/user-operation";
 import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";

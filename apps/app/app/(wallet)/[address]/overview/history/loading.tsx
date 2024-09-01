@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { TransactionTable } from "@lightdotso/tables/transaction";
 import { transactionColumns } from "@lightdotso/tables/transaction/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";

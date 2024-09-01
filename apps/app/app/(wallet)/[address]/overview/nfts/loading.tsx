@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { NftPortfolioSkeleton } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { NftTable } from "@lightdotso/tables/nft";

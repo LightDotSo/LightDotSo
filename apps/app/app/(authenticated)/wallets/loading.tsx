@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { WalletTable } from "@lightdotso/tables/wallet";
 import { walletColumns } from "@lightdotso/tables/wallet/columns";
 

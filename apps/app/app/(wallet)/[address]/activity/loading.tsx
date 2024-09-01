@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { ActivityTable } from "@lightdotso/tables/activity";
 import { activityColumns } from "@lightdotso/tables/activity/columns";
 
