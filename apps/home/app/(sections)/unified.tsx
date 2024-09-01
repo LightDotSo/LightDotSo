@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MagicCard } from "@/components/magic-card";
-import { MagicContainer } from "@/components/magic-container";
 import { SectionPill } from "@/components/section-pill";
 import { NextImage } from "@lightdotso/elements/next-image";
 import type { FC } from "react";
@@ -37,7 +35,7 @@ export const Unified: FC = () => {
           An Unified Crypto Experience.
         </h1>
       </div>
-      <MagicContainer className="mt-16 grid w-full max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
+      <div className="mt-16 grid w-full max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
         <UnifiedCard
           title="Gasless"
           description="No need to bridge, or refuel across chains. Select any asset you own across chains to pay for gas."
@@ -53,7 +51,7 @@ export const Unified: FC = () => {
           description="One signature, batch execute across chains. No need for multiple clicks, it all works with one single signature."
           imageUrl="https://assets.light.so/home/programmable-execution.png"
         />
-      </MagicContainer>
+      </div>
     </div>
   );
 };
@@ -82,24 +80,22 @@ export const UnifiedCard: FC<UnifiedCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <MagicCard
-      backgroundColor="bg-white dark:bg-black"
-      className="col-span-1 w-full"
-    >
-      <div className="absolute top-0 right-0 left-0 p-4">
-        <p className="font-bold font-normal text-text text-xl sm:text-3xl">
+    <div className="col-span-1 flex w-full flex-col rounded-xl bg-black">
+      <div className="flex-grow p-4 md:p-8">
+        <div className="font-bold font-normal text-text-inverse text-xl sm:text-3xl">
           {title}
-        </p>
-        <p className="mt-2 text-text-weak">{description}</p>
+        </div>
+        <p className="mt-2 text-text-weak tracking-wide">{description}</p>
       </div>
-      <NextImage
-        className="relative mt-12 w-full"
-        alt={title}
-        src={imageUrl}
-        width={572}
-        height={690}
-        style={{ width: "100%", height: "auto", objectFit: "cover" }}
-      />
-    </MagicCard>
+      <div className="-mt-36 md:-mt-40">
+        <NextImage
+          className="w-full"
+          alt={title}
+          src={imageUrl}
+          width={572}
+          height={690}
+        />
+      </div>
+    </div>
   );
 };
