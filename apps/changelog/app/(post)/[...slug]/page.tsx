@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import "@lightdotso/styles/keystatic.css";
+import { toThreeDigits } from "@/utils";
 import { createReader } from "@keystatic/core/reader";
 import { ExternalLink } from "@lightdotso/elements/external-link";
 import { NextImage } from "@lightdotso/elements/next-image";
@@ -59,6 +60,7 @@ export async function generateMetadata({
 
   return {
     title: changelog.title,
+    description: changelog.description,
     openGraph: {
       images: changelog.ogp.src,
     },
@@ -108,7 +110,8 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   return (
     <BannerSection
       size="xs"
-      title={`Changelog #${changelog.issue} - ${changelog.title}`}
+      title={`Changelog #${toThreeDigits(changelog.issue)} - ${changelog.title}`}
+      description={changelog.description}
     >
       <HStackFull>
         <BaseLayerWrapper size="xs">

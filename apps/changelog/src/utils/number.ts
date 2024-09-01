@@ -13,16 +13,9 @@
 // limitations under the License.
 
 // -----------------------------------------------------------------------------
-// Types
+// Utils
 // -----------------------------------------------------------------------------
 
-import type { ReactNode } from "react";
-
-export type Tab = {
-  label: string;
-  id: string;
-  href: string;
-  number?: number;
-  icon: (_props: { className?: string }) => ReactNode;
-  isTextOnly?: boolean;
-};
+export function toThreeDigits(num: number): string {
+  return num.toString().padStart(3, "0");
+}

@@ -18,6 +18,7 @@ import { INTERNAL_LINKS } from "@lightdotso/const";
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui/components/button";
+import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import Link from "next/link";
 import type { FC } from "react";
 import { MobileAppDrawer } from "../mobile-app-drawer";
@@ -48,18 +49,7 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
 
   const NavLocationContent = ({ tab }: { tab: Tab }) => {
     return (
-      <>
-        {tab.isTextTogether ? (
-          <>
-            {tab.label}
-            {tab.icon ? <tab.icon className="ml-1 size-4 sm:size-5" /> : null}
-          </>
-        ) : tab.icon ? (
-          <tab.icon className="size-4 sm:size-5" />
-        ) : (
-          tab.label
-        )}
-      </>
+      <>{tab.icon ? <tab.icon className="size-4 sm:size-5" /> : tab.label}</>
     );
   };
 
@@ -78,12 +68,21 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
   return (
     <div className="ml-auto hidden items-center space-x-1 md:flex">
       {tabs.map((tab) => {
-        return (
+        return tab.isTextOnly ? (
           <Button
             key={tab.id}
             asChild
             variant="ghost"
+            className="font-medium text-sm"
             size="sm"
+          >
+            <Link href={tab.href}>{tab.label}</Link>
+          </Button>
+        ) : (
+          <ButtonIcon
+            key={tab.id}
+            asChild
+            variant="ghost"
             className="font-medium text-sm"
           >
             {tab.href.startsWith("/") || tab.href === INTERNAL_LINKS.Home ? (
@@ -95,7 +94,7 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
                 <NavLocationContent tab={tab} />
               </a>
             )}
-          </Button>
+          </ButtonIcon>
         );
       })}
     </div>
