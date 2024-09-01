@@ -33,8 +33,8 @@ export const MantleLogo: ForwardRefExoticComponent<
     xmlns="http://www.w3.org/2000/svg"
   >
     <title>Mantle</title>
-    <g clip-path="url(#clip0_10113_10207)">
-      <g clip-path="url(#clip1_10113_10207)">
+    <g clipPath="url(#clip0_10113_10207)">
+      <g clipPath="url(#clip1_10113_10207)">
         <path d="M24 0H0V24H24V0Z" fill="black" />
         <path
           d="M7.29216 9.60997L4.86576 8.37451C4.67537 8.74717 4.51537 9.13806 4.38574 9.53705L6.9762 10.3755C7.06127 10.1123 7.16659 9.85503 7.29216 9.60997Z"

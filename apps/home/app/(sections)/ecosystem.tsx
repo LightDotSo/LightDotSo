@@ -86,7 +86,7 @@ export const Ecosystem: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center px-2 py-20">
+    <div className="relative z-10 flex flex-col items-center justify-center px-4 py-20">
       <div className="m-auto w-full max-w-5xl border-border-strong border-t">
         <div className="mt-8">
           <SectionPill title="Ecosystem" description="Chains" />

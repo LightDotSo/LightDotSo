@@ -36,32 +36,43 @@ export const Floating = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="relative flex flex-col items-center justify-center overflow-hidden">
-      <div className="absolute inset-y-0 left-0 w-1/3">
-        <FloatingIcon className="top-[10%] left-[10%]" chainId={chains[0].id} />
+      <div className="absolute inset-y-0 left-0 z-0 w-full md:w-1/3">
         <FloatingIcon
-          className="top-[15%] right-[15%]"
+          className="top-[10%] left-[10%] hidden md:block"
+          chainId={chains[0].id}
+        />
+        <FloatingIcon
+          className="top-[15%] right-[15%] hidden md:block"
           chainId={chains[1].id}
         />
-        <FloatingIcon className="top-[30%] left-[40%]" chainId={chains[2].id} />
-        <FloatingIcon className="top-1/2 right-[10%]" chainId={chains[3].id} />
         <FloatingIcon
-          className="bottom-[30%] left-[30%]"
+          className="top-[30%] left-[40%] hidden md:block"
+          chainId={chains[2].id}
+        />
+        <FloatingIcon
+          className="top-1/2 right-[10%] hidden md:block"
+          chainId={chains[3].id}
+        />
+        <FloatingIcon
+          className="bottom-[30%] left-[30%] hidden md:block"
           chainId={chains[4].id}
         />
         <FloatingIcon
-          className="right-[10%] bottom-[10%]"
+          className="right-[10%] bottom-[10%] hidden md:block"
           chainId={chains[5].id}
         />
       </div>
-      <BaseLayout>
-        <div className="my-8 text-center">
-          <h1 className="font-bold text-6xl tracking-tight">
-            All Chains. <br /> All Tokens. One Click.
-          </h1>
-        </div>
-        {children}
-      </BaseLayout>
-      <div className="absolute inset-y-0 right-0 w-1/3">
+      <div className="relative z-10 w-full">
+        <BaseLayout>
+          <div className="z-10 my-8 bg-opacity-100 text-center">
+            <h1 className="font-bold text-6xl tracking-tight">
+              All Chains. <br /> All Tokens. One Click.
+            </h1>
+          </div>
+          {children}
+        </BaseLayout>
+      </div>
+      <div className="absolute inset-y-0 right-0 w-full md:w-1/3 ">
         <FloatingIcon
           className="top-[10%] right-[10%]"
           chainId={chains[6].id}

@@ -33,7 +33,7 @@ export const ZoraLogo: ForwardRefExoticComponent<
     xmlns="http://www.w3.org/2000/svg"
   >
     <title>Zora</title>
-    <g clip-path="url(#clip0_10113_10246)">
+    <g clipPath="url(#clip0_10113_10246)">
       <mask
         id="mask0_10113_10246"
         maskUnits="userSpaceOnUse"
@@ -226,8 +226,8 @@ export const ZoraLogo: ForwardRefExoticComponent<
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(15.9339 6.15031) rotate(128.228) scale(20.4489 20.4473)"
       >
-        <stop offset="0.286458" stop-color="#387AFA" />
-        <stop offset="0.647782" stop-color="#387AFA" stopOpacity="0" />
+        <stop offset="0.286458" stopColor="#387AFA" />
+        <stop offset="0.647782" stopColor="#387AFA" stopOpacity="0" />
       </radialGradient>
       <radialGradient
         id="paint1_radial_10113_10246"
