@@ -15,7 +15,7 @@
 import "@lightdotso/styles/global.css";
 import { LightRoot } from "@lightdotso/roots/light";
 import { Footer } from "@lightdotso/templates/footer";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -58,8 +58,18 @@ export const metadata: Metadata = {
 };
 
 // -----------------------------------------------------------------------------
-// Props
+// Viewport
 // -----------------------------------------------------------------------------
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
+// -----------------------------------------------------------------------------
+// Props
 
 interface RootLayoutProps {
   children: ReactNode;

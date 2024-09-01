@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { toThreeDigits } from "@/utils";
 import { createReader } from "@keystatic/core/reader";
 import { NextImage } from "@lightdotso/elements/next-image";
 import { refineDateFormat } from "@lightdotso/utils";
@@ -58,6 +59,7 @@ export default async function Page() {
             />
             <div className="mt-4 flex items-center justify-between">
               <div className="font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
+                #{toThreeDigits(changelog.entry.issue)} -{" "}
                 {changelog.entry.title}
               </div>
               <div className="text-lg group-hover:underline">

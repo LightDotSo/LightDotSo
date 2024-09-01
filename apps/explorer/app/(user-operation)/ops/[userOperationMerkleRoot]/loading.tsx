@@ -13,25 +13,27 @@
 // limitations under the License.
 
 "use client";
-
-import { ActivityTable } from "@lightdotso/tables/activity";
-import { activityColumns } from "@lightdotso/tables/activity/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+import { TransactionTable } from "@lightdotso/tables/transaction";
+import { transactionColumns } from "@lightdotso/tables/transaction/columns";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
-    <TableSectionWrapper>
-      <ActivityTable
-        isLoading
-        data={[]}
-        columns={activityColumns}
-        pageSize={10}
-      />
-    </TableSectionWrapper>
+    <TransactionTable
+      isLoading
+      data={[]}
+      columns={transactionColumns}
+      pageSize={10}
+    />
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

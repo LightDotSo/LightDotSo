@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
+"use client";
+
 import { DEMO_WALLET_ADDRESS } from "@/const";
+import { UserOperationTable } from "@lightdotso/tables/user-operation";
 import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 
 // -----------------------------------------------------------------------------
@@ -22,14 +24,14 @@ import { userOperationColumns } from "@lightdotso/tables/user-operation/columns"
 
 export function Loading() {
   return (
-    <DataTable
+    <UserOperationTable
       isLoading
       address={DEMO_WALLET_ADDRESS}
       data={[]}
-      pageCount={0}
       columns={userOperationColumns}
       isTestnet={false}
       tableType="card"
+      pageSize={10}
     />
   );
 }

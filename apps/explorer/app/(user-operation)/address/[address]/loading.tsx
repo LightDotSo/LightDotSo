@@ -14,24 +14,29 @@
 
 "use client";
 
-import { ActivityTable } from "@lightdotso/tables/activity";
-import { activityColumns } from "@lightdotso/tables/activity/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+import { UserOperationTable } from "@lightdotso/tables/user-operation";
+import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
-    <TableSectionWrapper>
-      <ActivityTable
-        isLoading
-        data={[]}
-        columns={activityColumns}
-        pageSize={10}
-      />
-    </TableSectionWrapper>
+    <UserOperationTable
+      address={null}
+      isLoading
+      data={[]}
+      isTestnet={false}
+      columns={userOperationColumns}
+      pageSize={10}
+    />
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

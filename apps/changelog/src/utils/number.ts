@@ -12,26 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { ActivityTable } from "@lightdotso/tables/activity";
-import { activityColumns } from "@lightdotso/tables/activity/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
-
 // -----------------------------------------------------------------------------
-// Loading
+// Utils
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
-  return (
-    <TableSectionWrapper>
-      <ActivityTable
-        isLoading
-        data={[]}
-        columns={activityColumns}
-        pageSize={10}
-      />
-    </TableSectionWrapper>
-  );
+export function toThreeDigits(num: number): string {
+  return num.toString().padStart(3, "0");
 }

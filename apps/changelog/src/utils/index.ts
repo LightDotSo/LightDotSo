@@ -12,17 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-import type { ReactNode } from "react";
-
-export type Tab = {
-  label: string;
-  id: string;
-  href: string;
-  number?: number;
-  icon: (_props: { className?: string }) => ReactNode;
-  isTextOnly?: boolean;
-};
+export { toThreeDigits } from "./number";

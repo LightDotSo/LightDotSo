@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
+"use client";
+
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
+import { TokenTable } from "@lightdotso/tables/token";
 import { tokenColumns } from "@lightdotso/tables/token/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
@@ -29,7 +31,7 @@ export function Loading() {
         <TokenPortfolioSkeleton />
       </PortfolioSection>
       <TableSectionWrapper>
-        <DataTable isLoading pageCount={0} data={[]} columns={tokenColumns} />
+        <TokenTable isLoading data={[]} columns={tokenColumns} pageSize={10} />
       </TableSectionWrapper>
     </>
   );

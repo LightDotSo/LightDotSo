@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import type { Tab } from "@lightdotso/types";
+import { Button } from "@lightdotso/ui/components/button";
 import { BaseLayerWrapper } from "@lightdotso/ui/wrappers";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavLocation } from "./nav-location";
@@ -38,9 +39,22 @@ export const Nav: FC<NavProps> = ({ children, tabs }) => {
         <div className="overflow-y-visible border-b border-b-border py-2">
           <div className="flex h-16 items-center">
             <BaseLayerWrapper>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <NavLogo />
-                <NavLocation tabs={tabs} />
+                <div className="flex flex-row-reverse items-center gap-2 md:flex-row">
+                  <NavLocation tabs={tabs} />
+                  <Button className="shrink-0" asChild>
+                    <a
+                      href={`https://light.so${
+                        process.env.VERCEL_PROJECT_PRODUCTION_URL
+                          ? `?ref=${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+                          : ""
+                      }`}
+                    >
+                      Launch App
+                    </a>
+                  </Button>
+                </div>
               </div>
             </BaseLayerWrapper>
           </div>

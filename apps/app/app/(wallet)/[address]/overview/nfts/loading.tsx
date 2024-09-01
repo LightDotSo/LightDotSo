@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
+"use client";
+
 import { NftPortfolioSkeleton } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
+import { NftTable } from "@lightdotso/tables/nft";
 import { nftColumns } from "@lightdotso/tables/nft/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
@@ -29,7 +31,7 @@ export function Loading() {
         <NftPortfolioSkeleton />
       </PortfolioSection>
       <TableSectionWrapper>
-        <DataTable isLoading data={[]} columns={nftColumns} />
+        <NftTable isLoading data={[]} columns={nftColumns} pageSize={10} />
       </TableSectionWrapper>
     </>
   );

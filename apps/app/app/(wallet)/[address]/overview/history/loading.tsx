@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
+"use client";
+
+import { TransactionTable } from "@lightdotso/tables/transaction";
 import { transactionColumns } from "@lightdotso/tables/transaction/columns";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -22,14 +23,14 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 export function Loading() {
   return (
-    <TableSectionWrapper>
-      <DataTable
+    <>
+      <TransactionTable
         isLoading
-        pageCount={0}
         data={[]}
         columns={transactionColumns}
+        pageSize={10}
       />
-    </TableSectionWrapper>
+    </>
   );
 }
 

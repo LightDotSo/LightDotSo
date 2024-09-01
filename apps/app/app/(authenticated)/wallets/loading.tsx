@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
+"use client";
+
+import { WalletTable } from "@lightdotso/tables/wallet";
 import { walletColumns } from "@lightdotso/tables/wallet/columns";
 
 // -----------------------------------------------------------------------------
@@ -21,7 +23,7 @@ import { walletColumns } from "@lightdotso/tables/wallet/columns";
 
 export function Loading() {
   return (
-    <DataTable isLoading data={[]} columns={walletColumns} pageCount={1} />
+    <WalletTable isLoading data={[]} columns={walletColumns} pageSize={10} />
   );
 }
 
