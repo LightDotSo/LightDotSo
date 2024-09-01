@@ -17,7 +17,6 @@ import { verifyUserId } from "@/auth";
 import { TITLES } from "@/const";
 import { BannerSection } from "@lightdotso/ui/sections";
 import { HStackFull } from "@lightdotso/ui/stacks";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import {
   BaseLayerWrapper,
   BasicPageWrapper,
@@ -87,9 +86,7 @@ export default async function ActivityLayout({
         </MiddleLayerWrapper>
       </BannerSection>
       <BaseLayerWrapper>
-        <BasicPageWrapper>
-          <TableSectionWrapper>{children}</TableSectionWrapper>
-        </BasicPageWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
       </BaseLayerWrapper>
     </>
   );

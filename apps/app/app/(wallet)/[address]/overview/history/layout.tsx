@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { TITLES } from "@/const";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -43,5 +42,5 @@ export default function Layout({ children }: OverviewHistoryLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <TableSectionWrapper>{children}</TableSectionWrapper>;
+  return children;
 }
