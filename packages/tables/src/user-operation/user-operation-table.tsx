@@ -281,24 +281,35 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
           ))}
         </>
       ) : delayedIsLoading ? (
-        <div>
-          {Array(pageSize)
+        <div className="space-y-4">
+          {Array(Math.ceil(pageSize / 3))
             .fill(null)
-            .map((_, index) => (
+            .map((_, groupIndex) => (
               <div
-                key={`loading-${
+                key={`loading-group-${
                   // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  index
+                  groupIndex
                 }`}
-                className={cn(index % 3 === 2 && "mb-4")}
+                className="mb-4 space-y-3"
               >
-                {index % 3 === 0 && (
-                  <div className="mb-2 text-text-weak">
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                )}
+                <div className="text-text-weak">
+                  <Skeleton className="h-6 w-24" />
+                </div>
                 <div className="rounded-md border border-border bg-background">
-                  <Skeleton className="h-12 w-full" />
+                  {Array(3)
+                    .fill(null)
+                    .map((_, itemIndex) => (
+                      <Skeleton
+                        key={`loading-item-${groupIndex}-${
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          itemIndex
+                        }`}
+                        className={cn(
+                          "h-12 w-full rounded-none",
+                          itemIndex !== 2 && "border-border border-b",
+                        )}
+                      />
+                    ))}
                 </div>
               </div>
             ))}
