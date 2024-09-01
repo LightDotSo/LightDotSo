@@ -78,7 +78,7 @@ export const FloatingIcon = ({ className, chainId }: FloatingIconProps) => {
         transition: { duration: 0.3 },
       }}
     >
-      <ChainLogo size={size} chainId={chainId} />
+      <ChainLogo size={size as "4xl" | "5xl" | "6xl"} chainId={chainId} />
     </motion.div>
   );
 };

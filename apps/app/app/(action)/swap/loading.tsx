@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { BaseLayout } from "@/app/(action)/(layouts)/base-layout";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 
 // -----------------------------------------------------------------------------
@@ -19,7 +20,11 @@ import { Skeleton } from "@lightdotso/ui/components/skeleton";
 // -----------------------------------------------------------------------------
 
 export function Loading() {
-  return <Skeleton className="h-96 w-full" />;
+  return (
+    <BaseLayout>
+      <Skeleton className="h-96 w-full" />
+    </BaseLayout>
+  );
 }
 
 // -----------------------------------------------------------------------------
