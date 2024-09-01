@@ -3,3 +3,4 @@ reject:
   - "@coinbase/onchainkit"
   - "@lightdotso/services"
   - "@vercel/og"
+  - postcss
