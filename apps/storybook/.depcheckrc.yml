@@ -67,3 +67,4 @@ ignores:
   - "@lightdotso/modals"
   - "@lightdotso/states"
   - "@types/react"
+  - "@lightdotso/ui"
