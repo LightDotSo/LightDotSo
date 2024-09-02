@@ -26,8 +26,10 @@ import { useRef } from "react";
 interface FloatingIconProps {
   className: string;
   chainId: number;
+  chainName: string;
   scrollFactor?: number;
   rotationFactor?: number;
+  primaryColor?: string;
 }
 
 // -----------------------------------------------------------------------------
@@ -37,8 +39,9 @@ interface FloatingIconProps {
 export const FloatingIcon = ({
   className,
   chainId,
+  // chainName,
   scrollFactor = 0.8,
-  rotationFactor = 3,
+  rotationFactor = 6,
 }: FloatingIconProps) => {
   // ---------------------------------------------------------------------------
   // Refs
@@ -69,12 +72,25 @@ export const FloatingIcon = ({
   const yRange = Math.random() * 100 + 50;
   const y = useTransform(scrollYProgress, [0, 1], [0, yRange * scrollFactor]);
 
-  const rotationRange = Math.random() * 30 - 15; // Random range between -30 and 30
+  const rotationRange = Math.random() * 30 - 15;
   const rotate = useTransform(
     scrollYProgress,
     [0, 1],
     [0, rotationRange * rotationFactor],
   );
+
+  // ---------------------------------------------------------------------------
+  // Animations
+  // ---------------------------------------------------------------------------
+
+  const hoverAnimation = {
+    scale: 1.2,
+    rotate: 15,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
+  };
 
   // ---------------------------------------------------------------------------
   // Render
@@ -85,6 +101,7 @@ export const FloatingIcon = ({
       ref={ref}
       className={cn("absolute", className)}
       style={{ y, rotate }}
+      whileHover={hoverAnimation}
     >
       <ChainLogo size={size as "4xl" | "5xl" | "6xl"} chainId={chainId} />
     </motion.div>
