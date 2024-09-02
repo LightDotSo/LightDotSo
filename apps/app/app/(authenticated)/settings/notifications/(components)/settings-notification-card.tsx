@@ -185,7 +185,7 @@ export const SettingsNotificationCard: FC = () => {
             )}
           />
           <div>
-            <h3 className="mb-4 font-medium text-lg">Email Notifications</h3>
+            <div className="mb-4 font-medium text-lg">Email Notifications</div>
             <div className="space-y-4">
               <FormField
                 control={form.control}

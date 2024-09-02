@@ -2269,9 +2269,6 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@lightdotso/modals':
-        specifier: workspace:*
-        version: link:../modals
       '@lightdotso/msw':
         specifier: workspace:*
         version: link:../msw

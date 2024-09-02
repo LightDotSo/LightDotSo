@@ -51,7 +51,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
     id: "index",
     accessorKey: "index",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Index" />
+      <DataTableColumnHeader className="w-10" column={column} title="Index" />
     ),
     cell: ({ row }) => <div className="w-4">{row.getValue("index")}</div>,
     enableSorting: false,

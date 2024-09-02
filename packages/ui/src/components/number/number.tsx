@@ -27,7 +27,7 @@ import { forwardRef, useEffect, useState } from "react";
 const numberVariantsWhole = cva("text-text", {
   variants: {
     variant: {
-      default: "font-bold",
+      default: "font-semibold",
       neutral: "font-normal",
     },
     size: {
