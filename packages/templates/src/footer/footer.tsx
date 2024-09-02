@@ -37,9 +37,9 @@ export const Footer: FC = () => {
       className={cn("border-border border-t", baseWidthWrapper)}
       aria-labelledby="footer-heading"
     >
-      <h2 id="footer-heading" className="sr-only">
+      <h1 id="footer-heading" className="sr-only">
         Footer
-      </h2>
+      </h1>
       <div className="mx-auto max-w-7xl space-y-4 py-8 lg:space-y-8">
         <div className="flex flex-col justify-start space-y-6 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
           <div className="flex items-center justify-between space-x-3">

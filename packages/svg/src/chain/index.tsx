@@ -69,7 +69,24 @@ export const chainLogoConfig = {
 
 export const chainLogoVariants = cva([], chainLogoConfig);
 
-export const testnetChainLogoVariants = cva([], chainLogoConfig);
+const testnetChainLogoVariants = cva([], {
+  variants: {
+    size: {
+      default: "size-3 text-[6px]",
+      sm: "size-2 text-[4px]",
+      lg: "size-4 text-[8px]",
+      xl: "size-5 text-[10px]",
+      "2xl": "size-6 text-[12px]",
+      "3xl": "size-7 text-[14px]",
+      "4xl": "size-8 text-[16px]",
+      "5xl": "size-9 text-[18px]",
+      "6xl": "size-10 text-[20px]",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
 
 // -----------------------------------------------------------------------------
 // Wrapper

@@ -50,23 +50,6 @@ export const RootWelcomeCards: FC = () => {
           <CardHeader>
             <div>
               <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
-                <Wallet className="size-5 text-border-warning" />
-              </span>
-            </div>
-            <CardTitle>Connect to Light</CardTitle>
-            <CardDescription>
-              Connect your wallet to Light to get started.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <ConnectButton />
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="col-span-1 p-4">
-          <CardHeader>
-            <div>
-              <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
                 <PlayCircleIcon className="size-5 text-border-warning" />
               </span>
             </div>
@@ -80,6 +63,23 @@ export const RootWelcomeCards: FC = () => {
                 Swap
               </Link>
             </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="col-span-1 p-4">
+          <CardHeader>
+            <div>
+              <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
+                <Wallet className="size-5 text-border-warning" />
+              </span>
+            </div>
+            <CardTitle>Connect to Light</CardTitle>
+            <CardDescription>
+              Connect your wallet to Light to get started.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <ConnectButton />
           </CardContent>
         </Card>
       )}
