@@ -28,6 +28,7 @@
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/modals": "workspace:*",
     "@lightdotso/msw": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/states": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",

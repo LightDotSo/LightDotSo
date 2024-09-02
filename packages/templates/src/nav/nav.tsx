@@ -42,12 +42,10 @@ export const Nav: FC<NavProps> = ({ children, tabs }) => {
             <BaseLayerWrapper>
               <div className="flex items-center justify-between gap-2">
                 <NavLogo />
-                <div className="flex flex-row-reverse items-center gap-2 md:flex-row">
-                  <NavLocation tabs={tabs} />
-                  <Button className="shrink-0" asChild>
-                    <a href={INTERNAL_LINKS.App}>Launch App</a>
-                  </Button>
-                </div>
+                <NavLocation tabs={tabs} />
+                <Button className="hidden shrink-0 md:block" asChild>
+                  <a href={INTERNAL_LINKS.App}>Launch App</a>
+                </Button>
               </div>
             </BaseLayerWrapper>
           </div>

@@ -44,16 +44,6 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Component
-  // ---------------------------------------------------------------------------
-
-  const NavLocationContent = ({ tab }: { tab: Tab }) => {
-    return (
-      <>{tab.icon ? <tab.icon className="size-4 sm:size-5" /> : tab.label}</>
-    );
-  };
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -62,7 +52,13 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
   }
 
   if (!isDesktop) {
-    return <MobileAppDrawer tabs={tabs} />;
+    return (
+      <MobileAppDrawer tabs={tabs}>
+        <Button asChild>
+          <Link href={INTERNAL_LINKS.App}>Launch App</Link>
+        </Button>
+      </MobileAppDrawer>
+    );
   }
 
   return (
@@ -98,5 +94,15 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
         );
       })}
     </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const NavLocationContent = ({ tab }: { tab: Tab }) => {
+  return (
+    <>{tab.icon ? <tab.icon className="size-4 sm:size-5" /> : tab.label}</>
   );
 };
