@@ -15,7 +15,6 @@
 export {
   ChainLogo,
   chainLogoVariants,
-  testnetChainLogoVariants,
   chainLogoConfig,
 } from "./chain";
 export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";
