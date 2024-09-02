@@ -726,19 +726,6 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
-  apps/assets:
-    dependencies:
-      '@cloudflare/workers-types':
-        specifier: ^4.20240821.1
-        version: 4.20240821.1
-    devDependencies:
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-      wrangler:
-        specifier: ^3.73.0
-        version: 3.73.0(@cloudflare/workers-types@4.20240821.1)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
-
   apps/blog:
     dependencies:
       '@babel/core':
