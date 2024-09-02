@@ -16,7 +16,8 @@
 
 import { ChainLogo } from "@lightdotso/svg";
 import { cn } from "@lightdotso/utils";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -25,13 +26,38 @@ import { motion } from "framer-motion";
 interface FloatingIconProps {
   className: string;
   chainId: number;
+  chainName: string;
+  scrollFactor?: number;
+  rotationFactor?: number;
+  primaryColor?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FloatingIcon = ({ className, chainId }: FloatingIconProps) => {
+export const FloatingIcon = ({
+  className,
+  chainId,
+  // chainName,
+  scrollFactor = 0.8,
+  rotationFactor = 6,
+}: FloatingIconProps) => {
+  // ---------------------------------------------------------------------------
+  // Refs
+  // ---------------------------------------------------------------------------
+
+  const ref = useRef(null);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
   // ---------------------------------------------------------------------------
   // Const
   // ---------------------------------------------------------------------------
@@ -43,8 +69,28 @@ export const FloatingIcon = ({ className, chainId }: FloatingIconProps) => {
     )
   ];
 
-  const offset = Math.random() * 20 - 10;
-  const delay = Math.random() * 2;
+  const yRange = Math.random() * 100 + 50;
+  const y = useTransform(scrollYProgress, [0, 1], [0, yRange * scrollFactor]);
+
+  const rotationRange = Math.random() * 30 - 15;
+  const rotate = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, rotationRange * rotationFactor],
+  );
+
+  // ---------------------------------------------------------------------------
+  // Animations
+  // ---------------------------------------------------------------------------
+
+  const hoverAnimation = {
+    scale: 1.2,
+    rotate: 15,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
+  };
 
   // ---------------------------------------------------------------------------
   // Render
@@ -52,31 +98,10 @@ export const FloatingIcon = ({ className, chainId }: FloatingIconProps) => {
 
   return (
     <motion.div
+      ref={ref}
       className={cn("absolute", className)}
-      initial={{
-        opacity: 0.3,
-        filter: "blur(6px)",
-        rotate: Math.random() * 10 - 5,
-      }}
-      animate={{
-        y: [offset, offset - 10, offset],
-      }}
-      transition={{
-        y: {
-          duration: 2,
-          repeat: Number.POSITIVE_INFINITY,
-          repeatType: "reverse",
-          ease: "easeInOut",
-          delay: delay,
-        },
-      }}
-      whileHover={{
-        scale: 1.2,
-        opacity: 1,
-        filter: "blur(0px)",
-        rotate: Math.random() * 10 - 5,
-        transition: { duration: 0.3 },
-      }}
+      style={{ y, rotate }}
+      whileHover={hoverAnimation}
     >
       <ChainLogo size={size as "4xl" | "5xl" | "6xl"} chainId={chainId} />
     </motion.div>

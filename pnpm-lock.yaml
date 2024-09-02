@@ -1964,6 +1964,8 @@ importers:
         specifier: ^1.0.36
         version: 1.0.36
 
+  assets: {}
+
   bin:
     dependencies:
       '@lightdotso/crates':
