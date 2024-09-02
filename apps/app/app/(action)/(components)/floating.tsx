@@ -62,9 +62,9 @@ export const Floating = ({ children }: { children: ReactNode }) => {
           chainId={chains[5].id}
         />
       </div>
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 w-full md:z-0">
         <BaseLayout>
-          <div className="z-10 my-8 bg-opacity-100 text-center">
+          <div className="my-8 bg-opacity-100 text-center">
             <h1 className="font-bold text-6xl tracking-tight">
               All Chains. <br /> All Tokens. One Click.
             </h1>
@@ -72,7 +72,7 @@ export const Floating = ({ children }: { children: ReactNode }) => {
           {children}
         </BaseLayout>
       </div>
-      <div className="absolute inset-y-0 right-0 w-full md:w-1/3 ">
+      <div className="absolute inset-y-0 right-0 z-0 w-full md:w-1/3 ">
         <FloatingIcon
           className="top-[10%] right-[10%]"
           chainId={chains[6].id}
