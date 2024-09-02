@@ -47,7 +47,7 @@ export const Swap: FC = () => {
                 Instantly swap accross all chains in one click.
               </span>
             </div>
-            <div className="py-8">
+            <div className="py-8 md:pb-0">
               <Button
                 asChild
                 className="rounded-full px-4"

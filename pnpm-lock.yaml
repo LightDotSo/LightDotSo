@@ -1754,6 +1754,9 @@ importers:
       '@lightdotso/msw':
         specifier: workspace:*
         version: link:../../packages/msw
+      '@lightdotso/roots':
+        specifier: workspace:*
+        version: link:../../packages/roots
       '@lightdotso/states':
         specifier: workspace:*
         version: link:../../packages/states

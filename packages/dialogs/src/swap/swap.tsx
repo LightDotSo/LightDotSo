@@ -389,7 +389,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
+      <div className="rounded-t-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span className="text-sm">Sell</span>
         <div className="flex items-center justify-between">
           <FormField
@@ -518,7 +518,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </div>
       <div className="-my-4 z-10 flex items-center justify-center">
         <ButtonIcon
-          className="ring-4 ring-background-body"
+          className="ring-2 ring-background-body"
           onClick={() => {
             // Swap buy and sell values
             if (fromSwap?.quantity && toSwap?.quantity) {
@@ -558,7 +558,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <ArrowDown />
         </ButtonIcon>
       </div>
-      <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
+      <div className="mt-0.5 rounded-b-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span className="text-sm">Buy</span>
         <div className="flex items-center justify-between">
           <FormField

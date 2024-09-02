@@ -15,7 +15,7 @@
 import "./storybook.css";
 import "@lightdotso/styles/global.css";
 import "reactflow/dist/style.css";
-import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
+import { LightRoot } from "@lightdotso/roots/light";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
@@ -75,9 +75,9 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
 export const decorators = [
   (Story) => (
     <AppRouterContext.Provider value={{} as AppRouterInstance}>
-      <ReactQueryProvider>
+      <LightRoot>
         <Story />
-      </ReactQueryProvider>
+      </LightRoot>
     </AppRouterContext.Provider>
   ),
 ];
