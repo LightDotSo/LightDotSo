@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { LightHorizontalLogo } from "@lightdotso/svg";
-import { Button } from "@lightdotso/ui/components/button";
 import type { FC } from "react";
+import { HeaderButton } from "./header-button";
 import { Menu } from "./menu";
 
 // -----------------------------------------------------------------------------
@@ -32,9 +32,7 @@ export const Header: FC = () => {
       <div className="relative z-10 hidden sm:block">
         <Menu />
       </div>
-      <Button className="shrink-0" asChild>
-        <a href="/">Launch App</a>
-      </Button>
+      <HeaderButton />
     </div>
   );
 };

@@ -1341,6 +1341,9 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@lightdotso/roots':
         specifier: workspace:*
         version: link:../../packages/roots
@@ -1350,6 +1353,9 @@ importers:
       '@lightdotso/templates':
         specifier: workspace:*
         version: link:../../packages/templates
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
