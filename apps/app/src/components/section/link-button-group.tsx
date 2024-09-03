@@ -160,7 +160,6 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
                   </Button>
                 ))}
               </div>
-              {children}
             </DrawerBody>
           </DrawerContent>
         </Drawer>
