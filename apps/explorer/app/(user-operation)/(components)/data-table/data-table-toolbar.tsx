@@ -104,6 +104,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!table) {
+    return null;
+  }
+
   return (
     <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
