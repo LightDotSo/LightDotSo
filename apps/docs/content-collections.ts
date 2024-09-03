@@ -5,7 +5,7 @@ import {
   transformMDX,
 } from "@fumadocs/content-collections/configuration";
 
-const docs = defineCollection({
+export const docs = defineCollection({
   name: "docs",
   directory: "content",
   include: "./content/**/*.mdx",
@@ -13,7 +13,7 @@ const docs = defineCollection({
   transform: transformMDX,
 });
 
-const metas = defineCollection({
+export const metas = defineCollection({
   name: "meta",
   directory: "content",
   include: "./content/**/meta.json",

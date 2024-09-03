@@ -19,3 +19,4 @@ ignores:
   - "next-themes"
   - "fumadocs-openapi"
   - "@content-collections/next"
+  - shiki

@@ -10,8 +10,7 @@
     "paths": {
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"],
-      "~/*": ["./*"],
-      "content-collections": ["./.content-collections/generated"]
+      "@/source": ["./source.config.ts"]
     },
     "declaration": false,
     "declarationMap": false
