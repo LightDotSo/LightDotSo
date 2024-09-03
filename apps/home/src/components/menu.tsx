@@ -32,7 +32,12 @@ import {
   GitHubLogoIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
-import { CompassIcon, FileAxis3D, ScaleIcon } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  CompassIcon,
+  FileAxis3D,
+  ScaleIcon,
+} from "lucide-react";
 import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
@@ -204,6 +209,7 @@ export const Menu: FC<GridProps> = ({ className }) => {
           <a href={INTERNAL_LINKS.Paper} target="_blank" rel="noreferrer">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Paper
+              <ArrowUpRightIcon className="ml-1 h-4 w-4" />
             </NavigationMenuLink>
           </a>
         </NavigationMenuItem>
