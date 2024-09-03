@@ -14,7 +14,8 @@
 
 "use client";
 
-import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
+import { HOME_TABS } from "@/const/tabs";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { LightHorizontalLogo } from "@lightdotso/svg";
 import {
   NavigationMenu,
@@ -26,65 +27,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@lightdotso/ui/components/navigation-menu";
 import { cn } from "@lightdotso/utils";
-import {
-  DiscordLogoIcon,
-  FileTextIcon,
-  GitHubLogoIcon,
-  TwitterLogoIcon,
-} from "@radix-ui/react-icons";
-import { CompassIcon, FileAxis3D, ScaleIcon } from "lucide-react";
+import { FileTextIcon } from "@radix-ui/react-icons";
+import { ArrowUpRightIcon, CompassIcon, ScaleIcon } from "lucide-react";
 import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
-import { FaTelegram } from "react-icons/fa";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const components: {
-  title: string;
-  href: string;
-  description: string;
-  icon: ReactNode;
-}[] = [
-  {
-    title: "Blog",
-    href: INTERNAL_LINKS.Blog,
-    description: "Read the Light blog.",
-    icon: <FileTextIcon className="h-5 w-5" />,
-  },
-  {
-    title: "Changelog",
-    href: INTERNAL_LINKS.Changelog,
-    description: "View the Light changelog.",
-    icon: <FileAxis3D className="h-5 w-5" />,
-  },
-  {
-    title: "Discord",
-    href: SOCIAL_LINKS.Discord,
-    description: "Join the Light Discord.",
-    icon: <DiscordLogoIcon className="h-5 w-5" />,
-  },
-  {
-    title: "Github",
-    href: SOCIAL_LINKS.Github,
-    description: "Contribute to Light on Github.",
-    icon: <GitHubLogoIcon className="h-5 w-5" />,
-  },
-  {
-    title: "Telegram",
-    href: SOCIAL_LINKS.Telegram,
-    description: "Join the Light Telegram.",
-    icon: <FaTelegram className="h-5 w-5" />,
-  },
-  {
-    title: "Twitter",
-    href: SOCIAL_LINKS.Twitter,
-    description: "Follow Light on Twitter.",
-    icon: <TwitterLogoIcon className="h-5 w-5" />,
-  },
-];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -187,14 +134,14 @@ export const Menu: FC<GridProps> = ({ className }) => {
           <NavigationMenuTrigger>Official Links</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {components.map((component) => (
+              {HOME_TABS.map((tab) => (
                 <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                  icon={component.icon}
+                  key={tab.id}
+                  title={tab.label}
+                  href={tab.href}
+                  icon={<tab.icon className="h-5 w-5" />}
                 >
-                  {component.description}
+                  {tab.description}
                 </ListItem>
               ))}
             </ul>
@@ -204,6 +151,7 @@ export const Menu: FC<GridProps> = ({ className }) => {
           <a href={INTERNAL_LINKS.Paper} target="_blank" rel="noreferrer">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Paper
+              <ArrowUpRightIcon className="ml-1 h-4 w-4" />
             </NavigationMenuLink>
           </a>
         </NavigationMenuItem>

@@ -51,7 +51,7 @@ export const Introduction: FC = () => {
           ethos as an 100% open source project.
         </p>
       </div>
-      <Grid className="mt-20" />
+      <Grid className="mt-10 md:mt-20" />
     </div>
   );
 };

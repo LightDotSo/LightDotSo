@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { Floating } from "@/app/(action)/(components)/floating";
-import { Cta } from "@lightdotso/home/cta";
 import { Ecosystem } from "@lightdotso/home/ecosystem";
 import { Features } from "@lightdotso/home/features";
 import { Introduction } from "@lightdotso/home/introduction";
@@ -36,7 +35,6 @@ export const IntroLayout = ({ children }: { children: ReactNode }) => {
       <Unified />
       <Features />
       <Ecosystem />
-      <Cta />
     </>
   );
 };

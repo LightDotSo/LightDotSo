@@ -10,18 +10,11 @@
     "paths": {
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"],
-      "~/*": ["./*"],
-      "content-collections": ["./.content-collections/generated"]
+      "@/source": ["./source.config.ts"]
     },
     "declaration": false,
     "declarationMap": false
   },
-  "include": [
-    "content-collections.ts",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

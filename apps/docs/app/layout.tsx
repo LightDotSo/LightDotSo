@@ -1,16 +1,18 @@
-"use client";
-
-import "./fumadocs.css";
-import "@lightdotso/styles/global.css";
-import { DocsLayout } from "fumadocs-ui/layout";
+import "fumadocs-ui/style.css";
 import { RootProvider } from "fumadocs-ui/provider";
+import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
-import { docsOptions } from "./layout.config";
+
+const inter = Inter({
+  subsets: ["latin"],
+});
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <RootProvider>
-      <DocsLayout {...docsOptions}>{children}</DocsLayout>
-    </RootProvider>
+    <html lang="en" className={inter.className}>
+      <body>
+        <RootProvider>{children}</RootProvider>
+      </body>
+    </html>
   );
 }

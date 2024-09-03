@@ -36,13 +36,12 @@ import {
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
-import { getUserOperationHash } from "permissionless";
-import type {
-  ENTRYPOINT_ADDRESS_V06,
-  UserOperation as PermissionlessUserOperation,
-} from "permissionless";
 import { type FC, useEffect, useMemo, useState } from "react";
 import { type Address, type Hex, fromHex } from "viem";
+import {
+  type UserOperation as ViemUserOperation,
+  getUserOperationHash,
+} from "viem/account-abstraction";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -109,10 +108,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Get the nonce for the entry point
   const { data: entryPointNonce, isFetched: isEntryPointNonceFetched } =
     useReadEntryPointGetNonce({
-      address: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        findContractAddressByAddress(wallet?.factory_address as Address)!
-      ] as typeof ENTRYPOINT_ADDRESS_V06,
+      address:
+        WALLET_FACTORY_ENTRYPOINT_MAPPING[
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          findContractAddressByAddress(wallet?.factory_address as Address)!
+        ],
       chainId: Number(initialUserOperation.chainId),
       args: [address as Address, 0n],
     });
@@ -502,12 +502,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
       // Get the hash for the user operation w/ the corresponding entry point
       const hash = await getUserOperationHash({
-        userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
+        userOperation: userOperation as ViemUserOperation<"0.6">,
         chainId: Number(finalizedUserOperation.chainId) as number,
-        entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          findContractAddressByAddress(wallet?.factory_address as Address)!
-        ] as typeof ENTRYPOINT_ADDRESS_V06,
+        entryPointAddress:
+          WALLET_FACTORY_ENTRYPOINT_MAPPING[
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            findContractAddressByAddress(wallet?.factory_address as Address)!
+          ],
+        entryPointVersion: "0.6",
       });
 
       // Don't update the user operation if the hash is same as the previous one

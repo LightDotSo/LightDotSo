@@ -22,6 +22,7 @@ export type Tab = {
   label: string;
   id: string;
   href: string;
+  description?: string;
   number?: number;
   icon: (_props: { className?: string }) => ReactNode;
   isTextOnly?: boolean;
