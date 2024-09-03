@@ -70,7 +70,12 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
         <DrawerHeader>{children}</DrawerHeader>
         <DrawerBody>
           {tabs.map((tab) => {
-            if (tab.href.startsWith("http")) {
+            if (
+              !(
+                tab.href.startsWith("https://light.so") ||
+                tab.href.startsWith("/")
+              )
+            ) {
               return (
                 <div key={tab.id} className="border-border border-b py-1.5">
                   <Button asChild className="w-full" variant="link">

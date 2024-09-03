@@ -20,7 +20,7 @@ import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonIcon } from "@lightdotso/ui/components/button-icon";
 import Link from "next/link";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { MobileAppDrawer } from "../mobile-app-drawer";
 
 // -----------------------------------------------------------------------------
@@ -29,13 +29,19 @@ import { MobileAppDrawer } from "../mobile-app-drawer";
 
 type NavLocationProps = {
   tabs: Tab[];
+  children: ReactNode;
+  isTabsVisibleDesktop?: boolean;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
+export const NavLocation: FC<NavLocationProps> = ({
+  tabs,
+  children,
+  isTabsVisibleDesktop = true,
+}) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -52,48 +58,48 @@ export const NavLocation: FC<NavLocationProps> = ({ tabs }) => {
   }
 
   if (!isDesktop) {
-    return (
-      <MobileAppDrawer tabs={tabs}>
-        <Button asChild>
-          <Link href={INTERNAL_LINKS.App}>Launch App</Link>
-        </Button>
-      </MobileAppDrawer>
-    );
+    return <MobileAppDrawer tabs={tabs}>{children}</MobileAppDrawer>;
   }
 
   return (
-    <div className="ml-auto hidden items-center space-x-1 md:flex">
-      {tabs.map((tab) => {
-        return tab.isTextOnly ? (
-          <Button
-            key={tab.id}
-            asChild
-            variant="ghost"
-            className="font-medium text-sm"
-            size="sm"
-          >
-            <Link href={tab.href}>{tab.label}</Link>
-          </Button>
-        ) : (
-          <ButtonIcon
-            key={tab.id}
-            asChild
-            variant="ghost"
-            className="font-medium text-sm"
-          >
-            {tab.href.startsWith("/") || tab.href === INTERNAL_LINKS.Home ? (
-              <Link href={tab.href}>
-                <NavLocationContent tab={tab} />
-              </Link>
+    <>
+      {isTabsVisibleDesktop && (
+        <div className="ml-auto hidden items-center space-x-1 md:flex">
+          {tabs.map((tab) => {
+            return tab.isTextOnly ? (
+              <Button
+                key={tab.id}
+                asChild
+                variant="ghost"
+                className="font-medium text-sm"
+                size="sm"
+              >
+                <Link href={tab.href}>{tab.label}</Link>
+              </Button>
             ) : (
-              <a href={tab.href} target="_blank" rel="noreferrer">
-                <NavLocationContent tab={tab} />
-              </a>
-            )}
-          </ButtonIcon>
-        );
-      })}
-    </div>
+              <ButtonIcon
+                key={tab.id}
+                asChild
+                variant="ghost"
+                className="font-medium text-sm"
+              >
+                {tab.href.startsWith("/") ||
+                tab.href === INTERNAL_LINKS.Home ? (
+                  <Link href={tab.href}>
+                    <NavLocationContent tab={tab} />
+                  </Link>
+                ) : (
+                  <a href={tab.href} target="_blank" rel="noreferrer">
+                    <NavLocationContent tab={tab} />
+                  </a>
+                )}
+              </ButtonIcon>
+            );
+          })}
+        </div>
+      )}
+      {children}
+    </>
   );
 };
 
