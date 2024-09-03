@@ -20,3 +20,10 @@ ignores:
   - "fumadocs-openapi"
   - "@content-collections/next"
   - shiki
+  - fumadocs-core
+  - remark
+  - remark-rehype
+  - "@lightdotso/styles"
+  - "@types/mdx"
+  - "@content-collections/core"
+  - "@fumadocs/content-collections"
