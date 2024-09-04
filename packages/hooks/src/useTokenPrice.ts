@@ -61,9 +61,7 @@ export const useTokenPrice = ({
     }
 
     if (socketTokenPrice) {
-      return {
-        tokenPrice: socketTokenPrice.price,
-      };
+      return socketTokenPrice.price;
     }
 
     return getTokenPrice(chainId, tokenAddress);
