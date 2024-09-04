@@ -195,6 +195,10 @@ export const TokenModal: FC = () => {
   }, [lifiTokens, chainState]);
 
   const overlayTokens = useMemo(() => {
+    if (!(lightTokens && lifi_tokens)) {
+      return [];
+    }
+
     // Overlay light tokens amounts and balances on lifi tokens
     const overlayedTokens = lightTokens.map((lightToken) => {
       const lifiToken = lifi_tokens.find(
