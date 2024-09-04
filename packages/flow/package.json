@@ -35,7 +35,7 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "framer-motion": "^11.3.31",
+    "framer-motion": "^11.4.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.438.0",
     "next-themes": "^0.3.0",

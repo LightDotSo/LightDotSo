@@ -78,7 +78,7 @@ export const Floating = ({ children }: { children: ReactNode }) => {
           {children}
         </BaseLayout>
       </div>
-      <div className="absolute inset-y-0 right-0 z-0 w-full blur-sm lg:z-10 lg:w-1/3 lg:blur-0">
+      <div className="absolute inset-y-0 right-0 z-0 w-full blur-lg lg:z-10 lg:w-1/3 lg:blur-0">
         <FloatingIcon
           className="top-[10%] right-[10%]"
           chainId={chains[6].id}

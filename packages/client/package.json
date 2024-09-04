@@ -50,7 +50,7 @@
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.5.2",
-    "openapi-typescript": "^7.3.3",
+    "openapi-typescript": "^7.4.0",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

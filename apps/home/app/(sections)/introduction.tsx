@@ -26,15 +26,15 @@ export const Introduction: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 mt-16 flex h-screen flex-col items-center justify-center px-4">
-      <div className="m-auto max-w-3xl border-t">
+    <div className="relative z-10 flex flex-col items-center justify-center px-4">
+      <div className="m-auto mt-8 mb-24 max-w-3xl border-border-inverse-weaker border-t sm:mt-16 md:mt-32 md:mb-64">
         <div className="mt-8 text-thin">
           <SectionPill title="Introduction" description="Public Beta" />
         </div>
         <h1 className="mt-8 font-medium text-4xl leading-8 tracking-tight md:leading-10 lg:text-6xl">
           Use Ethereum as One.
         </h1>
-        <p className="mt-12 font-base text-base text-xl">
+        <p className="mt-12 mb-40 font-base text-base text-text text-xl md:text-2xl">
           Light enables using Ethereum, and EVM chains as seamless as possible.
           Designed from the ground up for the rollup/multi-chain world that we
           live in, Light enables you to use Ethereum like it is one.
@@ -51,7 +51,9 @@ export const Introduction: FC = () => {
           ethos as an 100% open source project.
         </p>
       </div>
-      <Grid className="mt-10 md:mt-20" />
+      <div className="absolute right-0 bottom-0 left-0">
+        <Grid />
+      </div>
     </div>
   );
 };

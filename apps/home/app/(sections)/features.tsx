@@ -236,7 +236,7 @@ export const FeatureCard: FC<FeatureCardProps> = ({ feature }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative col-span-1 w-full rounded-md bg-background-stronger p-4">
+    <div className="relative col-span-1 w-full rounded-lg bg-background-stronger p-4">
       <feature.icon className="size-6 text-text" />
       <p className="mt-2 font-normal text-lg text-text">{feature?.name}</p>
     </div>
@@ -261,7 +261,7 @@ export const FeatureCardList: FC<FeatureCardListProps> = ({ featureList }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="col-span-1 w-full rounded-md bg-background-weak p-4">
+    <div className="col-span-1 w-full rounded-lg bg-background-weak p-4">
       <div className="mt-2 font-bold font-normal text-lg text-text sm:text-2xl">
         {featureList?.name}
       </div>

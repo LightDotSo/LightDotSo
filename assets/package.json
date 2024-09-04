@@ -12,6 +12,9 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "dependencies": {
+    "ardrive-cli": "^2.0.6"
+  },
   "publishConfig": {
     "access": "public"
   }
