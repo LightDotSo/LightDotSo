@@ -41,7 +41,7 @@ export const Grid: FC<GridProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        "pointer-events-none relative h-full w-full overflow-hidden opacity-50 [perspective:200px]",
+        "pointer-events-none relative h-64 w-full overflow-hidden opacity-50 [perspective:200px] md:h-96",
         className,
       )}
     >
@@ -59,7 +59,7 @@ export const Grid: FC<GridProps> = ({ className }) => {
         />
       </div>
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white to-90% to-transparent dark:from-black" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white to-90% to-transparent dark:from-black" />
     </div>
   );
 };

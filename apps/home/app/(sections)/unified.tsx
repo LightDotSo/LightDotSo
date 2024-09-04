@@ -26,8 +26,8 @@ export const Unified: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger p-4 pt-20">
-      <div className="m-auto w-full w-full max-w-5xl border-border-strong border-t">
+    <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger p-4">
+      <div className="m-auto mt-12 w-full w-full max-w-5xl border-border-strong border-t sm:mt-16 md:mt-32">
         <div className="mt-8">
           <SectionPill title="Features" description="Upgraded" />
         </div>

@@ -26,7 +26,7 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
-    "@tanstack/react-query": "^5.53.3",
+    "@tanstack/react-query": "^5.54.1",
     "exponential-backoff": "^3.1.1",
     "next": "15.0.0-canary.120",
     "react": "19.0.0-rc-187dd6a7-20240806",
