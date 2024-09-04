@@ -16,7 +16,7 @@
 
 import { useIsFetchingLifiQuote } from "@lightdotso/query";
 import type { Swap } from "@lightdotso/schemas";
-import { useAuth, useUserOperations } from "@lightdotso/stores";
+import { useAuth, useTokenPrices, useUserOperations } from "@lightdotso/stores";
 import { useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { useDebouncedValue } from "./useDebouncedValue";
@@ -43,6 +43,7 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
 
   const { wallet } = useAuth();
   const { setExecutionParamsByChainId } = useUserOperations();
+  const { setTokenPrice } = useTokenPrices();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -212,6 +213,28 @@ export const useSwap = ({ fromSwap, toSwap }: SwapProps) => {
       setExecutionParamsByChainId(executionParams[0].chainId, executionParams);
     }
   }, [executionParams]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (fromTokenDollarRatio && fromSwap?.chainId && fromSwap?.address) {
+      setTokenPrice(
+        fromSwap?.chainId,
+        fromSwap?.address as Address,
+        fromTokenDollarRatio,
+      );
+    }
+  }, [fromTokenDollarRatio, fromSwap?.chainId, fromSwap?.address]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (toTokenDollarRatio && toSwap?.chainId && toSwap?.address) {
+      setTokenPrice(
+        toSwap?.chainId,
+        toSwap?.address as Address,
+        toTokenDollarRatio,
+      );
+    }
+  }, [toTokenDollarRatio, toSwap?.chainId, toSwap?.address]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

@@ -35,6 +35,7 @@ export { useSignMessageState } from "./useSignMessageState";
 export { useSwap } from "./useSwap";
 export { useTokenAmount } from "./useTokenAmount";
 export { useTokenAmounts } from "./useTokenAmounts";
+export { useTokenPrice } from "./useTokenPrice";
 export { useUserOperationsCreate } from "./useUserOperationsCreate";
 export { useUserOperationsCreateState } from "./useUserOperationsCreateState";
 export { useUserOperationSend } from "./useUserOperationSend";
