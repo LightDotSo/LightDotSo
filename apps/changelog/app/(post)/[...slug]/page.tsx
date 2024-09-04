@@ -64,6 +64,9 @@ export async function generateMetadata({
     openGraph: {
       images: changelog.ogp.src,
     },
+    twitter: {
+      images: changelog.ogp.src,
+    },
   };
 }
 

@@ -5,7 +5,10 @@ ardrive.sh
 copy.sh
 exclude.txt
 meta.sh
+node_modules/
 package.json
 CHANGELOG.md
 sync.sh
+turbo.json
+wallet.json
 README.md

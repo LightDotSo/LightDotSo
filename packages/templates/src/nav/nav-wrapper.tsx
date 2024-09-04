@@ -12,30 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Header } from "../src/components/header";
-import { Cta } from "./(sections)/cta";
-import { Ecosystem } from "./(sections)/ecosystem";
-import { Features } from "./(sections)/features";
-import { Hero } from "./(sections)/hero";
-import { Introduction } from "./(sections)/introduction";
-import { Swap } from "./(sections)/swap";
-import { Unified } from "./(sections)/unified";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Page
+// Props
 // -----------------------------------------------------------------------------
 
-export default function Page() {
+export interface NavWrapperProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export function NavWrapper({ children }: NavWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <div>
-      <Header />
-      <Hero />
-      <Swap />
-      <Introduction />
-      <Unified />
-      <Features />
-      <Ecosystem />
-      <Cta />
-    </div>
+    <main>
+      <div className="flex flex-col">
+        <div className="overflow-y-visible border-b border-b-border py-2">
+          <div className="flex h-16 items-center">{children}</div>
+        </div>
+      </div>
+    </main>
   );
 }
