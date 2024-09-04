@@ -454,10 +454,10 @@ impl SigModule {
             DynSolValue::Tuple(vec![
                 DynSolValue::FixedBytes(
                     FixedBytes::from_slice(
-                        &keccak256(
+                        keccak256(
                             DynSolValue::Tuple(vec![
                                 DynSolValue::FixedBytes(
-                                    FixedBytes::from_slice(&image_hash.to_vec()),
+                                    FixedBytes::from_slice(&image_hash),
                                     image_hash.to_vec().len(),
                                 ),
                                 DynSolValue::Uint(
@@ -467,15 +467,14 @@ impl SigModule {
                             ])
                             .abi_encode(),
                         )
-                        .to_vec(),
+                        .as_ref(),
                     ),
                     32,
                 ),
                 DynSolValue::Uint(U256::from_be_bytes(left_pad_u32_to_bytes32(checkpoint)), 256),
             ])
             .abi_encode(),
-        )
-        .into();
+        );
 
         // If the tree is single (right is empty), set the tree as root tree signer
         if self.tree.right.is_none() {

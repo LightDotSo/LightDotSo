@@ -74,17 +74,17 @@ impl WalletConfig {
                 DynSolValue::Tuple(vec![
                     DynSolValue::FixedBytes(
                         FixedBytes::from_slice(
-                            &keccak256(
+                            keccak256(
                                 DynSolValue::Tuple(vec![
                                     DynSolValue::FixedBytes(
-                                        FixedBytes::from_slice(&internal_root.0.to_vec()),
+                                        FixedBytes::from_slice(&internal_root.0),
                                         32,
                                     ),
                                     DynSolValue::Uint(U256::from(self.threshold), 256),
                                 ])
                                 .abi_encode(),
                             )
-                            .to_vec(),
+                            .as_ref(),
                         ),
                         32,
                     ),

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::utils::right_pad_to_bytes32;
 use alloy::{
     dyn_abi::DynSolValue,
     hex,
@@ -27,9 +26,7 @@ const PROXY_CREATION_CODE: &str = "0x6080604052604051610784380380610784833981016
 
 // From: https://github.com/rollchad/stylus-create2/blob/571f3a9a1bc2a4a568772dbbcc1383faa5753313/crates/factory/src/lib.rs#L43-L61
 
-fn get_create2_address(from: Address, salt: B256, init_code: &[u8]) -> Address {
-    let init_code_hash = keccak256(init_code);
-
+fn get_create2_address(from: Address, salt: B256, init_code_hash: B256) -> Address {
     let mut bytes = Vec::with_capacity(1 + 20 + salt.len() + init_code_hash.len());
 
     bytes.push(0xff);
@@ -42,9 +39,7 @@ fn get_create2_address(from: Address, salt: B256, init_code: &[u8]) -> Address {
     let mut address_bytes = [0u8; 20];
     address_bytes.copy_from_slice(&hash[12..]);
 
-    let address = Address::from_slice(&address_bytes);
-
-    address
+    Address::from_slice(&address_bytes)
 }
 
 pub fn get_address(hash: B256, salt: B256) -> Result<Address> {
@@ -54,10 +49,7 @@ pub fn get_address(hash: B256, salt: B256) -> Result<Address> {
     let (selector_slice, _) = selector.split_at(4);
 
     let and = DynSolValue::Tuple(vec![
-        DynSolValue::FixedBytes(
-            FixedBytes::from_slice(right_pad_to_bytes32(selector_slice).as_ref()),
-            selector_slice.len(),
-        ),
+        DynSolValue::FixedBytes(FixedBytes::from_slice(selector_slice), 4),
         DynSolValue::FixedBytes(FixedBytes::from_slice(hash.as_ref()), hash.to_vec().len()),
     ])
     .abi_encode_packed();
@@ -76,7 +68,7 @@ pub fn get_address(hash: B256, salt: B256) -> Result<Address> {
 
     let factory: Address = *LIGHT_WALLET_FACTORY_ADDRESS;
 
-    Ok(get_create2_address(factory, salt, init_code_hash.as_slice()))
+    Ok(get_create2_address(factory, salt, init_code_hash))
 }
 
 #[cfg(test)]

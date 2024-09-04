@@ -175,12 +175,6 @@ pub fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
     Ok(arr)
 }
 
-pub(crate) fn right_pad_to_bytes32(input: &'_ [u8]) -> [u8; 32] {
-    let mut output = [0; 32];
-    output[..input.len()].copy_from_slice(input);
-    output
-}
-
 pub(crate) fn left_pad_to_bytes32(input: &'_ [u8]) -> [u8; 32] {
     let mut output = [0; 32];
     output[32 - input.len()..].copy_from_slice(input);
