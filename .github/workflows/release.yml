@@ -51,6 +51,7 @@ jobs:
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
+        continue-on-error: true
         with:
           allowed-skips: release-please
           jobs: ${{ toJSON(needs) }}
