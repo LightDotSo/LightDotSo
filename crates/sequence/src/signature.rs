@@ -187,8 +187,8 @@ mod tests {
         // For ECDSASignatureTypeEIP712
         let message = B256::from(sub_digest);
         let signature = AlloySignature::from_str("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b")?;
-        let a = signature.recover_address_from_msg(message)?;
-        assert_eq!(a.to_checksum(None), "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d".to_string());
+        let a = signature.recover_address_from_prehash(&message)?;
+        assert_eq!(a.to_checksum(None), "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".to_string());
 
         Ok(())
     }

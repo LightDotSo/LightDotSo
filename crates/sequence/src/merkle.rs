@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::abi::{encode, encode_packed, Token};
+use alloy::{dyn_abi::DynSolValue, primitives::FixedBytes};
 use eyre::Result;
 
 pub fn render_merkle(
@@ -20,26 +20,33 @@ pub fn render_merkle(
     merkle_proofs: Vec<[u8; 32]>,
     signature: Vec<u8>,
 ) -> Result<Vec<u8>> {
-    Ok(encode_packed(&[
+    Ok(DynSolValue::Tuple(vec![
         // Encode as the merkle indicator
-        Token::Bytes(vec![0x04]),
+        DynSolValue::Bytes(vec![0x04]),
         // Encode the merkle root, proofs and signature
-        Token::Bytes(encode(&[
-            Token::FixedBytes(merkle_root.to_vec()),
-            Token::Array(
-                merkle_proofs.into_iter().map(|x| Token::FixedBytes(x.to_vec())).collect(),
-            ),
-            Token::Bytes(signature),
-        ])),
-    ])?)
+        DynSolValue::Bytes(
+            DynSolValue::Tuple(vec![
+                DynSolValue::FixedBytes(FixedBytes::from(merkle_root), merkle_root.len()),
+                DynSolValue::Array(
+                    merkle_proofs
+                        .into_iter()
+                        .map(|x| DynSolValue::FixedBytes(FixedBytes::from(x), x.len()))
+                        .collect(),
+                ),
+                DynSolValue::Bytes(signature),
+            ])
+            .abi_encode(),
+        ),
+    ])
+    .abi_encode_packed())
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::utils::parse_hex_to_bytes32;
-    use ethers::utils::hex;
+    use alloy::hex;
 
     use super::*;
+    use crate::utils::parse_hex_to_bytes32;
 
     #[test]
     fn test_render_merkle() -> Result<()> {

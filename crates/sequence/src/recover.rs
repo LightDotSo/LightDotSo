@@ -29,12 +29,11 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{config::WalletConfig, module::SigModule, types::Signature, utils::read_uint24};
-use async_recursion::async_recursion;
-use ethers::{
-    abi::{encode_packed, Token},
-    types::Address,
-    utils::keccak256,
+use alloy::{
+    dyn_abi::DynSolValue,
+    primitives::{keccak256, Address, FixedBytes},
 };
+use async_recursion::async_recursion;
 use eyre::{eyre, Result};
 
 #[async_recursion]
@@ -134,9 +133,8 @@ async fn recover_chained(
         // println!("sig_rindex: {}", sig_rindex);
         // println!("nrindex: {}", nrindex);
 
-        let hashed_digest = set_image_hash(
-            config.clone().unwrap_or(initial_config.clone()).image_hash.as_bytes().to_vec(),
-        )?;
+        let hashed_digest =
+            set_image_hash(config.clone().unwrap_or(initial_config.clone()).image_hash.to_vec())?;
         let mut new_config = Some(
             recover_signature(
                 address,
@@ -207,10 +205,16 @@ async fn recover_chained(
 }
 
 fn set_image_hash(sig_hash: Vec<u8>) -> Result<[u8; 32]> {
-    Ok(keccak256(encode_packed(&[
-        Token::FixedBytes(keccak256("SetImageHash(bytes32 imageHash)").to_vec()),
-        Token::FixedBytes(sig_hash),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::FixedBytes(
+                FixedBytes::from_slice(keccak256("SetImageHash(bytes32 imageHash)").as_slice()),
+                32,
+            ),
+            DynSolValue::FixedBytes(FixedBytes::from_slice(sig_hash.as_slice()), 32),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 #[cfg(test)]
@@ -226,7 +230,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature length");
 
-        let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
+        let res = recover_signature(Address::ZERO, 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
 
         Ok(())
@@ -238,7 +242,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature type");
 
-        let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
+        let res = recover_signature(Address::ZERO, 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
 
         Ok(())

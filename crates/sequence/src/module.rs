@@ -39,12 +39,11 @@ use crate::{
         read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address, render_subdigest,
     },
 };
-use async_recursion::async_recursion;
-use ethers::{
-    abi::{encode, Token},
-    types::Address,
-    utils::keccak256,
+use alloy::{
+    dyn_abi::DynSolValue,
+    primitives::{keccak256, Address, FixedBytes, U256},
 };
+use async_recursion::async_recursion;
 use eyre::{eyre, Result};
 use lightdotso_common::traits::IsZero;
 
@@ -91,7 +90,7 @@ impl SigModule {
     /// Initializes a new empty SigModule
     #[allow(dead_code)]
     pub fn empty() -> Self {
-        Self::new(Address::zero(), 1, [0; 32], None)
+        Self::new(Address::ZERO, 1, [0; 32], None)
     }
 
     /// Sets the address of the wallet
@@ -451,16 +450,31 @@ impl SigModule {
 
         // If the length is greater than 34 bytes, it's a branch signature
         let (weight, image_hash) = self.recover_branch().await?;
-        let image_hash = keccak256(encode(&[
-            Token::FixedBytes(
-                keccak256(encode(&[
-                    Token::FixedBytes(image_hash.to_vec()),
-                    Token::Uint(left_pad_u16_to_bytes32(threshold).into()),
-                ]))
-                .to_vec(),
-            ),
-            Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
-        ]))
+        let image_hash = keccak256(
+            DynSolValue::Tuple(vec![
+                DynSolValue::FixedBytes(
+                    FixedBytes::from_slice(
+                        &keccak256(
+                            DynSolValue::Tuple(vec![
+                                DynSolValue::FixedBytes(
+                                    FixedBytes::from_slice(&image_hash.to_vec()),
+                                    image_hash.to_vec().len(),
+                                ),
+                                DynSolValue::Uint(
+                                    U256::from_be_bytes(left_pad_u16_to_bytes32(threshold)),
+                                    256,
+                                ),
+                            ])
+                            .abi_encode(),
+                        )
+                        .to_vec(),
+                    ),
+                    32,
+                ),
+                DynSolValue::Uint(U256::from_be_bytes(left_pad_u32_to_bytes32(checkpoint)), 256),
+            ])
+            .abi_encode(),
+        )
         .into();
 
         // If the tree is single (right is empty), set the tree as root tree signer
@@ -488,8 +502,6 @@ impl SigModule {
 
 #[cfg(test)]
 mod tests {
-    use ethers::abi::encode_packed;
-
     use super::*;
     use crate::utils::{from_hex_string, parse_hex_to_bytes32, print_hex_string, to_hex_string};
 
@@ -561,8 +573,10 @@ mod tests {
         base_sig_module.set_subdigest_direct(subdigest);
         let empty_node_sig=
             // 3u8 is the signature type for a node signature
-            encode_packed(&[Token::Uint(3u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
-                ?;
+            DynSolValue::Tuple(vec![
+                DynSolValue::Uint(U256::from(3u8), 256),
+                DynSolValue::FixedBytes(FixedBytes::from_slice(&[0u8; 32]), 32),
+            ]).abi_encode_packed();
 
         base_sig_module.set_signature(empty_node_sig.clone().into());
 
@@ -616,8 +630,10 @@ mod tests {
         let mut base_sig_module = SigModule::empty();
         let empty_node_sig=
             // 9u8 is an invalid signature type
-            encode_packed(&[Token::Uint(9u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
-                ?;
+            DynSolValue::Tuple(vec![
+                DynSolValue::Uint(U256::from(9u8), 256),
+                DynSolValue::FixedBytes(FixedBytes::from_slice(&[0u8; 32]), 32),
+            ]).abi_encode_packed();
 
         base_sig_module.set_signature(empty_node_sig.clone().into());
 
@@ -807,8 +823,7 @@ mod tests {
 
         let expected_root = parse_hex_to_bytes32(
             "0x50ec12b237887c47767742e6425b98694ac9f793a31729766ea4748b382ea648",
-        )?
-        .into();
+        )?;
 
         let config = base_sig_module.recover(0).await?;
         assert_eq!(config.threshold, 17);

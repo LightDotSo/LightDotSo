@@ -63,7 +63,7 @@ async fn test_integration_signatures() -> Result<()> {
             "0x0000000000000000000000000000000000000000000000000000000000000001",
         )?;
 
-        let config = recover_signature(Address::zero(), 1, user_op_hash, sig).await?;
+        let config = recover_signature(Address::ZERO, 1, user_op_hash, sig).await?;
 
         // println!("tree: {:?}", config.tree);
 
@@ -104,7 +104,7 @@ async fn test_integration_signature_reduce() -> Result<()> {
     let user_op_hash =
         parse_hex_to_bytes32("0x0000000000000000000000000000000000000000000000000000000000000001")?;
 
-    let mut config = recover_signature(Address::zero(), 1, user_op_hash, sig).await?;
+    let mut config = recover_signature(Address::ZERO, 1, user_op_hash, sig).await?;
 
     // Write reducedd WalletConfig back to a different JSON file
     let path_name = "tests/samples/wallet_reduced_config_before.json".to_string();

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::utils::right_pad_to_bytes32;
 use alloy::{
     dyn_abi::DynSolValue,
     hex,
@@ -53,8 +54,11 @@ pub fn get_address(hash: B256, salt: B256) -> Result<Address> {
     let (selector_slice, _) = selector.split_at(4);
 
     let and = DynSolValue::Tuple(vec![
-        DynSolValue::FixedBytes(FixedBytes::from_slice(selector_slice), selector_slice.len()),
-        DynSolValue::FixedBytes(FixedBytes::from_slice(&hash.to_vec()), hash.to_vec().len()),
+        DynSolValue::FixedBytes(
+            FixedBytes::from_slice(right_pad_to_bytes32(selector_slice).as_ref()),
+            selector_slice.len(),
+        ),
+        DynSolValue::FixedBytes(FixedBytes::from_slice(hash.as_ref()), hash.to_vec().len()),
     ])
     .abi_encode_packed();
 
