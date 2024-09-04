@@ -49,8 +49,8 @@ impl GasApi {
         if chain_id == 42220 {
             let gas_price = gas_price * 3 / 2;
             let params = GasEstimationParams {
-                max_fee_per_gas: U256::from(gas_price).into(),
-                max_priority_fee_per_gas: U256::from(gas_price).into(),
+                max_fee_per_gas: U256::from(gas_price),
+                max_priority_fee_per_gas: U256::from(gas_price),
             };
             return Ok(create_gas_estimation(&params));
         }
@@ -61,8 +61,8 @@ impl GasApi {
         if chain_id == 42161 {
             let gas_price = gas_price * 5 / 4;
             let params = GasEstimationParams {
-                max_fee_per_gas: U256::from(gas_price).into(),
-                max_priority_fee_per_gas: U256::from(gas_price).into(),
+                max_fee_per_gas: U256::from(gas_price),
+                max_priority_fee_per_gas: U256::from(gas_price),
             };
             return Ok(create_gas_estimation(&params));
         }
@@ -103,7 +103,7 @@ impl GasApi {
         // Use the gas price to create the params
         let params = GasEstimationParams {
             max_fee_per_gas: U256::from(gas_price),
-            max_priority_fee_per_gas: U256::from(gas_price),
+            max_priority_fee_per_gas: U256::from(max_priority_fee_per_gas),
         };
 
         Ok(create_gas_estimation(&params))

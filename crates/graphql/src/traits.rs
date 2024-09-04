@@ -15,7 +15,11 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::polling::user_operations::UserOperation;
-use ethers::types::{Bloom, Log, OtherFields, Transaction, TransactionReceipt, H160};
+use alloy::{
+    consensus::{ReceiptEnvelope, ReceiptWithBloom},
+    primitives::{Address, Log, LogData, U256},
+    rpc::types::{Transaction, TransactionReceipt},
+};
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
 
@@ -36,12 +40,12 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .user_operation
                 .sender
                 .as_ref()
-                .and_then(|v| v.0.parse::<H160>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<Address>().ok().map(Into::into)),
             nonce: op
                 .user_operation
                 .nonce
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             init_code: op
                 .user_operation
                 .init_code
@@ -56,27 +60,27 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .user_operation
                 .call_gas_limit
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             verification_gas_limit: op
                 .user_operation
                 .verification_gas_limit
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             pre_verification_gas: op
                 .user_operation
                 .pre_verification_gas
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             max_fee_per_gas: op
                 .user_operation
                 .max_fee_per_gas
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             max_priority_fee_per_gas: op
                 .user_operation
                 .max_priority_fee_per_gas
                 .as_ref()
-                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<U256>().ok().map(Into::into)),
             paymaster_and_data: op
                 .user_operation
                 .paymaster_and_data
@@ -91,48 +95,39 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 logs.into_iter()
                     .map(|log| Log {
                         address: log.address.0.parse().unwrap(),
-                        topics: log
-                            .topics
-                            .unwrap()
-                            .into_iter()
-                            .map(|t| t.0.parse().unwrap())
-                            .collect(),
-                        data: log.data.0.hex_to_bytes().unwrap().into(),
-                        block_hash: None,
-                        block_number: None,
-                        transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
-                        transaction_index: Some(
-                            (log.transaction_index.0.parse::<u64>().unwrap()).into(),
-                        ),
-                        log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
-                        transaction_log_index: None,
-                        log_type: None,
-                        removed: None,
+                        data: LogData::new(
+                            log.topics
+                                .unwrap_or_default()
+                                .into_iter()
+                                .map(|t| t.0.parse().unwrap())
+                                .collect(),
+                            log.data.0.hex_to_bytes().unwrap().into(),
+                        )
+                        .unwrap_or_default(),
                     })
-                    .collect()
+                    .collect::<Vec<_>>()
             }),
             transaction: Transaction {
+                chain_id: Some(op.chain_id as u64),
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
-                nonce: (op.user_operation.transaction.nonce.unwrap().0.parse::<u64>().unwrap())
-                    .into(),
+                nonce: (op.user_operation.transaction.nonce.unwrap().0.parse::<u64>().unwrap()),
                 // Determistic Option None
                 block_hash: None,
-                block_number: Some(
-                    (op.user_operation.block_number.0.parse::<u64>().unwrap()).into(),
-                ),
+                block_number: Some(op.user_operation.block_number.0.parse::<u64>().unwrap()),
                 // Determistic Option None
                 transaction_index: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
                 to: Some(op.user_operation.transaction.to.unwrap().0.parse().unwrap()),
                 // Determistic Option Zero
-                value: 0.into(),
+                value: U256::from(0),
                 // Determistic Option None
                 gas_price: Some(
                     (op.user_operation.transaction.gas_price.unwrap().0.parse::<u64>().unwrap())
                         .into(),
                 ),
                 // Determistic Option Zero
-                gas: 0.into(),
+                gas: 0_u64.into(),
+                signature: None,
                 input: op
                     .user_operation
                     .transaction
@@ -142,12 +137,6 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     .hex_to_bytes()
                     .unwrap()
                     .into(),
-                // Determistic Option Zero
-                v: 0.into(),
-                // Determistic Option Zero
-                r: 0.into(),
-                // Determistic Option Zero
-                s: 0.into(),
                 // Determistic Option None
                 transaction_type: None,
                 // Determistic Option None
@@ -156,9 +145,14 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 max_priority_fee_per_gas: None,
                 // Determistic Option None
                 max_fee_per_gas: None,
-                chain_id: Some(op.chain_id.into()),
-                // Determistic Option Default
-                other: OtherFields::default(),
+                // Determistic Option None
+                max_fee_per_blob_gas: None,
+                // Determistic Option None
+                blob_versioned_hashes: None,
+                // Determistic Option None
+                authorization_list: None,
+                // Determistic Default
+                ..Default::default()
             },
             transaction_logs: op.user_operation.transaction.receipt.clone().unwrap().logs.map_or(
                 Vec::new(),
@@ -166,25 +160,17 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     logs.into_iter()
                         .map(|log| Log {
                             address: log.address.0.parse().unwrap(),
-                            topics: log
-                                .topics
-                                .unwrap()
-                                .into_iter()
-                                .map(|t| t.0.parse().unwrap())
-                                .collect(),
-                            data: log.data.0.hex_to_bytes().unwrap().into(),
-                            block_hash: None,
-                            block_number: None,
-                            transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
-                            transaction_index: Some(
-                                (log.transaction_index.0.parse::<u64>().unwrap()).into(),
-                            ),
-                            log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
-                            transaction_log_index: None,
-                            log_type: None,
-                            removed: None,
+                            data: LogData::new(
+                                log.topics
+                                    .unwrap_or_default()
+                                    .into_iter()
+                                    .map(|t| t.0.parse().unwrap())
+                                    .collect(),
+                                log.data.0.hex_to_bytes().unwrap().into(),
+                            )
+                            .unwrap_or_default(),
                         })
-                        .collect()
+                        .collect::<Vec<_>>()
                 },
             ),
             receipt: TransactionReceipt {
@@ -198,34 +184,37 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     .0
                     .parse()
                     .unwrap(),
-                transaction_index: op.user_operation.transaction.index.unwrap().0.parse().unwrap(),
+                transaction_index: op
+                    .user_operation
+                    .transaction
+                    .index
+                    .unwrap()
+                    .0
+                    .parse::<u64>()
+                    .unwrap()
+                    .into(),
                 // Determistic Option None
                 block_hash: None,
-                block_number: Some(
-                    (op.user_operation.block_number.0.parse::<u64>().unwrap()).into(),
-                ),
-                // Determistic Option Zero
-                cumulative_gas_used: 0.into(),
-                // Determistic Option None
-                gas_used: None,
+                block_number: Some(op.user_operation.block_number.0.parse::<u64>().unwrap()),
                 // Determistic Option None
                 contract_address: None,
-                logs: vec![],
-                // Determistic Option None
-                status: None,
-                // Determistic Option Default
-                logs_bloom: Bloom::default(),
-                // Determistic Option None
-                root: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
                 // Determistic Option None
                 to: None,
                 // Determistic Option None
-                transaction_type: None,
+                gas_used: 0_u64.into(),
+                // Determistic Option Zero
+                effective_gas_price: 0_u64.into(),
                 // Determistic Option None
-                effective_gas_price: None,
-                // Determistic Option Default
-                other: OtherFields::default(),
+                blob_gas_used: None,
+                // Determistic Option None
+                blob_gas_price: None,
+                // Determistic Option None
+                state_root: None,
+                // Determistic Option None
+                authorization_list: None,
+                // Determistic Default
+                inner: ReceiptEnvelope::Eip1559(ReceiptWithBloom::default()),
             },
             // The address of the Light Wallet
             light_wallet: op.user_operation.light_wallet.address.0.parse().unwrap(),
@@ -234,7 +223,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .user_operation
                 .paymaster
                 .as_ref()
-                .and_then(|v| v.0.parse::<H160>().ok().map(Into::into)),
+                .and_then(|v| v.0.parse::<Address>().ok().map(Into::into)),
             // Custom flag to indicate whether user operation is reverted or not
             is_reverted: op.user_operation.user_operation_revert_reason.is_some(),
         }
@@ -243,6 +232,8 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
 
 #[cfg(test)]
 mod tests {
+    use alloy::primitives::U256;
+
     use crate::polling::user_operations::{
         BigInt, Bytes, LightWallet, Log, Receipt, Transaction, UserOperation, UserOperationEvent,
     };
@@ -471,7 +462,7 @@ mod tests {
         assert_eq!(user_operation_with_transaction_and_receipt_logs.chain_id, 1);
         assert_eq!(
             user_operation_with_transaction_and_receipt_logs.call_gas_limit,
-            Some(5000000.into())
+            Some(U256::from(5000000u64))
         );
     }
 }

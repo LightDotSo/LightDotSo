@@ -43,8 +43,8 @@ impl From<ApiResponse> for GasEstimationParams {
     fn from(data: ApiResponse) -> Self {
         let make_params = |gas_data: &GasData| -> GasEstimationParams {
             GasEstimationParams {
-                max_priority_fee_per_gas: from_gwei_f64(gas_data.max_priority_fee).into(),
-                max_fee_per_gas: from_gwei_f64(gas_data.max_fee).into(),
+                max_priority_fee_per_gas: from_gwei_f64(gas_data.max_priority_fee),
+                max_fee_per_gas: from_gwei_f64(gas_data.max_fee),
             }
         };
 
