@@ -27,7 +27,7 @@ export const Hero: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative my-8 flex flex-col items-center justify-center px-2">
+    <div className="relative my-8 flex flex-col items-center justify-center px-3 md:px-6">
       <div className="m-auto w-full max-w-5xl">
         <div className="mb-8">
           <BetaVersion />

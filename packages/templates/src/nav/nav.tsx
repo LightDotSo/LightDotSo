@@ -19,6 +19,7 @@ import { BaseLayerWrapper } from "@lightdotso/ui/wrappers";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavLocation } from "./nav-location";
 import { NavLogo } from "./nav-logo";
+import { NavWrapper } from "./nav-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,24 +36,21 @@ type NavProps = HTMLAttributes<HTMLElement> & {
 
 export const Nav: FC<NavProps> = ({ children, tabs }) => {
   return (
-    <main>
-      <div className="flex flex-col">
-        <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className="flex h-16 items-center">
-            <BaseLayerWrapper>
-              <div className="flex items-center justify-between gap-2">
-                <NavLogo />
-                <NavLocation tabs={tabs}>
-                  <Button className="hidden shrink-0 md:block" asChild>
-                    <a href={INTERNAL_LINKS.App}>Launch App</a>
-                  </Button>
-                </NavLocation>
-              </div>
-            </BaseLayerWrapper>
+    <NavWrapper
+      nav={
+        <BaseLayerWrapper>
+          <div className="flex items-center justify-between gap-2">
+            <NavLogo />
+            <NavLocation tabs={tabs}>
+              <Button className="shrink-0" asChild>
+                <a href={INTERNAL_LINKS.App}>Launch App</a>
+              </Button>
+            </NavLocation>
           </div>
-        </div>
-        {children}
-      </div>
-    </main>
+        </BaseLayerWrapper>
+      }
+    >
+      {children}
+    </NavWrapper>
   );
 };

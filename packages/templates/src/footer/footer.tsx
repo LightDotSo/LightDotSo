@@ -34,7 +34,7 @@ export const Footer: FC = () => {
 
   return (
     <footer
-      className={cn("border-border border-t", baseWidthWrapper)}
+      className={cn("border-border-weak border-t", baseWidthWrapper)}
       aria-labelledby="footer-heading"
     >
       <h1 id="footer-heading" className="sr-only">

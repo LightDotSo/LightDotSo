@@ -23,6 +23,7 @@ import { NavTabs } from "@/components/nav/nav-tabs";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
 import { ConnectButton } from "@lightdotso/templates/connect-button";
+import { NavWrapper } from "@lightdotso/templates/nav";
 import { baseWidthWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import { useMemo } from "react";
@@ -60,30 +61,32 @@ export const Nav: FC<NavProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <main>
-      <div className="flex flex-col">
-        <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
-            <div className="flex items-center">
-              <NavLogo />
-              <span className="mr-1 ml-2 text-text/60 last:hidden">/</span>
-              <WalletSwitcher />
-            </div>
-            <NavApp mobile={<ConnectButton />} tabs={tabProps.tabs} />
+    <NavWrapper
+      nav={
+        <>
+          <div className="flex items-center">
+            <NavLogo />
+            <span className="mr-1 ml-2 text-text/60 last:hidden">/</span>
+            <WalletSwitcher />
           </div>
-          {isTabsNavigationVisible && (
-            <div
-              className={cn(
-                "flex h-10 items-center space-x-4 lg:space-x-6",
-                baseWidthWrapper,
-              )}
-            >
-              {TabsNavComponent}
-            </div>
-          )}
-        </div>
-        {children}
-      </div>
-    </main>
+          <NavApp mobile={<ConnectButton />} tabs={tabProps.tabs} />
+        </>
+      }
+      navClassName={baseWidthWrapper}
+      navChildren={
+        isTabsNavigationVisible && (
+          <div
+            className={cn(
+              "flex h-10 items-center space-x-4 lg:space-x-6",
+              baseWidthWrapper,
+            )}
+          >
+            {TabsNavComponent}
+          </div>
+        )
+      }
+    >
+      {children}
+    </NavWrapper>
   );
 };

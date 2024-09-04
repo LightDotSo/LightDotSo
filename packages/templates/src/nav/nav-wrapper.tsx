@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { cn } from "@lightdotso/utils";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -19,6 +20,9 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export interface NavWrapperProps {
+  nav: ReactNode;
+  navClassName?: string;
+  navChildren?: ReactNode;
   children: ReactNode;
 }
 
@@ -26,7 +30,12 @@ export interface NavWrapperProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export function NavWrapper({ children }: NavWrapperProps) {
+export function NavWrapper({
+  nav,
+  navClassName,
+  navChildren,
+  children,
+}: NavWrapperProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -34,9 +43,13 @@ export function NavWrapper({ children }: NavWrapperProps) {
   return (
     <main>
       <div className="flex flex-col">
-        <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className="flex h-16 items-center">{children}</div>
+        <div className="overflow-y-visible border-b border-b-border-weak py-2">
+          <div className={cn("flex h-16 items-center", navClassName)}>
+            {nav}
+          </div>
+          {navChildren}
         </div>
+        {children}
       </div>
     </main>
   );
