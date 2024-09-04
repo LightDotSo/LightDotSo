@@ -25,10 +25,7 @@ import type { Metadata } from "next";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Deposit.title} | %s`,
-    default: TITLES.Deposit.title,
-  },
+  title: TITLES.Deposit.title,
   description: TITLES.Deposit.description,
 };
 

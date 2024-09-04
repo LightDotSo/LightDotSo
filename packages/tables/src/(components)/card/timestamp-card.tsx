@@ -35,6 +35,9 @@ export const TimestampCard: FC<TimestampCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className={className}>{new Date(timestamp).toLocaleString()}</div>
+    <div
+      className={className}
+      title={new Date(timestamp).toISOString()}
+    >{`${new Date(timestamp).toLocaleDateString()} ${new Date(timestamp).toLocaleTimeString()}`}</div>
   );
 };

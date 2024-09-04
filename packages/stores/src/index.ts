@@ -32,5 +32,6 @@ export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";
 export { useTokenGroups } from "./useTokenGroups";
 export type { PendingTransaction } from "./useTransactions";
+export { useTokenPrices } from "./useTokenPrices";
 export { useTransactions } from "./useTransactions";
 export { useUserOperations } from "./useUserOperations";

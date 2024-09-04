@@ -26,7 +26,7 @@ export const Introduction: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center px-4">
+    <div className="relative z-10 flex flex-col items-center justify-center px-4 md:px-6">
       <div className="m-auto mt-8 mb-24 max-w-3xl border-border-inverse-weaker border-t sm:mt-16 md:mt-32 md:mb-64">
         <div className="mt-8 text-thin">
           <SectionPill title="Introduction" description="Public Beta" />

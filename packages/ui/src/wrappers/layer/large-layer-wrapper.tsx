@@ -33,7 +33,7 @@ export function LargeLayerWrapper({ children }: LargeLayerWrapperProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <BaseLayerWrapper className="border-border border-b py-4 md:py-6">
+    <BaseLayerWrapper className="border-border-weak border-b py-4 md:py-6">
       {children}
     </BaseLayerWrapper>
   );

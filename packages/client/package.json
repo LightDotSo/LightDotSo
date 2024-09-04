@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.2",
+    "@types/node": "^22.5.3",
     "openapi-typescript": "^7.4.0",
     "typescript": "^5.5.4"
   },

@@ -39,7 +39,7 @@ export function MiddleLayerWrapper({
   // ---------------------------------------------------------------------------
 
   return (
-    <BaseLayerWrapper size={size} className="border-border border-b py-4">
+    <BaseLayerWrapper size={size} className="border-border-weak border-b py-4">
       {children}
     </BaseLayerWrapper>
   );

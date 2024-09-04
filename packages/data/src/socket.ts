@@ -31,3 +31,15 @@ export type SocketBalancePageData = {
   success: boolean;
   result: SocketBalanceData[];
 };
+
+export type SocketTokenPriceData = {
+  chainId: number;
+  tokenAddress: string;
+  price: number;
+  currency: string;
+};
+
+export type SocketTokenPricePageData = {
+  success: boolean;
+  result: SocketTokenPriceData;
+};

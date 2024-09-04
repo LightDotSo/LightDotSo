@@ -12,5 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { NavLocation } from "./nav-location";
 export { Nav } from "./nav";
+export { NavLocation } from "./nav-location";
+export { NavWrapper } from "./nav-wrapper";

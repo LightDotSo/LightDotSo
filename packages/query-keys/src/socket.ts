@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { SocketBalanceParams } from "@lightdotso/params";
+import type {
+  SocketBalanceParams,
+  SocketTokenPriceParams,
+} from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -22,6 +25,9 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const socket = createQueryKeys("socket", {
   balance: (params: SocketBalanceParams) => ({
+    queryKey: [{ params: params }],
+  }),
+  token_price: (params: SocketTokenPriceParams) => ({
     queryKey: [{ params: params }],
   }),
 });

@@ -55,6 +55,7 @@ export { useQueryPaymasterOperation } from "./useQueryPaymasterOperation";
 export { useQueryPortfolio } from "./useQueryPortfolio";
 export { useQuerySimulation } from "./useQuerySimulation";
 export { useQuerySocketBalances } from "./useQuerySocketBalances";
+export { useQuerySocketTokenPrice } from "./useQuerySocketTokenPrice";
 export { useQueryToken } from "./useQueryToken";
 export { useQueryTokens } from "./useQueryTokens";
 export { useQueryTokensCount } from "./useQueryTokensCount";

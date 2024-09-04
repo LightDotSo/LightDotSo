@@ -12,76 +12,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(action)/create/loader";
-import { TITLES } from "@/const";
-import { handler } from "@/handlers/create/handler";
-import { preloader } from "@/preloaders/create/preloader";
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import type { Metadata } from "next";
+"use client";
+
+import { useQuerySocketTokenPrice } from "@lightdotso/query";
+import { useTokenPrices } from "@lightdotso/stores";
+import { useMemo } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Create.title,
-  description: TITLES.Create.description,
-};
-
-// ------------------------------------------------------c-----------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type PageProps = {
-  searchParams: {
-    address?: string;
-    userOperations?: string;
-  };
+export type UseTokenPriceProps = {
+  chainId: number | null;
+  tokenAddress: Address | null;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Hook
 // -----------------------------------------------------------------------------
 
-export default async function Page({ searchParams }: PageProps) {
+export const useTokenPrice = ({
+  chainId,
+  tokenAddress,
+}: UseTokenPriceProps) => {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const { configuration } = await handler(searchParams);
+  const { getTokenPrice } = useTokenPrices();
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = getQueryClient();
-
-  if (configuration) {
-    queryClient.setQueryData(
-      queryKeys.configuration.get({
-        address: searchParams.address as Address,
-        checkpoint: 0,
-      }).queryKey,
-      configuration,
-    );
-  }
+  const { socketTokenPrice } = useQuerySocketTokenPrice({
+    address: tokenAddress,
+    chainId: chainId,
+  });
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader searchParams={searchParams} />
-    </HydrationBoundary>
-  );
-}
+  const tokenPrice = useMemo(() => {
+    if (!(chainId && tokenAddress)) {
+      return null;
+    }
+
+    if (socketTokenPrice) {
+      return socketTokenPrice.price;
+    }
+
+    return getTokenPrice(chainId, tokenAddress);
+  }, [chainId, tokenAddress, getTokenPrice, socketTokenPrice]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
+  return {
+    tokenPrice: tokenPrice,
+  };
+};

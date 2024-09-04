@@ -117,7 +117,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
         <DrawerFooter className="flex items-center">
           <DrawerClose asChild>
             <ButtonIcon size="sm" className="rounded-full" variant="outline">
-              <XIcon />
+              <XIcon className="text-text-weak" />
             </ButtonIcon>
           </DrawerClose>
         </DrawerFooter>

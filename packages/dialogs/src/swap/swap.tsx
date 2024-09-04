@@ -21,6 +21,7 @@ import {
   type QuoteParams,
   useDebouncedValue,
   useQuote,
+  useTokenPrice,
 } from "@lightdotso/hooks";
 import { useCreate, useSwap } from "@lightdotso/hooks";
 import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
@@ -213,6 +214,16 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
+
+  const { tokenPrice: fromTokenPrice } = useTokenPrice({
+    tokenAddress: (fromSwap?.address as Address) ?? null,
+    chainId: fromSwap?.chainId ?? null,
+  });
+
+  const { tokenPrice: toTokenPrice } = useTokenPrice({
+    tokenAddress: (toSwap?.address as Address) ?? null,
+    chainId: toSwap?.chainId ?? null,
+  });
 
   const {
     fromToken,
@@ -481,9 +492,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
-            {fromTokenDollarRatio && (
+            {fromTokenPrice && (
               <span className="truncate text-text-weak text-xs">
-                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
+                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenPrice)})`}
               </span>
             )}
           </span>
@@ -641,9 +652,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
-            {toTokenDollarRatio && (
+            {toTokenPrice && (
               <span className="truncate text-text-weak text-xs">
-                {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenDollarRatio)})`}
+                {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenPrice)})`}
               </span>
             )}
           </span>
