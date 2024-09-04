@@ -388,6 +388,7 @@ delaunator
 Delclartive
 denodeify
 depcheck
+depcheckrc
 depd
 Deployeds
 deployemnts

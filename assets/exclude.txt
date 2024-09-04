@@ -1,6 +1,11 @@
+.depcheckrc.yml
 .DS_Store
 .gitignore
+ardrive.sh
 copy.sh
+exclude.txt
+meta.sh
+package.json
+CHANGELOG.md
 sync.sh
 README.md
-exclude.txt
