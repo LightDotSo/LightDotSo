@@ -25,6 +25,6 @@ export const SwapDialogLoader = dynamic(
   () => import("@lightdotso/dialogs/swap").then((mod) => mod.SwapDialog),
   {
     ssr: false,
-    loading: () => <Skeleton className="h-64 w-full" />,
+    loading: () => <Skeleton className="h-64 w-96" />,
   },
 );
