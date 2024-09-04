@@ -37,6 +37,27 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+async function fetchChangelog(params: { slug: string[] }) {
+  const issueNumber = params.slug[0];
+  const parsedIssueNumber = Number.parseInt(issueNumber, 10);
+  const changelogs = await reader.collections.posts.all();
+  const issueMaybeChangelog = changelogs.find(
+    (c) => c.entry.issue === parsedIssueNumber,
+  );
+
+  return issueMaybeChangelog
+    ? await reader.collections.posts.read(issueMaybeChangelog.slug, {
+        resolveLinkedFiles: true,
+      })
+    : await reader.collections.posts.read(params.slug.join("/"), {
+        resolveLinkedFiles: true,
+      });
+}
+
+// -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
@@ -49,7 +70,8 @@ export async function generateMetadata({
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await reader.collections.posts.read(params.slug.join("/"));
+  const changelog = await fetchChangelog(params);
+
   if (!changelog) {
     return notFound();
   }
@@ -77,9 +99,20 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const changelogs = await reader.collections.posts.all();
 
-  return changelogs.map((changelog) => ({
-    slug: changelog.slug.split("/"),
-  }));
+  return changelogs
+    .map((changelog) => ({
+      slug: changelog.slug.split("/"),
+    }))
+    .concat(
+      changelogs.map((changelog) => ({
+        slug: changelog.entry.issue.toString().split("/"),
+      })),
+    )
+    .concat(
+      changelogs.map((changelog) => ({
+        slug: toThreeDigits(changelog.entry.issue).split("/"),
+      })),
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -91,9 +124,8 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await reader.collections.posts.read(params.slug.join("/"), {
-    resolveLinkedFiles: true,
-  });
+  const changelog = await fetchChangelog(params);
+
   if (!changelog) {
     return notFound();
   }
