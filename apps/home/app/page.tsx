@@ -18,7 +18,7 @@ import { Ecosystem } from "./(sections)/ecosystem";
 import { Features } from "./(sections)/features";
 import { Hero } from "./(sections)/hero";
 import { Introduction } from "./(sections)/introduction";
-import { Swap } from "./(sections)/swap";
+// import { Swap } from "./(sections)/swap";
 import { Unified } from "./(sections)/unified";
 
 // -----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ export default function Page() {
     <div>
       <Header />
       <Hero />
-      <Swap />
+      {/* <Swap /> */}
       <Introduction />
       <Unified />
       <Features />

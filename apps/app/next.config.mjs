@@ -86,16 +86,12 @@ const nextConfig = {
       },
       {
         source: "/home",
-        destination: "https://lightdotso.framer.website",
+        destination: "https://home.light.so/home",
       },
-      // {
-      //   source: "/home",
-      //   destination: "https://home.light.so/home",
-      // },
-      // {
-      //   source: "/home/:path*",
-      //   destination: "https://home.light.so/home/:path*",
-      // },
+      {
+        source: "/home/:path*",
+        destination: "https://home.light.so/home/:path*",
+      },
       {
         source: "/proposals",
         destination: "https://proposals.light.so/proposals",

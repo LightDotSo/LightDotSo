@@ -36,7 +36,7 @@ export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
     <div className="flex items-center gap-1.5 text-thin text-xl">
       {title}
       {description && (
-        <div className="rounded-full bg-background-primary px-2 py-1 text-sm text-text-inverse">
+        <div className="rounded-full bg-background-primary px-2 py-1 text-sm text-text-weakest">
           {description}
         </div>
       )}

@@ -43,7 +43,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "border",
+        default: "",
         shadow: "",
         outline: "border",
         ghost: "",
