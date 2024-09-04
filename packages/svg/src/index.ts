@@ -12,5 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { ChainLogo } from "./chain";
+export {
+  ChainLogo,
+  chainLogoVariants,
+  chainLogoConfig,
+} from "./chain";
 export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";

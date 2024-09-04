@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TokenModal } from "@lightdotso/modals/token/token-modal";
 import { useAuth } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
@@ -50,10 +49,9 @@ export const Base: Story = {
     }, []);
 
     return (
-      <>
+      <div className="m-10 mx-auto max-w-xl">
         <SwapDialog />
-        <TokenModal />
-      </>
+      </div>
     );
   },
   args: {},

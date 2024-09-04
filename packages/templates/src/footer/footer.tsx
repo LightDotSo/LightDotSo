@@ -34,28 +34,28 @@ export const Footer: FC = () => {
 
   return (
     <footer
-      className={cn("border-border border-t", baseWidthWrapper)}
+      className={cn("border-border-weak border-t", baseWidthWrapper)}
       aria-labelledby="footer-heading"
     >
-      <h2 id="footer-heading" className="sr-only">
+      <h1 id="footer-heading" className="sr-only">
         Footer
-      </h2>
-      <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
-        <div className="flex flex-col justify-start space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+      </h1>
+      <div className="mx-auto max-w-7xl space-y-4 py-8 lg:space-y-8">
+        <div className="flex flex-col justify-start space-y-6 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
           <div className="flex items-center justify-between space-x-3">
             <FooterLogo />
             <FooterStatusButton />
           </div>
-          <div className="flex flex-col space-x-0 space-y-4 md:flex-row md:items-center md:space-x-3 md:space-y-0">
+          <div className="flex flex-col space-x-0 space-y-4 lg:flex-row lg:items-center lg:space-x-3 lg:space-y-0">
             <FooterModeSelect />
-            <span className="hidden text-text/60 md:inline-flex">/</span>
+            <span className="hidden text-text/60 lg:inline-flex">/</span>
             <FooterSocial />
           </div>
         </div>
         <div>
           <FooterList />
         </div>
-        <div className="hidden justify-between md:flex">
+        <div className="hidden justify-between lg:flex">
           <FooterCopy />
           <FooterVersion />
         </div>

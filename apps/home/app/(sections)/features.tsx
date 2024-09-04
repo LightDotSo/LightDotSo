@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MagicCard } from "@/components/magic-card";
-import { MagicContainer } from "@/components/magic-container";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import {
   ArrowLeftRight,
@@ -58,12 +56,12 @@ export const Features: FC = () => {
 
   return (
     <div className="relative z-10 flex flex-col items-center justify-center bg-background-stronger p-4 pt-8 pb-20">
-      <MagicContainer className="mt-5 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="mt-5 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
         <FeatureCardList featureList={COLLABORATION_FEATURE_LIST} />
         <FeatureCardList featureList={SEAMLESS_FEATURE_LIST} />
         <FeatureCardList featureList={VISUALIZE_FEATURE_LIST} />
         <FeatureCardList featureList={SECURITY_FEATURE_LIST} />
-      </MagicContainer>
+      </div>
     </div>
   );
 };
@@ -238,7 +236,7 @@ export const FeatureCard: FC<FeatureCardProps> = ({ feature }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative col-span-1 w-full rounded-md bg-background-stronger p-4">
+    <div className="relative col-span-1 w-full rounded-lg bg-background-stronger p-4">
       <feature.icon className="size-6 text-text" />
       <p className="mt-2 font-normal text-lg text-text">{feature?.name}</p>
     </div>
@@ -263,10 +261,7 @@ export const FeatureCardList: FC<FeatureCardListProps> = ({ featureList }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <MagicCard
-      backgroundColor="bg-background-weak"
-      className=" col-span-1 w-full p-4"
-    >
+    <div className="col-span-1 w-full rounded-lg bg-background-weak p-4">
       <div className="mt-2 font-bold font-normal text-lg text-text sm:text-2xl">
         {featureList?.name}
       </div>
@@ -276,6 +271,6 @@ export const FeatureCardList: FC<FeatureCardListProps> = ({ featureList }) => {
           <FeatureCard key={feature.id} feature={feature} />
         ))}
       </div>
-    </MagicCard>
+    </div>
   );
 };

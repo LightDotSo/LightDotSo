@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import type { Tab } from "@lightdotso/types";
+import { Button } from "@lightdotso/ui/components/button";
 import { BaseLayerWrapper } from "@lightdotso/ui/wrappers";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { NavLocation } from "./nav-location";
 import { NavLogo } from "./nav-logo";
+import { NavWrapper } from "./nav-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,20 +36,21 @@ type NavProps = HTMLAttributes<HTMLElement> & {
 
 export const Nav: FC<NavProps> = ({ children, tabs }) => {
   return (
-    <main>
-      <div className="flex flex-col">
-        <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className="flex h-16 items-center">
-            <BaseLayerWrapper>
-              <div className="flex items-center justify-between">
-                <NavLogo />
-                <NavLocation tabs={tabs} />
-              </div>
-            </BaseLayerWrapper>
+    <NavWrapper
+      nav={
+        <BaseLayerWrapper>
+          <div className="flex items-center justify-between gap-2">
+            <NavLogo />
+            <NavLocation tabs={tabs}>
+              <Button className="shrink-0" asChild>
+                <a href={INTERNAL_LINKS.App}>Launch App</a>
+              </Button>
+            </NavLocation>
           </div>
-        </div>
-        {children}
-      </div>
-    </main>
+        </BaseLayerWrapper>
+      }
+    >
+      {children}
+    </NavWrapper>
   );
 };

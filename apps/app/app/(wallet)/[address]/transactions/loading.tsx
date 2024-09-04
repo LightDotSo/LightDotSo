@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { OverviewList } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
+import { OverviewListSkeleton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
+
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
-  return <OverviewList isLoading address={null} />;
+export function Loading() {
+  return <OverviewListSkeleton />;
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

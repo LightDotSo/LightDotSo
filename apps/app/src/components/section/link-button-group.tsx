@@ -16,16 +16,15 @@
 
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonGroup } from "@lightdotso/ui/components/button-group";
-import { Label } from "@lightdotso/ui/components/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@lightdotso/ui/components/select";
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerTrigger,
+} from "@lightdotso/ui/components/drawer";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
+import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
@@ -132,33 +131,38 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   return (
     <>
       <div className="sm:hidden">
-        <Label htmlFor="tabs" className="sr-only">
-          Select a tab
-        </Label>
-        <Select
-          name="tabs"
-          onValueChange={(value) => {
-            // Get the item from the items
-            const item = items.find((item) => item.id === value);
-            // If the item is not found, return
-            if (!item) {
-              return;
-            }
-            // Navigate to the item
-            router.push(`${address ? `/${address}` : ""}${item.href}`);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a category." />
-          </SelectTrigger>
-          <SelectContent className="max-h-48">
-            {items.map((item) => (
-              <SelectItem key={item.id} value={item.id}>
-                {item.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Drawer shouldScaleBackground>
+          <DrawerTrigger asChild>
+            <Button
+              className="flex w-full justify-between bg-background-body"
+              variant="outline"
+            >
+              <span>{id ? id.charAt(0).toUpperCase() + id.slice(1) : ""}</span>
+              <ChevronDownIcon className="h-4 w-4" />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerBody>
+              <div>
+                {items.map((item) => (
+                  <Button
+                    variant="link"
+                    key={item.id}
+                    size="lg"
+                    onClick={() => {
+                      router.push(
+                        `${address ? `/${address}` : ""}${item.href}`,
+                      );
+                    }}
+                    className="block"
+                  >
+                    {item.title}
+                  </Button>
+                ))}
+              </div>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
       </div>
       <ToolbarSectionWrapper>
         <ButtonGroup

@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
+import { BaseLayout } from "@/app/(action)/(layouts)/base-layout";
+import { IntroLayout } from "@/app/(action)/(layouts)/intro-layout";
+import { Loader } from "@/app/(action)/deposit/loader";
+import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
-import { SwapDialog } from "@lightdotso/dialogs";
 import type { Metadata } from "next";
 
 // -----------------------------------------------------------------------------
@@ -21,21 +25,42 @@ import type { Metadata } from "next";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Swap.title} | %s`,
-    default: TITLES.Swap.title,
-  },
-  description: TITLES.Swap.description,
+  title: TITLES.Deposit.title,
+  description: TITLES.Deposit.description,
 };
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface PageProps {
+  searchParams: {
+    intro?: boolean;
+  };
+}
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
+export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <SwapDialog />;
+  if (searchParams.intro) {
+    return (
+      <IntroLayout>
+        <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+        <Loader />
+      </IntroLayout>
+    );
+  }
+
+  return (
+    <BaseLayout>
+      <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+      <Loader />
+    </BaseLayout>
+  );
 }

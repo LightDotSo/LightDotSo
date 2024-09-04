@@ -59,6 +59,9 @@ export async function generateMetadata({
     openGraph: {
       images: blog.ogp.src,
     },
+    twitter: {
+      images: blog.ogp.src,
+    },
   };
 }
 

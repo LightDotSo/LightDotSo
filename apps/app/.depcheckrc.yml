@@ -47,3 +47,5 @@ ignores:
   - "@sentry/integrations"
   - react-is
   - recharts
+  - "@lightdotso/modals"
+  - "@lightdotso/states"

@@ -19,6 +19,8 @@ import {
 } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
+import { DEMO_WALLET_ADDRESS } from "@/const";
+import { userOperationColumns } from "@lightdotso/tables/user-operation/columns";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -46,30 +48,7 @@ export const OverviewList: FC<OverviewListProps> = ({
   // ---------------------------------------------------------------------------
 
   if (isLoading || !address) {
-    return (
-      <>
-        <OverviewSectionSkeleton>
-          <DataTable
-            isLoading
-            address={null}
-            data={[]}
-            pageCount={0}
-            columns={[]}
-            isTestnet={false}
-          />
-        </OverviewSectionSkeleton>
-        <OverviewSectionSkeleton>
-          <DataTable
-            isLoading
-            address={null}
-            data={[]}
-            pageCount={0}
-            columns={[]}
-            isTestnet={false}
-          />
-        </OverviewSectionSkeleton>
-      </>
-    );
+    return <OverviewListSkeleton />;
   }
 
   return (
@@ -80,7 +59,11 @@ export const OverviewList: FC<OverviewListProps> = ({
         title="Queue"
         href={`/${isDemo ? "demo" : address}/transactions/queue`}
       >
-        <TransactionsDataTable address={address as Address} status="queued" />
+        <TransactionsDataTable
+          address={address as Address}
+          status="queued"
+          tableType="card"
+        />
       </OverviewSection>
       <OverviewSection
         address={address as Address}
@@ -88,9 +71,46 @@ export const OverviewList: FC<OverviewListProps> = ({
         title="History"
         href={`/${isDemo ? "demo" : address}/transactions/history`}
       >
-        <TransactionsDataTable address={address as Address} status="history" />
+        <TransactionsDataTable
+          address={address as Address}
+          status="history"
+          tableType="card"
+        />
       </OverviewSection>
       <OverviewSectionEmpty address={address as Address} />
     </>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export function OverviewListSkeleton() {
+  return (
+    <>
+      <OverviewSectionSkeleton title="Queue">
+        <DataTable
+          isLoading
+          address={DEMO_WALLET_ADDRESS}
+          data={[]}
+          pageCount={0}
+          columns={userOperationColumns}
+          isTestnet={false}
+          tableType="card"
+        />
+      </OverviewSectionSkeleton>
+      <OverviewSectionSkeleton title="History">
+        <DataTable
+          isLoading
+          address={DEMO_WALLET_ADDRESS}
+          data={[]}
+          pageCount={0}
+          columns={userOperationColumns}
+          isTestnet={false}
+          tableType="card"
+        />
+      </OverviewSectionSkeleton>
+    </>
+  );
+}

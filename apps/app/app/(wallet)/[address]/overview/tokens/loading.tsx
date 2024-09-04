@@ -12,27 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
+"use client";
+
 import { PortfolioSection } from "@/components/section/portfolio-section";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { TokenPortfolioSkeleton } from "@/components/token/token-portfolio";
+import { TokenTable } from "@lightdotso/tables/token";
+import { tokenColumns } from "@lightdotso/tables/token/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <>
       <PortfolioSection title="Total Token Value">
-        <Skeleton className="h-10 w-8" />
+        <TokenPortfolioSkeleton />
       </PortfolioSection>
       <TableSectionWrapper>
-        <DataTable isLoading pageCount={0} data={[]} columns={[]} />
+        <TokenTable isLoading data={[]} columns={tokenColumns} pageSize={10} />
       </TableSectionWrapper>
-      <DataTablePaginationSkeleton />
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

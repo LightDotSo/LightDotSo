@@ -35,22 +35,22 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "framer-motion": "^11.3.31",
+    "framer-motion": "^11.4.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.436.0",
+    "lucide-react": "^0.438.0",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-187dd6a7-20240806",
     "react-dom": "19.0.0-rc-187dd6a7-20240806",
     "react-is": "19.0.0-rc-187dd6a7-20240806",
     "reactflow": "^11.11.4",
-    "viem": "^2.21.0"
+    "viem": "^2.21.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.9",
     "@types/lodash": "^4.17.7",
-    "@types/node": "^22.5.1",
-    "@types/react": "^18.3.4",
+    "@types/node": "^22.5.3",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"
   },

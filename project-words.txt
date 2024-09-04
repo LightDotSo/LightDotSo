@@ -388,6 +388,7 @@ delaunator
 Delclartive
 denodeify
 depcheck
+depcheckrc
 depd
 Deployeds
 deployemnts
@@ -1473,6 +1474,7 @@ Taaki
 tabletype
 Tacaw
 tagfilter
+tailiwnd
 tailwindcss
 tanstack
 tapable

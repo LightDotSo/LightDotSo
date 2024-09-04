@@ -12,22 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import { DataTablePaginationSkeleton } from "@lightdotso/templates/data-table";
-import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
+"use client";
+
+import { TransactionTable } from "@lightdotso/tables/transaction";
+import { transactionColumns } from "@lightdotso/tables/transaction/columns";
 
 // -----------------------------------------------------------------------------
 // Loading
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default function Loading() {
+export function Loading() {
   return (
     <>
-      <TableSectionWrapper>
-        <DataTable isLoading pageCount={0} data={[]} columns={[]} />
-      </TableSectionWrapper>
-      <DataTablePaginationSkeleton />
+      <TransactionTable
+        isLoading
+        data={[]}
+        columns={transactionColumns}
+        pageSize={10}
+      />
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+// biome-ignore lint/style/noDefaultExport: <explanation>
+export default Loading;

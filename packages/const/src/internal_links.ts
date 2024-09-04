@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export enum Internal {
+  APP = "App",
   ASSETS = "Assets",
   BLOG = "Blog",
   CHANGELOG = "Changelog",
@@ -32,6 +33,11 @@ export enum Internal {
 export const INTERNAL_LINKS: {
   readonly [key in Internal]: string;
 } = {
+  [Internal.APP]: `https://light.so${
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `?ref=${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : ""
+  }`,
   [Internal.ASSETS]: "https://assets.light.so",
   [Internal.BLOG]: "https://light.so/blog",
   [Internal.CHANGELOG]: "https://light.so/changelog",

@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card";
+import { Loader } from "@/app/(wallet)/[address]/settings/deployment/loader";
 import { handler } from "@/handlers/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/[address]/preloader";
-import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address, Hex } from "viem";
 
@@ -70,23 +68,14 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  const walletChains = walletSettings?.is_enabled_testnet
-    ? CHAINS
-    : MAINNET_CHAINS;
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsSectionWrapper>
-        {walletChains.map((chain) => (
-          <SettingsDeploymentCard
-            key={chain.id}
-            chain={JSON.stringify(chain)}
-            address={params.address as Address}
-            image_hash={configuration.image_hash as Hex}
-            salt={wallet.salt as Hex}
-          />
-        ))}
-      </SettingsSectionWrapper>
+      <Loader
+        params={params}
+        image_hash={configuration.image_hash as Hex}
+        salt={wallet.salt as Hex}
+        is_enabled_testnet={walletSettings?.is_enabled_testnet ?? false}
+      />
     </HydrationBoundary>
   );
 }

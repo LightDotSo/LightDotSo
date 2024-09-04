@@ -47,7 +47,7 @@ jobs:
           pnpm turbo run build --filter=@lightdotso/extension
       - if: github.event_name == 'pull_request'
         name: Chrome upload
-        uses: mnao305/chrome-extension-upload@v4.0.1
+        uses: mnao305/chrome-extension-upload@v5.0.0
         with:
           file-path: apps/extension/chrome.zip
           extension-id: emflafmoooolgldefbdhjeifjnhhhedc
@@ -59,7 +59,7 @@ jobs:
       - if: github.event_name == 'merge_group'
         continue-on-error: true
         name: Chrome upload
-        uses: mnao305/chrome-extension-upload@v4.0.1
+        uses: mnao305/chrome-extension-upload@v5.0.0
         with:
           file-path: apps/extension/chrome.zip
           extension-id: emflafmoooolgldefbdhjeifjnhhhedc

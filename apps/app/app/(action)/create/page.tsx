@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Loader } from "@/app/(action)/create/loader";
 import { TITLES } from "@/const";
 import { handler } from "@/handlers/create/handler";
 import { preloader } from "@/preloaders/create/preloader";
-import { TransactionDialog } from "@lightdotso/dialogs";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
@@ -27,10 +27,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Create.title} | %s`,
-    default: TITLES.Create.title,
-  },
+  title: TITLES.Create.title,
   description: TITLES.Create.description,
 };
 
@@ -38,7 +35,7 @@ export const metadata: Metadata = {
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   searchParams: {
     address?: string;
     userOperations?: string;
@@ -84,7 +81,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionDialog address={searchParams.address as Address} />
+      <Loader searchParams={searchParams} />
     </HydrationBoundary>
   );
 }

@@ -19,7 +19,6 @@ import { useTables } from "@lightdotso/stores";
 import { DataTableViewOptions } from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { Input } from "@lightdotso/ui/components/input";
-import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
@@ -46,8 +45,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!table) {
+    return null;
+  }
+
   return (
-    <ToolbarSectionWrapper>
+    <>
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter name..."
@@ -76,6 +79,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           actions: "Actions",
         }}
       />
-    </ToolbarSectionWrapper>
+    </>
   );
 }

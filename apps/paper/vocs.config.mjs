@@ -15,35 +15,20 @@
 import { defineConfig } from "vocs";
 import pkg from "../../package.json";
 
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
 export default defineConfig({
-  // baseUrl:
-  //   process.env.VERCEL_ENV === "production"
-  //     ? "https://paper.light.so"
-  //     : undefined,
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
-  // head() {
-  //   return (
-  //     <>
-  //       <link
-  //         rel="icon"
-  //         href="https://light.so/favicon.ico"
-  //         type="image/x-icon"
-  //         sizes="255x256"
-  //       />
-  //     </>
-  //   );
-  // },
   editLink: {
     pattern:
       "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
     text: "Suggest changes to this page.",
   },
-  // iconUrl: {
-  //   light: "https://paper.light.so/light-icon-light.svg",
-  //   dark: "https://paper.light.so/light-icon-dark.svg",
-  // },
+  iconUrl: "/light-icon-light.svg",
   logoUrl: {
     light: "/light-logo-light.svg",
     dark: "/light-logo-dark.svg",
@@ -52,11 +37,8 @@ export default defineConfig({
   ogImageUrl: {
     "/":
       process.env.VERCEL_ENV === "production"
-        ? "https://paper.light.so/og-image.png"
-        : "https://paper.light.so/preview-og-image.png",
-    // Thank you `wevm` team for providing the OG image service!
-    "/docs":
-      "https://vocs.dev/api/og?logo=%logo&title=%title&description=%description",
+        ? "https://assets.light.so/paper/og-image.png"
+        : "https://assets.light.so/paper/preview-og-image.png",
   },
   socials: [
     {
@@ -67,10 +49,10 @@ export default defineConfig({
       icon: "github",
       link: "https://github.com/LightDotSo/LightDotSo",
     },
-    // {
-    //   icon: "warpcast",
-    //   link: "https://warpcast.com/~/channel/lightdotso",
-    // },
+    {
+      icon: "warpcast",
+      link: "https://warpcast.com/~/channel/lightdotso",
+    },
     {
       icon: "telegram",
       link: "https://t.me/LightDotSo",

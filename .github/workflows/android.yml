@@ -43,7 +43,7 @@ jobs:
         continue-on-error: true
         run: |
           ./gradlew lint
-      - uses: yutailang0119/action-android-lint@v3
+      - uses: yutailang0119/action-android-lint@v4
         continue-on-error: true
         with:
           report-path: build/reports/*.xml

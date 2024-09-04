@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
+"use client";
+
+import { ActivityTable } from "@lightdotso/tables/activity";
+import { activityColumns } from "@lightdotso/tables/activity/columns";
 import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
@@ -23,7 +26,12 @@ import { TableSectionWrapper } from "@lightdotso/ui/wrappers";
 export default function Loading() {
   return (
     <TableSectionWrapper>
-      <DataTable isLoading data={[]} columns={[]} pageCount={1} />
+      <ActivityTable
+        isLoading
+        data={[]}
+        columns={activityColumns}
+        pageSize={10}
+      />
     </TableSectionWrapper>
   );
 }

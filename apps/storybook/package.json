@@ -16,7 +16,6 @@
   "scripts": {
     "build": "storybook build -o dist || true",
     "dev": "STORYBOOK_ENV=dev storybook dev -p 6006",
-    "diff": "shadcn-ui diff",
     "prepack": "clean-package",
     "postpack": "clean-package restore"
   },
@@ -29,6 +28,7 @@
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/modals": "workspace:*",
     "@lightdotso/msw": "workspace:*",
+    "@lightdotso/roots": "workspace:*",
     "@lightdotso/states": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",
@@ -43,7 +43,7 @@
     "react-is": "19.0.0-rc-187dd6a7-20240806",
     "reactflow": "^11.11.4",
     "recharts": "2.13.0-alpha.4",
-    "vite": "^5.4.2",
+    "vite": "^5.4.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -74,21 +74,21 @@
     "@storybook/react-vite": "^8.2.9",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "^8.2.9",
-    "@types/node": "^22.5.1",
-    "@types/react": "^18.3.4",
+    "@types/node": "^22.5.3",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "css-loader": "^7.1.2",
     "msw-storybook-addon": "^2.0.3",
     "postcss": "^8.4.41",
-    "shadcn-ui": "^0.8.0",
+    "shadcn-ui": "^0.9.0",
     "storybook": "^8.2.9",
     "storybook-dark-mode": "^4.0.2",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
-    "vite": "^5.4.2"
+    "vite": "^5.4.3"
   },
   "publishConfig": {
     "access": "public"

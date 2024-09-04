@@ -45,7 +45,7 @@ import { type FC, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
 import { UserOperationCardTransaction } from "./card";
-import { userOperationColumns } from "./user-operation-columns";
+import { userOperationColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -63,6 +63,7 @@ type UserOperationTableProps = {
     TableOptions<UserOperationData>,
     "data" | "columns" | "getCoreRowModel"
   >;
+  tableType?: "table" | "card";
   columns?: ColumnDef<UserOperationData>[];
   setUserOperationTable?: (tableObject: ReactTable<UserOperationData>) => void;
 };
@@ -81,6 +82,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   address,
   isTestnet,
   columns = userOperationColumns,
+  tableType = "table",
   setUserOperationTable,
 }) => {
   // ---------------------------------------------------------------------------
@@ -172,7 +174,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (address === null) {
+  if (address === null || tableType === "table") {
     return (
       <Table>
         <TableHeader>
@@ -278,6 +280,40 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             </div>
           ))}
         </>
+      ) : delayedIsLoading ? (
+        <div className="space-y-4">
+          {Array(Math.ceil(pageSize / 3))
+            .fill(null)
+            .map((_, groupIndex) => (
+              <div
+                key={`loading-group-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  groupIndex
+                }`}
+                className="mb-4 space-y-3"
+              >
+                <div className="text-text-weak">
+                  <Skeleton className="h-6 w-24" />
+                </div>
+                <div className="rounded-md border border-border bg-background">
+                  {Array(3)
+                    .fill(null)
+                    .map((_, itemIndex) => (
+                      <Skeleton
+                        key={`loading-item-${groupIndex}-${
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          itemIndex
+                        }`}
+                        className={cn(
+                          "h-12 w-full rounded-none",
+                          itemIndex !== 2 && "border-border border-b",
+                        )}
+                      />
+                    ))}
+                </div>
+              </div>
+            ))}
+        </div>
       ) : (
         <Table>
           <TableBody>

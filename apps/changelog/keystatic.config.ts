@@ -19,6 +19,10 @@ export default config({
           label: "Issue",
           validation: { isRequired: true },
         }),
+        description: fields.text({
+          label: "Description",
+          validation: { isRequired: false },
+        }),
         date: fields.date({ label: "Date", validation: { isRequired: true } }),
         title: fields.slug({
           name: { label: "Title", validation: { isRequired: true } },

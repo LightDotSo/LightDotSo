@@ -14,7 +14,6 @@
 
 "use client";
 
-import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui/components/button";
 import { shortenAddress } from "@lightdotso/utils";
@@ -38,12 +37,6 @@ export const ConnectButton: FC = () => {
   const { ens } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isDesktop = useMediaQuery("md");
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -51,11 +44,7 @@ export const ConnectButton: FC = () => {
     <ConnectKitButton.Custom>
       {({ isConnecting, show, address }) => {
         return (
-          <Button
-            disabled={isConnecting}
-            size={isDesktop ? "default" : "lg"}
-            onClick={show}
-          >
+          <Button disabled={isConnecting} onClick={show}>
             <Wallet className="mr-2 size-4" />
             {address
               ? ens ?? shortenAddress(address as Address)

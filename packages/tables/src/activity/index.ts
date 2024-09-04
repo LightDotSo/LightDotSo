@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { activityColumns } from "./activity-columns";
+export { activityColumns } from "./columns";
 export { ActivityTable } from "./activity-table";

@@ -1,4 +1,0 @@
-ignores:
-  - "@cloudflare/workers-types"
-  - typescript
-  - wrangler

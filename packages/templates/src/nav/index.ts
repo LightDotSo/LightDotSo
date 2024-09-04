@@ -13,3 +13,5 @@
 // limitations under the License.
 
 export { Nav } from "./nav";
+export { NavLocation } from "./nav-location";
+export { NavWrapper } from "./nav-wrapper";

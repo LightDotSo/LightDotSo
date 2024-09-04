@@ -33,6 +33,15 @@ const nextConfig = {
     ppr: "incremental",
     optimizePackageImports: ["@radix-ui/react-icons"],
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "assets.light.so",
+        protocol: "https",
+        pathname: "**",
+      },
+    ],
+  },
   logging: {
     fetches: {
       fullUrl: true,
@@ -47,6 +56,15 @@ const nextConfig = {
       "./node_modules/rollup",
       "./node_modules/terser",
     ],
+  },
+  redirects: async () => {
+    return [
+      {
+        source: "/demo",
+        destination: "/demo/overview",
+        permanent: true,
+      },
+    ];
   },
   rewrites: async () => {
     return [
@@ -68,16 +86,12 @@ const nextConfig = {
       },
       {
         source: "/home",
-        destination: "https://lightdotso.framer.website",
+        destination: "https://home.light.so/home",
       },
-      // {
-      //   source: "/home",
-      //   destination: "https://home.light.so/home",
-      // },
-      // {
-      //   source: "/home/:path*",
-      //   destination: "https://home.light.so/home/:path*",
-      // },
+      {
+        source: "/home/:path*",
+        destination: "https://home.light.so/home/:path*",
+      },
       {
         source: "/proposals",
         destination: "https://proposals.light.so/proposals",

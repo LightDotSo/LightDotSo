@@ -21,6 +21,7 @@ import {
   type QuoteParams,
   useDebouncedValue,
   useQuote,
+  useTokenPrice,
 } from "@lightdotso/hooks";
 import { useCreate, useSwap } from "@lightdotso/hooks";
 import { useSwapFromQueryState, useSwapToQueryState } from "@lightdotso/nuqs";
@@ -214,6 +215,16 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
+  const { tokenPrice: fromTokenPrice } = useTokenPrice({
+    tokenAddress: (fromSwap?.address as Address) ?? null,
+    chainId: fromSwap?.chainId ?? null,
+  });
+
+  const { tokenPrice: toTokenPrice } = useTokenPrice({
+    tokenAddress: (toSwap?.address as Address) ?? null,
+    chainId: toSwap?.chainId ?? null,
+  });
+
   const {
     fromToken,
     fromTokens,
@@ -389,7 +400,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <div className="rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
+      <div className="rounded-t-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span className="text-sm">Sell</span>
         <div className="flex items-center justify-between">
           <FormField
@@ -481,9 +492,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {fromSwapQuantityDollarValue &&
               `$${refineNumberFormat(fromSwapQuantityDollarValue)} USD`}{" "}
-            {fromTokenDollarRatio && (
+            {fromTokenPrice && (
               <span className="truncate text-text-weak text-xs">
-                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenDollarRatio)})`}
+                {`(1 ${fromToken?.symbol} = $${refineNumberFormat(fromTokenPrice)})`}
               </span>
             )}
           </span>
@@ -518,7 +529,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
       </div>
       <div className="-my-4 z-10 flex items-center justify-center">
         <ButtonIcon
-          className="ring-4 ring-background-body"
+          className="ring-2 ring-background-body"
           onClick={() => {
             // Swap buy and sell values
             if (fromSwap?.quantity && toSwap?.quantity) {
@@ -558,7 +569,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <ArrowDown />
         </ButtonIcon>
       </div>
-      <div className="mt-1 rounded-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
+      <div className="mt-0.5 rounded-b-md border border-border-weaker bg-background-strong p-4 focus-within:ring-1 focus-within:ring-border-strong hover:border-border-weak">
         <span className="text-sm">Buy</span>
         <div className="flex items-center justify-between">
           <FormField
@@ -641,9 +652,9 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <span className="truncate text-sm text-text-weak">
             {toSwapQuantityDollarValue &&
               `$${refineNumberFormat(toSwapQuantityDollarValue)} USD`}{" "}
-            {toTokenDollarRatio && (
+            {toTokenPrice && (
               <span className="truncate text-text-weak text-xs">
-                {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenDollarRatio)})`}
+                {`(1 ${toToken?.symbol} = $${refineNumberFormat(toTokenPrice)})`}
               </span>
             )}
           </span>

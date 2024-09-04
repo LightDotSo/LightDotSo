@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button } from "@lightdotso/ui/components/button";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -36,7 +35,11 @@ export const SectionPill: FC<SectionPillProps> = ({ title, description }) => {
   return (
     <div className="flex items-center gap-1.5 text-thin text-xl">
       {title}
-      {description && <Button size="xs">{description}</Button>}
+      {description && (
+        <div className="rounded-full bg-background-primary px-2 py-1 text-sm text-text-weakest">
+          {description}
+        </div>
+      )}
     </div>
   );
 };

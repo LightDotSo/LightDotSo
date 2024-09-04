@@ -18,7 +18,60 @@ import { Root } from "@lightdotso/roots/root";
 import { Banner } from "@lightdotso/templates/banner";
 import { Footer } from "@lightdotso/templates/footer";
 import { Nav } from "@lightdotso/templates/nav";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: "Light Explorer",
+  description: "Light Explorer - Use Ethereum as One.",
+  metadataBase: new URL("https://light.so"),
+  openGraph: {
+    title: "Light Explorer",
+    description: "Light Explorer - Use Ethereum as One.",
+    url: "/",
+    siteName: "Light Explorer",
+    images: [
+      {
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Light Explorer",
+    description: "Light Explorer - Use Ethereum as One.",
+    creator: "@LightDotSo",
+    images: [
+      {
+        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
+  },
+};
+
+// -----------------------------------------------------------------------------
+// Viewport
+// -----------------------------------------------------------------------------
+
+export const viewport: Viewport = {
+  themeColor: [
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "var(--bg-background)",
+    },
+    { media: "(prefers-color-scheme: dark)", color: "var(--bg-background)" },
+  ],
+};
 
 // -----------------------------------------------------------------------------
 // Props

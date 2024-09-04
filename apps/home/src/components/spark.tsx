@@ -14,6 +14,7 @@
 
 "use client";
 
+import { NextImage } from "@lightdotso/elements/next-image";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -26,11 +27,14 @@ export const Spark: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="-z-50 absolute animate-slow-spin overflow-hidden p-4">
-      <img
-        className="pointer-events-none size-full animate-spin-slow select-none rounded-full object-cover blur-lg"
+    <div className="-z-50 absolute overflow-hidden">
+      <NextImage
+        priority
+        className="pointer-events-none animate-spin-slow select-none rounded-full object-cover blur-lg"
         src="https://assets.light.so/home/spark.png"
         alt="Spark"
+        width={1168}
+        height={1168}
       />
     </div>
   );

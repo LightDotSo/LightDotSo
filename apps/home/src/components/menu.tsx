@@ -14,6 +14,9 @@
 
 "use client";
 
+import { HOME_TABS } from "@/const/tabs";
+import { INTERNAL_LINKS } from "@lightdotso/const";
+import { LightHorizontalLogo } from "@lightdotso/svg";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,48 +27,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@lightdotso/ui/components/navigation-menu";
 import { cn } from "@lightdotso/utils";
-import Link from "next/link";
-import type { ComponentPropsWithoutRef, FC } from "react";
+import { FileTextIcon } from "@radix-ui/react-icons";
+import { ArrowUpRightIcon, CompassIcon, ScaleIcon } from "lucide-react";
+import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
-
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -79,29 +45,33 @@ interface GridProps {
 // Component
 // -----------------------------------------------------------------------------
 
-const ListItem = forwardRef<ElementRef<"a">, ComponentPropsWithoutRef<"a">>(
-  ({ className, title, children, ...props }, ref) => {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-            ref={ref}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className,
-            )}
-            {...props}
-          >
+const ListItem = forwardRef<
+  ElementRef<"a">,
+  ComponentPropsWithoutRef<"a"> & { icon?: ReactNode }
+>(({ className, title, children, icon, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-background-strong hover:text-text-strong focus:bg-background-strong focus:text-text-strong",
+            className,
+          )}
+          {...props}
+        >
+          <div className="flex items-center space-x-2">
+            {icon}
             <div className="font-medium text-sm leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm text-text-weak leading-snug">
-              {children}
-            </p>
-          </a>
-        </NavigationMenuLink>
-      </li>
-    );
-  },
-);
+          </div>
+          <p className="line-clamp-2 text-sm text-text-weak leading-snug">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
 ListItem.displayName = "ListItem";
 
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
@@ -122,54 +92,68 @@ export const Menu: FC<GridProps> = ({ className }) => {
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-background/50 to-background p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-background/50 to-background p-6 no-underline outline-none hover:bg-background-strong focus:shadow-md"
+                    href={INTERNAL_LINKS.App}
                   >
-                    {/* <Icons.logo className="h-6 w-6" /> */}
+                    <LightHorizontalLogo className="h-10 w-16" />
                     <div className="mt-4 mb-2 font-medium text-lg">
-                      shadcn/ui
+                      Light App
                     </div>
                     <p className="text-sm text-text-weak leading-tight">
-                      Beautifully designed components built with Radix UI and
-                      Tailwind CSS.
+                      Experience using Light w/ the official app. Use Ethereum
+                      as One.
                     </p>
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
+              <ListItem
+                href={INTERNAL_LINKS.Docs}
+                title="Documentation"
+                icon={<FileTextIcon className="h-5 w-5" />}
+              >
+                Learn how to use Light w/ our official product documentation.
               </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
+              <ListItem
+                href={INTERNAL_LINKS.Governance}
+                title="Governance"
+                icon={<ScaleIcon className="h-5 w-5" />}
+              >
+                Learn how to participate in Light governance.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
+              <ListItem
+                href={INTERNAL_LINKS.Explorer}
+                title="Explorer"
+                icon={<CompassIcon className="h-5 w-5" />}
+              >
+                Interact with the Light Protocol explorer.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Official Links</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {HOME_TABS.map((tab) => (
                 <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
+                  key={tab.id}
+                  title={tab.label}
+                  href={tab.href}
+                  icon={<tab.icon className="h-5 w-5" />}
                 >
-                  {component.description}
+                  {tab.description}
                 </ListItem>
               ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+          <a href={INTERNAL_LINKS.Paper} target="_blank" rel="noreferrer">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
+              Paper
+              <ArrowUpRightIcon className="ml-1 h-4 w-4" />
             </NavigationMenuLink>
-          </Link>
+          </a>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

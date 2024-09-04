@@ -48,18 +48,26 @@ import { ZoraLogo } from "./zora";
 // Styles
 // -----------------------------------------------------------------------------
 
-const chainLogoVariants = cva([], {
+export const chainLogoConfig = {
   variants: {
     size: {
       default: "size-6",
       sm: "size-4",
       lg: "size-8",
+      xl: "size-10",
+      "2xl": "size-12",
+      "3xl": "size-14",
+      "4xl": "size-16",
+      "5xl": "size-20",
+      "6xl": "size-24",
     },
   },
   defaultVariants: {
-    size: "default",
+    size: "default" as const,
   },
-});
+};
+
+export const chainLogoVariants = cva([], chainLogoConfig);
 
 const testnetChainLogoVariants = cva([], {
   variants: {
@@ -67,6 +75,12 @@ const testnetChainLogoVariants = cva([], {
       default: "size-3 text-[6px]",
       sm: "size-2 text-[4px]",
       lg: "size-4 text-[8px]",
+      xl: "size-5 text-[10px]",
+      "2xl": "size-6 text-[12px]",
+      "3xl": "size-7 text-[14px]",
+      "4xl": "size-8 text-[16px]",
+      "5xl": "size-9 text-[18px]",
+      "6xl": "size-10 text-[20px]",
     },
   },
   defaultVariants: {

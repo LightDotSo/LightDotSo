@@ -12,11 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
-import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { HStackFull } from "@lightdotso/ui/stacks";
-import { BaseLayerWrapper, MinimalPageWrapper } from "@lightdotso/ui/wrappers";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: {
+    template: "Light | %s",
+    default: "Light",
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,16 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <HStackFull>
-      <BaseLayerWrapper size="xxs">
-        <MinimalPageWrapper className="p-2" isScreen>
-          <LinkButtonGroup items={ACTION_NAV_ITEMS} />
-          <div className="flex w-full justify-center">{children}</div>
-        </MinimalPageWrapper>
-      </BaseLayerWrapper>
-    </HStackFull>
-  );
+  return <HStackFull>{children}</HStackFull>;
 }
 
 // -----------------------------------------------------------------------------

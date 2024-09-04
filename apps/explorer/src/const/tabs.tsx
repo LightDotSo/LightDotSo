@@ -17,7 +17,6 @@
 import type { Tab } from "@lightdotso/types";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ArrowUpRightFromSquare } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
@@ -33,7 +32,7 @@ export const EXPLORER_TABS: Tab[] = [
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
-    isTextTogether: true,
+    isTextOnly: true,
   },
   {
     label: "Transactions",
@@ -43,16 +42,6 @@ export const EXPLORER_TABS: Tab[] = [
       // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
-    isTextTogether: true,
-  },
-  {
-    label: "App",
-    id: "app",
-    href: "https://light.so",
-    icon: (
-      // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <ArrowUpRightFromSquare {...props} />,
-    isTextTogether: true,
+    isTextOnly: true,
   },
 ];

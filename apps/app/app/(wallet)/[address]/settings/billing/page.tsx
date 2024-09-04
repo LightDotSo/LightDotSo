@@ -17,7 +17,6 @@ import { handler } from "@/handlers/[address]/settings/billing/handler";
 import { preloader } from "@/preloaders/[address]/preloader";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 
@@ -25,7 +24,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
+export type PageProps = {
   params: { address: string };
 };
 
@@ -65,9 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsSectionWrapper>
-        <SettingsBillingBalanceCard address={params.address as Address} />
-      </SettingsSectionWrapper>
+      <SettingsBillingBalanceCard address={params.address as Address} />
     </HydrationBoundary>
   );
 }

@@ -16,3 +16,4 @@ ignores:
   - "@sentry/integrations"
   - "~"
   - "lucide-react"
+  - "@next/bundle-analyzer"

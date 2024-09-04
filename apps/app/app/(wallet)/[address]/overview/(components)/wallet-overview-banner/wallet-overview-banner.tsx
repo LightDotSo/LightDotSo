@@ -32,11 +32,11 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 const WalletOverviewBannerAddressSkeleton = () => (
-  <Skeleton className="h-8 w-full" />
+  <Skeleton className="h-12 w-64" />
 );
 
 const WalletOverviewBannerSparklineSkeleton = () => (
-  <Skeleton className="h-8 w-12" />
+  <Skeleton className="h-24 w-64" />
 );
 
 // -----------------------------------------------------------------------------
@@ -120,3 +120,21 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
     </div>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export const WalletOverviewBannerSkeleton = () => (
+  <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-8">
+    <div className="col-span-2 flex w-full flex-row items-center space-x-3 lg:border-border lg:border-r">
+      <WalletOverviewBannerAddressSkeleton />
+    </div>
+    <div className="col-span-1 flex w-full">
+      <WalletOverviewBannerSparklineSkeleton />
+    </div>
+    <div className="col-span-2 flex w-full items-center md:col-span-1 md:justify-end">
+      <Skeleton className="h-8 w-28" />
+    </div>
+  </div>
+);

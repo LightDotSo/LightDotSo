@@ -23,7 +23,7 @@ jobs:
         run: |
           sleep 30s
       - name: Wait Docker
-        uses: lewagon/wait-on-check-action@v1.3.3
+        uses: lewagon/wait-on-check-action@v1.3.4
         continue-on-error: true
         with:
           ref: ${{ github.ref }}
@@ -53,7 +53,7 @@ jobs:
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Thunder Client Check
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_seconds: 300
           max_attempts: 3

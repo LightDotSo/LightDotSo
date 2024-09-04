@@ -15,7 +15,6 @@
 import type { NftData } from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements/empty-state";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
-import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import {
   Table,
   TableBody,
@@ -38,8 +37,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { type FC, useEffect, useMemo } from "react";
-import { NftCard } from "./card";
-import { nftColumns } from "./nft-columns";
+import { NftCard, NftCardSkeleton } from "./card";
+import { nftColumns } from "./columns";
 import { NftsWrapper } from "./nfts-wrapper";
 
 // -----------------------------------------------------------------------------
@@ -175,7 +174,7 @@ export const NftTable: FC<NftTableProps> = ({
         Array(pageSize)
           .fill(null)
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          .map((_, index) => <Skeleton key={index} className="size-24" />)
+          .map((_, index) => <NftCardSkeleton key={index} />)
       ) : (
         <div className="col-span-6">
           <Table>

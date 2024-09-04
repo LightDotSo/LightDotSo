@@ -20,7 +20,9 @@ import type { ComponentProps, FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-export type ExternalLinkProps = ComponentProps<"a">;
+export type ExternalLinkProps = ComponentProps<"a"> & {
+  noIcon?: boolean;
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -30,6 +32,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
   href,
   children,
   className,
+  noIcon = false,
   ...props
 }) => {
   // ---------------------------------------------------------------------------
@@ -48,7 +51,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       {...props}
     >
       {children ?? href}
-      <ArrowUpRightFromSquareIcon className="h-2 w-2 shrink-0" />
+      {!noIcon && <ArrowUpRightFromSquareIcon className="h-2 w-2 shrink-0" />}
     </a>
   );
 };

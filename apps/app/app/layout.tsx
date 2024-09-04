@@ -14,7 +14,7 @@
 
 import "@lightdotso/styles/global.css";
 import { Root } from "@/components/root/root";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -54,6 +54,20 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+// -----------------------------------------------------------------------------
+// Viewport
+// -----------------------------------------------------------------------------
+
+export const viewport: Viewport = {
+  themeColor: [
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "var(--bg-background)",
+    },
+    { media: "(prefers-color-scheme: dark)", color: "var(--bg-background)" },
+  ],
 };
 
 // -----------------------------------------------------------------------------

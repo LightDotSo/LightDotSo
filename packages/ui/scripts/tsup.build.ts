@@ -9,7 +9,7 @@ import { build } from "tsup";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-async function buildStage({ entry }) {
+async function buildStage({ entry }: { entry: string[] }) {
   try {
     await build({
       clean: false,

@@ -42,5 +42,5 @@ export default function Layout({ children }: TransactionsHistoryLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return children;
+  return <>{children}</>;
 }

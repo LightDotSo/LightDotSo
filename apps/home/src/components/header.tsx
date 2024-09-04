@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { HOME_TABS } from "@/const/tabs";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { LightHorizontalLogo } from "@lightdotso/svg";
+import { NavLocation } from "@lightdotso/templates/nav";
 import { Button } from "@lightdotso/ui/components/button";
+import Link from "next/link";
 import type { FC } from "react";
 import { Menu } from "./menu";
 
@@ -27,14 +31,21 @@ export const Header: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto flex max-w-3xl items-center justify-between px-2">
-      <LightHorizontalLogo className="size-20 shrink-0" />
+    <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-2 py-1">
+      <Link
+        href="/"
+        className="p-2 hover:rounded-md hover:bg-background-stronger"
+      >
+        <LightHorizontalLogo className="h-8 shrink-0" />
+      </Link>
       <div className="relative z-10 hidden sm:block">
         <Menu />
       </div>
-      <Button className="shrink-0" asChild>
-        <a href="/">Launch App</a>
-      </Button>
+      <NavLocation tabs={HOME_TABS} isTabsVisibleDesktop={false}>
+        <Button asChild>
+          <a href={INTERNAL_LINKS.App}>Launch App</a>
+        </Button>
+      </NavLocation>
     </div>
   );
 };

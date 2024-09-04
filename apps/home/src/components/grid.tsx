@@ -41,7 +41,7 @@ export const Grid: FC<GridProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        "pointer-events-none relative h-full w-full overflow-hidden opacity-50 [perspective:200px]",
+        "pointer-events-none relative h-64 w-full overflow-hidden opacity-50 [perspective:200px] md:h-96",
         className,
       )}
     >
@@ -49,7 +49,7 @@ export const Grid: FC<GridProps> = ({ className }) => {
       <div className="absolute inset-0 [transform:rotateX(35deg)]">
         <div
           className={cn(
-            "animate-grid",
+            // "animate-grid",
             "[background-repeat:repeat] [background-size:60px_60px] [height:300vh] [inset:0%_0px] [margin-left:-50%] [transform-origin:100%_0_0] [width:600vw]",
             // Light Styles
             "[background-image:linear-gradient(to_right,rgba(0,0,0,0.3)_1px,transparent_0),linear-gradient(to_bottom,rgba(0,0,0,0.3)_1px,transparent_0)]",
@@ -59,7 +59,7 @@ export const Grid: FC<GridProps> = ({ className }) => {
         />
       </div>
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white to-90% to-transparent dark:from-black" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white to-90% to-transparent dark:from-black" />
     </div>
   );
 };

@@ -43,5 +43,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <>{children}</>;
+  return children;
 }

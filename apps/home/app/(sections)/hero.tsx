@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BetaVersion } from "@/components/beta-version";
 import { Button } from "@lightdotso/ui/components/button";
 import { Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
+import { BetaVersion } from "../../src/components/beta-version";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -27,8 +27,8 @@ export const Hero: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="relative my-8 flex flex-col items-center justify-center px-2">
-      <div className="m-auto w-full max-w-3xl">
+    <div className="relative my-8 flex flex-col items-center justify-center px-3 md:px-6">
+      <div className="m-auto w-full max-w-5xl">
         <div className="mb-8">
           <BetaVersion />
         </div>

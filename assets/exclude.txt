@@ -1,6 +1,14 @@
+.depcheckrc.yml
 .DS_Store
 .gitignore
+ardrive.sh
 copy.sh
-sync.sh
-README.md
 exclude.txt
+meta.sh
+node_modules/
+package.json
+CHANGELOG.md
+sync.sh
+turbo.json
+wallet.json
+README.md

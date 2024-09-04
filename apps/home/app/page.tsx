@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Cta } from "@/app/(sections)/cta";
-import { Ecosystem } from "@/app/(sections)/ecosystem";
-import { Features } from "@/app/(sections)/features";
-import { Hero } from "@/app/(sections)/hero";
-import { Introduction } from "@/app/(sections)/introduction";
-import { Swap } from "@/app/(sections)/swap";
-import { Unified } from "@/app/(sections)/unified";
-import { Header } from "@/components/header";
+import { Header } from "../src/components/header";
+import { Cta } from "./(sections)/cta";
+import { Ecosystem } from "./(sections)/ecosystem";
+import { Features } from "./(sections)/features";
+import { Hero } from "./(sections)/hero";
+import { Introduction } from "./(sections)/introduction";
+import { Swap } from "./(sections)/swap";
+import { Unified } from "./(sections)/unified";
 
 // -----------------------------------------------------------------------------
 // Page

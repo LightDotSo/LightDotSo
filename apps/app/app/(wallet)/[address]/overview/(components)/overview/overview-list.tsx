@@ -18,6 +18,14 @@ import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/ove
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { OverviewSubCategory, TITLES } from "@/const";
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { NftTable } from "@lightdotso/tables/nft";
+import { nftColumns } from "@lightdotso/tables/nft";
+import { TokenTable } from "@lightdotso/tables/token";
+import { tokenColumns } from "@lightdotso/tables/token";
+import {
+  TransactionTable,
+  transactionColumns,
+} from "@lightdotso/tables/transaction";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
@@ -29,7 +37,7 @@ import type { Address } from "viem";
 
 const OverviewListItemSkeleton = () => <Skeleton className="h-64 w-full" />;
 
-const OverviewListPortfolioSkeleton = () => <Skeleton className="h-4 w-8" />;
+const OverviewListPortfolioSkeleton = () => <Skeleton className="h-6 w-16" />;
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -116,7 +124,38 @@ export const OverviewList: FC<OverviewListProps> = ({
   // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToComponent = (itemId: string): JSX.Element => {
     if (isLoading || !address) {
-      return <OverviewListItemSkeleton />;
+      switch (itemId) {
+        case OverviewSubCategory.Tokens:
+          return (
+            <TokenTable
+              isLoading
+              pageSize={OVERVIEW_ROW_COUNT}
+              data={[]}
+              columns={tokenColumns}
+            />
+          );
+        case OverviewSubCategory.NFTs:
+          return (
+            <NftTable
+              isLoading
+              pageSize={OVERVIEW_ROW_COUNT}
+              limit={OVERVIEW_ROW_COUNT}
+              data={[]}
+              columns={nftColumns}
+            />
+          );
+        case OverviewSubCategory.History:
+          return (
+            <TransactionTable
+              isLoading
+              pageSize={OVERVIEW_ROW_COUNT}
+              data={[]}
+              columns={transactionColumns}
+            />
+          );
+        default:
+          return <></>;
+      }
     }
 
     switch (itemId) {

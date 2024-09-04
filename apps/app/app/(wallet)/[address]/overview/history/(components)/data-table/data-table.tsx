@@ -28,6 +28,7 @@ interface DataTableProps {
   isLoading: boolean;
   columns: ColumnDef<TransactionData>[];
   data: TransactionData[];
+  pageSize?: number;
   pageCount: number;
 }
 
@@ -39,6 +40,7 @@ export function DataTable({
   isLoading,
   columns,
   data,
+  pageSize,
   pageCount,
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
@@ -93,7 +95,7 @@ export function DataTable({
   return (
     <TransactionTable
       isLoading={isLoading}
-      pageSize={paginationState.pageSize}
+      pageSize={pageSize ?? paginationState.pageSize}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

@@ -42,7 +42,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { type FC, useEffect, useMemo } from "react";
-import { transactionColumns } from "./transaction-columns";
+import { transactionColumns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -33,3 +33,4 @@ ignores:
   - "@sentry-internal/feedback"
   - "@sentry/react"
   - "@sentry/integrations"
+  - lucide-react

@@ -3,3 +3,4 @@ reject:
   - "solc"
   - "@headlessui/react"
   - "vite-tsconfig-paths"
+  - "postcss"

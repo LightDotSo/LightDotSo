@@ -16,6 +16,7 @@
 
 import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
 import { useTables } from "@lightdotso/stores";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
@@ -47,5 +48,9 @@ export const OwnersDataTableToolbar: FC = () => {
     return null;
   }
 
-  return <DataTableToolbar table={ownerTable} />;
+  return (
+    <ToolbarSectionWrapper>
+      <DataTableToolbar table={ownerTable} />
+    </ToolbarSectionWrapper>
+  );
 };

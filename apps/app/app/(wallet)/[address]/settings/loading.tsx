@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
-import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 
 // -----------------------------------------------------------------------------
 // Loading
@@ -22,10 +21,10 @@ import { SettingsSectionWrapper } from "@lightdotso/ui/wrappers";
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default function Loading() {
   return (
-    <SettingsSectionWrapper>
+    <>
       <SettingsCardSkeleton />
       <SettingsCardSkeleton />
       <SettingsCardSkeleton />
-    </SettingsSectionWrapper>
+    </>
   );
 }

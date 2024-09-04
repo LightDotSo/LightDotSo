@@ -100,6 +100,10 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!table) {
+    return null;
+  }
+
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">

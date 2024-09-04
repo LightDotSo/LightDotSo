@@ -1,6 +1,7 @@
-import { withContentCollections } from "@content-collections/next";
+import { createMDX } from "fumadocs-mdx/next";
 import packageJson from "./package.json" assert { type: "json" };
 
+const withMDX = createMDX();
 // ---------------------------------------------------------------------------
 // Next Config
 // ---------------------------------------------------------------------------
@@ -11,6 +12,7 @@ const config = {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/docs@${packageJson.version}`,
   },
   reactStrictMode: true,
+  transpilePackages: ["prettier", "shiki"],
 };
 
-export default withContentCollections(config);
+export default withMDX(config);
