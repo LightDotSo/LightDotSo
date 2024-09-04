@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "Light Proposals",
     images: [
       {
-        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        url: "https://assets.light.so/social/proposals.png",
         width: 1200,
         height: 675,
       },
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     creator: "@LightDotSo",
     images: [
       {
-        url: "https://assets.light.so/social/use-ethereum-as-one.png",
+        url: "https://assets.light.so/social/proposals.png",
         width: 1200,
         height: 675,
       },
