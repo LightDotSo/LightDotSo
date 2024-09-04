@@ -32,9 +32,9 @@ use crate::types::{
     DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType, Signature,
     ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
 };
-use ethers::{
-    types::{Address, RecoveryMessage, Signature as EthersSignature, H256},
-    utils::hash_message,
+use alloy::{
+    hex,
+    primitives::{eip191_hash_message, Address, Signature as AlloySignature, B256},
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::erc1271::get_erc_1271_wallet;
@@ -67,18 +67,17 @@ pub fn recover_ecdsa_signature(
     let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
     signature_slice.copy_from_slice(&slice[..ECDSA_SIGNATURE_LENGTH]);
 
-    let signature: EthersSignature =
-        EthersSignature::from_str(&ethers::utils::hex::encode(signature_slice))?;
+    let signature: AlloySignature = AlloySignature::from_str(&hex::encode(signature_slice))?;
 
     // Recover the address from the signature
     let address = match signature_type {
         ECDSASignatureType::ECDSASignatureTypeEIP712 => {
-            let message = RecoveryMessage::Hash(H256::from(subdigest));
-            signature.recover(message)?
+            let message = B256::from(subdigest);
+            signature.recover_address_from_prehash(&message)?
         }
         ECDSASignatureType::ECDSASignatureTypeEthSign => {
-            let message = RecoveryMessage::Hash(hash_message(H256::from(subdigest)));
-            signature.recover(message)?
+            let message = eip191_hash_message(B256::from(subdigest));
+            signature.recover_address_from_prehash(&message)?
         }
     };
 
@@ -120,15 +119,16 @@ pub async fn recover_dynamic_signature(
             // Call the contract on-chain to verify the signature
             let wallet = get_erc_1271_wallet(chain_id, address).await?;
             let res = wallet
-                .is_valid_signature(
+                .isValidSignature(
                     subdigest.to_vec().into(),
                     signature.clone().as_slice().to_vec().into(),
                 )
+                .call()
                 .await?;
-            if res == ERC1271_MAGICVALUE_BYTES32 {
+            if res.magicValue == ERC1271_MAGICVALUE_BYTES32 {
                 address
             } else {
-                Address::zero()
+                Address::ZERO
             }
         }
     };
@@ -152,13 +152,14 @@ pub async fn recover_dynamic_signature(
 
 #[cfg(test)]
 mod tests {
+    use alloy::{
+        dyn_abi::DynSolValue,
+        primitives::{keccak256, FixedBytes},
+        signers::{local::PrivateKeySigner, Signer},
+    };
+
     use super::*;
     use crate::utils::{hash_message_bytes32, left_pad_u64_to_bytes32, parse_hex_to_bytes32};
-    use ethers::{
-        abi::{encode_packed, Token},
-        signers::{LocalWallet, Signer},
-        utils::keccak256,
-    };
 
     #[test]
     fn test_userop_recover_eip712() -> Result<()> {
@@ -167,18 +168,27 @@ mod tests {
         )?;
 
         // Hash the subdigest w/ https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/ModuleAuth.sol#L60
-        let sub_digest = keccak256(encode_packed(&[
-            Token::String("\x19\x01".to_string()),
-            Token::FixedBytes(left_pad_u64_to_bytes32(11155111).to_vec()),
-            Token::Address("0x10dbbe70128929723c1b982e53c51653232e4ff2".parse()?),
-            Token::FixedBytes(user_op_hash.to_vec()),
-        ])?);
+        let sub_digest = keccak256(
+            DynSolValue::Tuple(vec![
+                DynSolValue::String("\x19\x01".to_string()),
+                DynSolValue::FixedBytes(
+                    FixedBytes::from(left_pad_u64_to_bytes32(11155111)),
+                    left_pad_u64_to_bytes32(11155111).to_vec().len(),
+                ),
+                DynSolValue::Address("0x10dbbe70128929723c1b982e53c51653232e4ff2".parse()?),
+                DynSolValue::FixedBytes(
+                    FixedBytes::from(user_op_hash),
+                    user_op_hash.to_vec().len(),
+                ),
+            ])
+            .abi_encode_packed(),
+        );
 
         // For ECDSASignatureTypeEIP712
-        let message = RecoveryMessage::Hash(sub_digest.into());
-        let signature = EthersSignature::from_str("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b")?;
-        let a = signature.recover(message)?;
-        assert_eq!(a, "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d".parse()?);
+        let message = B256::from(sub_digest);
+        let signature = AlloySignature::from_str("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b")?;
+        let a = signature.recover_address_from_msg(message)?;
+        assert_eq!(a.to_checksum(None), "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d".to_string());
 
         Ok(())
     }
@@ -190,12 +200,21 @@ mod tests {
         )?;
 
         // Hash the subdigest w/ https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/ModuleAuth.sol#L60
-        let sub_digest = keccak256(encode_packed(&[
-            Token::String("\x19\x01".to_string()),
-            Token::FixedBytes(left_pad_u64_to_bytes32(11155111).to_vec()),
-            Token::Address("0x5D04d44C02ff74C4423F71fA07E51a75E4B9895E".parse()?),
-            Token::FixedBytes(user_op_hash.to_vec()),
-        ])?);
+        let sub_digest = keccak256(
+            DynSolValue::Tuple(vec![
+                DynSolValue::String("\x19\x01".to_string()),
+                DynSolValue::FixedBytes(
+                    FixedBytes::from(left_pad_u64_to_bytes32(11155111)),
+                    left_pad_u64_to_bytes32(11155111).to_vec().len(),
+                ),
+                DynSolValue::Address("0x5D04d44C02ff74C4423F71fA07E51a75E4B9895E".parse()?),
+                DynSolValue::FixedBytes(
+                    FixedBytes::from(user_op_hash),
+                    user_op_hash.to_vec().len(),
+                ),
+            ])
+            .abi_encode_packed(),
+        );
         assert_eq!(
             sub_digest,
             parse_hex_to_bytes32(
@@ -213,23 +232,23 @@ mod tests {
         );
 
         // An example singnature for `eth_sign`
-        let message = RecoveryMessage::Hash(hash_message_bytes32(&sub_digest)?.into());
-        let signature = EthersSignature::from_str("0xc2db3b0d1586ddb52005c1b9dbeba001a8c5bd7a6d5d74e6dabf3f79f85c81f43ca3ef079afeec48b9de9e1308b97c7faaab0040cfc0d1594cbc4ca16a5505571b")?;
-        let a = signature.recover(message)?;
-        assert_eq!(a, "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?);
+        let message = B256::from(hash_message_bytes32(&sub_digest)?);
+        let signature = AlloySignature::from_str("0xc2db3b0d1586ddb52005c1b9dbeba001a8c5bd7a6d5d74e6dabf3f79f85c81f43ca3ef079afeec48b9de9e1308b97c7faaab0040cfc0d1594cbc4ca16a5505571b")?;
+        let a = signature.recover_address_from_prehash(&message)?;
+        assert_eq!(a.to_checksum(None), "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string());
 
         Ok(())
     }
 
     #[tokio::test]
     async fn test_recover_ecdsa_signature() -> Result<()> {
-        let wallet = LocalWallet::new(&mut rand::thread_rng());
+        let wallet = PrivateKeySigner::random();
 
         let subdigest = [1u8; 32];
 
         // Sign the subdigest w/ type EIP712
-        let signature = wallet.sign_hash(subdigest.into())?;
-        let mut data = signature.clone().to_vec();
+        let signature = wallet.sign_hash(&FixedBytes::from(subdigest)).await?;
+        let mut data = signature.as_bytes().to_vec();
         // Set the `ECDSASignatureType` to `ECDSASignatureTypeEIP712`
         data.push(1);
 
@@ -240,8 +259,8 @@ mod tests {
         assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEIP712);
 
         // Sign the subdigest w/ EIP 191
-        let signature = wallet.sign_message(subdigest).await?;
-        let mut data = signature.clone().to_vec();
+        let signature = wallet.sign_message(&subdigest).await?;
+        let mut data = signature.as_bytes().to_vec();
         // Set the `ECDSASignatureType` to `ECDSASignatureTypeEthSign`
         data.push(2);
 
@@ -257,13 +276,13 @@ mod tests {
 
     #[tokio::test]
     async fn test_recover_dynamic_signature() -> Result<()> {
-        let wallet = LocalWallet::new(&mut rand::thread_rng());
+        let wallet = PrivateKeySigner::random();
 
         let subdigest = [1u8; 32];
 
         // Sign the subdigest w/ type EIP712
-        let signature = wallet.sign_hash(subdigest.into())?;
-        let mut data = signature.clone().to_vec();
+        let signature = wallet.sign_hash(&FixedBytes::from(subdigest)).await?;
+        let mut data = signature.as_bytes().to_vec();
         // Set the `ECDSASignatureType` to `ECDSASignatureTypeEIP712`
         data.push(1);
         // Set the `DynamicSignatureType` to `DynamicSignatureTypeEIP712`
@@ -272,12 +291,12 @@ mod tests {
         let recovered_sig =
             recover_dynamic_signature(1, &data, &subdigest, wallet.address(), 0, 66).await?;
         assert_eq!(recovered_sig.address, wallet.address());
-        assert_eq!(recovered_sig.signature, signature.to_vec().try_into()?);
+        assert_eq!(recovered_sig.signature, signature.as_bytes().to_vec().try_into()?);
         assert_eq!(recovered_sig.signature_type, DynamicSignatureType::DynamicSignatureTypeEIP712);
 
         // Sign the subdigest w/ EIP 191
-        let signature = wallet.sign_message(subdigest).await?;
-        let mut data = signature.clone().to_vec();
+        let signature = wallet.sign_message(&subdigest).await?;
+        let mut data = signature.as_bytes().to_vec();
         // Set the `ECDSASignatureType` to `ECDSASignatureTypeEthSign`
         data.push(2);
         // Set the `DynamicSignatureType` to `DynamicSignatureTypeEthSign`
@@ -286,7 +305,7 @@ mod tests {
         let recovered_sig =
             recover_dynamic_signature(1, &data, &subdigest, wallet.address(), 0, 66).await?;
         assert_eq!(recovered_sig.address, wallet.address());
-        assert_eq!(recovered_sig.signature, signature.to_vec().try_into()?);
+        assert_eq!(recovered_sig.signature, signature.as_bytes().to_vec().try_into()?);
         assert_eq!(recovered_sig.signature_type, DynamicSignatureType::DynamicSignatureTypeEthSign);
 
         Ok(())

@@ -28,9 +28,9 @@
 
 #![allow(clippy::expect_used)]
 
-use ethers::{
-    types::{Address, H256},
-    utils::hex,
+use alloy::{
+    hex,
+    primitives::{Address, B256},
 };
 use serde::{
     de::{self, Visitor},
@@ -189,7 +189,7 @@ impl From<&DynamicSignatureLeaf> for Vec<u8> {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct NodeLeaf {
-    pub hash: H256,
+    pub hash: B256,
 }
 
 impl From<&NodeLeaf> for Vec<u8> {
@@ -216,7 +216,7 @@ impl From<&BranchLeaf> for Vec<u8> {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct SubdigestLeaf {
-    pub hash: H256,
+    pub hash: B256,
 }
 
 impl From<&SubdigestLeaf> for Vec<u8> {
@@ -229,7 +229,7 @@ impl From<&SubdigestLeaf> for Vec<u8> {
 pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
-    pub internal_root: H256,
+    pub internal_root: B256,
     pub size: u32,
 }
 
