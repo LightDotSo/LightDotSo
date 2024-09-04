@@ -14,7 +14,9 @@
 
 "use client";
 
+import { useQuerySocketTokenPrice } from "@lightdotso/query";
 import { useTokenPrices } from "@lightdotso/stores";
+import { useMemo } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -41,16 +43,31 @@ export const useTokenPrice = ({
   const { getTokenPrice } = useTokenPrices();
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Query
   // ---------------------------------------------------------------------------
 
-  if (!(chainId && tokenAddress)) {
-    return {
-      tokenPrice: null,
-    };
-  }
+  const { socketTokenPrice } = useQuerySocketTokenPrice({
+    address: tokenAddress,
+    chainId: chainId,
+  });
 
-  const tokenPrice = getTokenPrice(chainId, tokenAddress);
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tokenPrice = useMemo(() => {
+    if (!(chainId && tokenAddress)) {
+      return null;
+    }
+
+    if (socketTokenPrice) {
+      return {
+        tokenPrice: socketTokenPrice.price,
+      };
+    }
+
+    return getTokenPrice(chainId, tokenAddress);
+  }, [chainId, tokenAddress, getTokenPrice, socketTokenPrice]);
 
   // ---------------------------------------------------------------------------
   // Return

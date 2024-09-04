@@ -21,3 +21,8 @@ import type { Address } from "viem";
 export type SocketBalanceParams = {
   address: Address | null | undefined;
 };
+
+export type SocketTokenPriceParams = {
+  address: Address | null | undefined;
+  chainId: number | null | undefined;
+};

@@ -32,7 +32,12 @@ export type { LifiQuotePageData, LifiTokensPageData } from "./lifi";
 export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";
 export type { SimulationData } from "./simulation";
-export type { SocketBalanceData, SocketBalancePageData } from "./socket";
+export type {
+  SocketBalanceData,
+  SocketBalancePageData,
+  SocketTokenPriceData,
+  SocketTokenPricePageData,
+} from "./socket";
 export type { TokenPortfolioData, NftValuationData } from "./portfolio";
 export type { TokenData, TokenCountData } from "./token";
 export type { TokenGroupData } from "./tokenGroup";
