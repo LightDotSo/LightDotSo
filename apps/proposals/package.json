@@ -34,7 +34,7 @@
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.28.0",
     "@tanstack/react-query": "^5.54.1",
-    "@types/node": "^22.5.2",
+    "@types/node": "^22.5.3",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.2",
+    "@types/node": "^22.5.3",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
