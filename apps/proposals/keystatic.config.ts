@@ -15,6 +15,7 @@ export default config({
       path: "content/proposals/*",
       format: { contentField: "content" },
       schema: {
+        date: fields.date({ label: "Date", validation: { isRequired: true } }),
         title: fields.slug({ name: { label: "Title" } }),
         ogp: fields.cloudImage({ label: "OGP" }),
         content: fields.mdx({ label: "Content" }),

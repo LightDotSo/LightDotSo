@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import { createReader } from "@keystatic/core/reader";
+import { NextImage } from "@lightdotso/elements/next-image";
+import { refineDateFormat } from "@lightdotso/utils";
 import keystaticConfig from "~/keystatic.config";
 
 // -----------------------------------------------------------------------------
@@ -39,11 +41,25 @@ export default async function Page() {
   return (
     <ul className="text-lg hover:underline">
       {proposals.map((proposal) => (
-        <li key={proposal.slug}>
+        <li key={proposal.slug} className="group col-span-1">
           <a
             href={`${process.env.VERCEL_ENV === "production" ? "/proposals/" : "/"}${proposal.slug}`}
           >
-            {proposal.entry.title}
+            <div className="aspect-h-9 aspect-w-16 cursor-pointer overflow-hidden rounded-sm transition duration-300 group-hover:opacity-80">
+              <NextImage
+                placeholder="blur"
+                src={proposal.entry.ogp.src}
+                alt={proposal.entry.title}
+                width={1200}
+                height={630}
+              />
+            </div>
+            <div className="mt-2 font-bold text-text text-xl tracking-tight group-hover:underline sm:text-3xl">
+              {proposal.entry.title}
+            </div>
+            <div className="group-hover:underline">
+              {refineDateFormat(new Date(proposal.entry.date))}
+            </div>
           </a>
         </li>
       ))}

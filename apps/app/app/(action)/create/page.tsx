@@ -27,10 +27,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Create.title} | %s`,
-    default: TITLES.Create.title,
-  },
+  title: TITLES.Create.title,
   description: TITLES.Create.description,
 };
 

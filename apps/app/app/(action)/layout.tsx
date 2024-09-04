@@ -13,7 +13,19 @@
 // limitations under the License.
 
 import { HStackFull } from "@lightdotso/ui/stacks";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: {
+    template: "Light | %s",
+    default: "Light",
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props

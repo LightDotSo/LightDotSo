@@ -24,10 +24,7 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: `${TITLES.Wallets.title} | %s`,
-    default: TITLES.Wallets.title,
-  },
+  title: TITLES.Wallets.title,
   description: TITLES.Wallets.description,
 };
 
