@@ -573,7 +573,7 @@ mod tests {
         let empty_node_sig=
             // 3u8 is the signature type for a node signature
             DynSolValue::Tuple(vec![
-                DynSolValue::Uint(U256::from(3u8), 256),
+                DynSolValue::Bytes(vec![3u8; 1]),
                 DynSolValue::FixedBytes(FixedBytes::from_slice(&[0u8; 32]), 32),
             ]).abi_encode_packed();
 
@@ -630,7 +630,7 @@ mod tests {
         let empty_node_sig=
             // 9u8 is an invalid signature type
             DynSolValue::Tuple(vec![
-                DynSolValue::Bytes(vec![9u8; 32]),
+                DynSolValue::Bytes(vec![9u8; 1]),
                 DynSolValue::FixedBytes(FixedBytes::from_slice(&[0u8; 32]), 32),
             ]).abi_encode_packed();
 

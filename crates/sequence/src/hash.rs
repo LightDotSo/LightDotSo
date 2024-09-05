@@ -48,23 +48,25 @@ pub fn get_address(hash: B256, salt: B256) -> Result<Address> {
     let selector = keccak256("initialize(bytes32)");
     let (selector_slice, _) = selector.split_at(4);
 
-    let and = DynSolValue::Tuple(vec![
-        DynSolValue::FixedBytes(FixedBytes::from_slice(selector_slice), 4),
-        DynSolValue::FixedBytes(FixedBytes::from_slice(hash.as_ref()), hash.to_vec().len()),
-    ])
-    .abi_encode_packed();
-
-    let input =
-        DynSolValue::Tuple(vec![DynSolValue::Address(implementation), DynSolValue::Bytes(and)])
-            .abi_encode();
-
-    let inal = DynSolValue::Tuple(vec![
-        DynSolValue::Bytes(hex::decode(PROXY_CREATION_CODE)?),
-        DynSolValue::Bytes(input),
-    ])
-    .abi_encode_packed();
-
-    let init_code_hash = keccak256(inal);
+    let init_code_hash = keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::Bytes(hex::decode(PROXY_CREATION_CODE)?),
+            DynSolValue::Bytes(
+                DynSolValue::Tuple(vec![
+                    DynSolValue::Address(implementation),
+                    DynSolValue::Bytes(
+                        DynSolValue::Tuple(vec![
+                            DynSolValue::Bytes(selector_slice.to_vec()),
+                            DynSolValue::FixedBytes(FixedBytes::from_slice(hash.as_ref()), 32),
+                        ])
+                        .abi_encode_packed(),
+                    ),
+                ])
+                .abi_encode(),
+            ),
+        ])
+        .abi_encode_packed(),
+    );
 
     let factory: Address = *LIGHT_WALLET_FACTORY_ADDRESS;
 
