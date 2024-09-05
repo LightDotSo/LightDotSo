@@ -24,7 +24,7 @@
 // You should have received a copy of the GNU Lesser Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{signers::Signer, utils::hash_message};
+use alloy::signers::Signer;
 use lightdotso_signer::connect::connect_to_kms;
 
 #[ignore]
@@ -50,13 +50,13 @@ async fn test_eth_sign() {
     let signer = connect_to_kms().await.unwrap();
 
     let message = "Hello, world!";
-    let signature = signer.sign_message(message).await.unwrap();
+    let signature = signer.sign_message(message.as_bytes()).await.unwrap();
 
     // The signature should be 65 bytes long
-    assert_eq!(signature.to_vec().len(), 65);
+    assert_eq!(signature.as_bytes().to_vec().len(), 65);
 
     let address = signer.address();
-    let recovered_address = signature.recover(message).unwrap();
+    let recovered_address = signature.recover_address_from_msg(message.as_bytes()).unwrap();
     assert_eq!(address, recovered_address);
 }
 
@@ -68,9 +68,9 @@ async fn test_kms_eth_sign_recover() {
     let signer = connect_to_kms().await.unwrap();
 
     let message = "0x38ed45be3f57fcb4fe573f3692fec8de3587dbf8eb2114d8945efc819799f9cb";
-    let signature = signer.sign_message(message).await.unwrap();
+    let signature = signer.sign_message(message.as_bytes()).await.unwrap();
 
     let address = signer.address();
-    let recovered_address = signature.recover(hash_message(message)).unwrap();
+    let recovered_address = signature.recover_address_from_msg(message.as_bytes()).unwrap();
     assert_eq!(address, recovered_address);
 }

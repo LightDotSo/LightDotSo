@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::{types::Address, utils::to_checksum};
+use alloy::primitives::Address;
 
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/primitives/src/utils.rs#L1C1-L10C1
 // License: MIT
@@ -21,5 +21,5 @@ pub fn as_checksum<S>(val: &Address, s: S) -> Result<S::Ok, S::Error>
 where
     S: serde::Serializer,
 {
-    s.serialize_str(&to_checksum(val, None))
+    s.serialize_str(&val.to_checksum(None))
 }

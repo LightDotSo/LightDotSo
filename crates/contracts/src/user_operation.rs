@@ -42,10 +42,10 @@
 use crate::{tracer::LogInfo, types::UserOperation};
 use alloy::{
     dyn_abi::DynSolValue,
+    hex,
     primitives::{keccak256, Address, Bytes, FixedBytes, B256, U256},
     rpc::types::RawLog,
 };
-use const_hex::hex;
 use core::fmt::Debug;
 use eyre::{eyre, Result};
 use std::str::FromStr;
@@ -64,7 +64,7 @@ pub trait EthLogDecode: Send + Sync {
 /// Parse the user operation event from the log
 /// Since the user operation event is a generic event, we need to parse it with the specific type
 /// `T` that implements `EthLogDecode`
-pub fn parse_user_op_event<T: Debug + EthLogDecode>(event: &LogInfo) -> Result<T> {
+pub fn parse_user_op_event<T: EthLogDecode>(event: &LogInfo) -> Result<T> {
     let topics = event
         .topics
         .iter()

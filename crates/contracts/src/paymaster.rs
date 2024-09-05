@@ -40,6 +40,7 @@ pub async fn get_paymaster(
 }
 
 /// Construct the paymaster and data.
+#[allow(deprecated)]
 pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec<u8>)> {
     // Internal function to make sure the timestamp is valid.
     fn is_valid_timestamp(timestamp: u64) -> bool {
@@ -91,7 +92,7 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec
 mod tests {
     use super::*;
     use crate::constants::LIGHT_PAYMASTER_ADDRESSES;
-    use ethers::utils::hex;
+    use alloy::hex;
     use eyre::Result;
 
     #[ignore]

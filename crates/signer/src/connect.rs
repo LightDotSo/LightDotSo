@@ -13,9 +13,8 @@
 // limitations under the License.
 
 use crate::kms::KmsSigner;
-use ethers::signers::AwsSigner;
+use alloy::signers::aws::AwsSigner;
 use eyre::{eyre, Context, Result};
-use rusoto_core::Region;
 use std::time::Duration;
 use tokio::time::timeout;
 
@@ -24,7 +23,6 @@ pub async fn connect_to_kms() -> Result<AwsSigner, eyre::Report> {
         Duration::from_millis(30000 / 10),
         KmsSigner::connect(
             1,
-            Region::UsEast1,
             std::env::var("AWS_KMS_KEY_IDS")
                 .wrap_err("Failed to get AWS_KMS_KEY_IDS from environment")?
                 .split(',')

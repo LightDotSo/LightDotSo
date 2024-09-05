@@ -86,26 +86,6 @@ impl From<alloy::transports::TransportError> for JsonRpcError {
     }
 }
 
-/// Convert a [ethers provider error](reqwest::Error) to a [JsonRpcError](JsonRpcError).
-impl From<ethers::providers::ProviderError> for JsonRpcError {
-    fn from(err: ethers::providers::ProviderError) -> Self {
-        match err {
-            ethers::providers::ProviderError::JsonRpcClientError(err) => {
-                JsonRpcError(ErrorObject::owned(
-                    INTERNAL_ERROR_CODE,
-                    format!("Provider error: {:?}", err),
-                    None::<bool>,
-                ))
-            }
-            _ => JsonRpcError(ErrorObject::owned(
-                INTERNAL_ERROR_CODE,
-                format!("Provider error with no status code: {:?}", err),
-                None::<bool>,
-            )),
-        }
-    }
-}
-
 /// Convert a [reqwest error](reqwest::Error) to a [JsonRpcError](JsonRpcError).
 impl From<reqwest::Error> for JsonRpcError {
     fn from(err: reqwest::Error) -> Self {

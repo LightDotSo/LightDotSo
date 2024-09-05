@@ -443,7 +443,7 @@ where
 
         let host = req
             .headers()
-            .get(http::header::HOST)
+            .get(axum::http::header::HOST)
             .and_then(|h| h.to_str().ok())
             .unwrap_or("unknown")
             .to_string();
@@ -483,7 +483,7 @@ fn compute_approximate_request_size<T>(req: &Request<T>) -> usize {
 
     s += req
         .headers()
-        .get(http::header::CONTENT_LENGTH)
+        .get(axum::http::header::CONTENT_LENGTH)
         .map(|v| v.to_str().unwrap().parse::<usize>().unwrap_or(0))
         .unwrap_or(0);
     s

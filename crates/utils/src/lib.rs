@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::primitives::{Address, U256};
 /// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
-use ethers::types::{Address, U256};
 use lightdotso_constants::chains::{
     CHAIN_BLOCK_SECONDS, DEFAULT_CHAIN_BLOCK_SECONDS, DEFAULT_TESTNET_CHAIN_BLOCK_SECONDS,
     MAINNET_CHAIN_IDS, NATIVE_TOKEN_SYMBOLS, TESTNET_CHAIN_IDS,

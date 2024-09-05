@@ -10,15 +10,12 @@
 
 [dependencies]
   alloy = { workspace = true }
-  anvil = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
   backon = { workspace = true }
   byteorder = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
-  ethers = { workspace = true }
-  ethers-providers = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
   lazy_static = { workspace = true }

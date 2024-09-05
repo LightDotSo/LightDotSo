@@ -19,8 +19,6 @@ use crate::{
     evm::Evm,
     types::{SimulationRequest, SimulationResponse},
 };
-use ethers::providers::Middleware;
-use ethers_main::abi::Uint;
 use eyre::{eyre, Result};
 use lightdotso_contracts::provider::get_provider;
 

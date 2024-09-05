@@ -27,22 +27,27 @@
 // limitations under the License.
 
 use crate::config::NodeArgs;
-use backon::{ExponentialBuilder, Retryable};
-use ethers::{
-    providers::Middleware,
-    types::{
-        spoof, transaction::eip2718::TypedTransaction, Address, BlockNumber, Bytes,
-        GethDebugTracerType, GethDebugTracingCallOptions, GethDebugTracingOptions, H256,
+use alloy::{
+    eips::{BlockId, BlockNumberOrTag},
+    primitives::{Address, Bytes, B256},
+    providers::ext::DebugApi,
+    rpc::types::trace::geth::{
+        GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
+        GethDebugTracingOptions, GethDefaultTracingOptions,
     },
 };
+use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    entrypoint::{get_entrypoint, UserOperationEventFilter, UserOperationRevertReasonFilter},
+    entrypoint::{
+        get_entrypoint,
+        // EntryPoint::UserOperationEvent, EntryPoint::UserOperationRevertReason,
+    },
     provider::get_provider,
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::UserOperation,
-    user_operation::parse_user_op_event,
-    utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
+    // user_operation::parse_user_op_event,
+    // utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
 };
 use lightdotso_jsonrpsee::{
     handle_response,
@@ -95,7 +100,7 @@ impl Node {
 
         // Simulate the user operation w/ `eth_call`
         let res = entrypoint
-            .simulate_handle_op(user_operation.clone().into(), Address::zero(), vec![].into())
+            .simulateHandleOp(user_operation.clone().into(), Address::ZERO, vec![].into())
             .call_raw()
             .await
             .err()
@@ -103,12 +108,12 @@ impl Node {
         info!("res: {:?}", res);
 
         // Decode the revert reason
-        let error_data = get_revert_bytes(res)?;
-        info!("error_data: {:?}", error_data);
+        // let error_data = get_revert_bytes(res)?;
+        // info!("error_data: {:?}", error_data);
 
         // Decode the execution result
-        let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
-        info!("execution_result: {:?}", reason);
+        // let reason = decode_simulate_handle_ops_revert(error_data).map_err(|e| eyre!(e))?;
+        // info!("execution_result: {:?}", reason);
 
         Ok(())
     }
@@ -150,15 +155,15 @@ impl Node {
         // License: Apache-2.0
 
         // Debug trace call
-        let call = entrypoint.simulate_handle_op(
+        let call = entrypoint.simulateHandleOp(
             user_operation.clone().into(),
-            Address::zero(),
+            Address::ZERO,
             Bytes::default(),
         );
-        let mut tx: TypedTransaction = call.tx;
-        tx.set_from(Address::zero());
-        tx.set_gas_price(user_operation.clone().max_fee_per_gas);
-        tx.set_gas(u64::MAX);
+        let tx = call.into_transaction_request();
+        // tx.(Address::ZERO);
+        // tx(user_operation.clone().max_fee_per_gas);
+        // tx.set_gas(u64::MAX);
 
         // Get provider
         let provider = get_provider(chain_id).await?;
@@ -167,25 +172,15 @@ impl Node {
         let trace = provider
             .debug_trace_call(
                 tx,
-                Some(BlockNumber::Latest.into()),
-                GethDebugTracingCallOptions {
-                    tracing_options: GethDebugTracingOptions {
-                        disable_storage: None,
-                        disable_stack: None,
-                        enable_memory: None,
-                        enable_return_data: None,
+                BlockId::Number(BlockNumberOrTag::Latest),
+                GethDebugTracingCallOptions::default().with_tracing_options(
+                    GethDebugTracingOptions {
+                        config: GethDefaultTracingOptions::default(),
                         tracer: Some(GethDebugTracerType::JsTracer(EXECUTOR_TRACER.into())),
-                        tracer_config: None,
+                        tracer_config: GethDebugTracerConfig::default(),
                         timeout: None,
                     },
-                    state_overrides: Some(spoof::balance(
-                        Address::zero(),
-                        // Maximum uint96 value
-                        // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/contracts/src/entry_point.rs#L29C26-L29C60
-                        // License: Apache-2.0
-                        5192296858534827628530496329220095_u128.into(),
-                    )),
-                },
+                ),
             )
             .await
             .map_err(|e| eyre!("Failed to debug trace call: {:?}", e))?;
@@ -194,20 +189,22 @@ impl Node {
             ExecutorTracerResult::try_from(trace).map_err(|e| eyre!(e))?;
         info!("tracer_result: {:?}", tracer_result);
 
-        let user_op_revert_event = tracer_result
-            .user_op_revert_event
-            .as_ref()
-            .and_then(|e| parse_user_op_event::<UserOperationRevertReasonFilter>(e).ok());
-        info!("user_op_revert_event: {:?}", user_op_revert_event);
+        // let user_op_revert_event = tracer_result
+        //     .user_op_revert_event
+        //     .as_ref()
+        //     .and_then(|e| parse_user_op_event::<UserOperationRevertReason>(e).ok());
+        // info!("user_op_revert_event: {:?}", user_op_revert_event);
 
-        let user_op_event = tracer_result
-            .user_op_event
-            .as_ref()
-            .ok_or(eyre!("Estimate trace simulate handle op user op event not found"))?;
-        let user_op_event = parse_user_op_event::<UserOperationEventFilter>(user_op_event)?;
-        info!("user_op_event: {:?}", user_op_event);
+        // let user_op_event = tracer_result
+        //     .user_op_event
+        //     .as_ref()
+        //     .ok_or(eyre!("Estimate trace simulate handle op user op event not found"))?;
+        // let user_op_event = parse_user_op_event::<UserOperationRevertReason>(user_op_event)?;
+        // info!("user_op_event: {:?}", user_op_event);
 
-        Ok(user_op_event.success)
+        // Ok(user_op_event.success)
+
+        Ok(true)
     }
 
     pub async fn send_user_operation_with_backon(
@@ -215,7 +212,7 @@ impl Node {
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
-    ) -> Result<Response<H256>> {
+    ) -> Result<Response<B256>> {
         let send_user_operation =
             || async { self.send_user_operation(chain_id, entry_point, user_operation).await };
 
@@ -233,7 +230,7 @@ impl Node {
         chain_id: u64,
         entry_point: Address,
         user_operation: &UserOperation,
-    ) -> Result<Response<H256>> {
+    ) -> Result<Response<B256>> {
         let params = vec![json!(user_operation.clone()), json!(entry_point)];
         info!("params: {:?}", params);
 

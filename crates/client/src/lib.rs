@@ -17,9 +17,9 @@
 pub mod constants;
 pub mod crypto;
 
+use alloy::primitives::B256;
 use backon::{ExponentialBuilder, Retryable};
 use constants::{ADMIN_BASE_API_URL, PUBLIC_BASE_API_URL};
-use ethers::types::H256;
 use eyre::Result;
 use http::HeaderMap;
 use lightdotso_common::traits::HexToBytes;
@@ -90,7 +90,7 @@ pub async fn request_api_json<T: DeserializeOwned>(path: String) -> Result<T> {
 
 // Get the signature of the user operation
 pub async fn get_user_operation_signature(
-    hash: H256,
+    hash: B256,
     configuration_id: Option<String>,
 ) -> Result<Vec<u8>> {
     // The path to the user operation signature

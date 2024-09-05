@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::utils::{hex_to_bytes, hex_to_bytes32};
-use const_hex::hex;
+use alloy::hex;
 use eyre::Result;
 
 pub trait VecU8ToHex {

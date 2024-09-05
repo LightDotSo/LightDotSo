@@ -13,11 +13,11 @@
   backon = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive", "env"] }
-  ethers = { workspace = true }
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
+  reth-rpc-types = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }

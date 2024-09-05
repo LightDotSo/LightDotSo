@@ -12,14 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::abi::{AbiDecode, AbiError};
-use ethers_main::{
-    abi::Address,
-    contract::abigen,
-    types::{Bytes, Log, U256},
-};
 use eyre::{eyre, Result};
-use foundry_evm::trace::CallTraceArena;
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
 

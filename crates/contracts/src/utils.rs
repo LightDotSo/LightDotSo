@@ -27,16 +27,20 @@
 #![allow(unused_doc_comments)]
 
 use crate::entrypoint::EntryPoint::{ExecutionResult, FailedOp};
-use alloy::{sol, sol_types::SolError};
-use ethers::{contract::ContractError, providers::Middleware, types::Bytes};
+use alloy::{
+    primitives::Bytes,
+    providers::Provider,
+    sol,
+    sol_types::{ContractError, SolError},
+};
 
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.
 /// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L31-37
 /// License: GNU Lesser General Public License v3.0
-pub fn get_revert_bytes<M: Middleware>(error: ContractError<M>) -> Result<Bytes, ContractError<M>> {
-    if let ContractError::Revert(bytes) = error {
-        Ok(bytes)
+pub fn get_revert_bytes<M: Provider>(error: ContractError<M>) -> Result<Bytes, ContractError<M>> {
+    if let ContractError::Revert(revert) = error {
+        Ok(Bytes::from(revert.reason().as_bytes().to_vec()))
     } else {
         Err(error)
     }

@@ -11,7 +11,6 @@
 [dependencies]
   async-trait = { workspace = true }
   clap = { workspace = true }
-  ethers-main = { workspace = true }
   eyre = { workspace = true }
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }

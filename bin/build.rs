@@ -13,15 +13,15 @@
 // limitations under the License.
 
 use std::error::Error;
-use vergen::EmitBuilder;
+use vergen::BuildBuilder;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // Emit the instructions
-    EmitBuilder::builder()
-        .git_sha(true)
-        .build_timestamp()
-        .cargo_features()
-        .cargo_target_triple()
-        .emit()?;
+    BuildBuilder::default()
+        // .git_sha(true)
+        .build_timestamp(true);
+    // .cargo_features()
+    // .cargo_target_triple()
+    // .emit()?;
     Ok(())
 }

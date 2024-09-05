@@ -16,15 +16,7 @@
 // License: MIT
 
 use crate::types::CallRawResult;
-use ethers_main::{
-    abi::{Address, Uint},
-    types::Bytes,
-};
 use eyre::{eyre, Result};
-use foundry_evm::{
-    executor::{fork::CreateFork, opts::EvmOpts, Backend, Executor, ExecutorBuilder},
-    trace::{identifier::SignaturesIdentifier, CallTraceDecoderBuilder},
-};
 use revm::primitives::Env;
 
 pub struct Evm {

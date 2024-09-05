@@ -26,7 +26,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::GethTrace;
+use alloy::rpc::types::trace::geth::GethTrace;
 use eyre::format_err;
 use serde::Deserialize;
 
@@ -63,9 +63,9 @@ impl TryFrom<GethTrace> for ExecutorTracerResult {
     type Error = eyre::Error;
     fn try_from(val: GethTrace) -> Result<Self, Self::Error> {
         match val {
-            GethTrace::Known(val) => Err(format_err!("Invalid geth trace: {val:?}")),
-            GethTrace::Unknown(val) => serde_json::from_value(val.clone())
-                .map_err(|error| format_err!("Failed to parse geth trace: {error}, {val:#}")),
+            GethTrace::Default(val) => serde_json::from_slice(&val.return_value)
+                .map_err(|error| format_err!("Failed to parse geth trace: {error}, {val:#?}")),
+            _ => Err(format_err!("Invalid geth trace: {val:?}")),
         }
     }
 }
