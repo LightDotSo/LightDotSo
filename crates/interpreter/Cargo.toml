@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   async-trait = { workspace = true }
   clap = { workspace = true }
   eyre = { workspace = true }
@@ -20,6 +21,7 @@
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }
+  revm-inspectors = { workspace = true }
   serde = { workspace = true }
   strum = { workspace = true }
   strum_macros = { workspace = true }

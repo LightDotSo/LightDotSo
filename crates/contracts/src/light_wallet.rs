@@ -28,7 +28,7 @@ pub async fn get_light_wallet(
     wallet_address: Address,
 ) -> Result<LightWalletInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await?;
+    let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
     let contract = LightWallet::new(wallet_address, provider);

@@ -91,6 +91,7 @@
   eyre = "0.6.8"
   foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "3f15f9a83377daac583ff87f900cb6d86ee4499f", package = "foundry-config" }
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "3f15f9a83377daac583ff87f900cb6d86ee4499f", package = "foundry-evm" }
+  foundry-evm-traces = { git = "https://github.com/foundry-rs/foundry", rev = "3f15f9a83377daac583ff87f900cb6d86ee4499f", package = "foundry-evm-traces" }
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "1"
@@ -176,8 +177,8 @@
     "stream",
   ], default-features = false }
   reth-rpc-types = { git = "https://github.com/paradigmxyz/reth", rev = "98b214f63dcbe11a357ec85532306c3756552eba", package = "reth-rpc-types" }
-  revm = { git = "https://github.com/bluealloy/revm", rev = "d38ff452714e1c4a17cf0fbdaa4913f6d61033c4", default-features = false }
-  revm-primitives = { git = "https://github.com/bluealloy/revm", rev = "d38ff452714e1c4a17cf0fbdaa4913f6d61033c4", default-features = false }
+  revm = { git = "https://github.com/bluealloy/revm", rev = "caadc71", default-features = false }
+  revm-primitives = { git = "https://github.com/bluealloy/revm", rev = "caadc71", default-features = false }
   revm-inspectors = { version = "0.5", features = ["serde"] }
   rustc-hex = "2.1.0"
   serde = "1.0.183"

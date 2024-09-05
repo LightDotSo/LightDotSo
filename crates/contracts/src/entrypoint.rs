@@ -28,7 +28,7 @@ pub async fn get_entrypoint(
     entry_point_address: Address,
 ) -> Result<EntryPointInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await?;
+    let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
     let contract = EntryPoint::new(entry_point_address, provider);

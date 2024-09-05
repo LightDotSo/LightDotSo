@@ -15,48 +15,57 @@
 use crate::{
     adapter::Adapter,
     constants::{
-        InterpretationActionType, ERC1155_ABI, TRANSFER_BATCH_EVENT_TOPIC,
-        TRANSFER_SINGLE_EVENT_TOPIC,
+        InterpretationActionType, TRANSFER_BATCH_EVENT_TOPIC, TRANSFER_SINGLE_EVENT_TOPIC,
     },
     types::{
         AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
         InterpretationRequest,
     },
 };
-use async_trait::async_trait;
-use ethers_main::{
-    abi::Address,
-    contract::BaseContract,
-    types::{H160, U256},
+use alloy::{
+    primitives::{Address, Bytes, U256},
+    sol,
+    sol_types::{SolCall, SolEvent},
 };
+use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
-#[derive(Clone)]
-pub(crate) struct ERC1155Adapter {
-    abi: BaseContract,
+sol! {
+    contract ERC1155 {
+        function balanceOf(address account, uint256 id) external view returns (uint256);
+        function transferFrom(address from, address to, uint256 id, uint256 value) external;
+        function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes calldata data) external;
+        function safeBatchTransferFrom(address from, address to, uint256[] calldata ids, uint256[] calldata values) external;
+        event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value);
+        event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values);
+    }
 }
+
+#[derive(Clone)]
+pub(crate) struct ERC1155Adapter {}
 
 impl ERC1155Adapter {
     pub fn new() -> Self {
-        let erc1155_abi: BaseContract = ERC1155_ABI.clone();
-        ERC1155Adapter { abi: erc1155_abi }
+        ERC1155Adapter {}
     }
     pub async fn get_erc1155_balance(
         &self,
         evm: &mut Evm,
-        address: H160,
+        address: Address,
         token_id: U256,
-        token_address: H160,
+        token_address: Address,
     ) -> Result<U256> {
         // Encode the method and parameters to call
-        let calldata = self.abi.encode("balanceOf", (address, token_id))?;
+        let calldata = ERC1155::balanceOfCall::new((address, token_id)).abi_encode();
 
         // Call the contract method
-        let res = evm.call_raw(address, token_address, Some(0.into()), Some(calldata)).await?;
+        let res = evm
+            .call_raw(address, token_address, Some(U256::ZERO), Some(Bytes::from(calldata)))
+            .await?;
 
         // Decode the output
-        let balance: U256 = self.abi.decode_output("balanceOf", res.return_data)?;
+        let balance = ERC1155::balanceOfCall::abi_decode_returns(&res.return_data, true)?._0;
 
         // Return the balance
         Ok(balance)
@@ -67,9 +76,9 @@ impl ERC1155Adapter {
 impl Adapter for ERC1155Adapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
         request.logs.iter().any(|log| {
-            log.topics.len() == 4 &&
-                (log.topics[0] == *TRANSFER_SINGLE_EVENT_TOPIC ||
-                    log.topics[0] == *TRANSFER_BATCH_EVENT_TOPIC)
+            log.topics().len() == 4 &&
+                (log.topics()[0] == *TRANSFER_SINGLE_EVENT_TOPIC ||
+                    log.topics()[0] == *TRANSFER_BATCH_EVENT_TOPIC)
         })
     }
 
@@ -82,13 +91,15 @@ impl Adapter for ERC1155Adapter {
         let single_logs = _request
             .logs
             .iter()
-            .filter(|log| log.topics.len() == 4 && log.topics[0] == *TRANSFER_SINGLE_EVENT_TOPIC)
+            .filter(|log| {
+                log.topics().len() == 4 && log.topics()[0] == *TRANSFER_SINGLE_EVENT_TOPIC
+            })
             .collect::<Vec<_>>();
         // Get all the logs that match the transfer event
         let batch_logs = _request
             .logs
             .iter()
-            .filter(|log| log.topics.len() == 4 && log.topics[0] == *TRANSFER_BATCH_EVENT_TOPIC)
+            .filter(|log| log.topics().len() == 4 && log.topics()[0] == *TRANSFER_BATCH_EVENT_TOPIC)
             .collect::<Vec<_>>();
 
         let mut actions = Vec::new();
@@ -97,8 +108,9 @@ impl Adapter for ERC1155Adapter {
         // Iterate over the logs
         for log in single_logs {
             // Get the `from` and `to` addresses from the log
-            let (_operator, from, to, id, value): (Address, Address, Address, U256, U256) =
-                self.abi.decode_event("TransferSingle", log.clone().topics, log.clone().data)?;
+            let res = ERC1155::TransferSingle::decode_log(log, true)?;
+            let (_operator, from, to, id, value) =
+                (res.operator, res.from, res.to, res.id, res.value);
 
             // Get the asset token
             let token_address = log.address;
@@ -111,7 +123,7 @@ impl Adapter for ERC1155Adapter {
             };
 
             // Get the actions for the `from` address
-            let from_action_type = if from == Address::zero() {
+            let from_action_type = if from == Address::ZERO {
                 InterpretationActionType::ERC1155Mint
             } else {
                 InterpretationActionType::ERC1155Send
@@ -121,7 +133,7 @@ impl Adapter for ERC1155Adapter {
                 InterpretationAction { action_type: from_action_type, address: Some(from) };
 
             // Get the actions for the `to` address
-            let to_action_type = if to == Address::zero() {
+            let to_action_type = if to == Address::ZERO {
                 InterpretationActionType::ERC1155Burn
             } else {
                 InterpretationActionType::ERC1155Receive
@@ -185,13 +197,9 @@ impl Adapter for ERC1155Adapter {
         // Iterate over the logs
         for log in batch_logs {
             // Get the `from` and `to` addresses from the log
-            let (_operator, from, to, ids, values): (
-                Address,
-                Address,
-                Address,
-                Vec<U256>,
-                Vec<U256>,
-            ) = self.abi.decode_event("TransferBatch", log.clone().topics, log.clone().data)?;
+            let res = ERC1155::TransferBatch::decode_log(log, true)?;
+            let (_operator, from, to, ids, values) =
+                (res.operator, res.from, res.to, res.ids.clone(), res.values.clone());
 
             // Get the asset token
             let token_address = log.address;
@@ -204,7 +212,7 @@ impl Adapter for ERC1155Adapter {
             };
 
             // Get the actions for the `from` address
-            let from_action_type = if from == Address::zero() {
+            let from_action_type = if from == Address::ZERO {
                 InterpretationActionType::ERC1155Mint
             } else {
                 InterpretationActionType::ERC1155Send
@@ -215,7 +223,7 @@ impl Adapter for ERC1155Adapter {
                 InterpretationAction { action_type: from_action_type, address: Some(from) };
 
             // Get the actions for the `to` address
-            let to_action_type = if to == Address::zero() {
+            let to_action_type = if to == Address::ZERO {
                 InterpretationActionType::ERC1155Burn
             } else {
                 InterpretationActionType::ERC1155Receive

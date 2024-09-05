@@ -18,15 +18,9 @@
 use crate::{
     adapter::Adapter,
     adapters::ADAPTERS,
-    config::InterpreterArgs,
     types::{AdapterResponse, CallTrace, InterpretationRequest, InterpretationResponse},
 };
 use eyre::{eyre, Result};
-use foundry_config::Chain;
-use foundry_evm::trace::{
-    identifier::{EtherscanIdentifier, SignaturesIdentifier},
-    CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
-};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_simulator::{
     evm::Evm,
@@ -37,35 +31,18 @@ use revm::interpreter::InstructionResult;
 
 pub struct Interpreter<'a> {
     adapters: &'a [Box<dyn Adapter + Sync + Send>],
-    decoder: CallTraceDecoder,
-    etherscan_identifier: Option<EtherscanIdentifier>,
 }
 
 impl Interpreter<'_> {
-    pub async fn new(args: &InterpreterArgs, chain_id: u64) -> Self {
-        let foundry_config = foundry_config::Config {
-            etherscan_api_key: args.clone().etherscan_key,
-            ..Default::default()
-        };
-
-        let chain: Chain = chain_id.into();
-        let etherscan_identifier = EtherscanIdentifier::new(&foundry_config, Some(chain)).ok();
-        let mut decoder = CallTraceDecoderBuilder::new().with_verbosity(5).build();
-
-        if let Ok(identifier) =
-            SignaturesIdentifier::new(foundry_config::Config::foundry_cache_dir(), false)
-        {
-            decoder.add_signature_identifier(identifier);
-        }
-
+    pub async fn new() -> Self {
         let adapters = &ADAPTERS[..];
 
-        Interpreter { decoder, etherscan_identifier, adapters }
+        Interpreter { adapters }
     }
 
     pub async fn interpret(&self, request: InterpretationRequest) -> Result<Vec<AdapterResponse>> {
-        let fork_url = get_provider(request.chain_id).await?.url().to_string();
-        let mut evm = Evm::new(None, fork_url, request.block_number, request.gas_limit, true).await;
+        let (_, fork_url) = get_provider(request.chain_id).await?;
+        let mut evm = Evm::new(None, fork_url, request.block_number, request.gas_limit).await?;
         let mut response = vec![];
 
         for adapter in self.adapters {
@@ -76,18 +53,6 @@ impl Interpreter<'_> {
         }
 
         Ok(response)
-    }
-
-    pub async fn format_trace(&mut self, traces: Option<CallTraceArena>) -> Result<String> {
-        let mut output = String::new();
-        for trace in &mut traces.clone() {
-            if let Some(identifier) = &mut self.etherscan_identifier {
-                self.decoder.identify(trace, identifier);
-            }
-            self.decoder.decode(trace).await;
-            output.push_str(format!("{trace}").as_str());
-        }
-        Ok(output)
     }
 
     pub async fn run_with_interpret(
@@ -123,12 +88,15 @@ impl Interpreter<'_> {
         // Simulate the user operation
         let res = simulate(request.clone()).await?;
 
-        // Run the interpreter
-        let _format_trace = self.format_trace(res.arena.clone()).await?;
-
         // Get the traces
-        let traces: Vec<CallTrace> =
-            res.clone().arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+        let traces: Vec<CallTrace> = res
+            .clone()
+            .arena
+            .unwrap_or_default()
+            .nodes()
+            .iter()
+            .map(|node| CallTrace::from(node.clone()))
+            .collect();
 
         // Construct the interpretation request
         let req = InterpretationRequest {
@@ -138,7 +106,7 @@ impl Interpreter<'_> {
             to: Some(request.to),
             chain_id: request.chain_id,
             call_data: request.data,
-            value: request.value,
+            value: Some(request.value.try_into().unwrap_or_default()),
             traces: traces.clone(),
             logs: res.clone().logs,
         };
@@ -181,17 +149,14 @@ impl Interpreter<'_> {
             let req =
                 requests.get(idx).ok_or(eyre!("No matching request for simulation result"))?;
 
-            // Run the formatter
-            let _format_trace = self.format_trace(res.arena.clone()).await?;
-
             // Get the traces
             let traces: Vec<CallTrace> = res
                 .clone()
                 .arena
                 .unwrap_or_default()
-                .arena
-                .into_iter()
-                .map(CallTrace::from)
+                .nodes()
+                .iter()
+                .map(|node| CallTrace::from(node.clone()))
                 .collect();
 
             // Construct the interpretation request
@@ -202,7 +167,7 @@ impl Interpreter<'_> {
                 to: Some(req.to),
                 chain_id: req.chain_id,
                 call_data: req.data.clone(),
-                value: req.value,
+                value: Some(req.value.try_into().unwrap_or_default()),
                 traces: traces.clone(),
                 logs: res.clone().logs,
             };

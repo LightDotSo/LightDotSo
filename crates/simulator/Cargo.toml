@@ -15,8 +15,10 @@
   foundry-evm = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  reqwest = { workspace = true }
   revm = { workspace = true }
   serde = { workspace = true }
 
 [dev-dependencies]
+  alloy = { workspace = true }
   tokio = { workspace = true }

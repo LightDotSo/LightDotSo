@@ -37,7 +37,7 @@ impl GasApi {
         }
 
         // Setup a new ethers provider
-        let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+        let (client, _) = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
 
         // Get the gas price from the client
         let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;

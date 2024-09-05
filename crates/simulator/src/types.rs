@@ -12,23 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::{
+    primitives::{Address, Bytes, Log, U256},
+    sol,
+    sol_types::{Error, SolCall},
+};
 use eyre::{eyre, Result};
+use foundry_evm::traces::CallTraceArena;
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
 
-abigen!(
-    LightWalletFactory,
-    r#"[
-        createAccount(bytes32 hash, bytes32 salt)
-    ]"#,
+sol!(
+    interface LightWalletFactory {
+        function createAccount(bytes32 hash, bytes32 salt) external returns (address);
+    }
 );
 
-abigen!(
-    LightWallet,
-    r#"[
-        execute(address dest, uint256 value, bytes calldata func)
-        executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)
-    ]"#,
+sol!(
+    interface LightWallet {
+        function execute(address dest, uint256 value, bytes calldata func) external returns (bytes);
+        function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external returns (bytes[]);
+    }
 );
 
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
@@ -47,7 +51,7 @@ pub struct SimulationRequest {
     /// Gas limit of the transaction
     pub gas_limit: u64,
     /// Value to send
-    pub value: Option<u64>,
+    pub value: U256,
     /// Block number of the request
     pub block_number: Option<u64>,
 }
@@ -142,8 +146,11 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
                 // Try decoding for `createAccount`
                 // Omit the first 20 bytes (the address of the contract)
                 let factory_addr = Address::from_slice(&init_code.0[..20]);
-                let res: Result<CreateAccountCall, AbiError> =
-                    CreateAccountCall::decode(&init_code.0.slice(20..));
+                let res: Result<LightWalletFactory::createAccountCall, Error> =
+                    LightWalletFactory::createAccountCall::abi_decode(
+                        &init_code.0.slice(20..),
+                        true,
+                    );
 
                 if res.is_ok() {
                     requests.push(SimulationRequest {
@@ -152,7 +159,7 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
                         to: factory_addr,
                         data: Some(init_code),
                         gas_limit: u64::MAX,
-                        value: None,
+                        value: U256::ZERO,
                         block_number: None,
                     });
                 }
@@ -161,7 +168,8 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
 
         if let Some(call_data) = params.clone().call_data {
             // Try decoding for `execute`
-            let res: Result<ExecuteCall, AbiError> = ExecuteCall::decode(&call_data);
+            let res: Result<LightWallet::executeCall, Error> =
+                LightWallet::executeCall::abi_decode(&call_data, true);
 
             if let Ok(decoded) = res {
                 requests.push(SimulationRequest {
@@ -170,7 +178,7 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
                     to: decoded.dest,
                     data: Some(decoded.func.0.into()),
                     gas_limit: u64::MAX,
-                    value: Some(decoded.value.low_u64()),
+                    value: decoded.value,
                     block_number: None,
                 });
             }
@@ -178,7 +186,8 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
 
         if let Some(call_data) = params.clone().call_data {
             // Try decoding for `executeBatch`
-            let res: Result<ExecuteBatchCall, AbiError> = ExecuteBatchCall::decode(&call_data);
+            let res: Result<LightWallet::executeBatchCall, Error> =
+                LightWallet::executeBatchCall::abi_decode(&call_data, true);
 
             if let Ok(decoded) = res {
                 for ((dest, value), func) in
@@ -190,7 +199,7 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
                         to: dest,
                         data: Some(func.0.into()),
                         gas_limit: u64::MAX,
-                        value: Some(value.low_u64()),
+                        value,
                         block_number: None,
                     });
                 }
@@ -216,8 +225,8 @@ impl From<UserOperationRequest> for SimulationRequest {
             from: uo.sender,
             to: uo.entrypoint.unwrap_or_default(),
             data: uo.call_data,
-            gas_limit: uo.call_gas_limit.unwrap_or_default().low_u64(),
-            value: None,
+            gas_limit: uo.call_gas_limit.unwrap_or_default().try_into().unwrap_or_default(),
+            value: U256::ZERO,
             block_number: uo.block_number,
         }
     }

@@ -16,7 +16,15 @@
 // License: MIT
 
 use crate::types::CallRawResult;
+use alloy::primitives::{Address, Bytes, Uint, U256};
 use eyre::{eyre, Result};
+use foundry_evm::{
+    backend::Backend,
+    executors::{Executor, ExecutorBuilder},
+    fork::CreateFork,
+    opts::EvmOpts,
+    traces::TraceMode,
+};
 use revm::primitives::Env;
 
 pub struct Evm {
@@ -29,12 +37,11 @@ impl Evm {
         fork_url: String,
         fork_block_number: Option<u64>,
         gas_limit: u64,
-        tracing: bool,
-    ) -> Self {
+    ) -> Result<Self> {
         let evm_opts = EvmOpts {
             fork_url: Some(fork_url.clone()),
             fork_block_number,
-            env: foundry_evm::executor::opts::Env {
+            env: foundry_evm::opts::Env {
                 chain_id: None,
                 code_size_limit: None,
                 gas_price: Some(0),
@@ -45,47 +52,31 @@ impl Evm {
             ..Default::default()
         };
 
-        let fork_opts = CreateFork {
-            url: fork_url,
-            enable_caching: true,
-            env: evm_opts.local_evm_env(),
-            evm_opts,
-        };
+        let fork_env = evm_opts.fork_evm_env(fork_url.clone()).await?.0;
+
+        let fork_opts = CreateFork { url: fork_url, enable_caching: true, env: fork_env, evm_opts };
 
         let db = Backend::spawn(Some(fork_opts.clone()));
 
-        let mut builder =
-            ExecutorBuilder::default().with_gas_limit(gas_limit.into()).set_tracing(tracing);
+        let builder = ExecutorBuilder::default()
+            .gas_limit(gas_limit)
+            .inspectors(|stack| stack.trace_mode(TraceMode::Debug));
 
-        if let Some(env) = env {
-            builder = builder.with_config(env);
-        } else {
-            builder = builder.with_config(fork_opts.env.clone());
-        }
+        let executor = builder.build(env.unwrap_or(fork_opts.env.clone()), db);
 
-        let executor = builder.build(db.await);
-
-        let mut decoder = CallTraceDecoderBuilder::new().with_verbosity(5).build();
-
-        if let Ok(identifier) =
-            SignaturesIdentifier::new(foundry_config::Config::foundry_cache_dir(), false)
-        {
-            decoder.add_signature_identifier(identifier);
-        }
-
-        Evm { executor }
+        Ok(Evm { executor })
     }
 
     pub async fn call_raw(
         &mut self,
         from: Address,
         to: Address,
-        value: Option<Uint>,
+        value: Option<U256>,
         data: Option<Bytes>,
     ) -> Result<CallRawResult> {
         let res = self
             .executor
-            .call_raw(from, to, data.unwrap_or_default().0, value.unwrap_or_default())
+            .call_raw(from, to, data.unwrap_or_default(), value.unwrap_or_default())
             .map_err(|err| {
                 dbg!(&err);
                 eyre!(err)
@@ -95,10 +86,10 @@ impl Evm {
             gas_used: res.gas_used,
             block_number: res.env.block.number.to(),
             success: !res.reverted,
-            trace: res.traces,
+            trace: res.traces.map(|trace| trace.arena),
             logs: res.logs,
             exit_reason: res.exit_reason,
-            return_data: Bytes(res.result),
+            return_data: res.result,
         })
     }
 
@@ -106,14 +97,14 @@ impl Evm {
         &mut self,
         from: Address,
         to: Address,
-        value: Option<Uint>,
+        value: Option<U256>,
         data: Option<Bytes>,
         gas_limit: u64,
     ) -> Result<CallRawResult> {
-        self.executor.set_gas_limit(gas_limit.into());
+        self.executor.set_gas_limit(gas_limit);
         let res = self
             .executor
-            .call_raw_committing(from, to, data.unwrap_or_default().0, value.unwrap_or_default())
+            .transact_raw(from, to, data.unwrap_or_default(), value.unwrap_or_default())
             .map_err(|err| {
                 dbg!(&err);
                 eyre!(err)
@@ -123,14 +114,14 @@ impl Evm {
             gas_used: res.gas_used,
             block_number: res.env.block.number.to(),
             success: !res.reverted,
-            trace: res.traces,
+            trace: res.traces.map(|trace| trace.arena),
             logs: res.logs,
             exit_reason: res.exit_reason,
-            return_data: Bytes(res.result),
+            return_data: res.result,
         })
     }
 
-    pub async fn get_balance(&self, address: Address) -> Result<Uint> {
+    pub async fn get_balance(&self, address: Address) -> Result<U256> {
         let balance = self.executor.get_balance(address).map_err(|err| {
             dbg!(&err);
             eyre!(err)
@@ -140,24 +131,24 @@ impl Evm {
     }
 
     pub async fn set_block(&mut self, number: u64) -> Result<()> {
-        self.executor.env_mut().block.number = Uint::from(number).into();
+        self.executor.env_mut().block.number = U256::from(number);
         Ok(())
     }
 
-    pub fn get_block(&self) -> Uint {
-        self.executor.env().block.number.into()
+    pub fn get_block(&self) -> U256 {
+        self.executor.env().block.number
     }
 
     pub async fn set_block_timestamp(&mut self, timestamp: u64) -> Result<()> {
-        self.executor.env_mut().block.timestamp = Uint::from(timestamp).into();
+        self.executor.env_mut().block.timestamp = Uint::from(timestamp);
         Ok(())
     }
 
-    pub fn get_block_timestamp(&self) -> Uint {
-        self.executor.env().block.timestamp.into()
+    pub fn get_block_timestamp(&self) -> U256 {
+        self.executor.env().block.timestamp
     }
 
-    pub fn get_chain_id(&self) -> Uint {
-        self.executor.env().cfg.chain_id.into()
+    pub fn get_chain_id(&self) -> U256 {
+        U256::from(self.executor.env().cfg.chain_id)
     }
 }

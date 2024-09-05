@@ -160,7 +160,7 @@ impl Indexer {
         self.chain_id = chain_id;
 
         // Get the http_client for the rpc
-        let http_client = get_provider(chain_id)
+        let (http_client, _) = get_provider(chain_id)
             .await
             .map_err(|_| ProviderError::CustomError("Failed to get provider".to_string()))?;
         self.http_client = Some(Arc::new(http_client));
@@ -180,7 +180,7 @@ impl Indexer {
         self.chain_id = chain_id;
 
         // Get the http_client for the rpc
-        let http_client = get_provider(chain_id).await?;
+        let (http_client, _) = get_provider(chain_id).await?;
         self.http_client = Some(Arc::new(http_client));
 
         // Index the block

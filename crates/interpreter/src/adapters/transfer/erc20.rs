@@ -14,47 +14,54 @@
 
 use crate::{
     adapter::Adapter,
-    constants::{InterpretationActionType, ERC20_ABI, TRANSFER_EVENT_TOPIC},
+    constants::{InterpretationActionType, TRANSFER_EVENT_TOPIC},
     types::{
         AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
         InterpretationRequest,
     },
 };
-use async_trait::async_trait;
-use ethers_main::{
-    abi::Address,
-    contract::BaseContract,
-    types::{H160, U256},
+use alloy::{
+    primitives::Bytes,
+    sol,
+    sol_types::{SolCall, SolEvent},
 };
+use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 use lightdotso_tracing::tracing::info;
+use revm::primitives::{Address, U256};
+
+sol! {
+    contract ERC20 {
+        function balanceOf(address) external view returns (uint256);
+        event Transfer(address indexed from, address indexed to, uint256 value);
+    }
+}
 
 #[derive(Clone)]
-pub(crate) struct ERC20Adapter {
-    abi: BaseContract,
-}
+pub(crate) struct ERC20Adapter {}
 
 impl ERC20Adapter {
     pub fn new() -> Self {
-        let erc20_abi: BaseContract = ERC20_ABI.clone();
-        ERC20Adapter { abi: erc20_abi }
+        ERC20Adapter {}
     }
 
     pub async fn get_erc20_balance(
         &self,
         evm: &mut Evm,
-        address: H160,
-        token_address: H160,
+        address: Address,
+        token_address: Address,
     ) -> Result<U256> {
         // Encode the method and parameters to call
-        let calldata = self.abi.encode("balanceOf", address)?;
+        let calldata = ERC20::balanceOfCall::new((address,)).abi_encode();
 
         // Call the contract method
-        let res = evm.call_raw(address, token_address, Some(0.into()), Some(calldata)).await?;
+        let res = evm
+            .call_raw(address, token_address, Some(U256::ZERO), Some(Bytes::from(calldata)))
+            .await?;
 
         // Decode the output
-        let balance: U256 = self.abi.decode_output("balanceOf", res.return_data)?;
+        let balance = ERC20::balanceOfCall::abi_decode_returns(&res.return_data, true)?._0;
 
         // Return the balance
         Ok(balance)
@@ -67,7 +74,7 @@ impl Adapter for ERC20Adapter {
         request
             .logs
             .iter()
-            .any(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
+            .any(|log| log.topics().len() == 3 && log.topics()[0] == *TRANSFER_EVENT_TOPIC)
     }
     async fn query(
         &self,
@@ -78,7 +85,7 @@ impl Adapter for ERC20Adapter {
         let logs = request
             .logs
             .iter()
-            .filter(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
+            .filter(|log| log.topics().len() == 3 && log.topics()[0] == *TRANSFER_EVENT_TOPIC)
             .collect::<Vec<_>>();
         info!("logs: {:?}", logs);
 
@@ -88,8 +95,8 @@ impl Adapter for ERC20Adapter {
         // Iterate over all of the logs
         for log in logs {
             // Get the `from` and `to` addresses from the log
-            let (from, to, value): (Address, Address, U256) =
-                self.abi.decode_event("Transfer", log.clone().topics, log.clone().data)?;
+            let res = ERC20::Transfer::decode_log(log, true)?;
+            let (from, to, value) = (res.from, res.to, res.value);
 
             // Get the token address from the log
             let token_address = log.address;

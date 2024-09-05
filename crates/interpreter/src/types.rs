@@ -13,12 +13,9 @@
 // limitations under the License.
 
 use crate::constants::InterpretationActionType;
-use ethers_main::{
-    abi::{Address, Uint},
-    types::{Bytes, Log},
-};
-use foundry_evm::{trace::node::CallTraceNode, CallKind};
-use revm::interpreter::InstructionResult;
+use alloy::primitives::{Address, Bytes, Log};
+use revm::{interpreter::InstructionResult, primitives::U256};
+use revm_inspectors::tracing::types::{CallKind, CallTraceNode};
 use serde::{Deserialize, Serialize};
 
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
@@ -121,11 +118,11 @@ pub struct AssetChange {
     /// Address of the asset holder
     pub address: Address,
     /// Amount of the asset before the transaction
-    pub before_amount: Option<Uint>,
+    pub before_amount: Option<U256>,
     /// Amount of the asset after the transaction
-    pub after_amount: Option<Uint>,
+    pub after_amount: Option<U256>,
     /// The amount of the asset that was transferred
-    pub amount: Uint,
+    pub amount: U256,
     /// The action that was interpreted
     pub action: InterpretationAction,
     /// The token that was transferred
@@ -137,7 +134,7 @@ pub struct AssetToken {
     /// Address of the token
     pub address: Address,
     /// The optional id of the token
-    pub token_id: Option<Uint>,
+    pub token_id: Option<U256>,
     /// The type of the token
     pub token_type: AssetTokenType,
 }
@@ -163,7 +160,7 @@ pub struct CallTrace {
     /// The address of the callee
     pub to: Address,
     /// The value of the call
-    pub value: Option<Uint>,
+    pub value: Option<U256>,
 }
 
 impl From<CallTraceNode> for CallTrace {

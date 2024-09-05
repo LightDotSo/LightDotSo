@@ -19,13 +19,13 @@ use alloy::{
 use eyre::{eyre, Result};
 
 /// Returns a provider for the given chain ID w/ fallbacks
-pub async fn get_provider(chain_id: u64) -> Result<RootProvider<BoxTransport>> {
+pub async fn get_provider(chain_id: u64) -> Result<(RootProvider<BoxTransport>, String)> {
     // If env `ENVIRONMENT` is `development`, use the local anvil fork
     let internal_rpc_url = "http://localhost:8545".to_string();
     if std::env::var("ENVIRONMENT").unwrap_or_default() == "development" {
         if let Ok(provider) = ProviderBuilder::new().on_builtin(internal_rpc_url.as_str()).await {
             if provider.get_block_number().await.is_ok() {
-                return Ok(provider);
+                return Ok((provider, internal_rpc_url));
             }
         }
     }
@@ -34,7 +34,7 @@ pub async fn get_provider(chain_id: u64) -> Result<RootProvider<BoxTransport>> {
     let rpc_url_1 = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
     if let Ok(provider) = ProviderBuilder::new().on_builtin(rpc_url_1.as_str()).await {
         if provider.get_block_number().await.is_ok() {
-            return Ok(provider);
+            return Ok((provider, rpc_url_1));
         }
     }
 
@@ -42,7 +42,7 @@ pub async fn get_provider(chain_id: u64) -> Result<RootProvider<BoxTransport>> {
     let rpc_url_2 = format!("http://lightdotso-rpc.internal:3000/internal/{}", chain_id);
     if let Ok(provider) = ProviderBuilder::new().on_builtin(rpc_url_2.as_str()).await {
         if provider.get_block_number().await.is_ok() {
-            return Ok(provider);
+            return Ok((provider, rpc_url_2));
         }
     }
 
@@ -52,7 +52,7 @@ pub async fn get_provider(chain_id: u64) -> Result<RootProvider<BoxTransport>> {
         let rpc_url_2 = format!("{}/{}", protected_rpc_url, chain_id);
         if let Ok(provider) = ProviderBuilder::new().on_builtin(rpc_url_2.as_str()).await {
             if provider.get_block_number().await.is_ok() {
-                return Ok(provider);
+                return Ok((provider, rpc_url_2));
             }
         }
     }
@@ -61,7 +61,7 @@ pub async fn get_provider(chain_id: u64) -> Result<RootProvider<BoxTransport>> {
     let rpc_url_3 = format!("https://rpc.light.so/{}", chain_id);
     if let Ok(provider) = ProviderBuilder::new().on_builtin(rpc_url_3.as_str()).await {
         if provider.get_block_number().await.is_ok() {
-            return Ok(provider);
+            return Ok((provider, rpc_url_3));
         }
     }
 

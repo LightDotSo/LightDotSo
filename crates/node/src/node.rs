@@ -166,7 +166,7 @@ impl Node {
         // tx.set_gas(u64::MAX);
 
         // Get provider
-        let provider = get_provider(chain_id).await?;
+        let (provider, _) = get_provider(chain_id).await?;
 
         // Get the geth trace
         let trace = provider

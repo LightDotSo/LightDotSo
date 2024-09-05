@@ -52,7 +52,7 @@ async fn test_integration_upsert_transaction_with_log_receipt() -> Result<()> {
     let db = create_test_client().await?;
 
     // Get the provider.
-    let provider = get_provider(1).await?;
+    let (provider, _) = get_provider(1).await?;
 
     // Set the tx hash.
     let tx_hash =

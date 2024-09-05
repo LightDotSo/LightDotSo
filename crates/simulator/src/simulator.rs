@@ -19,6 +19,7 @@ use crate::{
     evm::Evm,
     types::{SimulationRequest, SimulationResponse},
 };
+use alloy::providers::Provider;
 use eyre::{eyre, Result};
 use lightdotso_contracts::provider::get_provider;
 
@@ -28,7 +29,7 @@ async fn run(
     commit: bool,
 ) -> Result<SimulationResponse> {
     // Get the value
-    let value = request.value.map(Uint::from);
+    let value = Some(request.value);
 
     // Run the transaction and get the result
     let result = if commit {
@@ -54,19 +55,16 @@ async fn run(
 
 pub async fn simulate(transaction: SimulationRequest) -> Result<SimulationResponse> {
     // Get the provider
-    let provider = get_provider(transaction.chain_id).await?;
-
-    // Get the fork url
-    let fork_url = provider.url().to_string();
+    let (provider, fork_url) = get_provider(transaction.chain_id).await?;
 
     // If block number is not provided, use the latest block number
     let latest_block_number = provider.get_block_number().await?;
 
     // Get the block number
-    let block_number = transaction.block_number.unwrap_or(latest_block_number.low_u64());
+    let block_number = transaction.block_number.unwrap_or(latest_block_number);
 
     // Construct the EVM
-    let mut evm = Evm::new(None, fork_url, Some(block_number), transaction.gas_limit, true).await;
+    let mut evm = Evm::new(None, fork_url, Some(block_number), transaction.gas_limit).await?;
 
     // Run the transaction
     let response = run(&mut evm, transaction, false).await?;
@@ -83,20 +81,16 @@ pub async fn simulate_bundle(
     let first_block_number = transactions[0].block_number;
 
     // Get the provider
-    let provider = get_provider(first_chain_id).await?;
-
-    // Get the fork url
-    let fork_url = provider.url().to_string();
+    let (provider, fork_url) = get_provider(first_chain_id).await?;
 
     // If block number is not provided, use the latest block number
     let latest_block_number = provider.get_block_number().await?;
 
     // Get the block number
-    let block_number = first_block_number.unwrap_or(latest_block_number.low_u64());
+    let block_number = first_block_number.unwrap_or(latest_block_number);
 
     // Construct the EVM
-    let mut evm =
-        Evm::new(None, fork_url, Some(block_number), transactions[0].gas_limit, true).await;
+    let mut evm = Evm::new(None, fork_url, Some(block_number), transactions[0].gas_limit).await?;
 
     // Run the transactions
     let mut response = Vec::with_capacity(transactions.len());

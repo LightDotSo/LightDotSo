@@ -30,7 +30,7 @@ pub async fn get_paymaster(
     verifying_paymaster_address: Address,
 ) -> Result<LightPaymasterInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await?;
+    let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
     let contract = LightPaymaster::new(verifying_paymaster_address, provider);

@@ -28,7 +28,7 @@ pub async fn get_erc_1271_wallet(
     wallet_address: Address,
 ) -> Result<ERC1271Instance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await?;
+    let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
     let contract = ERC1271::new(wallet_address, provider);
