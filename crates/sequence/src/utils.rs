@@ -71,7 +71,7 @@ pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Addre
     let a = slice_1[0];
 
     let h160 = Address::from_slice(slice_2);
-    let b = Address::from(h160);
+    let b = h160;
 
     Ok((a, b, new_pointer))
 }

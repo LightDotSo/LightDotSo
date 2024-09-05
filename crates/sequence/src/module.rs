@@ -630,11 +630,11 @@ mod tests {
         let empty_node_sig=
             // 9u8 is an invalid signature type
             DynSolValue::Tuple(vec![
-                DynSolValue::Uint(U256::from(9u8), 256),
+                DynSolValue::Bytes(vec![9u8; 32]),
                 DynSolValue::FixedBytes(FixedBytes::from_slice(&[0u8; 32]), 32),
             ]).abi_encode_packed();
 
-        base_sig_module.set_signature(empty_node_sig.clone().into());
+        base_sig_module.set_signature(empty_node_sig.into());
 
         let expected_err = eyre!("Invalid signature flag");
 
