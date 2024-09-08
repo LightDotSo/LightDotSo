@@ -16,12 +16,12 @@ use super::types::Token;
 use crate::{
     error::RouteError, result::AppJsonResult, routes::token::error::TokenError, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{token, wallet_balance};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
@@ -72,11 +72,11 @@ pub(crate) async fn v1_token_get_handler(
     let Query(query) = get_query;
 
     info!("Get token for address: {:?}", query);
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     let parsed_wallet_address: Option<String> = match query.wallet {
-        Some(wallet) => Some(to_checksum(&(wallet.parse()?), None)),
+        Some(wallet) => Some(wallet.parse::<Address>()?.to_checksum(None)),
         None => None,
     };
 

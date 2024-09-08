@@ -21,8 +21,8 @@ use crate::{
     sessions::update_session_expiry,
     state::AppState,
 };
+use alloy::{primitives::Address, signers::Signature};
 use axum::{extract::State, Json};
-use ethers_main::{abi::ethereum_types::Signature, utils::to_checksum};
 use eyre::eyre;
 use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::{error, info};
@@ -109,7 +109,7 @@ pub(crate) async fn v1_auth_verify_handler(
     // Verify the signed message
     match message
         .verify(
-            signature.as_ref(),
+            &signature.as_bytes(),
             &VerificationOpts { nonce: Some(session_nonce.clone()), ..Default::default() },
         )
         .await
@@ -130,8 +130,8 @@ pub(crate) async fn v1_auth_verify_handler(
         .client
         .user()
         .upsert(
-            user::address::equals(to_checksum(&message.address.into(), None)),
-            user::create(to_checksum(&message.address.into(), None), vec![]),
+            user::address::equals(Address::from_slice(&message.address).to_checksum(None)),
+            user::create(Address::from_slice(&message.address).to_checksum(None), vec![]),
             vec![],
         )
         .exec()

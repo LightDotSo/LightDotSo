@@ -219,7 +219,7 @@ pub(crate) async fn v1_wallet_create_handler(
         let wallet = state
             .client
             .wallet()
-            .find_first(vec![wallet::address::equals(to_checksum(&new_wallet_address, None))])
+            .find_first(vec![wallet::address::equals(new_wallet_address.to_checksum(None))])
             .exec()
             .await?;
 
@@ -231,8 +231,8 @@ pub(crate) async fn v1_wallet_create_handler(
         return Ok(Json::from(Wallet {
             name: "".to_string(),
             salt: format!("{:?}", salt_bytes),
-            address: to_checksum(&new_wallet_address, None),
-            factory_address: to_checksum(&factory_address, None),
+            address: new_wallet_address.to_checksum(None),
+            factory_address: factory_address.to_checksum(None),
         }));
     }
 
@@ -274,7 +274,7 @@ pub(crate) async fn v1_wallet_create_handler(
                 .iter()
                 .map(|owner| {
                     lightdotso_prisma::user::create_unchecked(
-                        to_checksum(&owner.address.parse::<Address>().unwrap(), None),
+                        owner.address.parse::<Address>().unwrap().to_checksum(None),
                         vec![],
                     )
                 })
@@ -293,7 +293,7 @@ pub(crate) async fn v1_wallet_create_handler(
             let configuration_data = client
                 .configuration()
                 .create(
-                    to_checksum(&new_wallet_address, None),
+                    new_wallet_address.to_checksum(None),
                     // Checkpoint is 0, as it is the first checkpoint.
                     0,
                     format!("{:?}", image_hash_bytes),
@@ -308,7 +308,7 @@ pub(crate) async fn v1_wallet_create_handler(
             let user_data = client
                 .user()
                 .find_many(vec![lightdotso_prisma::user::address::in_vec(
-                    owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
+                    owners_addresses.iter().map(|addr| addr.to_checksum(None)).collect(),
                 )])
                 .exec()
                 .await?;
@@ -323,7 +323,7 @@ pub(crate) async fn v1_wallet_create_handler(
                         .enumerate()
                         .map(|(index, owner)| {
                             lightdotso_prisma::owner::create_unchecked(
-                                to_checksum(&owner.address.parse::<Address>().unwrap(), None),
+                                owner.address.parse::<Address>().unwrap().to_checksum(None),
                                 owner.weight.into(),
                                 index as i32,
                                 configuration_data.clone().id,
@@ -332,10 +332,11 @@ pub(crate) async fn v1_wallet_create_handler(
                                         .iter()
                                         .find(|user| {
                                             user.address ==
-                                                to_checksum(
-                                                    &owner.address.parse::<Address>().unwrap(),
-                                                    None,
-                                                )
+                                                owner
+                                                    .address
+                                                    .parse::<Address>()
+                                                    .unwrap()
+                                                    .to_checksum(None)
                                         })
                                         .unwrap()
                                         .id
@@ -353,9 +354,9 @@ pub(crate) async fn v1_wallet_create_handler(
             let wallet = client
                 .wallet()
                 .create(
-                    to_checksum(&new_wallet_address, None),
+                    new_wallet_address.to_checksum(None),
                     format!("{:?}", salt_bytes),
-                    to_checksum(&factory_address, None),
+                    factory_address.to_checksum(None),
                     vec![
                         lightdotso_prisma::wallet::name::set(name),
                         lightdotso_prisma::wallet::configurations::connect(vec![

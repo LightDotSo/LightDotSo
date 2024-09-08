@@ -15,12 +15,12 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use alloy::primitives::B256;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::types::H256;
 use lightdotso_kafka::{topics::node::produce_node_message, types::node::NodeMessage};
 use lightdotso_prisma::{configuration, signature, user_operation, user_operation_merkle};
 use lightdotso_redis::query::node::node_rate_limit;
@@ -70,7 +70,7 @@ pub(crate) async fn v1_queue_node_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_query_hash: H256 = query.hash.parse()?;
+    let parsed_query_hash: B256 = query.hash.parse()?;
     let full_op_hash = format!("{:?}", parsed_query_hash);
 
     info!("parsed_query_hash: {:?}", parsed_query_hash);

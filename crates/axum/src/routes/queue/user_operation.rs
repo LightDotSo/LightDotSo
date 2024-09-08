@@ -13,12 +13,12 @@
 // limitations under the License.
 
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use alloy::primitives::B256;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::types::H256;
 use lightdotso_kafka::{
     topics::user_operation::produce_user_operation_message,
     types::user_operation::UserOperationMessage,
@@ -70,7 +70,7 @@ pub(crate) async fn v1_queue_user_operation_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_query_hash: H256 = query.hash.parse()?;
+    let parsed_query_hash: B256 = query.hash.parse()?;
     let full_op_hash = format!("{:?}", parsed_query_hash);
 
     // -------------------------------------------------------------------------

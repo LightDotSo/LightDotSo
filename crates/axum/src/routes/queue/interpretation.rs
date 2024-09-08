@@ -17,12 +17,12 @@ use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
 };
+use alloy::primitives::B256;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::types::H256;
 use lightdotso_kafka::{
     topics::interpretation::produce_interpretation_message,
     types::interpretation::InterpretationMessage,
@@ -75,9 +75,9 @@ pub(crate) async fn v1_queue_interpretation_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_transaction_hash: Option<H256> =
+    let parsed_transaction_hash: Option<B256> =
         query.transaction_hash.map_or(Ok(None), |hash| hash.parse().map(Some))?;
-    let parsed_user_operation_hash: Option<H256> =
+    let parsed_user_operation_hash: Option<B256> =
         query.user_operation_hash.map_or(Ok(None), |hash| hash.parse().map(Some))?;
 
     // -------------------------------------------------------------------------

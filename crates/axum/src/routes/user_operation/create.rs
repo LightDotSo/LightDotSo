@@ -20,7 +20,10 @@ use crate::{
     routes::signature::create::SignatureCreateParams,
     state::AppState,
 };
-use alloy::{hex, primitives::Address};
+use alloy::{
+    hex,
+    primitives::{Address, U256},
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -162,14 +165,14 @@ impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
     fn try_from(op: UserOperationCreateParams) -> Result<Self> {
         Ok(BaseUserOperation {
             sender: op.sender.parse()?,
-            nonce: op.nonce.into(),
+            nonce: U256::from(op.nonce),
             init_code: hex_to_bytes(&op.init_code)?.into(),
             call_data: hex_to_bytes(&op.call_data)?.into(),
-            call_gas_limit: op.call_gas_limit.into(),
-            verification_gas_limit: op.verification_gas_limit.into(),
-            pre_verification_gas: op.pre_verification_gas.into(),
-            max_fee_per_gas: op.max_fee_per_gas.into(),
-            max_priority_fee_per_gas: op.max_priority_fee_per_gas.into(),
+            call_gas_limit: U256::from(op.call_gas_limit),
+            verification_gas_limit: U256::from(op.verification_gas_limit),
+            pre_verification_gas: U256::from(op.pre_verification_gas),
+            max_fee_per_gas: U256::from(op.max_fee_per_gas),
+            max_priority_fee_per_gas: U256::from(op.max_priority_fee_per_gas),
             paymaster_and_data: hex_to_bytes(&op.paymaster_and_data)?.into(),
             signature: vec![].into(),
         })
@@ -292,10 +295,13 @@ pub(crate) async fn v1_user_operation_create_handler(
     };
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
-            recovered_sig.address, owner.address
+            recovered_sig.address.to_checksum(None),
+            owner.address.parse::<Address>()?.to_checksum(None)
         );
         return Err(AppError::BadRequest);
     }
@@ -365,11 +371,11 @@ pub(crate) async fn v1_user_operation_create_handler(
                 .paymaster()
                 .upsert(
                     paymaster::address_chain_id(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain_id,
                     ),
                     paymaster::create(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain::id::equals(chain_id),
                         vec![],
                     ),
@@ -423,7 +429,7 @@ pub(crate) async fn v1_user_operation_create_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
@@ -699,7 +705,9 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     };
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
             recovered_sig.address, owner.address
@@ -715,7 +723,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let wallet = state
         .client
         .wallet()
-        .find_unique(wallet::address::equals(to_checksum(&sender_address, None)))
+        .find_unique(wallet::address::equals(sender_address.to_checksum(None)))
         .exec()
         .await?;
     info!(?wallet);
@@ -724,10 +732,10 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
     // If the wallet address is not equal to user operation sender, return a 400.
-    if wallet.address != to_checksum(&sender_address, None) {
+    if wallet.address != sender_address.to_checksum(None) {
         error!(
             "user_operation.sender: {}, wallet.address: {}",
-            to_checksum(&sender_address, None),
+            sender_address.to_checksum(None),
             wallet.address
         );
         return Err(AppError::BadRequest);
@@ -737,7 +745,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let configuration = state
         .client
         .configuration()
-        .find_first(vec![configuration::address::equals(to_checksum(&sender_address, None))])
+        .find_first(vec![configuration::address::equals(sender_address.to_checksum(None))])
         .order_by(configuration::checkpoint::order(Direction::Desc))
         .with(configuration::owners::fetch(vec![]))
         .exec()
@@ -797,11 +805,11 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 .paymaster()
                 .upsert(
                     paymaster::address_chain_id(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain_id,
                     ),
                     paymaster::create(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain::id::equals(chain_id),
                         vec![],
                     ),
@@ -872,7 +880,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,

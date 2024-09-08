@@ -82,7 +82,7 @@ pub(crate) async fn v1_user_get_handler(
         state
             .client
             .user()
-            .find_unique(user::address::equals(to_checksum(&addr, None)))
+            .find_unique(user::address::equals(addr.to_checksum(None)))
             .exec()
             .await?
     } else if let Some(user_id) = query.user_id {

@@ -15,12 +15,12 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use alloy::{eips::BlockNumberOrTag, primitives::B256, providers::Provider};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers::{providers::Middleware, types::H256};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_kafka::topics::transaction::produce_transaction_message;
 use lightdotso_redis::query::transaction::transaction_rate_limit;
@@ -71,7 +71,7 @@ pub(crate) async fn v1_queue_transaction_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_query_hash: H256 = query.hash.parse()?;
+    let parsed_query_hash: B256 = query.hash.parse()?;
     let full_op_hash = format!("{:?}", parsed_query_hash);
 
     // -------------------------------------------------------------------------
@@ -86,10 +86,10 @@ pub(crate) async fn v1_queue_transaction_handler(
     // Provider
     // -------------------------------------------------------------------------
 
-    let provider = get_provider(query.chain_id).await?;
+    let (provider, _) = get_provider(query.chain_id).await?;
 
     let tx = provider
-        .get_transaction(parsed_query_hash)
+        .get_transaction_by_hash(parsed_query_hash)
         .await
         .map_err(|err| RouteError::QueueError(QueueError::ProviderError(err.to_string())))?;
 
@@ -99,7 +99,7 @@ pub(crate) async fn v1_queue_transaction_handler(
 
     // Get the block.
     let block = provider
-        .get_block(tx.block_number.unwrap())
+        .get_block_by_number(BlockNumberOrTag::Number(tx.block_number.unwrap()), true)
         .await
         .map_err(|err| RouteError::QueueError(QueueError::ProviderError(err.to_string())))?;
 

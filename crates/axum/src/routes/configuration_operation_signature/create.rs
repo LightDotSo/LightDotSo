@@ -21,6 +21,7 @@ use crate::{
     routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -262,7 +263,9 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         configuration_operation_signature_owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != configuration_operation_signature_owner.address.parse()? {
+    if recovered_sig.address !=
+        configuration_operation_signature_owner.address.parse::<Address>()?
+    {
         error!(
             "recovered_sig.address: {}, configuration_operation_signature_owner.address: {}",
             recovered_sig.address, configuration_operation_signature_owner.address

@@ -18,10 +18,10 @@ use crate::{
     routes::simulation::{error::SimulationError, types::Simulation},
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;
-use ethers_main::utils::to_checksum;
 use lightdotso_common::utils::hex_to_bytes;
 use lightdotso_db::models::{
     activity::CustomParams, interpretation::upsert_interpretation_with_actions,
@@ -142,7 +142,7 @@ pub(crate) async fn v1_simulation_create_handler(
             simulation_request_op.init_code.unwrap_or_default().to_vec(),
             simulation_request_op.call_data.unwrap_or_default().to_vec(),
             interpretation::id::equals(interpretation.id.clone()),
-            wallet::address::equals(to_checksum(&simulation_request_op.sender, None)),
+            wallet::address::equals(simulation_request_op.sender.to_checksum(None)),
             vec![],
         )
         .exec()
@@ -157,10 +157,9 @@ pub(crate) async fn v1_simulation_create_handler(
             simulation::interpretation::fetch()
                 .with(interpretation::actions::fetch(vec![
                     or![interpretation_action::address::equals("".to_string())],
-                    or![interpretation_action::address::equals(to_checksum(
-                        &simulation_request_op.sender,
-                        None
-                    ))],
+                    or![interpretation_action::address::equals(
+                        simulation_request_op.sender.to_checksum(None),
+                    )],
                 ]))
                 .with(
                     interpretation::asset_changes::fetch(vec![])

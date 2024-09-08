@@ -88,7 +88,7 @@ pub(crate) async fn v1_user_operation_nonce_handler(
         .user_operation()
         .find_first(vec![
             user_operation::chain_id::equals(chain_id),
-            user_operation::sender::equals(to_checksum(&address, None)),
+            user_operation::sender::equals(address.to_checksum(None)),
             or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted)

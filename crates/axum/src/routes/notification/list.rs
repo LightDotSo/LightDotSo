@@ -19,13 +19,13 @@ use crate::{
     sessions::get_user_id,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use ethers_main::types::H160;
 use lightdotso_prisma::{
     activity,
     notification::{self, WhereParam},
@@ -229,7 +229,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<String> {
     // Parse the address.
-    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
+    let query_address: Option<Address> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {

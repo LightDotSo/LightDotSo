@@ -78,7 +78,7 @@ pub(crate) async fn v1_user_operation_update_handler(
         .client
         .user_operation()
         .find_many(vec![
-            user_operation::sender::equals(to_checksum(&address, None)),
+            user_operation::sender::equals(address.to_checksum(None)),
             or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted)
