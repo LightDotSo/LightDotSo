@@ -39,7 +39,7 @@ use crate::routes::{
     wallet_notification_settings::error::WalletNotificationSettingsError,
     wallet_settings::error::WalletSettingsError,
 };
-use http::StatusCode;
+use hyper::StatusCode;
 
 #[allow(clippy::enum_variant_names)]
 #[allow(dead_code)]

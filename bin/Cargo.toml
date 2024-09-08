@@ -48,7 +48,14 @@
   tower_governor = { workspace = true }
 
 [build-dependencies]
+  eyre = { workspace = true }
   vergen = { version = "9.0.0", default-features = false, features = [
     "build",
     "cargo",
+  ] }
+  vergen-git2 = { version = "1.0.0", features = [
+    "build",
+    "cargo",
+    "rustc",
+    "si",
   ] }

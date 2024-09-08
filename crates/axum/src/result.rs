@@ -18,7 +18,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use hyper::http::StatusCode;
+use hyper::StatusCode;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     chrono::ParseError,

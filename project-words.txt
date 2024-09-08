@@ -1468,6 +1468,7 @@ sxwjr
 symbolicate
 synckit
 Synthetix
+Sysinfo
 systemjs
 szmarczak
 Taaki
