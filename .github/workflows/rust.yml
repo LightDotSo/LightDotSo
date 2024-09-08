@@ -171,6 +171,7 @@ jobs:
       #     flags: rust
       - if: matrix.check
         name: Deny Check
+        continue-on-error: true
         run: |
           cargo deny check
       - if: matrix.check

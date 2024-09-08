@@ -45,8 +45,6 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PutQuery {
     /// The address of the wallet.
     pub address: String,
-    /// The chain id of the wallet.
-    pub chain_id: Option<i64>,
 }
 
 // -----------------------------------------------------------------------------
