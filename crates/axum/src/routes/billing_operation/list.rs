@@ -47,8 +47,6 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// The status to filter by.
     pub status: Option<String>,
-    /// The id to filter by.
-    pub id: Option<String>,
     /// The user id to filter by.
     pub user_id: Option<String>,
     /// The wallet address to filter by.

@@ -20,13 +20,12 @@ use crate::{
     types::{AppJsonResult, Database},
 };
 use alloy::{
-    primitives::{Address, Bloom, B256, U256},
+    primitives::{Address, B256, U256},
     rpc::types::{trace::geth::GethTrace, Log, Transaction, TransactionReceipt},
 };
 use autometrics::autometrics;
 use axum::extract::Json;
 use eyre::Result;
-use lightdotso_common::traits::U256ToU64;
 use lightdotso_prisma::{chain, log, log_topic, receipt, transaction, wallet};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -34,7 +33,7 @@ use lightdotso_tracing::{
 };
 use lightdotso_utils::is_testnet;
 use prisma_client_rust::{
-    chrono::{DateTime, FixedOffset, NaiveDateTime},
+    chrono::DateTime,
     serde_json::{self, json},
 };
 use serde::{Deserialize, Serialize};
@@ -136,10 +135,7 @@ pub async fn upsert_transaction_with_log_receipt(
         .upsert(
             transaction::hash::equals(format!("{:?}", transaction.hash)),
             transaction::create(
-                DateTime::<FixedOffset>::from_utc(
-                    NaiveDateTime::from_timestamp_opt(timestamp as i64, 0).unwrap(),
-                    FixedOffset::east_opt(0).unwrap(),
-                ),
+                DateTime::from_timestamp(timestamp as i64, 0).unwrap().into(),
                 trace
                     .clone()
                     .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),

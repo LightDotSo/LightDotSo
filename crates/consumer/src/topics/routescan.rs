@@ -176,7 +176,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                 (
                                     // Temporary fix for quote rate
                                     // item.quote.unwrap_or(0.0),
-                                    0.0 as f64,
+                                    0.0_f64,
                                     payload.chain_id as i64,
                                     payload.address.to_checksum(None),
                                     vec![

@@ -47,10 +47,7 @@ use lightdotso_prisma::{
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
 use lightdotso_utils::is_testnet;
-use prisma_client_rust::{
-    chrono::{DateTime, NaiveDateTime, Utc},
-    Direction,
-};
+use prisma_client_rust::{chrono::DateTime, Direction};
 use rs_merkle::{Hasher as MerkleHasher, MerkleTree};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -395,16 +392,8 @@ pub(crate) async fn v1_user_operation_create_handler(
                 .client
                 .paymaster_operation()
                 .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     paymaster.clone().id.clone(),
                 ))
                 .exec()
@@ -829,16 +818,8 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 .client
                 .paymaster_operation()
                 .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     paymaster.clone().id.clone(),
                 ))
                 .exec()
@@ -983,7 +964,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             ActivityEntity::Signature,
             &ActivityMessage {
                 operation: ActivityOperation::Create,
-                log: serde_json::to_value(&user_operation.clone())?,
+                log: serde_json::to_value(user_operation.clone())?,
                 params: CustomParams {
                     signature_id: Some(signature.id.clone()),
                     user_id: Some(user_id.clone()),

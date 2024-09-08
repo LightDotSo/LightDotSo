@@ -18,7 +18,6 @@ use crate::{
     routes::simulation::{error::SimulationError, types::Simulation},
     state::AppState,
 };
-use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;

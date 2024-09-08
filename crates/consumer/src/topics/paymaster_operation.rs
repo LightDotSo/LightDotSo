@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use alloy::primitives::U256;
 use eyre::Result;
 use lightdotso_common::traits::U256ToU64;
-use lightdotso_contracts::paymaster::{
-    decode_paymaster_and_data, get_paymaster, LightPaymaster::senderNonceReturn,
-};
+use lightdotso_contracts::paymaster::{decode_paymaster_and_data, get_paymaster};
 use lightdotso_db::models::paymaster_operation::create_paymaster_operation;
 use lightdotso_kafka::{
     topics::billing_operation::produce_billing_operation_message,

@@ -134,8 +134,10 @@ impl IntoResponse for AppError {
             AppError::SerdeJsonError(err) => {
                 (StatusCode::BAD_REQUEST, format!("Serde JSON Error: {}", err))
             }
-            AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad Hex".to_string()),
-            AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad Rust Hex".to_string()),
+            AppError::FromHexError(err) => (StatusCode::BAD_REQUEST, format!("Bad Hex: {}", err)),
+            AppError::RustHexError(err) => {
+                (StatusCode::BAD_REQUEST, format!("Bad Rust Hex: {}", err))
+            }
             AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
             AppError::AuthError(msg) => (StatusCode::UNAUTHORIZED, msg),
             AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),

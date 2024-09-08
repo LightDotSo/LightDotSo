@@ -37,7 +37,7 @@ use lightdotso_prisma::{
 };
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
-use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
+use prisma_client_rust::chrono::DateTime;
 use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
@@ -167,16 +167,8 @@ pub async fn upsert_paymaster_and_data(
             .paymaster_operation()
             .update(
                 paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     pm.clone().id.clone(),
                 ),
                 vec![paymaster_operation::user_operation::connect(user_operation::hash::equals(
@@ -211,9 +203,7 @@ pub async fn upsert_user_operation_logs(
     let logs = logs
         .into_iter()
         .filter(|log| {
-            user_operation_logs
-                .iter()
-                .any(|l| l.log_index.map(|idx| idx as u64) == log.log_index.map(|idx| idx as u64))
+            user_operation_logs.iter().any(|l| l.log_index == log.log_index.map(|idx| idx as u64))
         })
         .collect::<Vec<_>>();
 

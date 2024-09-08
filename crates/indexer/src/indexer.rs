@@ -16,12 +16,23 @@
 
 use crate::{
     config::IndexerArgs,
-    namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
+    namespace::{
+        // ERC1155, ERC20, ERC721,
+        ETH,
+        // IMAGE_HASH_UPDATED,
+        LIGHT_WALLET_INITIALIZED,
+    },
 };
 use alloy::{
-    consensus::TxReceipt,
+    // consensus::TxReceipt,
     eips::BlockNumberOrTag,
-    primitives::{Address, BlockNumber, B256, U256, U64},
+    primitives::{
+        Address,
+        //  BlockNumber,
+        B256,
+        U256,
+        //  U64
+    },
     providers::{ext::DebugApi, Provider, ProviderBuilder, RootProvider, WsConnect},
     pubsub::PubSubFrontend,
     rpc::types::{
@@ -37,9 +48,9 @@ use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use eyre::{eyre, Result};
-use futures::{stream::TakeUntil, StreamExt};
+use futures::StreamExt;
 use lightdotso_constants::chains::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
-use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESSES, provider::get_provider};
+use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESSES;
 use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{
     get_producer, rdkafka::producer::FutureProducer,
@@ -51,11 +62,10 @@ use lightdotso_redis::{
     query::wallet::{add_to_wallets, is_wallet_present},
     redis::Client,
 };
-use lightdotso_tracing::tracing::{error, info, trace, warn};
+use lightdotso_tracing::tracing::{error, info, trace};
 use std::{
     collections::{HashMap, HashSet},
     hash::Hash,
-    str::FromStr,
     sync::Arc,
     time::Duration,
 };
@@ -160,7 +170,7 @@ impl Indexer {
         // self.http_client = Arc::new(http_client);
 
         // Index the block
-        self.get_block(block_number.into()).await
+        self.get_block(block_number).await
     }
 
     /// Index w/ specified chain id
@@ -182,7 +192,7 @@ impl Indexer {
     }
 
     /// The core indexing function.
-    pub async fn index(&self, db_client: Arc<PrismaClient>, block: Block) -> eyre::Result<()> {
+    pub async fn index(&self, _db_client: Arc<PrismaClient>, block: Block) -> eyre::Result<()> {
         info!("Indexer index, starting");
 
         // Get block from http client
@@ -196,9 +206,9 @@ impl Indexer {
         trace!(?block);
 
         // Create new vec for addresses
-        let mut wallet_address_hashmap: HashMap<B256, HashMap<Address, Address>> = HashMap::new();
-        let mut tx_address_hashmap: HashMap<B256, Vec<Address>> = HashMap::new();
-        let mut tx_address_type_hashmap: HashMap<B256, HashMap<Address, String>> = HashMap::new();
+        let _wallet_address_hashmap: HashMap<B256, HashMap<Address, Address>> = HashMap::new();
+        let tx_address_hashmap: HashMap<B256, Vec<Address>> = HashMap::new();
+        let tx_address_type_hashmap: HashMap<B256, HashMap<Address, String>> = HashMap::new();
 
         // Get the traced block
         let traced_block =
@@ -446,7 +456,7 @@ impl Indexer {
                         //     self.get_geth_trace(&block, &unique_wallet_tx_hash, traced_block);
 
                         if let Some(hashmap) = tx_adress_category {
-                            for (_addr, category) in hashmap {
+                            hashmap.iter().for_each(|(_addr, category)| {
                                 // If the category is a wallet initialized
                                 if category == &LIGHT_WALLET_INITIALIZED.to_string() {
                                     // Get the wallet entry
@@ -527,7 +537,7 @@ impl Indexer {
                                 //         )
                                 //         .await;
                                 // }
-                            }
+                            });
                         }
                     }
                 }
@@ -558,7 +568,7 @@ impl Indexer {
         // Convert the to address to a wallet address
         // If the to address is none, use the from address
         // Temporarily use the from address if the to address is not a wallet address
-        let to = frame.to.clone().unwrap();
+        let to = frame.to.unwrap();
 
         // Push the from and to address to the tx_address_hashmap
         entry.push(frame.from);

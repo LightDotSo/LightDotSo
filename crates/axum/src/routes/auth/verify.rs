@@ -31,19 +31,7 @@ use siwe::{Message, VerificationOpts};
 use std::str::FromStr;
 use tower_cookies::Cookies;
 use tower_sessions::Session;
-use utoipa::{IntoParams, ToSchema};
-
-// -----------------------------------------------------------------------------
-// Query
-// -----------------------------------------------------------------------------
-
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[serde(rename_all = "snake_case")]
-#[into_params(parameter_in = Query)]
-pub struct PostQuery {
-    // The hash of the user operation.
-    pub user_address: String,
-}
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
 // Params
@@ -66,10 +54,7 @@ pub struct AuthVerifyCreateRequestParams {
 #[utoipa::path(
         post,
         path = "/auth/verify",
-        params(
-            PostQuery
-        ),
-        // request_body = AuthCreateRequestParams,
+        request_body = AuthVerifyCreateRequestParams,
         responses(
             (status = 200, description = "Auth verified successfully", body = AuthNonce),
             (status = 400, description = "Invalid configuration", body = AuthError),

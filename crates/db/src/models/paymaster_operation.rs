@@ -22,10 +22,7 @@ use lightdotso_prisma::{
     chain, paymaster, paymaster_operation, user_operation, wallet, UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{
-    chrono::{DateTime, NaiveDateTime, Utc},
-    or, Direction,
-};
+use prisma_client_rust::{chrono::DateTime, or, Direction};
 
 // -----------------------------------------------------------------------------
 // Create
@@ -63,16 +60,8 @@ pub async fn create_paymaster_operation(
         .paymaster_operation()
         .create(
             sender_nonce,
-            DateTime::<Utc>::from_utc(
-                NaiveDateTime::from_timestamp_opt(valid_until, 0).unwrap(),
-                Utc,
-            )
-            .into(),
-            DateTime::<Utc>::from_utc(
-                NaiveDateTime::from_timestamp_opt(valid_after, 0).unwrap(),
-                Utc,
-            )
-            .into(),
+            DateTime::from_timestamp(valid_until, 0).unwrap().into(),
+            DateTime::from_timestamp(valid_after, 0).unwrap().into(),
             paymaster::id::equals(paymaster.clone().id.clone()),
             wallet::address::equals(sender_address.to_checksum(None)),
             vec![],
