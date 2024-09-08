@@ -25,7 +25,10 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light Blog",
+  title: {
+    template: "%s | Light Blog",
+    default: "Light Blog",
+  },
   description: "Light Blog - Use Ethereum as One.",
   metadataBase: new URL("https://light.so"),
   openGraph: {

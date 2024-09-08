@@ -23,7 +23,10 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light",
+  title: {
+    template: "%s | Light",
+    default: "Light - Use Ethereum as One.",
+  },
   description:
     "Light is an EVM chain abstraction protocol unifying all chains as one.",
   metadataBase: new URL("https://light.so"),

@@ -25,7 +25,10 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light Changelog",
+  title: {
+    template: "%s | Light Changelog",
+    default: "Light Changelog",
+  },
   description: "Light Changelog - Use Ethereum as One.",
   metadataBase: new URL("https://light.so"),
   openGraph: {
