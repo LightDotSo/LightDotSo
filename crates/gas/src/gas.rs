@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     chains::polygon::polygon_gas_estimation,
     types::{GasEstimation, GasEstimationParams},
