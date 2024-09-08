@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers_main::types::Address;
+use alloy::primitives::{Address, U256};
 use eyre::Result;
 use lightdotso_db::{
     db::create_test_client, models::interpretation::upsert_interpretation_with_actions,
@@ -47,11 +47,11 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
         exit_reason: InstructionResult::Stop,
         actions: vec![
             InterpretationAction {
-                address: Some(Address::zero()),
+                address: Some(Address::ZERO),
                 action_type: InterpretationActionType::ERC1155Burn,
             },
             InterpretationAction {
-                address: Some(Address::zero()),
+                address: Some(Address::ZERO),
                 action_type: InterpretationActionType::ERC1155Burn,
             },
             InterpretationAction {
@@ -61,47 +61,47 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
         ],
         asset_changes: vec![
             AssetChange {
-                address: Address::zero(),
+                address: Address::ZERO,
                 before_amount: None,
                 after_amount: None,
-                amount: 0.into(),
+                amount: U256::ZERO,
                 action: InterpretationAction {
-                    address: Some(Address::zero()),
+                    address: Some(Address::ZERO),
                     action_type: InterpretationActionType::ERC1155Burn,
                 },
                 token: AssetToken {
-                    address: Address::zero(),
+                    address: Address::ZERO,
                     token_id: None,
                     token_type: AssetTokenType::Erc1155,
                 },
             },
             AssetChange {
-                address: Address::zero(),
-                before_amount: Some(1.into()),
+                address: Address::ZERO,
+                before_amount: Some(U256::from(1)),
                 after_amount: None,
-                amount: 0.into(),
+                amount: U256::ZERO,
                 action: InterpretationAction {
-                    address: Some(Address::zero()),
+                    address: Some(Address::ZERO),
                     action_type: InterpretationActionType::ERC1155Burn,
                 },
                 token: AssetToken {
                     address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
-                    token_id: Some(1.into()),
+                    token_id: Some(U256::from(1)),
                     token_type: AssetTokenType::Erc1155,
                 },
             },
             AssetChange {
-                address: Address::zero(),
-                before_amount: Some(1.into()),
+                address: Address::ZERO,
+                before_amount: Some(U256::from(1)),
                 after_amount: None,
-                amount: 0.into(),
+                amount: U256::ZERO,
                 action: InterpretationAction {
                     address: Some("0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap()),
                     action_type: InterpretationActionType::ERC1155Mint,
                 },
                 token: AssetToken {
                     address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
-                    token_id: Some(1.into()),
+                    token_id: Some(U256::from(1)),
                     token_type: AssetTokenType::Erc1155,
                 },
             },

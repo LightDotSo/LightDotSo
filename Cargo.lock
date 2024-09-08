@@ -7103,6 +7103,7 @@ dependencies = [
  "axum",
  "dotenvy",
  "eyre",
+ "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-graphql",
  "lightdotso-interpreter",

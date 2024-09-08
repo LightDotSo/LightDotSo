@@ -13,6 +13,7 @@
   autometrics = { workspace = true }
   axum = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-graphql = { workspace = true }
   lightdotso-interpreter = { workspace = true }

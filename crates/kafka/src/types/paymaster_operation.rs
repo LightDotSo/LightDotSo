@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::types::{Bytes, H160, U256};
+use alloy::primitives::{Address, Bytes, U256};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -24,7 +24,7 @@ use serde_json::{json, Value};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PaymasterOperationMessage {
     pub chain_id: u64,
-    pub sender: H160,
+    pub sender: Address,
     pub call_gas_limit: U256,
     pub verification_gas_limit: U256,
     pub pre_verification_gas: U256,
@@ -53,7 +53,6 @@ impl ToJson for PaymasterOperationMessage {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::types::Bytes;
     use serde_json::Result;
 
     // Test `ToJson` trait's `to_json` method for the `PaymasterOperationMessage`
@@ -61,10 +60,10 @@ mod tests {
     fn test_to_json() {
         let msg = PaymasterOperationMessage {
             chain_id: 1u64,
-            sender: H160::zero(),
-            call_gas_limit: 0u64.into(),
-            verification_gas_limit: 0u64.into(),
-            pre_verification_gas: 0u64.into(),
+            sender: Address::ZERO,
+            call_gas_limit: U256::from(0u64),
+            verification_gas_limit: U256::from(0u64),
+            pre_verification_gas: U256::from(0u64),
             paymaster_and_data: Bytes::default(),
         };
 
@@ -78,10 +77,10 @@ mod tests {
     fn test_serialization_deserialization() -> Result<()> {
         let original_msg = PaymasterOperationMessage {
             chain_id: 1u64,
-            sender: H160::zero(),
-            call_gas_limit: 0u64.into(),
-            verification_gas_limit: 0u64.into(),
-            pre_verification_gas: 0u64.into(),
+            sender: Address::ZERO,
+            call_gas_limit: U256::from(0u64),
+            verification_gas_limit: U256::from(0u64),
+            pre_verification_gas: U256::from(0u64),
             paymaster_and_data: Bytes::default(),
         };
 

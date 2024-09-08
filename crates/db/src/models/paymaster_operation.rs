@@ -15,8 +15,8 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::types::Database;
+use alloy::primitives::Address;
 use autometrics::autometrics;
-use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_prisma::{
     chain, paymaster, paymaster_operation, user_operation, wallet, UserOperationStatus,
@@ -36,8 +36,8 @@ use prisma_client_rust::{
 pub async fn create_paymaster_operation(
     db: Database,
     chain_id: i64,
-    paymaster_address: ethers::types::H160,
-    sender_address: ethers::types::H160,
+    paymaster_address: Address,
+    sender_address: Address,
     sender_nonce: i64,
     valid_until: i64,
     valid_after: i64,
@@ -47,9 +47,9 @@ pub async fn create_paymaster_operation(
     let paymaster = db
         .paymaster()
         .upsert(
-            paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+            paymaster::address_chain_id(paymaster_address.to_checksum(None), chain_id),
             paymaster::create(
-                to_checksum(&paymaster_address, None),
+                paymaster_address.to_checksum(None),
                 chain::id::equals(chain_id),
                 vec![],
             ),
@@ -74,7 +74,7 @@ pub async fn create_paymaster_operation(
             )
             .into(),
             paymaster::id::equals(paymaster.clone().id.clone()),
-            wallet::address::equals(to_checksum(&sender_address, None)),
+            wallet::address::equals(sender_address.to_checksum(None)),
             vec![],
         )
         .exec()
@@ -92,15 +92,15 @@ pub async fn create_paymaster_operation(
 pub async fn get_most_recent_paymaster_operation_with_sender(
     db: Database,
     chain_id: i64,
-    paymaster_address: ethers::types::H160,
-    sender_address: ethers::types::H160,
+    paymaster_address: Address,
+    sender_address: Address,
 ) -> Result<Option<paymaster_operation::Data>> {
     info!("Getting paymaster sender nonce");
 
     // Find the paymaster
     let paymaster = db
         .paymaster()
-        .find_unique(paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id))
+        .find_unique(paymaster::address_chain_id(paymaster_address.to_checksum(None), chain_id))
         .exec()
         .await?;
 
@@ -110,7 +110,7 @@ pub async fn get_most_recent_paymaster_operation_with_sender(
             .user_operation()
             .find_first(vec![
                 user_operation::chain_id::equals(chain_id),
-                user_operation::sender::equals(to_checksum(&sender_address, None)),
+                user_operation::sender::equals(sender_address.to_checksum(None)),
                 user_operation::paymaster_id::equals(Some(paymaster.id)),
                 or![
                     user_operation::status::equals(UserOperationStatus::Executed),

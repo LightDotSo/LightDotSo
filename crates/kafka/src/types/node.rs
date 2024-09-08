@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::types::H256;
+use alloy::primitives::B256;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -23,7 +23,7 @@ use serde_json::{json, Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NodeMessage {
-    pub hash: H256,
+    pub hash: B256,
 }
 
 // -----------------------------------------------------------------------------
@@ -37,5 +37,23 @@ impl ToJson for NodeMessage {
         });
 
         msg_value.to_string()
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_to_json() {
+        let msg = NodeMessage { hash: B256::from_slice(&[1u8; 32]) };
+
+        let json_str = msg.to_json();
+        let expected_str = format!("{{\"hash\":\"{:?}\"}}", msg.hash);
+        assert_eq!(json_str, expected_str);
     }
 }

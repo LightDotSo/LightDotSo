@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::{types::H160, utils::to_checksum};
+use alloy::primitives::Address;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -23,7 +23,7 @@ use serde_json::{json, Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RoutescanMessage {
-    pub address: H160,
+    pub address: Address,
     pub chain_id: u64,
 }
 
@@ -34,7 +34,7 @@ pub struct RoutescanMessage {
 impl ToJson for RoutescanMessage {
     fn to_json(&self) -> String {
         let msg_value: Value = json!({
-            "address": to_checksum(&self.address, None),
+            "address": self.address.to_checksum(None),
             "chain_id": &self.chain_id,
         });
 

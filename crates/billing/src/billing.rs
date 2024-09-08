@@ -17,11 +17,6 @@
 use crate::config::BillingArgs;
 use autometrics::autometrics;
 use backon::{ExponentialBuilder, Retryable};
-use ethers::{
-    prelude::Provider,
-    providers::{Http, Middleware},
-    types::U256,
-};
 use eyre::{eyre, Result};
 use lightdotso_client::crypto::get_native_token_price;
 use lightdotso_contracts::provider::get_provider;

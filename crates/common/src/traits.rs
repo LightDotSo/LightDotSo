@@ -13,8 +13,19 @@
 // limitations under the License.
 
 use crate::utils::{hex_to_bytes, hex_to_bytes32};
-use alloy::hex;
+use alloy::{hex, primitives::U256};
 use eyre::Result;
+
+pub trait U256ToU64 {
+    fn to_u64(&self) -> Result<u64>;
+}
+
+impl U256ToU64 for U256 {
+    fn to_u64(&self) -> Result<u64> {
+        let bytes: [u8; 32] = self.to_be_bytes();
+        Ok(u64::from_be_bytes(bytes[24..32].try_into()?))
+    }
+}
 
 pub trait VecU8ToHex {
     fn to_hex_string(&self) -> String;
@@ -59,6 +70,18 @@ impl IsZero for [u8; 32] {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_to_u64() {
+        let u256 = U256::from(0);
+        assert_eq!(u256.to_u64().unwrap(), 0);
+
+        let u256 = U256::from(100);
+        assert_eq!(u256.to_u64().unwrap(), 100);
+
+        let u256 = U256::from(10000000000000000000_u64);
+        assert_eq!(u256.to_u64().unwrap(), 10000000000000000000);
+    }
 
     #[test]
     fn test_to_hex_string() {
