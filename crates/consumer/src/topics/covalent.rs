@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use ethers::utils::to_checksum;
+use alloy::primitives::Address;
 use eyre::{eyre, Result};
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::{
@@ -51,7 +51,7 @@ pub async fn covalent_consumer(
         // Log the payload
         let mut balances = get_token_balances(
             &payload.chain_id.to_string(),
-            &to_checksum(&payload.address, None),
+            &payload.address.to_checksum(None),
             None,
             None,
         )
@@ -92,10 +92,12 @@ pub async fn covalent_consumer(
                     .iter()
                     .map(|item| {
                         (
-                            to_checksum(
-                                &(item.contract_address.clone().unwrap().parse().unwrap()),
-                                None,
-                            ),
+                            item.contract_address
+                                .clone()
+                                .unwrap()
+                                .parse::<Address>()
+                                .unwrap()
+                                .to_checksum(None),
                             payload.chain_id as i64,
                             vec![
                                 token::symbol::set(Some(
@@ -162,10 +164,9 @@ pub async fn covalent_consumer(
                     .wallet_balance()
                     .update_many(
                         vec![
-                            wallet_balance::wallet_address::equals(to_checksum(
-                                &payload.address,
-                                None,
-                            )),
+                            wallet_balance::wallet_address::equals(
+                                payload.address.to_checksum(None),
+                            ),
                             wallet_balance::chain_id::equals(payload.chain_id as i64),
                         ],
                         vec![wallet_balance::is_latest::set(false)],
@@ -194,7 +195,7 @@ pub async fn covalent_consumer(
                                 (
                                     item.quote.unwrap_or(0.0),
                                     payload.chain_id as i64,
-                                    to_checksum(&payload.address, None),
+                                    payload.address.to_checksum(None),
                                     vec![
                                         wallet_balance::amount::set(Some(
                                             item.balance

@@ -16,12 +16,12 @@ use super::types::User;
 use crate::{
     error::RouteError, result::AppJsonResult, routes::user::error::UserError, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
@@ -71,7 +71,7 @@ pub(crate) async fn v1_user_get_handler(
 
     info!("Get user for address: {:?}", query);
 
-    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
+    let query_address: Option<Address> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // -------------------------------------------------------------------------
     // DB

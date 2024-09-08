@@ -15,7 +15,7 @@
 #![allow(clippy::expect_used)]
 #![allow(clippy::unwrap_used)]
 
-use alloy::primitives::{Address, Bytes, B256, U256};
+use alloy::primitives::{Address, Bytes, U256};
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{

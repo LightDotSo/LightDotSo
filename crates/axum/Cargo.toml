@@ -42,6 +42,7 @@
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }
+  rand = { workspace = true }
   reqwest = { workspace = true }
   rs_merkle = "1.1.0"
   rustc-hex = { workspace = true }

@@ -6902,6 +6902,7 @@ dependencies = [
  "lightdotso-tracing",
  "lightdotso-utils",
  "prisma-client-rust",
+ "rand 0.8.5",
  "reqwest 0.12.7",
  "rs_merkle",
  "rustc-hex",

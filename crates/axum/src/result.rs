@@ -13,12 +13,12 @@
 // limitations under the License.
 
 use crate::error::{RouteError, RouteErrorStatusCodeAndMsg};
+use alloy::hex::FromHexError;
 use axum::{
-    http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
-use const_hex::FromHexError;
+use hyper::http::StatusCode;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     chrono::ParseError,

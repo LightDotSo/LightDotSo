@@ -20,12 +20,12 @@ use crate::{
     routes::{owner::types::Owner, signature::types::Signature},
     state::AppState,
 };
+use alloy::hex;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use const_hex::hex;
 use eyre::{eyre, Result};
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
 use lightdotso_prisma::{

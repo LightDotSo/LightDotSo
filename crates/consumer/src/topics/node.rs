@@ -14,7 +14,7 @@
 
 #![allow(clippy::expect_used)]
 
-use ethers::{types::Address, utils::to_checksum};
+use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
@@ -58,13 +58,13 @@ pub async fn node_consumer(
             let light_wallet_contract = get_light_wallet(chain_id, sender).await?;
 
             // Get the image from the chain_id
-            let image_hash: [u8; 32] = light_wallet_contract.image_hash().await?;
+            let image_hash: [u8; 32] = *light_wallet_contract.imageHash().call().await?._0;
 
             // Get the configuration from the chain_id
             let configuration = db
                 .configuration()
                 .find_unique(configuration::address_image_hash(
-                    to_checksum(&sender, None),
+                    sender.to_checksum(None),
                     image_hash.to_vec().to_hex_string(),
                 ))
                 .exec()

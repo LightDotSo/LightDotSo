@@ -22,12 +22,12 @@ use crate::{
     routes::wallet_notification_settings::error::WalletNotificationSettingsError,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -101,8 +101,8 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
     let Query(put) = put_query;
 
     // Parse the address from the put query.
-    let parsed_query_address: H160 = put.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = put.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // Get the wallet_notification_settings from the put body.
     let optional_params = params.wallet_notification_settings;

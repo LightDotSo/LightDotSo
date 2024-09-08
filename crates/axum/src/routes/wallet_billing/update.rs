@@ -19,12 +19,12 @@ use crate::{
     constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
     routes::wallet_billing::error::WalletBillingError, sessions::get_user_id, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::wallet_billing;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -109,8 +109,8 @@ pub(crate) async fn v1_wallet_billing_update_handler(
     let Query(put) = put_query;
 
     // Parse the address from the put query.
-    let parsed_query_address: H160 = put.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = put.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // Get the wallet_billing from the put body.
     // let wallet_billing = params.wallet_billing;

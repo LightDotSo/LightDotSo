@@ -20,13 +20,13 @@ use crate::{
     routes::wallet_notification_settings::error::WalletNotificationSettingsError,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_notifier::types::{WALLET_NOTIFICATION_DEFAULT_ENABLED, WALLET_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, wallet, wallet_notification_settings};
 use lightdotso_tracing::tracing::info;
@@ -79,8 +79,8 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     info!("Get wallet_notification_settings for address: {:?}", checksum_address);
 
@@ -283,7 +283,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<String> {
     // Parse the address.
-    let parsed_query_address: H160 = query.address.parse()?;
+    let parsed_query_address: Address = query.address.parse()?;
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {

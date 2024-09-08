@@ -108,7 +108,7 @@ impl Interpreter<'_> {
             call_data: request.data,
             value: Some(request.value.try_into().unwrap_or_default()),
             traces: traces.clone(),
-            logs: res.clone().logs,
+            logs: res.logs.clone(),
         };
 
         // Run the interpreter

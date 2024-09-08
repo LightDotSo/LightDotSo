@@ -18,13 +18,13 @@ use crate::{
     result::{AppJsonResult, AppResult},
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use alloy::primitives::Address;
 use lightdotso_prisma::{
     billing_operation::{self, WhereParam},
     paymaster_operation,
@@ -202,7 +202,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<()> {
     // Parse the address.
-    let query_address: H160 = query.address.parse()?;
+    let query_address: Address = query.address.parse()?;
 
     // Authenticate the user
     if query.user_id.is_some() {

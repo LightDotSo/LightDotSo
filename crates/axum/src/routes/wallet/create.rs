@@ -21,15 +21,12 @@ use crate::{
     routes::{auth::error::AuthError, wallet::types::Wallet},
     state::AppState,
 };
+use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
-};
-use ethers_main::{
-    types::{H160, H256},
-    utils::to_checksum,
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
@@ -133,7 +130,7 @@ pub(crate) async fn v1_wallet_create_handler(
     let Query(query) = post_query;
     info!(?query);
 
-    let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
+    let factory_address: Address = *LIGHT_WALLET_FACTORY_ADDRESS;
 
     let owners = &params.owners;
     let threshold = params.threshold;
@@ -143,11 +140,11 @@ pub(crate) async fn v1_wallet_create_handler(
     // Validate
     // -------------------------------------------------------------------------
 
-    // Check if all of the owner address can be parsed to H160.
+    // Check if all of the owner address can be parsed to Address.
     let owners_addresses = owners
         .iter()
-        .map(|owner| owner.address.parse::<H160>())
-        .collect::<Result<Vec<H160>, _>>()?;
+        .map(|owner| owner.address.parse::<Address>())
+        .collect::<Result<Vec<Address>, _>>()?;
 
     // Check if the threshold is greater than 0
     if params.threshold == 0 {
@@ -155,7 +152,7 @@ pub(crate) async fn v1_wallet_create_handler(
     }
 
     // Parse the salt to bytes.
-    let salt_bytes: H256 = params.salt.parse()?;
+    let salt_bytes: B256 = params.salt.parse()?;
 
     // Conver the owners to SignerNode.
     let owner_nodes: Vec<SignerNode> = owners
@@ -198,7 +195,7 @@ pub(crate) async fn v1_wallet_create_handler(
     let image_hash = res.map_err(|_| AppError::NotFound)?;
 
     // Parse the image hash to bytes.
-    let image_hash_bytes: H256 = image_hash.into();
+    let image_hash_bytes: B256 = image_hash.into();
 
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
@@ -277,7 +274,7 @@ pub(crate) async fn v1_wallet_create_handler(
                 .iter()
                 .map(|owner| {
                     lightdotso_prisma::user::create_unchecked(
-                        to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                        to_checksum(&owner.address.parse::<Address>().unwrap(), None),
                         vec![],
                     )
                 })
@@ -326,7 +323,7 @@ pub(crate) async fn v1_wallet_create_handler(
                         .enumerate()
                         .map(|(index, owner)| {
                             lightdotso_prisma::owner::create_unchecked(
-                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                                to_checksum(&owner.address.parse::<Address>().unwrap(), None),
                                 owner.weight.into(),
                                 index as i32,
                                 configuration_data.clone().id,
@@ -336,7 +333,7 @@ pub(crate) async fn v1_wallet_create_handler(
                                         .find(|user| {
                                             user.address ==
                                                 to_checksum(
-                                                    &owner.address.parse::<H160>().unwrap(),
+                                                    &owner.address.parse::<Address>().unwrap(),
                                                     None,
                                                 )
                                         })

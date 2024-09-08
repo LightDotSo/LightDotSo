@@ -108,10 +108,8 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                         block_number: None,
                         block_timestamp: None,
                         transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
-                        transaction_index: Some(
-                            (log.transaction_index.0.parse::<u64>().unwrap()).into(),
-                        ),
-                        log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
+                        transaction_index: Some(log.transaction_index.0.parse::<u64>().unwrap()),
+                        log_index: Some(log.log_index.0.parse::<u64>().unwrap()),
                         // transaction_log_index: None,
                         // log_type: None,
                         removed: false,

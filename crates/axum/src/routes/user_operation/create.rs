@@ -20,14 +20,11 @@ use crate::{
     routes::signature::create::SignatureCreateParams,
     state::AppState,
 };
+use alloy::{hex, primitives::Address};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
-};
-use ethers_main::{
-    types::H160,
-    utils::{hex, to_checksum},
 };
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
@@ -237,7 +234,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     info!("base_hash: 0x{}", hex::encode(base_hash));
 
     // Parse the user operation address.
-    let sender_address: H160 = user_operation.sender.parse()?;
+    let sender_address: Address = user_operation.sender.parse()?;
 
     // -------------------------------------------------------------------------
     // Signature
@@ -597,7 +594,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         info!("base_hash: 0x{}", hex::encode(base_hash));
 
         // Check that the user operation address is parsable.
-        let _: H160 = user_operation.sender.parse()?;
+        let _: Address = user_operation.sender.parse()?;
     }
 
     // Check if all of the sender addresses are the same.
@@ -612,7 +609,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     }
 
     // Get the sender address.
-    let sender_address: H160 = user_operations[0].sender.parse()?;
+    let sender_address: Address = user_operations[0].sender.parse()?;
 
     // -------------------------------------------------------------------------
     // Merkle

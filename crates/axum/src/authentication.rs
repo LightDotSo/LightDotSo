@@ -22,7 +22,7 @@ use crate::{
     sessions::get_user_id,
     state::AppState,
 };
-use ethers_main::{types::Address, utils::to_checksum};
+use alloy::primitives::Address;
 use lightdotso_prisma::{configuration, user, wallet};
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
@@ -117,7 +117,7 @@ pub(crate) async fn authenticate_wallet_user(
     let wallet = state
         .client
         .wallet()
-        .find_unique(wallet::address::equals(to_checksum(wallet, None)))
+        .find_unique(wallet::address::equals(wallet.to_checksum(None)))
         .with(wallet::configurations::fetch(vec![]).with(configuration::owners::fetch(vec![])))
         .exec()
         .await?;

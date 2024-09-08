@@ -19,12 +19,12 @@ use crate::{
     authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -95,8 +95,8 @@ pub(crate) async fn v1_wallet_update_handler(
     // Get the get query.
     let Query(query) = put_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // -------------------------------------------------------------------------
     // Authentication

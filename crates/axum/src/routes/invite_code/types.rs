@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers_main::core::rand::{self, Rng};
 use lightdotso_prisma::invite_code;
+use rand::{self, Rng};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 

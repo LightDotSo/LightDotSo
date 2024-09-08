@@ -17,12 +17,12 @@ use crate::{
     error::RouteError, result::AppJsonResult, routes::configuration::error::ConfigurationError,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{configuration, owner};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -75,8 +75,8 @@ pub(crate) async fn v1_configuration_get_handler(
 
     info!("Get configuration for address: {:?}", query);
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     info!("Get configuration for checksum address: {:?}", checksum_address);
 
