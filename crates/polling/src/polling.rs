@@ -18,16 +18,17 @@ use crate::{
     config::PollingArgs,
     constants::{SATSUMA, STUDIO},
 };
+use alloy::{
+    eips::BlockNumberOrTag,
+    primitives::{Address, B256},
+    providers::{Provider, RootProvider},
+    rpc::types::{Block, Log, Transaction, TransactionReceipt},
+    transports::BoxTransport,
+};
 use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
-use ethers::{
-    prelude::Provider,
-    providers::{Http, Middleware},
-    types::{Address, Block, Log, Transaction, TransactionReceipt, H256},
-    utils::to_checksum,
-};
 use eyre::{eyre, Result};
 use lightdotso_contracts::{
     provider::get_provider,
@@ -185,7 +186,7 @@ impl Polling {
     /// Run a single user operation query
     /// Get the user operation by the given index
     #[autometrics]
-    pub async fn run_uop(&self, chain_id: u64, hash: H256) -> Result<()> {
+    pub async fn run_uop(&self, chain_id: u64, hash: B256) -> Result<()> {
         let chain = self.chain_mapping.get(&chain_id);
 
         // Get the url from the chain mapping.
@@ -236,7 +237,7 @@ impl Polling {
     pub async fn get_user_operation(
         &self,
         chain_id: u64,
-        hash: H256,
+        hash: B256,
     ) -> Result<Response<UserOperationReceipt>> {
         let params = vec![json!(format!("{:?}", hash))];
         info!("params: {:?}", params);
@@ -293,7 +294,7 @@ impl Polling {
     pub async fn get_user_operation_with_backon(
         &self,
         chain_id: u64,
-        hash: H256,
+        hash: B256,
     ) -> Result<Response<UserOperationReceipt>> {
         let get_user_operation = || async { self.get_user_operation(chain_id, hash).await };
 
@@ -458,10 +459,7 @@ impl Polling {
         info!("send_tx_queue");
         if self.kafka_client.is_some() {
             let _ = self
-                .send_tx_queue(
-                    chain_id,
-                    receipt.clone().tx_receipt.block_number.unwrap().as_u32() as i32,
-                )
+                .send_tx_queue(chain_id, receipt.clone().tx_receipt.block_number.unwrap() as i32)
                 .await;
         }
 
@@ -536,7 +534,7 @@ impl Polling {
 
     /// Poll a single user operation
     // #[autometrics]
-    async fn poll_uop(&self, url: String, hash: H256) -> Result<Option<UserOperation>> {
+    async fn poll_uop(&self, url: String, hash: B256) -> Result<Option<UserOperation>> {
         // Get the user operation query from the graphql api.
         let user_operation_res = tokio::task::spawn_blocking(move || {
             {
@@ -652,7 +650,7 @@ impl Polling {
 
     /// Get the user operation by the given hash
     #[autometrics]
-    pub async fn db_get_user_operation(&self, hash: H256) -> Result<DbUserOperationLogs> {
+    pub async fn db_get_user_operation(&self, hash: B256) -> Result<DbUserOperationLogs> {
         let db_client = self.db_client.clone();
 
         { || get_user_operation_with_logs(db_client.clone(), hash) }
@@ -687,7 +685,7 @@ impl Polling {
                     uow.clone().transaction_logs,
                     uow.clone().receipt,
                     chain_id as i64,
-                    block.clone().unwrap().timestamp,
+                    block.clone().unwrap().header.timestamp,
                     None,
                 )
             }
@@ -723,7 +721,7 @@ impl Polling {
                     logs.clone(),
                     receipt.clone(),
                     chain_id as i64,
-                    block.clone().unwrap().timestamp,
+                    block.clone().unwrap().header.timestamp,
                     None,
                 )
             }
@@ -769,11 +767,11 @@ impl Polling {
     /// Add a new wallet in the cache
     #[autometrics]
     pub fn add_to_wallets(&self, user_operation: &UserOperation) -> Result<()> {
-        let address = user_operation.light_wallet.address.0.parse().unwrap();
+        let address: Address = user_operation.light_wallet.address.0.parse().unwrap();
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            let _ = { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
+            let _ = { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call();
         } else {
@@ -788,7 +786,7 @@ impl Polling {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            let _ = { || add_to_wallets(&mut con, to_checksum(address, None).as_str()) }
+            let _ = { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call();
         } else {
@@ -798,20 +796,19 @@ impl Polling {
     }
 
     /// Get the provider
-    pub async fn get_provider(&self, chain_id: u64) -> Result<Option<Arc<Provider<Http>>>> {
+    pub async fn get_provider(
+        &self,
+        chain_id: u64,
+    ) -> Result<Option<Arc<RootProvider<BoxTransport>>>> {
         // Create the provider
-        let client: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
+        let (client, _) = get_provider(chain_id).await?;
 
-        Ok(client)
+        Ok(Some(Arc::new(client)))
     }
 
     /// Get the block logs for the given block number
     #[autometrics]
-    pub async fn get_block(
-        &self,
-        chain_id: u64,
-        block_number: ethers::types::U64,
-    ) -> Result<Option<Block<H256>>> {
+    pub async fn get_block(&self, chain_id: u64, block_number: u64) -> Result<Option<Block>> {
         let client = self.get_provider(chain_id).await?;
 
         info!("get_block, chain_id: {} block_number: {}", chain_id, block_number);
@@ -819,7 +816,9 @@ impl Polling {
         if let Some(client) = client {
             // Get the logs
             let res =
-                { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await?;
+                { || client.get_block_by_number(BlockNumberOrTag::Number(block_number), true) }
+                    .retry(&ExponentialBuilder::default())
+                    .await?;
 
             return Ok(res);
         }
@@ -832,7 +831,7 @@ impl Polling {
     pub async fn get_transaction(
         &self,
         chain_id: u64,
-        transaction_hash: H256,
+        transaction_hash: B256,
     ) -> Result<Transaction> {
         let client = self.get_provider(chain_id).await?;
 
@@ -840,7 +839,7 @@ impl Polling {
 
         if let Some(client) = client {
             // Get the transaction
-            let res = { || client.get_transaction(transaction_hash) }
+            let res = { || client.get_transaction_by_hash(transaction_hash) }
                 .retry(&ExponentialBuilder::default())
                 .await?;
 
@@ -857,7 +856,7 @@ impl Polling {
     #[autometrics]
     pub async fn send_activity_queue(
         &self,
-        user_operation_hash: H256,
+        user_operation_hash: B256,
         sender: Address,
         op: user_operation::Data,
     ) -> Result<()> {
@@ -868,7 +867,7 @@ impl Polling {
             log: payload.clone().to_owned(),
             params: CustomParams {
                 user_operation_hash: Some(format!("{:?}", user_operation_hash.clone())),
-                wallet_address: Some(to_checksum(&sender.clone(), None)),
+                wallet_address: Some(sender.to_checksum(None)),
                 ..Default::default()
             },
         };
@@ -884,8 +883,8 @@ impl Polling {
     #[autometrics]
     pub async fn send_interpretation_queue(
         &self,
-        uop_hash: H256,
-        transaction_hash: Option<H256>,
+        uop_hash: B256,
+        transaction_hash: Option<B256>,
     ) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
 
@@ -918,9 +917,11 @@ impl Polling {
         let provider = self.get_provider(chain_id).await?;
 
         if let Some(provider) = provider {
-            let block = { || provider.get_block(block_number as u64) }
-                .retry(&ExponentialBuilder::default())
-                .await?;
+            let block = {
+                || provider.get_block_by_number(BlockNumberOrTag::Number(block_number as u64), true)
+            }
+            .retry(&ExponentialBuilder::default())
+            .await?;
 
             if let Some(block) = block {
                 let payload = serde_json::to_value((&block, &chain_id))
@@ -954,7 +955,7 @@ mod tests {
 
         let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
 
-        let hash: H256 =
+        let hash: B256 =
             "0x5c9ac218426e13b18f7260d73ce0ea2d86dd44e88886ef0265803829874ff140".parse().unwrap();
         let res = polling.get_user_operation(10, hash).await;
 

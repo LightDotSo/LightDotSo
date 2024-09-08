@@ -54,7 +54,7 @@ pub async fn upsert_transaction_with_log_receipt(
     logs: Vec<Log>,
     receipt: TransactionReceipt,
     chain_id: i64,
-    timestamp: U256,
+    timestamp: u64,
     trace: Option<GethTrace>,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
@@ -137,7 +137,7 @@ pub async fn upsert_transaction_with_log_receipt(
             transaction::hash::equals(format!("{:?}", transaction.hash)),
             transaction::create(
                 DateTime::<FixedOffset>::from_utc(
-                    NaiveDateTime::from_timestamp_opt(timestamp.to_u64()? as i64, 0).unwrap(),
+                    NaiveDateTime::from_timestamp_opt(timestamp as i64, 0).unwrap(),
                     FixedOffset::east_opt(0).unwrap(),
                 ),
                 trace

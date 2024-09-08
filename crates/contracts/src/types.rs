@@ -17,8 +17,8 @@
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
     hex,
-    primitives::{Address, Bytes, Log, B256, U256},
-    rpc::types::{Transaction, TransactionReceipt},
+    primitives::{Address, Bytes, B256, U256},
+    rpc::types::{Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};

@@ -17,8 +17,8 @@
 use crate::polling::user_operations::UserOperation;
 use alloy::{
     consensus::{ReceiptEnvelope, ReceiptWithBloom},
-    primitives::{Address, Log, LogData, U256},
-    rpc::types::{Transaction, TransactionReceipt},
+    primitives::{Address, Log as AlloyLog, LogData, U256},
+    rpc::types::{Log, Transaction, TransactionReceipt},
 };
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
@@ -93,9 +93,9 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .and_then(|v| v.0.hex_to_bytes().ok().map(Into::into)),
             logs: op.user_operation.logs.map_or(Vec::new(), |logs| {
                 logs.into_iter()
-                    .map(|log| Log {
-                        address: log.address.0.parse().unwrap(),
-                        data: LogData::new(
+                    .map(|log| Log::<LogData> {
+                        inner: AlloyLog::new(
+                            log.address.0.parse().unwrap(),
                             log.topics
                                 .unwrap_or_default()
                                 .into_iter()
@@ -104,8 +104,19 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                             log.data.0.hex_to_bytes().unwrap().into(),
                         )
                         .unwrap_or_default(),
+                        block_hash: None,
+                        block_number: None,
+                        block_timestamp: None,
+                        transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
+                        transaction_index: Some(
+                            (log.transaction_index.0.parse::<u64>().unwrap()).into(),
+                        ),
+                        log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
+                        // transaction_log_index: None,
+                        // log_type: None,
+                        removed: false,
                     })
-                    .collect::<Vec<_>>()
+                    .collect()
             }),
             transaction: Transaction {
                 chain_id: Some(op.chain_id as u64),
@@ -158,9 +169,9 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 Vec::new(),
                 |logs| {
                     logs.into_iter()
-                        .map(|log| Log {
-                            address: log.address.0.parse().unwrap(),
-                            data: LogData::new(
+                        .map(|log| Log::<LogData> {
+                            inner: AlloyLog::new(
+                                log.address.0.parse().unwrap(),
                                 log.topics
                                     .unwrap_or_default()
                                     .into_iter()
@@ -169,6 +180,15 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                                 log.data.0.hex_to_bytes().unwrap().into(),
                             )
                             .unwrap_or_default(),
+                            block_hash: None,
+                            block_number: None,
+                            block_timestamp: None,
+                            transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
+                            transaction_index: Some(
+                                log.transaction_index.0.parse::<u64>().unwrap(),
+                            ),
+                            log_index: Some(log.log_index.0.parse::<u64>().unwrap()),
+                            removed: false,
                         })
                         .collect::<Vec<_>>()
                 },

@@ -14,7 +14,7 @@
 
 use alloy::{
     eips::BlockNumberOrTag,
-    primitives::{Address, B256, U256},
+    primitives::{Address, B256},
     providers::Provider,
 };
 use eyre::Result;
@@ -81,7 +81,7 @@ async fn test_integration_upsert_transaction_with_log_receipt() -> Result<()> {
         tx_with_receipt.clone().unwrap().inner.logs().to_vec(),
         tx_with_receipt.clone().unwrap(),
         1,
-        U256::from(block.clone().unwrap().header.timestamp),
+        block.clone().unwrap().header.timestamp,
         None,
     )
     .await?;
