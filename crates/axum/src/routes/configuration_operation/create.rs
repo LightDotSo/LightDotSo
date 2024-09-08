@@ -319,7 +319,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .client
         .user()
         .find_many(vec![user::address::in_vec(
-            owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
+            owners_addresses.iter().map(|addr| addr.to_checksum(None)).collect(),
         )])
         .exec()
         .await?;
@@ -362,14 +362,12 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                                         .iter()
                                         .find(|user| {
                                             user.address ==
-                                                to_checksum(
-                                                    &config_owner
-                                                        .clone()
-                                                        .address
-                                                        .parse::<Address>()
-                                                        .unwrap(),
-                                                    None,
-                                                )
+                                                &config_owner
+                                                    .clone()
+                                                    .address
+                                                    .parse::<Address>()
+                                                    .unwrap()
+                                                    .to_checksum(None)
                                         })
                                         .unwrap()
                                         .id
