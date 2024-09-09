@@ -234,6 +234,7 @@ mod test {
         dyn_abi::DynSolValue,
         primitives::{hex::FromHex, FixedBytes},
     };
+    use lightdotso_common::traits::HexToBytes;
 
     #[test]
     fn test_tree_string_type() {
@@ -277,6 +278,52 @@ mod test {
         assert_eq!(
             root,
             B256::from_hex("0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7")
+                .unwrap()
+        );
+    }
+
+    #[test]
+    fn test_one_tree() {
+        let hashes =
+            ["0x0000000000000000000000000000000000000000000000000000000000000001".to_string()];
+
+        let leaf_hashes: Vec<DynSolValue> = hashes
+            .iter()
+            .map(|hash| {
+                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
+            })
+            .collect();
+
+        let tree = StandardMerkleTree::of(&leaf_hashes);
+
+        let root = tree.root();
+        assert_eq!(
+            root,
+            B256::from_hex("0xb5d9d894133a730aa651ef62d26b0ffa846233c74177a591a4a896adfda97d22")
+                .unwrap()
+        );
+    }
+
+    #[test]
+    fn test_simple_tree() {
+        let hashes = [
+            "0x0000000000000000000000000000000000000000000000000000000000000001".to_string(),
+            "0x0000000000000000000000000000000000000000000000000000000000000002".to_string(),
+        ];
+
+        let leaf_hashes: Vec<DynSolValue> = hashes
+            .iter()
+            .map(|hash| {
+                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
+            })
+            .collect();
+
+        let tree = StandardMerkleTree::of(&leaf_hashes);
+
+        let root = tree.root();
+        assert_eq!(
+            root,
+            B256::from_hex("0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c")
                 .unwrap()
         );
     }

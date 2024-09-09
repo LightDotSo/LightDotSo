@@ -19,7 +19,7 @@ import {
 import { MerkleTree } from "merkletreejs";
 import type { Hex } from "viem";
 import { hexToBytes, keccak256 } from "viem";
-import { assert, expect, test } from "vitest";
+import { expect, test } from "vitest";
 
 test("Should return correct merkle root", () => {
   const merkleHashes: Hex[] = [
@@ -80,9 +80,25 @@ test("single merkle tree", () => {
 
   const _standardTreeRoot = standardTree.root.toString();
 
-  assert(
-    _standardTreeRoot ===
-      "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+  expect(_standardTreeRoot).to.equal(
+    "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+  );
+});
+
+test("one merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+  ];
+
+  const standardTree = StandardMerkleTree.of([merkleHashes], ["bytes32"]);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(standardTree.root.toString());
+
+  const _standardTreeRoot = standardTree.root.toString();
+
+  expect(_standardTreeRoot).to.equal(
+    "0xb5d9d894133a730aa651ef62d26b0ffa846233c74177a591a4a896adfda97d22",
   );
 });
 
@@ -113,6 +129,10 @@ test("simple merkle tree", () => {
   const _standardTreeRoot = standardTree.root.toString();
 
   const _simpleTree = SimpleMerkleTree.of(leaves);
+
+  expect(_standardTreeRoot).to.equal(
+    "0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c",
+  );
 });
 
 test("simple nested merkle tree", () => {

@@ -13,6 +13,7 @@
   eyre = { workspace = true }
   hashbrown = "0.14.3"
   lazy_static = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }
   lightdotso-prisma = { workspace = true }
   prisma-client-rust = { workspace = true }

@@ -23,19 +23,7 @@ import {console} from "forge-std/console.sol";
 
 /// @notice Unit tests for `MerkleProof` for getting base hash
 contract MerkleProofUnitTest is BaseTest {
-    // -------------------------------------------------------------------------
-    // Tests
-    // -------------------------------------------------------------------------
-
-    /// Tests raw `Create2.safeCreate2`
-    function test_simple_merkle_proof() public {
-        // solhint-disable-next-line no-console
-        console.logAddress(address(this));
-
-        address computedAddress = Create2.computeAddress(bytes32(0), bytes32(0));
-
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logAddress(computedAddress);
-    }
+// -------------------------------------------------------------------------
+// Tests
+// -------------------------------------------------------------------------
 }

@@ -6672,6 +6672,7 @@ dependencies = [
  "eyre",
  "hashbrown 0.14.5",
  "lazy_static",
+ "lightdotso-common",
  "lightdotso-constants",
  "lightdotso-prisma",
  "prisma-client-rust",
