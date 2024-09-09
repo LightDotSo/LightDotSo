@@ -14,8 +14,7 @@
       "@/*": ["./src/*"],
       "@/.source": ["./.source"]
     },
-    "declaration": false,
-    "declarationMap": false
+    "target": "es2020"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
