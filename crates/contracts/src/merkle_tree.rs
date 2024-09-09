@@ -251,7 +251,7 @@ mod test {
         let root = tree.root;
         assert_eq!(
             root,
-            B256::from_hex("0x9feccf6caa602894c8105bdda7f81b2a7bb7de7dba1f18af92d8d057b708cb41")
+            B256::from_hex("0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0")
                 .unwrap()
         );
     }
@@ -277,7 +277,7 @@ mod test {
         let root = tree.root;
         assert_eq!(
             root,
-            B256::from_hex("0x6bf4e61b5cdb00b5d13973040b7e7c9690fc0e3e3509eabf38ee45a4fe1a3c0a")
+            B256::from_hex("0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87")
                 .unwrap()
         );
     }

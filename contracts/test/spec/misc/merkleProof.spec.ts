@@ -185,13 +185,28 @@ test("simple nested merkle tree", () => {
   // const proof = tree.getProof(leaves[0]);
 
   const _root = tree.getHexRoot();
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  expect(_root).to.equal(
+    "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
+  );
+
+  const _proof = tree.getProof(merkleHashes[0]);
+  expect(proofToHex(_proof)[0]).to.eql(
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+  );
+  expect(proofToHex(_proof)[2]).to.eql(undefined);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_proof);
 
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
     ["bytes32", "bytes32", "bytes32"],
   );
 
-  const _proof = standardTree.getProof(0);
+  // const _proof = standardTree.getProof(0);
 
   const _standardTreeRoot = standardTree.root.toString();
 
