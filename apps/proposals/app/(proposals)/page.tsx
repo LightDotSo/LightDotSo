@@ -39,7 +39,7 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <ul className="text-lg hover:underline">
+    <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
       {proposals.map((proposal) => (
         <li key={proposal.slug} className="group col-span-1">
           <a
