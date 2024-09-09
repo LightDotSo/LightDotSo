@@ -137,7 +137,7 @@ test("simple merkle tree", () => {
   const _simpleTree = SimpleMerkleTree.of(leaves);
 
   expect(_standardTreeRoot).to.equal(
-    "0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53",
+    "0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c",
   );
 });
 
@@ -169,6 +169,10 @@ test("simple nested merkle tree", () => {
   const _standardTreeRoot = standardTree.root.toString();
 
   const _simpleTree = SimpleMerkleTree.of(leaves);
+
+  expect(_standardTreeRoot).to.equal(
+    "0x6bf4e61b5cdb00b5d13973040b7e7c9690fc0e3e3509eabf38ee45a4fe1a3c0a",
+  );
 });
 
 test("simple deep nested merkle tree", () => {

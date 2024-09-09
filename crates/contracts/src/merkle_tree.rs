@@ -323,7 +323,32 @@ mod test {
         let root = tree.root();
         assert_eq!(
             root,
-            B256::from_hex("0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53")
+            B256::from_hex("0x9feccf6caa602894c8105bdda7f81b2a7bb7de7dba1f18af92d8d057b708cb41")
+                .unwrap()
+        );
+    }
+
+    #[test]
+    fn test_simple_nested_tree() {
+        let hashes = [
+            "0x0000000000000000000000000000000000000000000000000000000000000001".to_string(),
+            "0x0000000000000000000000000000000000000000000000000000000000000002".to_string(),
+            "0x0000000000000000000000000000000000000000000000000000000000000003".to_string(),
+        ];
+
+        let leaf_hashes: Vec<DynSolValue> = hashes
+            .iter()
+            .map(|hash| {
+                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
+            })
+            .collect();
+
+        let tree = StandardMerkleTree::of(&leaf_hashes);
+
+        let root = tree.root();
+        assert_eq!(
+            root,
+            B256::from_hex("0x6bf4e61b5cdb00b5d13973040b7e7c9690fc0e3e3509eabf38ee45a4fe1a3c0a")
                 .unwrap()
         );
     }
