@@ -43,6 +43,14 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof, root, leaf));
     }
 
+    function test_not_sorted_merkle() public {
+        bytes32[] memory proof = new bytes32[](1);
+        proof[0] = bytes32(0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0);
+        bytes32 root = bytes32(0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87);
+        bytes32 leaf = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
+        assertTrue(MerkleProof.verify(proof, root, leaf));
+    }
+
     function test_simple_nested_merkle() public {
         bytes32[] memory proof = new bytes32[](2);
 
@@ -103,5 +111,17 @@ contract MerkleProofUnitTest is BaseTest {
         root = bytes32(0x3856185f708a95a4cef51f6538ed3ea849702a46e020430070ac99c94a831c58);
         leaf = bytes32(0x0000000000000000000000000000000000000000000000000000000000000005);
         assertTrue(MerkleProof.verify(proof5, root, leaf));
+    }
+
+    function test_simple_deep_nested_merkle() public {
+        bytes32[] memory proof = new bytes32[](5);
+        proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
+        proof[1] = bytes32(0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0);
+        proof[2] = bytes32(0x027d4202008bf9d080d976936bdbedf33e9934bc0b1745fd5712497536a83bd9);
+        proof[3] = bytes32(0xfe80662db288f0dd9570b3f328230d82aed77131c5b2ca12e6ff8862f5676018);
+        proof[4] = bytes32(0x62c5d723f64d0a40a5e7e1155936334a2e84fb4edafd16a6045d8b502c0e3d99);
+        bytes32 root = bytes32(0x829aa29a4940648ff39373741e8cf185ad9cff8af1529623eacce5b528406827);
+        bytes32 leaf = bytes32(0x0000000000000000000000000000000000000000000000000000000000000001);
+        assertTrue(MerkleProof.verify(proof, root, leaf));
     }
 }
