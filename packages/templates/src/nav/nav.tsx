@@ -28,17 +28,24 @@ import { NavWrapper } from "./nav-wrapper";
 type NavProps = HTMLAttributes<HTMLElement> & {
   tabs: Tab[];
   children: ReactNode;
+  className?: string;
+  layerClassName?: string;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Nav: FC<NavProps> = ({ children, tabs }) => {
+export const Nav: FC<NavProps> = ({
+  children,
+  tabs,
+  className,
+  layerClassName,
+}) => {
   return (
     <NavWrapper
       nav={
-        <BaseLayerWrapper>
+        <BaseLayerWrapper className={className} layerClassName={layerClassName}>
           <div className="flex items-center justify-between gap-2">
             <NavLogo />
             <NavLocation tabs={tabs}>

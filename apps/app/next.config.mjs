@@ -85,6 +85,14 @@ const nextConfig = {
         destination: "https://changelog.light.so/changelog/:path*",
       },
       {
+        source: "/docs",
+        destination: "https://docs.light.so/docs",
+      },
+      {
+        source: "/docs/:path*",
+        destination: "https://docs.light.so/docs/:path*",
+      },
+      {
         source: "/home",
         destination: "https://home.light.so/home",
       },
