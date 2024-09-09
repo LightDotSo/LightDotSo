@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Button } from "@lightdotso/ui/components/button";
-import { Compass, Gamepad } from "lucide-react";
+import { ChevronRight, Compass, Gamepad } from "lucide-react";
 import type { FC } from "react";
 import { BetaVersion } from "../../src/components/beta-version";
 
@@ -45,16 +45,18 @@ export const Hero: FC = () => {
           >
             <a href="/">
               <Compass className="mr-2 size-6" /> Explore Now
+              <ChevronRight className="ml-2 size-4" />
             </a>
           </Button>
           <Button
             asChild
             size="lg"
-            variant="outline"
+            variant="link"
             className="w-full rounded-lg px-6 py-5 sm:w-auto"
           >
             <a href="/demo/overview">
               <Gamepad className="mr-2 size-6" /> Start Demo
+              <ChevronRight className="ml-2 size-4" />
             </a>
           </Button>
         </div>

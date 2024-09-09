@@ -55,7 +55,7 @@ export const Swap: FC = () => {
               <div className="py-8 md:pb-0">
                 <Button
                   asChild
-                  className="rounded-full px-4"
+                  className="rounded-full bg-opacity-80 px-4"
                   size="lg"
                   variant="shadow"
                 >
