@@ -12,6 +12,7 @@
   alloy = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }
   lightdotso-prisma = { workspace = true }
   prisma-client-rust = { workspace = true }

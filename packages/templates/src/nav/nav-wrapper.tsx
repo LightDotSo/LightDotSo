@@ -21,6 +21,7 @@ import type { ReactNode } from "react";
 
 export interface NavWrapperProps {
   nav: ReactNode;
+  className?: string;
   navClassName?: string;
   navChildren?: ReactNode;
   children: ReactNode;
@@ -32,6 +33,7 @@ export interface NavWrapperProps {
 
 export function NavWrapper({
   nav,
+  className,
   navClassName,
   navChildren,
   children,
@@ -43,7 +45,12 @@ export function NavWrapper({
   return (
     <main>
       <div className="flex flex-col">
-        <div className="overflow-y-visible border-b border-b-border-weak py-2">
+        <div
+          className={cn(
+            "overflow-y-visible border-b border-b-border-weak py-2",
+            className,
+          )}
+        >
           <div className={cn("flex h-16 items-center", navClassName)}>
             {nav}
           </div>

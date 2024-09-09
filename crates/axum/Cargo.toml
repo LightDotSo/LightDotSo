@@ -44,11 +44,9 @@
   prisma-client-rust = { workspace = true }
   rand = { workspace = true }
   reqwest = { workspace = true }
-  rs_merkle = "1.1.0"
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
-  sha3 = "0.10"
   siwe = { version = "0.6.0", features = ["serde"] }
   thiserror = { workspace = true }
   time = { workspace = true }

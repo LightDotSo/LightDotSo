@@ -24,7 +24,7 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {console} from "forge-std/console.sol";
 
 /// @notice Unit tests for `LightWalletFactory` for getting base hash
-contract LightWalletFactoryGetHash is BaseTest {
+contract LightWalletFactoryGetHashUnitTest is BaseTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
