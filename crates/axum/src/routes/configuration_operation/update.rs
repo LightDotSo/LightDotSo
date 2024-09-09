@@ -186,7 +186,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
             ActivityEntity::ConfigurationOperation,
             &ActivityMessage {
                 operation: ActivityOperation::Update,
-                log: serde_json::to_value(&configuration_operation.clone())?,
+                log: serde_json::to_value(configuration_operation.clone())?,
                 params: CustomParams {
                     configuration_operation_id: Some(configuration_operation.clone().id.clone()),
                     wallet_address: Some(wallet.address.clone()),
@@ -227,8 +227,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
                     .create_many(
                         owners
                             .iter()
-                            .enumerate()
-                            .map(|(_index, owner)| {
+                            .map(|owner| {
                                 owner::create_unchecked(
                                     owner.clone().address,
                                     owner.clone().weight,
@@ -284,16 +283,14 @@ pub(crate) async fn v1_configuration_operation_update_handler(
             // Enumerate and map the id of the configuration operation signature
             configuration_operation_signatures
                 .iter()
-                .enumerate()
-                .map(|(_index, signature)| {
+                .map(|signature| {
                     configuration_operation_signature::id::equals(signature.clone().id.clone())
                 })
                 .collect(),
             // Map the configuration id to the configuration operation signature.
             configuration_operation_signatures
                 .iter()
-                .enumerate()
-                .map(|(_index, _signature)| {
+                .map(|_signature| {
                     configuration_operation_signature::configuration_id::set(Some(
                         configuration.clone().id.clone(),
                     ))

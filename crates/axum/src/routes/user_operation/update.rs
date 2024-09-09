@@ -15,12 +15,12 @@
 use crate::{
     result::AppJsonResult, routes::user_operation::types::UserOperationSuccess, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{user_operation, UserOperationStatus};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
@@ -67,7 +67,7 @@ pub(crate) async fn v1_user_operation_update_handler(
     // Get the get query.
     let Query(query) = put_query;
     // Get the wallet address from the nonce query.
-    let address: H160 = query.address.parse()?;
+    let address: Address = query.address.parse()?;
 
     // -------------------------------------------------------------------------
     // DB
@@ -78,7 +78,7 @@ pub(crate) async fn v1_user_operation_update_handler(
         .client
         .user_operation()
         .find_many(vec![
-            user_operation::sender::equals(to_checksum(&address, None)),
+            user_operation::sender::equals(address.to_checksum(None)),
             or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted)

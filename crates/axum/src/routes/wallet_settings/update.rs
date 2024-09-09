@@ -16,12 +16,12 @@
 
 use super::types::{WalletSettings, WalletSettingsOptional};
 use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -89,8 +89,8 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     let Query(put) = put_query;
 
     // Parse the address from the put query.
-    let parsed_query_address: H160 = put.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = put.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // Get the wallet_settings from the put body.
     let wallet_settings = params.wallet_settings;

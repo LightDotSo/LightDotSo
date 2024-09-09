@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::Address;
+use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_sequence::{
     config::WalletConfig,
@@ -130,7 +130,7 @@ fn test_wallet_complex_to_json() -> Result<()> {
                     signer: Some(Signer {
                         weight: Some(1),
                         leaf: SignatureLeaf::DynamicSignature(DynamicSignatureLeaf {
-                            address: Address::zero(),
+                            address: Address::ZERO,
                             signature_type: DynamicSignatureType::DynamicSignatureTypeEIP1271,
                             signature: Signature([0u8; 65].to_vec()),
                             size: 3,

@@ -9,11 +9,11 @@
   repository.workspace = true
 
 [dependencies]
+  alloy = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
-  ethers = { workspace = true }
-  ethers-main = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-graphql = { workspace = true }
   lightdotso-interpreter = { workspace = true }

@@ -14,26 +14,34 @@
 
 use crate::{
     adapter::Adapter,
-    constants::{InterpretationActionType, ERC721_ABI, TRANSFER_EVENT_TOPIC},
+    constants::{InterpretationActionType, TRANSFER_EVENT_TOPIC},
     types::{
         AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
         InterpretationRequest,
     },
 };
+use alloy::{
+    primitives::{Address, U256},
+    sol,
+    sol_types::SolEvent,
+};
 use async_trait::async_trait;
-use ethers_main::{abi::Address, contract::BaseContract, types::U256};
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
-#[derive(Clone)]
-pub(crate) struct ERC721Adapter {
-    abi: BaseContract,
+sol! {
+    contract ERC721 {
+        function transferFrom(address from, address to, uint256 tokenId) external;
+        event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    }
 }
+
+#[derive(Clone)]
+pub(crate) struct ERC721Adapter {}
 
 impl ERC721Adapter {
     pub fn new() -> Self {
-        let erc20_abi: BaseContract = ERC721_ABI.clone();
-        ERC721Adapter { abi: erc20_abi }
+        ERC721Adapter {}
     }
 }
 
@@ -43,7 +51,7 @@ impl Adapter for ERC721Adapter {
         request
             .logs
             .iter()
-            .any(|log| log.topics.len() == 4 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
+            .any(|log| log.topics().len() == 4 && log.topics()[0] == *TRANSFER_EVENT_TOPIC)
     }
     async fn query(
         &self,
@@ -54,7 +62,7 @@ impl Adapter for ERC721Adapter {
         let logs = _request
             .logs
             .iter()
-            .filter(|log| log.topics.len() == 4 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
+            .filter(|log| log.topics().len() == 4 && log.topics()[0] == *TRANSFER_EVENT_TOPIC)
             .collect::<Vec<_>>();
 
         let mut actions = Vec::new();
@@ -63,14 +71,14 @@ impl Adapter for ERC721Adapter {
         // Iterate over the logs
         for log in logs {
             // Get the `from` and `to` addresses from the log
-            let (from, to, id): (Address, Address, U256) =
-                self.abi.decode_event("Transfer", log.clone().topics, log.clone().data)?;
+            let res = ERC721::Transfer::decode_log(log, true)?;
+            let (from, to, id) = (res.from, res.to, res.tokenId);
 
             // Get the asset token
             let token_address = log.address;
 
             // Get the actions for the `from` address
-            let from_action_type = if from == Address::zero() {
+            let from_action_type = if from == Address::ZERO {
                 InterpretationActionType::ERC721Mint
             } else {
                 InterpretationActionType::ERC721Send
@@ -79,7 +87,7 @@ impl Adapter for ERC721Adapter {
                 InterpretationAction { action_type: from_action_type, address: Some(from) };
 
             // Get the actions for the `to` address
-            let to_action_type = if to == Address::zero() {
+            let to_action_type = if to == Address::ZERO {
                 InterpretationActionType::ERC721Burn
             } else {
                 InterpretationActionType::ERC721Receive
@@ -95,9 +103,9 @@ impl Adapter for ERC721Adapter {
                     token_id: Some(id),
                     token_type: AssetTokenType::Erc721,
                 },
-                before_amount: Some(1.into()),
-                after_amount: Some(0.into()),
-                amount: 1.into(),
+                before_amount: Some(U256::from(1)),
+                after_amount: Some(U256::from(0)),
+                amount: U256::from(1),
             };
 
             // Get the asset changes for the `to` address
@@ -109,9 +117,9 @@ impl Adapter for ERC721Adapter {
                     token_id: Some(id),
                     token_type: AssetTokenType::Erc721,
                 },
-                before_amount: Some(0.into()),
-                after_amount: Some(1.into()),
-                amount: 0.into(),
+                before_amount: Some(U256::from(0)),
+                after_amount: Some(U256::from(1)),
+                amount: U256::from(0),
             };
 
             // Add the actions and asset changes to the vectors

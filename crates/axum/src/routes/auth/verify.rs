@@ -21,8 +21,8 @@ use crate::{
     sessions::update_session_expiry,
     state::AppState,
 };
+use alloy::{primitives::Address, signers::Signature};
 use axum::{extract::State, Json};
-use ethers_main::{abi::ethereum_types::Signature, utils::to_checksum};
 use eyre::eyre;
 use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::{error, info};
@@ -31,19 +31,7 @@ use siwe::{Message, VerificationOpts};
 use std::str::FromStr;
 use tower_cookies::Cookies;
 use tower_sessions::Session;
-use utoipa::{IntoParams, ToSchema};
-
-// -----------------------------------------------------------------------------
-// Query
-// -----------------------------------------------------------------------------
-
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[serde(rename_all = "snake_case")]
-#[into_params(parameter_in = Query)]
-pub struct PostQuery {
-    // The hash of the user operation.
-    pub user_address: String,
-}
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
 // Params
@@ -66,10 +54,7 @@ pub struct AuthVerifyCreateRequestParams {
 #[utoipa::path(
         post,
         path = "/auth/verify",
-        params(
-            PostQuery
-        ),
-        // request_body = AuthCreateRequestParams,
+        request_body = AuthVerifyCreateRequestParams,
         responses(
             (status = 200, description = "Auth verified successfully", body = AuthNonce),
             (status = 400, description = "Invalid configuration", body = AuthError),
@@ -109,7 +94,7 @@ pub(crate) async fn v1_auth_verify_handler(
     // Verify the signed message
     match message
         .verify(
-            signature.as_ref(),
+            &signature.as_bytes(),
             &VerificationOpts { nonce: Some(session_nonce.clone()), ..Default::default() },
         )
         .await
@@ -130,8 +115,8 @@ pub(crate) async fn v1_auth_verify_handler(
         .client
         .user()
         .upsert(
-            user::address::equals(to_checksum(&message.address.into(), None)),
-            user::create(to_checksum(&message.address.into(), None), vec![]),
+            user::address::equals(Address::from_slice(&message.address).to_checksum(None)),
+            user::create(Address::from_slice(&message.address).to_checksum(None), vec![]),
             vec![],
         )
         .exec()

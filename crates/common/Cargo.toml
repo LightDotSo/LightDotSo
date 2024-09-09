@@ -9,7 +9,6 @@
   repository.workspace = true
 
 [dependencies]
-  const-hex = { workspace = true }
-  ethers = { workspace = true }
+  alloy = { workspace = true }
   eyre = { workspace = true }
   serde = { workspace = true }

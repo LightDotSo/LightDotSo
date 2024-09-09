@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::{Address, H256};
+use alloy::primitives::{Address, B256};
 use eyre::Result;
 use lightdotso_sequence::{
     config::WalletConfig,
@@ -51,10 +51,10 @@ async fn test_integration_hash_first() -> Result<()> {
     let image_hash = config.image_hash_of_wallet_config()?;
 
     // Parse the image hash to bytes.
-    let image_hash_bytes: H256 = image_hash.into();
+    let image_hash_bytes: B256 = image_hash.into();
 
     // Parse the salt to bytes.
-    let salt_bytes: H256 =
+    let salt_bytes: B256 =
         "0x0000000000000000000000000000000000000000000000000000000000000001".parse()?;
 
     // Calculate the new wallet address.

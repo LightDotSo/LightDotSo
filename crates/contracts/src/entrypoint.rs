@@ -13,24 +13,25 @@
 // limitations under the License.
 
 use crate::provider::get_provider;
-use ethers::{
-    contract::abigen,
-    providers::{Http, Provider},
-    types::Address,
-};
+use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
 use eyre::Result;
+use EntryPoint::EntryPointInstance;
 
-abigen!(EntryPoint, "abi/EntryPoint.json",);
+sol!(
+    #[sol(rpc)]
+    EntryPoint,
+    "abi/EntryPoint.json"
+);
 
 pub async fn get_entrypoint(
     chain_id: u64,
     entry_point_address: Address,
-) -> Result<EntryPoint<Provider<Http>>> {
+) -> Result<EntryPointInstance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await?;
+    let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = EntryPoint::new(entry_point_address, provider.into());
+    let contract = EntryPoint::new(entry_point_address, provider);
 
     // Return the contract.
     Ok(contract)

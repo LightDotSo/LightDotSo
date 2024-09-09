@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::providers::Middleware;
-use ethers_main::types::{H160, H256};
+use alloy::{
+    eips::BlockNumberOrTag,
+    primitives::{Address, B256},
+    providers::Provider,
+};
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
@@ -25,7 +29,7 @@ use std::{str::FromStr, sync::Arc};
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_transaction_with_logs() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Create a database client.
     let db = create_test_client().await?;
@@ -46,39 +50,39 @@ async fn test_integration_get_transaction_with_logs() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_upsert_transaction_with_log_receipt() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Create a database client.
     let db = create_test_client().await?;
 
     // Get the provider.
-    let provider = get_provider(1).await?;
+    let (provider, _) = get_provider(1).await?;
 
     // Set the tx hash.
     let tx_hash =
-        H256::from_str("0xf8af7ce87505ad4611ec3beaf3f0f70ca4c73dff544347fac5fcf198b4e73ed0")?;
+        B256::from_str("0xf8af7ce87505ad4611ec3beaf3f0f70ca4c73dff544347fac5fcf198b4e73ed0")?;
 
     // Get a transaction with logs.
-    let tx = provider.get_transaction(tx_hash).await?;
+    let tx = provider.get_transaction_by_hash(tx_hash).await?;
 
     // Get the transaction with logs.
     let tx_with_receipt = provider.get_transaction_receipt(tx_hash).await?;
 
     // Get the block number.
-    let block = provider.get_block(18917135).await?;
+    let block = provider.get_block_by_number(BlockNumberOrTag::Number(18917135), true).await?;
 
     // Wallet address.
-    let wallet_address: H160 = "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?;
+    let wallet_address: Address = "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?;
 
     // Upsert the transaction with log receipt.
     let res = upsert_transaction_with_log_receipt(
         db.into(),
         wallet_address,
         tx.clone().unwrap(),
-        tx_with_receipt.clone().unwrap().logs,
+        tx_with_receipt.clone().unwrap().inner.logs().to_vec(),
         tx_with_receipt.clone().unwrap(),
         1,
-        block.clone().unwrap().timestamp,
+        block.clone().unwrap().header.timestamp,
         None,
     )
     .await?;

@@ -14,9 +14,9 @@
 
 #![allow(clippy::unwrap_used)]
 
+use alloy::rpc::types::Block;
 use backon::{ExponentialBuilder, Retryable};
-use ethers::types::{Block, H256};
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_indexer::indexer::Indexer;
 use lightdotso_kafka::{
     namespace::{
@@ -61,7 +61,7 @@ pub async fn transaction_consumer(
             indexer.get_block_with_internal(maybe_block_number, chain_id).await
         } else {
             // Return an error
-            Err(ethers::providers::ProviderError::CustomError("Block number is 0".to_string()))
+            Err(eyre!("Block number is 0".to_string()))
         };
 
         // If the block is valid, put as payload_block in bytes format w/
@@ -82,10 +82,10 @@ pub async fn transaction_consumer(
         };
 
         // Deserialize the payload
-        match serde_json::from_slice::<(Block<H256>, u64)>(payload_block.as_bytes()) {
+        match serde_json::from_slice::<(Block, u64)>(payload_block.as_bytes()) {
             Ok((block, chain_id)) => {
                 // Get the block number
-                let block_number = block.number.unwrap().low_u64();
+                let block_number = block.header.number.unwrap();
 
                 // Log each message as an example.
                 info!("Indexing block: {:?} at chain_id: {:?}", block_number, chain_id);
@@ -107,7 +107,7 @@ pub async fn transaction_consumer(
                     if topic == TRANSACTION.to_string() || topic == RETRY_TRANSACTION.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 0",
-                            block.number.unwrap().low_u64(),
+                            block.header.number.unwrap(),
                             chain_id
                         );
                         let _ = { || produce_retry_transaction_0_message(client.clone(), payload) }
@@ -116,7 +116,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_0.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 1",
-                            block.number.unwrap().low_u64(),
+                            block.header.number.unwrap(),
                             chain_id
                         );
                         let _ = { || produce_retry_transaction_1_message(client.clone(), payload) }
@@ -125,7 +125,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_1.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 2",
-                            block.number.unwrap().low_u64(),
+                            block.header.number.unwrap(),
                             chain_id
                         );
                         let _ = { || produce_retry_transaction_2_message(client.clone(), payload) }
@@ -134,7 +134,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_2.to_string() {
                         warn!(
                             "Block: {:?} at chain_id: {:?} error, adding to error queue",
-                            block.number.unwrap().low_u64(),
+                            block.header.number.unwrap(),
                             chain_id
                         );
                         let _ = { || produce_error_transaction_message(client.clone(), payload) }
@@ -146,8 +146,7 @@ pub async fn transaction_consumer(
                 // Log success
                 info!(
                     "Successfully indexed block: {:?} at chain_id: {:?}",
-                    block.number.unwrap().low_u64(),
-                    chain_id
+                    block.header.number, chain_id
                 );
             }
             Err(e) => {

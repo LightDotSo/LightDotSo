@@ -26,14 +26,11 @@ use crate::{
     },
     state::AppState,
 };
+use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
-};
-use ethers_main::{
-    types::{H160, H256},
-    utils::to_checksum,
 };
 use eyre::{eyre, Result};
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
@@ -182,11 +179,11 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .find(|owner| owner.id == sig.owner_id)
         .ok_or(AppError::BadRequest)?;
 
-    // Check if all of the owner address can be parsed to H160.
+    // Check if all of the owner address can be parsed to Address.
     let owners_addresses = owners
         .iter()
-        .map(|owner| owner.address.parse::<H160>())
-        .collect::<Result<Vec<H160>, _>>()?;
+        .map(|owner| owner.address.parse::<Address>())
+        .collect::<Result<Vec<Address>, _>>()?;
 
     // Check if the threshold is greater than 0
     if params.threshold == 0 {
@@ -234,7 +231,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     info!("image_hash: {}", image_hash.to_vec().to_hex_string());
 
     // Parse the image hash to bytes.
-    let image_hash_bytes: H256 = image_hash.into();
+    let image_hash_bytes: B256 = image_hash.into();
 
     // Check if the wallet configuration is valid.
     let valid = config.is_wallet_valid();
@@ -304,11 +301,13 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let owner = owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.clone().address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.clone().address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
-            recovered_sig.address,
-            owner.clone().address
+            recovered_sig.address.to_checksum(None),
+            owner.clone().address.parse::<Address>()?.to_checksum(None)
         );
         return Err(AppError::BadRequest);
     }
@@ -322,7 +321,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .client
         .user()
         .find_many(vec![user::address::in_vec(
-            owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
+            owners_addresses.iter().map(|addr| addr.to_checksum(None)).collect(),
         )])
         .exec()
         .await?;
@@ -356,7 +355,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                         .enumerate()
                         .map(|(index, config_owner)| {
                             configuration_operation_owner::create_unchecked(
-                                to_checksum(&config_owner.address.parse::<H160>().unwrap(), None),
+                                config_owner.address.parse::<Address>().unwrap().to_checksum(None),
                                 config_owner.weight.into(),
                                 index as i32,
                                 configuration_operation.clone().id,
@@ -365,14 +364,12 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                                         .iter()
                                         .find(|user| {
                                             user.address ==
-                                                to_checksum(
-                                                    &config_owner
-                                                        .clone()
-                                                        .address
-                                                        .parse::<H160>()
-                                                        .unwrap(),
-                                                    None,
-                                                )
+                                                config_owner
+                                                    .clone()
+                                                    .address
+                                                    .parse::<Address>()
+                                                    .unwrap()
+                                                    .to_checksum(None)
                                         })
                                         .unwrap()
                                         .id

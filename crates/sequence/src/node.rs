@@ -32,18 +32,19 @@ use crate::{
     types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32},
 };
-use ethers::{
-    abi::{encode_packed, Token},
-    types::{Address, U256},
-    utils::keccak256,
+use alloy::{
+    dyn_abi::DynSolValue,
+    primitives::{keccak256, Address, FixedBytes, U256},
 };
 use eyre::{eyre, Result};
 
 /// Generates a leaf node for the merkle tree
 pub fn leaf_for_address_and_weight(addr: Address, weight: u8) -> Result<[u8; 32]> {
-    let weight_shifted = U256::from(weight) << 160;
-    let addr_u256 = U256::from_big_endian(addr.as_bytes());
-    Ok((weight_shifted | addr_u256).into())
+    let weight_shifted: U256 = U256::from(weight) << 160;
+    let addr_u256: U256 = U256::from_be_slice(addr.as_ref());
+    let combined = weight_shifted | addr_u256;
+    let combined_bytes: [u8; 32] = combined.to_be_bytes();
+    Ok(combined_bytes)
 }
 
 /// Recovers the wallet config from the signature
@@ -52,20 +53,35 @@ pub fn leaf_for_nested(
     internal_threshold: u16,
     external_weight: u8,
 ) -> Result<[u8; 32]> {
-    Ok(keccak256(ethers::abi::encode_packed(&[
-        Token::String("Sequence nested config:\n".to_string()),
-        Token::FixedBytes(internal_root.to_vec()),
-        Token::FixedBytes(left_pad_u16_to_bytes32(internal_threshold).to_vec()),
-        Token::FixedBytes(left_pad_u8_to_bytes32(external_weight).to_vec()),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::String("Sequence nested config:\n".to_string()),
+            DynSolValue::FixedBytes(FixedBytes::from(internal_root), internal_root.len()),
+            DynSolValue::FixedBytes(
+                FixedBytes::from(left_pad_u16_to_bytes32(internal_threshold)),
+                internal_root.len(),
+            ),
+            DynSolValue::FixedBytes(
+                FixedBytes::from(left_pad_u8_to_bytes32(external_weight)),
+                internal_root.len(),
+            ),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 /// Recovers the wallet config from the signature
 pub fn leaf_for_hardcoded_subdigest(hardcoded_subdigest: [u8; 32]) -> Result<[u8; 32]> {
-    Ok(keccak256(encode_packed(&[
-        Token::String("Sequence static digest:\n".to_string()),
-        Token::FixedBytes(hardcoded_subdigest.to_vec()),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::String("Sequence static digest:\n".to_string()),
+            DynSolValue::FixedBytes(
+                FixedBytes::from(hardcoded_subdigest),
+                hardcoded_subdigest.len(),
+            ),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 impl SignerNode {

@@ -24,7 +24,8 @@
 // You should have received a copy of the GNU Lesser Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::signers::AwsSigner;
+use alloy::signers::aws::AwsSigner;
+use aws_config::BehaviorVersion;
 use eyre::{eyre, Context, Result};
 use lightdotso_redis::{
     get_redis_client,
@@ -32,8 +33,6 @@ use lightdotso_redis::{
     redis::Client,
 };
 use lightdotso_tracing::tracing::{debug, error, info, warn};
-use rusoto_core::Region;
-use rusoto_kms::KmsClient;
 use std::{future::Future, time::Duration};
 use tokio::{sync::oneshot, task::AbortHandle, time::sleep};
 
@@ -50,7 +49,6 @@ pub struct KmsSigner {
 impl KmsSigner {
     pub async fn connect(
         chain_id: u64,
-        region: Region,
         key_ids: Vec<String>,
         ttl_millis: u64,
     ) -> eyre::Result<Self> {
@@ -67,9 +65,10 @@ impl KmsSigner {
             tx,
         ));
         let key_id = rx.await.context("should lock key_id")?;
-        let client = KmsClient::new(region);
+        let config = aws_config::load_defaults(BehaviorVersion::latest()).await;
+        let client = aws_sdk_kms::Client::new(&config);
         let signer =
-            AwsSigner::new(client, key_id, chain_id).await.context("should create signer")?;
+            AwsSigner::new(client, key_id, Some(chain_id)).await.context("should create signer")?;
 
         Ok(Self { signer, _kms_guard: kms_guard })
     }

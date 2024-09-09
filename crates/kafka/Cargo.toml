@@ -9,7 +9,7 @@
   repository.workspace = true
 
 [dependencies]
-  ethers = { workspace = true }
+  alloy = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-contracts = { workspace = true }

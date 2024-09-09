@@ -24,17 +24,23 @@
 // If not, see https://www.gnu.org/licenses/.
 
 #![allow(clippy::expect_used)]
+#![allow(unused_doc_comments)]
 
-use crate::entrypoint::{ExecutionResult, FailedOp};
-use ethers::{abi::AbiDecode, contract::ContractError, providers::Middleware, types::Bytes};
+use crate::entrypoint::EntryPoint::{ExecutionResult, FailedOp};
+use alloy::{
+    primitives::Bytes,
+    providers::Provider,
+    sol,
+    sol_types::{ContractError, SolError},
+};
 
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.
 /// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L31-37
 /// License: GNU Lesser General Public License v3.0
-pub fn get_revert_bytes<M: Middleware>(error: ContractError<M>) -> Result<Bytes, ContractError<M>> {
-    if let ContractError::Revert(bytes) = error {
-        Ok(bytes)
+pub fn get_revert_bytes<M: Provider>(error: ContractError<M>) -> Result<Bytes, ContractError<M>> {
+    if let ContractError::Revert(revert) = error {
+        Ok(Bytes::from(revert.reason().as_bytes().to_vec()))
     } else {
         Err(error)
     }
@@ -43,23 +49,20 @@ pub fn get_revert_bytes<M: Middleware>(error: ContractError<M>) -> Result<Bytes,
 /// The abi for what happens when you just `revert("message")` in a contract
 /// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L39-45
 /// License: GNU Lesser General Public License v3.0
-#[derive(Clone, Debug, Default, Eq, PartialEq, ethers::contract::EthError)]
-#[etherror(name = "Error", abi = "Error(string)")]
-pub struct ContractRevertError {
-    /// Revert reason
-    pub reason: String,
+sol! {
+  error Error(string);
 }
 
 /// Decode the revert data into an `ExecutionResult` or a `FailedOp`.
 /// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/provider/src/ethers/entry_point.rs#L141-155
 /// License: GNU Lesser General Public License v3.0
 pub fn decode_simulate_handle_ops_revert(revert_data: Bytes) -> Result<ExecutionResult, String> {
-    if let Ok(result) = ExecutionResult::decode(&revert_data) {
+    if let Ok(result) = ExecutionResult::abi_decode(&revert_data, true) {
         Ok(result)
-    } else if let Ok(failed_op) = FailedOp::decode(&revert_data) {
+    } else if let Ok(failed_op) = FailedOp::abi_decode(&revert_data, true) {
         Err(failed_op.reason)
-    } else if let Ok(err) = ContractRevertError::decode(&revert_data) {
-        Err(err.reason)
+    } else if let Ok(err) = Error::abi_decode(&revert_data, true) {
+        Err(err._0)
     } else {
         Err(String::new())
     }

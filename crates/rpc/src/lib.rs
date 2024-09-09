@@ -29,12 +29,12 @@ use crate::{
     },
     utils::shuffle_requests,
 };
+use alloy::primitives::B256;
 use axum::{
     body::Body,
     extract::{Path, State},
     http::{Request, Response},
 };
-use ethers::types::H256;
 use hyper::body;
 use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
 use lightdotso_hyper::HyperClient;
@@ -414,10 +414,10 @@ pub async fn rpc_proxy_handler(
                             if let Some(result) = body_json.get("result") {
                                 info!("result: {:?}", result);
 
-                                // Convert the result to a H256
+                                // Convert the result to a B256
                                 let result =
                                     serde_json::from_value::<String>(result.clone()).unwrap();
-                                let hash: Result<H256, _> = result.parse();
+                                let hash: Result<B256, _> = result.parse();
                                 info!("hash: {:?}", hash);
 
                                 if let Ok(hash) = hash {

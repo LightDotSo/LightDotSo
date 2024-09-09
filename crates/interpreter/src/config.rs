@@ -22,11 +22,7 @@ use lightdotso_simulator::types::SimulationRequest;
 use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]
-pub struct InterpreterArgs {
-    /// The etherscan API key
-    #[clap(long, env = "ETHERSCAN_KEYS")]
-    pub etherscan_key: Option<String>,
-}
+pub struct InterpreterArgs {}
 
 impl InterpreterArgs {
     pub async fn run(self, requests: Vec<SimulationRequest>) -> Result<InterpretationResponse> {
@@ -37,11 +33,7 @@ impl InterpreterArgs {
         info!("Config: {:?}", self);
 
         // Construct the interpreter
-        let mut interpreter = Interpreter::new(
-            &self,
-            requests.first().and_then(|request| request.block_number).unwrap_or(1),
-        )
-        .await;
+        let mut interpreter = Interpreter::new().await;
 
         info!("InterpreterArgs run, starting simulate...");
 
@@ -66,7 +58,7 @@ impl InterpreterArgs {
         info!("Config: {:?}", self);
 
         // Construct the interpreter
-        let mut interpreter = Interpreter::new(&self, request.chain_id).await;
+        let mut interpreter = Interpreter::new().await;
 
         info!("InterpreterArgs run, starting interpret...");
 

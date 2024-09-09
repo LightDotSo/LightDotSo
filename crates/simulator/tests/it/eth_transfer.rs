@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::primitives::U256;
 use eyre::Result;
 use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
 
@@ -24,7 +25,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
         // fiveoutofnine.eth
         to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
         data: None,
-        value: Some(1),
+        value: U256::from(1),
         gas_limit: u64::MAX,
         block_number: None,
     };

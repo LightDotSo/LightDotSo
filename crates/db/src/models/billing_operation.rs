@@ -15,8 +15,8 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::types::Database;
+use alloy::primitives::Address;
 use autometrics::autometrics;
-use ethers::utils::to_checksum;
 use eyre::{eyre, Result};
 use lightdotso_prisma::{
     billing, paymaster_operation, wallet, wallet_billing, BillingOperationStatus,
@@ -31,7 +31,7 @@ use lightdotso_tracing::tracing::info;
 #[autometrics]
 pub async fn create_billing_operation(
     db: Database,
-    sender_address: ethers::types::H160,
+    sender_address: Address,
     paymaster_operation_id: String,
     pending_usd: f64,
 ) -> Result<()> {
@@ -39,7 +39,7 @@ pub async fn create_billing_operation(
 
     let wallet_with_billing = db
         .wallet()
-        .find_unique(wallet::address::equals(to_checksum(&sender_address, None)))
+        .find_unique(wallet::address::equals(sender_address.to_checksum(None)))
         .with(wallet::wallet_billing::fetch().with(wallet_billing::billing::fetch()))
         .exec()
         .await?;

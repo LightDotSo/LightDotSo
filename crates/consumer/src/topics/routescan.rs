@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use ethers::utils::to_checksum;
+use alloy::primitives::Address;
 use eyre::{eyre, Result};
 use lightdotso_kafka::types::routescan::RoutescanMessage;
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
@@ -36,13 +36,13 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
 
         // Log the payload
         let balances =
-            get_token_balances(&payload.chain_id, &to_checksum(&payload.address, None), None, None)
+            get_token_balances(&payload.chain_id, &payload.address.to_checksum(None), None, None)
                 .await?;
         info!(?balances);
 
         // Get the native balance
         let native_balance =
-            get_native_balance(&payload.chain_id, &to_checksum(&payload.address, None)).await?;
+            get_native_balance(&payload.chain_id, &payload.address.to_checksum(None)).await?;
         info!(?native_balance);
 
         // Get the items from the token balances
@@ -84,10 +84,8 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                     .iter()
                     .map(|item| {
                         (
-                            to_checksum(
-                                &(item.token_address.clone().unwrap().parse().unwrap()),
-                                None,
-                            ),
+                            (item.token_address.clone().unwrap().parse::<Address>().unwrap())
+                                .to_checksum(None),
                             payload.chain_id as i64,
                             vec![
                                 token::symbol::set(Some(
@@ -150,10 +148,9 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                     .wallet_balance()
                     .update_many(
                         vec![
-                            wallet_balance::wallet_address::equals(to_checksum(
-                                &payload.address,
-                                None,
-                            )),
+                            wallet_balance::wallet_address::equals(
+                                payload.address.to_checksum(None),
+                            ),
                             wallet_balance::chain_id::equals(payload.chain_id as i64),
                         ],
                         vec![wallet_balance::is_latest::set(false)],
@@ -179,9 +176,9 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                 (
                                     // Temporary fix for quote rate
                                     // item.quote.unwrap_or(0.0),
-                                    0.0,
+                                    0.0_f64,
                                     payload.chain_id as i64,
-                                    to_checksum(&payload.address, None),
+                                    payload.address.to_checksum(None),
                                     vec![
                                         wallet_balance::amount::set(Some(
                                             item.token_quantity

@@ -15,15 +15,16 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::config::BillingArgs;
+use alloy::{
+    primitives::{Address, U256},
+    providers::{Provider, RootProvider},
+    transports::BoxTransport,
+};
 use autometrics::autometrics;
 use backon::{ExponentialBuilder, Retryable};
-use ethers::{
-    prelude::Provider,
-    providers::{Http, Middleware},
-    types::U256,
-};
 use eyre::{eyre, Result};
 use lightdotso_client::crypto::get_native_token_price;
+use lightdotso_common::traits::U256ToU64;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::create_client,
@@ -108,14 +109,14 @@ impl Billing {
         info!("max_gas_limit: {}", max_gas_limit);
 
         // Multiply the gas price by the gas limit, denominated in ether 1e-18
-        let max_gas_consumed = gas_price * U256::from(max_gas_limit);
+        let max_gas_consumed = U256::from(gas_price) * U256::from(max_gas_limit);
 
         // Log the gas consumed
         info!("max_gas_consumed: {}", max_gas_consumed);
 
         // Calculate the total cost
         let total_cost_usd =
-            (max_gas_consumed.as_u64() as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
+            (max_gas_consumed.to_u64()? as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
 
         // Log the total cost
         info!("total_cost_usd: {}", total_cost_usd);
@@ -133,11 +134,14 @@ impl Billing {
     }
 
     /// Get the provider
-    pub async fn get_provider(&self, chain_id: u64) -> Result<Option<Arc<Provider<Http>>>> {
+    pub async fn get_provider(
+        &self,
+        chain_id: u64,
+    ) -> Result<Option<Arc<RootProvider<BoxTransport>>>> {
         // Create the provider
-        let client: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
+        let (client, _) = get_provider(chain_id).await?;
 
-        Ok(client)
+        Ok(Some(Arc::new(client)))
     }
 
     /// Creates a new transaction with log receipt in the database
@@ -145,7 +149,7 @@ impl Billing {
     pub async fn db_create_billing_operation(
         &self,
         db_client: Arc<PrismaClient>,
-        wallet_address: ethers::types::H160,
+        wallet_address: Address,
         paymaster_operation_id: String,
         pending_usd: f64,
     ) -> Result<()> {
@@ -178,7 +182,7 @@ impl Billing {
 
     /// Get the gas price for the chain
     #[autometrics]
-    pub async fn get_gas_price(&self, chain_id: u64) -> Result<Option<U256>> {
+    pub async fn get_gas_price(&self, chain_id: u64) -> Result<Option<u128>> {
         let client = self.get_provider(chain_id).await?;
 
         info!("get_block, chain_id: {}", chain_id);
@@ -224,7 +228,7 @@ mod tests {
 
     // Calculate the total cost
     #[tokio::test]
-    async fn test_calculate_total_cost() {
+    async fn test_calculate_total_cost() -> Result<()> {
         let currency_price_usd = 3000_f64;
         let gas_price = U256::from(1361699);
         let max_gas_limit = 306824_u64;
@@ -233,8 +237,10 @@ mod tests {
         println!("max_gas_consumed: {}", max_gas_consumed);
 
         let total_cost_usd =
-            (max_gas_consumed.as_u64() as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
+            (max_gas_consumed.to_u64()? as f64) / 10_u64.pow(18) as f64 * currency_price_usd;
 
         println!("total_cost_usd: {}", total_cost_usd);
+
+        Ok(())
     }
 }

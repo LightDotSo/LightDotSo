@@ -29,10 +29,9 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::types::SignerNode;
-use ethers::{
-    abi::{encode, Token},
-    types::{H256, U256},
-    utils::keccak256,
+use alloy::{
+    dyn_abi::DynSolValue,
+    primitives::{keccak256, FixedBytes, B256, U256},
 };
 use eyre::{eyre, Result};
 use lightdotso_common::traits::VecU8ToHex;
@@ -52,14 +51,14 @@ pub struct WalletConfig {
     // Uint256 weight of the retured signature
     pub weight: u32,
     // Image hash of the wallet config that is used to verify the wallet
-    pub image_hash: H256,
+    pub image_hash: B256,
     // Signers of the wallet
     pub tree: SignerNode,
     // The type of the recovery
     pub signature_type: u8,
     // Internal field used to store the image hash of the wallet config
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub internal_root: Option<H256>,
+    pub internal_root: Option<B256>,
     // The internal field used to store the history of the recovered wallet configs
     #[serde(skip_serializing_if = "Option::is_none")]
     pub internal_recovered_configs: Option<Vec<WalletConfig>>,
@@ -71,16 +70,28 @@ impl WalletConfig {
     // internal_root is computed by the module
     pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
         if let Some(internal_root) = self.internal_root {
-            Ok(keccak256(encode(&[
-                Token::FixedBytes(
-                    keccak256(encode(&[
-                        Token::FixedBytes(internal_root.0.to_vec()),
-                        Token::Uint(U256::from(self.threshold)),
-                    ]))
-                    .to_vec(),
-                ),
-                Token::Uint(U256::from(self.checkpoint)),
-            ])))
+            Ok(*keccak256(
+                DynSolValue::Tuple(vec![
+                    DynSolValue::FixedBytes(
+                        FixedBytes::from_slice(
+                            keccak256(
+                                DynSolValue::Tuple(vec![
+                                    DynSolValue::FixedBytes(
+                                        FixedBytes::from_slice(&internal_root.0),
+                                        32,
+                                    ),
+                                    DynSolValue::Uint(U256::from(self.threshold), 256),
+                                ])
+                                .abi_encode(),
+                            )
+                            .as_ref(),
+                        ),
+                        32,
+                    ),
+                    DynSolValue::Uint(U256::from(self.checkpoint), 256),
+                ])
+                .abi_encode(),
+            ))
         }
         // If the internal root is not set, return an error
         else {

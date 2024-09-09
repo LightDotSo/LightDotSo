@@ -9,5 +9,5 @@
   repository.workspace = true
 
 [dependencies]
-  ethers = { workspace = true }
+  alloy = { workspace = true }
   lightdotso-constants = { workspace = true }

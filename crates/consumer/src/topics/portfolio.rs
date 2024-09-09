@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
 use lightdotso_prisma::{chain, wallet, wallet_balance, PrismaClient};
@@ -47,7 +46,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                         AND isTestnet = FALSE
                         AND NOT (chainId = 0)
                 ",
-                PrismaValue::String(to_checksum(&payload.address, None))
+                PrismaValue::String(payload.address.to_checksum(None))
             ))
             .exec()
             .await?;
@@ -64,10 +63,9 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                         .wallet_balance()
                         .update_many(
                             vec![
-                                wallet_balance::wallet_address::equals(to_checksum(
-                                    &payload.address,
-                                    None,
-                                )),
+                                wallet_balance::wallet_address::equals(
+                                    payload.address.to_checksum(None),
+                                ),
                                 wallet_balance::chain_id::equals(0),
                             ],
                             vec![wallet_balance::is_latest::set(false)],
@@ -80,7 +78,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                         .create(
                             latest_portfolio_balance,
                             chain::id::equals(0),
-                            wallet::address::equals(to_checksum(&payload.address, None)),
+                            wallet::address::equals(payload.address.to_checksum(None)),
                             vec![wallet_balance::is_latest::set(true)],
                         )
                         .exec()

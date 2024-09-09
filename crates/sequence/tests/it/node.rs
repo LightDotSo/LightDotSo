@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::types::Address;
+use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_sequence::{
     module::SigModule,
@@ -23,7 +23,7 @@ use lightdotso_sequence::{
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_node_simple() -> Result<()> {
     let module = SigModule::new(
-        Address::zero(),
+        Address::ZERO,
         1,
         [0; 32],
         Some(SignerNode {
@@ -66,7 +66,7 @@ async fn test_integration_node_simple() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_node_nested() -> Result<()> {
     let module = SigModule::new(
-        Address::zero(),
+        Address::ZERO,
         1,
         [0; 32],
         Some(SignerNode {
@@ -133,7 +133,7 @@ async fn test_integration_node_nested() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_node_complex() -> Result<()> {
     let module = SigModule::new(
-        Address::zero(),
+        Address::ZERO,
         1,
         [0; 32],
         Some(SignerNode {

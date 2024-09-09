@@ -14,12 +14,12 @@
 
 use super::{error::QueueError, types::QueueSuccess};
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_constants::chains::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS, ROUTESCAN_CHAIN_IDS};
 use lightdotso_kafka::{
     topics::{covalent::produce_covalent_message, routescan::produce_routescan_message},
@@ -70,8 +70,8 @@ pub(crate) async fn v1_queue_token_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // -------------------------------------------------------------------------
     // DB

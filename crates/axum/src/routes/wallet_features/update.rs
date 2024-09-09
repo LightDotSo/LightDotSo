@@ -19,12 +19,12 @@ use crate::{
     constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
     routes::wallet_features::error::WalletFeaturesError, sessions::get_user_id, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{wallet, wallet_features};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -109,8 +109,8 @@ pub(crate) async fn v1_wallet_features_update_handler(
     let Query(put) = put_query;
 
     // Parse the address from the put query.
-    let parsed_query_address: H160 = put.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = put.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // Get the wallet_features from the put body.
     let wallet_features = params.wallet_features;

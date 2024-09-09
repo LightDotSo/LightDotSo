@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::primitives::{Bytes, Log, LogData, U256};
 use clap::Parser;
-use ethers_main::types::Log;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::{config::InterpreterArgs, types::InterpretationRequest};
 use lightdotso_simulator::types::SimulationRequest;
@@ -22,6 +23,9 @@ use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc20_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -29,7 +33,7 @@ async fn test_integration_erc20_transfer() -> Result<()> {
         // ENS token address
         to: "0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72".parse()?,
         data: Some("0xa9059cbb0000000000000000000000006f8a90995fdce00da1f7dd731d812f6a6d18d1ff000000000000000000000000000000000000000000000001a055690d9db80000".parse()?),
-        value: None,
+        value: U256::ZERO,
         gas_limit: u64::MAX,
         // Tx was on 13704035
         block_number: Some(13704034),
@@ -51,6 +55,9 @@ async fn test_integration_erc20_transfer() -> Result<()> {
 // https://polygonscan.com/tx/0xc8e327667f062843195f77db4374afdb29f8ed2fce0e88c315f2c4110f59ed44#eventlog
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc20_transfer_query_overflow_bug() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     // Initialize the tracing subscriber.
     lightdotso_tracing::tracing_subscriber::fmt().init();
 
@@ -64,20 +71,23 @@ async fn test_integration_erc20_transfer_query_overflow_bug() -> Result<()> {
         logs: vec![
             Log {
                 address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
-                topics: vec![
-                    "0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972".parse()?
-                ],
-                ..Default::default()
+                data: LogData::new(
+                    vec![
+                        "0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972".parse()?,
+                    ],
+                    Bytes::default()
+                ).unwrap(),
             },
             Log {
                 address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
-                topics: vec![
+                data: LogData::new(
+                    vec![
                     "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef".parse()?,
                     "0x000000000000000000000000fbd80fe5ce1ece895845fd131bd621e2b6a1345f".parse()?,
                     "0x000000000000000000000000e8a0e8466df96ec769a02adaa969abe67c70ec68".parse()?
-                ],
-                data: "0x00000000000000000000000000000000000000000000000000000000000493e0".parse()?,
-                ..Default::default()
+                    ],
+                "0x00000000000000000000000000000000000000000000000000000000000493e0".parse()?,
+                ).unwrap(),
             }
         ],
         value: None,

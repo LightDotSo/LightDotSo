@@ -3,7 +3,7 @@ source: crates/graphql/src/polling/user_operations.rs
 expression: query.query
 ---
 query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
-  userOperations(first: 300, where: {blockNumber_gt: $minBlock, index_gt: $minIndex, }, orderBy: index) {
+  userOperations(first: 300, where: {blockNumber_gt: $minBlock, index_gt: $minIndex}, orderBy: index) {
     id
     index
     sender
@@ -104,5 +104,3 @@ query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
     }
   }
 }
-
-

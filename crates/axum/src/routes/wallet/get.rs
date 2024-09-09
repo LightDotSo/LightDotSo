@@ -17,12 +17,12 @@ use crate::{
     cookies::CookieUtility, error::RouteError, result::AppJsonResult,
     routes::wallet::error::WalletError, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::wallet;
 use serde::Deserialize;
 use tower_cookies::Cookies;
@@ -38,8 +38,6 @@ use utoipa::IntoParams;
 pub struct GetQuery {
     /// The address of the wallet.
     pub address: String,
-    /// The chain id of the wallet.
-    pub chain_id: Option<i64>,
 }
 
 // -----------------------------------------------------------------------------
@@ -71,8 +69,8 @@ pub(crate) async fn v1_wallet_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // -------------------------------------------------------------------------
     // DB

@@ -14,12 +14,12 @@
 
 use super::types::Token;
 use crate::{result::AppJsonResult, routes::token::types::TokenGroup, state::AppState};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use eyre::Result;
 use lightdotso_prisma::{
     token, token_group,
@@ -358,8 +358,8 @@ pub(crate) async fn v1_token_list_count_handler(
 
 /// Constructs a params list for tokens.
 fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam>> {
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     let mut query_params = vec![
         wallet_balance::wallet_address::equals(checksum_address),

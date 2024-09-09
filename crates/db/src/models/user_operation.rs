@@ -19,13 +19,14 @@ use crate::{
     models::log::DbLog,
     types::{AppJsonResult, Database},
 };
+use alloy::{
+    primitives::{Bytes, B256, U256},
+    rpc::types::Log,
+};
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::{
-    types::{Bytes, Log, H256, U256},
-    utils::to_checksum,
-};
 use eyre::Result;
+use lightdotso_common::traits::U256ToU64;
 use lightdotso_contracts::{
     paymaster::decode_paymaster_and_data,
     types::{UserOperation, UserOperationReceipt, UserOperationWithTransactionAndReceiptLogs},
@@ -36,7 +37,7 @@ use lightdotso_prisma::{
 };
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
-use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
+use prisma_client_rust::chrono::DateTime;
 use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
@@ -46,7 +47,7 @@ use serde::{Deserialize, Serialize};
 #[autometrics]
 pub async fn update_user_operation_with_receipt(
     db: Database,
-    user_operation_hash: H256,
+    user_operation_hash: B256,
     user_operation_receipt: UserOperationReceipt,
 ) -> AppJsonResult<()> {
     info!("Updating user operation status");
@@ -86,19 +87,19 @@ pub async fn upsert_user_operation(
         .upsert(
             user_operation::hash::equals(format!("{:?}", uow.hash)),
             user_operation::create(
-                to_checksum(&uow.entry_point, None),
+                uow.entry_point.to_checksum(None),
                 format!("{:?}", uow.hash),
-                uow.nonce.unwrap_or(0.into()).low_u64() as i64,
+                uow.nonce.unwrap_or(U256::ZERO).to_u64()? as i64,
                 uow.init_code.clone().unwrap_or_else(|| vec![].into()).to_vec(),
                 uow.call_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
-                uow.call_gas_limit.unwrap_or(0.into()).low_u64() as i64,
-                uow.verification_gas_limit.unwrap_or(0.into()).low_u64() as i64,
-                uow.pre_verification_gas.unwrap_or(0.into()).low_u64() as i64,
-                uow.max_fee_per_gas.unwrap_or(0.into()).low_u64() as i64,
-                uow.max_priority_fee_per_gas.unwrap_or(0.into()).low_u64() as i64,
+                uow.call_gas_limit.unwrap_or(U256::ZERO).to_u64()? as i64,
+                uow.verification_gas_limit.unwrap_or(U256::ZERO).to_u64()? as i64,
+                uow.pre_verification_gas.unwrap_or(U256::ZERO).to_u64()? as i64,
+                uow.max_fee_per_gas.unwrap_or(U256::ZERO).to_u64()? as i64,
+                uow.max_priority_fee_per_gas.unwrap_or(U256::ZERO).to_u64()? as i64,
                 uow.paymaster_and_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
                 chain::id::equals(chain_id),
-                wallet::address::equals(to_checksum(&uow.light_wallet, None)),
+                wallet::address::equals(uow.light_wallet.to_checksum(None)),
                 vec![user_operation::signature::set(Some(
                     uow.signature.clone().unwrap_or_else(|| vec![].into()).to_vec(),
                 ))],
@@ -132,7 +133,7 @@ pub async fn upsert_paymaster_and_data(
     db: Database,
     chain_id: i64,
     paymaster_and_data: Bytes,
-    user_operation_hash: H256,
+    user_operation_hash: B256,
 ) -> AppJsonResult<()> {
     info!("Upserting paymaster and data");
 
@@ -146,9 +147,9 @@ pub async fn upsert_paymaster_and_data(
         let pm = db
             .paymaster()
             .upsert(
-                paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+                paymaster::address_chain_id(paymaster_address.to_checksum(None), chain_id),
                 paymaster::create(
-                    to_checksum(&paymaster_address, None),
+                    paymaster_address.to_checksum(None),
                     chain::id::equals(chain_id),
                     vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                         format!("{:?}", user_operation_hash),
@@ -166,16 +167,8 @@ pub async fn upsert_paymaster_and_data(
             .paymaster_operation()
             .update(
                 paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     pm.clone().id.clone(),
                 ),
                 vec![paymaster_operation::user_operation::connect(user_operation::hash::equals(
@@ -193,8 +186,8 @@ pub async fn upsert_paymaster_and_data(
 pub async fn upsert_user_operation_logs(
     db: Database,
     chain_id: i64,
-    transaction_hash: H256,
-    user_operation_hash: H256,
+    transaction_hash: B256,
+    user_operation_hash: B256,
     user_operation_logs: Vec<Log>,
 ) -> AppJsonResult<()> {
     info!("Creating user operation");
@@ -210,11 +203,7 @@ pub async fn upsert_user_operation_logs(
     let logs = logs
         .into_iter()
         .filter(|log| {
-            user_operation_logs.iter().any(|l| {
-                l.log_index == log.log_index.map(U256::from) &&
-                    l.log_index.is_some() &&
-                    log.log_index.is_some()
-            })
+            user_operation_logs.iter().any(|l| l.log_index == log.log_index.map(|idx| idx as u64))
         })
         .collect::<Vec<_>>();
 
@@ -241,7 +230,7 @@ pub async fn upsert_user_operation_logs(
 
 pub async fn get_user_operation_with_chain_id(
     db: Database,
-    user_operation_hash: ethers::types::H256,
+    user_operation_hash: B256,
 ) -> Result<(UserOperation, u64)> {
     info!("Getting user operation");
 
@@ -264,7 +253,7 @@ pub async fn get_user_operation_with_chain_id(
 
 pub async fn get_user_operation_with_logs(
     db: Database,
-    user_operation_hash: ethers::types::H256,
+    user_operation_hash: B256,
 ) -> Result<DbUserOperationLogs> {
     info!("Getting user operation");
 
@@ -295,7 +284,7 @@ pub async fn get_user_operation_with_logs(
 pub struct DbUserOperationLogs {
     pub transaction: Option<transaction::Data>,
     pub user_operation: user_operation::Data,
-    pub logs: Vec<ethers_main::types::Log>,
+    pub logs: Vec<Log>,
 }
 
 impl TryFrom<user_operation::Data> for DbUserOperationLogs {
@@ -308,7 +297,7 @@ impl TryFrom<user_operation::Data> for DbUserOperationLogs {
 
         let db_logs = logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
 
-        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers_main::types::Log>>();
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<Log>>();
 
         Ok(Self { transaction, user_operation, logs })
     }

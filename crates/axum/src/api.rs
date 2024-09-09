@@ -48,11 +48,13 @@ use crate::{
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
-use http::{
-    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
-    HeaderValue,
+use hyper::{
+    client,
+    http::{
+        header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+        HeaderValue, Method,
+    },
 };
-use hyper::client;
 use lightdotso_db::db::create_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
@@ -443,12 +445,12 @@ pub async fn start_api_server() -> Result<()> {
     }
     let cors = CorsLayer::new()
         .allow_methods([
-            http::Method::GET,
-            http::Method::PUT,
-            http::Method::POST,
-            http::Method::PATCH,
-            http::Method::DELETE,
-            http::Method::OPTIONS,
+            Method::GET,
+            Method::PUT,
+            Method::POST,
+            Method::PATCH,
+            Method::DELETE,
+            Method::OPTIONS,
         ])
         .allow_credentials(true)
         .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE])

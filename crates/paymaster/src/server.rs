@@ -13,8 +13,8 @@
 // limitations under the License.
 
 use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
+use alloy::primitives::Address;
 use async_trait::async_trait;
-use ethers::types::Address;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
 

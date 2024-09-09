@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::primitives::U256;
 use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_eth_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -26,7 +31,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
         // fiveoutofnine.eth
         to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
         data: None,
-        value: Some(1),
+        value: U256::from(1),
         gas_limit: u64::MAX,
         block_number: None,
     };
@@ -48,6 +53,9 @@ async fn test_integration_eth_transfer() -> Result<()> {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_light_eth_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 10,
         // Light
@@ -55,7 +63,7 @@ async fn test_integration_light_eth_transfer() -> Result<()> {
         // kaki.eth
         to: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
         data: None,
-        value: Some(1),
+        value: U256::from(1),
         gas_limit: u64::MAX,
         block_number: Some(114445705),
     };

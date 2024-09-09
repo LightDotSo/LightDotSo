@@ -36,7 +36,7 @@ use axum::{
 };
 use clap::Parser;
 use eyre::Result;
-use hyper::client;
+use hyper::{client, http::Method};
 use lightdotso_kafka::get_producer;
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
@@ -73,12 +73,12 @@ pub async fn start_rpc_server() -> Result<()> {
     // License: Apache-2.0
     let cors = CorsLayer::new()
         .allow_methods([
-            http::Method::GET,
-            http::Method::PUT,
-            http::Method::POST,
-            http::Method::PATCH,
-            http::Method::DELETE,
-            http::Method::OPTIONS,
+            Method::GET,
+            Method::PUT,
+            Method::POST,
+            Method::PATCH,
+            Method::DELETE,
+            Method::OPTIONS,
         ])
         .allow_headers(Any)
         .allow_origin(Any)

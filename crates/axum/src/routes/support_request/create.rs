@@ -14,12 +14,12 @@
 
 use super::types::SupportRequest;
 use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -81,7 +81,7 @@ pub(crate) async fn v1_support_request_create_handler(
     let Query(query) = post_query;
 
     // Get the wallet address from the post query.
-    let wallet_address: H160 = query.wallet_address.parse()?;
+    let wallet_address: Address = query.wallet_address.parse()?;
 
     // Get the support_request from the post body.
     let support_request = params.support_request;
@@ -107,7 +107,7 @@ pub(crate) async fn v1_support_request_create_handler(
             support_request.description,
             support_request.area,
             support_request.severity,
-            lightdotso_prisma::wallet::address::equals(to_checksum(&wallet_address, None)),
+            lightdotso_prisma::wallet::address::equals(wallet_address.to_checksum(None)),
             vec![],
         )
         .exec()
@@ -128,7 +128,7 @@ pub(crate) async fn v1_support_request_create_handler(
             params: CustomParams {
                 support_request_id: Some(support_request.id.clone()),
                 user_id: Some(auth_user_id.clone()),
-                wallet_address: Some(to_checksum(&wallet_address, None)),
+                wallet_address: Some(wallet_address.to_checksum(None)),
                 ..Default::default()
             },
         },

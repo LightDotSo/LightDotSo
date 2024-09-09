@@ -14,8 +14,13 @@
 
 #![allow(clippy::unwrap_used)]
 
+use alloy::{
+    primitives::{Log as AlloyLog, B256},
+    rpc::types::Log,
+};
 use eyre::{eyre, Result};
 use lightdotso_prisma::log;
+use revm::primitives::LogData;
 use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
@@ -24,8 +29,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DbLog {
-    pub log: ethers_main::types::Log,
-    pub topics: Vec<ethers_main::types::H256>,
+    pub log: Log,
+    pub topics: Vec<B256>,
 }
 
 impl TryFrom<log::Data> for DbLog {
@@ -50,35 +55,33 @@ impl TryFrom<log::Data> for DbLog {
                     split[1].parse::<usize>().map_err(|_| eyre!("Invalid number in topic id"))?;
 
                 // Parse log_topic_id
-                let log_topic_id = split[0]
-                    .parse::<ethers_main::types::H256>()
-                    .map_err(|_| eyre!("Error while parsing log topic"))?;
+                let log_topic_id =
+                    split[0].parse::<B256>().map_err(|_| eyre!("Error while parsing log topic"))?;
 
                 Ok((index, log_topic_id))
             })
-            .collect::<Result<Vec<(usize, ethers_main::types::H256)>>>()?;
+            .collect::<Result<Vec<(usize, B256)>>>()?;
 
         // Sorts topics by their indexes.
         log_topic_ids.sort_by_key(|(index, _)| *index);
 
         // If only the sorted log_topic_ids are needed, map again to remove the index.
-        let log_topics = log_topic_ids
-            .into_iter()
-            .map(|(_, log_topic_id)| log_topic_id)
-            .collect::<Vec<ethers_main::types::H256>>();
+        let log_topics =
+            log_topic_ids.into_iter().map(|(_, log_topic_id)| log_topic_id).collect::<Vec<B256>>();
 
-        let log = ethers_main::types::Log {
-            address: log.address.parse().unwrap(),
-            topics: log_topics.clone(),
-            data: log.data.into(),
+        let alloy_log =
+            AlloyLog::new(log.address.parse().unwrap(), log_topics.clone(), log.data.into())
+                .unwrap();
+
+        let log = Log::<LogData> {
+            inner: alloy_log,
             block_hash: log.block_hash.map(|bh| bh.parse().unwrap()),
-            block_number: log.block_number.map(|bn| (bn as u64).into()),
+            block_number: log.block_number.map(|bn| (bn as u64)),
+            block_timestamp: None,
             transaction_hash: log.transaction_hash.map(|th| th.parse().unwrap()),
-            transaction_index: log.transaction_index.map(|ti| (ti as u64).into()),
-            log_index: log.log_index.map(|li| (li as u64).into()),
-            transaction_log_index: log.transaction_log_index.map(|lti| (lti as u64).into()),
-            log_type: log.log_type,
-            removed: log.removed,
+            transaction_index: log.transaction_index.map(|ti| (ti as u64)),
+            log_index: log.log_index.map(|li| (li as u64)),
+            removed: false,
         };
 
         Ok(Self { log: log.clone(), topics: log_topics })

@@ -17,12 +17,12 @@ use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{token, token_price};
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
@@ -94,8 +94,8 @@ pub(crate) async fn v1_token_price_get_handler(
     let Query(query) = get_query;
 
     info!("Get token for address: {:?}", query);
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_query_address: Address = query.address.parse()?;
+    let checksum_address = parsed_query_address.to_checksum(None);
 
     // -------------------------------------------------------------------------
     // Return

@@ -76,7 +76,7 @@ pub async fn interpretation_consumer(
                     .value
                     .and_then(|value| value.parse::<u64>().ok()),
                 traces: vec![],
-                logs: transaction_with_logs.logs,
+                logs: transaction_with_logs.logs.into_iter().map(|lx| lx.inner).collect(),
             };
 
             // Run the interpretation
@@ -119,7 +119,7 @@ pub async fn interpretation_consumer(
                 call_data: Some(user_operation_with_logs.user_operation.clone().call_data.into()),
                 value: None,
                 traces: vec![],
-                logs: user_operation_with_logs.logs,
+                logs: user_operation_with_logs.logs.into_iter().map(|lx| lx.inner).collect(),
             };
 
             // Run the interpretation

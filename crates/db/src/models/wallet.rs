@@ -13,9 +13,9 @@
 // limitations under the License.
 
 use crate::types::{AppJsonResult, Database};
+use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::{types::H256, utils::to_checksum};
 use lightdotso_prisma::wallet;
 use lightdotso_tracing::tracing::info;
 
@@ -27,21 +27,21 @@ use lightdotso_tracing::tracing::info;
 #[autometrics]
 pub async fn upsert_wallet_with_configuration(
     db: Database,
-    address: ethers::types::H160,
+    address: Address,
     chain_id: i64,
-    salt: H256,
-    factory_address: ethers::types::H160,
+    salt: B256,
+    factory_address: Address,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet at address: {:?} chain_id: {:?}", address, chain_id);
 
     let wallet = db
         .wallet()
         .upsert(
-            wallet::address::equals(to_checksum(&address, None)),
+            wallet::address::equals(address.to_checksum(None)),
             wallet::create(
-                to_checksum(&address, None),
+                address.to_checksum(None),
                 format!("{:?}", salt),
-                to_checksum(&factory_address, None),
+                factory_address.to_checksum(None),
                 vec![],
             ),
             vec![],
@@ -59,14 +59,21 @@ pub async fn upsert_wallet_with_configuration(
 // Tests
 #[cfg(test)]
 mod tests {
-    // use super::*;
-    use ethers::types::Address;
-    // use lightdotso_prisma::PrismaClient;
+    use super::*;
 
     #[test]
     fn test_display_address() {
-        let address = Address::zero();
+        let address = Address::ZERO;
         assert_eq!(format!("{:?}", address), "0x0000000000000000000000000000000000000000");
+    }
+
+    #[test]
+    fn test_display_b256() {
+        let b256 = B256::ZERO;
+        assert_eq!(
+            format!("{:?}", b256),
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+        );
     }
 
     // #[tokio::test]

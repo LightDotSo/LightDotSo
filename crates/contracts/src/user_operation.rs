@@ -40,16 +40,23 @@
 // If not, see https://www.gnu.org/licenses/.
 
 use crate::{tracer::LogInfo, types::UserOperation};
-use const_hex::hex;
-use core::fmt::Debug;
-use ethers::{
-    abi::{encode, Hash, RawLog, Token},
-    contract::EthLogDecode,
-    types::{Address, Bytes, H256, U256},
-    utils::keccak256,
+use alloy::{
+    dyn_abi::DynSolValue,
+    hex,
+    primitives::{keccak256, Address, Bytes, FixedBytes, B256, U256},
+    rpc::types::RawLog,
 };
+use core::fmt::Debug;
 use eyre::{eyre, Result};
 use std::str::FromStr;
+
+/// A trait for types (events) that can be decoded from a `RawLog`
+pub trait EthLogDecode: Send + Sync {
+    /// decode from a `RawLog`
+    fn decode_log(log: &RawLog) -> Result<Self, Box<dyn std::error::Error>>
+    where
+        Self: Sized;
+}
 
 // From: https://github.com/silius-rs/silius/blob/62cff148f386283bc44114ec9d545eae427489f2/crates/mempool/src/estimate.rs#L80
 // License: Apache-2.0
@@ -57,7 +64,7 @@ use std::str::FromStr;
 /// Parse the user operation event from the log
 /// Since the user operation event is a generic event, we need to parse it with the specific type
 /// `T` that implements `EthLogDecode`
-pub fn parse_user_op_event<T: Debug + EthLogDecode>(event: &LogInfo) -> Result<T> {
+pub fn parse_user_op_event<T: EthLogDecode>(event: &LogInfo) -> Result<T> {
     let topics = event
         .topics
         .iter()
@@ -68,17 +75,20 @@ pub fn parse_user_op_event<T: Debug + EthLogDecode>(event: &LogInfo) -> Result<T
             };
             hex::decode(hash_str).map(|mut b| {
                 b.resize(32, 0);
-                Hash::from_slice(b.as_ref())
+                FixedBytes::<32>::from_slice(b.as_ref())
             })
         })
-        .collect::<Result<Vec<Hash>, _>>()
+        .collect::<Result<Vec<FixedBytes<32>>, _>>()
         .map_err(|e| {
             eyre!("simulate handle user op failed on parsing user op event topic hash, {e:?}")
         })?;
     let data = Bytes::from_str(event.data.as_str()).map_err(|e| {
         eyre!("simulate handle user op failed on parsing user op event data: {e:?}")
     })?;
-    let log = RawLog::from((topics, data.to_vec()));
+
+    // Create the log
+    let log = RawLog { address: Address::ZERO, topics, data };
+
     <T>::decode_log(&log)
         .map_err(|err| eyre!("simulate handle user op failed on parsing user op event: {err:?}"))
 }
@@ -101,13 +111,18 @@ impl UserOperation {
     ///
     /// The hash is used to uniquely identify a user operation in the entry point.
     /// It does not include the signature field.
-    pub fn op_hash(&self, entry_point: Address, chain_id: u64) -> H256 {
-        keccak256(encode(&[
-            Token::FixedBytes(keccak256(self.pack_for_hash()).to_vec()),
-            Token::Address(entry_point),
-            Token::Uint(chain_id.into()),
-        ]))
-        .into()
+    pub fn op_hash(&self, entry_point: Address, chain_id: u64) -> B256 {
+        keccak256(
+            DynSolValue::Tuple(vec![
+                DynSolValue::FixedBytes(
+                    keccak256(self.pack_for_hash()),
+                    self.pack_for_hash().len(),
+                ),
+                DynSolValue::Address(entry_point),
+                DynSolValue::Uint(U256::from(chain_id), 256),
+            ])
+            .abi_encode(),
+        )
     }
 
     /// Get the unique identifier for this user operation from its sender
@@ -159,18 +174,22 @@ impl UserOperation {
         let hash_call_data = keccak256(self.call_data.clone());
         let hash_paymaster_and_data = keccak256(self.paymaster_and_data.clone());
 
-        encode(&[
-            Token::Address(self.sender),
-            Token::Uint(self.nonce),
-            Token::FixedBytes(hash_init_code.to_vec()),
-            Token::FixedBytes(hash_call_data.to_vec()),
-            Token::Uint(self.call_gas_limit),
-            Token::Uint(self.verification_gas_limit),
-            Token::Uint(self.pre_verification_gas),
-            Token::Uint(self.max_fee_per_gas),
-            Token::Uint(self.max_priority_fee_per_gas),
-            Token::FixedBytes(hash_paymaster_and_data.to_vec()),
+        DynSolValue::Tuple(vec![
+            DynSolValue::Address(self.sender),
+            DynSolValue::Uint(self.nonce, 256),
+            DynSolValue::FixedBytes(hash_init_code, hash_init_code.to_vec().len()),
+            DynSolValue::FixedBytes(hash_call_data, hash_call_data.to_vec().len()),
+            DynSolValue::Uint(self.call_gas_limit, 256),
+            DynSolValue::Uint(self.verification_gas_limit, 256),
+            DynSolValue::Uint(self.pre_verification_gas, 256),
+            DynSolValue::Uint(self.max_fee_per_gas, 256),
+            DynSolValue::Uint(self.max_priority_fee_per_gas, 256),
+            DynSolValue::FixedBytes(
+                hash_paymaster_and_data,
+                hash_paymaster_and_data.to_vec().len(),
+            ),
         ])
+        .abi_encode()
         .into()
     }
 }
@@ -183,7 +202,6 @@ fn pad_len(b: &Bytes) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::types::{Bytes, U256};
 
     #[test]
     fn test_hash_zeroed() {
@@ -208,14 +226,14 @@ mod tests {
         // Hash: 0xdca97c3b49558ab360659f6ead939773be8bf26631e61bb17045bb70dc983b2d
         let operation = UserOperation {
             sender: "0x0000000000000000000000000000000000000000".parse().unwrap(),
-            nonce: U256::zero(),
+            nonce: U256::ZERO,
             init_code: Bytes::default(),
             call_data: Bytes::default(),
-            call_gas_limit: U256::zero(),
-            verification_gas_limit: U256::zero(),
-            pre_verification_gas: U256::zero(),
-            max_fee_per_gas: U256::zero(),
-            max_priority_fee_per_gas: U256::zero(),
+            call_gas_limit: U256::ZERO,
+            verification_gas_limit: U256::ZERO,
+            pre_verification_gas: U256::ZERO,
+            max_fee_per_gas: U256::ZERO,
+            max_priority_fee_per_gas: U256::ZERO,
             paymaster_and_data: Bytes::default(),
             signature: Bytes::default(),
         };
@@ -223,8 +241,8 @@ mod tests {
         let chain_id = 1337;
         let hash = operation.op_hash(entry_point, chain_id);
         assert_eq!(
-            hash,
-            "0xdca97c3b49558ab360659f6ead939773be8bf26631e61bb17045bb70dc983b2d".parse().unwrap()
+            format!("0x{:x}", hash),
+            "0xdca97c3b49558ab360659f6ead939773be8bf26631e61bb17045bb70dc983b2d"
         );
     }
 
@@ -253,14 +271,14 @@ mod tests {
         // Hash: 0x484add9e4d8c3172d11b5feb6a3cc712280e176d278027cfa02ee396eb28afa1
         let operation = UserOperation {
             sender: "0x1306b01bc3e4ad202612d3843387e94737673f53".parse().unwrap(),
-            nonce: 8942.into(),
+            nonce: U256::from(8942),
             init_code: "0x6942069420694206942069420694206942069420".parse().unwrap(),
             call_data: "0x0000000000000000000000000000000000000000080085".parse().unwrap(),
-            call_gas_limit: 10000.into(),
-            verification_gas_limit: 100000.into(),
-            pre_verification_gas: 100.into(),
-            max_fee_per_gas: 99999.into(),
-            max_priority_fee_per_gas: 9999999.into(),
+            call_gas_limit: U256::from(10000),
+            verification_gas_limit: U256::from(100000),
+            pre_verification_gas: U256::from(100),
+            max_fee_per_gas: U256::from(99999),
+            max_priority_fee_per_gas: U256::from(9999999),
             paymaster_and_data:
                 "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
                     .parse()
@@ -273,8 +291,8 @@ mod tests {
         let chain_id = 1337;
         let hash = operation.op_hash(entry_point, chain_id);
         assert_eq!(
-            hash,
-            "0x484add9e4d8c3172d11b5feb6a3cc712280e176d278027cfa02ee396eb28afa1".parse().unwrap()
+            format!("0x{:x}", hash),
+            "0x484add9e4d8c3172d11b5feb6a3cc712280e176d278027cfa02ee396eb28afa1"
         );
     }
 }

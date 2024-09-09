@@ -17,15 +17,15 @@ use crate::{
     error::RouteError, result::AppJsonResult,
     routes::paymaster_operation::error::PaymasterOperationError, state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{billing_operation, paymaster, paymaster_operation, token_price};
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::chrono::{NaiveDateTime, Utc};
+use prisma_client_rust::chrono::DateTime;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -74,27 +74,21 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
 
     // Get the get query.
     let Query(query) = get_query;
-    let valid_until_timestamp = NaiveDateTime::from_timestamp_opt(query.valid_until, 0);
-    let valid_after_timestamp = NaiveDateTime::from_timestamp_opt(query.valid_after, 0);
+    let valid_until_timestamp = DateTime::from_timestamp(query.valid_until, 0);
+    let valid_after_timestamp = DateTime::from_timestamp(query.valid_after, 0);
 
     // If the timestamp is not valid, return a 500.
-    let valid_until_timestamp =
-        valid_until_timestamp.ok_or(RouteError::PaymasterOperationError(
-            PaymasterOperationError::BadRequest("Invalid timestamp".to_string()),
-        ))?;
+    let valid_until = valid_until_timestamp.ok_or(RouteError::PaymasterOperationError(
+        PaymasterOperationError::BadRequest("Invalid timestamp".to_string()),
+    ))?;
 
     // If the timestamp is not valid, return a 500.
-    let valid_after_timestamp =
-        valid_after_timestamp.ok_or(RouteError::PaymasterOperationError(
-            PaymasterOperationError::BadRequest("Invalid timestamp".to_string()),
-        ))?;
+    let valid_after = valid_after_timestamp.ok_or(RouteError::PaymasterOperationError(
+        PaymasterOperationError::BadRequest("Invalid timestamp".to_string()),
+    ))?;
 
     // Convert the timestamp to a DateTime.
-    let valid_until =
-        prisma_client_rust::chrono::DateTime::<Utc>::from_utc(valid_until_timestamp, Utc);
-    let valid_after =
-        prisma_client_rust::chrono::DateTime::<Utc>::from_utc(valid_after_timestamp, Utc);
-    let parsed_query_address: H160 = query.address.parse()?;
+    let parsed_query_address: Address = query.address.parse()?;
 
     info!("Get paymaster for address: {:?}", query);
 
@@ -107,7 +101,7 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
         .client
         .paymaster()
         .find_unique(paymaster::address_chain_id(
-            to_checksum(&parsed_query_address, None),
+            parsed_query_address.to_checksum(None),
             query.chain_id,
         ))
         .exec()

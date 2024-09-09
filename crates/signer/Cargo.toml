@@ -9,17 +9,13 @@
   repository.workspace = true
 
 [dependencies]
-  ethers = { workspace = true }
+  alloy = { workspace = true, features = ["signer-aws"] }
+  aws-config = { version = "1.5", default-features = false }
+  aws-sdk-kms = { version = "1.36", default-features = false }
   eyre = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-tracing = { workspace = true }
-  rusoto_core = { version = "0.48.0", default-features = false, features = [
-    "rustls",
-  ] }
-  rusoto_kms = { version = "0.48.0", default-features = false, features = [
-    "rustls",
-  ] }
   tokio = { workspace = true }
 
 [dev-dependencies]

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 use crate::error::{RouteError, RouteErrorStatusCodeAndMsg};
+use alloy::hex::FromHexError;
 use axum::{
-    http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
-use const_hex::FromHexError;
+use hyper::StatusCode;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     chrono::ParseError,
@@ -134,8 +134,10 @@ impl IntoResponse for AppError {
             AppError::SerdeJsonError(err) => {
                 (StatusCode::BAD_REQUEST, format!("Serde JSON Error: {}", err))
             }
-            AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad Hex".to_string()),
-            AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad Rust Hex".to_string()),
+            AppError::FromHexError(err) => (StatusCode::BAD_REQUEST, format!("Bad Hex: {}", err)),
+            AppError::RustHexError(err) => {
+                (StatusCode::BAD_REQUEST, format!("Bad Rust Hex: {}", err))
+            }
             AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
             AppError::AuthError(msg) => (StatusCode::UNAUTHORIZED, msg),
             AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),

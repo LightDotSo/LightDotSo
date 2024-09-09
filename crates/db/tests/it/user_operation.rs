@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_db::{db::create_test_client, models::user_operation::get_user_operation_with_logs};
 use std::sync::Arc;
@@ -19,7 +20,7 @@ use std::sync::Arc;
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_user_operation_with_logs() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Create a database client.
     let db = create_test_client().await?;

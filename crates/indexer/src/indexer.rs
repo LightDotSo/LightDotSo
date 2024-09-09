@@ -16,25 +16,41 @@
 
 use crate::{
     config::IndexerArgs,
-    namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
+    namespace::{
+        // ERC1155, ERC20, ERC721,
+        ETH,
+        // IMAGE_HASH_UPDATED,
+        LIGHT_WALLET_INITIALIZED,
+    },
+};
+use alloy::{
+    // consensus::TxReceipt,
+    eips::BlockNumberOrTag,
+    primitives::{
+        Address,
+        //  BlockNumber,
+        B256,
+        U256,
+        //  U64
+    },
+    providers::{ext::DebugApi, Provider, ProviderBuilder, RootProvider, WsConnect},
+    pubsub::PubSubFrontend,
+    rpc::types::{
+        trace::{
+            common::TraceResult,
+            geth::{CallFrame, GethDebugTracingOptions, GethTrace},
+        },
+        Block, Filter, Log, Transaction, TransactionReceipt,
+    },
+    transports::http::{Client as ReqwestClient, Http},
 };
 use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
-use ethers::{
-    prelude::Provider,
-    providers::{Http, Middleware, ProviderError, Ws},
-    types::{
-        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
-        GethDebugTracingOptions, GethTrace, GethTraceFrame, Transaction, TransactionReceipt, H256,
-        U256,
-    },
-    utils::to_checksum,
-};
-use ethers_providers::StreamExt;
-use eyre::eyre;
+use eyre::{eyre, Result};
+use futures::StreamExt;
 use lightdotso_constants::chains::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
-use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESSES, provider::get_provider};
+use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESSES;
 use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{
     get_producer, rdkafka::producer::FutureProducer,
@@ -46,11 +62,10 @@ use lightdotso_redis::{
     query::wallet::{add_to_wallets, is_wallet_present},
     redis::Client,
 };
-use lightdotso_tracing::tracing::{error, info, trace, warn};
+use lightdotso_tracing::tracing::{error, info, trace};
 use std::{
     collections::{HashMap, HashSet},
     hash::Hash,
-    str::FromStr,
     sync::Arc,
     time::Duration,
 };
@@ -66,8 +81,8 @@ pub struct Indexer {
     chain_id: u64,
     redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
-    http_client: Option<Arc<Provider<Http>>>,
-    ws_client: Option<Arc<Provider<Ws>>>,
+    http_client: Arc<RootProvider<Http<ReqwestClient>>>,
+    ws_client: Arc<RootProvider<PubSubFrontend>>,
 }
 
 impl Indexer {
@@ -76,23 +91,13 @@ impl Indexer {
         info!("Indexer new, starting");
 
         // Create the http client
-        let http_client = match Provider::<Http>::try_from(args.rpc.to_string()) {
-            Ok(client) => Some(Arc::new(client)),
-            Err(_) => None,
-        };
+        let http_client =
+            Arc::new(ProviderBuilder::new().on_http(args.rpc.to_string().parse().unwrap()));
 
         // Create the websocket client
-        let ws_client =
-            match Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await {
-                Ok(client) => Some(Arc::new(client)),
-                Err(_) => {
-                    // Only error if env var is not empty
-                    if !args.ws.is_empty() {
-                        error!("Websocket connection failed.");
-                    }
-                    None
-                }
-            };
+        let ws_client = Arc::new(
+            ProviderBuilder::new().on_ws(WsConnect::new(args.ws.to_string())).await.unwrap(),
+        );
 
         // Create the redis client
         let redis_client: Option<Arc<Client>> =
@@ -111,13 +116,14 @@ impl Indexer {
         info!("Indexer run, starting");
 
         // Initiate stream for new blocks
-        let client = self.ws_client.clone().unwrap();
-        let mut stream = client.subscribe_blocks().await.unwrap();
+        let client = self.ws_client.clone();
+        // Take until the stream is closed
+        let mut stream = client.subscribe_blocks().await.unwrap().into_stream().take(10);
 
         // Loop over the blocks
         while let Some(block) = stream.next().await {
             // Get the block number
-            info!("New block: {:?}", block.clone().number.unwrap());
+            info!("New block: {:?}", block.clone().header.number.unwrap());
 
             // Check if the block is in the sleep chain ids
             if SLEEP_CHAIN_IDS.contains_key(&self.chain_id) {
@@ -155,82 +161,65 @@ impl Indexer {
         &mut self,
         block_number: u64,
         chain_id: u64,
-    ) -> eyre::Result<Option<Block<H256>>, ProviderError> {
+    ) -> eyre::Result<Option<Block>> {
         // Mutate the chain id
         self.chain_id = chain_id;
 
         // Get the http_client for the rpc
-        let http_client = get_provider(chain_id)
-            .await
-            .map_err(|_| ProviderError::CustomError("Failed to get provider".to_string()))?;
-        self.http_client = Some(Arc::new(http_client));
+        // let (http_client, _) = get_provider(chain_id).await?;
+        // self.http_client = Arc::new(http_client);
 
         // Index the block
-        self.get_block(block_number.into()).await
+        self.get_block(block_number).await
     }
 
     /// Index w/ specified chain id
     pub async fn index_with_internal(
         &mut self,
         db_client: Arc<PrismaClient>,
-        block: Block<H256>,
+        block: Block,
         chain_id: u64,
     ) -> eyre::Result<()> {
         // Mutate the chain id
         self.chain_id = chain_id;
 
         // Get the http_client for the rpc
-        let http_client = get_provider(chain_id).await?;
-        self.http_client = Some(Arc::new(http_client));
+        // let (http_client, _) = get_provider(chain_id).await?;
+        // self.http_client = Some(Arc::new(http_client));
 
         // Index the block
         self.index(db_client, block).await
     }
 
     /// The core indexing function.
-    pub async fn index(
-        &self,
-        db_client: Arc<PrismaClient>,
-        block: Block<H256>,
-    ) -> eyre::Result<()> {
+    pub async fn index(&self, _db_client: Arc<PrismaClient>, block: Block) -> eyre::Result<()> {
         info!("Indexer index, starting");
 
-        // If the http client is none, return an error
-        if self.http_client.is_none() {
-            return Err(eyre!("Error: http client is none"));
-        }
-
         // Get block from http client
-        let block = self.get_block(block.number.unwrap()).await?.ok_or_else(|| {
+        let block = self.get_block(block.header.number.unwrap()).await?.ok_or_else(|| {
             eyre!(
                 "Error: Block not found at chain_id: {}, block: {}",
                 self.chain_id,
-                block.number.unwrap_or_default()
+                block.header.number.unwrap_or_default()
             )
         })?;
         trace!(?block);
 
         // Create new vec for addresses
-        let mut wallet_address_hashmap: HashMap<
-            ethers::types::H256,
-            HashMap<ethers::types::H160, ethers::types::H160>,
-        > = HashMap::new();
-        let mut tx_address_hashmap: HashMap<ethers::types::H256, Vec<ethers::types::H160>> =
-            HashMap::new();
-        let mut tx_address_type_hashmap: HashMap<
-            ethers::types::H256,
-            HashMap<ethers::types::H160, String>,
-        > = HashMap::new();
+        let _wallet_address_hashmap: HashMap<B256, HashMap<Address, Address>> = HashMap::new();
+        let tx_address_hashmap: HashMap<B256, Vec<Address>> = HashMap::new();
+        let tx_address_type_hashmap: HashMap<B256, HashMap<Address, String>> = HashMap::new();
 
         // Get the traced block
-        let traced_block = self.get_traced_block(block.number.unwrap()).await.map_err(|e| {
-            eyre!(
-                "Error in get_traced_block: {:?} at chain_id: {}, block: {}",
-                e,
-                self.chain_id,
-                block.number.unwrap_or_default()
-            )
-        })?;
+        let traced_block =
+            self.get_traced_block(block.header.number.unwrap()).await.map_err(|e| {
+                eyre!(
+                    "Error in get_traced_block: {:?} at chain_id: {}, block: {}",
+                    e,
+                    self.chain_id,
+                    block.header.number.unwrap_or_default()
+                )
+            })?;
         trace!(?traced_block);
 
         // Check if the traced block length and block transactions length are the same
@@ -241,131 +230,120 @@ impl Indexer {
         }
 
         // Convert the traced block to a vec of call frames
-        let traces: Vec<&CallFrame> = traced_block
-            .iter()
-            .filter_map(|trace| match trace {
-                GethTrace::Known(frame) => match frame {
-                    GethTraceFrame::CallTracer(call_frame) => Some(call_frame),
-                    GethTraceFrame::Default(_) => None,
-                    GethTraceFrame::NoopTracer(_) => None,
-                    GethTraceFrame::FourByteTracer(_) => None,
-                    GethTraceFrame::PreStateTracer(_) => None,
-                },
-                _ => None,
-            })
-            .collect();
+        // let traces: Vec<CallFrame> =
+        //     traced_block.into_iter().filter_map(|trace| trace.success()).collect();
 
         // Recursively loop over the traces
-        for (index, trace) in traces.iter().enumerate() {
-            self.iterate_from_addresses(
-                index,
-                trace,
-                &block,
-                &mut wallet_address_hashmap,
-                &mut tx_address_hashmap,
-                &mut tx_address_type_hashmap,
-            )
-        }
+        // for (index, trace) in traces.iter().enumerate() {
+        //     self.iterate_from_addresses(
+        //         index,
+        //         trace,
+        //         &block,
+        //         &mut wallet_address_hashmap,
+        //         &mut tx_address_hashmap,
+        //         &mut tx_address_type_hashmap,
+        //     )
+        // }
 
         // Get the block logs
-        let block_logs = self
-            .get_block_logs(block.number.unwrap() - 1)
-            .await
-            .map_err(|e| eyre!("Error in get_block_logs: {:?}", e))?;
-        trace!(?block_logs);
+        // let block_logs = self
+        //     .get_block_logs(block.header.number.unwrap() - 1)
+        //     .await
+        //     .map_err(|e| eyre!("Error in get_block_logs: {:?}", e))?;
+        // trace!(?block_logs);
 
         // Loop over the block logs
-        for log in block_logs.clone() {
-            // Build the tx_address_hashmap
-            let entry = tx_address_hashmap.entry(log.transaction_hash.unwrap()).or_default();
-            // Build the address_type_hashmap
-            let address_type_entry =
-                tx_address_type_hashmap.entry(log.transaction_hash.unwrap()).or_default();
+        // for log in block_logs.clone() {
+        //     // Build the tx_address_hashmap
+        //     let entry = tx_address_hashmap.entry(log.transaction_hash.unwrap()).or_default();
+        //     // Build the address_type_hashmap
+        //     let address_type_entry =
+        //         tx_address_type_hashmap.entry(log.transaction_hash.unwrap()).or_default();
 
-            // Skip if no topics
-            if log.topics.is_empty() {
-                continue;
-            }
+        //     // Skip if no topics
+        //     if log.topics().is_empty() {
+        //         continue;
+        //     }
 
-            if log.topics[0] ==
-                    // Event signature for `ImageHashUpdated(bytes32)`
-                    H256::from_str(
-                        "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa",
-                    )
-                    .unwrap() &&
-                log.topics.len() == 2
-            {
-                // Address for from
-                entry.push(log.address);
+        //     if log.topics()[0] ==
+        //             // Event signature for `ImageHashUpdated(bytes32)`
+        //             B256::from_str(
+        //                 "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa",
+        //             )
+        //             .unwrap() &&
+        //         log.topics().len() == 2
+        //     {
+        //         // Address for from
+        //         entry.push(log.address());
 
-                // Insert entries into the hashmap
-                address_type_entry.insert(log.address, IMAGE_HASH_UPDATED.to_string());
-            }
+        //         // Insert entries into the hashmap
+        //         address_type_entry.insert(log.address(), IMAGE_HASH_UPDATED.to_string());
+        //     }
 
-            // Filter the logs for transfers
-            if log.topics[0] ==
-                    // Event signature for `Transfer(address,address,uint256)`
-                    H256::from_str(
-                        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-                    )
-                    .unwrap()
-            {
-                // If the id exists in the log for topic 3,
-                // it's a ERC721 transfer
-                if !log.topics.len() < 4 && !log.topics[3].is_zero() {
-                    // Address for from
-                    entry.push(log.topics[1].into());
-                    // Address for to
-                    entry.push(log.topics[2].into());
-                    // Insert entries into the hashmap
-                    address_type_entry.insert(log.topics[1].into(), ERC721.to_string());
-                    address_type_entry.insert(log.topics[2].into(), ERC721.to_string());
-                // It's a ERC20 transfer
-                } else if log.topics.len() >= 3 {
-                    // Address for from
-                    entry.push(log.topics[1].into());
-                    // Address for to
-                    entry.push(log.topics[2].into());
-                    // Insert entries into the hashmap
-                    address_type_entry.insert(log.topics[1].into(), ERC20.to_string());
-                    address_type_entry.insert(log.topics[2].into(), ERC20.to_string());
-                }
-            }
+        //     // Filter the logs for transfers
+        //     if log.topics()[0] ==
+        //             // Event signature for `Transfer(address,address,uint256)`
+        //             B256::from_str(
+        //                 "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        //             )
+        //             .unwrap()
+        //     {
+        //         // If the id exists in the log for topic 3,
+        //         // it's a ERC721 transfer
+        //         if !log.topics().len() < 4 && !log.topics()[3].is_zero() {
+        //             // Address for from
+        //             entry.push(log.topics()[1].into());
+        //             // Address for to
+        //             entry.push(log.topics()[2].into());
+        //             // Insert entries into the hashmap
+        //             address_type_entry.insert(log.topics()[1].into(), ERC721.to_string());
+        //             address_type_entry.insert(log.topics()[2].into(), ERC721.to_string());
+        //         // It's a ERC20 transfer
+        //         } else if log.topics().len() >= 3 {
+        //             // Address for from
+        //             entry.push(log.topics()[1].into());
+        //             // Address for to
+        //             entry.push(log.topics()[2].into());
+        //             // Insert entries into the hashmap
+        //             address_type_entry.insert(log.topics()[1].into(), ERC20.to_string());
+        //             address_type_entry.insert(log.topics()[2].into(), ERC20.to_string());
+        //         }
+        //     }
 
-            if log.topics[0] ==
-                    // Event signature for `TransferSingle(address,address,address,uint256,uint256)`
-                    H256::from_str(
-                        "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62",
-                    )
-                    .unwrap() &&
-                log.topics.len() == 5
-            {
-                // Address for from
-                entry.push(log.topics[2].into());
-                // Address for to
-                entry.push(log.topics[3].into());
-                // Insert entries into the hashmap
-                address_type_entry.insert(log.topics[2].into(), ERC1155.to_string());
-                address_type_entry.insert(log.topics[3].into(), ERC1155.to_string());
-            }
+        //     if log.topics()[0] ==
+        //             // Event signature for
+        // `TransferSingle(address,address,address,uint256,uint256)`
+        // B256::from_str(
+        // "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62",
+        // )             .unwrap() &&
+        //         log.topics().len() == 5
+        //     {
+        //         // Address for from
+        //         entry.push(log.topics()[2].into());
+        //         // Address for to
+        //         entry.push(log.topics()[3].into());
+        //         // Insert entries into the hashmap
+        //         address_type_entry.insert(log.topics()[2].into(), ERC1155.to_string());
+        //         address_type_entry.insert(log.topics()[3].into(), ERC1155.to_string());
+        //     }
 
-            if log.topics[0] ==
-                    // Event signature for `TransferBatch(address,address,address,uint256[],uint256[])`
-                    H256::from_str(
-                        "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb",
-                    )
-                    .unwrap() &&
-                log.topics.len() == 5
-            {
-                // Address for from
-                entry.push(log.topics[2].into());
-                // Address for to
-                entry.push(log.topics[3].into());
-                // Insert entries into the hashmap
-                address_type_entry.insert(log.topics[2].into(), ERC1155.to_string());
-                address_type_entry.insert(log.topics[3].into(), ERC1155.to_string());
-            }
-        }
+        //     if log.topics()[0] ==
+        //             // Event signature for
+        // `TransferBatch(address,address,address,uint256[],uint256[])`
+        // B256::from_str(
+        // "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb",
+        // )             .unwrap() &&
+        //         log.topics().len() == 5
+        //     {
+        //         // Address for from
+        //         entry.push(log.topics()[2].into());
+        //         // Address for to
+        //         entry.push(log.topics()[3].into());
+        //         // Insert entries into the hashmap
+        //         address_type_entry.insert(log.topics()[2].into(), ERC1155.to_string());
+        //         address_type_entry.insert(log.topics()[3].into(), ERC1155.to_string());
+        //     }
+        //  }
 
         // Loop over the hashes
         // if !wallet_address_hashmap.is_empty() {
@@ -431,7 +409,7 @@ impl Indexer {
                 // wallet_tx_hashes: [hash1, hash3]
                 // tx_hashes: [hash1, hash2, hash3]
                 // check_res: [true, false, true]
-                let wallet_tx_hashes: Vec<ethers::types::H256> = tx_hashes
+                let wallet_tx_hashes: Vec<B256> = tx_hashes
                     .iter()
                     .zip(check_res.iter())
                     .filter(|(_, &check)| check)
@@ -443,7 +421,7 @@ impl Indexer {
                 // wallet_addresses: [addr1, addr3]
                 // addresses: [addr1, addr2, addr3]
                 // check_res: [true, false, true]
-                let wallet_addresses: Vec<ethers::types::H160> = addresses
+                let wallet_addresses: Vec<Address> = addresses
                     .iter()
                     .zip(check_res.iter())
                     .filter(|(_, &check)| check)
@@ -462,10 +440,8 @@ impl Indexer {
                 }
 
                 // Get the unique hashes and addresses
-                let unique_wallet_tx_hashes: Vec<ethers::types::H256> =
-                    make_unique(wallet_tx_hashes);
-                let unique_wallet_addreses: Vec<ethers::types::H160> =
-                    make_unique(wallet_addresses);
+                let unique_wallet_tx_hashes: Vec<B256> = make_unique(wallet_tx_hashes);
+                let unique_wallet_addreses: Vec<Address> = make_unique(wallet_addresses);
                 info!("unique_wallet_tx_hashes: {:?}", unique_wallet_tx_hashes.clone());
                 info!("unique_wallet_addreses: {:?}", unique_wallet_addreses.clone());
 
@@ -476,11 +452,11 @@ impl Indexer {
 
                     if tx_adress_category.is_some() {
                         // Get the trace
-                        let trace =
-                            self.get_geth_trace(&block, &unique_wallet_tx_hash, &traced_block);
+                        // let trace =
+                        //     self.get_geth_trace(&block, &unique_wallet_tx_hash, traced_block);
 
                         if let Some(hashmap) = tx_adress_category {
-                            for (addr, category) in hashmap {
+                            hashmap.iter().for_each(|(_addr, category)| {
                                 // If the category is a wallet initialized
                                 if category == &LIGHT_WALLET_INITIALIZED.to_string() {
                                     // Get the wallet entry
@@ -503,24 +479,24 @@ impl Indexer {
                                     //     .filter(|log| {
                                     //         log.transaction_hash == Some(unique_wallet_tx_hash)
                                     //     })
-                                    //     .collect::<Vec<ethers::types::Log>>();
+                                    //     .collect::<Vec<Log>>();
 
                                     // Filter the logs for the `ImageHashUpdated(bytes32)`
                                     // let image_hash_updated_logs = initialized_logs
                                     //     .clone()
                                     //     .into_iter()
                                     //     .filter(|log| {
-                                    //         log.topics[0] ==
+                                    //         log.topics()[0] ==
                                     //             // Event signature for
                                     // `ImageHashUpdated(bytes32)`
-                                    //             H256::from_str(
+                                    //             B256::from_str(
                                     //
                                     // "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa"
                                     // ,             )
                                     //             .unwrap() &&
-                                    //             log.topics.len() == 2
+                                    //             log.topics().len() == 2
                                     //     })
-                                    //     .collect::<Vec<ethers::types::Log>>();
+                                    //     .collect::<Vec<Log>>();
 
                                     // Get the last image hash updated log
                                     // let image_hash_updated_log =
@@ -539,17 +515,17 @@ impl Indexer {
                                 }
 
                                 // Create the transaction for indexing if wallet exists
-                                if unique_wallet_addreses.contains(addr) {
-                                    let _ = self
-                                        .db_create_transaction(
-                                            *addr,
-                                            db_client.clone(),
-                                            unique_wallet_tx_hash,
-                                            block.timestamp,
-                                            trace.clone(),
-                                        )
-                                        .await;
-                                }
+                                // if unique_wallet_addreses.contains(addr) {
+                                //     let _ = self
+                                //         .db_create_transaction(
+                                //             *addr,
+                                //             db_client.clone(),
+                                //             unique_wallet_tx_hash,
+                                //             block.header.timestamp,
+                                //             trace.clone(),
+                                //         )
+                                //         .await;
+                                // }
 
                                 // Create the transaction category if wallet exists
                                 // if unique_wallet_addreses.contains(addr) {
@@ -561,7 +537,7 @@ impl Indexer {
                                 //         )
                                 //         .await;
                                 // }
-                            }
+                            });
                         }
                     }
                 }
@@ -576,19 +552,13 @@ impl Indexer {
         &self,
         index: usize,
         frame: &CallFrame,
-        block: &Block<H256>,
-        wallet_address_hashmap: &mut HashMap<
-            ethers::types::H256,
-            HashMap<ethers::types::H160, ethers::types::H160>,
-        >,
-        tx_address_hashmap: &mut HashMap<ethers::types::H256, Vec<ethers::types::H160>>,
-        tx_address_type_hashmap: &mut HashMap<
-            ethers::types::H256,
-            HashMap<ethers::types::H160, String>,
-        >,
+        block: &Block,
+        wallet_address_hashmap: &mut HashMap<B256, HashMap<Address, Address>>,
+        tx_address_hashmap: &mut HashMap<B256, Vec<Address>>,
+        tx_address_type_hashmap: &mut HashMap<B256, HashMap<Address, String>>,
     ) {
         // Get the tx hash w/ the index
-        let tx_hash = block.clone().transactions[index];
+        let tx_hash = block.clone().transactions.as_transactions().unwrap()[index].hash;
 
         // Build the tx_address_hashmap
         let entry = tx_address_hashmap.entry(tx_hash).or_default();
@@ -598,19 +568,7 @@ impl Indexer {
         // Convert the to address to a wallet address
         // If the to address is none, use the from address
         // Temporarily use the from address if the to address is not a wallet address
-        let to = match frame.to.clone() {
-            Some(address) => match address.as_address() {
-                Some(addr) => *addr,
-                None => {
-                    warn!("Conversion warning: to address is not a wallet address: {:?}", address);
-                    frame.from
-                }
-            },
-            None => {
-                warn!("Conversion warning: to address is none, using from address");
-                frame.from
-            }
-        };
+        let to = frame.to.unwrap();
 
         // Push the from and to address to the tx_address_hashmap
         entry.push(frame.from);
@@ -619,7 +577,7 @@ impl Indexer {
         // If the value is a eth transfer
         if frame.value.is_some() && frame.input.0.is_empty() {
             // Log if the value is not zero
-            if frame.value.unwrap() != U256::zero() {
+            if frame.value.unwrap() != U256::ZERO {
                 address_type_entry.entry(frame.from).or_insert(ETH.to_string());
                 address_type_entry.entry(to).or_insert(ETH.to_string());
             }
@@ -642,29 +600,27 @@ impl Indexer {
             }
         }
 
-        if let Some(calls) = &frame.calls {
-            for frame in calls {
-                self.iterate_from_addresses(
-                    index,
-                    frame,
-                    block,
-                    wallet_address_hashmap,
-                    tx_address_hashmap,
-                    tx_address_type_hashmap,
-                );
-            }
+        for frame in &frame.calls {
+            self.iterate_from_addresses(
+                index,
+                frame,
+                block,
+                wallet_address_hashmap,
+                tx_address_hashmap,
+                tx_address_type_hashmap,
+            );
         }
     }
 
     /// Get the geth trace from the block w/ hash
     pub fn get_geth_trace(
         &self,
-        block: &Block<H256>,
-        hash: &ethers::types::H256,
+        block: &Block,
+        hash: &B256,
         traced_block: &[GethTrace],
     ) -> Option<GethTrace> {
         // Get the index of the tx in blocks.transactions
-        let index = block.transactions.iter().position(|&x| x == *hash).unwrap_or(0);
+        let index = block.transactions.hashes().position(|x| x == *hash).unwrap_or(0);
 
         // Get the trace
         let trace = traced_block[index].clone();
@@ -676,7 +632,7 @@ impl Indexer {
     #[autometrics]
     pub async fn send_tx_queue(
         &self,
-        block: Block<H256>,
+        block: Block,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
         let chain_id = self.chain_id;
@@ -695,12 +651,12 @@ impl Indexer {
     #[autometrics]
     pub fn add_to_wallets(
         &self,
-        address: ethers::types::H160,
+        address: Address,
     ) -> Result<(), lightdotso_redis::redis::RedisError> {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
+            { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
@@ -713,7 +669,7 @@ impl Indexer {
     #[autometrics]
     pub fn check_if_exists_in_wallets(
         &self,
-        addresses: Vec<ethers::types::H160>,
+        addresses: Vec<Address>,
     ) -> Result<std::vec::Vec<bool>, lightdotso_redis::redis::RedisError> {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
@@ -722,7 +678,7 @@ impl Indexer {
                 || {
                     is_wallet_present(
                         &mut con,
-                        addresses.iter().map(|address| to_checksum(address, None)).collect(),
+                        addresses.iter().map(|address| address.to_checksum(None)).collect(),
                     )
                 }
             }
@@ -738,10 +694,10 @@ impl Indexer {
     #[autometrics]
     pub async fn db_create_transaction(
         &self,
-        wallet_address: ethers::types::H160,
+        wallet_address: Address,
         db_client: Arc<PrismaClient>,
-        hash: ethers::types::H256,
-        timestamp: U256,
+        hash: B256,
+        timestamp: u64,
         trace: Option<GethTrace>,
     ) {
         // Get the tx receipt
@@ -778,8 +734,8 @@ impl Indexer {
     // pub async fn db_create_wallet(
     //     &self,
     //     db_client: Arc<PrismaClient>,
-    //     address: ethers::types::H160,
-    //     factory_address: ethers::types::H160,
+    //     address: Address,
+    //     factory_address: Address,
     // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { { || { create_wallet(
     //   db_client.clone(), address, self.chain_id as i64, factory_address,
     //   Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)), ) } }
@@ -792,7 +748,7 @@ impl Indexer {
     //     &self,
     //     db_client: Arc<PrismaClient>,
     //     category: &str,
-    //     tx_hash: ethers::types::H256,
+    //     tx_hash: B256,
     // ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
     //     { || create_transaction_category(db_client.clone(), category.to_string(), tx_hash) }
     //         .retry(&ExponentialBuilder::default())
@@ -803,11 +759,11 @@ impl Indexer {
     #[autometrics]
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
-        wallet_address: ethers::types::H160,
+        wallet_address: Address,
         db_client: Arc<PrismaClient>,
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
-        timestamp: U256,
+        timestamp: u64,
         trace: Option<GethTrace>,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
@@ -816,7 +772,7 @@ impl Indexer {
                     db_client.clone(),
                     wallet_address,
                     tx.clone().unwrap(),
-                    tx_receipt.clone().unwrap().logs,
+                    tx_receipt.clone().unwrap().inner.logs().to_vec(),
                     tx_receipt.clone().unwrap(),
                     self.chain_id as i64,
                     timestamp,
@@ -830,81 +786,84 @@ impl Indexer {
 
     /// Get the block logs for the given block number
     #[autometrics]
-    pub async fn get_block(
-        &self,
-        block_number: ethers::types::U64,
-    ) -> Result<Option<Block<H256>>, ProviderError> {
-        let client = self.http_client.clone().unwrap();
+    pub async fn get_block(&self, block_number: u64) -> Result<Option<Block>> {
+        let client = self.http_client.clone();
+
+        let block_tag = BlockNumberOrTag::Number(block_number);
 
         // Get the logs
-        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_block_by_number(block_tag, true) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .map_err(|e| eyre!(e.to_string()))
     }
 
     /// Get the block logs for the given block number
     #[autometrics]
-    pub async fn get_block_logs(
-        &self,
-        block_number: ethers::types::U64,
-    ) -> Result<Vec<ethers::types::Log>, ProviderError> {
-        let client = self.http_client.clone().unwrap();
+    pub async fn get_block_logs(&self, block_number: u64) -> Result<Vec<Log>> {
+        let client = self.http_client.clone();
 
         // Create the filter for the logs
         let filter = Filter::new()
-            .from_block(BlockNumber::Number(block_number))
-            .to_block(BlockNumber::Number(block_number));
+            .from_block(BlockNumberOrTag::Number(block_number))
+            .to_block(BlockNumberOrTag::Number(block_number));
 
         // Get the logs
-        { || client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_logs(&filter) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .map_err(|e| eyre!(e.to_string()))
     }
 
     /// Get the transaction for the given hash
     #[autometrics]
-    pub async fn get_transaction(
-        &self,
-        hash: ethers::types::H256,
-    ) -> Result<Option<Transaction>, ProviderError> {
-        let client = self.http_client.clone().unwrap();
+    pub async fn get_transaction(&self, hash: B256) -> Result<Option<Transaction>> {
+        let client = self.http_client.clone();
 
         // Get the block number
-        { || client.get_transaction(hash) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_transaction_by_hash(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .map_err(|e| eyre!(e.to_string()))
     }
 
     /// Get the transaction receipt for the given hash
     #[autometrics]
-    pub async fn get_transaction_receipt(
-        &self,
-        hash: ethers::types::H256,
-    ) -> Result<Option<TransactionReceipt>, ProviderError> {
-        let client = self.http_client.clone().unwrap();
+    pub async fn get_transaction_receipt(&self, hash: B256) -> Result<Option<TransactionReceipt>> {
+        let client = self.http_client.clone();
 
         // Get the block number
-        { || client.get_transaction_receipt(hash) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_transaction_receipt(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .map_err(|e| eyre!(e.to_string()))
     }
 
     /// Get the traced block for the given block number
     #[autometrics]
     pub async fn get_traced_block(
         &self,
-        block_number: ethers::types::U64,
-    ) -> Result<Vec<GethTrace>, ProviderError> {
-        let client = self.http_client.clone().unwrap();
+        block_number: u64,
+    ) -> Result<Vec<TraceResult<GethTrace, String>>> {
+        let client = self.http_client.clone();
 
-        let opts = GethDebugTracingOptions {
-            disable_storage: None,
-            disable_stack: None,
-            enable_memory: None,
-            enable_return_data: None,
-            tracer: Some(GethDebugTracerType::BuiltInTracer(
-                GethDebugBuiltInTracerType::CallTracer,
-            )),
-            tracer_config: None,
-            timeout: None,
-        };
-        let block_num = BlockNumber::Number(block_number);
+        // let opts = GethDebugTracingOptions {
+        //     disable_storage: None,
+        //     disable_stack: None,
+        //     enable_memory: None,
+        //     enable_return_data: None,
+        //     tracer: Some(GethDebugTracerType::BuiltInTracer(
+        //         GethDebugBuiltInTracerType::CallTracer,
+        //     )),
+        //     tracer_config: None,
+        //     timeout: None,
+        // };
+        let block_num = BlockNumberOrTag::Number(block_number);
 
         // Get the traced block
-        { || client.debug_trace_block_by_number(Some(block_num), opts.clone()) }
+        { || client.debug_trace_block_by_number(block_num, GethDebugTracingOptions::default()) }
             .retry(&ExponentialBuilder::default())
             .await
+            .map_err(|e| eyre!(e.to_string()))
     }
 }

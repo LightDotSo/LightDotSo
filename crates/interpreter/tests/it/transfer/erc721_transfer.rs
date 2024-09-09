@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloy::primitives::U256;
 use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc721_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     // https://etherscan.io/tx/0xfc9ab285eef688cac83d0fd32d8da79099202a0606e82843ab5d226e38ac12a1
     let request = SimulationRequest {
         chain_id: 1,
@@ -27,7 +32,7 @@ async fn test_integration_erc721_transfer() -> Result<()> {
         // WAGUMI token address
         to: "0x6144D927EE371de7e7f8221b596F3432E7A8e6D9".parse()?,
         data: Some("0x23b872dd0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed000000000000000000000000914a7625b645d0d705b9a0a30d22583e1fb87eb1000000000000000000000000000000000000000000000000000000000000000b".parse()?),
-        value: None,
+        value: U256::ZERO,
         gas_limit: u64::MAX,
         // Tx was on 16318897
         block_number: Some(16318896),
@@ -48,6 +53,9 @@ async fn test_integration_erc721_transfer() -> Result<()> {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc721_mint() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -55,7 +63,7 @@ async fn test_integration_erc721_mint() -> Result<()> {
         // WAGUMI token address
         to: "0x6144D927EE371de7e7f8221b596F3432E7A8e6D9".parse()?,
         data: Some("0x1249c58b".parse()?),
-        value: None,
+        value: U256::ZERO,
         gas_limit: u64::MAX,
         // Tx was on 13834190
         block_number: Some(13834189),

@@ -452,6 +452,7 @@ ecdsa
 eciesjs
 edqbnrqatvtoqhva
 eeyl
+eips
 elkjs
 embla
 Embla
@@ -1467,6 +1468,7 @@ sxwjr
 symbolicate
 synckit
 Synthetix
+Sysinfo
 systemjs
 szmarczak
 Taaki

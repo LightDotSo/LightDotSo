@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_routescan::{get_native_balance, get_token_balances};
 
@@ -21,7 +22,8 @@ use lightdotso_routescan::{get_native_balance, get_token_balances};
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_token_test() -> Result<()> {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     let res =
         get_token_balances(&168587773, "0x35da762a35FCb3160738EeCd60fa18438C273D5E", None, None)
@@ -35,7 +37,8 @@ async fn test_integration_token_test() -> Result<()> {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_native_test() -> Result<()> {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     let res = get_native_balance(&168587773, "0x35da762a35FCb3160738EeCd60fa18438C273D5E").await?;
     println!("{:#?}", res);

@@ -12,40 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ethers::{
-    abi::{encode, encode_packed, Token},
-    types::{Address, H160},
-    utils::{hex, keccak256},
+use alloy::{
+    dyn_abi::DynSolValue,
+    hex,
+    primitives::{keccak256, Address, FixedBytes},
 };
 use eyre::{eyre, Result};
 
 pub fn hash_message_bytes32(msg: &[u8; 32]) -> Result<[u8; 32]> {
-    Ok(keccak256(encode_packed(&[
-        Token::String("\x19Ethereum Signed Message:\n32".to_string()),
-        Token::FixedBytes(msg.to_vec()),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::String("\x19Ethereum Signed Message:\n32".to_string()),
+            DynSolValue::FixedBytes(FixedBytes::from(*msg), msg.len()),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 pub fn hash_image_bytes32(msg: &[u8; 32]) -> Result<[u8; 32]> {
-    Ok(keccak256(encode_packed(&[
-        Token::FixedBytes(
-            parse_hex_to_bytes32(
-                // Hash of `SetImageHash(bytes32 imageHash)`
-                "0x8713a7c4465f6fbee2b6e9d6646d1d9f83fec929edfc4baf661f3c865bdd04d1",
-            )?
-            .to_vec(),
-        ),
-        Token::FixedBytes(msg.to_vec()),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::FixedBytes(
+                FixedBytes::from(parse_hex_to_bytes32(
+                    // Hash of `SetImageHash(bytes32 imageHash)`
+                    "0x8713a7c4465f6fbee2b6e9d6646d1d9f83fec929edfc4baf661f3c865bdd04d1",
+                )?),
+                32,
+            ),
+            DynSolValue::FixedBytes(FixedBytes::from(*msg), msg.len()),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> Result<[u8; 32]> {
-    Ok(keccak256(encode_packed(&[
-        Token::String("\x19\x01".to_string()),
-        Token::FixedBytes(left_pad_u64_to_bytes32(chain_id).to_vec()),
-        Token::Address(address),
-        Token::FixedBytes(digest.to_vec()),
-    ])?))
+    Ok(*keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::String("\x19\x01".to_string()),
+            DynSolValue::FixedBytes(FixedBytes::from(left_pad_u64_to_bytes32(chain_id)), 32),
+            DynSolValue::Address(address),
+            DynSolValue::FixedBytes(FixedBytes::from(digest), 32),
+        ])
+        .abi_encode_packed(),
+    ))
 }
 
 pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Address, usize)> {
@@ -61,8 +70,8 @@ pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Addre
 
     let a = slice_1[0];
 
-    let h160 = H160::from_slice(slice_2);
-    let b = Address::from(h160);
+    let h160 = Address::from_slice(slice_2);
+    let b = h160;
 
     Ok((a, b, new_pointer))
 }
@@ -137,7 +146,13 @@ pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize
 }
 
 pub(crate) fn hash_keccak_256(a: [u8; 32], b: [u8; 32]) -> [u8; 32] {
-    keccak256(encode(&[Token::FixedBytes(a.to_vec()), Token::FixedBytes(b.to_vec())]))
+    *keccak256(
+        DynSolValue::Tuple(vec![
+            DynSolValue::FixedBytes(FixedBytes::from(a), 32),
+            DynSolValue::FixedBytes(FixedBytes::from(b), 32),
+        ])
+        .abi_encode_packed(),
+    )
 }
 
 pub fn from_hex_string(data: &str) -> Result<Vec<u8>> {
@@ -192,9 +207,8 @@ pub fn print_hex_string(data: &[u8]) {
 
 #[cfg(test)]
 mod tests {
-    use ethers::utils::hash_message;
-
     use super::*;
+    use alloy::primitives::eip191_hash_message;
 
     #[test]
     fn test_hash_message() -> Result<()> {
@@ -202,7 +216,7 @@ mod tests {
             "0x84fcef6a64ccef82e5436d5281e94687e0371478798a1ce226da0b9838113ce8",
         )?;
         let result_original = hash_message_bytes32(&message)?;
-        let result: [u8; 32] = hash_message(message).into();
+        let result: [u8; 32] = eip191_hash_message(message).into();
         let expected = parse_hex_to_bytes32(
             "0xdafe5b72d714f0405b7b2c2c04bf346d94964b3fd39265cc05db27f6910dbb60",
         )?;

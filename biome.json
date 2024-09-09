@@ -103,6 +103,9 @@
       }
     },
     {
+      "include": ["**/*.json"]
+    },
+    {
       "include": [
         "apps/**/app/**/page.tsx",
         "apps/**/app/**/layout.tsx",

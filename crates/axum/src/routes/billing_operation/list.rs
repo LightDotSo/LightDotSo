@@ -18,13 +18,13 @@ use crate::{
     result::{AppJsonResult, AppResult},
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use ethers_main::types::H160;
 use lightdotso_prisma::{
     billing_operation::{self, WhereParam},
     paymaster_operation,
@@ -47,8 +47,6 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// The status to filter by.
     pub status: Option<String>,
-    /// The id to filter by.
-    pub id: Option<String>,
     /// The user id to filter by.
     pub user_id: Option<String>,
     /// The wallet address to filter by.
@@ -202,7 +200,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<()> {
     // Parse the address.
-    let query_address: H160 = query.address.parse()?;
+    let query_address: Address = query.address.parse()?;
 
     // Authenticate the user
     if query.user_id.is_some() {

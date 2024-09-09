@@ -22,8 +22,8 @@ use crate::{
         InterpretationRequest,
     },
 };
+use alloy::primitives::{Address, U256};
 use async_trait::async_trait;
-use ethers_main::types::Address;
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
@@ -42,7 +42,7 @@ impl Adapter for EthAdapter {
         // If the request has a value larger than 0, then it is a native transfer
         request.value.map_or(false, |v| v > 0) ||
         // If the traces have a value larger than 0, then it is a native transfer
-            request.traces.iter().any(|t| t.value.map_or(false, |v| v > 0.into()))
+            request.traces.iter().any(|t| t.value.map_or(false, |v| v > U256::ZERO))
     }
     async fn query(
         &self,
@@ -50,7 +50,7 @@ impl Adapter for EthAdapter {
         request: InterpretationRequest,
     ) -> Result<AdapterResponse> {
         let token = AssetToken {
-            address: Address::zero(),
+            address: Address::ZERO,
             token_id: None,
             token_type: AssetTokenType::Erc20,
         };
@@ -121,12 +121,12 @@ impl Adapter for EthAdapter {
             // Get the after balances
             // unwrap is safe because we know that value is Some in the matches function
             let after_from_balance = if let Some(balance) = before_from_balance {
-                Some(balance - request.value.unwrap())
+                Some(balance - U256::from(request.value.unwrap()))
             } else {
                 None
             };
             let after_to_balance = if let Some(balance) = before_to_balance {
-                Some(balance + request.value.unwrap())
+                Some(balance + U256::from(request.value.unwrap()))
             } else {
                 None
             };
@@ -150,7 +150,7 @@ impl Adapter for EthAdapter {
                 token: token.clone(),
                 before_amount: before_from_balance,
                 after_amount: after_from_balance,
-                amount: request.value.unwrap().into(),
+                amount: U256::from(request.value.unwrap()),
             };
 
             // Get the asset changes for the to address
@@ -160,7 +160,7 @@ impl Adapter for EthAdapter {
                 token: token.clone(),
                 before_amount: before_to_balance,
                 after_amount: after_to_balance,
-                amount: request.value.unwrap().into(),
+                amount: U256::from(request.value.unwrap()),
             };
 
             // Add the actions and asset changes to the vectors

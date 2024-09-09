@@ -20,14 +20,14 @@ use crate::{
     routes::signature::create::SignatureCreateParams,
     state::AppState,
 };
+use alloy::{
+    hex,
+    primitives::{Address, U256},
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
-};
-use ethers_main::{
-    types::H160,
-    utils::{hex, to_checksum},
 };
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
@@ -47,10 +47,7 @@ use lightdotso_prisma::{
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
 use lightdotso_utils::is_testnet;
-use prisma_client_rust::{
-    chrono::{DateTime, NaiveDateTime, Utc},
-    Direction,
-};
+use prisma_client_rust::{chrono::DateTime, Direction};
 use rs_merkle::{Hasher as MerkleHasher, MerkleTree};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -165,14 +162,14 @@ impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
     fn try_from(op: UserOperationCreateParams) -> Result<Self> {
         Ok(BaseUserOperation {
             sender: op.sender.parse()?,
-            nonce: op.nonce.into(),
+            nonce: U256::from(op.nonce),
             init_code: hex_to_bytes(&op.init_code)?.into(),
             call_data: hex_to_bytes(&op.call_data)?.into(),
-            call_gas_limit: op.call_gas_limit.into(),
-            verification_gas_limit: op.verification_gas_limit.into(),
-            pre_verification_gas: op.pre_verification_gas.into(),
-            max_fee_per_gas: op.max_fee_per_gas.into(),
-            max_priority_fee_per_gas: op.max_priority_fee_per_gas.into(),
+            call_gas_limit: U256::from(op.call_gas_limit),
+            verification_gas_limit: U256::from(op.verification_gas_limit),
+            pre_verification_gas: U256::from(op.pre_verification_gas),
+            max_fee_per_gas: U256::from(op.max_fee_per_gas),
+            max_priority_fee_per_gas: U256::from(op.max_priority_fee_per_gas),
             paymaster_and_data: hex_to_bytes(&op.paymaster_and_data)?.into(),
             signature: vec![].into(),
         })
@@ -237,7 +234,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     info!("base_hash: 0x{}", hex::encode(base_hash));
 
     // Parse the user operation address.
-    let sender_address: H160 = user_operation.sender.parse()?;
+    let sender_address: Address = user_operation.sender.parse()?;
 
     // -------------------------------------------------------------------------
     // Signature
@@ -295,10 +292,13 @@ pub(crate) async fn v1_user_operation_create_handler(
     };
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
-            recovered_sig.address, owner.address
+            recovered_sig.address.to_checksum(None),
+            owner.address.parse::<Address>()?.to_checksum(None)
         );
         return Err(AppError::BadRequest);
     }
@@ -368,11 +368,11 @@ pub(crate) async fn v1_user_operation_create_handler(
                 .paymaster()
                 .upsert(
                     paymaster::address_chain_id(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain_id,
                     ),
                     paymaster::create(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain::id::equals(chain_id),
                         vec![],
                     ),
@@ -392,16 +392,8 @@ pub(crate) async fn v1_user_operation_create_handler(
                 .client
                 .paymaster_operation()
                 .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     paymaster.clone().id.clone(),
                 ))
                 .exec()
@@ -426,7 +418,7 @@ pub(crate) async fn v1_user_operation_create_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
@@ -597,7 +589,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         info!("base_hash: 0x{}", hex::encode(base_hash));
 
         // Check that the user operation address is parsable.
-        let _: H160 = user_operation.sender.parse()?;
+        let _: Address = user_operation.sender.parse()?;
     }
 
     // Check if all of the sender addresses are the same.
@@ -612,7 +604,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     }
 
     // Get the sender address.
-    let sender_address: H160 = user_operations[0].sender.parse()?;
+    let sender_address: Address = user_operations[0].sender.parse()?;
 
     // -------------------------------------------------------------------------
     // Merkle
@@ -702,7 +694,9 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     };
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
             recovered_sig.address, owner.address
@@ -718,7 +712,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let wallet = state
         .client
         .wallet()
-        .find_unique(wallet::address::equals(to_checksum(&sender_address, None)))
+        .find_unique(wallet::address::equals(sender_address.to_checksum(None)))
         .exec()
         .await?;
     info!(?wallet);
@@ -727,10 +721,10 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
     // If the wallet address is not equal to user operation sender, return a 400.
-    if wallet.address != to_checksum(&sender_address, None) {
+    if wallet.address != sender_address.to_checksum(None) {
         error!(
             "user_operation.sender: {}, wallet.address: {}",
-            to_checksum(&sender_address, None),
+            sender_address.to_checksum(None),
             wallet.address
         );
         return Err(AppError::BadRequest);
@@ -740,7 +734,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let configuration = state
         .client
         .configuration()
-        .find_first(vec![configuration::address::equals(to_checksum(&sender_address, None))])
+        .find_first(vec![configuration::address::equals(sender_address.to_checksum(None))])
         .order_by(configuration::checkpoint::order(Direction::Desc))
         .with(configuration::owners::fetch(vec![]))
         .exec()
@@ -800,11 +794,11 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 .paymaster()
                 .upsert(
                     paymaster::address_chain_id(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain_id,
                     ),
                     paymaster::create(
-                        to_checksum(&decded_paymaster_address, None),
+                        decded_paymaster_address.to_checksum(None),
                         chain::id::equals(chain_id),
                         vec![],
                     ),
@@ -824,16 +818,8 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 .client
                 .paymaster_operation()
                 .find_unique(paymaster_operation::valid_until_valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+                    DateTime::from_timestamp(valid_until as i64, 0).unwrap().into(),
+                    DateTime::from_timestamp(valid_after as i64, 0).unwrap().into(),
                     paymaster.clone().id.clone(),
                 ))
                 .exec()
@@ -875,7 +861,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
@@ -978,7 +964,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             ActivityEntity::Signature,
             &ActivityMessage {
                 operation: ActivityOperation::Create,
-                log: serde_json::to_value(&user_operation.clone())?,
+                log: serde_json::to_value(user_operation.clone())?,
                 params: CustomParams {
                     signature_id: Some(signature.id.clone()),
                     user_id: Some(user_id.clone()),

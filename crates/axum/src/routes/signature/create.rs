@@ -19,6 +19,7 @@ use crate::{
     routes::signature::error::SignatureError,
     state::AppState,
 };
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -195,7 +196,9 @@ pub(crate) async fn v1_signature_create_handler(
     let owner = owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != owner.address.parse()? {
+    if recovered_sig.address.to_checksum(None) !=
+        owner.address.parse::<Address>()?.to_checksum(None)
+    {
         error!(
             "recovered_sig.address: {}, owner.address: {}",
             recovered_sig.address, owner.address

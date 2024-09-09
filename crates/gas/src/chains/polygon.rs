@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::types::GasEstimationParams;
-use ethers::types::{u256_from_f64_saturating, U256};
+use alloy::primitives::U256;
 use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
@@ -81,18 +81,16 @@ pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimationParams
 // From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-middleware/src/gas_oracle/mod.rs#L39
 // License: MIT
 pub(crate) const GWEI_TO_WEI: u64 = 1_000_000_000;
-pub(crate) const GWEI_TO_WEI_U256: U256 = U256([GWEI_TO_WEI, 0, 0, 0]);
+// pub(crate) const GWEI_TO_WEI_U256: U256 = U256::from_limbs([GWEI_TO_WEI, 0, 0, 0]);
 
 // From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-middleware/src/gas_oracle/mod.rs#L155
 // License: MIT
 pub(crate) fn from_gwei_f64(gwei: f64) -> U256 {
-    u256_from_f64_saturating(gwei) * GWEI_TO_WEI_U256
+    U256::from((gwei * GWEI_TO_WEI as f64) as u64)
 }
 
 #[cfg(test)]
 mod tests {
-    use ethers::types::U256;
-
     use super::*;
 
     #[tokio::test]

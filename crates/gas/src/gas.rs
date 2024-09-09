@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     chains::polygon::polygon_gas_estimation,
     types::{GasEstimation, GasEstimationParams},
 };
-use ethers::{providers::Middleware, types::BlockNumber};
-use ethers_main::types::U256;
+use alloy::{eips::BlockNumberOrTag, primitives::U256, providers::Provider};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_jsonrpsee::error::JsonRpcError;
@@ -38,7 +39,7 @@ impl GasApi {
         }
 
         // Setup a new ethers provider
-        let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+        let (client, _) = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
 
         // Get the gas price from the client
         let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;
@@ -50,8 +51,8 @@ impl GasApi {
         if chain_id == 42220 {
             let gas_price = gas_price * 3 / 2;
             let params = GasEstimationParams {
-                max_fee_per_gas: gas_price,
-                max_priority_fee_per_gas: gas_price,
+                max_fee_per_gas: U256::from(gas_price),
+                max_priority_fee_per_gas: U256::from(gas_price),
             };
             return Ok(create_gas_estimation(&params));
         }
@@ -62,35 +63,35 @@ impl GasApi {
         if chain_id == 42161 {
             let gas_price = gas_price * 5 / 4;
             let params = GasEstimationParams {
-                max_fee_per_gas: gas_price,
-                max_priority_fee_per_gas: gas_price,
+                max_fee_per_gas: U256::from(gas_price),
+                max_priority_fee_per_gas: U256::from(gas_price),
             };
             return Ok(create_gas_estimation(&params));
         }
 
         // Get the fee history
         let fee_history = client
-            .fee_history(10, BlockNumber::Latest, &[20.0])
+            .get_fee_history(10, BlockNumberOrTag::Latest, &[20.0])
             .await
             .map_err(JsonRpcError::from)?;
 
-        if fee_history.reward.is_empty() {
+        if fee_history.reward.is_none() {
             let gas_price = gas_price * 3 / 2;
             // Use the gas price to create the params
             let params = GasEstimationParams {
-                max_fee_per_gas: gas_price,
-                max_priority_fee_per_gas: gas_price,
+                max_fee_per_gas: U256::from(gas_price),
+                max_priority_fee_per_gas: U256::from(gas_price),
             };
             return Ok(create_gas_estimation(&params));
         };
-
         // Get the average gas price
-        let fee_average = fee_history.reward.iter().fold(0, |acc, cur| cur[0].as_u32() + acc) / 10;
-        let fee_average = U256::from(fee_average);
+        let original_fee_average =
+            fee_history.reward.as_ref().unwrap().iter().flatten().sum::<u128>() / 10;
+        let fee_average = U256::from(original_fee_average);
 
         // Compare the average gas price with the current gas price
-        if fee_average > gas_price {
-            gas_price = fee_average;
+        if fee_average > U256::from(gas_price) {
+            gas_price = original_fee_average;
         }
         let max_priority_fee_per_gas = gas_price;
 
@@ -102,7 +103,10 @@ impl GasApi {
         }
 
         // Use the gas price to create the params
-        let params = GasEstimationParams { max_fee_per_gas: gas_price, max_priority_fee_per_gas };
+        let params = GasEstimationParams {
+            max_fee_per_gas: U256::from(gas_price),
+            max_priority_fee_per_gas: U256::from(max_priority_fee_per_gas),
+        };
 
         Ok(create_gas_estimation(&params))
     }

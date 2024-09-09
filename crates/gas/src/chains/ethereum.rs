@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use crate::types::GasEstimationParams;
+use alloy::primitives::U256;
 use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
@@ -33,8 +34,8 @@ impl From<ApiResponseData> for GasEstimationParams {
     fn from(data: ApiResponseData) -> Self {
         let make_params = |value: u64| -> GasEstimationParams {
             GasEstimationParams {
-                max_priority_fee_per_gas: value.into(),
-                max_fee_per_gas: value.into(),
+                max_priority_fee_per_gas: U256::from(value),
+                max_fee_per_gas: U256::from(value),
             }
         };
 
@@ -66,8 +67,6 @@ pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimationParam
 
 #[cfg(test)]
 mod tests {
-    use ethers::types::U256;
-
     use super::*;
 
     #[tokio::test]

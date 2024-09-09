@@ -13,13 +13,12 @@
 // limitations under the License.
 
 use crate::{result::AppJsonResult, state::AppState};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
-
 use lightdotso_prisma::{user_operation, UserOperationStatus};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
@@ -81,7 +80,7 @@ pub(crate) async fn v1_user_operation_nonce_handler(
     let Query(query) = get_query;
     let chain_id = query.chain_id;
     // Get the wallet address from the nonce query.
-    let address: H160 = query.address.parse()?;
+    let address: Address = query.address.parse()?;
 
     // Get the user operations from the database.
     let user_operation = state
@@ -89,7 +88,7 @@ pub(crate) async fn v1_user_operation_nonce_handler(
         .user_operation()
         .find_first(vec![
             user_operation::chain_id::equals(chain_id),
-            user_operation::sender::equals(to_checksum(&address, None)),
+            user_operation::sender::equals(address.to_checksum(None)),
             or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted)
@@ -137,7 +136,7 @@ pub(crate) async fn v1_user_operation_nonce_handler(
             // *"0xd51a9c61267aa6196961883ecf5ff2da6619c37dac0fa92122513fb32c032d2d-0" &&
             // log.data.len() == 64 {                       // Parse the topic data as
             // hex string                       // Get the first 64 characters
-            //                       let address = H160::from_slice(&log.data[44..64]);
+            //                       let address = Address::from_slice(&log.data[44..64]);
             //                       info!("address: {}", to_checksum(&address, None));
 
             //                       // Check if the data in the paymaster is one of ours

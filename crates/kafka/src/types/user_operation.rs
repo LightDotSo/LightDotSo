@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::traits::ToJson;
-use ethers::types::H256;
+use alloy::primitives::B256;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
@@ -23,7 +23,7 @@ use serde_json::{json, Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserOperationMessage {
-    pub hash: H256,
+    pub hash: B256,
     pub chain_id: u64,
     pub is_pending_update: bool,
 }
@@ -53,17 +53,17 @@ mod tests {
     use super::*;
     use serde_json::Result;
 
-    // Helper function to create mock H256 hash
-    fn h256_mock() -> H256 {
+    // Helper function to create mock B256 hash
+    fn b256_mock() -> B256 {
         // Replace with actual mock generation
-        H256::from_slice(&[1u8; 32])
+        B256::from_slice(&[1u8; 32])
     }
 
     // Test `ToJson` trait's `to_json` method for the `UserOperationMessage`
     #[test]
     fn test_to_json() {
         let msg =
-            UserOperationMessage { hash: h256_mock(), chain_id: 1u64, is_pending_update: true };
+            UserOperationMessage { hash: b256_mock(), chain_id: 1u64, is_pending_update: true };
 
         let json_str = msg.to_json();
         let expected_str =
@@ -76,7 +76,7 @@ mod tests {
     #[test]
     fn test_serialization_deserialization() -> Result<()> {
         let original_msg =
-            UserOperationMessage { hash: h256_mock(), chain_id: 137, is_pending_update: true };
+            UserOperationMessage { hash: b256_mock(), chain_id: 137, is_pending_update: true };
 
         let serialized = serde_json::to_string(&original_msg)?;
         let deserialized: UserOperationMessage = serde_json::from_str(&serialized)?;
