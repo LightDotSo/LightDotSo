@@ -200,6 +200,7 @@ Cardano
 carryforward
 caseless
 castarray
+catppuccin
 cbor
 cborg
 CBRIDGE
@@ -548,6 +549,7 @@ ftch
 Ftqz
 fullscreen
 fullwidth
+fuma
 fumadocs
 futoin
 Gasestimate

@@ -10,7 +10,7 @@
     "paths": {
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"],
-      "@/source": ["./source.config.ts"]
+      "@/.source": ["./.source"]
     },
     "declaration": false,
     "declarationMap": false

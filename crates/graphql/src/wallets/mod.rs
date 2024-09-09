@@ -37,14 +37,15 @@ pub struct LightWallet {
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
 
-pub fn run_query() -> cynic::GraphQlResponse<MyQuery> {
-    use cynic::http::ReqwestBlockingExt;
+pub async fn run_query() -> cynic::GraphQlResponse<MyQuery> {
+    use cynic::http::ReqwestExt;
 
     let query = build_query();
 
-    reqwest::blocking::Client::new()
+    reqwest::Client::new()
         .post("https://api.thegraph.com/subgraphs/name/lightdotso/mainnet")
         .run_graphql(query)
+        .await
         .unwrap()
 }
 
@@ -67,17 +68,5 @@ mod test {
         let query = build_query();
 
         insta::assert_snapshot!(query.query);
-    }
-
-    // TODO: The Official graph API is down, so we can't run this test.
-    #[test]
-    #[ignore]
-    fn test_running_query() {
-        let result = run_query();
-
-        if result.errors.is_some() {
-            assert_eq!(result.errors.unwrap().len(), 0);
-        }
-        insta::assert_debug_snapshot!(result.data);
     }
 }

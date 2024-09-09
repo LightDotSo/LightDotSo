@@ -310,15 +310,15 @@ pub fn build_user_operation_query(
     GetUserOperationQuery::build(vars)
 }
 
-pub fn run_user_operation_query(
+pub async fn run_user_operation_query(
     url: String,
-    vars: GetUserOperationQueryVariables,
+    vars: GetUserOperationQueryVariables<'_>,
 ) -> Result<cynic::GraphQlResponse<GetUserOperationQuery>> {
-    use cynic::http::ReqwestBlockingExt;
+    use cynic::http::ReqwestExt;
 
     let query = build_user_operation_query(vars);
 
-    Ok(reqwest::blocking::Client::new().post(url).run_graphql(query)?)
+    Ok(reqwest::Client::new().post(url).run_graphql(query).await?)
 }
 
 pub fn build_user_operations_query(
@@ -329,21 +329,20 @@ pub fn build_user_operations_query(
     GetUserOperationsQuery::build(vars)
 }
 
-pub fn run_user_operations_query(
+pub async fn run_user_operations_query(
     url: String,
     vars: GetUserOperationsQueryVariables,
 ) -> Result<cynic::GraphQlResponse<GetUserOperationsQuery>> {
-    use cynic::http::ReqwestBlockingExt;
+    use cynic::http::ReqwestExt;
 
     let query = build_user_operations_query(vars);
 
-    Ok(reqwest::blocking::Client::new().post(url).run_graphql(query)?)
+    Ok(reqwest::Client::new().post(url).run_graphql(query).await?)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::utils::get_graphql_url;
 
     #[test]
     fn snapshot_test_query() {
@@ -361,35 +360,5 @@ mod test {
         let query = build_user_operation_query(GetUserOperationQueryVariables { id: "0x1234" });
 
         insta::assert_snapshot!(query.query);
-    }
-
-    // TODO: The Official graph API is down, so we can't run this test.
-    #[test]
-    #[ignore]
-    fn test_running_query() {
-        let result = run_user_operations_query(
-            get_graphql_url(1).unwrap(),
-            GetUserOperationsQueryVariables {
-                min_block: BigInt("0".to_string()),
-                min_index: BigInt("0".to_string()),
-            },
-        )
-        .unwrap();
-        if result.errors.is_some() {
-            assert_eq!(result.errors.unwrap().len(), 0);
-        }
-
-        let result = run_user_operation_query(
-            get_graphql_url(137).unwrap(),
-            GetUserOperationQueryVariables {
-                id: "0x3aa33c2bf5adbafef0a884b90aa412667c97ba3fb2506589771e12898acb2c61",
-            },
-        )
-        .unwrap();
-        println!("{:?}", result);
-
-        if result.errors.is_some() {
-            assert_eq!(result.errors.unwrap().len(), 0);
-        }
     }
 }
