@@ -41,7 +41,7 @@ export const INTERNAL_LINKS: {
   [Internal.ASSETS]: "https://assets.light.so",
   [Internal.BLOG]: "https://light.so/blog",
   [Internal.CHANGELOG]: "https://light.so/changelog",
-  [Internal.DOCS]: "https://docs.light.so",
+  [Internal.DOCS]: "https://light.so/docs",
   [Internal.EXPLORER]: "https://explorer.light.so",
   [Internal.GOVERNANCE]: "https://gov.light.so",
   [Internal.IMAGES]: "https://images.light.so",
