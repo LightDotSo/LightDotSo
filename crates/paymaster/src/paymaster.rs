@@ -85,6 +85,7 @@ pub async fn fetch_gas_and_paymaster_and_data(
     if (*PIMLICO_RPC_URLS).contains_key(&chain_id) {
         // For each paymaster policy, attempt to fetch the user operation sponsorship.
         for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
+            info!("[SPONSORSHIP]: pimlico");
             info!("pimlico policy: {:?}", policy);
 
             let sponsorship = get_gas_and_paymaster_and_data(
@@ -119,6 +120,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
     if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
+        info!("[SPONSORSHIP]: particle network");
+
         let sponsorship = get_gas_and_paymaster_and_data(
             format!(
                 "{}?chainId={}&projectUuid={}&projectKey={}",
@@ -148,6 +151,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // Check if the `chain_id` is one of the key of `ALCHEMY_POLICY_IDS`.
     if (*ALCHEMY_POLICY_IDS).contains_key(&chain_id) {
+        info!("[SPONSORSHIP]: alchemy");
+
         // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
         if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
             let sponsorship = get_alchemy_paymaster_and_data(
@@ -178,6 +183,8 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // Check if the `chain_id` is one of the key of `BICONOMY_POLICY_IDS`.
     if (*BICONOMY_POLICY_IDS).contains_key(&chain_id) {
+        info!("[SPONSORSHIP]: biconomy");
+
         // Get the alchemy rpc url from the `BICONOMY_PAYMASTER_RPC_URLS`.
         if let Some(biconomy_rpc_url) = (*BICONOMY_PAYMASTER_RPC_URLS).get(&chain_id) {
             let sponsorship = get_biconomy_paymaster_and_data(
