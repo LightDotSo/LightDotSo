@@ -27,3 +27,8 @@ ignores:
   - "@types/mdx"
   - "@content-collections/core"
   - "@fumadocs/content-collections"
+  - "@shikijs/transformers"
+  - "fumadocs-docgen"
+  - "fumadocs-twoslash"
+  - "rehype-katex"
+  - "remark-math"

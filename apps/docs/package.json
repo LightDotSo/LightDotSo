@@ -14,6 +14,7 @@
   "author": "LightDotSo",
   "scripts": {
     "build": "next build",
+    "build:docs": "node ./scripts/generate-docs.mjs",
     "dev": "next dev --turbo",
     "lint": "next lint || exit 0",
     "start": "next start"
@@ -53,6 +54,7 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
   },

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { source } from "@/app/source";
+import { openapi, source } from "@/app/source";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import {
   DocsBody,
@@ -68,7 +68,9 @@ export default async function Page({
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX
+          components={{ ...defaultMdxComponents, APIPage: openapi.APIPage }}
+        />
       </DocsBody>
     </DocsPage>
   );
