@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::provider::get_provider;
+use crate::{entrypoint::EntryPoint::UserOperation, provider::get_provider};
 use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
 use eyre::Result;
 use EntryPoint::EntryPointInstance;

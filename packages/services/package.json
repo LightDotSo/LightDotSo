@@ -26,17 +26,17 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
-    "@tanstack/react-query": "^5.54.1",
+    "@tanstack/react-query": "^5.55.2",
     "exponential-backoff": "^3.1.1",
-    "next": "15.0.0-canary.120",
-    "react": "19.0.0-rc-187dd6a7-20240806",
-    "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "react-is": "19.0.0-rc-187dd6a7-20240806",
+    "next": "15.0.0-canary.146",
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

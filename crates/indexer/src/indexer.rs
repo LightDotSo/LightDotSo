@@ -81,8 +81,8 @@ pub struct Indexer {
     chain_id: u64,
     redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
-    http_client: Arc<RootProvider<Http<ReqwestClient>>>,
-    ws_client: Arc<RootProvider<PubSubFrontend>>,
+    http_client: Option<Arc<RootProvider<Http<ReqwestClient>>>>,
+    ws_client: Option<Arc<RootProvider<PubSubFrontend>>>,
 }
 
 impl Indexer {
@@ -91,13 +91,17 @@ impl Indexer {
         info!("Indexer new, starting");
 
         // Create the http client
-        let http_client =
-            Arc::new(ProviderBuilder::new().on_http(args.rpc.to_string().parse().unwrap()));
+        let http_client = match args.rpc.to_string().parse() {
+            Ok(parsed_rpc) => Some(Arc::new(ProviderBuilder::new().on_http(parsed_rpc))),
+            Err(_) => None,
+        };
 
         // Create the websocket client
-        let ws_client = Arc::new(
-            ProviderBuilder::new().on_ws(WsConnect::new(args.ws.to_string())).await.unwrap(),
-        );
+        let ws_connect = WsConnect::new(args.ws.to_string());
+        let ws_client = match ProviderBuilder::new().on_ws(ws_connect).await {
+            Ok(ws_connect) => Some(Arc::new(ws_connect)),
+            Err(_) => None,
+        };
 
         // Create the redis client
         let redis_client: Option<Arc<Client>> =
@@ -112,18 +116,19 @@ impl Indexer {
     }
 
     /// Runs the indexer
-    pub async fn run(&self, db_client: Arc<PrismaClient>) {
+    pub async fn run(&self, db_client: Arc<PrismaClient>) -> Result<()> {
         info!("Indexer run, starting");
 
         // Initiate stream for new blocks
-        let client = self.ws_client.clone();
+        let client = self.ws_client.clone().unwrap();
+
         // Take until the stream is closed
         let mut stream = client.subscribe_blocks().await.unwrap().into_stream().take(10);
 
         // Loop over the blocks
         while let Some(block) = stream.next().await {
             // Get the block number
-            info!("New block: {:?}", block.clone().header.number.unwrap());
+            info!("New block: {:?}", block.clone().header.number);
 
             // Check if the block is in the sleep chain ids
             if SLEEP_CHAIN_IDS.contains_key(&self.chain_id) {
@@ -155,6 +160,8 @@ impl Indexer {
                 }
             }
         }
+
+        Ok(())
     }
 
     pub async fn get_block_with_internal(
@@ -196,11 +203,11 @@ impl Indexer {
         info!("Indexer index, starting");
 
         // Get block from http client
-        let block = self.get_block(block.header.number.unwrap()).await?.ok_or_else(|| {
+        let block = self.get_block(block.header.number).await?.ok_or_else(|| {
             eyre!(
                 "Error: Block not found at chain_id: {}, block: {}",
                 self.chain_id,
-                block.header.number.unwrap_or_default()
+                block.header.number
             )
         })?;
         trace!(?block);
@@ -211,15 +218,14 @@ impl Indexer {
         let tx_address_type_hashmap: HashMap<B256, HashMap<Address, String>> = HashMap::new();
 
         // Get the traced block
-        let traced_block =
-            self.get_traced_block(block.header.number.unwrap()).await.map_err(|e| {
-                eyre!(
-                    "Error in get_traced_block: {:?} at chain_id: {}, block: {}",
-                    e,
-                    self.chain_id,
-                    block.header.number.unwrap_or_default()
-                )
-            })?;
+        let traced_block = self.get_traced_block(block.header.number).await.map_err(|e| {
+            eyre!(
+                "Error in get_traced_block: {:?} at chain_id: {}, block: {}",
+                e,
+                self.chain_id,
+                block.header.number
+            )
+        })?;
         trace!(?traced_block);
 
         // Check if the traced block length and block transactions length are the same
@@ -787,7 +793,7 @@ impl Indexer {
     /// Get the block logs for the given block number
     #[autometrics]
     pub async fn get_block(&self, block_number: u64) -> Result<Option<Block>> {
-        let client = self.http_client.clone();
+        let client = self.http_client.clone().unwrap();
 
         let block_tag = BlockNumberOrTag::Number(block_number);
 
@@ -801,7 +807,7 @@ impl Indexer {
     /// Get the block logs for the given block number
     #[autometrics]
     pub async fn get_block_logs(&self, block_number: u64) -> Result<Vec<Log>> {
-        let client = self.http_client.clone();
+        let client = self.http_client.clone().unwrap();
 
         // Create the filter for the logs
         let filter = Filter::new()
@@ -818,7 +824,7 @@ impl Indexer {
     /// Get the transaction for the given hash
     #[autometrics]
     pub async fn get_transaction(&self, hash: B256) -> Result<Option<Transaction>> {
-        let client = self.http_client.clone();
+        let client = self.http_client.clone().unwrap();
 
         // Get the block number
         { || client.get_transaction_by_hash(hash) }
@@ -830,7 +836,7 @@ impl Indexer {
     /// Get the transaction receipt for the given hash
     #[autometrics]
     pub async fn get_transaction_receipt(&self, hash: B256) -> Result<Option<TransactionReceipt>> {
-        let client = self.http_client.clone();
+        let client = self.http_client.clone().unwrap();
 
         // Get the block number
         { || client.get_transaction_receipt(hash) }
@@ -845,7 +851,7 @@ impl Indexer {
         &self,
         block_number: u64,
     ) -> Result<Vec<TraceResult<GethTrace, String>>> {
-        let client = self.http_client.clone();
+        let client = self.http_client.clone().unwrap();
 
         // let opts = GethDebugTracingOptions {
         //     disable_storage: None,

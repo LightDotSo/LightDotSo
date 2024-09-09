@@ -24,13 +24,13 @@
   },
   "dependencies": {
     "chai": "^5.1.1",
-    "envio": "^2.2.0",
+    "envio": "^2.2.2",
     "ethers": "^6.13.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.19",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "mocha": "^10.7.3",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",

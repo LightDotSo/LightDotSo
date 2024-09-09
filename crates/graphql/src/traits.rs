@@ -160,8 +160,6 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 blob_versioned_hashes: None,
                 // Determistic Option None
                 authorization_list: None,
-                // Determistic Default
-                ..Default::default()
             },
             transaction_logs: op.user_operation.transaction.receipt.clone().unwrap().logs.map_or(
                 Vec::new(),

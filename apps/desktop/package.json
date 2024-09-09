@@ -20,13 +20,13 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.6.0",
-    "react": "19.0.0-rc-187dd6a7-20240806",
-    "react-dom": "19.0.0-rc-187dd6a7-20240806"
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827"
   },
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@tauri-apps/cli": "^1.6.1",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

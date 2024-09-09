@@ -24,12 +24,12 @@
   },
   "dependencies": {
     "abitype": "^1.0.6",
-    "viem": "^2.21.1",
+    "viem": "^2.21.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "typescript": "^5.5.4"
   },
   "publishConfig": {

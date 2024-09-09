@@ -18,6 +18,5 @@
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
-  reth-rpc-types = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
