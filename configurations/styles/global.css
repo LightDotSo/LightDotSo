@@ -417,8 +417,8 @@
     --border-inverse-strong: 227 18% 90%;
     --border-inverse-stronger: 240 10% 96%;
     --border-inverse-strongest: 0 0% 100%;
-    --border-inverse-weaker: 220 26% 30%;
-    --border-inverse-weakest: 218 43% 12%;
+    --border-inverse-weaker: 0 0% 63%;
+    --border-inverse-weakest: 0 0% 93%;
     --border-neutral: 213 100% 49%;
     --border-neutral-strong: 213 98% 44%;
     --border-neutral-stronger: 213 98% 44%;
