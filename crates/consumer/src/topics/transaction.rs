@@ -85,7 +85,7 @@ pub async fn transaction_consumer(
         match serde_json::from_slice::<(Block, u64)>(payload_block.as_bytes()) {
             Ok((block, chain_id)) => {
                 // Get the block number
-                let block_number = block.header.number.unwrap();
+                let block_number = block.header.number;
 
                 // Log each message as an example.
                 info!("Indexing block: {:?} at chain_id: {:?}", block_number, chain_id);
@@ -107,8 +107,7 @@ pub async fn transaction_consumer(
                     if topic == TRANSACTION.to_string() || topic == RETRY_TRANSACTION.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 0",
-                            block.header.number.unwrap(),
-                            chain_id
+                            block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_0_message(client.clone(), payload) }
                             .retry(&ExponentialBuilder::default())
@@ -116,8 +115,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_0.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 1",
-                            block.header.number.unwrap(),
-                            chain_id
+                            block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_1_message(client.clone(), payload) }
                             .retry(&ExponentialBuilder::default())
@@ -125,8 +123,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_1.to_string() {
                         info!(
                             "Block: {:?} at chain_id: {:?} error, adding to retry queue: 2",
-                            block.header.number.unwrap(),
-                            chain_id
+                            block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_2_message(client.clone(), payload) }
                             .retry(&ExponentialBuilder::default())
@@ -134,8 +131,7 @@ pub async fn transaction_consumer(
                     } else if topic == RETRY_TRANSACTION_2.to_string() {
                         warn!(
                             "Block: {:?} at chain_id: {:?} error, adding to error queue",
-                            block.header.number.unwrap(),
-                            chain_id
+                            block.header.number, chain_id
                         );
                         let _ = { || produce_error_transaction_message(client.clone(), payload) }
                             .retry(&ExponentialBuilder::default())

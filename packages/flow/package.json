@@ -35,21 +35,21 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "framer-motion": "^11.4.0",
+    "framer-motion": "^11.5.4",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.438.0",
+    "lucide-react": "^0.439.0",
     "next-themes": "^0.3.0",
-    "react": "19.0.0-rc-187dd6a7-20240806",
-    "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "react-is": "19.0.0-rc-187dd6a7-20240806",
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827",
     "reactflow": "^11.11.4",
-    "viem": "^2.21.1"
+    "viem": "^2.21.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.9",
     "@types/lodash": "^4.17.7",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

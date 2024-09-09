@@ -29,14 +29,14 @@
   "dependencies": {
     "@lightdotso/utils": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "react": "19.0.0-rc-187dd6a7-20240806",
-    "react-dom": "19.0.0-rc-187dd6a7-20240806",
-    "react-is": "19.0.0-rc-187dd6a7-20240806"
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.2.9",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"

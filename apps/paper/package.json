@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
-    "react": "19.0.0-rc-187dd6a7-20240806",
-    "react-dom": "19.0.0-rc-187dd6a7-20240806",
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
     "typescript": "^5.5.4",
     "vocs": "^1.0.0-alpha.58",
     "yaml": "2.3.4"
