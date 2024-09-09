@@ -76,6 +76,15 @@ test("single merkle tree", () => {
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(standardTree.root.toString());
 
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(simpleTree.root.toString());
+
+  expect(simpleTree.root.toString()).to.equal(
+    "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+  );
+
   const _proof = standardTree.getProof(0);
 
   const _standardTreeRoot = standardTree.root.toString();
@@ -161,7 +170,20 @@ test("simple merkle tree", () => {
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(_standardTreeRoot);
 
-  const _simpleTree = SimpleMerkleTree.of(leaves);
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(simpleTree.root.toString());
+
+  expect(simpleTree.root.toString()).to.equal(
+    "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+  );
+
+  const proof = simpleTree.getProof(merkleHashes[0]);
+
+  expect(proof[0]).to.eql(
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+  );
 
   expect(_standardTreeRoot).to.equal(
     "0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53",
@@ -193,10 +215,15 @@ test("simple nested merkle tree", () => {
   );
 
   const _proof = tree.getProof(merkleHashes[0]);
-  expect(proofToHex(_proof)[0]).to.eql(
+  expect(proofToHex(tree.getProof(merkleHashes[0]))[0]).to.eql(
     "0x0000000000000000000000000000000000000000000000000000000000000002",
   );
-  expect(proofToHex(_proof)[2]).to.eql(undefined);
+  expect(proofToHex(tree.getProof(merkleHashes[1]))[0]).to.eql(
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+  );
+  expect(proofToHex(tree.getProof(merkleHashes[2]))[0]).to.eql(
+    "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+  );
 
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(_proof);
@@ -210,7 +237,31 @@ test("simple nested merkle tree", () => {
 
   const _standardTreeRoot = standardTree.root.toString();
 
-  const _simpleTree = SimpleMerkleTree.of(leaves);
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  const _simpleTreeRoot = simpleTree.root.toString();
+
+  expect(_simpleTreeRoot).to.equal(
+    "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
+  );
+
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[0]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "0x0000000000000000000000000000000000000000000000000000000000000003",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[1]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "0x0000000000000000000000000000000000000000000000000000000000000003",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[2]))).to.equal(
+    JSON.stringify([
+      "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+    ]),
+  );
 
   expect(_standardTreeRoot).to.equal(
     "0x6bf4e61b5cdb00b5d13973040b7e7c9690fc0e3e3509eabf38ee45a4fe1a3c0a",
