@@ -19,7 +19,7 @@ import {
 import { MerkleTree } from "merkletreejs";
 import type { Hex } from "viem";
 import { hexToBytes, keccak256 } from "viem";
-import { expect, test } from "vitest";
+import { assert, expect, test } from "vitest";
 
 test("Should return correct merkle root", () => {
   const merkleHashes: Hex[] = [
@@ -53,6 +53,37 @@ test("Should return correct merkle root", () => {
   );
 
   expect(standardTree.root.toString()).to.equal(merkleRoot);
+});
+
+test("single merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b",
+  ];
+
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  const _root = tree.getHexRoot();
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  const standardTree = StandardMerkleTree.of([merkleHashes], ["bytes32"]);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(standardTree.root.toString());
+
+  const _proof = standardTree.getProof(0);
+
+  const _standardTreeRoot = standardTree.root.toString();
+
+  assert(
+    _standardTreeRoot ===
+      "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+  );
 });
 
 test("simple merkle tree", () => {

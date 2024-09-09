@@ -24,7 +24,7 @@ import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {console} from "forge-std/console.sol";
 
 /// @notice Unit tests for `LightPaymaster` for getting base hash
-contract PaymasterGetHash is BaseTest {
+contract PaymasterGetHashUnitTest is BaseTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
