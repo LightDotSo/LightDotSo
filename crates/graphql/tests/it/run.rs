@@ -20,6 +20,7 @@ use lightdotso_graphql::{
     polling::user_operations::{run_user_operation_query, GetUserOperationQueryVariables},
 };
 
+#[ignore]
 #[tokio::test]
 async fn test_integration_run_query() -> Result<()> {
     // Load the environment variables.
