@@ -1019,8 +1019,13 @@ mod tests {
 
         assert_eq!(
             merkle_root,
-            "0x065199af802af0eb8e82c6d4d7f13466a3678f1cfe3c735a7682cc2feb11791c"
+            "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87"
         );
+
+        for hash in hashes.iter() {
+            let proof = merkle_tree.create_proof(&hash.hex_to_bytes32().unwrap().into()).unwrap();
+            assert!(MerkleTree::verify_proof(&proof));
+        }
     }
 
     #[test]
@@ -1053,6 +1058,11 @@ mod tests {
             merkle_root,
             "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0"
         );
+
+        for hash in hashes.iter() {
+            let proof = merkle_tree.create_proof(&hash.hex_to_bytes32().unwrap().into()).unwrap();
+            assert!(MerkleTree::verify_proof(&proof));
+        }
     }
 
     #[test]
@@ -1086,7 +1096,12 @@ mod tests {
 
         assert_eq!(
             merkle_root,
-            "0xf6c00687a2a50c87101e36eddc215e458f8ca89ee0fb3be978e73e0ea380b768"
+            "0x3856185f708a95a4cef51f6538ed3ea849702a46e020430070ac99c94a831c58"
         );
+
+        for hash in hashes.iter() {
+            let proof = merkle_tree.create_proof(&hash.hex_to_bytes32().unwrap().into()).unwrap();
+            assert!(MerkleTree::verify_proof(&proof));
+        }
     }
 }

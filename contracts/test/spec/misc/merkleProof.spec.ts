@@ -268,6 +268,112 @@ test("simple nested merkle tree", () => {
   );
 });
 
+test("simple deep merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+    "0x0000000000000000000000000000000000000000000000000000000000000003",
+    "0x0000000000000000000000000000000000000000000000000000000000000004",
+    "0x0000000000000000000000000000000000000000000000000000000000000005",
+  ];
+
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  const _root = tree.getHexRoot();
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  expect(_root).to.equal(
+    "0x3856185f708a95a4cef51f6538ed3ea849702a46e020430070ac99c94a831c58",
+  );
+
+  expect(JSON.stringify(proofToHex(tree.getProof(merkleHashes[0])))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+    ]),
+  );
+  expect(JSON.stringify(proofToHex(tree.getProof(merkleHashes[1])))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+    ]),
+  );
+  expect(JSON.stringify(proofToHex(tree.getProof(merkleHashes[2])))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000004",
+      "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+    ]),
+  );
+  expect(JSON.stringify(proofToHex(tree.getProof(merkleHashes[3])))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000003",
+      "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+    ]),
+  );
+  expect(JSON.stringify(proofToHex(tree.getProof(merkleHashes[4])))).to.equal(
+    JSON.stringify([
+      "0x0c48ddc2b8d6d066c52fc608d4d0254f418bea6cd8424fe95390ac87323f9c9f",
+    ]),
+  );
+
+  const _standardTree = StandardMerkleTree.of(
+    [merkleHashes],
+    ["bytes32", "bytes32", "bytes32", "bytes32", "bytes32"],
+  );
+
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  const _simpleTreeRoot = simpleTree.root.toString();
+
+  expect(_simpleTreeRoot).to.equal(
+    "0xf6c00687a2a50c87101e36eddc215e458f8ca89ee0fb3be978e73e0ea380b768",
+  );
+
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[0]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+      "0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[1]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "0x0000000000000000000000000000000000000000000000000000000000000005",
+      "0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[2]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000004",
+      "0x8ccb1afe9004b46e81f9742458856abcec79e407373a838bac2e3a4e97e00ec6",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[3]))).to.equal(
+    JSON.stringify([
+      "0x0000000000000000000000000000000000000000000000000000000000000003",
+      "0x8ccb1afe9004b46e81f9742458856abcec79e407373a838bac2e3a4e97e00ec6",
+    ]),
+  );
+  expect(JSON.stringify(simpleTree.getProof(merkleHashes[4]))).to.equal(
+    JSON.stringify([
+      "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+      "0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0",
+    ]),
+  );
+});
+
 test("simple deep nested merkle tree", () => {
   const merkleHashes: Hex[] = [
     "0x0000000000000000000000000000000000000000000000000000000000000001",

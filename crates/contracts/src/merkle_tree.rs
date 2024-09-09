@@ -94,28 +94,25 @@ impl MerkleTree {
             return;
         }
 
-        self.depth = 1;
-        self.layers.push(self.leaves.clone());
+        self.depth = 0;
+        let mut current_layer = self.leaves.clone();
 
-        while self.layers.last().unwrap().len() > 1 {
+        while current_layer.len() > 1 {
             let mut new_layer = Vec::new();
-            let mut i = 0;
-            while i < self.layers.last().unwrap().len() {
-                let left = &self.layers.last().unwrap()[i];
-                i += 1;
-                let right = if i < self.layers.last().unwrap().len() {
-                    &self.layers.last().unwrap()[i]
+            for chunk in current_layer.chunks(2) {
+                if chunk.len() == 2 {
+                    new_layer.push(Self::hash(&chunk[0], &chunk[1]));
                 } else {
-                    left
-                };
-                i += 1;
-                new_layer.push(Self::hash(left, right));
+                    new_layer.push(chunk[0]);
+                }
             }
-            self.layers.push(new_layer);
+            self.layers.push(current_layer);
+            current_layer = new_layer;
             self.depth += 1;
         }
 
-        self.root = self.layers.last().unwrap()[0];
+        self.layers.push(current_layer.clone());
+        self.root = current_layer[0];
         self.is_tree_ready = true;
     }
 
@@ -186,6 +183,22 @@ mod test {
     }
 
     #[test]
+    fn test_tree_odd_leaves() {
+        let mut tree = MerkleTree::new();
+
+        let num_leaves = 100;
+        for i in 0..num_leaves {
+            tree.insert(B256::from(U256::from(i)));
+        }
+        tree.finish();
+
+        for i in 0..num_leaves {
+            let proof = tree.create_proof(&B256::from(U256::from(i))).unwrap();
+            assert!(MerkleTree::verify_proof(&proof));
+        }
+    }
+
+    #[test]
     fn test_tree_bytes32_type() {
         let mut leaves = Vec::new();
 
@@ -205,7 +218,7 @@ mod test {
 
         assert_eq!(
             tree.root,
-            B256::from_hex("0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7")
+            B256::from_hex("0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b")
                 .unwrap()
         );
     }
@@ -228,7 +241,7 @@ mod test {
         let root = tree.root;
         assert_eq!(
             root,
-            B256::from_hex("0xb5d9d894133a730aa651ef62d26b0ffa846233c74177a591a4a896adfda97d22")
+            B256::from_hex("0x0000000000000000000000000000000000000000000000000000000000000001")
                 .unwrap()
         );
     }
