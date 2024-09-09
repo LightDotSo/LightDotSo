@@ -46,7 +46,7 @@ export default async function Page() {
       {changelogs.map((changelog) => (
         <li key={changelog.slug} className="group">
           <a
-            href={`${process.env.VERCEL_ENV === "production" ? "/changelog/" : "/"}${changelog.slug}`}
+            href={`${process.env.VERCEL_ENV === "production" ? "/changelog/" : "/"}${toThreeDigits(changelog.entry.issue)}`}
           >
             <NextImage
               placeholder="blur"
