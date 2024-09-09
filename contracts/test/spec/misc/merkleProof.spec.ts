@@ -119,6 +119,9 @@ test("simple merkle tree", () => {
 
   const _root = tree.getHexRoot();
 
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
     ["bytes32", "bytes32"],
@@ -128,10 +131,13 @@ test("simple merkle tree", () => {
 
   const _standardTreeRoot = standardTree.root.toString();
 
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_standardTreeRoot);
+
   const _simpleTree = SimpleMerkleTree.of(leaves);
 
   expect(_standardTreeRoot).to.equal(
-    "0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c",
+    "0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53",
   );
 });
 

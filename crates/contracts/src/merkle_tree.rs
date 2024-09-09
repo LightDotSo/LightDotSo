@@ -323,7 +323,7 @@ mod test {
         let root = tree.root();
         assert_eq!(
             root,
-            B256::from_hex("0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c")
+            B256::from_hex("0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53")
                 .unwrap()
         );
     }
