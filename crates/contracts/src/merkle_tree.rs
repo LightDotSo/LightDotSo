@@ -79,8 +79,11 @@ impl StandardMerkleTree {
             .map(|(i, value)| (value, i, standard_leaf_hash(value)))
             .collect();
 
-        let hashed_values_hash =
+        let mut hashed_values_hash =
             hashed_values.iter().map(|(_, _, hash)| *hash).collect::<Vec<B256>>();
+
+        // Sort the hashed values
+        hashed_values_hash.sort();
 
         let tree = make_merkle_tree(hashed_values_hash);
 

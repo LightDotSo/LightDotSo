@@ -179,7 +179,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
     // Assert that the hex hash of base_hash is the same as the user_operation_hash (prefix 0x)
-    if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
+    if hex::encode(base_hash) != user_operation_hash {
         error!(
             "base_hash: {}, user_operation_hash: {}",
             hex::encode(base_hash),
@@ -534,7 +534,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
         // Assert that the hex hash of base_hash is the same as the user_operation_hash
-        if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
+        if hex::encode(base_hash) != user_operation_hash {
             error!(
                 "base_hash: {}, user_operation_hash: {}",
                 hex::encode(base_hash),
@@ -594,7 +594,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
 
     // Get the merkle root from the merkle tree.
-    let merkle_root = format!("0x{}", merkle_tree.root());
+    let merkle_root = format!("{}", merkle_tree.root());
     info!(?merkle_root);
 
     // Check that the merkle root is the same as the one provided.
@@ -802,7 +802,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             .unwrap()
             // Prepend 0x to each hash
             .iter()
-            .map(|x| format!("0x{}", x))
+            .map(|x| format!("{}", x))
             .collect::<Vec<String>>();
 
         // Create the user operation in the database w/ the sig.
@@ -989,7 +989,7 @@ mod tests {
     }
 
     #[test]
-    fn test_merkle_tree() {
+    fn test_merkle_tree_basic() {
         let hashes = [
             "0x0000000000000000000000000000000000000000000000000000000000000003",
             "0x0000000000000000000000000000000000000000000000000000000000000001",
@@ -1017,7 +1017,7 @@ mod tests {
 
         // merkle_tree.commit();
 
-        let merkle_root = format!("0x{}", merkle_tree.root());
+        let merkle_root = format!("{}", merkle_tree.root());
 
         assert_eq!(
             merkle_root,
@@ -1041,13 +1041,13 @@ mod tests {
 
         // leaf_hashes.sort();
 
-        for hash in leaf_hashes.iter() {
-            println!("0x{}", hex::encode(hash.as_bytes().unwrap()));
-        }
+        // for hash in leaf_hashes.iter() {
+        //     println!("0x{}", hex::encode(hash.as_bytes().unwrap()));
+        // }
 
         let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
 
-        let merkle_root = format!("0x{}", merkle_tree.root());
+        let merkle_root = format!("{}", merkle_tree.root());
 
         assert_eq!(
             merkle_root,
@@ -1056,7 +1056,7 @@ mod tests {
     }
 
     #[test]
-    fn test_merkle_tree_simple_deep() {
+    fn test_merkle_tree_deep() {
         let hashes = [
             "0x0000000000000000000000000000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000000000000000000000000000002",
@@ -1080,7 +1080,7 @@ mod tests {
 
         let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
 
-        let merkle_root = format!("0x{}", merkle_tree.root());
+        let merkle_root = format!("{}", merkle_tree.root());
 
         assert_eq!(
             merkle_root,
