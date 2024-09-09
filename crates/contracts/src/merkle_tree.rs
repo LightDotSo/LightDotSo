@@ -58,6 +58,7 @@ impl Default for MerkleTree {
 }
 
 impl MerkleTree {
+    /// Create a new merkle tree.
     pub fn new() -> Self {
         MerkleTree {
             leaves: Vec::new(),
@@ -68,6 +69,7 @@ impl MerkleTree {
         }
     }
 
+    /// Insert a leaf into the merkle tree.
     pub fn insert(&mut self, leaf: B256) {
         self.leaves.push(leaf);
     }
@@ -75,53 +77,71 @@ impl MerkleTree {
     // Hash two leaves together
     // From: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c01a0fa27fb2d1546958be5d2cbbdd3fb565e4fa/contracts/utils/cryptography/Hashes.sol#L10-L13
     // License: MIT
-    // Hash two leaves together, if the left is greater than the right, swap them
+    /// Hash two leaves together, if the left is greater than the right, swap them
     fn hash(left: &B256, right: &B256) -> B256 {
         let mut hasher = Keccak256::new();
 
+        // If left is greater than right, swap them
         let combined = if left <= right { left } else { right };
         let second = if left <= right { right } else { left };
 
+        // Hash the combined and second leaves
         hasher.update(combined);
         hasher.update(second);
 
+        // Return the hash
         let result = hasher.finalize();
         B256::from(result)
     }
 
+    /// Finish the merkle tree.
     pub fn finish(&mut self) {
         if self.is_tree_ready {
             return;
         }
 
+        // Set the depth to 0
         self.depth = 0;
         let mut current_layer = self.leaves.clone();
 
+        // While the current layer has more than 1 leaf
         while current_layer.len() > 1 {
             let mut new_layer = Vec::new();
+            // Hash each pair of leaves together
             for chunk in current_layer.chunks(2) {
                 if chunk.len() == 2 {
+                    // If there are two leaves, hash them together
                     new_layer.push(Self::hash(&chunk[0], &chunk[1]));
                 } else {
+                    // If there is only one leaf, push it to the new layer
                     new_layer.push(chunk[0]);
                 }
             }
+            // Push the current layer to the layers
             self.layers.push(current_layer);
+            // Set the current layer to the new layer
             current_layer = new_layer;
+            // Increment the depth
             self.depth += 1;
         }
 
+        // Push the last layer to the layers
         self.layers.push(current_layer.clone());
+        // Set the root to the last leaf
         self.root = current_layer[0];
+        // Set the tree to be ready
         self.is_tree_ready = true;
     }
 
+    /// Create a proof for a leaf.
     pub fn create_proof(&self, leaf: &B256) -> Option<MerkleProof> {
+        // Get the index of the leaf
         let mut index = match self.leaves.iter().position(|x| x == leaf) {
             Some(index) => index,
             None => return None,
         };
 
+        // Create a proof
         let mut proof = MerkleProof {
             leaf: *leaf,
             siblings: Vec::new(),
@@ -129,31 +149,43 @@ impl MerkleTree {
             root: self.root,
         };
 
+        // For each layer, get the sibling and the path index
         for layer in &self.layers {
+            // If the index is even, get the right sibling
             if index % 2 == 0 {
+                // If the index is even, get the right sibling
                 if index + 1 < layer.len() {
                     proof.siblings.push(layer[index + 1]);
                     proof.path_indices.push(1);
                 }
             } else {
+                // If the index is odd, get the left sibling
                 proof.siblings.push(layer[index - 1]);
                 proof.path_indices.push(0);
             }
+            // Divide the index by 2
             index /= 2;
         }
 
+        // Return the proof
         Some(proof)
     }
 
+    /// Verify a proof.
     pub fn verify_proof(proof: &MerkleProof) -> bool {
+        // Start with the leaf
         let mut hash = proof.leaf;
+        // For each sibling, hash it with the current hash
         for (i, sibling) in proof.siblings.iter().enumerate() {
+            // If the path index is 0, hash the sibling with the current hash
+            // Otherwise, hash the current hash with the sibling
             hash = if proof.path_indices[i] == 0 {
                 Self::hash(sibling, &hash)
             } else {
                 Self::hash(&hash, sibling)
             };
         }
+        // Return true if the final hash is equal to the root
         hash == proof.root
     }
 }
@@ -325,6 +357,32 @@ mod test {
             "0x0000000000000000000000000000000000000000000000000000000000000022".to_string(),
             "0x0000000000000000000000000000000000000000000000000000000000000023".to_string(),
             "0x0000000000000000000000000000000000000000000000000000000000000024".to_string(),
+        ];
+
+        let leaf_hashes: Vec<B256> =
+            hashes.iter().map(|hash| B256::from_str(hash).unwrap()).collect();
+
+        let mut tree = MerkleTree::new();
+
+        for leaf in leaf_hashes {
+            tree.insert(leaf);
+        }
+        tree.finish();
+
+        let root = tree.root;
+        assert_eq!(
+            root,
+            B256::from_hex("0x829aa29a4940648ff39373741e8cf185ad9cff8af1529623eacce5b528406827")
+                .unwrap()
+        );
+    }
+
+    #[test]
+    fn test_not_sorted_tree() {
+        let hashes = [
+            "0x0000000000000000000000000000000000000000000000000000000000000003".to_string(),
+            "0x0000000000000000000000000000000000000000000000000000000000000001".to_string(),
+            "0x0000000000000000000000000000000000000000000000000000000000000002".to_string(),
         ];
 
         let leaf_hashes: Vec<B256> =

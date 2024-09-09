@@ -190,6 +190,30 @@ test("simple merkle tree", () => {
   );
 });
 
+test("not sorted tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000003",
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+  ];
+
+  const leaves = merkleHashes.map((x) => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  const _root = tree.getHexRoot();
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  expect(_root).to.equal(
+    "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
+  );
+});
+
 test("simple nested merkle tree", () => {
   const merkleHashes: Hex[] = [
     "0x0000000000000000000000000000000000000000000000000000000000000001",
