@@ -21,7 +21,7 @@ import { baseWidthWrapper } from "../base";
 // Styles
 // -----------------------------------------------------------------------------
 
-const baseLayerWrapperVariants = cva([], {
+export const baseLayerWrapperVariants = cva([], {
   variants: {
     size: {
       default: "max-w-7xl",
@@ -45,6 +45,7 @@ export interface BaseLayerWrapperProps
   extends VariantProps<typeof baseLayerWrapperVariants> {
   children: ReactNode;
   className?: string;
+  layerClassName?: string;
 }
 
 // -----------------------------------------------------------------------------
@@ -54,6 +55,7 @@ export interface BaseLayerWrapperProps
 export function BaseLayerWrapper({
   children,
   className,
+  layerClassName,
   size,
 }: BaseLayerWrapperProps) {
   // ---------------------------------------------------------------------------
@@ -72,6 +74,7 @@ export function BaseLayerWrapper({
         className={cn(
           "mx-auto flex-1",
           baseLayerWrapperVariants({ size: size }),
+          layerClassName,
         )}
       >
         {children}

@@ -22,7 +22,8 @@ import animatePlugin from "tailwindcss-animate";
 export default {
   darkMode: "class",
   content: [
-    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@tremor/**/*.js",
+    "./node_modules/fumadocs-ui/dist/**/*.js",
     "../../apps/ai/app/**/*.{ts,tsx}",
     "../../apps/ai/src/components/**/*.{ts,tsx}",
     "../../apps/app/app/**/*.{ts,tsx}",
@@ -34,7 +35,10 @@ export default {
     "../../apps/changelog/content/**/*.mdx",
     "../../apps/changelog/src/components/**/*.{ts,tsx}",
     "../../apps/desktop/src/**/*.{ts,tsx}",
-    "../../apps/docs/src/**/*.{ts,tsx}",
+    "../../apps/docs/app/**/*.{ts,tsx}",
+    "../../apps/docs/src/components/**/*.{ts,tsx}",
+    "../../apps/docs/content/**/*.{ts,tsx}",
+    "../../apps/docs/node_modules/fumadocs-ui/dist/**/*.js",
     "../../apps/explorer/app/**/*.{ts,tsx}",
     "../../apps/explorer/src/components/**/*.{ts,tsx}",
     "../../apps/extension/src/**/*.{ts,tsx}",

@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { BaseLayerWrapper } from "./base-layer-wrapper";
+export {
+  BaseLayerWrapper,
+  baseLayerWrapperVariants,
+} from "./base-layer-wrapper";
 export type { BaseLayerWrapperProps } from "./base-layer-wrapper";
 export { LargeLayerWrapper } from "./large-layer-wrapper";
 export { MiddleLayerWrapper } from "./middle-layer-wrapper";

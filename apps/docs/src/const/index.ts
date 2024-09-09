@@ -12,31 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  baseWidthWrapper,
-  baseHeightWrapper,
-  minimalHeightWrapper,
-  minimalWidthWrapper,
-} from "./base";
-export {
-  BaseLayerWrapper,
-  baseLayerWrapperVariants,
-  LargeLayerWrapper,
-  MiddleLayerWrapper,
-} from "./layer";
-export type {
-  BaseLayerWrapperProps,
-  MiddleLayerWrapperProps,
-} from "./layer";
-export {
-  BasicPageWrapper,
-  MinimalPageWrapper,
-  SettingsPageWrapper,
-} from "./page";
-export {
-  BaseSectionWrapper,
-  DialogSectionWrapper,
-  SettingsSectionWrapper,
-  TableSectionWrapper,
-  ToolbarSectionWrapper,
-} from "./section";
+export { DOCS_TABS } from "./tabs";
