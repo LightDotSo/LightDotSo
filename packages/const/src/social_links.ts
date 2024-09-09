@@ -32,7 +32,8 @@ export const SOCIAL_LINKS: {
   [Social.FARCASTER]: "https://warpcast.com/~/channel/LightDotSo",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
-  [Social.NOTION]: "https://lightdotso.notion.site",
+  [Social.NOTION]:
+    "https://lightdotso.notion.site/5f3d8ad35b43436283ebc7fad1f14a29",
   [Social.TELEGRAM]: "https://t.me/LightDotSo",
   [Social.TWITTER]: "https://twitter.com/LightDotSo",
   [Social.WEBSITE]: "https://light.so",
