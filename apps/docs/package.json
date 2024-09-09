@@ -14,6 +14,7 @@
   "author": "LightDotSo",
   "scripts": {
     "build": "next build",
+    "build:docs": "node ./scripts/generate-docs.mjs",
     "dev": "next dev --turbo",
     "lint": "next lint || exit 0",
     "start": "next start"
