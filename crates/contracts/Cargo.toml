@@ -11,6 +11,7 @@
 [dependencies]
   alloy = { workspace = true }
   eyre = { workspace = true }
+  hashbrown = "0.14.3"
   lazy_static = { workspace = true }
   lightdotso-constants = { workspace = true }
   lightdotso-prisma = { workspace = true }
