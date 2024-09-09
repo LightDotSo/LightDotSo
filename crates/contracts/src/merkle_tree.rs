@@ -26,229 +26,160 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// From: https://github.com/rkdud007/alloy-merkle-tree/blob/de47ec9e67ce62d6bb8981051f94f2d8296f51da/src/standard_binary_tree.rs
+// From: https://github.com/rkdud007/alloy-merkle-tree/blob/de47ec9e67ce62d6bb8981051f94f2d8296f51da/src/tree.rs
 // License: Apache-2.0
 // Thank you to `rkdud007` for the original implementation!
 
-use alloy::{
-    dyn_abi::DynSolValue,
-    primitives::{keccak256, Keccak256, B256},
-};
-use core::panic;
-use hashbrown::HashMap;
+use alloy::primitives::{Keccak256, B256};
 
-/// The error type for the [StandardMerkleTree].
 #[derive(Debug)]
-pub enum MerkleTreeError {
-    /// The tree is empty.
-    LeafNotFound,
-    /// Invalid check.
-    InvalidCheck,
-    /// The root hash have no siblings.
-    RootHaveNoSiblings,
-    /// Leaf is not supported type.
-    NotSupportedType,
+pub struct MerkleProof {
+    pub leaf: B256,
+    pub siblings: Vec<B256>,
+    pub path_indices: Vec<usize>,
+    pub root: B256,
 }
 
 #[derive(Debug)]
-pub struct StandardMerkleTree {
-    tree: Vec<B256>,
-    tree_values: HashMap<String, usize>,
+pub struct MerkleTree {
+    leaves: Vec<B256>,
+    is_tree_ready: bool,
+    layers: Vec<Vec<B256>>,
+    depth: u64,
+    pub root: B256,
 }
 
-impl Default for StandardMerkleTree {
+impl Default for MerkleTree {
     fn default() -> Self {
-        Self::new(Vec::new(), Vec::new())
+        Self::new()
     }
 }
 
-impl StandardMerkleTree {
-    pub fn new(tree: Vec<B256>, values: Vec<(&DynSolValue, usize)>) -> Self {
-        let mut tree_values = HashMap::new();
-        for (tree_key, tree_value) in values.into_iter() {
-            let tree_key_str = Self::check_valid_value_type(tree_key);
-            tree_values.insert(tree_key_str, tree_value);
-        }
-        Self { tree, tree_values }
-    }
-
-    pub fn of(values: &[DynSolValue]) -> Self {
-        let hashed_values: Vec<(&DynSolValue, usize, B256)> = values
-            .iter()
-            .enumerate()
-            .map(|(i, value)| (value, i, standard_leaf_hash(value)))
-            .collect();
-
-        let hashed_values_hash =
-            hashed_values.iter().map(|(_, _, hash)| *hash).collect::<Vec<B256>>();
-
-        let tree = make_merkle_tree(hashed_values_hash);
-
-        let mut indexed_values: Vec<(&DynSolValue, usize)> =
-            values.iter().map(|value| (value, 0)).collect();
-
-        for (leaf_index, (_, value_index, _)) in hashed_values.iter().enumerate() {
-            indexed_values[*value_index].1 = tree.len() - leaf_index - 1;
-        }
-
-        Self::new(tree, indexed_values)
-    }
-
-    pub fn root(&self) -> B256 {
-        self.tree[0]
-    }
-
-    pub fn get_proof(&self, value: &DynSolValue) -> Result<Vec<B256>, MerkleTreeError> {
-        let tree_key = Self::check_valid_value_type(value);
-
-        let tree_index = self.tree_values.get(&tree_key).ok_or(MerkleTreeError::LeafNotFound)?;
-
-        make_proof(&self.tree, *tree_index)
-    }
-
-    fn get_leaf_hash(&self, leaf: &DynSolValue) -> B256 {
-        standard_leaf_hash(leaf)
-    }
-
-    pub fn verify_proof(&self, leaf: &DynSolValue, proof: Vec<B256>) -> bool {
-        let leaf_hash = self.get_leaf_hash(leaf);
-        let implied_root = process_proof(leaf_hash, proof);
-        self.tree[0] == implied_root
-    }
-
-    fn check_valid_value_type(value: &DynSolValue) -> String {
-        match value {
-            DynSolValue::String(inner_value) => inner_value.to_string(),
-            DynSolValue::FixedBytes(inner_value, _) => inner_value.to_string(),
-            _ => panic!("Not supported value type"),
+impl MerkleTree {
+    pub fn new() -> Self {
+        MerkleTree {
+            leaves: Vec::new(),
+            is_tree_ready: false,
+            layers: Vec::new(),
+            depth: 0,
+            root: B256::default(),
         }
     }
-}
 
-fn standard_leaf_hash(value: &DynSolValue) -> B256 {
-    let encoded = match value {
-        DynSolValue::String(inner_value) => inner_value.as_bytes(),
-        DynSolValue::FixedBytes(inner_value, _) => inner_value.as_ref(),
-        _ => panic!("Not supported value type for leaf"),
-    };
-    keccak256(keccak256(encoded))
-}
-
-fn left_child_index(index: usize) -> usize {
-    2 * index + 1
-}
-
-fn right_child_index(index: usize) -> usize {
-    2 * index + 2
-}
-
-fn sibling_index(index: usize) -> Result<usize, MerkleTreeError> {
-    if index == 0 {
-        return Err(MerkleTreeError::RootHaveNoSiblings);
+    pub fn insert(&mut self, leaf: B256) {
+        self.leaves.push(leaf);
     }
 
-    if index % 2 == 0 {
-        Ok(index - 1)
-    } else {
-        Ok(index + 1)
-    }
-}
-fn parent_index(index: usize) -> usize {
-    (index - 1) / 2
-}
+    // Hash two leaves together
+    // From: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/c01a0fa27fb2d1546958be5d2cbbdd3fb565e4fa/contracts/utils/cryptography/Hashes.sol#L10-L13
+    // License: MIT
+    // Hash two leaves together, if the left is greater than the right, swap them
+    fn hash(left: &B256, right: &B256) -> B256 {
+        let mut hasher = Keccak256::new();
 
-fn is_tree_node(tree: &[B256], index: usize) -> bool {
-    index < tree.len()
-}
+        let combined = if left <= right { left } else { right };
+        let second = if left <= right { right } else { left };
 
-fn is_internal_node(tree: &[B256], index: usize) -> bool {
-    is_tree_node(tree, left_child_index(index))
-}
+        hasher.update(combined);
+        hasher.update(second);
 
-fn is_leaf_node(tree: &[B256], index: usize) -> bool {
-    !is_internal_node(tree, index) && is_tree_node(tree, index)
-}
-
-fn check_leaf_node(tree: &[B256], index: usize) -> Result<(), MerkleTreeError> {
-    if !is_leaf_node(tree, index) {
-        Err(MerkleTreeError::InvalidCheck)
-    } else {
-        Ok(())
-    }
-}
-
-fn make_merkle_tree(leaves: Vec<B256>) -> Vec<B256> {
-    let tree_len = 2 * leaves.len() - 1;
-    let mut tree = vec![B256::default(); tree_len];
-    let leaves_len = leaves.len();
-
-    for (i, leaf) in leaves.into_iter().enumerate() {
-        tree[tree_len - 1 - i] = leaf;
+        let result = hasher.finalize();
+        B256::from(result)
     }
 
-    for i in (0..tree_len - leaves_len).rev() {
-        let left = tree[left_child_index(i)];
-        let right = tree[right_child_index(i)];
-
-        tree[i] = hash_pair(left, right);
-    }
-
-    tree
-}
-
-fn make_proof(tree: &[B256], index: usize) -> Result<Vec<B256>, MerkleTreeError> {
-    check_leaf_node(tree, index)?;
-
-    let mut proof = Vec::new();
-    let mut current_index = index;
-    while current_index > 0 {
-        let sibling = sibling_index(current_index)?;
-
-        if sibling < tree.len() {
-            proof.push(tree[sibling]);
+    pub fn finish(&mut self) {
+        if self.is_tree_ready {
+            return;
         }
-        current_index = parent_index(current_index);
+
+        self.depth = 1;
+        self.layers.push(self.leaves.clone());
+
+        while self.layers.last().unwrap().len() > 1 {
+            let mut new_layer = Vec::new();
+            let mut i = 0;
+            while i < self.layers.last().unwrap().len() {
+                let left = &self.layers.last().unwrap()[i];
+                i += 1;
+                let right = if i < self.layers.last().unwrap().len() {
+                    &self.layers.last().unwrap()[i]
+                } else {
+                    left
+                };
+                i += 1;
+                new_layer.push(Self::hash(left, right));
+            }
+            self.layers.push(new_layer);
+            self.depth += 1;
+        }
+
+        self.root = self.layers.last().unwrap()[0];
+        self.is_tree_ready = true;
     }
 
-    Ok(proof)
-}
+    pub fn create_proof(&self, leaf: &B256) -> Option<MerkleProof> {
+        let mut index = match self.leaves.iter().position(|x| x == leaf) {
+            Some(index) => index,
+            None => return None,
+        };
 
-fn process_proof(leaf: B256, proof: Vec<B256>) -> B256 {
-    proof.into_iter().fold(leaf, hash_pair)
-}
+        let mut proof = MerkleProof {
+            leaf: *leaf,
+            siblings: Vec::new(),
+            path_indices: Vec::new(),
+            root: self.root,
+        };
 
-fn hash_pair(left: B256, right: B256) -> B256 {
-    let combined = if left <= right { left } else { right };
-    let second = if left <= right { right } else { left };
+        for layer in &self.layers {
+            if index % 2 == 0 {
+                if index + 1 < layer.len() {
+                    proof.siblings.push(layer[index + 1]);
+                    proof.path_indices.push(1);
+                }
+            } else {
+                proof.siblings.push(layer[index - 1]);
+                proof.path_indices.push(0);
+            }
+            index /= 2;
+        }
 
-    let mut hasher = Keccak256::new();
-    hasher.update(combined);
-    hasher.update(second);
-    hasher.finalize()
+        Some(proof)
+    }
+
+    pub fn verify_proof(proof: &MerkleProof) -> bool {
+        let mut hash = proof.leaf;
+        for (i, sibling) in proof.siblings.iter().enumerate() {
+            hash = if proof.path_indices[i] == 0 {
+                Self::hash(sibling, &hash)
+            } else {
+                Self::hash(&hash, sibling)
+            };
+        }
+        hash == proof.root
+    }
 }
 
 #[cfg(test)]
 mod test {
+    use std::str::FromStr;
+
     use super::*;
-    use alloy::{
-        dyn_abi::DynSolValue,
-        primitives::{hex::FromHex, FixedBytes},
-    };
-    use lightdotso_common::traits::HexToBytes;
+    use alloy::primitives::{hex::FromHex, U256};
 
     #[test]
-    fn test_tree_string_type() {
-        let num_leaves = 1000;
-        let mut leaves = Vec::new();
-        for i in 0..num_leaves {
-            leaves.push(DynSolValue::String(i.to_string()));
-        }
-        let tree = StandardMerkleTree::of(&leaves);
+    fn test_tree() {
+        let mut tree = MerkleTree::new();
 
-        for leaf in leaves.into_iter() {
-            let proof = tree.get_proof(&leaf).unwrap();
-            let bool = tree.verify_proof(&leaf, proof);
-            assert!(bool);
+        // Should be 2 ^ N leaves
+        let num_leaves = 16;
+        for i in 0..num_leaves {
+            tree.insert(B256::from(U256::from(i)));
+        }
+        tree.finish();
+
+        for i in 0..num_leaves {
+            let proof = tree.create_proof(&B256::from(U256::from(i))).unwrap();
+            assert!(MerkleTree::verify_proof(&proof));
         }
     }
 
@@ -256,27 +187,22 @@ mod test {
     fn test_tree_bytes32_type() {
         let mut leaves = Vec::new();
 
-        let leaf = DynSolValue::FixedBytes(
-            FixedBytes::<32>::from_hex(
-                "0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b",
-            )
-            .unwrap(),
-            32,
-        );
+        let leaf =
+            B256::from_str("0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b")
+                .unwrap();
 
         leaves.push(leaf);
 
-        let tree = StandardMerkleTree::of(&leaves);
+        let mut tree = MerkleTree::new();
 
-        for leaf in leaves.into_iter() {
-            let proof = tree.get_proof(&leaf).unwrap();
-            let bool = tree.verify_proof(&leaf, proof);
-            assert!(bool);
-        }
+        tree.insert(leaf);
+        tree.finish();
 
-        let root = tree.root();
+        let proof = tree.create_proof(&leaf).unwrap();
+        assert!(MerkleTree::verify_proof(&proof));
+
         assert_eq!(
-            root,
+            tree.root,
             B256::from_hex("0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7")
                 .unwrap()
         );
@@ -287,16 +213,17 @@ mod test {
         let hashes =
             ["0x0000000000000000000000000000000000000000000000000000000000000001".to_string()];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let leaf_hashes: Vec<B256> =
+            hashes.iter().map(|hash| B256::from_str(hash).unwrap()).collect();
 
-        let tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut tree = MerkleTree::new();
 
-        let root = tree.root();
+        for leaf in leaf_hashes {
+            tree.insert(leaf);
+        }
+        tree.finish();
+
+        let root = tree.root;
         assert_eq!(
             root,
             B256::from_hex("0xb5d9d894133a730aa651ef62d26b0ffa846233c74177a591a4a896adfda97d22")
@@ -311,16 +238,17 @@ mod test {
             "0x0000000000000000000000000000000000000000000000000000000000000002".to_string(),
         ];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let leaf_hashes: Vec<B256> =
+            hashes.iter().map(|hash| B256::from_str(hash).unwrap()).collect();
 
-        let tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut tree = MerkleTree::new();
 
-        let root = tree.root();
+        for leaf in leaf_hashes {
+            tree.insert(leaf);
+        }
+        tree.finish();
+
+        let root = tree.root;
         assert_eq!(
             root,
             B256::from_hex("0x9feccf6caa602894c8105bdda7f81b2a7bb7de7dba1f18af92d8d057b708cb41")
@@ -336,16 +264,17 @@ mod test {
             "0x0000000000000000000000000000000000000000000000000000000000000003".to_string(),
         ];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let leaf_hashes: Vec<B256> =
+            hashes.iter().map(|hash| B256::from_str(hash).unwrap()).collect();
 
-        let tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut tree = MerkleTree::new();
 
-        let root = tree.root();
+        for leaf in leaf_hashes {
+            tree.insert(leaf);
+        }
+        tree.finish();
+
+        let root = tree.root;
         assert_eq!(
             root,
             B256::from_hex("0x6bf4e61b5cdb00b5d13973040b7e7c9690fc0e3e3509eabf38ee45a4fe1a3c0a")

@@ -23,7 +23,23 @@ import {console} from "forge-std/console.sol";
 
 /// @notice Unit tests for `MerkleProof` for getting base hash
 contract MerkleProofUnitTest is BaseTest {
-// -------------------------------------------------------------------------
-// Tests
-// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
+    function test_merkle_verify_empty_fail() public {
+        bytes32[] memory proof = new bytes32[](1);
+        proof[0] = bytes32(0);
+        bytes32 root = bytes32(0);
+        bytes32 leaf = bytes32(0);
+        assertFalse(MerkleProof.verify(proof, root, leaf));
+    }
+
+    function test_simple_merkle() public {
+        bytes32[] memory proof = new bytes32[](1);
+        proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
+        bytes32 root = bytes32(0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0);
+        bytes32 leaf = bytes32(0x0000000000000000000000000000000000000000000000000000000000000001);
+        assertTrue(MerkleProof.verify(proof, root, leaf));
+    }
 }

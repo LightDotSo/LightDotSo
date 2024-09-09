@@ -21,9 +21,9 @@ use crate::{
     state::AppState,
 };
 use alloy::{
-    dyn_abi::DynSolValue,
     hex,
-    primitives::{Address, U256},
+    hex::ToHexExt,
+    primitives::{Address, FixedBytes, U256},
 };
 use autometrics::autometrics;
 use axum::{
@@ -33,7 +33,7 @@ use axum::{
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
-    constants::ENTRYPOINT_V060_ADDRESS, merkle_tree::StandardMerkleTree,
+    constants::ENTRYPOINT_V060_ADDRESS, merkle_tree::MerkleTree,
     paymaster::decode_paymaster_and_data, types::UserOperation as BaseUserOperation,
 };
 use lightdotso_db::models::activity::CustomParams;
@@ -179,7 +179,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
     // Assert that the hex hash of base_hash is the same as the user_operation_hash (prefix 0x)
-    if hex::encode(base_hash) != user_operation_hash {
+    if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
         error!(
             "base_hash: {}, user_operation_hash: {}",
             hex::encode(base_hash),
@@ -534,7 +534,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
 
         // Assert that the hex hash of base_hash is the same as the user_operation_hash
-        if hex::encode(base_hash) != user_operation_hash {
+        if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
             error!(
                 "base_hash: {}, user_operation_hash: {}",
                 hex::encode(base_hash),
@@ -572,18 +572,18 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let sorted_user_operations = user_operations.clone();
 
     // Then, get the hashes of the user operations.
-    let leaf_hashes: Vec<DynSolValue> = sorted_user_operations
+    let mut leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
         .iter()
         .map(|user_operation| {
             let base_user_operation = BaseUserOperation::try_from(user_operation.clone()).unwrap();
             let base_hash = base_user_operation
                 .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64);
-            DynSolValue::FixedBytes(base_hash, 32)
+            base_hash.0
         })
         .collect();
 
     // Sort the leaf hashes.
-    // leaf_hashes.sort();
+    leaf_hashes.sort();
 
     // If the number of leaf hashes is not divisible by 2, add a empty hash to the end.
     // if leaf_hashes.len() % 2 != 0 {
@@ -591,10 +591,13 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     // }
 
     // Create the merkle tree from the hashes.
-    let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
-
+    let mut merkle_tree = MerkleTree::new();
+    for leaf in leaf_hashes {
+        merkle_tree.insert(FixedBytes::from_slice(&leaf));
+    }
+    merkle_tree.finish();
     // Get the merkle root from the merkle tree.
-    let merkle_root = format!("{}", merkle_tree.root());
+    let merkle_root = format!("0x{}", merkle_tree.root.encode_hex());
     info!(?merkle_root);
 
     // Check that the merkle root is the same as the one provided.
@@ -798,11 +801,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
 
         // Get the merkle proof for the user operation.
         let merkle_proof = merkle_tree
-            .get_proof(&DynSolValue::FixedBytes(base_hash, 32))
+            .create_proof(&base_hash)
             .unwrap()
             // Prepend 0x to each hash
+            .siblings
             .iter()
-            .map(|x| format!("{}", x))
+            .map(|x| format!("0x{}", x))
             .collect::<Vec<String>>();
 
         // Create the user operation in the database w/ the sig.
@@ -962,8 +966,6 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
 // Create tests for rundler user operation
 #[cfg(test)]
 mod tests {
-    use alloy::primitives::FixedBytes;
-
     use super::*;
 
     #[test]
@@ -989,35 +991,31 @@ mod tests {
     }
 
     #[test]
-    fn test_merkle_tree_basic() {
+    fn test_merkle_tree() {
         let hashes = [
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000000000000000000000000000002",
         ];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let mut leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
 
-        // leaf_hashes.sort();
+        leaf_hashes.sort();
 
-        // for hash in leaf_hashes.iter() {
-        //     println!("0x{}", hex::encode(hash));
-        // }
+        for hash in leaf_hashes.iter() {
+            println!("0x{}", hex::encode(hash));
+        }
 
-        let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut merkle_tree = MerkleTree::new();
 
-        // for hash in leaf_hashes.into_iter() {
-        //     merkle_tree.insert(hash);
-        // }
+        for hash in leaf_hashes.into_iter() {
+            merkle_tree.insert(FixedBytes::from_slice(&hash));
+        }
 
-        // merkle_tree.commit();
+        merkle_tree.finish();
 
-        let merkle_root = format!("{}", merkle_tree.root());
+        let merkle_root = format!("0x{}", merkle_tree.root.0.encode_hex());
 
         assert_eq!(
             merkle_root,
@@ -1032,22 +1030,24 @@ mod tests {
             "0x0000000000000000000000000000000000000000000000000000000000000002",
         ];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
 
         // leaf_hashes.sort();
 
-        // for hash in leaf_hashes.iter() {
-        //     println!("0x{}", hex::encode(hash.as_bytes().unwrap()));
-        // }
+        for hash in leaf_hashes.iter() {
+            println!("0x{}", hex::encode(hash));
+        }
 
-        let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut merkle_tree = MerkleTree::new();
 
-        let merkle_root = format!("{}", merkle_tree.root());
+        for hash in leaf_hashes.into_iter() {
+            merkle_tree.insert(FixedBytes::from_slice(&hash));
+        }
+
+        merkle_tree.finish();
+
+        let merkle_root = format!("0x{}", merkle_tree.root.encode_hex());
 
         assert_eq!(
             merkle_root,
@@ -1056,7 +1056,7 @@ mod tests {
     }
 
     #[test]
-    fn test_merkle_tree_deep() {
+    fn test_merkle_tree_simple_deep() {
         let hashes = [
             "0x0000000000000000000000000000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000000000000000000000000000002",
@@ -1065,22 +1065,24 @@ mod tests {
             "0x0000000000000000000000000000000000000000000000000000000000000005",
         ];
 
-        let leaf_hashes: Vec<DynSolValue> = hashes
-            .iter()
-            .map(|hash| {
-                DynSolValue::FixedBytes(FixedBytes::from(hash.hex_to_bytes32().unwrap()), 32)
-            })
-            .collect();
+        let mut leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
 
-        // leaf_hashes.sort();
+        leaf_hashes.sort();
 
         for hash in leaf_hashes.iter() {
-            println!("0x{}", hex::encode(hash.as_bytes().unwrap()));
+            println!("0x{}", hex::encode(hash));
         }
 
-        let merkle_tree = StandardMerkleTree::of(&leaf_hashes);
+        let mut merkle_tree = MerkleTree::new();
 
-        let merkle_root = format!("{}", merkle_tree.root());
+        for hash in leaf_hashes.into_iter() {
+            merkle_tree.insert(FixedBytes::from_slice(&hash));
+        }
+
+        merkle_tree.finish();
+
+        let merkle_root = format!("0x{}", merkle_tree.root.encode_hex());
 
         assert_eq!(
             merkle_root,

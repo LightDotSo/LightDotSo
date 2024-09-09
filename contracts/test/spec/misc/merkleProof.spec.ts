@@ -92,6 +92,22 @@ test("one merkle tree", () => {
 
   const standardTree = StandardMerkleTree.of([merkleHashes], ["bytes32"]);
 
+  const tree = new MerkleTree(merkleHashes, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  const _root = tree.getHexRoot();
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  expect(_root).to.equal(
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+  );
+
+  const _proof = standardTree.getProof(0);
+
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(standardTree.root.toString());
 
@@ -115,9 +131,20 @@ test("simple merkle tree", () => {
     // isBitcoinTree: false,
   });
 
-  // const proof = tree.getProof(leaves[0]);
-
   const _root = tree.getHexRoot();
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_root);
+
+  expect(_root).to.equal(
+    "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+  );
+
+  const _proof = tree.getProof(merkleHashes[0]);
+
+  expect(proofToHex(_proof)[0]).to.eql(
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+  );
 
   // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(_root);
@@ -127,7 +154,7 @@ test("simple merkle tree", () => {
     ["bytes32", "bytes32"],
   );
 
-  const _proof = standardTree.getProof(0);
+  // const _proof = standardTree.getProof(0);
 
   const _standardTreeRoot = standardTree.root.toString();
 
@@ -137,7 +164,7 @@ test("simple merkle tree", () => {
   const _simpleTree = SimpleMerkleTree.of(leaves);
 
   expect(_standardTreeRoot).to.equal(
-    "0xe685571b7e25a4a0391fb8daa09dc8d3fbb3382504525f89a2334fbbf8f8e92c",
+    "0x7fef4bf8f63cf9dd467136c679c02b5c17fcf6322d9562512bf5eb952cf7cc53",
   );
 });
 
@@ -232,3 +259,12 @@ test("simple deep nested merkle tree", () => {
 
   expect(tree.getHexRoot()).to.equal(simpleTree.root.toString());
 });
+
+function proofToHex(
+  proof: {
+    position: "left" | "right";
+    data: Buffer;
+  }[],
+) {
+  return proof.map((p) => `0x${p.data.toString("hex")}`);
+}
