@@ -33,3 +33,6 @@
   reqwest = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }
