@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use alloy::primitives::{Address, U256};
-use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_db::{
