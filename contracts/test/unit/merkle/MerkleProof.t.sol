@@ -43,6 +43,14 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof, root, leaf));
     }
 
+    function test_not_sorted_merkle() public {
+        bytes32[] memory proof = new bytes32[](1);
+        proof[0] = bytes32(0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0);
+        bytes32 root = bytes32(0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87);
+        bytes32 leaf = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
+        assertTrue(MerkleProof.verify(proof, root, leaf));
+    }
+
     function test_simple_nested_merkle() public {
         bytes32[] memory proof = new bytes32[](2);
 

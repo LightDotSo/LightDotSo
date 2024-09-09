@@ -100,6 +100,9 @@ impl MerkleTree {
             return;
         }
 
+        // Sort the leaves
+        self.leaves.sort();
+
         // Set the depth to 0
         self.depth = 0;
         let mut current_layer = self.leaves.clone();
@@ -398,7 +401,7 @@ mod test {
         let root = tree.root;
         assert_eq!(
             root,
-            B256::from_hex("0x829aa29a4940648ff39373741e8cf185ad9cff8af1529623eacce5b528406827")
+            B256::from_hex("0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87")
                 .unwrap()
         );
     }

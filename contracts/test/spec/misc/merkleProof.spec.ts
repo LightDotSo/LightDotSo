@@ -212,6 +212,21 @@ test("not sorted tree", () => {
   expect(_root).to.equal(
     "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
   );
+
+  const _proof = tree.getProof(merkleHashes[0]);
+
+  expect(proofToHex(_proof)[0]).to.eql(
+    "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+  );
+
+  const _simpleTree = SimpleMerkleTree.of(leaves);
+
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(_simpleTree.root.toString());
+
+  expect(_simpleTree.root.toString()).to.equal(
+    "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
+  );
 });
 
 test("simple nested merkle tree", () => {
