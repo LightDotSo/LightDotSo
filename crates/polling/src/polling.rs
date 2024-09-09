@@ -255,11 +255,9 @@ impl Polling {
         // Send the user operation to the node
         let client = reqwest::Client::new();
 
-        let response = client
-            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
-            .json(&req_body)
-            .send()
-            .await?;
+        let (_, rpc_url) = get_provider(chain_id).await?;
+
+        let response = client.post(rpc_url).json(&req_body).send().await?;
 
         // Handle the response for the JSON-RPC API.
         let res = handle_response(response).await?;
@@ -529,8 +527,9 @@ impl Polling {
 
     /// Poll a single user operation
     // #[autometrics]
-    async fn poll_uop(&self, url: String, hash: B256) -> Result<Option<UserOperation>> {
+    pub async fn poll_uop(&self, url: String, hash: B256) -> Result<Option<UserOperation>> {
         let hash_str = &format!("{:?}", hash);
+        info!("poll_uop, hash: {}", hash_str);
 
         // Get the user operation query from the graphql api.
         let user_operation_res = {
@@ -929,32 +928,5 @@ impl Polling {
         }
 
         Ok(())
-    }
-}
-
-// Test the polling (just the get_user_operation part)
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use lightdotso_tracing::init_test_tracing;
-    use std::collections::HashMap;
-
-    #[ignore]
-    #[tokio::test]
-    async fn test_polling() {
-        init_test_tracing();
-
-        let args = PollingArgs::default();
-        let chain_mapping = HashMap::new();
-
-        let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
-
-        let hash: B256 =
-            "0x5c9ac218426e13b18f7260d73ce0ea2d86dd44e88886ef0265803829874ff140".parse().unwrap();
-        let res = polling.get_user_operation(10, hash).await;
-
-        println!("{:?}", res);
-
-        assert!(res.is_ok());
     }
 }

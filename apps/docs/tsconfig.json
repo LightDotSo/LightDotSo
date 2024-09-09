@@ -6,6 +6,8 @@
         "name": "next"
       }
     ],
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
     "paths": {
       "@/app/*": ["./app/*"],
