@@ -13,6 +13,8 @@
 // limitations under the License.
 
 use alloy::primitives::{Address, U256};
+use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_db::{
     db::create_test_client, models::interpretation::upsert_interpretation_with_actions,
@@ -29,7 +31,7 @@ use std::sync::Arc;
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Initialize the tracing subscriber.
     lightdotso_tracing::tracing_subscriber::fmt().init();
@@ -120,7 +122,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_upsert_interpretation_with_actions_empty() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Initialize the tracing subscriber.
     lightdotso_tracing::tracing_subscriber::fmt().init();

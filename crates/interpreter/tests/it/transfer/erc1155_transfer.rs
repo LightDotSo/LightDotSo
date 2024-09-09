@@ -14,12 +14,16 @@
 
 use alloy::primitives::U256;
 use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc1155_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     // https://etherscan.io/tx/0x34869de523b7e8c78c58bbb0f12194318c10f37b8fa7549193f533e2a5ac92fc
     let request = SimulationRequest {
         chain_id: 1,

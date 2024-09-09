@@ -25,12 +25,14 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 use alloy::signers::Signer;
+use dotenvy::dotenv;
 use lightdotso_signer::connect::connect_to_kms;
 
 #[ignore]
 #[tokio::test]
 async fn test_kms_connect() {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
     // License: LGPL-3.0
@@ -43,7 +45,8 @@ async fn test_kms_connect() {
 #[ignore]
 #[tokio::test]
 async fn test_eth_sign() {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
     // License: LGPL-3.0
@@ -63,7 +66,8 @@ async fn test_eth_sign() {
 #[ignore]
 #[tokio::test]
 async fn test_kms_eth_sign_recover() {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     let signer = connect_to_kms().await.unwrap();
 

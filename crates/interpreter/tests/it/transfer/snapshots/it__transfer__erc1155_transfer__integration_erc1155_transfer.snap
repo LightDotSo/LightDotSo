@@ -20,21 +20,15 @@ InterpretationResponse {
     logs: [
         Log {
             address: 0x495f947276749ce646f68ac8c248420045cb7b5e,
-            topics: [
-                0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62,
-                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
-                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
-                0x0000000000000000000000002af8ddab77a7c90a38cf26f29763365d0028cfef,
-            ],
-            data: Bytes(0x2af8ddab77a7c90a38cf26f29763365d0028cfef0000000000000100000000010000000000000000000000000000000000000000000000000000000000000001),
-            block_hash: None,
-            block_number: None,
-            transaction_hash: None,
-            transaction_index: None,
-            log_index: None,
-            transaction_log_index: None,
-            log_type: None,
-            removed: None,
+            data: LogData {
+                topics: [
+                    0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62,
+                    0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                    0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                    0x0000000000000000000000002af8ddab77a7c90a38cf26f29763365d0028cfef,
+                ],
+                data: 0x2af8ddab77a7c90a38cf26f29763365d0028cfef0000000000000100000000010000000000000000000000000000000000000000000000000000000000000001,
+            },
         },
     ],
     exit_reason: Stop,

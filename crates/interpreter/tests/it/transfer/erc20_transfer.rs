@@ -14,6 +14,7 @@
 
 use alloy::primitives::{Bytes, Log, LogData, U256};
 use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::{config::InterpreterArgs, types::InterpretationRequest};
 use lightdotso_simulator::types::SimulationRequest;
@@ -22,6 +23,9 @@ use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc20_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -51,6 +55,9 @@ async fn test_integration_erc20_transfer() -> Result<()> {
 // https://polygonscan.com/tx/0xc8e327667f062843195f77db4374afdb29f8ed2fce0e88c315f2c4110f59ed44#eventlog
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc20_transfer_query_overflow_bug() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     // Initialize the tracing subscriber.
     lightdotso_tracing::tracing_subscriber::fmt().init();
 

@@ -14,12 +14,16 @@
 
 use alloy::primitives::U256;
 use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_eth_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -49,6 +53,9 @@ async fn test_integration_eth_transfer() -> Result<()> {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_light_eth_transfer() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenv();
+
     let request = SimulationRequest {
         chain_id: 10,
         // Light

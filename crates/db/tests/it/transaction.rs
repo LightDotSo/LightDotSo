@@ -17,6 +17,7 @@ use alloy::{
     primitives::{Address, B256},
     providers::Provider,
 };
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
@@ -28,7 +29,7 @@ use std::{str::FromStr, sync::Arc};
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_transaction_with_logs() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Create a database client.
     let db = create_test_client().await?;
@@ -49,7 +50,7 @@ async fn test_integration_get_transaction_with_logs() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_upsert_transaction_with_log_receipt() -> Result<()> {
     // Load the environment variables.
-    let _ = dotenvy::dotenv();
+    let _ = dotenv();
 
     // Create a database client.
     let db = create_test_client().await?;

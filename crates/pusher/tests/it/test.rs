@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_pusher::{channel::TEST_CHANNEL, event::TEST_EVENT, get_pusher};
 use std::collections::HashMap;
@@ -19,7 +20,8 @@ use std::collections::HashMap;
 #[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_test() -> Result<()> {
-    let _ = dotenvy::dotenv();
+    // Load the environment variables.
+    let _ = dotenv();
 
     let pusher = get_pusher()?;
 

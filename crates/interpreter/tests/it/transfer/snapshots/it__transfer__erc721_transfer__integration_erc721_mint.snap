@@ -20,21 +20,15 @@ InterpretationResponse {
     logs: [
         Log {
             address: 0x6144d927ee371de7e7f8221b596f3432e7a8e6d9,
-            topics: [
-                0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-                0x0000000000000000000000000000000000000000000000000000000000000000,
-                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
-                0x000000000000000000000000000000000000000000000000000000000000000b,
-            ],
-            data: Bytes(0x),
-            block_hash: None,
-            block_number: None,
-            transaction_hash: None,
-            transaction_index: None,
-            log_index: None,
-            transaction_log_index: None,
-            log_type: None,
-            removed: None,
+            data: LogData {
+                topics: [
+                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                    0x0000000000000000000000000000000000000000000000000000000000000000,
+                    0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                    0x000000000000000000000000000000000000000000000000000000000000000b,
+                ],
+                data: 0x,
+            },
         },
     ],
     exit_reason: Stop,

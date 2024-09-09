@@ -27,5 +27,6 @@
   strum_macros = { workspace = true }
 
 [dev-dependencies]
+  dotenvy = { workspace = true }
   insta = { workspace = true }
   tokio = { workspace = true }

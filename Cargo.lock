@@ -7245,6 +7245,7 @@ dependencies = [
  "alloy",
  "async-trait",
  "clap 4.5.17",
+ "dotenvy",
  "eyre",
  "foundry-config",
  "foundry-evm",
