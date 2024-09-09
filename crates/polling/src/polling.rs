@@ -271,13 +271,11 @@ impl Polling {
     #[autometrics]
     async fn get_min_block(&self, url: String) -> Result<i32> {
         // Get the min_block query from the graphql api.
-        let min_block_res = tokio::task::spawn_blocking(move || {
-            { || run_min_block_query(url.clone()) }.retry(&ExponentialBuilder::default()).call()
-        })
-        .await?;
+        let min_block_res =
+            { || run_min_block_query(url.clone()) }.retry(&ExponentialBuilder::default()).await?;
 
         // Get the data from the response.
-        let data = min_block_res?.data;
+        let data = min_block_res.data;
 
         if let Some(d) = data {
             // Set the min block to the returned block.
@@ -477,25 +475,22 @@ impl Polling {
 
         // Get the light operation data, spawn a blocking task to not block the tokio runtime thread
         // used by the underlying reqwest client. (blocking)
-        let user_operation = tokio::task::spawn_blocking(move || {
-            {
-                || {
-                    run_user_operations_query(
-                        url.clone(),
-                        GetUserOperationsQueryVariables {
-                            min_block: BigInt(min_block.to_string()),
-                            min_index: BigInt(index.to_string()),
-                        },
-                    )
-                }
+        let user_operation = {
+            || {
+                run_user_operations_query(
+                    url.clone(),
+                    GetUserOperationsQueryVariables {
+                        min_block: BigInt(min_block.to_string()),
+                        min_index: BigInt(index.to_string()),
+                    },
+                )
             }
-            .retry(&ExponentialBuilder::default())
-            .call()
-        })
+        }
+        .retry(&ExponentialBuilder::default())
         .await?;
 
         // Get the data from the response.
-        let data = user_operation?.data;
+        let data = user_operation.data;
 
         // If can parse the data, loop through the operations.
         if let Some(d) = data {
@@ -535,23 +530,22 @@ impl Polling {
     /// Poll a single user operation
     // #[autometrics]
     async fn poll_uop(&self, url: String, hash: B256) -> Result<Option<UserOperation>> {
+        let hash_str = &format!("{:?}", hash);
+
         // Get the user operation query from the graphql api.
-        let user_operation_res = tokio::task::spawn_blocking(move || {
-            {
-                || {
-                    run_user_operation_query(
-                        url.clone(),
-                        GetUserOperationQueryVariables { id: &format!("{:?}", hash) },
-                    )
-                }
+        let user_operation_res = {
+            || {
+                run_user_operation_query(
+                    url.clone(),
+                    GetUserOperationQueryVariables { id: hash_str },
+                )
             }
-            .retry(&ExponentialBuilder::default())
-            .call()
-        })
+        }
+        .retry(&ExponentialBuilder::default())
         .await?;
 
         // Get the data from the response.
-        let data = user_operation_res?.data;
+        let data = user_operation_res.data;
 
         // If can parse the data, return the user operation.
         if let Some(d) = data {

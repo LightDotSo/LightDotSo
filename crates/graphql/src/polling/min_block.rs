@@ -42,16 +42,15 @@ pub fn build_min_block_query() -> cynic::Operation<GetMinBlockQuery> {
     GetMinBlockQuery::build(())
 }
 
-pub fn run_min_block_query(url: String) -> Result<cynic::GraphQlResponse<GetMinBlockQuery>> {
-    use cynic::http::ReqwestBlockingExt;
+pub async fn run_min_block_query(url: String) -> Result<cynic::GraphQlResponse<GetMinBlockQuery>> {
+    use cynic::http::ReqwestExt;
 
-    Ok(reqwest::blocking::Client::new().post(url).run_graphql(build_min_block_query())?)
+    Ok(reqwest::Client::new().post(url).run_graphql(build_min_block_query()).await?)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::utils::get_graphql_url;
 
     #[test]
     fn snapshot_test_query() {
@@ -62,15 +61,5 @@ mod test {
         let query = build_min_block_query();
 
         insta::assert_snapshot!(query.query);
-    }
-
-    // TODO: The Official graph API is down, so we can't run this test.
-    #[test]
-    #[ignore]
-    fn test_running_query() {
-        let result = run_min_block_query(get_graphql_url(1).unwrap()).unwrap();
-        if result.errors.is_some() {
-            assert_eq!(result.errors.unwrap().len(), 0);
-        }
     }
 }
