@@ -71,6 +71,33 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec
         return Ok((verifying_paymaster_address, valid_until, valid_after, signature));
     }
 
+    // From: https://github.com/pimlicolabs/singleton-paymaster/blob/6f0049330f17b971038f8cf82dac9adc3dbd9c01/src/SingletonPaymasterV6.sol#L61-L90
+    // License: MIT
+    // Try w/ the offset w/ the `SingletonPaymasterV6`
+    if msg.len() == 98 {
+        // Get the valid until.
+        let valid_until = u64::from_be_bytes(
+            [&[0, 0], &msg[21..27]]
+                .concat()
+                .try_into()
+                .map_err(|e| eyre!("Failed to convert valid_until data: {:?}", e))?,
+        );
+        // Get the valid after.
+        let valid_after = u64::from_be_bytes(
+            [&[0, 0], &msg[27..33]]
+                .concat()
+                .try_into()
+                .map_err(|e| eyre!("Failed to convert valid_after data: {:?}", e))?,
+        );
+        // Get the signature.
+        let signature = msg[33..].to_vec();
+
+        // Check if the timestamp is valid.
+        if is_valid_timestamp(valid_until) && is_valid_timestamp(valid_after) {
+            return Ok((verifying_paymaster_address, valid_until, valid_after, signature));
+        }
+    }
+
     // Get the valid until.
     let valid_until =
         u64::from_be_bytes(msg[44..52].try_into().wrap_err("Failed to convert valid_until data")?);
@@ -227,6 +254,26 @@ mod tests {
         }
 
         println!("signature: 0x{}", hex_string);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_decode_paymaster_and_data_full() -> Result<()> {
+        // Get the expected msg.
+        let msgs: Vec<Vec<u8>> = vec![
+            hex::decode("0x00000000000000fb866daaa79352cc568a005d9600000066df3c170000000000002fb0f267b69d35bf8a1792423ad9ff7591a15d6a2d533f4d08e989b89f1a2cd27d9198683f61a499ec2b262649acb9f4da3acf33db335064bf002a83b6b3c6c91c").unwrap(),
+            hex::decode("0x00000000000000fb866daaa79352cc568a005d9600000066df3c180000000000007253e8abd8dd910c6388e665c073882bb51d99d4b5f6a00ef2e705e14c8861fd3119de93e83cefa84012c195970fff1e6fa377bf190425787deff168a901e3a61b").unwrap(),
+            hex::decode("0x00000000000000fb866daaa79352cc568a005d9600000066df3c16000000000000c1197123600c9f913325219385e1a9e169c48ba8570f7caa6f49e80ad24cb51143e208994ab5b2216177bb3058de17ec9ac41ea8f6596f8fffbc0a55216234e41b").unwrap(),
+        ];
+
+        for msg in msgs {
+            // Decode the paymaster and data.
+            let res = decode_paymaster_and_data(msg.clone());
+
+            // Assert that the result is not an error.
+            assert!(res.is_ok());
+        }
 
         Ok(())
     }
