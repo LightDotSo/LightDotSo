@@ -55,29 +55,33 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     /// @param lightWallet The address of the light wallet
     /// @param lightProtocolController The address of the light protocol controller
     /// @dev This function is called by the factory contract
+    /// @dev Modified from `__TimelockController_init_unchained` in TimelockControllerUpgradeable.sol
     function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
-        // Initialize the timelock controller
-        __TimelockController_init(
-            MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
-        );
+        // Set the role admin for the timelock controller
+        // From: https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/f55babcbeef1d1c42c8e0f8884abcd6663a7909f/contracts/governance/TimelockControllerUpgradeable.sol#L87-90
+        // License: MIT
+        _setRoleAdmin(TIMELOCK_ADMIN_ROLE, TIMELOCK_ADMIN_ROLE);
+        _setRoleAdmin(PROPOSER_ROLE, TIMELOCK_ADMIN_ROLE);
+        _setRoleAdmin(EXECUTOR_ROLE, TIMELOCK_ADMIN_ROLE);
+        _setRoleAdmin(CANCELLER_ROLE, TIMELOCK_ADMIN_ROLE);
 
-        // Register executor role to the light wallet
+        // self administration
+        // From: https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/f55babcbeef1d1c42c8e0f8884abcd6663a7909f/contracts/governance/TimelockControllerUpgradeable.sol#L92-93
+        // License: MIT
+        _setupRole(TIMELOCK_ADMIN_ROLE, address(this));
+
+        // Register executor and proposer role to the light wallet
         _setupRole(EXECUTOR_ROLE, lightWallet);
+        _setupRole(PROPOSER_ROLE, lightWallet);
 
         // Register canceler role to the light protocol controller
         _setupRole(CANCELLER_ROLE, lightProtocolController);
-    }
+        _setupRole(EXECUTOR_ROLE, lightProtocolController);
 
-    // -------------------------------------------------------------------------
-    // Utils
-    // -------------------------------------------------------------------------
-
-    /// @notice Helper function to create a single-element address array
-    /// @param element The address to create the array
-    /// @return The single-element address array
-    function _singletonArray(address element) private pure returns (address[] memory) {
-        address[] memory array = new address[](1);
-        array[0] = element;
-        return array;
+        // Set the minimum delay for the timelock
+        // From: https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/f55babcbeef1d1c42c8e0f8884abcd6663a7909f/contracts/governance/TimelockControllerUpgradeable.sol#L111-112
+        // License: MIT
+        _minDelay = minDelay;
+        emit MinDelayChange(0, minDelay);
     }
 }
