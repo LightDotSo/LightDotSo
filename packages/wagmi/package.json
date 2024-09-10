@@ -31,15 +31,15 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
-    "@wagmi/core": "^2.13.4",
+    "@wagmi/core": "^2.13.5",
     "connectkit": "^1.8.2",
-    "viem": "^2.21.3",
-    "wagmi": "^2.12.8"
+    "viem": "^2.21.4",
+    "wagmi": "^2.12.10"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.5.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "publishConfig": {
     "access": "public"
