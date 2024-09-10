@@ -15,6 +15,10 @@
 import { source } from "@/app/source";
 import { createSearchAPI } from "fumadocs-core/search/server";
 
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
 export const { GET } = createSearchAPI("advanced", {
   indexes: source.getPages().map((page) => ({
     title: page.data.title,

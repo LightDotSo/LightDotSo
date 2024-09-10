@@ -56,12 +56,20 @@ export default async function Page({
 }: {
   params: { slug?: string[] };
 }) {
+  // ---------------------------------------------------------------------------
+  // Reader
+  // ---------------------------------------------------------------------------
+
   const page = source.getPage(params.slug);
   if (!page) {
     notFound();
   }
 
   const MDX = page.data.body;
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
