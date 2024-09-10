@@ -23,7 +23,7 @@
 | LibOptim                       |       86 |     24,490 |
 | LightDAG                       |    1,542 |     23,034 |
 | LightPaymaster                 |    5,533 |     19,043 |
-| LightTimelockController        |   11,467 |     13,109 |
+| LightTimelockController        |   11,509 |     13,067 |
 | LightTimelockControllerFactory |    3,671 |     20,905 |
 | LightVerifyingPaymaster        |    5,533 |     19,043 |
 | LightWallet                    |   13,265 |     11,311 |
