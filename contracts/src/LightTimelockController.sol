@@ -52,14 +52,20 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     }
 
     /// @notice Initialize the timelock controller
-    /// @param lightWallet The address of the light wallet
-    /// @param lightProtocolController The address of the light protocol controller
+    /// @param lightWallet The address of the light wallet (proposer and executor)
+    /// @param lightProtocolController The address of the light protocol controller (executor and canceler)
     /// @dev This function is called by the factory contract
     function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
-        // Initialize the timelock controller
+        // Initialize the timelock controller as in `__TimelockController_init_unchained`
+        // Proposer `singletonArray(lightWallet)` is the proposer and canceller by default
+        // Executor `singletonArray(lightProtocolController)` is the only executor by default
+        // Admin `address(0)` is the default admin (set to the timelock controller itself)
         __TimelockController_init(
             MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
         );
+
+        // Revoke canceller role from the light wallet
+        _revokeRole(CANCELLER_ROLE, lightWallet);
 
         // Register executor role to the light wallet
         _setupRole(EXECUTOR_ROLE, lightWallet);

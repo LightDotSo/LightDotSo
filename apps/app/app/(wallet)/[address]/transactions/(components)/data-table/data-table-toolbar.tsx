@@ -100,7 +100,11 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!table) {
+  if (
+    !table ||
+    typeof table.getColumn !== "function" ||
+    typeof table.resetColumnFilters !== "function"
+  ) {
     return null;
   }
 
@@ -121,7 +125,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"
-            onClick={() => table.resetColumnFilters()}
+            onClick={() => table?.resetColumnFilters()}
           >
             Reset
             <Cross2Icon className="ml-2 size-4" />

@@ -77,7 +77,7 @@
     "@types/node": "^22.5.4",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.2",
     "wabt": "^1.0.36"
   },
   "publishConfig": {

@@ -17,6 +17,10 @@ import { loader } from "fumadocs-core/source";
 import { createMDXSource } from "fumadocs-mdx";
 import { attachFile, createOpenAPI } from "fumadocs-openapi/server";
 
+// -----------------------------------------------------------------------------
+// Source
+// -----------------------------------------------------------------------------
+
 export const source = loader({
   baseUrl: "/",
   source: createMDXSource(docs, meta),
@@ -24,5 +28,9 @@ export const source = loader({
     attachFile,
   },
 });
+
+// -----------------------------------------------------------------------------
+// Open API
+// -----------------------------------------------------------------------------
 
 export const openapi = createOpenAPI();

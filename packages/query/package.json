@@ -32,20 +32,20 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.55.2",
+    "@tanstack/react-query": "^5.55.4",
     "exponential-backoff": "^3.1.1",
     "neverthrow": "^8.0.0",
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
     "react-is": "19.0.0-rc-7771d3a7-20240827",
-    "viem": "^2.21.3"
+    "viem": "^2.21.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "publishConfig": {
     "access": "public"

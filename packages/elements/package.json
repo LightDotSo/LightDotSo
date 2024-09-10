@@ -43,7 +43,7 @@
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-blurhash": "^0.3.0",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
-    "viem": "^2.21.3"
+    "viem": "^2.21.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
@@ -53,7 +53,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "publishConfig": {
     "access": "public"
