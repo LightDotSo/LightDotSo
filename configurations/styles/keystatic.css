@@ -70,6 +70,14 @@
   @apply max-w-screen-md mx-0 my-auto text-2xl font-bold;
 }
 
+.keystatic pre {
+  @apply select-all;
+}
+
+.keystatic pre > code {
+  @apply bg-background-stronger rounded-md text-text-weak;
+}
+
 .keystatic img {
   @apply mx-auto my-8 rounded-md;
 }

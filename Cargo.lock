@@ -7230,6 +7230,7 @@ dependencies = [
  "eyre",
  "futures",
  "futures-util",
+ "http-body-util",
  "hyper 1.4.1",
  "hyper-rustls 0.27.3",
  "lazy_static",
