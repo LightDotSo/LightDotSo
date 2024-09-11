@@ -47,7 +47,7 @@ pub async fn start_internal_server() -> Result<()> {
         panic!("No available ports found!");
     }
 
-    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    let listener = TcpListener::bind(socket_addr).await?;
     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())

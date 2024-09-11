@@ -641,7 +641,7 @@ pub async fn start_api_server() -> Result<()> {
         .with_state(state);
 
     let socket_addr = "[::]:3000";
-    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    let listener = TcpListener::bind(socket_addr).await?;
     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())

@@ -68,7 +68,7 @@ pub async fn start_prometheus_server() -> Result<()> {
         .with_state(client);
 
     let socket_addr = "0.0.0.0:3002";
-    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    let listener = TcpListener::bind(socket_addr).await?;
     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())

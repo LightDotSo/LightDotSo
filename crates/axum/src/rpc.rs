@@ -137,7 +137,7 @@ pub async fn start_rpc_server() -> Result<()> {
         .with_state((client, producer));
 
     let socket_addr = "[::]:3000";
-    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    let listener = TcpListener::bind(socket_addr).await?;
     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
