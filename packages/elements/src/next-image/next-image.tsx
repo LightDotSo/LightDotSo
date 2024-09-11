@@ -89,12 +89,17 @@ export const NextImage: FC<ImageProps> = (props) => {
     },
     [props],
   );
+
+  // Make sure the placeholder is blurred by default if not set explicitly
   const isPlaceholderBlur =
-    typeof props.src === "string" && props.placeholder === "blur";
+    typeof props.src === "string" &&
+    (props.placeholder === "blur" || props.placeholder === undefined);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const style = useMemo(
     () =>
-      typeof props.src === "string" && props.placeholder === "blur"
+      typeof props.src === "string" &&
+      (props.placeholder === "blur" || props.placeholder === undefined)
         ? {
             ...props.style,
             backgroundImage: `url(${blurDataUrl(props.src)})`,
