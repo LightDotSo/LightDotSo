@@ -83,7 +83,7 @@ pub async fn start_rpc_server() -> Result<()> {
     // Rate limit based on IP address
     // From: https://github.com/benwis/tower-governor
     // License: MIT
-    let governor_conf = Box::new(
+    let governor_conf = Arc::new(
         GovernorConfigBuilder::default()
             .per_millisecond(300)
             .burst_size(100)
@@ -120,7 +120,7 @@ pub async fn start_rpc_server() -> Result<()> {
                 //  .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(GovernorLayer {
                     // We can leak this because it is created only once and it persists.
-                    config: Box::leak(governor_conf),
+                    config: governor_conf,
                 })
                 // .layer(HandleErrorLayer::new(handle_error))
                 .layer(cors), // .into_inner(),

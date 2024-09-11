@@ -464,7 +464,7 @@ pub async fn start_api_server() -> Result<()> {
     // Rate limit based on IP address
     // From: https://github.com/benwis/tower-governor
     // License: MIT
-    let governor_conf = Box::new(
+    let governor_conf = Arc::new(
         GovernorConfigBuilder::default()
             .per_millisecond(300)
             .burst_size(300)
@@ -475,7 +475,7 @@ pub async fn start_api_server() -> Result<()> {
     );
 
     // Rate limit based on IP address but only for authenticated users
-    let authenticated_governor_conf = Box::new(
+    let authenticated_governor_conf = Arc::new(
         GovernorConfigBuilder::default()
             .per_millisecond(100)
             .burst_size(1000)
@@ -601,7 +601,7 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 // .layer(HandleErrorLayer::new(handle_error))
-                .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .layer(GovernorLayer { config: governor_conf })
                 .layer(cookie_manager_layer.clone())
                 .layer(session_manager_layer.clone())
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
@@ -615,7 +615,7 @@ pub async fn start_api_server() -> Result<()> {
             api.clone().layer(
                 ServiceBuilder::new()
                     // .layer(HandleErrorLayer::new(handle_error))
-                    .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
+                    .layer(GovernorLayer { config: authenticated_governor_conf })
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(authenticated))

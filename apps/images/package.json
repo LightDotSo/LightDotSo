@@ -22,7 +22,7 @@
     "@hono/zod-validator": "^0.2.2",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
-    "hono": "^4.5.11",
+    "hono": "^4.6.1",
     "hono-rate-limiter": "^0.4.0",
     "zod": "^3.23.8"
   },
