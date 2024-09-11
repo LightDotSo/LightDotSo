@@ -17,7 +17,6 @@ pub(crate) mod metrics;
 
 use autometrics::autometrics;
 use axum::{routing::get, Router};
-use http_body::Body as HttpBody;
 
 pub(crate) use crate::routes::metrics::metrics::handler;
 
@@ -26,9 +25,8 @@ pub(crate) use crate::routes::metrics::metrics::handler;
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router<S, B>() -> Router<S, B>
+pub(crate) fn router<S>() -> Router<S>
 where
-    B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
     Router::new().route("/metrics", get(handler))

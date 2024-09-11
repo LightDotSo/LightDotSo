@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use serde::{Deserialize, Serialize};
-use strum_macros::{Display, EnumString, EnumVariantNames, IntoStaticStr};
+use strum_macros::{Display, EnumString, IntoStaticStr, VariantNames};
 
 #[derive(
     Debug,
@@ -21,7 +21,7 @@ use strum_macros::{Display, EnumString, EnumVariantNames, IntoStaticStr};
     Serialize,
     Deserialize,
     PartialEq,
-    EnumVariantNames,
+    VariantNames,
     Display,
     EnumString,
     IntoStaticStr,

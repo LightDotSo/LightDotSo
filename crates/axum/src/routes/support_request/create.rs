@@ -91,7 +91,7 @@ pub(crate) async fn v1_support_request_create_handler(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id from the session.
-    let auth_user_id = get_user_id(&mut session)?;
+    let auth_user_id = get_user_id(&mut session).await?;
     info!(?auth_user_id);
 
     // -------------------------------------------------------------------------

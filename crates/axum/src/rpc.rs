@@ -32,24 +32,26 @@ use crate::handle_error;
 use axum::{
     error_handling::HandleErrorLayer,
     routing::{get, on, MethodFilter},
-    Router,
+    BoxError, Router,
 };
 use clap::Parser;
 use eyre::Result;
 use hyper::{client, http::Method};
+use lightdotso_hyper::get_hyper_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
 };
 use lightdotso_tracing::tracing::{info, Level};
 use std::{net::SocketAddr, sync::Arc, time::Duration};
+use tokio::net::TcpListener;
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::{
     cors::{Any, CorsLayer},
-    // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
+    sensitive_headers::SetSensitiveRequestHeadersLayer,
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
@@ -57,12 +59,7 @@ pub async fn start_rpc_server() -> Result<()> {
     info!("Starting RPC server");
 
     // Create a client
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_or_http()
-        .enable_http1()
-        .build();
-    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
+    let client = get_hyper_client()?;
     let producer = Arc::new(get_producer()?);
 
     // Get the config
@@ -107,28 +104,42 @@ pub async fn start_rpc_server() -> Result<()> {
 
     let app = Router::new()
         .route("/", get("rpc.light.so"))
-        .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
+        .route(
+            "/:chain_id",
+            on(
+                MethodFilter::POST.or(MethodFilter::GET).or(MethodFilter::OPTIONS),
+                public_rpc_handler,
+            ),
+        )
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
             // License: Apache-2.0
             ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
+                // .layer(HandleErrorLayer::new(handle_error))
                 .layer(trace_layer.clone())
-                .layer(GovernorLayer { config: Box::leak(governor_conf) })
-                .layer(cors)
-                .into_inner(),
+                //  .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
+                .layer(GovernorLayer {
+                    // We can leak this because it is created only once and it persists.
+                    config: Box::leak(governor_conf),
+                })
+                // .layer(HandleErrorLayer::new(handle_error))
+                .layer(cors), // .into_inner(),
         )
-        .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
-        .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
+        .route(
+            "/protected/:key/:chain_id",
+            on(MethodFilter::POST.or(MethodFilter::GET), protected_rpc_handler),
+        )
+        .route(
+            "/internal/:chain_id",
+            on(MethodFilter::POST.or(MethodFilter::GET), internal_rpc_handler),
+        )
         .layer(ServiceBuilder::new().layer(trace_layer.clone()).into_inner())
         .with_state((client, producer));
 
-    let socket_addr = "[::]:3000".parse()?;
-    axum::Server::bind(&socket_addr)
-        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
-        .await?;
+    let socket_addr = "[::]:3000";
+    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
 }

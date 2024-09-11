@@ -71,7 +71,7 @@ pub(crate) async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<Aut
 
     let nonce = generate_nonce();
 
-    match &session.insert(&NONCE_KEY, &nonce) {
+    match &session.insert(&NONCE_KEY, &nonce).await {
         Ok(_) => {
             info!("Nonce inserted into session");
         }
@@ -82,7 +82,7 @@ pub(crate) async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<Aut
         }
     }
 
-    update_session_expiry(&session)?;
+    update_session_expiry(&session).await?;
 
     let auth_nonce: AuthNonce = nonce.into();
     Ok(Json::from(auth_nonce))

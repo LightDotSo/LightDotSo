@@ -14,19 +14,21 @@
 
 #![allow(clippy::unwrap_used)]
 
-use autometrics::autometrics;
 use axum::{
+    body::Body,
     extract::{Path, State},
     http::{uri::Uri, Request, Response},
+    response::IntoResponse,
     routing::get,
     Router,
 };
 use eyre::Result;
-use hyper::{client, header::HeaderValue, Body, HeaderMap};
-use lightdotso_hyper::HyperClient;
+use hyper::{header::HeaderValue, HeaderMap};
+use lightdotso_hyper::{get_hyper_client, HyperClient};
 use lightdotso_tracing::tracing::info;
+use std::net::SocketAddr;
+use tokio::net::TcpListener;
 
-#[autometrics]
 async fn handler(
     Path(path): Path<String>,
     State(state): State<HyperClient>,
@@ -47,10 +49,9 @@ async fn handler(
 
     *req.headers_mut() = headers;
 
-    state.request(req).await.unwrap()
+    state.request(req).await.unwrap().into_response()
 }
 
-#[autometrics]
 async fn health_check() -> &'static str {
     "OK"
 }
@@ -58,13 +59,7 @@ async fn health_check() -> &'static str {
 pub async fn start_prometheus_server() -> Result<()> {
     info!("Starting prometheus server");
 
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_only()
-        .enable_http1()
-        .build();
-    // Build the hyper client from the HTTPS connector.
-    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
+    let client = get_hyper_client()?;
 
     let app = Router::new()
         .route("/", get(health_check))
@@ -72,8 +67,9 @@ pub async fn start_prometheus_server() -> Result<()> {
         .route("/api/*anything", get(handler)) // fallback route that will handle all other paths
         .with_state(client);
 
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
+    let socket_addr = "0.0.0.0:3002";
+    let listener = TcpListener::bind(socket_addr).await.unwrap();
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
 }

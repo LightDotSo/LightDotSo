@@ -296,7 +296,7 @@ impl Polling {
 
         let res = get_user_operation
             .retry(
-                &ExponentialBuilder::default()
+                ExponentialBuilder::default()
                     .with_max_delay(Duration::from_secs(get_chain_block_seconds(chain_id)))
                     .with_max_times(10),
             )

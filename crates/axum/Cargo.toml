@@ -13,6 +13,7 @@
   async-trait = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
+  axum-extra = { version = "0.9.3", features = ["typed-header"] }
   axum-tracing-opentelemetry = "0.19.1"
   clap = { workspace = true }
   eyre = { workspace = true }
@@ -44,6 +45,7 @@
   prisma-client-rust = { workspace = true }
   rand = { workspace = true }
   reqwest = { workspace = true }
+  rmp-serde = { workspace = true }
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }

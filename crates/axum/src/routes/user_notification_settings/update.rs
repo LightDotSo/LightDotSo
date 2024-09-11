@@ -25,8 +25,11 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
+    Json,
+};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    Json, TypedHeader,
+    TypedHeader,
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{

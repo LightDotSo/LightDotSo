@@ -13,10 +13,13 @@
 // limitations under the License.
 
 use axum::{
-    headers::{authorization::Bearer, Authorization},
+    body::Body,
     http::{Request, StatusCode},
     middleware::Next,
     response::Response,
+};
+use axum_extra::{
+    headers::{authorization::Bearer, Authorization},
     TypedHeader,
 };
 
@@ -29,8 +32,8 @@ pub async fn admin<B>(
     // you can also add more extractors here but the last
     // extractor must implement `FromRequest` which
     // `Request` does
-    request: Request<B>,
-    next: Next<B>,
+    request: Request<Body>,
+    next: Next,
 ) -> Result<Response, StatusCode> {
     if token_is_valid(auth.token()) {
         let response = next.run(request).await;

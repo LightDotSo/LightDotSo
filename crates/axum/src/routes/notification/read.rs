@@ -76,7 +76,7 @@ pub(crate) async fn v1_notification_read_handler(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id from the session.
-    let auth_user_id = get_user_id(&mut session)?;
+    let auth_user_id = get_user_id(&mut session).await?;
 
     // -------------------------------------------------------------------------
     // DB

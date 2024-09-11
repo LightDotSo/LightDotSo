@@ -183,6 +183,7 @@
   revm = { version = "14.0.1", default-features = false }
   revm-primitives = { version = "9.0.1", default-features = false }
   revm-inspectors = { version = "0.6", features = ["serde"] }
+  rmp-serde = "1.1.2"
   rustc-hex = "2.1.0"
   serde = "1.0.183"
   serde_json = "1.0.113"
@@ -199,7 +200,7 @@
   tonic = { version = "0.12.2", features = ["tls", "tls-roots"] }
   tower = "0.5.1"
   tower-cookies = "0.10.0"
-  tower_governor = { git = "https://github.com/benwis/tower-governor", rev = "d6cb6acf904207aec1c2618592a8bb469e932cad", package = "tower_governor" }
+  tower_governor = "0.3.2"
   tower-http = { version = "0.5", features = [
     "trace",
     "auth",

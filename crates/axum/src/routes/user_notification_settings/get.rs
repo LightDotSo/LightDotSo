@@ -23,8 +23,11 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
+    Json,
+};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    Json, TypedHeader,
+    TypedHeader,
 };
 use lightdotso_notifier::types::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, user_notification_settings};

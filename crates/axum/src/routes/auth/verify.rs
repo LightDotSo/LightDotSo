@@ -81,7 +81,7 @@ pub(crate) async fn v1_auth_verify_handler(
     })?;
 
     // The frontend must set a session expiry
-    let session_nonce = match session.get::<String>(&NONCE_KEY) {
+    let session_nonce = match session.get::<String>(&NONCE_KEY).await {
         Ok(Some(nonce)) => nonce,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -108,7 +108,7 @@ pub(crate) async fn v1_auth_verify_handler(
     }
 
     // Update the session expiry
-    update_session_expiry(&session)?;
+    update_session_expiry(&session).await?;
 
     // Upsert the user
     let user = state
@@ -124,7 +124,7 @@ pub(crate) async fn v1_auth_verify_handler(
     info!(?user);
 
     // Insert the user id into the session
-    match session.insert(&USER_ID_KEY, user.clone().id) {
+    match session.insert(&USER_ID_KEY, user.clone().id).await {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
