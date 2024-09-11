@@ -32,9 +32,13 @@ export default async function Page() {
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blogs = (await reader.collections.posts.all()).sort((a, b) => {
-    return new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime();
-  });
+  const blogs = (await reader.collections.posts.all())
+    .sort((a, b) => {
+      return (
+        new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime()
+      );
+    })
+    .filter((blog) => blog.entry.preview === false);
 
   // ---------------------------------------------------------------------------
   // Render

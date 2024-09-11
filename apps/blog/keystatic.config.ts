@@ -24,6 +24,7 @@ export default config({
           validation: { isRequired: true },
         }),
         content: fields.mdx({ label: "Content" }),
+        preview: fields.checkbox({ label: "Preview" }),
       },
     }),
   },
