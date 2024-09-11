@@ -18,6 +18,6 @@
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
-  tower = { workspace = true }
+  tower = "0.4.13"
   tower-http = { workspace = true }
   url = { workspace = true }

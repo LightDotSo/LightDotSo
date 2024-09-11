@@ -7015,7 +7015,7 @@ dependencies = [
  "reqwest 0.12.7",
  "serde",
  "serde_json",
- "tower 0.5.1",
+ "tower 0.4.13",
  "tower-http",
  "url",
 ]

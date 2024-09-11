@@ -21,6 +21,7 @@ use jsonrpsee::{
     Methods, RpcModule,
 };
 use std::net::{IpAddr, SocketAddr};
+use tower::ServiceBuilder;
 use tower_http::cors::{AllowOrigin, Any, CorsLayer};
 
 // Entire file is from: https://github.com/Vid201/silius/blob/4fa09996d156bcc70fdf1e812f8e423709bac58c/crates/rpc/src/rpc.rs
@@ -164,14 +165,20 @@ impl JsonRpcServer {
     ///   [handle]((Option<ServerHandle>, Option<ServerHandle>)) of the HTTP and WS servers.
     pub async fn start(&self) -> eyre::Result<(Option<ServerHandle>, Option<ServerHandle>)> {
         let http_handle = if self.http {
-            // let service = RpcServiceBuilder::new().option_layer(self.http_cors_layer.clone());
+            // Allow all origins, methods, and headers
+            let cors = CorsLayer::new().allow_methods(Any).allow_origin(Any).allow_headers(Any);
 
+            // Create a new service with the cors layer
+            let service = ServiceBuilder::new().layer(cors);
+
+            // Create a new module with the http methods
             let mut module = RpcModule::new(());
             module.merge(self.http_methods.clone()).expect("No conflicting methods");
 
+            // Create a new server with the http only option and the cors layer
             let server = ServerBuilder::new()
                 .http_only()
-                // .set_rpc_middleware(service)
+                .set_http_middleware(service)
                 .build(SocketAddr::new(self.http_addr, self.http_port))
                 .await?;
 
@@ -180,14 +187,20 @@ impl JsonRpcServer {
             None
         };
         let ws_handle = if self.ws {
-            // let service = ServiceBuilder::new().option_layer(self.ws_cors_layer.clone());
+            // Allow all origins, methods, and headers
+            let cors = CorsLayer::new().allow_methods(Any).allow_origin(Any).allow_headers(Any);
 
+            // Create a new service with the cors layer
+            let service = ServiceBuilder::new().layer(cors);
+
+            // Create a new module with the ws methods
             let mut module = RpcModule::new(());
             module.merge(self.ws_methods.clone()).expect("No conflicting methods");
 
+            // Create a new server with the ws only option and the cors layer
             let server = ServerBuilder::new()
                 .ws_only()
-                // .set_middleware(service)
+                .set_http_middleware(service)
                 .build(SocketAddr::new(self.ws_addr, self.ws_port))
                 .await?;
 
