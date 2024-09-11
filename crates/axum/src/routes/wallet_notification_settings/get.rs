@@ -24,8 +24,11 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
+    Json,
+};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    Json, TypedHeader,
+    TypedHeader,
 };
 use lightdotso_notifier::types::{WALLET_NOTIFICATION_DEFAULT_ENABLED, WALLET_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, wallet, wallet_notification_settings};

@@ -44,7 +44,7 @@ impl CookieUtility for Cookies {
     // Add a cookie to the response.
     async fn add_cookie(&self, name: String, value: String) {
         // Initialize a cookie builder.
-        let mut cookie_builder = Cookie::build(name, value).path("/").max_age(Duration::weeks(3));
+        let mut cookie_builder = Cookie::build((name, value)).path("/").max_age(Duration::weeks(3));
 
         // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api`
         // then set the cookie domain to `.light.so` and secure to true.
@@ -59,7 +59,7 @@ impl CookieUtility for Cookies {
         }
 
         // Finish the cookie builder.
-        let cookie = cookie_builder.finish();
+        let cookie = cookie_builder.build();
 
         self.add(cookie);
     }

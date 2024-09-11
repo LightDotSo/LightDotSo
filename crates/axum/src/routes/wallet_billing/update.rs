@@ -85,7 +85,7 @@ pub(crate) async fn v1_wallet_billing_update_handler(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
-    let auth_user_id = get_user_id(&mut session)?;
+    let auth_user_id = get_user_id(&mut session).await?;
     info!(?auth_user_id);
 
     // -------------------------------------------------------------------------

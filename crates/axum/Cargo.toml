@@ -13,10 +13,11 @@
   async-trait = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
-  axum-tracing-opentelemetry = "0.13.1"
+  axum-extra = { version = "0.9.3", features = ["typed-header"] }
+  axum-tracing-opentelemetry = "0.19.1"
   clap = { workspace = true }
   eyre = { workspace = true }
-  governor = "0.5.1"
+  governor = "0.6.3"
   http = { workspace = true }
   http-body = { workspace = true }
   hyper = { workspace = true }
@@ -44,6 +45,7 @@
   prisma-client-rust = { workspace = true }
   rand = { workspace = true }
   reqwest = { workspace = true }
+  rmp-serde = { workspace = true }
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
@@ -64,6 +66,6 @@
   tower-sessions-core = { workspace = true }
   tower_governor = { workspace = true }
   utoipa = { version = "4.0.0", features = ["axum_extras"] }
-  utoipa-rapidoc = { version = "1.0.0", features = ["axum"] }
-  utoipa-redoc = { version = "1.0.0", features = ["axum"] }
-  utoipa-swagger-ui = { version = "4.0.0", features = ["axum"] }
+  utoipa-rapidoc = { version = "4.0.0", features = ["axum"] }
+  utoipa-redoc = { version = "4.0.0", features = ["axum"] }
+  utoipa-swagger-ui = { version = "7.1.0", features = ["axum"] }

@@ -647,7 +647,7 @@ impl Indexer {
             .to_string();
 
         let _ = { || produce_transaction_message(client.clone(), &payload) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await;
 
         Ok(())
@@ -663,7 +663,7 @@ impl Indexer {
         let con = client.get_connection();
         if let Ok(mut con) = con {
             { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .call()
         } else {
             error!("Redis connection error, {:?}", con.err());
@@ -688,7 +688,7 @@ impl Indexer {
                     )
                 }
             }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .call()
         } else {
             error!("Redis connection error, {:?}", con.err());
@@ -745,7 +745,7 @@ impl Indexer {
     // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { { || { create_wallet(
     //   db_client.clone(), address, self.chain_id as i64, factory_address,
     //   Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)), ) } }
-    //   .retry(&ExponentialBuilder::default()) .await
+    //   .retry(ExponentialBuilder::default()) .await
     // }
 
     /// Creates a new transaction category in the database
@@ -757,7 +757,7 @@ impl Indexer {
     //     tx_hash: B256,
     // ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
     //     { || create_transaction_category(db_client.clone(), category.to_string(), tx_hash) }
-    //         .retry(&ExponentialBuilder::default())
+    //         .retry(ExponentialBuilder::default())
     //         .await
     // }
 
@@ -786,7 +786,7 @@ impl Indexer {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await
     }
 
@@ -799,7 +799,7 @@ impl Indexer {
 
         // Get the logs
         { || client.get_block_by_number(block_tag, true) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
             .map_err(|e| eyre!(e.to_string()))
     }
@@ -816,7 +816,7 @@ impl Indexer {
 
         // Get the logs
         { || client.get_logs(&filter) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
             .map_err(|e| eyre!(e.to_string()))
     }
@@ -828,7 +828,7 @@ impl Indexer {
 
         // Get the block number
         { || client.get_transaction_by_hash(hash) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
             .map_err(|e| eyre!(e.to_string()))
     }
@@ -840,7 +840,7 @@ impl Indexer {
 
         // Get the block number
         { || client.get_transaction_receipt(hash) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
             .map_err(|e| eyre!(e.to_string()))
     }
@@ -868,7 +868,7 @@ impl Indexer {
 
         // Get the traced block
         { || client.debug_trace_block_by_number(block_num, GethDebugTracingOptions::default()) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
             .map_err(|e| eyre!(e.to_string()))
     }

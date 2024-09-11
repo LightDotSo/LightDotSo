@@ -77,9 +77,9 @@
       "opentelemetry-0_20",
       "prometheus-exporter",
     ], default-features = false }
-    axum = { version = "0.6.16", features = ["headers", "macros", "ws"] }
-    backon = "0.4.1"
-    base64 = "0.21.3"
+    axum = { version = "0.7.5", features = ["macros", "ws"] }
+    backon = "1.2.0"
+    base64 = "0.22.1"
     byteorder = "1.4.3"
     chrono = { version = "0.4.38", default-features = false, features = [
       "clock",
@@ -95,12 +95,16 @@
     futures = "0.3.28"
     futures-util = "0.3.28"
     http = "1"
-    http-body = "0.4.5"
-    hyper = { version = "0.14", features = ["full"] }
-    hyper-rustls = "0.24.1"
+    http-body = "1.0.1"
+    hyper = { version = "1.4", features = ["full"] }
+    hyper-rustls = "0.27.3"
+    hyper-util = { version = "0.1", default-features = false, features = [
+      "client-legacy",
+      "tokio",
+    ] }
     insta = "1.17"
     js-sys = "=0.3.64"
-    jsonrpsee = { version = "0.20.1", features = [
+    jsonrpsee = { version = "0.24.3", features = [
       "server",
       "macros",
       "client",
@@ -145,16 +149,16 @@
     lightdotso-telegram = { path = "./crates/telegram" }
     lightdotso-tracing = { path = "./crates/tracing" }
     lightdotso-utils = { path = "./crates/utils" }
-    opentelemetry = { version = "0.20.0", features = ["metrics", "rt-tokio"] }
+    opentelemetry = { version = "0.25.0", features = ["metrics"] }
     opentelemetry-otlp = { version = "0.13.0", features = [
       "grpc-tonic",
       "reqwest-client",
       "tls",
       "tls-roots",
     ] }
-    opentelemetry-prometheus = "0.13.0"
-    opentelemetry-semantic-conventions = "0.13.0"
-    opentelemetry_sdk = { version = "0.20.0", features = ["metrics"] }
+    opentelemetry-prometheus = "0.17.0"
+    opentelemetry-semantic-conventions = "0.25.0"
+    opentelemetry_sdk = { version = "0.25.0", features = ["metrics"] }
     once_cell = "1.8.0"
     pin-project-lite = "0.2.13"
     prettyplease = "0.2.15"
@@ -172,8 +176,8 @@
     ] }
     prometheus = "0.13.3"
     rand = "0.8.5"
-    rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
-    redb = "1.0.5"
+    rdkafka = { version = "0.36.2", features = ["sasl", "ssl"] }
+    redb = "2.1.2"
     regress = "0.4.1"
     reqwest = { version = "0.12", features = [
       "blocking",
@@ -183,24 +187,26 @@
     revm = { version = "14.0.1", default-features = false }
     revm-primitives = { version = "9.0.1", default-features = false }
     revm-inspectors = { version = "0.6", features = ["serde"] }
+    rmp-serde = "1.1.2"
     rustc-hex = "2.1.0"
+    rustls = { version = "0.23.13", features = ["ring"] }
     serde = "1.0.183"
     serde_json = "1.0.113"
     serde_yaml = "0.9"
     spki = "0.7.2"
-    strum = "0.25"
-    strum_macros = "0.25"
+    strum = "0.26"
+    strum_macros = "0.26"
     syn = "2.0"
     tauri = { version = "1.4", features = ["shell-open"] }
     tauri-build = { version = "1.4", features = [] }
     thiserror = "1.0.40"
     time = "0.3.36"
     tokio = { version = "1.39.3", features = ["full"] }
-    tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
-    tower = { version = "0.4.12" }
-    tower-cookies = "0.9.0"
-    tower_governor = { git = "https://github.com/benwis/tower-governor", rev = "d6cb6acf904207aec1c2618592a8bb469e932cad", package = "tower_governor" }
-    tower-http = { version = "0.4", features = [
+    tonic = { version = "0.12.2", features = ["tls", "tls-roots"] }
+    tower = "0.5.1"
+    tower-cookies = "0.10.0"
+    tower_governor = "0.3.2"
+    tower-http = { version = "0.5", features = [
       "trace",
       "auth",
       "request-id",
@@ -210,35 +216,35 @@
       "limit",
       "sensitive-headers",
     ] }
-    tower-sessions = "0.5.0"
-    tower-sessions-core = "0.5.0"
+    tower-sessions = "0.13.0"
+    tower-sessions-core = "0.13.0"
     tracing = "0.1.37"
     tracing-test = "0.2.4"
-    uniffi = "0.24.2"
-    uniffi_macros = "0.24.2"
-    uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
+    uniffi = "0.28.1"
+    uniffi_macros = "0.28.1"
+    uniffi_build = { version = "0.28.1", features = ["builtin-bindgen"] }
     uuid = { version = "1.3.4", features = ["v4", "fast-rng", "serde"] }
     url = { version = "2.4", default-features = false }
 
 [patch.crates-io]
-  alloy-consensus = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-contract = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-eips = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-genesis = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-json-rpc = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-network = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-provider = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-pubsub = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-rpc-client = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-rpc-types = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-serde = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer-aws = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer-gcp = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer-ledger = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer-local = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-signer-trezor = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-transport = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-transport-http = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-transport-ipc = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
-  alloy-transport-ws = { git = "https://github.com/alloy-rs/alloy", rev = "7fab7ee" }
+  alloy-consensus = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-contract = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-eips = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-genesis = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-json-rpc = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-network = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-provider = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-pubsub = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-rpc-client = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-rpc-types = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-serde = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer-aws = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer-gcp = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer-ledger = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer-local = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-signer-trezor = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-transport = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-transport-http = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-transport-ipc = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
+  alloy-transport-ws = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }

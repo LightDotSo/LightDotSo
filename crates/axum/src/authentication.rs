@@ -75,7 +75,7 @@ pub(crate) async fn authenticate_user(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id from the session.
-    let auth_user_id = get_user_id(session)?;
+    let auth_user_id = get_user_id(session).await?;
     info!(?auth_user_id);
 
     // -------------------------------------------------------------------------
@@ -106,7 +106,7 @@ pub(crate) async fn authenticate_wallet_user(
     let auth_user_id = if token.is_some() {
         authenticate_user(state, session, token, user_id).await?
     } else {
-        get_user_id(session)?
+        get_user_id(session).await?
     };
 
     // -------------------------------------------------------------------------

@@ -14,8 +14,7 @@
 
 #![recursion_limit = "512"]
 
-use axum::{http::StatusCode, response::IntoResponse, BoxError};
-use std::borrow::Cow;
+use axum::{http::StatusCode, BoxError};
 
 pub mod admin;
 pub mod api;
@@ -33,13 +32,10 @@ pub mod state;
 
 // Handle errors
 // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L308
-pub async fn handle_error(error: BoxError) -> impl IntoResponse {
-    if error.is::<tower::load_shed::error::Overloaded>() {
-        return (
-            StatusCode::SERVICE_UNAVAILABLE,
-            Cow::from("service is overloaded, please try again later"),
-        );
+pub async fn handle_error(err: BoxError) -> (StatusCode, String) {
+    if err.is::<tower::timeout::error::Elapsed>() {
+        (StatusCode::REQUEST_TIMEOUT, "Request took too long".to_string())
+    } else {
+        (StatusCode::INTERNAL_SERVER_ERROR, format!("Unhandled internal error: {err}"))
     }
-
-    (StatusCode::INTERNAL_SERVER_ERROR, Cow::from(format!("Unhandled internal error: {}", error)))
 }

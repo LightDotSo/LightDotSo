@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use autometrics::{autometrics, prometheus_exporter};
-use axum::response::IntoResponse;
+use autometrics::prometheus_exporter;
+use axum::response::Response;
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) async fn handler() -> impl IntoResponse {
-    prometheus_exporter::encode_http_response()
+pub(crate) async fn handler() -> Response {
+    Response::new(prometheus_exporter::encode_http_response().into_body().into())
 }

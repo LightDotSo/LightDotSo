@@ -13,33 +13,29 @@
 // limitations under the License.
 
 use eyre::Result;
-use hyper::client::{self, HttpConnector};
-use hyper_rustls::HttpsConnector;
-use pusher::{Pusher, PusherBuilder};
+use pusher_rs::{PusherClient, PusherConfig};
+use std::time::Duration;
 
 pub mod channel;
 pub mod event;
 
 /// Get a Pusher consumer with the required settings.
-pub fn get_pusher() -> Result<Pusher<HttpsConnector<HttpConnector>>> {
-    // Create a client
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_or_http()
-        .enable_http1()
-        .build();
-    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
+pub fn get_pusher() -> Result<PusherClient> {
+    let config = PusherConfig {
+        app_id: std::env::var("SOKETI_DEFAULT_APP_ID")?,
+        app_key: std::env::var("SOKETI_DEFAULT_APP_KEY")?,
+        app_secret: std::env::var("PUSHER_SECRET")?,
+        cluster: "DEFAULT".to_string(),
+        use_tls: true,
+        host: Some("soketi.light.so".to_string()),
+        max_reconnection_attempts: 10,
+        backoff_interval: Duration::from_secs(2),
+        activity_timeout: Duration::from_secs(180),
+        pong_timeout: Duration::from_secs(45),
+    };
 
     // Create a Pusher provider
-    let pusher = PusherBuilder::new_with_client(
-        client,
-        &std::env::var("SOKETI_DEFAULT_APP_ID")?,
-        &std::env::var("SOKETI_DEFAULT_APP_KEY")?,
-        "PUSHER_SECRET",
-    )
-    .host("soketi.light.so")
-    .secure()
-    .finalize();
+    let pusher = PusherClient::new(config)?;
 
     Ok(pusher)
 }

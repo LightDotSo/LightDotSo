@@ -84,7 +84,7 @@ pub(crate) async fn v1_wallet_update_handler(
     Json(params): Json<WalletUpdateRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Verify the session
-    verify_session(&session)?;
+    verify_session(&session).await?;
 
     // -------------------------------------------------------------------------
     // Parse

@@ -81,7 +81,7 @@ impl Node {
             || async { self.simulate_user_operation(chain_id, entry_point, user_operation).await };
 
         let res =
-            simulate_user_operation.retry(&ExponentialBuilder::default().with_max_times(1)).await;
+            simulate_user_operation.retry(ExponentialBuilder::default().with_max_times(1)).await;
         info!("res: {:?}", res);
 
         Ok(())
@@ -129,7 +129,7 @@ impl Node {
         };
 
         let res = simulate_user_operation_with_tracer
-            .retry(&ExponentialBuilder::default().with_max_times(1))
+            .retry(ExponentialBuilder::default().with_max_times(1))
             .await;
         info!("res: {:?}", res);
 
@@ -216,7 +216,7 @@ impl Node {
         let send_user_operation =
             || async { self.send_user_operation(chain_id, entry_point, user_operation).await };
 
-        let res = send_user_operation.retry(&ExponentialBuilder::default().with_max_times(5)).await;
+        let res = send_user_operation.retry(ExponentialBuilder::default().with_max_times(5)).await;
         info!("res: {:?}", res);
 
         res

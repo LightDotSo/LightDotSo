@@ -1684,6 +1684,7 @@ webcrypto
 webext
 webextension
 webidl
+webpki
 weis
 wevm
 whatwg

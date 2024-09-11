@@ -25,8 +25,11 @@ use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
+    Json,
+};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    Json, TypedHeader,
+    TypedHeader,
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;

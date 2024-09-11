@@ -42,27 +42,26 @@ use crate::{
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
     },
-    sessions::{authenticated, RedisStore},
+    sessions::{self, authenticated},
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
-use hyper::{
-    client,
-    http::{
-        header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
-        HeaderValue, Method,
-    },
+use hyper::http::{
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    HeaderValue, Method,
 };
 use lightdotso_db::db::create_client;
+use lightdotso_hyper::get_hyper_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
 use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
+use tokio::net::TcpListener;
 use tower::ServiceBuilder;
-use tower_cookies::CookieManagerLayer;
+use tower_cookies::{cookie::SameSite, CookieManagerLayer};
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
@@ -413,14 +412,7 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_only()
-        .enable_http1()
-        .build();
-    // Build the hyper client from the HTTPS connector.
-    let hyper: client::Client<_, hyper::Body> = client::Client::builder().build(https);
-
+    let hyper = get_hyper_client()?;
     let db = Arc::new(create_client().await?);
     let producer = Arc::new(get_producer()?);
     let redis = get_redis_client()?;
@@ -542,9 +534,9 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet_settings::router());
 
     // Create the session store
-    let session_store = RedisStore::new(redis);
+    let session_store = sessions::RedisStore::new(redis);
     let mut session_manager_layer =
-        SessionManagerLayer::new(session_store.clone()).with_name(&SESSION_COOKIE_ID);
+        SessionManagerLayer::new(session_store.clone()).with_name(*SESSION_COOKIE_ID);
 
     // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie
     // domain to `.light.so` and secure to true. Also set the same site to lax.
@@ -553,7 +545,7 @@ pub async fn start_api_server() -> Result<()> {
             session_manager_layer = session_manager_layer
                 .with_domain(".light.so".to_string())
                 .with_secure(true)
-                .with_same_site(tower_sessions_core::cookie::SameSite::Lax);
+                .with_same_site(SameSite::Lax);
         }
     }
 
@@ -608,7 +600,7 @@ pub async fn start_api_server() -> Result<()> {
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
             // License: Apache-2.0
             ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
+                // .layer(HandleErrorLayer::new(handle_error))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(cookie_manager_layer.clone())
                 .layer(session_manager_layer.clone())
@@ -616,14 +608,13 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(metrics.clone())
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
-                .layer(cors.clone())
-                .into_inner(),
+                .layer(cors.clone()),
         )
         .nest(
             "/authenticated/v1",
             api.clone().layer(
                 ServiceBuilder::new()
-                    .layer(HandleErrorLayer::new(handle_error))
+                    // .layer(HandleErrorLayer::new(handle_error))
                     .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
@@ -631,31 +622,27 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
-                    .layer(cors.clone())
-                    .into_inner(),
+                    .layer(cors.clone()),
             ),
         )
         .nest(
             "/admin/v1",
             api.clone().layer(
                 ServiceBuilder::new()
-                    .layer(HandleErrorLayer::new(handle_error))
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(admin))
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
-                    .layer(OtelAxumLayer::default())
-                    .into_inner(),
+                    .layer(OtelAxumLayer::default()),
             ),
         )
         .layer(ServiceBuilder::new().layer(cors).into_inner())
         .with_state(state);
 
-    let socket_addr = "[::]:3000".parse()?;
-    axum::Server::bind(&socket_addr)
-        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
-        .await?;
+    let socket_addr = "[::]:3000";
+    let listener = TcpListener::bind(socket_addr).await?;
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
 }

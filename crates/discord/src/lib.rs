@@ -14,21 +14,21 @@
 
 use eyre::Result;
 use serenity::{
+    all::{CreateEmbed, ExecuteWebhook},
     http::Http,
-    json::Value,
-    model::{channel::Embed, webhook::Webhook},
+    model::webhook::Webhook,
 };
 
-pub async fn notify(webhook: &str, content: Value) -> Result<()> {
+pub async fn notify(webhook: &str, embed: CreateEmbed) -> Result<()> {
     // You don't need a token when you are only dealing with webhooks.
     let http = Http::new("");
     let webhook = Webhook::from_url(&http, webhook).await?;
+    let builder = ExecuteWebhook::new()
+        .username("LightDotSo")
+        .avatar_url("https://assets.light.so/icon.png")
+        .embed(embed);
 
-    webhook
-        .execute(&http, false, |w| {
-            w.content(content).username("LightDotSo").avatar_url("https://assets.light.so/icon.png")
-        })
-        .await?;
+    webhook.execute(&http, false, builder).await?;
 
     Ok(())
 }
@@ -39,14 +39,13 @@ pub async fn notify_create_wallet(
     chain_id: &str,
     transaction_hash: &str,
 ) -> Result<()> {
-    let embed = Embed::fake(|e| {
-        e.title("Wallet Created")
-            .description(format!(
-                "Address: {}\nChainid: {}\nHash: {}\n",
-                address, chain_id, transaction_hash
-            ))
-            .color(0x00ff00)
-    });
+    let embed = CreateEmbed::new()
+        .title("Wallet Created")
+        .description(format!(
+            "Address: {}\nChainid: {}\nHash: {}\n",
+            address, chain_id, transaction_hash
+        ))
+        .color(0x00ff00);
 
     notify(webhook, embed).await?;
 

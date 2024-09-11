@@ -10,10 +10,8 @@
 
 [dependencies]
   eyre = { workspace = true }
-  hyper = { workspace = true }
-  hyper-rustls = { workspace = true }
   lazy_static = { workspace = true }
-  pusher = "0.4.5"
+  pusher-rs = "0.1.2"
   tokio = { workspace = true }
 
 [dev-dependencies]

@@ -12,25 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use axum::{
+use axum::{extract::Request, http::StatusCode, middleware::Next, response::Response};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    http::{Request, StatusCode},
-    middleware::Next,
-    response::Response,
     TypedHeader,
 };
 
 // Code from: https://docs.rs/axum/latest/axum/middleware/fn.from_fn.html
 // This is a middleware that checks if the Authorization header is valid
 
-pub async fn admin<B>(
+pub async fn admin(
     // run the `TypedHeader` extractor
     TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
     // you can also add more extractors here but the last
     // extractor must implement `FromRequest` which
     // `Request` does
-    request: Request<B>,
-    next: Next<B>,
+    request: Request,
+    next: Next,
 ) -> Result<Response, StatusCode> {
     if token_is_valid(auth.token()) {
         let response = next.run(request).await;

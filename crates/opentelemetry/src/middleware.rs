@@ -31,11 +31,11 @@ use futures_util::ready;
 use http_body::Body as httpBody;
 use opentelemetry::{
     global,
-    metrics::{Counter, Histogram, MeterProvider as _, Unit, UpDownCounter},
+    metrics::{Counter, Histogram, MeterProvider, UpDownCounter},
     Key, KeyValue, Value,
 };
 use opentelemetry_sdk::{
-    metrics::{new_view, Aggregation, Instrument, MeterProvider, Stream},
+    metrics::{new_view, Aggregation, Instrument, SdkMeterProvider, Stream},
     resource::{EnvResourceDetector, SdkProvidedResourceDetector, TelemetryResourceDetector},
     Resource,
 };
@@ -257,7 +257,7 @@ impl HttpMetricsLayerBuilder {
 
         let ns = env::var("INSTANCE_NAMESPACE").unwrap_or_default();
         if !ns.is_empty() {
-            resource.push(SERVICE_NAMESPACE.string(ns.clone()));
+            resource.push(SERVICE_NAMESPACE.to_string());
         }
 
         // let instance_ip = env::var("INSTANCE_IP").unwrap_or_default();
@@ -265,16 +265,17 @@ impl HttpMetricsLayerBuilder {
         //     resource.push(SERVICE_INSTANCE.string(instance_ip));
         // }
 
-        if let Some(service_name) = self.service_name {
+        if let Some(_service_name) = self.service_name {
             // `foo.ns`
-            if !ns.is_empty() && !service_name.starts_with(format!("{}.", &ns).as_str()) {
-                resource.push(SERVICE_NAME.string(format!("{}.{}", service_name, &ns)));
-            } else {
-                resource.push(SERVICE_NAME.string(service_name));
-            }
+            // if !ns.is_empty() && !service_name.starts_with(format!("{}.", &ns).as_str()) {
+            //     resource.push(SERVICE_NAME.to_string());
+            // } else {
+            //     resource.push(SERVICE_NAME.to_string());
+            // }
+            resource.push(SERVICE_NAME.to_string());
         }
-        if let Some(service_version) = self.service_version {
-            resource.push(SERVICE_VERSION.string(service_version));
+        if let Some(_service_version) = self.service_version {
+            resource.push(SERVICE_VERSION.to_string());
         }
 
         let res = Resource::from_detectors(
@@ -297,12 +298,12 @@ impl HttpMetricsLayerBuilder {
             Registry::new()
         };
         // init prometheus exporter
-        let exporter =
-            opentelemetry_prometheus::exporter().with_registry(registry.clone()).build().unwrap();
+        // let exporter =
+        // opentelemetry_prometheus::exporter().with_registry(registry.clone()).build().unwrap();
 
-        let provider = MeterProvider::builder()
+        let provider = SdkMeterProvider::builder()
             .with_resource(res)
-            .with_reader(exporter)
+            // .with_reader(exporter)
             .with_view(
                 new_view(
                     Instrument::new().name("*http.server.request.duration"),
@@ -352,20 +353,20 @@ impl HttpMetricsLayerBuilder {
         // request_duration_seconds
         let req_duration = meter
             .f64_histogram("http.server.request.duration")
-            .with_unit(Unit::new("s"))
+            .with_unit("s")
             .with_description("The HTTP request latencies in seconds.")
             .init();
 
         // request_size_bytes
         let req_size = meter
             .u64_histogram("http.server.request.size")
-            .with_unit(Unit::new("By"))
+            .with_unit("By")
             .with_description("The HTTP request sizes in bytes.")
             .init();
 
         let res_size = meter
             .u64_histogram("http.server.response.size")
-            .with_unit(Unit::new("By"))
+            .with_unit("By")
             .with_description("The HTTP reponse sizes in bytes.")
             .init();
 

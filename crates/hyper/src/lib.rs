@@ -12,7 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use hyper::{client::HttpConnector, Body, Client};
-use hyper_rustls::HttpsConnector;
+#![allow(clippy::expect_used)]
+
+use axum::body::Body;
+use eyre::Result;
+use hyper_rustls::{HttpsConnector, HttpsConnectorBuilder};
+use hyper_util::{
+    client::legacy::{connect::HttpConnector, Builder, Client},
+    rt::TokioExecutor,
+};
+use rustls::crypto::ring;
 
 pub type HyperClient = Client<HttpsConnector<HttpConnector>, Body>;
+
+pub fn get_hyper_client() -> Result<HyperClient> {
+    ring::default_provider().install_default().expect("Failed to install default crypto provider");
+
+    let https =
+        HttpsConnectorBuilder::new().with_webpki_roots().https_or_http().enable_http1().build();
+    Ok(Builder::new(TokioExecutor::new()).to_owned().build(https))
+}

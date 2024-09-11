@@ -40,8 +40,8 @@ pub(crate) async fn v1_auth_logout_handler(
 
     cookies.remove_wallet_cookie().await;
 
-    session.clear();
-    session.delete();
+    session.clear().await;
+    let _ = session.delete().await;
 
     Ok(Json::from(AuthSuccess::Logout("Logout Success".to_string())))
 }

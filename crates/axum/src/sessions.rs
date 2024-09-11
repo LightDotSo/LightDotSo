@@ -21,21 +21,22 @@ use crate::{
     routes::auth::error::AuthError,
 };
 use async_trait::async_trait;
-use axum::{
-    http::{Request, StatusCode},
-    middleware::Next,
-    response::Response,
-};
+use axum::{extract::Request, http::StatusCode, middleware::Next, response::Response};
 use eyre::{eyre, Result};
 use lightdotso_redis::redis::{Client, Commands};
 use std::{
+    fmt::Debug,
     sync::Arc,
     time::{SystemTime, UNIX_EPOCH},
 };
 use time::OffsetDateTime;
-use tower_sessions_core::{session::Id, Expiry, Session, SessionStore};
+use tower_sessions_core::{
+    session::{Id, Record},
+    session_store, Expiry, Session, SessionStore,
+};
 
 // Redis implementation of https://github.com/maxcountryman/tower-sessions/blob/3db1504b3f0adb41612b1b12d9d843986ddd4b72/redis-store/src/lib.rs
+// Updated here at: https://github.com/maxcountryman/tower-sessions-stores/blob/d14bbc1ebd78e0d7d55c019aee54c83bab5fcf3e/redis-store/src/lib.rs
 // License: MIT
 // This is a copy of the original code, with the only difference being the use of `redis` instead of
 // `fred`.
@@ -86,43 +87,63 @@ impl RedisStore {
 
 #[async_trait]
 impl SessionStore for RedisStore {
-    type Error = RedisStoreError;
+    async fn create(&self, record: &mut Record) -> session_store::Result<()> {
+        // Run save
+        self.save(record).await
+    }
 
-    async fn save(&self, session: &Session) -> Result<(), Self::Error> {
+    async fn save(&self, record: &Record) -> session_store::Result<()> {
         // Serialize the session data
-        let session_data = serde_json::to_string(&session)?;
+        let session_data =
+            rmp_serde::to_vec(&record).map_err(|e| session_store::Error::Backend(e.to_string()))?;
 
         // Get the session expiry time (offset from the current time)
-        let current_time = unix_timestamp()?;
+        let current_time =
+            unix_timestamp().map_err(|e| session_store::Error::Backend(e.to_string()))?;
         // Get the session expiry time (offset from the current time)
         let expire_seconds =
-            OffsetDateTime::unix_timestamp(session.expiry_date()) as usize - current_time as usize;
+            OffsetDateTime::unix_timestamp(record.expiry_date) - current_time as i64;
 
         // Save the session data
-        let mut conn = self.client.get_connection()?;
-        let _: () = conn.set_ex(session.id().to_string(), session_data, expire_seconds)?;
+        let mut conn = self
+            .client
+            .get_connection()
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+        let _: () = conn
+            .set_ex(record.id.to_string(), session_data, expire_seconds as u64)
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
         Ok(())
     }
 
-    async fn load(&self, session_id: &Id) -> Result<Option<Session>, Self::Error> {
+    async fn load(&self, session_id: &Id) -> session_store::Result<Option<Record>> {
         // Load the session data
-        let mut conn = self.client.get_connection()?;
-        let data: Option<String> = conn.get(session_id.to_string())?;
+        let mut conn = self
+            .client
+            .get_connection()
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+        let data: Option<Vec<u8>> = conn
+            .get(session_id.to_string())
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
 
         // Deserialize the session data
         match data {
             Some(data) => {
-                let session: Session = serde_json::from_str(&data)?;
+                let session: Record = rmp_serde::from_slice(&data)
+                    .map_err(|e| session_store::Error::Backend(e.to_string()))?;
                 Ok(Some(session))
             }
             None => Ok(None),
         }
     }
 
-    async fn delete(&self, session_id: &Id) -> Result<(), Self::Error> {
+    async fn delete(&self, session_id: &Id) -> session_store::Result<()> {
         // Delete the session data
-        let mut conn = self.client.get_connection()?;
-        conn.del(session_id.to_string())?;
+        let mut conn = self
+            .client
+            .get_connection()
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+        conn.del(session_id.to_string())
+            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
 
         Ok(())
     }
@@ -134,9 +155,9 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
 }
 
 /// Verify the session is valid.
-pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
+pub(crate) async fn verify_session(session: &Session) -> Result<(), AppError> {
     // The frontend must set a session expiry
-    match session.get::<String>(&NONCE_KEY) {
+    match session.get::<String>(&NONCE_KEY).await {
         Ok(Some(_)) => {}
         // Invalid nonce
         Ok(None) | Err(_) => {
@@ -151,7 +172,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
     };
 
     // Verify the session has not expired
-    match session.get::<u64>(&EXPIRATION_TIME_KEY) {
+    match session.get::<u64>(&EXPIRATION_TIME_KEY).await {
         Err(_) | Ok(None) => {
             return Err(AppError::AuthError("Failed to get expiration.".to_string()));
         }
@@ -163,7 +184,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
     }
 
     // Verify that a user id is set
-    match session.get::<String>(&USER_ID_KEY) {
+    match session.get::<String>(&USER_ID_KEY).await {
         Ok(Some(_)) => {}
         // Invalid nonce
         Ok(None) | Err(_) => {
@@ -175,7 +196,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
 }
 
 /// Update the session expiry to the current time.
-pub(crate) fn update_session_expiry(session: &Session) -> Result<(), AppError> {
+pub(crate) async fn update_session_expiry(session: &Session) -> Result<(), AppError> {
     // Make sure we don't inherit a dirty session expiry
     let ts = match unix_timestamp() {
         Ok(ts) => ts,
@@ -190,7 +211,7 @@ pub(crate) fn update_session_expiry(session: &Session) -> Result<(), AppError> {
     let ts = ts + 1814400;
 
     // Insert the new expiration time into the session
-    match session.insert(&EXPIRATION_TIME_KEY, ts) {
+    match session.insert(&EXPIRATION_TIME_KEY, ts).await {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -207,15 +228,15 @@ pub(crate) fn update_session_expiry(session: &Session) -> Result<(), AppError> {
 }
 
 /// Middleware to verify the session is valid.
-pub async fn authenticated<B>(
+pub async fn authenticated(
     session: Session,
     // you can also add more extractors here but the last
     // extractor must implement `FromRequest` which
     // `Request` does
-    request: Request<B>,
-    next: Next<B>,
+    request: Request,
+    next: Next,
 ) -> Result<Response, StatusCode> {
-    let authenticated = verify_session(&session);
+    let authenticated = verify_session(&session).await;
 
     match authenticated {
         Ok(_) => {
@@ -227,8 +248,8 @@ pub async fn authenticated<B>(
 }
 
 /// Get the user id from the session.
-pub fn get_user_id(session: &mut Session) -> Result<String> {
-    match session.get::<String>(&USER_ID_KEY) {
+pub async fn get_user_id(session: &mut Session) -> Result<String> {
+    match session.get::<String>(&USER_ID_KEY).await {
         Ok(Some(user_id)) => {
             let user_id = user_id.to_lowercase();
             Ok(user_id)

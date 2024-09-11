@@ -16,7 +16,8 @@ use autometrics::prometheus_exporter;
 use axum::Router;
 use eyre::Result;
 use lightdotso_tracing::tracing::{info, warn};
-use std::net::{SocketAddr, TcpListener};
+use std::net::SocketAddr;
+use tokio::net::TcpListener;
 
 pub async fn start_internal_server() -> Result<()> {
     info!("Starting internal server");
@@ -32,7 +33,7 @@ pub async fn start_internal_server() -> Result<()> {
     let mut socket_addr = SocketAddr::from(([0, 0, 0, 0], port_number));
 
     while port_number <= max_port_number {
-        match TcpListener::bind(socket_addr) {
+        match TcpListener::bind(socket_addr).await {
             Ok(_) => break,
             Err(_) => {
                 port_number += 1;
@@ -46,9 +47,8 @@ pub async fn start_internal_server() -> Result<()> {
         panic!("No available ports found!");
     }
 
-    axum::Server::bind(&socket_addr)
-        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
-        .await?;
+    let listener = TcpListener::bind(socket_addr).await?;
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
 }

@@ -23,8 +23,11 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
+    Json,
+};
+use axum_extra::{
     headers::{authorization::Bearer, Authorization},
-    Json, TypedHeader,
+    TypedHeader,
 };
 use lightdotso_prisma::{
     activity,
@@ -215,7 +218,7 @@ async fn unauthenticate_user_id(
     let user_id = if query.user_id.is_some() {
         authenticate_user(state, session, auth_token, query.user_id.clone()).await?
     } else {
-        get_user_id(session)?
+        get_user_id(session).await?
     };
 
     Ok(user_id)
@@ -237,7 +240,7 @@ async fn authenticate_user_id(
     } else if let Some(addr) = query_address {
         authenticate_wallet_user(state, session, &addr, None, None).await?
     } else {
-        get_user_id(session)?
+        get_user_id(session).await?
     };
 
     Ok(auth_user_id)
