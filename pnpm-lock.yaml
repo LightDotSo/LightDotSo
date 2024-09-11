@@ -216,6 +216,9 @@ importers:
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
+      sherif:
+        specifier: ^1.0.0
+        version: 1.0.0
       solhint:
         specifier: ^5.0.3
         version: 5.0.3(typescript@5.6.2)
@@ -586,9 +589,6 @@ importers:
       '@tremor/react':
         specifier: ^3.18.1
         version: 3.18.1(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.7.24(@swc/helpers@0.5.13))(@types/node@22.5.4)(typescript@5.6.2)))
-      '@types/lodash':
-        specifier: ^4.17.7
-        version: 4.17.7
       '@upstash/edge-flags':
         specifier: ^0.1.3
         version: 0.1.3(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.0)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))
@@ -701,6 +701,9 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
       '@types/node':
         specifier: ^22.5.4
         version: 22.5.4
@@ -773,15 +776,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.55.4
         version: 5.55.4(react@19.0.0-rc-7771d3a7-20240827)
-      '@types/node':
-        specifier: ^22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.5
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
@@ -822,6 +816,15 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^22.5.4
+        version: 22.5.4
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.5
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       postcss:
         specifier: ^8.4.41
         version: 8.4.41
@@ -876,15 +879,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.55.4
         version: 5.55.4(react@19.0.0-rc-7771d3a7-20240827)
-      '@types/node':
-        specifier: ^22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.5
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
@@ -925,6 +919,15 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^22.5.4
+        version: 22.5.4
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.5
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       postcss:
         specifier: ^8.4.41
         version: 8.4.41
@@ -1594,6 +1597,8 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
 
+  apps/llm: {}
+
   apps/open: {}
 
   apps/paper:
@@ -1601,12 +1606,6 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
-      '@types/node':
-        specifier: ^22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.5
       react:
         specifier: 19.0.0-rc-7771d3a7-20240827
         version: 19.0.0-rc-7771d3a7-20240827
@@ -1620,8 +1619,15 @@ importers:
         specifier: ^1.0.0-alpha.58
         version: 1.0.0-alpha.58(@types/node@22.5.4)(@types/react-dom@18.3.0)(@types/react@18.3.5)(babel-plugin-macros@3.1.0)(less@4.2.0)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(rollup@4.20.0)(terser@5.31.5)(ts-node@10.9.2(@swc/core@1.7.24(@swc/helpers@0.5.13))(@types/node@22.5.4)(typescript@5.6.2))(typescript@5.6.2)
       yaml:
-        specifier: 2.3.4
-        version: 2.3.4
+        specifier: ^2.5.1
+        version: 2.5.1
+    devDependencies:
+      '@types/node':
+        specifier: ^22.5.4
+        version: 22.5.4
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.5
 
   apps/proposals:
     dependencies:
@@ -1670,15 +1676,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.55.4
         version: 5.55.4(react@19.0.0-rc-7771d3a7-20240827)
-      '@types/node':
-        specifier: ^22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.5
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
@@ -1719,6 +1716,15 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^22.5.4
+        version: 22.5.4
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.5
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       postcss:
         specifier: ^8.4.41
         version: 8.4.41
@@ -2104,11 +2110,11 @@ importers:
         specifier: github:OpenZeppelin/merkle-tree#master
         version: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71
       merkletreejs:
-        specifier: ^0.3.11
-        version: 0.3.11
+        specifier: ^0.4.0
+        version: 0.4.0
       viem:
-        specifier: ^2.13.7
-        version: 2.19.3(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^2.21.4
+        version: 2.21.4(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@6.0.4)(zod@3.23.8)
     devDependencies:
       ts-node:
         specifier: ^10.9.2
@@ -3772,7 +3778,7 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       '@radix-ui/react-dialog':
-        specifier: ^1.0.5
+        specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.1
@@ -3880,8 +3886,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.263.1
-        version: 0.263.1(react@19.0.0-rc-7771d3a7-20240827)
+        specifier: ^0.439.0
+        version: 0.439.0(react@19.0.0-rc-7771d3a7-20240827)
       next:
         specifier: 15.0.0-canary.146
         version: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.0)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
@@ -18017,11 +18023,6 @@ packages:
   lru_map@0.3.3:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
 
-  lucide-react@0.263.1:
-    resolution: {integrity: sha512-keqxAx97PlaEN89PXZ6ki1N8nRjGWtDa4021GFYLNj0RgruM5odbpl8GHTExj0hhPq3sF6Up0gnxt6TSHu+ovw==}
-    peerDependencies:
-      react: 19.0.0-rc-7771d3a7-20240827
-
   lucide-react@0.438.0:
     resolution: {integrity: sha512-uq6yCB+IzVfgIPMK8ibkecXSWTTSOMs9UjUgZigfrDCVqgdwkpIgYg1fSYnf0XXF2AoSyCJZhoZXQwzoai7VGw==}
     peerDependencies:
@@ -18302,10 +18303,6 @@ packages:
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
-
-  merkletreejs@0.3.11:
-    resolution: {integrity: sha512-LJKTl4iVNTndhL+3Uz/tfkjD0klIWsHlUzgtuNnNrsf7bAlXR30m+xYB7lHr5Z/l6e/yAIsr26Dabx6Buo4VGQ==}
-    engines: {node: '>= 7.6.0'}
 
   merkletreejs@0.4.0:
     resolution: {integrity: sha512-a48Ta5kWiVNBgeEbZVMm6FB1hBlp6vEuou/XnZdlkmd2zq6NZR6Sh2j+kR1B0iOZIXrTMcigBYzZ39MLdYhm1g==}
@@ -21627,6 +21624,40 @@ packages:
   shellwords@0.1.1:
     resolution: {integrity: sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==}
 
+  sherif-darwin-arm64@1.0.0:
+    resolution: {integrity: sha512-BRzDsWGjdZ6JqaDQ0HdcpapfHcnZyN24wUWpnFkljZOH78N+vB4qr+wwhmM7oyePJiO4pZWEoIBvzVT4cn1+3g==}
+    cpu: [arm64]
+    os: [darwin]
+
+  sherif-darwin-x64@1.0.0:
+    resolution: {integrity: sha512-forkTw6v2N2sjvDdHGL+MqSPdLc0e7Z0v9BsmSdIKv5kdCPncVn6tRv/4xfAE7q+Xqa2a2bH9EEXppGb4gR3Tw==}
+    cpu: [x64]
+    os: [darwin]
+
+  sherif-linux-arm64@1.0.0:
+    resolution: {integrity: sha512-psjD3YupFQtphWbwptM8EnU2jRkS6cnhxdxqJhMG9/yJpGsk99JD4tEmrDq0j/+T9UXZ5g7kXvQZXzocl3J62A==}
+    cpu: [arm64]
+    os: [linux]
+
+  sherif-linux-x64@1.0.0:
+    resolution: {integrity: sha512-4VM2Z0xfKOEEkZ2bZppq4PAxP4RYC2eWyUq23Jl/nQFeoPMQpA9IkF51UGzxZT4WZ2kZDFftgyJeB09yPvd1CA==}
+    cpu: [x64]
+    os: [linux]
+
+  sherif-windows-arm64@1.0.0:
+    resolution: {integrity: sha512-tSEzytTz3guhKLtdMCKWWru6UtmuCXD+0RsUWcqOMpzPBZZwvSr7OrTc83z8Oabmo8k6SJ5fvQeg33JSthgTqw==}
+    cpu: [arm64]
+    os: [win32]
+
+  sherif-windows-x64@1.0.0:
+    resolution: {integrity: sha512-R/KXUHBWVPU9hSlWS+Gea/ogP1h/3q/Dm/quqGrVq+MN/F+fiRsJlU52EAjAJ6G5r/4RsvQddD1ova8MKsffdw==}
+    cpu: [x64]
+    os: [win32]
+
+  sherif@1.0.0:
+    resolution: {integrity: sha512-x5gZqXmBT0G6Xnr2N63FwbMjaOikk/mPszl2bl3pnDMMyRi89w1ynAfcdIJpOyqZXW445418zkMIXAkQEfEtHw==}
+    hasBin: true
+
   shiki@0.14.7:
     resolution: {integrity: sha512-dNPAPrxSc87ua2sKJ3H5dQ/6ZaY8RNnaAqK+t0eG7p0Soi2ydiqbGOTaZCqaYvA/uZYfS1LJnemt3Q+mSfcPCg==}
 
@@ -23358,14 +23389,6 @@ packages:
       typescript:
         optional: true
 
-  viem@2.19.3:
-    resolution: {integrity: sha512-djOw1X/jOvDOEMiol4g/T030MVncF2utC9G929ODNJ/00E7UXjSpwOeuyapmaqn831eSIHlELicZETYl2vI9oQ==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   viem@2.21.4:
     resolution: {integrity: sha512-4E61XWhErjuXh5ObEoosKSy4iMvYnkuQq9jGLW5Isod68dNrENnyNV0QlVpn0LB3qunJ4ZMFMhYdfTjETqe7cQ==}
     peerDependencies:
@@ -23889,10 +23912,6 @@ packages:
   yaml@1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
-
-  yaml@2.3.4:
-    resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
-    engines: {node: '>= 14'}
 
   yaml@2.5.1:
     resolution: {integrity: sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==}
@@ -31723,7 +31742,7 @@ snapshots:
   '@scure/bip39@1.3.0':
     dependencies:
       '@noble/hashes': 1.4.0
-      '@scure/base': 1.1.7
+      '@scure/base': 1.1.8
 
   '@scure/bip39@1.4.0':
     dependencies:
@@ -42286,10 +42305,6 @@ snapshots:
 
   lru_map@0.3.3: {}
 
-  lucide-react@0.263.1(react@19.0.0-rc-7771d3a7-20240827):
-    dependencies:
-      react: 19.0.0-rc-7771d3a7-20240827
-
   lucide-react@0.438.0(react@19.0.0-rc-7771d3a7-20240827):
     dependencies:
       react: 19.0.0-rc-7771d3a7-20240827
@@ -42844,14 +42859,6 @@ snapshots:
   merge-stream@2.0.0: {}
 
   merge2@1.4.1: {}
-
-  merkletreejs@0.3.11:
-    dependencies:
-      bignumber.js: 9.1.2
-      buffer-reverse: 1.0.1
-      crypto-js: 4.2.0
-      treeify: 1.1.0
-      web3-utils: 1.10.4
 
   merkletreejs@0.4.0:
     dependencies:
@@ -47174,6 +47181,33 @@ snapshots:
 
   shellwords@0.1.1: {}
 
+  sherif-darwin-arm64@1.0.0:
+    optional: true
+
+  sherif-darwin-x64@1.0.0:
+    optional: true
+
+  sherif-linux-arm64@1.0.0:
+    optional: true
+
+  sherif-linux-x64@1.0.0:
+    optional: true
+
+  sherif-windows-arm64@1.0.0:
+    optional: true
+
+  sherif-windows-x64@1.0.0:
+    optional: true
+
+  sherif@1.0.0:
+    optionalDependencies:
+      sherif-darwin-arm64: 1.0.0
+      sherif-darwin-x64: 1.0.0
+      sherif-linux-arm64: 1.0.0
+      sherif-linux-x64: 1.0.0
+      sherif-windows-arm64: 1.0.0
+      sherif-windows-x64: 1.0.0
+
   shiki@0.14.7:
     dependencies:
       ansi-sequence-parser: 1.1.1
@@ -49142,24 +49176,6 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.19.3(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@6.0.4)(zod@3.23.8):
-    dependencies:
-      '@adraffy/ens-normalize': 1.10.0
-      '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
-      '@scure/bip32': 1.4.0
-      '@scure/bip39': 1.3.0
-      abitype: 1.0.5(typescript@5.6.2)(zod@3.23.8)
-      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      webauthn-p256: 0.0.5
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
-    optionalDependencies:
-      typescript: 5.6.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
   viem@2.21.4(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8):
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
@@ -49928,8 +49944,6 @@ snapshots:
   yaml-ast-parser@0.0.43: {}
 
   yaml@1.10.2: {}
-
-  yaml@2.3.4: {}
 
   yaml@2.5.1: {}
 

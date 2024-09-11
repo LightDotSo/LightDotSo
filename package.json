@@ -1,7 +1,7 @@
 {
   "name": "lightdotso",
   "version": "0.2.4",
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -142,6 +142,7 @@
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
     "react-is": "19.0.0-rc-7771d3a7-20240827",
     "rimraf": "^6.0.1",
+    "sherif": "^1.0.0",
     "solhint": "^5.0.3",
     "solidity-docgen": "0.6.0-beta.36",
     "sort-package-json": "^2.10.1",
