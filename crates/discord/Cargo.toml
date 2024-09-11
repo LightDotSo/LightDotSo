@@ -10,5 +10,5 @@
 
 [dependencies]
   eyre = { workspace = true }
-  serenity = "0.11"
+  serenity = "0.12"
   tokio = { workspace = true }

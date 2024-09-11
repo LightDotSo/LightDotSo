@@ -14,13 +14,13 @@
 
 use dotenvy::dotenv;
 use eyre::Result;
-use opentelemetry::sdk::{
-    propagation::TraceContextPropagator,
-    resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
-    Resource,
-};
-use opentelemetry_otlp::WithExportConfig;
-use opentelemetry_sdk::trace::Sampler;
+// use opentelemetry::sdk::{
+//     propagation::TraceContextPropagator,
+//     resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
+//     Resource,
+// };
+// use opentelemetry_otlp::WithExportConfig;
+// use opentelemetry_sdk::trace::Sampler;
 use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
 // use pyroscope_pprofrs::{pprof_backend, PprofConfig};
@@ -102,7 +102,7 @@ pub fn init_metrics() -> Result<()> {
     let _ = dotenv();
 
     // Retrieve the required environment variables for tracing
-    let fly_app_name = std::env::var("FLY_APP_NAME")?;
+    // let fly_app_name = std::env::var("FLY_APP_NAME")?;
 
     // Determine the log level based on the environment
     let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
@@ -120,7 +120,7 @@ pub fn init_metrics() -> Result<()> {
     }
 
     // Set the global propagator to the W3C Trace Context propagator
-    opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
+    // opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
     // Initialize the Loki layer
     // let (logging_layer, task) = tracing_loki::builder()
@@ -128,35 +128,36 @@ pub fn init_metrics() -> Result<()> {
     //     .unwrap();
 
     // Merge the detected resources with the service name for Tempo
-    let resources = OsResourceDetector
-        .detect(std::time::Duration::from_secs(0))
-        .merge(&ProcessResourceDetector.detect(std::time::Duration::from_secs(0)))
-        .merge(&Resource::new(vec![opentelemetry::KeyValue::new(
-            "service.name",
-            fly_app_name.clone(),
-        )]));
+    // let resources = OsResourceDetector
+    //     .detect(std::time::Duration::from_secs(0))
+    //     .merge(&ProcessResourceDetector.detect(std::time::Duration::from_secs(0)))
+    //     .merge(&Resource::new(vec![opentelemetry::KeyValue::new(
+    //         "service.name",
+    //         fly_app_name.clone(),
+    //     )]));
 
     // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
     // https://grafana.com/docs/grafana-cloud/monitor-infrastructure/otlp/send-data-otlp/
     // https://community.grafana.com/t/opentelemetry-endpoint-of-grafana-cloud/85359/5
     // Bug with https://github.com/hyperium/tonic/issues/1427, disabling for now
-    let tracer = opentelemetry_otlp::new_pipeline()
-        .tracing()
-        .with_exporter(
-            opentelemetry_otlp::new_exporter()
-                .tonic()
-                .with_endpoint("http://lightdotso-grafana-agent.internal:4317"),
-        )
-        .with_trace_config(
-            opentelemetry::sdk::trace::config()
-                .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
-                .with_sampler(Sampler::ParentBased(Box::new(Sampler::TraceIdRatioBased(0.03))))
-                .with_resource(resources),
-        )
-        .install_batch(opentelemetry::runtime::Tokio)?;
+    // let tracer = opentelemetry_otlp::new_pipeline()
+    //     .tracing()
+    //     .with_exporter(
+    //         opentelemetry_otlp::new_exporter()
+    //             .tonic()
+    //             .with_endpoint("http://lightdotso-grafana-agent.internal:4317"),
+    //     )
+    //     .with_trace_config(
+    //         opentelemetry::sdk::trace::config()
+    //             .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
+    //             .with_sampler(Sampler::ParentBased(Box::new(Sampler::TraceIdRatioBased(0.03))))
+    //             .with_resource(resources),
+    //     )
+    //     .install_batch(opentelemetry::runtime::Tokio)?;
 
     // Create the OpenTelemetry layer
-    let telemetry_layer = tracing_opentelemetry::layer().with_tracer(tracer);
+    let telemetry_layer = tracing_opentelemetry::layer();
+    // .with_tracer(tracer);
 
     // Initialize the tracing subscriber
     tracing_subscriber::registry()

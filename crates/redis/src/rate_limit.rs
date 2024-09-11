@@ -66,7 +66,7 @@ impl RateLimiter {
         let (count,): (u64,) = redis::pipe()
             .atomic()
             .incr(&key, 1)
-            .expire(&key, size.as_secs() as usize)
+            .expire(&key, size.as_secs() as i64)
             .ignore()
             .query(&mut self.conn)?;
         Ok(count)
@@ -98,7 +98,7 @@ impl RateLimiter {
             .zadd(&key, now.as_millis() as u64, now.as_millis() as u64)
             .ignore()
             .zcard(&key)
-            .expire(&key, size.as_secs() as usize)
+            .expire(&key, size.as_secs() as i64)
             .ignore()
             .query(&mut self.conn)?;
         Ok(count)
@@ -144,7 +144,7 @@ impl RateLimiter {
             .atomic()
             .get(&previous_key)
             .incr(&current_key, 1)
-            .expire(&current_key, (size_secs * 2) as usize)
+            .expire(&current_key, (size_secs * 2) as i64)
             .ignore()
             .query(&mut self.conn)?;
         Ok(Self::sliding_window_count(previous_count, current_count, now, size))

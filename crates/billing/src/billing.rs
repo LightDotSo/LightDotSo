@@ -163,7 +163,7 @@ impl Billing {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await
     }
 
@@ -174,7 +174,7 @@ impl Billing {
         let symbol = get_native_token_symbol(chain_id);
 
         let res = { || get_native_token_price(symbol.to_string()) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await?;
 
         Ok(res)
@@ -189,7 +189,7 @@ impl Billing {
 
         if let Some(client) = client {
             // Get the logs
-            let res = { || client.get_gas_price() }.retry(&ExponentialBuilder::default()).await?;
+            let res = { || client.get_gas_price() }.retry(ExponentialBuilder::default()).await?;
 
             return Ok(Some(res));
         }
@@ -215,7 +215,7 @@ impl Billing {
 
         let _ =
             { || produce_activity_message(client.clone(), ActivityEntity::BillingOperation, msg) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .await;
 
         Ok(())

@@ -15,7 +15,6 @@
 use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_pusher::{channel::TEST_CHANNEL, event::TEST_EVENT, get_pusher};
-use std::collections::HashMap;
 
 #[ignore]
 #[tokio::test(flavor = "multi_thread")]
@@ -25,10 +24,8 @@ async fn test_integration_test() -> Result<()> {
 
     let pusher = get_pusher()?;
 
-    let mut hash_map = HashMap::new();
-    hash_map.insert("message", "hello world from rust");
-
-    let res = pusher.trigger(TEST_CHANNEL.as_str(), TEST_EVENT.as_str(), &hash_map).await;
+    let res =
+        pusher.trigger(TEST_CHANNEL.as_str(), TEST_EVENT.as_str(), "hello world from rust").await;
 
     assert!(res.is_ok());
 

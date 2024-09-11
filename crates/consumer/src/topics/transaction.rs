@@ -110,7 +110,7 @@ pub async fn transaction_consumer(
                             block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_0_message(client.clone(), payload) }
-                            .retry(&ExponentialBuilder::default())
+                            .retry(ExponentialBuilder::default())
                             .await;
                     } else if topic == RETRY_TRANSACTION_0.to_string() {
                         info!(
@@ -118,7 +118,7 @@ pub async fn transaction_consumer(
                             block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_1_message(client.clone(), payload) }
-                            .retry(&ExponentialBuilder::default())
+                            .retry(ExponentialBuilder::default())
                             .await;
                     } else if topic == RETRY_TRANSACTION_1.to_string() {
                         info!(
@@ -126,7 +126,7 @@ pub async fn transaction_consumer(
                             block.header.number, chain_id
                         );
                         let _ = { || produce_retry_transaction_2_message(client.clone(), payload) }
-                            .retry(&ExponentialBuilder::default())
+                            .retry(ExponentialBuilder::default())
                             .await;
                     } else if topic == RETRY_TRANSACTION_2.to_string() {
                         warn!(
@@ -134,7 +134,7 @@ pub async fn transaction_consumer(
                             block.header.number, chain_id
                         );
                         let _ = { || produce_error_transaction_message(client.clone(), payload) }
-                            .retry(&ExponentialBuilder::default())
+                            .retry(ExponentialBuilder::default())
                             .await;
                     }
                 }

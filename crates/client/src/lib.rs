@@ -72,7 +72,7 @@ pub async fn request_api_json<T: DeserializeOwned>(path: String) -> Result<T> {
         let res = {
             || get_api_json_response::<T>(client.clone(), url.to_string(), Some(headers.clone()))
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await;
 
         // Return the response if it is Ok

@@ -9,5 +9,8 @@
   repository.workspace = true
 
 [dependencies]
+  axum = { workspace = true }
+  eyre = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  hyper-util = { workspace = true }

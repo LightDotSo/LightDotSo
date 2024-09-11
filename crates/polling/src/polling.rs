@@ -270,7 +270,7 @@ impl Polling {
     async fn get_min_block(&self, url: String) -> Result<i32> {
         // Get the min_block query from the graphql api.
         let min_block_res =
-            { || run_min_block_query(url.clone()) }.retry(&ExponentialBuilder::default()).await?;
+            { || run_min_block_query(url.clone()) }.retry(ExponentialBuilder::default()).await?;
 
         // Get the data from the response.
         let data = min_block_res.data;
@@ -484,7 +484,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?;
 
         // Get the data from the response.
@@ -540,7 +540,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?;
 
         // Get the data from the response.
@@ -566,7 +566,7 @@ impl Polling {
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
         Ok({ || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await?)
     }
 
@@ -592,7 +592,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?)
     }
 
@@ -615,7 +615,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?)
     }
 
@@ -635,7 +635,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?;
 
         Ok(())
@@ -647,7 +647,7 @@ impl Polling {
         let db_client = self.db_client.clone();
 
         { || get_user_operation_with_logs(db_client.clone(), hash) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await
     }
 
@@ -683,7 +683,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?)
     }
 
@@ -719,7 +719,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default())
+        .retry(ExponentialBuilder::default())
         .await?)
     }
 
@@ -748,7 +748,7 @@ impl Polling {
                         )
                     }
                 }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .await?);
             }
         }
@@ -765,7 +765,7 @@ impl Polling {
         let con = client.get_connection();
         if let Ok(mut con) = con {
             let _ = { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .call();
         } else {
             error!("Redis connection error, {:?}", con.err());
@@ -780,7 +780,7 @@ impl Polling {
         let con = client.get_connection();
         if let Ok(mut con) = con {
             let _ = { || add_to_wallets(&mut con, address.to_checksum(None).as_str()) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .call();
         } else {
             error!("Redis connection error, {:?}", con.err());
@@ -810,7 +810,7 @@ impl Polling {
             // Get the logs
             let res =
                 { || client.get_block_by_number(BlockNumberOrTag::Number(block_number), true) }
-                    .retry(&ExponentialBuilder::default())
+                    .retry(ExponentialBuilder::default())
                     .await?;
 
             return Ok(res);
@@ -833,7 +833,7 @@ impl Polling {
         if let Some(client) = client {
             // Get the transaction
             let res = { || client.get_transaction_by_hash(transaction_hash) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .await?;
 
             // Ensure the transaction is found
@@ -866,7 +866,7 @@ impl Polling {
         };
 
         let _ = { || produce_activity_message(client.clone(), ActivityEntity::UserOperation, msg) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await;
 
         Ok(())
@@ -885,7 +885,7 @@ impl Polling {
             &InterpretationMessage { user_operation_hash: Some(uop_hash), transaction_hash: None };
 
         let _ = { || produce_interpretation_message(client.clone(), uop_msg) }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await;
 
         if let Some(tx_hash) = transaction_hash {
@@ -895,7 +895,7 @@ impl Polling {
             };
 
             let _ = { || produce_interpretation_message(client.clone(), tx_msg) }
-                .retry(&ExponentialBuilder::default())
+                .retry(ExponentialBuilder::default())
                 .await;
         }
 
@@ -913,7 +913,7 @@ impl Polling {
             let block = {
                 || provider.get_block_by_number(BlockNumberOrTag::Number(block_number as u64), true)
             }
-            .retry(&ExponentialBuilder::default())
+            .retry(ExponentialBuilder::default())
             .await?;
 
             if let Some(block) = block {
@@ -922,7 +922,7 @@ impl Polling {
                     .to_string();
 
                 let _ = { || produce_transaction_message(client.clone(), &payload) }
-                    .retry(&ExponentialBuilder::default())
+                    .retry(ExponentialBuilder::default())
                     .await;
             }
         }
