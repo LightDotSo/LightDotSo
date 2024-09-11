@@ -55,6 +55,8 @@
     "prisma": "make prisma",
     "ruff:fmt:cmd": "make ruff-fmt",
     "ruff:lint:cmd": "make ruff-lint",
+    "sherif:fix": "sherif -r root-package-dependencies --fix",
+    "sherif:lint": "sherif -r root-package-dependencies",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\" --noPrompt",
