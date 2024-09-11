@@ -15,3 +15,55 @@ It is the first product built on the Light Protocol and a DEX aggregator that su
 It is currently in beta and is available on 30+ chains.
 
 ## How it works
+
+We combine the best of bridging and solver based approaches to provide a fast, permissionless, and atomic way to swap tokens across chains.
+Not only that, but through our [Timelock Balance](https://light.so/docs/timelock-balance) feature, we provide a way for users to escrow funds while preserving self-custodial security and off-chain solver rules are enforced on-chain and orchestrated through [Light Layer's Programmable Intents](https://paper.light.so/light-programmable-intents).
+This way, we preserve the best of both worlds while providing a seamless user experience, and also enforcing security on-chain.
+
+## Pros and Cons of Bridging vs Solver Based Approaches
+
+### Bridging Based Approaches
+
+#### Pros
+
+- Permissionless, enforced on-chain
+- Mature and battle-tested, widest range of tokens and chains
+- Enshrined bridges can be the most gas efficient + fast + secure
+
+#### Cons
+
+- Take time and is fragile
+- Need destination gas for transactions to initiate on target chain(s)
+- Not atomic, if the transaction fails on the target chain, the swap will fail
+
+### Solver Based Approaches
+
+#### Pros
+
+- No gas needed for transactions to initiate
+- Atomic execution on target chain(s)
+- Fast, can be instant if the funds are fronted immediately
+
+#### Cons
+
+- Counterparty risk
+- Not enforced on-chain, price is not guaranteed
+- CAB balances are not self-custodial and can be seized by the solver/operator
+
+### Using Light Protocol
+
+### Pros
+
+- No gas needed for transactions on any chain(s) w/ any asset(s)
+- CAB balances are self-custodial, and can be repaid/withdrawn if solver/operator fails to perform through insurance
+- Solver/operator operations are programatically defined and can be enforced on-chain through programmable intents
+
+### Use Cases
+
+- If the destination chain is not specified, Light Swaps will automatically route to provide the best price benefeting users w/ the best price execution
+
+## How to use Light Swaps
+
+Light Swaps is currently in beta and is available on all chains supported by the Light Protocol.
+To use Light Swaps, you can go to [https://light.so/swap](https://light.so/swap) and connect your wallet.
+You will need to deposit funds into your Light Wallet and approve the swap amount. (This will change soon, read more below)

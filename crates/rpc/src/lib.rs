@@ -31,10 +31,12 @@ use crate::{
 };
 use alloy::primitives::B256;
 use axum::{
-    body::{to_bytes, Body},
+    body::Body,
     extract::{Path, State},
     http::{Request, Response},
+    response::IntoResponse,
 };
+use http_body_util::BodyExt;
 use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
 use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
@@ -50,9 +52,7 @@ use std::{collections::HashMap, sync::Arc};
 /// Get the method from the body of the JSON RPC request
 pub async fn get_method(body: Body) -> Result<String, SerdeError> {
     // Convert the body into bytes
-    let body = to_bytes(body, usize::MAX)
-        .await
-        .map_err(|_| SerdeError::custom("Error while getting request body"))?;
+    let body = body.collect().await.unwrap().to_bytes();
     let body_json: Value = serde_json::from_slice(&body)?;
 
     // Try to retrieve the "method" field
@@ -75,7 +75,6 @@ pub async fn get_client_result(
     info!("uri: {}", uri);
 
     // Clone the body to keep the original body for later reuse
-    let full_body: Body = std::mem::replace(body, Body::empty());
     let req_body: Body = std::mem::replace(body, Body::empty());
 
     // Create a new request with the same method and body
@@ -88,8 +87,12 @@ pub async fn get_client_result(
 
     if let Ok(res) = client.request(client_req).await {
         if res.status().is_success() {
+            // Consume the body and replace it with an empty one for later reuse
+            let full_body: Body = std::mem::replace(res.into_response().body_mut(), Body::empty());
+
             // If the body contains a error field return None
-            if let Ok(body) = to_bytes(full_body, usize::MAX).await {
+            if let Ok(body) = full_body.collect().await {
+                let body = body.to_bytes();
                 // Convert the body into bytes
                 let body_json: Value = serde_json::from_slice(&body).unwrap_or_default();
                 // If the error code is the speficied error code return None
@@ -250,6 +253,8 @@ pub async fn rpc_proxy_handler(
     debug: bool,
 ) -> Response<Body> {
     info!("req: {:?}", req);
+    let body = std::mem::take(req.body_mut());
+    let body_bytes = body.collect().await.unwrap().to_bytes();
 
     // Get the client from the state
     let client = state.0.clone();
@@ -272,19 +277,14 @@ pub async fn rpc_proxy_handler(
         return Response::builder().status(404).body(Body::from("Not Found")).unwrap();
     }
 
-    // Consume the body and replace it with an empty one for later reuse
-    let full_body = std::mem::replace(req.body_mut(), Body::empty());
-    // Call your async function to consume the body
-    let full_body_bytes = to_bytes(full_body, usize::MAX).await.unwrap().to_vec();
-
     // Get the method from the body
-    let method = get_method(Body::from(full_body_bytes.clone())).await;
+    let method = get_method(Body::from(body_bytes.clone())).await;
 
     if let Ok(method) = method {
         info!("method: {}", method);
-        let full_body_string = String::from_utf8(full_body_bytes.clone())
+        let req_body_string = String::from_utf8(body_bytes.clone().to_vec())
             .unwrap_or_else(|_| "Failed to convert byte array to UTF-8".to_string());
-        info!("body: {}", full_body_string);
+        info!("body: {}", req_body_string);
 
         match method.as_str() {
             "debug_traceBlock" |
@@ -323,7 +323,7 @@ pub async fn rpc_proxy_handler(
                                 let result = get_client_result(
                                     uri,
                                     client.clone(),
-                                    &mut Body::from(full_body_bytes.clone()),
+                                    &mut Body::from(body_bytes.clone()),
                                 )
                                 .await;
                                 if let Some(resp) = result {
@@ -349,7 +349,7 @@ pub async fn rpc_proxy_handler(
                         key.clone(),
                         &chain_id,
                         &client,
-                        &mut Body::from(full_body_bytes.clone()),
+                        &mut Body::from(body_bytes.clone()),
                     )
                     .await;
 
@@ -365,7 +365,7 @@ pub async fn rpc_proxy_handler(
             "eth_getUserOperationReceipt" => {
                 // Deserialize w/ serde_json
                 let body_json_result =
-                    serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&full_body_bytes);
+                    serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&body_bytes.clone());
 
                 // Provide a default case for `body_json`
                 let body_json = body_json_result.unwrap_or(JSONRPCRequest {
@@ -401,7 +401,7 @@ pub async fn rpc_proxy_handler(
                         key.clone(),
                         &chain_id,
                         &client,
-                        &mut Body::from(full_body_bytes.clone()),
+                        &mut Body::from(body_bytes.clone()),
                     )
                     .await;
 
@@ -409,7 +409,7 @@ pub async fn rpc_proxy_handler(
                         // If the method is `eth_sendUserOperation` and the response is 200, get the
                         // `result` in the response body and log it
                         if method == "eth_sendUserOperation" && resp.status().is_success() {
-                            let body = to_bytes(resp.into_body(), usize::MAX).await.unwrap();
+                            let body = resp.into_body().collect().await.unwrap().to_bytes();
                             let body_json: Value = serde_json::from_slice(&body).unwrap();
                             if let Some(result) = body_json.get("result") {
                                 info!("result: {:?}", result);
@@ -465,7 +465,7 @@ pub async fn rpc_proxy_handler(
                 // Deserialize w/ serde_json
                 let body_json_result = serde_json::from_slice::<
                     JSONRPCRequest<Vec<UserOperationRequest>>,
-                >(&full_body_bytes);
+                >(&body_bytes.clone());
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
@@ -506,6 +506,8 @@ pub async fn rpc_proxy_handler(
             }
             &_ => {}
         }
+    } else {
+        error!("Error while getting method: {:?}", method);
     }
 
     // Construct the params for the rpc request
@@ -527,7 +529,7 @@ pub async fn rpc_proxy_handler(
             key.clone(),
             &chain_id,
             &client,
-            &mut Body::from(full_body_bytes.clone()),
+            &mut Body::from(body_bytes.clone()),
         )
         .await;
 
@@ -546,7 +548,7 @@ pub async fn rpc_proxy_handler(
         None,
         &chain_id,
         &client,
-        &mut Body::from(full_body_bytes.clone()),
+        &mut Body::from(body_bytes.clone()),
     )
     .await;
 

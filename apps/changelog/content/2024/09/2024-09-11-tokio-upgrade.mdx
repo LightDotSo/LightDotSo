@@ -1,0 +1,24 @@
+---
+title: Tokio Upgrade
+description: We've successfully upgraded to `tokio` suite (`axum`, `tower`, `hyper`, etc.) 
+issue: 5
+date: 2024-09-11
+ogp:
+  src: "https://assets.light.so/changelog/005.png"
+---
+
+<Image src="https://assets.light.so/changelog/005.png" alt="Introducing Light" width={1920} height={1080} />
+
+We've upgraded to [`tokio` suite](https://github.com/tokio-rs/tokio) (`axum`, `tower`, `hyper`, etc.) successfully.
+
+See this [upgrade PR](https://github.com/LightDotSo/LightDotSo/pull/2351) for more details.
+
+This is a part of our initiative to keep the core dependencies updated to the latest versions and improve the security and performance of the platform.
+
+Running the following [command](https://github.com/rust-lang/cargo/issues/14178) to upgrade the dependencies with breaking changes:
+
+```sh
+cargo +nightly update --breaking -Z unstable-options
+```
+
+Stay tuned for more updates!
