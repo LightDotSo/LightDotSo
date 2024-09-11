@@ -21,7 +21,7 @@ use crate::{
     routes::auth::error::AuthError,
 };
 use async_trait::async_trait;
-use axum::{body::Body, extract::Request, http::StatusCode, middleware::Next, response::Response};
+use axum::{extract::Request, http::StatusCode, middleware::Next, response::Response};
 use eyre::{eyre, Result};
 use lightdotso_redis::redis::{Client, Commands};
 use std::{
@@ -228,12 +228,12 @@ pub(crate) async fn update_session_expiry(session: &Session) -> Result<(), AppEr
 }
 
 /// Middleware to verify the session is valid.
-pub async fn authenticated<B>(
+pub async fn authenticated(
     session: Session,
     // you can also add more extractors here but the last
     // extractor must implement `FromRequest` which
     // `Request` does
-    request: Request<Body>,
+    request: Request,
     next: Next,
 ) -> Result<Response, StatusCode> {
     let authenticated = verify_session(&session).await;

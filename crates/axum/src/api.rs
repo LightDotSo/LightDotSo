@@ -42,18 +42,15 @@ use crate::{
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
     },
-    sessions::{self, authenticated, RedisStore},
+    sessions::{self, authenticated},
     state::AppState,
 };
-use axum::{body::Body, error_handling::HandleErrorLayer, middleware, routing::get, Router};
+use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
-use hyper::{
-    client,
-    http::{
-        header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
-        HeaderValue, Method,
-    },
+use hyper::http::{
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    HeaderValue, Method,
 };
 use lightdotso_db::db::create_client;
 use lightdotso_hyper::get_hyper_client;
@@ -621,7 +618,7 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
-                    // .layer(middleware::from_fn(authenticated))
+                    .layer(middleware::from_fn(authenticated))
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
@@ -632,10 +629,9 @@ pub async fn start_api_server() -> Result<()> {
             "/admin/v1",
             api.clone().layer(
                 ServiceBuilder::new()
-                    // .layer(HandleErrorLayer::new(handle_error))
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
-                    // .layer(middleware::from_fn::<Body, _>(admin))
+                    .layer(middleware::from_fn(admin))
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default()),

@@ -28,15 +28,15 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::handle_error;
+// use crate::handle_error;
 use axum::{
-    error_handling::HandleErrorLayer,
+    // error_handling::HandleErrorLayer,
     routing::{get, on, MethodFilter},
-    BoxError, Router,
+    Router,
 };
 use clap::Parser;
 use eyre::Result;
-use hyper::{client, http::Method};
+use hyper::http::Method;
 use lightdotso_hyper::get_hyper_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_rpc::{
@@ -51,7 +51,6 @@ use tower_governor::{
 };
 use tower_http::{
     cors::{Any, CorsLayer},
-    sensitive_headers::SetSensitiveRequestHeadersLayer,
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
