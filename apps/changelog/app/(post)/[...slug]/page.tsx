@@ -81,7 +81,7 @@ export async function generateMetadata({
   // ---------------------------------------------------------------------------
 
   return {
-    title: changelog.title,
+    title: `#${toThreeDigits(changelog.issue)} - ${changelog.title}`,
     description: changelog.description,
     openGraph: {
       images: changelog.ogp.src,

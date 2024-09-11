@@ -49,7 +49,6 @@ export default async function Page() {
             href={`${process.env.VERCEL_ENV === "production" ? "/changelog/" : "/"}${toThreeDigits(changelog.entry.issue)}`}
           >
             <NextImage
-              placeholder="blur"
               className="rounded-sm border border-border group-hover:opacity-80"
               src={changelog.entry.ogp.src}
               alt={changelog.entry.title}
