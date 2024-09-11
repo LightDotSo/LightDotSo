@@ -47,7 +47,6 @@ export default async function Page() {
           >
             <div className="aspect-h-9 aspect-w-16 cursor-pointer overflow-hidden rounded-sm transition duration-300 group-hover:opacity-80">
               <NextImage
-                placeholder="blur"
                 src={proposal.entry.ogp.src}
                 alt={proposal.entry.title}
                 width={1200}
