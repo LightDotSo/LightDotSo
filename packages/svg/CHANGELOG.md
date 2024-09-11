@@ -1,5 +1,18 @@
 # @lightdotso/svg
 
+## 0.0.12
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2329](https://github.com/LightDotSo/LightDotSo/pull/2329) [`6e570a4`](https://github.com/LightDotSo/LightDotSo/commit/6e570a418ddd0e2171d021607ce5a6fb47d31507) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix svg exports
+
+- [#2285](https://github.com/LightDotSo/LightDotSo/pull/2285) [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add export src
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd)]:
+  - @lightdotso/utils@3.1.11
+
 ## 0.0.11
 
 ### Patch Changes

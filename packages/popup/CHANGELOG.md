@@ -1,5 +1,15 @@
 # @lightdotso/popup
 
+## 3.1.8
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2344](https://github.com/LightDotSo/LightDotSo/pull/2344) [`f6490a5`](https://github.com/LightDotSo/LightDotSo/commit/f6490a524f3f5028f2f133836b7173914ca652c8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs config
+
+- [#2310](https://github.com/LightDotSo/LightDotSo/pull/2310) [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light ui
+
 ## 3.1.7
 
 ### Patch Changes

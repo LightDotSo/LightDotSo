@@ -1,5 +1,14 @@
 # @lightdotso/paper
 
+## 0.0.6
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- Updated dependencies [[`f6490a5`](https://github.com/LightDotSo/LightDotSo/commit/f6490a524f3f5028f2f133836b7173914ca652c8)]:
+  - @lightdotso/tsconfig@3.1.6
+
 ## 0.0.5
 
 ### Patch Changes

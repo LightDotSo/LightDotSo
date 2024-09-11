@@ -1,5 +1,11 @@
 # @lightdotso/tsconfig
 
+## 3.1.6
+
+### Patch Changes
+
+- [#2344](https://github.com/LightDotSo/LightDotSo/pull/2344) [`f6490a5`](https://github.com/LightDotSo/LightDotSo/commit/f6490a524f3f5028f2f133836b7173914ca652c8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs config
+
 ## 3.1.5
 
 ### Patch Changes

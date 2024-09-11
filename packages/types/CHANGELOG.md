@@ -1,5 +1,16 @@
 # @lightdotso/types
 
+## 0.0.9
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2313](https://github.com/LightDotSo/LightDotSo/pull/2313) [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd)]:
+  - @lightdotso/data@0.1.9
+
 ## 0.0.8
 
 ### Patch Changes
