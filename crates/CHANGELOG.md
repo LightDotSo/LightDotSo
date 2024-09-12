@@ -1,5 +1,15 @@
 # @lightdotso/crates
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2359](https://github.com/LightDotSo/LightDotSo/pull/2359) [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update all packages
+
+- [#2351](https://github.com/LightDotSo/LightDotSo/pull/2351) [`1146091`](https://github.com/LightDotSo/LightDotSo/commit/1146091abc1c236a3590e3e2d59fe0050b02fc2d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add expect clippy
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
 ## 3.1.8
 
 ### Patch Changes

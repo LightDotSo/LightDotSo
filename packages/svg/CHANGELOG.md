@@ -1,5 +1,14 @@
 # @lightdotso/svg
 
+## 0.0.13
+
+### Patch Changes
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/utils@3.1.12
+
 ## 0.0.12
 
 ### Patch Changes

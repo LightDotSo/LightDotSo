@@ -1,5 +1,11 @@
 # @lightdotso/popup
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
 ## 3.1.8
 
 ### Patch Changes

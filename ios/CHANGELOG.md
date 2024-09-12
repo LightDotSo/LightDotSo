@@ -1,5 +1,13 @@
 # @lightdotso/ios
 
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [[`e303521`](https://github.com/LightDotSo/LightDotSo/commit/e3035219529eab2f0e3bc553542c568695984a3c), [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`1146091`](https://github.com/LightDotSo/LightDotSo/commit/1146091abc1c236a3590e3e2d59fe0050b02fc2d), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/extension@3.1.9
+  - @lightdotso/crates@3.1.9
+
 ## 3.0.9
 
 ### Patch Changes

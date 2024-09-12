@@ -1,5 +1,24 @@
 # @lightdotso/query
 
+## 0.1.16
+
+### Patch Changes
+
+- [#2359](https://github.com/LightDotSo/LightDotSo/pull/2359) [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update all packages
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/query-keys@0.1.11
+  - @lightdotso/params@0.1.11
+  - @lightdotso/stores@0.1.13
+  - @lightdotso/const@3.1.10
+  - @lightdotso/utils@3.1.12
+  - @lightdotso/wagmi@3.1.11
+  - @lightdotso/data@0.1.10
+  - @lightdotso/ui@3.1.16
+  - @lightdotso/client@3.1.11
+
 ## 0.1.15
 
 ### Patch Changes

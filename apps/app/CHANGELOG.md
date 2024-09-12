@@ -1,5 +1,44 @@
 # @lightdotso/app
 
+## 3.2.15
+
+### Patch Changes
+
+- [#2359](https://github.com/LightDotSo/LightDotSo/pull/2359) [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update all packages
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`1bbdeb4`](https://github.com/LightDotSo/LightDotSo/commit/1bbdeb489d4bc5825d1504ca22f81c7318049b3c), [`324853d`](https://github.com/LightDotSo/LightDotSo/commit/324853d16c260d2e4a5a6e660a41d3550dba684d), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/query-keys@0.1.11
+  - @lightdotso/validators@0.0.9
+  - @lightdotso/templates@0.0.16
+  - @lightdotso/elements@0.0.16
+  - @lightdotso/sequence@0.0.9
+  - @lightdotso/services@0.0.12
+  - @lightdotso/dialogs@0.0.11
+  - @lightdotso/schemas@3.1.10
+  - @lightdotso/modals@0.0.16
+  - @lightdotso/params@0.1.11
+  - @lightdotso/states@0.0.16
+  - @lightdotso/stores@0.1.13
+  - @lightdotso/tables@0.1.16
+  - @lightdotso/const@3.1.10
+  - @lightdotso/forms@0.0.16
+  - @lightdotso/hooks@0.0.17
+  - @lightdotso/query@0.1.16
+  - @lightdotso/types@0.0.10
+  - @lightdotso/utils@3.1.12
+  - @lightdotso/wagmi@3.1.11
+  - @lightdotso/data@0.1.10
+  - @lightdotso/nuqs@0.0.12
+  - @lightdotso/ui@3.1.16
+  - @lightdotso/home@3.1.15
+  - @lightdotso/roots@0.0.2
+  - @lightdotso/msw@0.0.11
+  - @lightdotso/svg@0.0.13
+  - @lightdotso/client@3.1.11
+  - @lightdotso/demo@0.0.12
+
 ## 3.2.14
 
 ### Patch Changes

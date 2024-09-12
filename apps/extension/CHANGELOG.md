@@ -1,5 +1,14 @@
 # @lightdotso/extension
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2361](https://github.com/LightDotSo/LightDotSo/pull/2361) [`e303521`](https://github.com/LightDotSo/LightDotSo/commit/e3035219529eab2f0e3bc553542c568695984a3c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add change ext
+
+- Updated dependencies [[`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/popup@3.1.9
+
 ## 3.1.8
 
 ### Patch Changes
