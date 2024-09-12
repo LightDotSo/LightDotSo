@@ -12,8 +12,6 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "sideEffects": false,
-  "files": ["CHANGELOG.md"],
   "scripts": {
     "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched && echo \"\"",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",
@@ -30,7 +28,7 @@
     "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix || exit 0",
     "clippy:cmd": "cargo clippy --workspace -- -D warnings --no-deps -D clippy::expect_used -D clippy::unwrap_used",
     "cspell:cmd": "cspell --no-summary --no-progress",
-    "cspell:fix": "cspell --no-summary --no-progress --write",
+    "cspell:fix": "cspell --no-summary --no-progress",
     "cspell:lint": "cspell --no-summary --no-progress",
     "depcheck:lint": "pnpm -r exec depcheck .",
     "deploy:checkly": "checkly deploy",
