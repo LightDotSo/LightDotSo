@@ -37,7 +37,12 @@ export const useBaseImageLoaded = () => useContext(BaseImageContext);
 // Component
 // -----------------------------------------------------------------------------
 
-export const BaseImage: FC<BaseImageProps> = ({ className, src, alt }) => {
+export const BaseImage: FC<BaseImageProps> = ({
+  className,
+  src,
+  alt,
+  ...props
+}) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -62,6 +67,7 @@ export const BaseImage: FC<BaseImageProps> = ({ className, src, alt }) => {
         src={src}
         alt={alt}
         onLoad={() => setIsImageLoaded(true)}
+        {...props}
       />
     </BaseImageContext.Provider>
   );
