@@ -210,7 +210,7 @@ export const UserOperationCardTransaction: FC<
                         {item.href ? (
                           <ExternalLink
                             href={item.href}
-                            className="group-hover:underline"
+                            className="text-text hover:text-text-strong group-hover:underline"
                           >
                             {item.value}
                           </ExternalLink>

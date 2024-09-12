@@ -45,13 +45,13 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex flex-1 justify-center gap-0.5 break-all text-text-info leading-4 hover:text-text-info-strong",
+        "inline-flex flex-1 items-center justify-center gap-1 break-all text-text-info leading-4 hover:text-text-info-strong",
         className,
       )}
       {...props}
     >
-      {children ?? href}
-      {!noIcon && <ArrowUpRightFromSquareIcon className="h-2 w-2 shrink-0" />}
+      <span>{children ?? href}</span>
+      {!noIcon && <ArrowUpRightFromSquareIcon className="h-3 w-3 shrink-0" />}
     </a>
   );
 };
