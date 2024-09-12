@@ -1,5 +1,18 @@
 # @lightdotso/extension
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2363](https://github.com/LightDotSo/LightDotSo/pull/2363) [`7f1ca57`](https://github.com/LightDotSo/LightDotSo/commit/7f1ca5773d3f9afdf81c1b10d7df9046b45c28a8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app release
+
+- Updated dependencies [[`7f1ca57`](https://github.com/LightDotSo/LightDotSo/commit/7f1ca5773d3f9afdf81c1b10d7df9046b45c28a8)]:
+  - @lightdotso/background@3.1.9
+  - @lightdotso/content@3.1.9
+  - @lightdotso/inpage@3.1.9
+  - @lightdotso/popup@3.1.10
+  - @lightdotso/resources@3.0.5
+
 ## 3.1.9
 
 ### Patch Changes

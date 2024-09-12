@@ -1,5 +1,11 @@
 # @lightdotso/open
 
+## 3.0.5
+
+### Patch Changes
+
+- [#2363](https://github.com/LightDotSo/LightDotSo/pull/2363) [`7f1ca57`](https://github.com/LightDotSo/LightDotSo/commit/7f1ca5773d3f9afdf81c1b10d7df9046b45c28a8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app release
+
 ## 3.0.4
 
 ### Patch Changes
