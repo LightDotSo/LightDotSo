@@ -17,6 +17,7 @@
 import { cn } from "@lightdotso/utils";
 import type { ImageProps } from "next/image";
 import { type FC, createContext, useContext, useState } from "react";
+import { NextImage } from "../next-image";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -49,7 +50,7 @@ export const BaseImage: FC<BaseImageProps> = ({ className, src, alt }) => {
 
   return (
     <BaseImageContext.Provider value={isImageLoaded}>
-      <BaseImage
+      <NextImage
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
           !isImageLoaded && "animate-pulse bg-emphasis-medium",
