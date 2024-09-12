@@ -75,6 +75,7 @@ export const getNftsByOwner = async (
       headers,
     ),
     (err) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(err);
       return err as Error;
     },

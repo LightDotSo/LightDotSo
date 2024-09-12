@@ -43,7 +43,7 @@ interface SidebarItemsProps {
 // -----------------------------------------------------------------------------
 
 export function SidebarItems({ chats }: SidebarItemsProps) {
-  if (!chats?.length) {
+  if (chats?.length === 0) {
     return null;
   }
 

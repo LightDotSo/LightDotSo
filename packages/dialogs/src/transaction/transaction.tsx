@@ -297,236 +297,232 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
       <div className="flex w-full items-center">
         <ModalSwiper>
           {pageIndex === 0 && (
-            <>
-              <Tabs className="w-full" defaultValue="transaction">
-                <TabsList className="sticky w-full">
-                  <TabsTrigger
-                    className={cn(isDev ? "w-1/4" : "w-1/3")}
-                    value="transaction"
-                  >
-                    Transaction
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className={cn(isDev ? "w-1/4" : "w-1/3")}
-                    value="details"
-                  >
-                    Details
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className={cn(isDev ? "w-1/4" : "w-1/3")}
-                    value="data"
-                  >
-                    Data
-                  </TabsTrigger>
-                  {isDev && (
-                    <TabsTrigger className="w-1/4" value="dev">
-                      Dev
-                    </TabsTrigger>
-                  )}
-                </TabsList>
-                <TabsContent
-                  className={cn(isInsideModal && "h-96 overflow-y-auto")}
+            <Tabs className="w-full" defaultValue="transaction">
+              <TabsList className="sticky w-full">
+                <TabsTrigger
+                  className={cn(isDev ? "w-1/4" : "w-1/3")}
                   value="transaction"
                 >
-                  <div className="space-y-3 pt-3">
-                    <TransactionDetails />
-                    <Form {...form}>
-                      <form className="space-y-4">
-                        <FormField
-                          control={form.control}
-                          name="gas.asset.quantity"
-                          render={({ field: _field }) => {
-                            // Get the matching token
-                            const token = tokens?.find(
-                              (token) =>
-                                token.address ===
-                                  (form.getValues("gas.asset.address") || "") &&
-                                token.chain_id ===
-                                  form.getValues("gas.chainId"),
-                            );
-
-                            return (
-                              <FormControl>
-                                <div className="flex flex-col space-y-3">
-                                  <div className="w-full space-y-2">
-                                    <Label htmlFor="weight">
-                                      Gas Token{" "}
-                                      {totalGasUsd > 0 &&
-                                        `($${refineNumberFormat(totalGasUsd)})`}
-                                    </Label>
-                                    <Button
-                                      size="lg"
-                                      type="button"
-                                      variant="outline"
-                                      className="flex w-full items-center justify-between px-4 text-sm"
-                                      onClick={() => {
-                                        if (!address) {
-                                          toast.error(
-                                            "Please connect your wallet to proceed!",
-                                          );
-                                          return;
-                                        }
-
-                                        setTokenModalProps({
-                                          address: address as Address,
-                                          type: "light",
-                                          isTestnet: false,
-                                          onClose: () => {
-                                            hideTokenModal();
-                                            setCreateBackgroundModal(false);
-                                          },
-                                          onTokenSelect: (token) => {
-                                            form.setValue(
-                                              "gas.chainId",
-                                              token.chain_id,
-                                            );
-                                            form.setValue(
-                                              "gas.asset.address",
-                                              token.address,
-                                            );
-                                            form.setValue(
-                                              "gas.asset.decimals",
-                                              token.decimals,
-                                            );
-                                            form.setValue(
-                                              "gas.assetType",
-                                              "erc20",
-                                            );
-
-                                            if (
-                                              !form.getValues(
-                                                "gas.asset.quantity",
-                                              )
-                                            ) {
-                                              form.setValue(
-                                                "gas.asset.quantity",
-                                                0,
-                                              );
-                                            }
-
-                                            form.trigger();
-
-                                            hideTokenModal();
-                                            if (isInsideModal) {
-                                              setCreateBackgroundModal(false);
-                                            }
-
-                                            // const quantity =
-                                            //   form.getValues(
-                                            //     "gas.asset.quantity",
-                                            //   );
-                                            // if (quantity) {
-                                            //   validateTokenQuantity(quantity);
-                                            // }
-                                          },
-                                        });
-
-                                        setCreateBackgroundModal(true);
-                                        showTokenModal();
-                                      }}
-                                    >
-                                      {token ? (
-                                        <>
-                                          <TokenImage
-                                            size="xs"
-                                            className="mr-2"
-                                            token={{
-                                              ...token,
-                                              // biome-ignore lint/style/useNamingConvention: <explanation>
-                                              balance_usd: 0,
-                                              id: "",
-                                              // biome-ignore lint/style/useNamingConvention: <explanation>
-                                              chain_id: token.chain_id,
-                                            }}
-                                          />
-                                          {token?.symbol}
-                                          &nbsp;
-                                          <span className="text-text-weak">
-                                            on{" "}
-                                            {
-                                              getChainWithChainId(
-                                                token.chain_id,
-                                              )?.name
-                                            }
-                                          </span>
-                                          &nbsp;
-                                          <ChainLogo chainId={token.chain_id} />
-                                        </>
-                                      ) : (
-                                        "Select Token"
-                                      )}
-                                      <div className="grow" />
-                                      {/* <ChevronDown className="size-4 opacity-50" /> */}
-                                    </Button>
-                                  </div>
-                                </div>
-                              </FormControl>
-                            );
-                          }}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="isDirectSubmit"
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value}
-                                  // disabled={!isUserOperationCreateSubmittable}
-                                  onCheckedChange={field.onChange}
-                                  onBlur={() => {
-                                    form.trigger();
-                                  }}
-                                />
-                              </FormControl>
-                              <div className="space-y-1 leading-none">
-                                <FormLabel className="cursor-pointer">
-                                  Confirm to directly execute the transaction
-                                  upon signing.
-                                </FormLabel>
-                              </div>
-                            </FormItem>
-                          )}
-                        />
-                        {/* Show all errors for debugging */}
-                        {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
-                        {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
-                      </form>
-                    </Form>
-                    {!isInsideModal && (
-                      <FooterButton
-                        cancelDisabled
-                        isModal={false}
-                        isLoading={isFormLoading}
-                        disabled={isFormLoading || isFormDisabled}
-                        customSuccessText={customFormSuccessText}
-                        onClick={signUserOperations}
-                      />
-                    )}
-                  </div>
-                </TabsContent>
-                <TabsContent
-                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  Transaction
+                </TabsTrigger>
+                <TabsTrigger
+                  className={cn(isDev ? "w-1/4" : "w-1/3")}
                   value="details"
                 >
-                  <div className="space-y-3 pt-3">
-                    <TransactionDetails />
-                  </div>
-                </TabsContent>
-                <TabsContent
-                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  Details
+                </TabsTrigger>
+                <TabsTrigger
+                  className={cn(isDev ? "w-1/4" : "w-1/3")}
                   value="data"
                 >
-                  <div className="space-y-3 pt-3">
-                    <TransactionCalldata />
-                  </div>
-                </TabsContent>
-                <TabsContent
-                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
-                  value="dev"
-                />
-              </Tabs>
-            </>
+                  Data
+                </TabsTrigger>
+                {isDev && (
+                  <TabsTrigger className="w-1/4" value="dev">
+                    Dev
+                  </TabsTrigger>
+                )}
+              </TabsList>
+              <TabsContent
+                className={cn(isInsideModal && "h-96 overflow-y-auto")}
+                value="transaction"
+              >
+                <div className="space-y-3 pt-3">
+                  <TransactionDetails />
+                  <Form {...form}>
+                    <form className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="gas.asset.quantity"
+                        render={({ field: _field }) => {
+                          // Get the matching token
+                          const token = tokens?.find(
+                            (token) =>
+                              token.address ===
+                                (form.getValues("gas.asset.address") || "") &&
+                              token.chain_id === form.getValues("gas.chainId"),
+                          );
+
+                          return (
+                            <FormControl>
+                              <div className="flex flex-col space-y-3">
+                                <div className="w-full space-y-2">
+                                  <Label htmlFor="weight">
+                                    Gas Token{" "}
+                                    {totalGasUsd > 0 &&
+                                      `($${refineNumberFormat(totalGasUsd)})`}
+                                  </Label>
+                                  <Button
+                                    size="lg"
+                                    type="button"
+                                    variant="outline"
+                                    className="flex w-full items-center justify-between px-4 text-sm"
+                                    onClick={() => {
+                                      if (!address) {
+                                        toast.error(
+                                          "Please connect your wallet to proceed!",
+                                        );
+                                        return;
+                                      }
+
+                                      setTokenModalProps({
+                                        address: address as Address,
+                                        type: "light",
+                                        isTestnet: false,
+                                        onClose: () => {
+                                          hideTokenModal();
+                                          setCreateBackgroundModal(false);
+                                        },
+                                        onTokenSelect: (token) => {
+                                          form.setValue(
+                                            "gas.chainId",
+                                            token.chain_id,
+                                          );
+                                          form.setValue(
+                                            "gas.asset.address",
+                                            token.address,
+                                          );
+                                          form.setValue(
+                                            "gas.asset.decimals",
+                                            token.decimals,
+                                          );
+                                          form.setValue(
+                                            "gas.assetType",
+                                            "erc20",
+                                          );
+
+                                          if (
+                                            !form.getValues(
+                                              "gas.asset.quantity",
+                                            )
+                                          ) {
+                                            form.setValue(
+                                              "gas.asset.quantity",
+                                              0,
+                                            );
+                                          }
+
+                                          form.trigger();
+
+                                          hideTokenModal();
+                                          if (isInsideModal) {
+                                            setCreateBackgroundModal(false);
+                                          }
+
+                                          // const quantity =
+                                          //   form.getValues(
+                                          //     "gas.asset.quantity",
+                                          //   );
+                                          // if (quantity) {
+                                          //   validateTokenQuantity(quantity);
+                                          // }
+                                        },
+                                      });
+
+                                      setCreateBackgroundModal(true);
+                                      showTokenModal();
+                                    }}
+                                  >
+                                    {token ? (
+                                      <>
+                                        <TokenImage
+                                          size="xs"
+                                          className="mr-2"
+                                          token={{
+                                            ...token,
+                                            // biome-ignore lint/style/useNamingConvention: <explanation>
+                                            balance_usd: 0,
+                                            id: "",
+                                            // biome-ignore lint/style/useNamingConvention: <explanation>
+                                            chain_id: token.chain_id,
+                                          }}
+                                        />
+                                        {token?.symbol}
+                                        &nbsp;
+                                        <span className="text-text-weak">
+                                          on{" "}
+                                          {
+                                            getChainWithChainId(token.chain_id)
+                                              ?.name
+                                          }
+                                        </span>
+                                        &nbsp;
+                                        <ChainLogo chainId={token.chain_id} />
+                                      </>
+                                    ) : (
+                                      "Select Token"
+                                    )}
+                                    <div className="grow" />
+                                    {/* <ChevronDown className="size-4 opacity-50" /> */}
+                                  </Button>
+                                </div>
+                              </div>
+                            </FormControl>
+                          );
+                        }}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="isDirectSubmit"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                // disabled={!isUserOperationCreateSubmittable}
+                                onCheckedChange={field.onChange}
+                                onBlur={() => {
+                                  form.trigger();
+                                }}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="cursor-pointer">
+                                Confirm to directly execute the transaction upon
+                                signing.
+                              </FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      {/* Show all errors for debugging */}
+                      {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
+                      {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+                    </form>
+                  </Form>
+                  {!isInsideModal && (
+                    <FooterButton
+                      cancelDisabled
+                      isModal={false}
+                      isLoading={isFormLoading}
+                      disabled={isFormLoading || isFormDisabled}
+                      customSuccessText={customFormSuccessText}
+                      onClick={signUserOperations}
+                    />
+                  )}
+                </div>
+              </TabsContent>
+              <TabsContent
+                className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                value="details"
+              >
+                <div className="space-y-3 pt-3">
+                  <TransactionDetails />
+                </div>
+              </TabsContent>
+              <TabsContent
+                className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                value="data"
+              >
+                <div className="space-y-3 pt-3">
+                  <TransactionCalldata />
+                </div>
+              </TabsContent>
+              <TabsContent
+                className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                value="dev"
+              />
+            </Tabs>
           )}
           {pageIndex === 1 && <Loading />}
           {pageIndex === 2 && <TransactionStatus />}

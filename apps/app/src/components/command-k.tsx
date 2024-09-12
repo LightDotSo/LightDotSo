@@ -89,6 +89,7 @@ export const CommandK: FC = () => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(url.search);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info(url.search);
   }, [copy]);
 
@@ -96,6 +97,7 @@ export const CommandK: FC = () => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(decodeURIComponent(url.search));
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info(decodeURIComponent(url.search));
   }, [copy]);
 

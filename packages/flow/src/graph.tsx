@@ -200,7 +200,7 @@ async function getGraphDataFromTables(tables: PostgresTable[]): Promise<{
   nodes: Node<TableNodeData>[];
   edges: Edge[];
 }> {
-  if (!tables.length) {
+  if (tables.length === 0) {
     return { nodes: [], edges: [] };
   }
 

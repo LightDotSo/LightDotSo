@@ -29,6 +29,7 @@ afterAll(async () => {
 });
 
 // From: https://github.com/wagmi-dev/viem/blob/41bafa3d8db3d9dd58c0179d15c9e7d00b00871c/src/_test/setup.ts#L41-L65
+// biome-ignore lint/style/noDoneCallback: <explanation>
 afterEach((context) => {
   // Print the last log entries from anvil after each test.
   context.onTestFailed(async (result) => {
@@ -49,6 +50,7 @@ afterEach((context) => {
           "\n\nAnvil log output\n=======================================\n";
         error.message += `\n${logs.join("\n")}`;
       } else {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.warn(...logs);
       }
     } catch {

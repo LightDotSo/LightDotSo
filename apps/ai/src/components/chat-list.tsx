@@ -46,7 +46,7 @@ export interface ChatList {
 // -----------------------------------------------------------------------------
 
 export function ChatList({ messages, isShared }: ChatList) {
-  if (!messages.length) {
+  if (messages.length === 0) {
     return null;
   }
 

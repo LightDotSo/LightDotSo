@@ -221,7 +221,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   const {
     data: writeContractHash,
     writeContract,
-    error,
     isPending: isWriteContractPending,
   } = useWriteContract();
 
@@ -328,34 +327,28 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     const assetChainId = form.getValues("chainId");
 
     if (!assetChainId) {
-      console.error("assetChainId is not defined");
       return;
     }
 
     if (chainId !== assetChainId) {
-      console.error("ChainId does not match");
-      console.warn("Current chain: ", chainId);
-      console.warn("Switching chain to: ", assetChainId);
-
       await switchChainAsync({ chainId: assetChainId });
     }
 
     if (!wallet) {
-      console.error("Wallet is not defined");
       return;
     }
 
     const quantity = form.getValues("asset.quantity");
 
     if (!quantity) {
-      console.error("Quantity is 0");
-      console.warn("quantity: ", quantity);
       return;
     }
 
     const decimals = form.getValues("asset.decimals");
     if (!decimals) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Decimals is not defined");
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.warn("Decimals: ", decimals);
     }
 
@@ -367,21 +360,18 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       const tokenId = form.getValues("asset.tokenId");
 
       if (!tokenId) {
-        console.error("Token ID is not defined");
         return;
       }
 
       const bigIntTokenId = BigInt(tokenId);
 
-      const res = await writeContract({
+      const _res = await writeContract({
         abi: erc721Abi,
         address: contractAddress,
         chainId: chainId,
         functionName: "transferFrom",
         args: [address, wallet, bigIntTokenId],
       });
-
-      console.info(res);
 
       return;
     }
@@ -390,14 +380,13 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       const tokenId = form.getValues("asset.tokenId");
 
       if (!tokenId) {
-        console.error("Token ID is not defined");
         return;
       }
 
       const bigIntTokenId = BigInt(tokenId);
       const bigIntQuantity = BigInt(quantity);
 
-      const res = await writeContract({
+      const _res = await writeContract({
         abi: [
           {
             type: "function",
@@ -434,40 +423,31 @@ export const DepositDialog: FC<DepositDialogProps> = ({
         args: [address, wallet, bigIntTokenId, bigIntQuantity, "0x"],
       });
 
-      console.info(res);
-
       return;
     }
 
     if (!decimals) {
-      console.error("Decimals is not defined");
       return;
     }
 
     const bigIntQuantity = BigInt(quantity * 10 ** decimals);
 
     if (contractAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
-      const res = await sendTransaction({
+      const _res = await sendTransaction({
         chainId: chainId,
         to: wallet,
         value: bigIntQuantity,
       });
-
-      console.info(res);
       return;
     }
 
-    const res = writeContract({
+    const _res = writeContract({
       abi: erc20Abi,
       address: contractAddress,
       chainId: chainId,
       functionName: "transfer",
       args: [wallet, bigIntQuantity],
     });
-
-    console.error(error);
-
-    console.info(res);
     // form.trigger();
     // router.push(href);
   };

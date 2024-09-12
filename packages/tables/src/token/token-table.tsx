@@ -177,10 +177,10 @@ export const TokenTable: FC<TokenTableProps> = ({
         ))}
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows?.length ? (
+        {table.getRowModel().rows?.length > 0 ? (
           table
             .getRowModel()
-            .rows.slice(0, limit || table.getRowModel().rows?.length)
+            .rows.slice(0, limit || table.getRowModel().rows?.length > 0)
             // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
             .map((row) => {
               let isLastExpanded = false;
@@ -231,25 +231,20 @@ export const TokenTable: FC<TokenTableProps> = ({
               );
             })
         ) : delayedIsLoading ? (
-          Array(pageSize)
-            .fill(null)
-            .map((_, index) => (
-              <TableRow
-                key={`loading-${
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  index
-                }`}
-              >
-                {table.getVisibleLeafColumns().map((column) => (
-                  <TableCell
-                    key={column.id}
-                    style={{ width: column.getSize() }}
-                  >
-                    <Skeleton className="h-6 w-full" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+          new Array(pageSize).fill(null).map((_, index) => (
+            <TableRow
+              key={`loading-${
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                index
+              }`}
+            >
+              {table.getVisibleLeafColumns().map((column) => (
+                <TableCell key={column.id} style={{ width: column.getSize() }}>
+                  <Skeleton className="h-6 w-full" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

@@ -65,7 +65,8 @@ const ToggleGroupItem = forwardRef<
       className={cn(
         toggleVariants({
           variant: context.variant || variant,
-          size: context.size || size,
+          // biome-ignore lint/style/useExplicitLengthCheck: <explanation>
+          size: context?.size ? context.size : size,
         }),
         className,
       )}

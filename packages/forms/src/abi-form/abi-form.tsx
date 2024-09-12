@@ -220,7 +220,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       return func.type === "function" && func.name === functionNameWatch;
     });
 
-    if (matchingAbiFunctions.length < 1) {
+    if (matchingAbiFunctions.length === 0) {
       return undefined;
     }
 
@@ -343,7 +343,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (SolidityAddress.safeParse(abiType).success) {
       if (
         isAddress(value) ||
-        "0x000000000000000000000000000000000000000" === value
+        value === "0x000000000000000000000000000000000000000"
       ) {
         form.setValue(
           `abiArguments.${
@@ -458,6 +458,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     if (SolidityArray.safeParse(abiType).success) {
+      // biome-ignore lint/suspicious/noEvolvingTypes: <explanation>
       // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
       let parsedArray;
       try {
@@ -597,7 +598,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
             <>
               <Label htmlFor="weight">Function</Label>
               <Select
-                disabled={executableFuncs.length < 1}
+                disabled={executableFuncs.length === 0}
                 onValueChange={(value) => {
                   field.onChange(value);
                 }}

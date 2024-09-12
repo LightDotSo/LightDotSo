@@ -725,6 +725,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       });
 
       // Create the user operations params for each chainId
+      // biome-ignore lint/suspicious/noEvolvingTypes: <explanation>
       const userOperationsParams = [];
       // If the transfer count is one, encode as `execute`
       for (const [chainId, transfers] of transfersByChainId.entries()) {
@@ -899,6 +900,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       address &&
       address.length > 3 &&
       address.includes(".") &&
+      // biome-ignore lint/performance/useTopLevelRegex: <explanation>
       /[a-zA-Z]/.test(address)
     ) {
       // If the address is not valid, try to resolve it as an ENS name
@@ -1365,7 +1367,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           {token
                                             ? `${(
                                                 token?.amount /
-                                                10 ** token?.decimals
+                                                  10 ** token?.decimals
                                               ).toString()} ${token.symbol} available`
                                             : ""}
                                         </div>
@@ -1582,11 +1584,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   nft.contract?.type?.toLowerCase() ===
                                                   "erc1155"
                                                     ? // Get the quantity from the owner array
-                                                      nft.owners?.find(
+                                                      (nft.owners?.find(
                                                         (owner) =>
                                                           owner.owner_address ===
                                                           address,
-                                                      )?.quantity ?? 1
+                                                      )?.quantity ?? 1)
                                                     : 1;
 
                                                 form.setValue(

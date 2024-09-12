@@ -20,6 +20,7 @@ import { hexRegex } from "@lightdotso/regexs";
 
 export const parseNumber = (value: string): number => {
   // Check if the value is a non-negative integer
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   if (/^\d+$/.test(value)) {
     return Number.parseInt(value, 10);
   }

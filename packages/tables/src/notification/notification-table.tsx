@@ -160,7 +160,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
         ))}
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows?.length ? (
+        {table.getRowModel().rows?.length > 0 ? (
           table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
@@ -175,25 +175,20 @@ export const NotificationTable: FC<NotificationTableProps> = ({
             </TableRow>
           ))
         ) : delayedIsLoading ? (
-          Array(pageSize)
-            .fill(null)
-            .map((_, index) => (
-              <TableRow
-                key={`loading-${
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  index
-                }`}
-              >
-                {table.getVisibleLeafColumns().map((column) => (
-                  <TableCell
-                    key={column.id}
-                    style={{ width: column.getSize() }}
-                  >
-                    <Skeleton className="h-6 w-full" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+          new Array(pageSize).fill(null).map((_, index) => (
+            <TableRow
+              key={`loading-${
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                index
+              }`}
+            >
+              {table.getVisibleLeafColumns().map((column) => (
+                <TableCell key={column.id} style={{ width: column.getSize() }}>
+                  <Skeleton className="h-6 w-full" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

@@ -109,6 +109,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isSendModalBackground;
       case "swap":
         return isSwapModalBackground;
+      default:
+        return false;
     }
   }, [
     isCreateModalBackground,
@@ -135,6 +137,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isSendModalVisible;
       case "swap":
         return isSwapModalVisible;
+      default:
+        return false;
     }
   }, [
     isCreateModalVisible,
@@ -188,6 +192,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         router.back();
         break;
       }
+      default:
+        break;
     }
   }, [
     hideCreateModal,
@@ -247,6 +253,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         if (pathname.includes("swap")) {
           showSwapModal();
         }
+        break;
+      default:
         break;
     }
   }, [pathname, type]);

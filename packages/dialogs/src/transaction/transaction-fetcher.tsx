@@ -189,7 +189,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
-      ((historyUserOperations && historyUserOperations?.length < 1) ||
+      ((historyUserOperations && historyUserOperations?.length === 0) ||
         typeof walletBytecode === "undefined") &&
       wallet?.factory_address &&
       genesisConfiguration?.image_hash &&
@@ -200,7 +200,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             genesisConfiguration?.image_hash as Hex,
             wallet?.salt as Hex,
           )
-        : initialUserOperation.initCode ?? "0x";
+        : (initialUserOperation.initCode ?? "0x");
 
     // If the initial user operation nonce is provided, make sure it is same or greater
     // In the case that it is not, update the nonce to the minimum nonce
@@ -252,6 +252,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the user operation nonce changes
     userOperationNonce?.nonce,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
@@ -268,7 +269,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     chainId: Number(targetUserOperation?.chainId),
     callData: targetUserOperation?.callData as Hex,
   });
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("maxFeePerGas", maxFeePerGas);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("maxPriorityFeePerGas", maxPriorityFeePerGas);
 
   // Gets the gas estimate for the user operation
@@ -284,8 +287,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     initCode: targetUserOperation?.initCode,
     callData: targetUserOperation?.callData,
   });
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("callGasLimit", callGasLimit);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("preVerificationGas", preVerificationGas);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("verificationGasLimit", verificationGasLimit);
 
   // ---------------------------------------------------------------------------
@@ -350,6 +356,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas,
     verificationGasLimit,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
@@ -360,6 +367,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     updatedUserOperation,
     300,
   );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("debouncedUserOperation", debouncedUserOperation);
 
   // ---------------------------------------------------------------------------
@@ -442,6 +450,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterVerificationGasLimit,
     paymasterAndData,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("finalizedUserOperation", finalizedUserOperation);
 
   const decodedPaymasterAndData = useMemo(() => {

@@ -141,9 +141,8 @@ export const Action: Story = {
     data: {
       action: {
         label: "Action",
-        onClick: () => {
-          console.info("Action clicked");
-        },
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+        onClick: () => {},
       },
       duration: 400000,
     },
@@ -153,11 +152,6 @@ export const Cancel: Story = {
   args: {
     message: "This is a cancel toast.",
     variant: "info",
-    data: {
-      cancel: {
-        label: "Cancel",
-      },
-    },
   },
 };
 export const Close: Story = {

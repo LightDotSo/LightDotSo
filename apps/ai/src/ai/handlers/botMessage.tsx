@@ -25,8 +25,6 @@ export const botMessageHandler = (
   streamEvent: StreamEvent,
   fields: EventHandlerFields,
 ) => {
-  console.info("streamEvent", streamEvent);
-
   // Handle the event
   const chunk = streamEvent.data.chunk;
   const ui = fields.ui;

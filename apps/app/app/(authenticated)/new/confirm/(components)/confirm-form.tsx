@@ -245,11 +245,13 @@ export const ConfirmForm: FC = () => {
               if (ensNameAddress) {
                 owner.address = ensNameAddress;
               } else {
+                // biome-ignore lint/suspicious/noConsole: <explanation>
                 console.error(
                   "The ENS name did not resolve. Please enter a valid address or ENS name",
                 );
               }
             } catch (error) {
+              // biome-ignore lint/suspicious/noConsole: <explanation>
               console.error(
                 "An error occurred while resolving the ENS name",
                 error,

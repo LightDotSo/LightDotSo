@@ -72,7 +72,7 @@ export const Base: Story = {
       resolver: zodResolver(
         walletNameFormSchema.refine(
           ({ addressOrEns }) => {
-            if (addressOrEns.length < 1 || isAddress(addressOrEns)) {
+            if (addressOrEns.length === 0 || isAddress(addressOrEns)) {
               return true;
             }
             return validEns({ name: addressOrEns });

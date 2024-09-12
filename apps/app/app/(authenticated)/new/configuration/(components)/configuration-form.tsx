@@ -369,6 +369,7 @@ export const ConfigurationForm: FC = () => {
       address &&
       address.length > 3 &&
       address.includes(".") &&
+      // biome-ignore lint/performance/useTopLevelRegex: <explanation>
       /[a-zA-Z]/.test(address)
     ) {
       // If the address is not valid, try to resolve it as an ENS name
@@ -561,7 +562,7 @@ export const ConfigurationForm: FC = () => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="max-h-60">
-                                {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
+                                {[...new Array(CONFIGURATION_MAX_WEIGHT)].map(
                                   (_, i) => (
                                     <SelectItem
                                       // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -642,7 +643,7 @@ export const ConfigurationForm: FC = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
+                          {[...new Array(CONFIGURATION_MAX_THRESHOLD)].map(
                             (_, i) => (
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               <SelectItem key={i} value={(i + 1).toString()}>

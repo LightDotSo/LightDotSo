@@ -123,7 +123,8 @@ export const WalletOverviewBannerAddress: FC<
           <div className="font-extrabold text-lg tracking-tight md:text-2xl">
             {wallet
               ? wallet.name
-              : ens ?? (typeof address === "string" && shortenAddress(address))}
+              : (ens ??
+                (typeof address === "string" && shortenAddress(address)))}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

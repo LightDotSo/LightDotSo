@@ -95,5 +95,6 @@ test("LightWallet: Correct humanReadableAbi", () => {
 
 test("Should return correct subdigest", () => {
   const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.warn(ls);
 });

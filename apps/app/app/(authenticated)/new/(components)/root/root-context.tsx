@@ -115,6 +115,7 @@ export const RootContext: FC = () => {
   }, [pathname]);
 
   const formWarnings = useMemo(() => {
+    // biome-ignore lint/suspicious/noEvolvingTypes: <explanation>
     const warnings = [];
 
     if (pathname === "/new/configuration") {

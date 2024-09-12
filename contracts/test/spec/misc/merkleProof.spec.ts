@@ -68,18 +68,10 @@ test("single merkle tree", () => {
   });
 
   const _root = tree.getHexRoot();
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
 
   const standardTree = StandardMerkleTree.of([merkleHashes], ["bytes32"]);
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(standardTree.root.toString());
-
   const simpleTree = SimpleMerkleTree.of(leaves);
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(simpleTree.root.toString());
 
   expect(simpleTree.root.toString()).to.equal(
     "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
@@ -108,17 +100,11 @@ test("one merkle tree", () => {
 
   const _root = tree.getHexRoot();
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
-
   expect(_root).to.equal(
     "0x0000000000000000000000000000000000000000000000000000000000000001",
   );
 
   const _proof = standardTree.getProof(0);
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(standardTree.root.toString());
 
   const _standardTreeRoot = standardTree.root.toString();
 
@@ -142,9 +128,6 @@ test("simple merkle tree", () => {
 
   const _root = tree.getHexRoot();
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
-
   expect(_root).to.equal(
     "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
   );
@@ -155,9 +138,6 @@ test("simple merkle tree", () => {
     "0x0000000000000000000000000000000000000000000000000000000000000002",
   );
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
-
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
     ["bytes32", "bytes32"],
@@ -167,13 +147,7 @@ test("simple merkle tree", () => {
 
   const _standardTreeRoot = standardTree.root.toString();
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_standardTreeRoot);
-
   const simpleTree = SimpleMerkleTree.of(leaves);
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(simpleTree.root.toString());
 
   expect(simpleTree.root.toString()).to.equal(
     "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
@@ -206,9 +180,6 @@ test("not sorted tree", () => {
 
   const _root = tree.getHexRoot();
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
-
   expect(_root).to.equal(
     "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
   );
@@ -220,9 +191,6 @@ test("not sorted tree", () => {
   );
 
   const _simpleTree = SimpleMerkleTree.of(leaves);
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_simpleTree.root.toString());
 
   expect(_simpleTree.root.toString()).to.equal(
     "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
@@ -246,8 +214,6 @@ test("simple nested merkle tree", () => {
   // const proof = tree.getProof(leaves[0]);
 
   const _root = tree.getHexRoot();
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
 
   expect(_root).to.equal(
     "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87",
@@ -263,9 +229,6 @@ test("simple nested merkle tree", () => {
   expect(proofToHex(tree.getProof(merkleHashes[2]))[0]).to.eql(
     "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
   );
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_proof);
 
   const standardTree = StandardMerkleTree.of(
     [merkleHashes],
@@ -324,9 +287,6 @@ test("simple deep merkle tree", () => {
   });
 
   const _root = tree.getHexRoot();
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
 
   expect(_root).to.equal(
     "0x3856185f708a95a4cef51f6538ed3ea849702a46e020430070ac99c94a831c58",
@@ -450,17 +410,11 @@ test("simple deep nested merkle tree", () => {
 
   const _root = tree.getHexRoot();
 
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(_root);
-
   expect(_root).to.equal(
     "0x829aa29a4940648ff39373741e8cf185ad9cff8af1529623eacce5b528406827",
   );
 
   const proof = tree.getProof(merkleHashes[0]);
-
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(proof);
 
   expect(JSON.stringify(proofToHex(proof))).to.equal(
     JSON.stringify([

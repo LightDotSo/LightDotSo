@@ -196,7 +196,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows?.length > 0 ? (
             table
               .getRowModel()
               .rows.slice(0, table.getRowModel().rows?.length)
@@ -226,25 +226,23 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                 </TableRow>
               ))
           ) : delayedIsLoading ? (
-            Array(pageSize)
-              .fill(null)
-              .map((_, index) => (
-                <TableRow
-                  key={`loading-${
-                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                    index
-                  }`}
-                >
-                  {table.getVisibleLeafColumns().map((column) => (
-                    <TableCell
-                      key={column.id}
-                      style={{ width: column.getSize() }}
-                    >
-                      <Skeleton className="h-6 w-full" />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+            new Array(pageSize).fill(null).map((_, index) => (
+              <TableRow
+                key={`loading-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                {table.getVisibleLeafColumns().map((column) => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
@@ -282,7 +280,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
         </>
       ) : delayedIsLoading ? (
         <div className="space-y-4">
-          {Array(Math.ceil(pageSize / 3))
+          {new Array(Math.ceil(pageSize / 3))
             .fill(null)
             .map((_, groupIndex) => (
               <div
@@ -296,20 +294,18 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                   <Skeleton className="h-6 w-24" />
                 </div>
                 <div className="rounded-md border border-border bg-background">
-                  {Array(3)
-                    .fill(null)
-                    .map((_, itemIndex) => (
-                      <Skeleton
-                        key={`loading-item-${groupIndex}-${
-                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                          itemIndex
-                        }`}
-                        className={cn(
-                          "h-12 w-full rounded-none",
-                          itemIndex !== 2 && "border-border border-b",
-                        )}
-                      />
-                    ))}
+                  {new Array(3).fill(null).map((_, itemIndex) => (
+                    <Skeleton
+                      key={`loading-item-${groupIndex}-${
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        itemIndex
+                      }`}
+                      className={cn(
+                        "h-12 w-full rounded-none",
+                        itemIndex !== 2 && "border-border border-b",
+                      )}
+                    />
+                  ))}
                 </div>
               </div>
             ))}

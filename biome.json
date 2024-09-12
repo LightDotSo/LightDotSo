@@ -6,6 +6,7 @@
   "files": {
     "ignore": [
       ".vscode/settings.json",
+      "ios/LightWalletSafariExtension/Resources/**",
       "**/.source/**",
       "**/_next/static/**",
       "**/generated/**",
@@ -21,11 +22,18 @@
     "enabled": true,
     "rules": {
       "all": true,
+      "correctness": {
+        "noUndeclaredDependencies": "off",
+        "useImportExtensions": "off"
+      },
       "style": {
         "noImplicitBoolean": "off"
       },
       "nursery": {
         "useSortedClasses": "warn"
+      },
+      "suspicious": {
+        "noReactSpecificProps": "off"
       }
     }
   },

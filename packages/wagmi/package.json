@@ -20,10 +20,7 @@
     "./wagmi": "./src/wagmi.ts"
   },
   "main": "./src/index.ts",
-  "files": [
-    "dist/**",
-    "src/**"
-  ],
+  "files": ["dist/**", "src/**"],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",

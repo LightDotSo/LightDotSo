@@ -56,5 +56,6 @@ test("llamaGetSchema", async () => {
     });
   });
 
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info(balances);
 });

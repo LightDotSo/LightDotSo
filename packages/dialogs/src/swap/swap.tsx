@@ -84,6 +84,7 @@ export const SwapFetcher: FC<SwapFetcherProps> = (params: SwapFetcherProps) => {
   // ---------------------------------------------------------------------------
 
   const { executionParams, toQuotedAmount } = useQuote(params);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("SwapFetcher executionParams:", executionParams);
 
   // ---------------------------------------------------------------------------
@@ -264,6 +265,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("quotes:", quotes);
 
     // For multi-chain swaps, set the to swap quoted amount
@@ -364,6 +366,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
         }
       }
     }
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("tokenSwaps:", tokenSwaps);
 
     return tokenSwaps;
@@ -379,6 +382,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
   ]);
 
   const userOperationsParams: Partial<UserOperation>[] = useMemo(() => {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("executionParams:", executionParams);
 
     if (!(wallet && executionParams) || executionParams.length === 0) {

@@ -33,6 +33,7 @@ export const factory = createFactory();
 
 export const preventResizeLoop = createMiddleware((c, next) => {
   const via = c.req.header("via") ?? "";
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   if (/image-resizing/.test(via)) {
     return fetch(c.req.raw);
   }
@@ -98,9 +99,11 @@ export const transformImageHandler = factory.createHandlers(
               return query.format;
             }
 
+            // biome-ignore lint/performance/useTopLevelRegex: <explanation>
             if (/image\/avif/.test(accept)) {
               return "avif";
               // biome-ignore lint/style/noUselessElse: <explanation>
+              // biome-ignore lint/performance/useTopLevelRegex: <explanation>
             } else if (/image\/webp/.test(accept)) {
               return "webp";
             }

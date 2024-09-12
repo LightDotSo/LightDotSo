@@ -24,6 +24,7 @@ async function buildStage({ entry }: { entry: string[] }) {
       sourcemap: true,
     });
   } catch (err) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.error(err);
     throw err;
   }
@@ -35,6 +36,7 @@ export async function buildAllStages() {
   const chunks = _.chunk(files, chunkSize);
   // await buildStage({ clean:true, entry: chunks[0] });
   for await (const [_, chunk] of chunks.entries()) {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("🚀 ~ chunk === ", chunk);
     await buildStage({ entry: chunk });
   }
@@ -44,9 +46,11 @@ export async function buildAllStages() {
 export function invokeBuild() {
   buildAllStages()
     .then(() => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info("🚀 ~ buildAllStages success");
     })
     .catch((err) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("🚀 ~ buildAllStages error === ", err);
     });
 }

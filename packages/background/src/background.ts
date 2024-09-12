@@ -13,6 +13,7 @@
 // limitations under the License.
 
 browser.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.warn("Received request: ", request);
 
   if (request.greeting === "hello") {

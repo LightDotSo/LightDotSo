@@ -34,7 +34,7 @@ export const FooterVersion: FC = () => {
           target="_blank"
           rel="noreferrer"
         >
-          v
+          v{/* biome-ignore lint/performance/useTopLevelRegex: <explanation> */}
           {process.env.NEXT_PUBLIC_APP_VERSION?.match(/(\d+\.\d+\.\d+)/)?.[0] ??
             "0.0.0"}
         </a>{" "}

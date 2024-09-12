@@ -97,7 +97,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({
     resolver: zodResolver(
       newFormSchema.pick({ inviteCode: true }).refine(
         ({ inviteCode }) => {
-          if (inviteCode.length < 1) {
+          if (inviteCode.length === 0) {
             return true;
           }
           return validInviteCode({ inviteCode: inviteCode });

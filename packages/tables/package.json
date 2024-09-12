@@ -19,10 +19,7 @@
     "./*/columns": "./src/*/columns.tsx"
   },
   "main": "./src/index.ts",
-  "files": [
-    "dist/**",
-    "src/**"
-  ],
+  "files": ["dist/**", "src/**"],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
