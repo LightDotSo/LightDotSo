@@ -12,7 +12,6 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "sideEffects": false,
   "scripts": {
     "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched && echo \"\"",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",

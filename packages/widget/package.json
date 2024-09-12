@@ -1,6 +1,6 @@
 {
   "name": "@lightdotso/widget",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -27,10 +27,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/ui": "workspace:*",
-    "react": "19.0.0-rc-7771d3a7-20240827",
-    "react-dom": "19.0.0-rc-7771d3a7-20240827",
-    "react-is": "19.0.0-rc-7771d3a7-20240827"
+    "@lightdotso/ui": "workspace:*"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
@@ -44,6 +41,11 @@
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.6.2"
+  },
+  "peerDependencies": {
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827"
   },
   "publishConfig": {
     "access": "public"

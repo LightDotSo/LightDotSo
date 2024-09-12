@@ -1,6 +1,6 @@
 {
   "name": "@lightdotso/msw",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -31,6 +31,11 @@
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.5.4",
     "typescript": "^5.6.2"
+  },
+  "peerDependencies": {
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827"
   },
   "publishConfig": {
     "access": "public"
