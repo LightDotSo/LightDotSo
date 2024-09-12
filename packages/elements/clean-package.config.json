@@ -19,6 +19,11 @@
         "require": "./dist/asset-change/index.js",
         "types": "./dist/asset-change/index.d.ts"
       },
+      "./base-image": {
+        "import": "./dist/base-image/index.mjs",
+        "require": "./dist/base-image/index.js",
+        "types": "./dist/base-image/index.d.ts"
+      },
       "./chain-stack": {
         "import": "./dist/chain-stack/index.mjs",
         "require": "./dist/chain-stack/index.js",

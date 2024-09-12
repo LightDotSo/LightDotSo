@@ -16,9 +16,9 @@
 
 import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
-import { type FC, useState } from "react";
+import type { FC } from "react";
 import { Blurhash } from "react-blurhash";
-import { NextImage } from "../next-image/next-image";
+import { BaseImage } from "../base-image/base-image";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -38,45 +38,29 @@ export const NftImage: FC<NftImageProps> = ({
   nft: { contract_address, image_url, collection, previews, extra_metadata },
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div
-      className={cn(
-        "relative aspect-h-1 aspect-w-1 w-full overflow-hidden bg-background",
-        className,
-      )}
-    >
-      {!isImageLoaded && previews && previews.blurhash && (
-        <div className="absolute inset-0 size-full">
-          <Blurhash width="100%" height="100%" hash={previews.blurhash} />
-        </div>
-      )}
-      <NextImage
-        className={cn(
-          "absolute inset-0 w-full duration-500 ease-in-out",
-          !isImageLoaded && "animate-pulse bg-emphasis-medium",
-          isImageLoaded
-            ? "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0"
-            : "scale-90 blur-xl",
-        )}
-        src={
-          image_url ??
-          previews?.image_large_url ??
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          extra_metadata?.image_original_url!
-        }
+    <BaseImage
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      alt={collection?.description ?? contract_address!}
+      src={
+        image_url ??
+        previews?.image_large_url ??
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        alt={collection?.description ?? contract_address!}
-        onLoad={() => setIsImageLoaded(true)}
-      />
-    </div>
+        extra_metadata?.image_original_url!
+      }
+      blurhash={
+        <>
+          {previews?.blurhash && (
+            <div className="absolute inset-0 size-full">
+              <Blurhash width="100%" height="100%" hash={previews.blurhash} />
+            </div>
+          )}
+        </>
+      }
+      containerClassName={cn("aspect-h-1 aspect-w-1 w-full", className)}
+    />
   );
 };
