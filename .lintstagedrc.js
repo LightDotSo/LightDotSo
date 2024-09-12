@@ -22,6 +22,7 @@ module.exports = {
     "pnpm run sherif:cmd",
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
+    "pnpm run biome:fix",
   ],
   "thunder-tests/**/*.json": ["./scripts/check_thunder_url.sh"],
 };
