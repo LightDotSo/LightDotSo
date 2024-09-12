@@ -13,9 +13,7 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
-  "files": [
-    "CHANGELOG.md"
-  ],
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched && echo \"\"",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",

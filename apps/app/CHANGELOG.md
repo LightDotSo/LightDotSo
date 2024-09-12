@@ -1,5 +1,47 @@
 # @lightdotso/app
 
+## 3.2.16
+
+### Patch Changes
+
+- [#2363](https://github.com/LightDotSo/LightDotSo/pull/2363) [`7f1ca57`](https://github.com/LightDotSo/LightDotSo/commit/7f1ca5773d3f9afdf81c1b10d7df9046b45c28a8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app release
+
+- Updated dependencies [[`7f1ca57`](https://github.com/LightDotSo/LightDotSo/commit/7f1ca5773d3f9afdf81c1b10d7df9046b45c28a8)]:
+  - @lightdotso/home@3.1.16
+  - @lightdotso/kysely@3.1.9
+  - @lightdotso/prisma@3.1.9
+  - @lightdotso/styles@3.0.7
+  - @lightdotso/client@3.1.12
+  - @lightdotso/const@3.1.11
+  - @lightdotso/data@0.1.11
+  - @lightdotso/demo@0.0.13
+  - @lightdotso/dialogs@0.0.12
+  - @lightdotso/elements@0.0.17
+  - @lightdotso/forms@0.0.17
+  - @lightdotso/hooks@0.0.18
+  - @lightdotso/modals@0.0.17
+  - @lightdotso/msw@0.0.12
+  - @lightdotso/nuqs@0.0.13
+  - @lightdotso/params@0.1.12
+  - @lightdotso/pusher@0.0.8
+  - @lightdotso/query@0.1.17
+  - @lightdotso/query-keys@0.1.12
+  - @lightdotso/redis@0.0.8
+  - @lightdotso/roots@0.0.3
+  - @lightdotso/schemas@3.1.11
+  - @lightdotso/sequence@0.0.10
+  - @lightdotso/services@0.0.13
+  - @lightdotso/states@0.0.17
+  - @lightdotso/stores@0.1.14
+  - @lightdotso/svg@0.0.14
+  - @lightdotso/tables@0.1.17
+  - @lightdotso/templates@0.0.17
+  - @lightdotso/types@0.0.11
+  - @lightdotso/ui@3.1.17
+  - @lightdotso/utils@3.1.13
+  - @lightdotso/validators@0.0.10
+  - @lightdotso/wagmi@3.1.12
+
 ## 3.2.15
 
 ### Patch Changes
