@@ -73,7 +73,7 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^1.9.0",
     "@headlessui/react": "0.0.0-insiders.03c22b4",
     "dprint": "^0.47.2",
     "next": "15.0.0-canary.146",
