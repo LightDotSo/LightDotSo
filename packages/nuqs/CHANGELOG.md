@@ -1,5 +1,15 @@
 # @lightdotso/nuqs
 
+## 0.0.11
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd)]:
+  - @lightdotso/schemas@3.1.9
+  - @lightdotso/const@3.1.9
+
 ## 0.0.10
 
 ### Patch Changes

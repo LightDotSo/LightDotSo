@@ -1,5 +1,16 @@
 # @lightdotso/crates
 
+## 3.1.8
+
+### Patch Changes
+
+- [#2345](https://github.com/LightDotSo/LightDotSo/pull/2345) [`bee20e0`](https://github.com/LightDotSo/LightDotSo/commit/bee20e06695e50c5684c6e1be1e3c4ecc37ec29b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add merkle tree in alloy
+
+- [#2296](https://github.com/LightDotSo/LightDotSo/pull/2296) [`bdd7bb9`](https://github.com/LightDotSo/LightDotSo/commit/bdd7bb94be30dca697d4dd31fbf6d4ca484e79b7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add alloy migration
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd)]:
+  - @lightdotso/prisma@3.1.8
+
 ## 3.1.7
 
 ### Patch Changes

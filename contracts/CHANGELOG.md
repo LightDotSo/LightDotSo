@@ -1,5 +1,17 @@
 # @lightdotso/contracts
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2349](https://github.com/LightDotSo/LightDotSo/pull/2349) [`5a02d07`](https://github.com/LightDotSo/LightDotSo/commit/5a02d075fb3cadc867b4819ad7ae563605a236ea) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add contracts size
+
+- [#2296](https://github.com/LightDotSo/LightDotSo/pull/2296) [`bdd7bb9`](https://github.com/LightDotSo/LightDotSo/commit/bdd7bb94be30dca697d4dd31fbf6d4ca484e79b7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add alloy migration
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd)]:
+  - @lightdotso/sequence@0.0.8
+  - @lightdotso/wagmi@3.1.10
+
 ## 3.1.9
 
 ### Patch Changes

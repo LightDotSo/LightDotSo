@@ -1,5 +1,27 @@
 # @lightdotso/changelog
 
+## 3.1.14
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2313](https://github.com/LightDotSo/LightDotSo/pull/2313) [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- [#2296](https://github.com/LightDotSo/LightDotSo/pull/2296) [`bdd7bb9`](https://github.com/LightDotSo/LightDotSo/commit/bdd7bb94be30dca697d4dd31fbf6d4ca484e79b7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add alloy migration
+
+- [#2310](https://github.com/LightDotSo/LightDotSo/pull/2310) [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light ui
+
+- Updated dependencies [[`ed4c4fc`](https://github.com/LightDotSo/LightDotSo/commit/ed4c4fc66606dd1e9da5dff24ec9cecb95a12be9), [`3faccb9`](https://github.com/LightDotSo/LightDotSo/commit/3faccb98efc6d3c7f37c27c391afda2d7b4150e1), [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd), [`b4f5d74`](https://github.com/LightDotSo/LightDotSo/commit/b4f5d7485980e135022a47e02a73ac614d1c37b4), [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4), [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579), [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788)]:
+  - @lightdotso/elements@0.0.15
+  - @lightdotso/ui@3.1.15
+  - @lightdotso/styles@3.0.6
+  - @lightdotso/templates@0.0.15
+  - @lightdotso/const@3.1.9
+  - @lightdotso/types@0.0.9
+  - @lightdotso/utils@3.1.11
+  - @lightdotso/roots@0.0.1
+
 ## 3.1.13
 
 ### Patch Changes
