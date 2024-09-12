@@ -24,4 +24,5 @@ module.exports = {
     "pnpm run sort-package-json:fix",
   ],
   "thunder-tests/**/*.json": ["./scripts/check_thunder_url.sh"],
+  "project-words.txt": ["./scripts/sort_project_words.sh"],
 };

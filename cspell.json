@@ -1,9 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "dictionaries": [
-    "project-words"
-  ],
+  "dictionaries": ["project-words"],
   "dictionaryDefinitions": [
     {
       "name": "project-words",
@@ -12,14 +10,7 @@
     }
   ],
   "useGitignore": true,
-  "ignorePaths": [
-    "node_modules",
-    "pnpm-lock.yaml",
-    "assets/meta",
-    "**.sql"
-  ],
-  "enableFiletypes": [
-    "mdx"
-  ],
+  "ignorePaths": ["node_modules", "pnpm-lock.yaml", "assets/meta", "**.sql"],
+  "enableFiletypes": ["mdx"],
   "enabled": true
 }
