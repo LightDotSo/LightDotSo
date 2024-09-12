@@ -38,9 +38,6 @@
     "lodash": "^4.17.21",
     "merkletreejs": "^0.4.0",
     "next": "15.0.0-canary.146",
-    "react": "19.0.0-rc-7771d3a7-20240827",
-    "react-dom": "19.0.0-rc-7771d3a7-20240827",
-    "react-is": "19.0.0-rc-7771d3a7-20240827",
     "siwe": "^2.3.2",
     "viem": "^2.21.6"
   },
@@ -51,6 +48,11 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.6.2"
+  },
+  "peerDependencies": {
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827",
+    "react-is": "19.0.0-rc-7771d3a7-20240827"
   },
   "publishConfig": {
     "access": "public"
