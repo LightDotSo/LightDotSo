@@ -151,7 +151,8 @@ export const NftTable: FC<NftTableProps> = ({
       {table.getRowModel().rows?.length > 0 ? (
         table
           .getRowModel()
-          .rows.slice(0, limit || table.getRowModel().rows?.length > 0)
+          // biome-ignore lint/style/useExplicitLengthCheck: <explanation>
+          .rows.slice(0, limit || table.getRowModel().rows?.length)
           .map((row) => (
             <NftCard
               key={row.id}
