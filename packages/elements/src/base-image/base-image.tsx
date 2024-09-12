@@ -12,46 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { cn } from "@lightdotso/utils";
-import { ArrowUpRightFromSquareIcon } from "lucide-react";
-import type { ComponentProps, FC } from "react";
+import type { ImageProps } from "next/image";
+import { type FC, type ReactNode, useState } from "react";
+import { NextImage } from "../next-image/next-image";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type ExternalLinkProps = ComponentProps<"a"> & {
-  noIcon?: boolean;
+type BaseImageProps = ImageProps & {
+  containerClassName?: string;
+  blurhash?: ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ExternalLink: FC<ExternalLinkProps> = ({
-  href,
-  children,
+export const BaseImage: FC<BaseImageProps> = ({
   className,
-  noIcon = false,
-  ...props
+  containerClassName,
+  src,
+  alt,
+  blurhash,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className={cn(
-        "inline-flex flex-1 items-center justify-center gap-1 break-all text-text-info leading-4 hover:text-text-info-strong",
-        className,
+        "relative aspect-h-1 aspect-w-1 w-full overflow-hidden bg-background",
+        containerClassName,
       )}
-      {...props}
     >
-      <span>{children ?? href}</span>
-      {!noIcon && <ArrowUpRightFromSquareIcon className="h-3 w-3 shrink-0" />}
-    </a>
+      {!isImageLoaded && blurhash}
+      <NextImage
+        className={cn(
+          "absolute inset-0 w-full duration-500 ease-in-out",
+          !isImageLoaded && "animate-pulse bg-emphasis-medium",
+          isImageLoaded
+            ? "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0"
+            : "scale-90 blur-xl",
+          className,
+        )}
+        src={src}
+        alt={alt}
+        onLoad={() => setIsImageLoaded(true)}
+      />
+    </div>
   );
 };
