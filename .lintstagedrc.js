@@ -14,7 +14,7 @@ module.exports = {
   ],
   "*.toml": ["pnpm run taplo:cmd"],
   "package.json": [
-    "pnpm run sherif:lint",
+    'pnpm run sherif:cmd && echo ""\'',
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
     "pnpm run biome:cmd",

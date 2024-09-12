@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "cross-env NODE_ENV=production next build && pnpm run cp:ios",
     "build:dev": "cross-env NODE_ENV=development next build && pnpm run cp:ios",

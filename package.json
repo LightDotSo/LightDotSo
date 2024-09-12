@@ -1,7 +1,7 @@
 {
   "name": "lightdotso",
   "version": "0.2.4",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",
@@ -55,6 +57,7 @@
     "prisma": "make prisma",
     "ruff:fmt:cmd": "make ruff-fmt",
     "ruff:lint:cmd": "make ruff-lint",
+    "sherif:cmd": "sherif -r root-package-dependencies",
     "sherif:fix": "sherif -r root-package-dependencies --fix",
     "sherif:lint": "sherif -r root-package-dependencies",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",

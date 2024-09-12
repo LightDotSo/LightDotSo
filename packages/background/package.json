@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"

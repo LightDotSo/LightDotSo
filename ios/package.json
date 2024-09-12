@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "exit 0",
     "swift-format:cmd": "mint run swift-format --in-place --recursive --parallel --ignore-unparsable-files",

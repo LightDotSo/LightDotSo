@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/extension",
   "version": "3.1.9",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "pnpm run build:chrome && pnpm run build:firefox",
     "build:chrome": "crx pack chrome --zip-output chrome.zip",

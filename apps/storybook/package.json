@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/storybook",
   "version": "0.0.17",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,7 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
-  "files": ["dist/**"],
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "storybook build -o dist || true",
     "dev": "STORYBOOK_ENV=dev storybook dev -p 6006",
