@@ -25,7 +25,7 @@
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:status": "changeset status --verbose --since origin/main",
-    "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix",
+    "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix || exit 0",
     "clippy:cmd": "cargo clippy --workspace -- -D warnings --no-deps -D clippy::expect_used -D clippy::unwrap_used",
     "cspell": "cspell --no-summary --no-progress",
     "depcheck:lint": "pnpm -r exec depcheck .",

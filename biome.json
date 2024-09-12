@@ -6,6 +6,8 @@
   "files": {
     "ignore": [
       ".vscode/settings.json",
+      "apps/extension/chrome/**",
+      "apps/extension/firefox/**",
       "ios/LightWalletSafariExtension/Resources/**",
       "**/.source/**",
       "**/_next/static/**",
