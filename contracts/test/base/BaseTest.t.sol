@@ -18,6 +18,8 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
+import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
+import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -103,6 +105,10 @@ abstract contract BaseTest is Test {
     LightPaymaster internal paymaster;
     // LightWallet for deployed account
     LightWallet internal wallet;
+    // LightTimelockController core contract
+    LightTimelockController internal timelock;
+    // LightTimelockControllerFactory core contract
+    LightTimelockControllerFactory internal timelockFactory;
 
     // SimpleAccountFactory core contract
     SimpleAccountFactory internal simpleAccountFactory;
@@ -134,11 +140,15 @@ abstract contract BaseTest is Test {
     function setUp() public virtual {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
+
         // Deploy the LightWalletFactory w/ EntryPoint
         factory = new LightWalletFactory(entryPoint);
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
+
+        // Deploy the LightTimelockControllerFactory
+        timelockFactory = new LightTimelockControllerFactory();
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0

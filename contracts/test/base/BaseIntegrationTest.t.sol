@@ -40,6 +40,8 @@ abstract contract BaseIntegrationTest is BaseTest {
     uint256 internal userKey;
     // Address of the beneficiary of the account
     address payable internal beneficiary;
+    // Address of the light protocol controller
+    address internal lightProtocolController;
 
     // -------------------------------------------------------------------------
     // Utility Contracts
@@ -64,10 +66,17 @@ abstract contract BaseIntegrationTest is BaseTest {
         (user, userKey) = makeAddrAndKey("user");
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
+        // Set the light protocol controller
+        lightProtocolController = address(makeAddr("lightProtocolController"));
         // Get the expected image hash
         expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
+
         // Create the account using the factory w/ nonce and hash
         account = factory.createAccount(expectedImageHash, nonce);
+        // Create the timelock controller
+        timelock = timelockFactory.createTimelockController(
+            address(account), address(lightProtocolController), bytes32(uint256(1))
+        );
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);

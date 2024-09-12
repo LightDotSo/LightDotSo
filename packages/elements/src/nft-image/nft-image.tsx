@@ -18,7 +18,7 @@ import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { Blurhash } from "react-blurhash";
-import { BaseImage } from "../base-image/base-image";
+import { BaseImage, useBaseImageLoaded } from "../base-image/base-image";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -38,29 +38,37 @@ export const NftImage: FC<NftImageProps> = ({
   nft: { contract_address, image_url, collection, previews, extra_metadata },
 }) => {
   // ---------------------------------------------------------------------------
+  // Context Hooks
+  // ---------------------------------------------------------------------------
+
+  const isImageLoaded = useBaseImageLoaded();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <BaseImage
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      alt={collection?.description ?? contract_address!}
-      src={
-        image_url ??
-        previews?.image_large_url ??
+    <div
+      className={cn(
+        "relative aspect-h-1 aspect-w-1 w-full overflow-hidden bg-background",
+        className,
+      )}
+    >
+      {!isImageLoaded && previews?.blurhash && (
+        <div className="absolute inset-0 size-full">
+          <Blurhash width="100%" height="100%" hash={previews.blurhash} />
+        </div>
+      )}
+      <BaseImage
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        extra_metadata?.image_original_url!
-      }
-      blurhash={
-        <>
-          {previews?.blurhash && (
-            <div className="absolute inset-0 size-full">
-              <Blurhash width="100%" height="100%" hash={previews.blurhash} />
-            </div>
-          )}
-        </>
-      }
-      containerClassName={cn("aspect-h-1 aspect-w-1 w-full", className)}
-    />
+        alt={collection?.description ?? contract_address!}
+        src={
+          image_url ??
+          previews?.image_large_url ??
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          extra_metadata?.image_original_url!
+        }
+      />
+    </div>
   );
 };

@@ -16,29 +16,27 @@
 
 import { cn } from "@lightdotso/utils";
 import type { ImageProps } from "next/image";
-import { type FC, type ReactNode, useState } from "react";
-import { NextImage } from "../next-image/next-image";
+import { type FC, createContext, useContext, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type BaseImageProps = ImageProps & {
-  containerClassName?: string;
-  blurhash?: ReactNode;
-};
+type BaseImageProps = ImageProps;
+
+// -----------------------------------------------------------------------------
+// Context
+// -----------------------------------------------------------------------------
+
+const BaseImageContext = createContext<boolean>(false);
+
+export const useBaseImageLoaded = () => useContext(BaseImageContext);
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const BaseImage: FC<BaseImageProps> = ({
-  className,
-  containerClassName,
-  src,
-  alt,
-  blurhash,
-}) => {
+export const BaseImage: FC<BaseImageProps> = ({ className, src, alt }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -50,14 +48,8 @@ export const BaseImage: FC<BaseImageProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div
-      className={cn(
-        "relative aspect-h-1 aspect-w-1 w-full overflow-hidden bg-background",
-        containerClassName,
-      )}
-    >
-      {!isImageLoaded && blurhash}
-      <NextImage
+    <BaseImageContext.Provider value={isImageLoaded}>
+      <BaseImage
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
           !isImageLoaded && "animate-pulse bg-emphasis-medium",
@@ -70,6 +62,6 @@ export const BaseImage: FC<BaseImageProps> = ({
         alt={alt}
         onLoad={() => setIsImageLoaded(true)}
       />
-    </div>
+    </BaseImageContext.Provider>
   );
 };

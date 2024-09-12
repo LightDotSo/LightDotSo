@@ -1759,6 +1759,7 @@ zksync
 ZKSYNC
 zora
 Zora
+Zordcrypt
 zrange
 zrem
 zrembyscore

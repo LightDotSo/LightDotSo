@@ -1,5 +1,5 @@
 [package]
-  name = "embedded-uniffi-bindgen"
+  name = "embedded-bulloak"
 
   version.workspace = true
   edition.workspace = true
@@ -11,4 +11,4 @@
   publish = false
 
 [dependencies]
-  uniffi = { workspace = true, features = ["cli"] }
+  bulloak = "0.8.0"
