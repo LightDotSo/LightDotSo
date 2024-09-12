@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/docs",
   "version": "3.1.16",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "next build",
     "build:docs": "node ./scripts/generate-docs.mjs",

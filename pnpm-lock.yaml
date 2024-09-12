@@ -17,15 +17,9 @@ importers:
 
   .:
     dependencies:
-      '@biomejs/biome':
-        specifier: ^1.9.0
-        version: 1.9.0
       '@headlessui/react':
         specifier: 0.0.0-insiders.03c22b4
         version: 0.0.0-insiders.03c22b4(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
-      dprint:
-        specifier: ^0.47.2
-        version: 0.47.2
       next:
         specifier: 15.0.0-canary.146
         version: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.0)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
@@ -45,6 +39,9 @@ importers:
         specifier: 0.8.18
         version: 0.8.18(debug@4.3.6)
     devDependencies:
+      '@biomejs/biome':
+        specifier: ^1.9.0
+        version: 1.9.0
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0(encoding@0.1.13)
@@ -174,6 +171,9 @@ importers:
       dotenv-cli:
         specifier: ^7.4.2
         version: 7.4.2
+      dprint:
+        specifier: ^0.47.2
+        version: 0.47.2
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
@@ -1596,6 +1596,8 @@ importers:
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
+
+  apps/llm: {}
 
   apps/open: {}
 

@@ -12,8 +12,12 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": [
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched",
+    "biome:cmd": "biome check --write --unsafe --no-errors-on-unmatched && echo \"\"",
     "biome:fix": "biome check --write --unsafe --no-errors-on-unmatched",
     "biome:lint": "biome check --unsafe --no-errors-on-unmatched",
     "cargo:fmt:cmd": "make cargo-fmt",
@@ -27,7 +31,9 @@
     "changeset:status": "changeset status --verbose --since origin/main",
     "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix || exit 0",
     "clippy:cmd": "cargo clippy --workspace -- -D warnings --no-deps -D clippy::expect_used -D clippy::unwrap_used",
-    "cspell": "cspell --no-summary --no-progress",
+    "cspell:cmd": "cspell --no-summary --no-progress",
+    "cspell:fix": "cspell --no-summary --no-progress --write",
+    "cspell:lint": "cspell --no-summary --no-progress",
     "depcheck:lint": "pnpm -r exec depcheck .",
     "deploy:checkly": "checkly deploy",
     "deploy:graph:hosted": "pnpm run deploy:graph:hosted --filter @lightdotso/subgraph",
@@ -55,8 +61,9 @@
     "prisma": "make prisma",
     "ruff:fmt:cmd": "make ruff-fmt",
     "ruff:lint:cmd": "make ruff-lint",
-    "sherif:fix": "sherif -r root-package-dependencies --fix",
-    "sherif:lint": "sherif -r root-package-dependencies",
+    "sherif:cmd": "sherif -r root-package-dependencies --fix . && echo \"\"",
+    "sherif:fix": "sherif -r root-package-dependencies --fix .",
+    "sherif:lint": "sherif -r root-package-dependencies .",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\" --noPrompt",
@@ -73,9 +80,7 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
-    "@biomejs/biome": "^1.9.0",
     "@headlessui/react": "0.0.0-insiders.03c22b4",
-    "dprint": "^0.47.2",
     "next": "15.0.0-canary.146",
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
@@ -84,6 +89,7 @@
     "solc": "0.8.18"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.8",
     "@commitlint/cli": "^19.5.0",
@@ -127,6 +133,7 @@
     "depcheck": "^1.4.7",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
+    "dprint": "^0.47.2",
     "esbuild": "^0.23.1",
     "execa": "^9.3.1",
     "git-cz": "^4.9.0",

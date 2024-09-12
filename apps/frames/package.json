@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/frames",
   "version": "0.0.10",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,6 +12,8 @@
   },
   "license": "Apache-2.0",
   "author": "LightDotSo",
+  "sideEffects": false,
+  "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "next build || exit 0",
     "dev": "next dev --turbo --port 3008",
