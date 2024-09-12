@@ -10,20 +10,7 @@
     }
   ],
   "useGitignore": true,
-  "ignorePaths": ["node_modules", "pnpm-lock.yaml"],
+  "ignorePaths": ["node_modules", "pnpm-lock.yaml", "assets/meta", "**.sql"],
   "enableFiletypes": ["mdx"],
-  "enabled": true,
-  "words": [
-    "isSwapNotEmpty",
-    "lockb",
-    "mobiledev",
-    "pbxproj",
-    "swiftpm",
-    "venv",
-    "webp",
-    "xcscheme",
-    "xcsettings",
-    "xcuserstate",
-    "xcworkspacedata"
-  ]
+  "enabled": true
 }
