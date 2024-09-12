@@ -1,5 +1,25 @@
 # @lightdotso/docs
 
+## 3.1.15
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2340](https://github.com/LightDotSo/LightDotSo/pull/2340) [`39af81b`](https://github.com/LightDotSo/LightDotSo/commit/39af81b78be51c960af5377fdf54901b967a6fbd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs light
+
+- [#2344](https://github.com/LightDotSo/LightDotSo/pull/2344) [`f6490a5`](https://github.com/LightDotSo/LightDotSo/commit/f6490a524f3f5028f2f133836b7173914ca652c8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs config
+
+- [#2341](https://github.com/LightDotSo/LightDotSo/pull/2341) [`54afdc6`](https://github.com/LightDotSo/LightDotSo/commit/54afdc65c727765f1386dac0f4b4809efc85359d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs upd
+
+- [#2310](https://github.com/LightDotSo/LightDotSo/pull/2310) [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light ui
+
+- Updated dependencies [[`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd), [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4), [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579)]:
+  - @lightdotso/templates@0.0.15
+  - @lightdotso/const@3.1.9
+  - @lightdotso/types@0.0.9
+  - @lightdotso/roots@0.0.1
+
 ## 3.1.14
 
 ### Patch Changes

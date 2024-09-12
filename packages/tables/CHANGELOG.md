@@ -1,5 +1,34 @@
 # @lightdotso/tables
 
+## 0.1.15
+
+### Patch Changes
+
+- [#2338](https://github.com/LightDotSo/LightDotSo/pull/2338) [`7a954df`](https://github.com/LightDotSo/LightDotSo/commit/7a954df5c972eb57db7a860038df2d6073cc2349) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix timestamp title
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2306](https://github.com/LightDotSo/LightDotSo/pull/2306) [`0df2541`](https://github.com/LightDotSo/LightDotSo/commit/0df25414872f8976755749f7d886e08e95362246) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add uop table
+
+- [#2285](https://github.com/LightDotSo/LightDotSo/pull/2285) [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add export src
+
+- [#2310](https://github.com/LightDotSo/LightDotSo/pull/2310) [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light ui
+
+- Updated dependencies [[`ed4c4fc`](https://github.com/LightDotSo/LightDotSo/commit/ed4c4fc66606dd1e9da5dff24ec9cecb95a12be9), [`3faccb9`](https://github.com/LightDotSo/LightDotSo/commit/3faccb98efc6d3c7f37c27c391afda2d7b4150e1), [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd), [`b4f5d74`](https://github.com/LightDotSo/LightDotSo/commit/b4f5d7485980e135022a47e02a73ac614d1c37b4), [`6e570a4`](https://github.com/LightDotSo/LightDotSo/commit/6e570a418ddd0e2171d021607ce5a6fb47d31507), [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4), [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579), [`1455dc6`](https://github.com/LightDotSo/LightDotSo/commit/1455dc66fbfa0ea79b22ed0c204e6ca89c5be896), [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788)]:
+  - @lightdotso/elements@0.0.15
+  - @lightdotso/ui@3.1.15
+  - @lightdotso/templates@0.0.15
+  - @lightdotso/stores@0.1.12
+  - @lightdotso/const@3.1.9
+  - @lightdotso/hooks@0.0.16
+  - @lightdotso/query@0.1.15
+  - @lightdotso/utils@3.1.11
+  - @lightdotso/wagmi@3.1.10
+  - @lightdotso/data@0.1.9
+  - @lightdotso/demo@0.0.11
+  - @lightdotso/msw@0.0.10
+  - @lightdotso/svg@0.0.12
+
 ## 0.1.14
 
 ### Patch Changes

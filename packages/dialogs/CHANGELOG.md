@@ -1,5 +1,33 @@
 # @lightdotso/dialogs
 
+## 0.0.10
+
+### Patch Changes
+
+- [#2305](https://github.com/LightDotSo/LightDotSo/pull/2305) [`3faccb9`](https://github.com/LightDotSo/LightDotSo/commit/3faccb98efc6d3c7f37c27c391afda2d7b4150e1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app dialog
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2285](https://github.com/LightDotSo/LightDotSo/pull/2285) [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add export src
+
+- Updated dependencies [[`ed4c4fc`](https://github.com/LightDotSo/LightDotSo/commit/ed4c4fc66606dd1e9da5dff24ec9cecb95a12be9), [`3faccb9`](https://github.com/LightDotSo/LightDotSo/commit/3faccb98efc6d3c7f37c27c391afda2d7b4150e1), [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd), [`b4f5d74`](https://github.com/LightDotSo/LightDotSo/commit/b4f5d7485980e135022a47e02a73ac614d1c37b4), [`6e570a4`](https://github.com/LightDotSo/LightDotSo/commit/6e570a418ddd0e2171d021607ce5a6fb47d31507), [`bb49521`](https://github.com/LightDotSo/LightDotSo/commit/bb495212aafd918980e3f22a29416fdd5bb7cfb4), [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579), [`1455dc6`](https://github.com/LightDotSo/LightDotSo/commit/1455dc66fbfa0ea79b22ed0c204e6ca89c5be896), [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788)]:
+  - @lightdotso/elements@0.0.15
+  - @lightdotso/ui@3.1.15
+  - @lightdotso/templates@0.0.15
+  - @lightdotso/sequence@0.0.8
+  - @lightdotso/schemas@3.1.9
+  - @lightdotso/stores@0.1.12
+  - @lightdotso/const@3.1.9
+  - @lightdotso/hooks@0.0.16
+  - @lightdotso/query@0.1.15
+  - @lightdotso/utils@3.1.11
+  - @lightdotso/wagmi@3.1.10
+  - @lightdotso/data@0.1.9
+  - @lightdotso/nuqs@0.0.11
+  - @lightdotso/msw@0.0.10
+  - @lightdotso/sdk@0.0.5
+  - @lightdotso/svg@0.0.12
+
 ## 0.0.9
 
 ### Patch Changes

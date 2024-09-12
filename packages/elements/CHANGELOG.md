@@ -1,5 +1,24 @@
 # @lightdotso/elements
 
+## 0.0.15
+
+### Patch Changes
+
+- [#2350](https://github.com/LightDotSo/LightDotSo/pull/2350) [`ed4c4fc`](https://github.com/LightDotSo/LightDotSo/commit/ed4c4fc66606dd1e9da5dff24ec9cecb95a12be9) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add default placeholder blur
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2285](https://github.com/LightDotSo/LightDotSo/pull/2285) [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add export src
+
+- Updated dependencies [[`3faccb9`](https://github.com/LightDotSo/LightDotSo/commit/3faccb98efc6d3c7f37c27c391afda2d7b4150e1), [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd), [`b4f5d74`](https://github.com/LightDotSo/LightDotSo/commit/b4f5d7485980e135022a47e02a73ac614d1c37b4), [`6e570a4`](https://github.com/LightDotSo/LightDotSo/commit/6e570a418ddd0e2171d021607ce5a6fb47d31507), [`b70a528`](https://github.com/LightDotSo/LightDotSo/commit/b70a5288f6d549a75d96b0910965189b1da65579), [`671ef9c`](https://github.com/LightDotSo/LightDotSo/commit/671ef9c186deda80b3529b42ee82774ab2442788)]:
+  - @lightdotso/ui@3.1.15
+  - @lightdotso/const@3.1.9
+  - @lightdotso/utils@3.1.11
+  - @lightdotso/wagmi@3.1.10
+  - @lightdotso/data@0.1.9
+  - @lightdotso/demo@0.0.11
+  - @lightdotso/svg@0.0.12
+
 ## 0.0.14
 
 ### Patch Changes

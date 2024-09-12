@@ -1,5 +1,13 @@
 # @lightdotso/assets
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2298](https://github.com/LightDotSo/LightDotSo/pull/2298) [`a7c41a6`](https://github.com/LightDotSo/LightDotSo/commit/a7c41a6fcbacea1e8265c231b01d130be9bdb2bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix light router
+
+- [#2335](https://github.com/LightDotSo/LightDotSo/pull/2335) [`b4f5d74`](https://github.com/LightDotSo/LightDotSo/commit/b4f5d7485980e135022a47e02a73ac614d1c37b4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix ui assets
+
 ## 3.1.6
 
 ### Patch Changes
