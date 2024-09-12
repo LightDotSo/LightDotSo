@@ -1,5 +1,17 @@
 # @lightdotso/contracts
 
+## 3.1.11
+
+### Patch Changes
+
+- [#2359](https://github.com/LightDotSo/LightDotSo/pull/2359) [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update all packages
+
+- [#2358](https://github.com/LightDotSo/LightDotSo/pull/2358) [`1bbdeb4`](https://github.com/LightDotSo/LightDotSo/commit/1bbdeb489d4bc5825d1504ca22f81c7318049b3c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add elements tables
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/sequence@0.0.9
+  - @lightdotso/wagmi@3.1.11
+
 ## 3.1.10
 
 ### Patch Changes

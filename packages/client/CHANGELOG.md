@@ -1,5 +1,13 @@
 # @lightdotso/client
 
+## 3.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/schemas@3.1.10
+  - @lightdotso/data@0.1.10
+
 ## 3.1.10
 
 ### Patch Changes

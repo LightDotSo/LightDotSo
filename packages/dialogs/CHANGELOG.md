@@ -1,5 +1,31 @@
 # @lightdotso/dialogs
 
+## 0.0.11
+
+### Patch Changes
+
+- [#2359](https://github.com/LightDotSo/LightDotSo/pull/2359) [`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update all packages
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`1bbdeb4`](https://github.com/LightDotSo/LightDotSo/commit/1bbdeb489d4bc5825d1504ca22f81c7318049b3c), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/templates@0.0.16
+  - @lightdotso/elements@0.0.16
+  - @lightdotso/sequence@0.0.9
+  - @lightdotso/schemas@3.1.10
+  - @lightdotso/stores@0.1.13
+  - @lightdotso/const@3.1.10
+  - @lightdotso/hooks@0.0.17
+  - @lightdotso/query@0.1.16
+  - @lightdotso/utils@3.1.12
+  - @lightdotso/wagmi@3.1.11
+  - @lightdotso/data@0.1.10
+  - @lightdotso/nuqs@0.0.12
+  - @lightdotso/sdk@0.0.6
+  - @lightdotso/ui@3.1.16
+  - @lightdotso/msw@0.0.11
+  - @lightdotso/svg@0.0.13
+
 ## 0.0.10
 
 ### Patch Changes

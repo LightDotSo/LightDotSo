@@ -1,5 +1,27 @@
 # @lightdotso/storybook
 
+## 0.0.17
+
+### Patch Changes
+
+- [#2354](https://github.com/LightDotSo/LightDotSo/pull/2354) [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update core deps
+
+- Updated dependencies [[`b6321b5`](https://github.com/LightDotSo/LightDotSo/commit/b6321b59f995404f8ccc4724db64bb2cf27873a7), [`1bbdeb4`](https://github.com/LightDotSo/LightDotSo/commit/1bbdeb489d4bc5825d1504ca22f81c7318049b3c), [`324853d`](https://github.com/LightDotSo/LightDotSo/commit/324853d16c260d2e4a5a6e660a41d3550dba684d), [`5fa5677`](https://github.com/LightDotSo/LightDotSo/commit/5fa56771d56a52f4a2a16a600cf54c0260a27764)]:
+  - @lightdotso/templates@0.0.16
+  - @lightdotso/elements@0.0.16
+  - @lightdotso/dialogs@0.0.11
+  - @lightdotso/modals@0.0.16
+  - @lightdotso/states@0.0.16
+  - @lightdotso/tables@0.1.16
+  - @lightdotso/const@3.1.10
+  - @lightdotso/forms@0.0.16
+  - @lightdotso/wagmi@3.1.11
+  - @lightdotso/ui@3.1.16
+  - @lightdotso/roots@0.0.2
+  - @lightdotso/msw@0.0.11
+  - @lightdotso/svg@0.0.13
+  - @lightdotso/demo@0.0.12
+
 ## 0.0.16
 
 ### Patch Changes
