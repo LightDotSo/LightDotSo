@@ -74,8 +74,8 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             p({ children }) {
               return <p className="mb-2 last:mb-0">{children}</p>;
             },
-            code({ node, inline, className, children, ...props }) {
-              if (children.length) {
+            code({ inline, className, children, ...props }) {
+              if (children.length > 0) {
                 if (children[0] === "▍") {
                   return (
                     <span className="mt-1 animate-pulse cursor-default">▍</span>
@@ -85,6 +85,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                 children[0] = (children[0] as string).replace("`▍`", "▍");
               }
 
+              // biome-ignore lint/performance/useTopLevelRegex: <explanation>
               const match = /language-(\w+)/.exec(className || "");
 
               if (inline) {
@@ -99,6 +100,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                 <CodeBlock
                   key={Math.random()}
                   language={match?.[1] || ""}
+                  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
                   value={String(children).replace(/\n$/, "")}
                   {...props}
                 />

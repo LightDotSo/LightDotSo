@@ -13,9 +13,11 @@
 // limitations under the License.
 
 browser.runtime.sendMessage({ greeting: "hello" }).then((response) => {
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.warn("Received response: ", response);
 });
 
 browser.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.warn("Received request: ", request);
 });

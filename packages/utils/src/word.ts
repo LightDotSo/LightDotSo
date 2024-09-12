@@ -18,6 +18,7 @@
 
 export const camelCaseToCapitalizedWords = (input: string): string => {
   // Split the string at each point where a lowercase letter is followed by an uppercase letter
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   const words = input.split(/(?=[A-Z])/);
 
   // Capitalize the first letter of each word and make sure the rest of the letters are lowercase

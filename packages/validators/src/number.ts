@@ -20,6 +20,7 @@ import { hexRegex } from "@lightdotso/regexs";
 
 export const validateNumber = (value: string): boolean => {
   // Check if the value is a non-negative integer
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   if (/^\d+$/.test(value)) {
     return true;
   }

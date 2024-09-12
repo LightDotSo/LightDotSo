@@ -398,8 +398,11 @@ export const useUserOperationsCreate = ({
   // Set the transaction disabled state
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isUserOperationsDisabled = useMemo(() => {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("isValidUserOperations", isValidUserOperations);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("isUserOperationsCreateable", isUserOperationsCreateable);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
 
     // A combination of conditions that would disable the transaction
@@ -417,6 +420,7 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("isUserOperationsDisabled", isUserOperationsDisabled);
 
   // ---------------------------------------------------------------------------

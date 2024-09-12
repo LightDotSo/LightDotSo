@@ -77,7 +77,7 @@ export const OTP = ({
   onChange,
 }: OtpFieldProps) => {
   const [activeInputIndex, setActiveInputIndex] = useState(0);
-  const [inputs, setInputs] = useState(Array<string>(length).fill(""));
+  const [inputs, setInputs] = useState(new Array(length).fill(""));
 
   const focusInput = (index: number) => {
     if (activeInputIndex === 0 && index === -1) {
@@ -106,6 +106,7 @@ export const OTP = ({
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value.toUpperCase();
+    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
     if (/^[0-9A-Z]$/.test(inputValue)) {
       e.preventDefault();
 
@@ -154,6 +155,7 @@ export const OTP = ({
       }
 
       default:
+        // biome-ignore lint/performance/useTopLevelRegex: <explanation>
         if (key && /^[0-9A-Z]$/.test(key)) {
           e.preventDefault();
           setInputs((prevInputs) => {
@@ -180,6 +182,7 @@ export const OTP = ({
     let pastedData = e.clipboardData.getData("text/plain").trim().toUpperCase();
 
     if (
+      // biome-ignore lint/performance/useTopLevelRegex: <explanation>
       /^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(pastedData) &&
       pastedData.length <= length + 1
     ) {
@@ -206,7 +209,10 @@ export const OTP = ({
       }
 
       triggerOnChange(
-        updatedInputs.join("").replace(/^(.{3})/, "$1-"),
+        updatedInputs
+          .join("")
+          // biome-ignore lint/performance/useTopLevelRegex: <explanation>
+          .replace(/^(.{3})/, "$1-"),
         `input-${activeInputIndex}`,
       );
     }
@@ -220,16 +226,17 @@ export const OTP = ({
 
       if (
         alphanumericChars.length === length &&
+        // biome-ignore lint/performance/useTopLevelRegex: <explanation>
         alphanumericChars.every((char) => /^[0-9A-Z]$/.test(char))
       ) {
         setInputs([...alphanumericChars]);
         setActiveInputIndex(-1);
       } else {
-        setInputs(Array<string>(length).fill(""));
+        setInputs(new Array(length).fill(""));
         setActiveInputIndex(0);
       }
     } else {
-      setInputs(Array<string>(length).fill(""));
+      setInputs(new Array(length).fill(""));
       setActiveInputIndex(0);
     }
   }, [defaultValue, length]);

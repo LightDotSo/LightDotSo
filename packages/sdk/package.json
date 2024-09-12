@@ -28,7 +28,7 @@
     "@lightdotso/types": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "neverthrow": "^8.0.0",
-    "viem": "^2.21.5"
+    "viem": "^2.21.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

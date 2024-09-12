@@ -147,7 +147,9 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
         baseMaxFeePerGas;
 
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("baseMaxFeePerGas", baseMaxFeePerGas);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
 
     // If gas estimation is available, return the gas estimation
@@ -167,7 +169,9 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
         { to: "bigint" },
       );
 
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info("gasEstimationMaxFeePerGas", gasEstimationMaxFeePerGas);
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info(
         "gasEstimationMaxPriorityFeePerGas",
         gasEstimationMaxPriorityFeePerGas,

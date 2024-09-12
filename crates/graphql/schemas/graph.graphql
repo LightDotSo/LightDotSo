@@ -350,7 +350,6 @@ enum Deposited_orderBy {
 
 """
 8 bytes signed integer
-
 """
 scalar Int8
 
@@ -1137,7 +1136,13 @@ type Receipt {
   gasUsed: BigInt!
   status: BigInt!
   logsBloom: Bytes!
-  logs(skip: Int = 0, first: Int = 100, orderBy: Log_orderBy, orderDirection: OrderDirection, where: Log_filter): [Log!]
+  logs(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Log_orderBy
+    orderDirection: OrderDirection
+    where: Log_filter
+  ): [Log!]
   transaction: Transaction!
 }
 
@@ -2201,7 +2206,13 @@ type UserOperation {
   entryPoint: Bytes!
   paymaster: Bytes
   lightWallet: LightWallet!
-  logs(skip: Int = 0, first: Int = 100, orderBy: Log_orderBy, orderDirection: OrderDirection, where: Log_filter): [Log!]
+  logs(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Log_orderBy
+    orderDirection: OrderDirection
+    where: Log_filter
+  ): [Log!]
   transaction: Transaction!
   userOperationEvent: UserOperationEvent
   userOperationRevertReason: UserOperationRevertReason
@@ -2926,7 +2937,6 @@ type _Meta_ {
   will be null if the _meta field has a block constraint that asks for
   a block number. It will be filled if the _meta field has no block constraint
   and therefore asks for the latest  block
-
   """
   block: _Block_!
   """
@@ -2949,4 +2959,3 @@ enum _SubgraphErrorPolicy_ {
   """
   deny
 }
-

@@ -43,6 +43,7 @@ export const useUserOperationSend = ({
   address,
   hash,
 }: UserOperationSendProps) => {
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation send", address, hash);
   // ---------------------------------------------------------------------------
   // Query
@@ -56,6 +57,7 @@ export const useUserOperationSend = ({
   const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: hash,
   });
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation", userOperation);
 
   // ---------------------------------------------------------------------------
@@ -82,6 +84,7 @@ export const useUserOperationSend = ({
       hash: hash,
       configuration_id: configuration?.id,
     });
+  // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation signature", userOperationSignature);
 
   const {
@@ -172,14 +175,19 @@ export const useUserOperationSend = ({
     if (
       !(isUserOperationSendReady && userOperation && userOperationSignature)
     ) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("User operation is not ready to be sent");
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Params", address, hash);
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("User operation", userOperation);
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("User operation signature", userOperationSignature);
       return;
     }
 
     if (userOperationReceipt) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info(
         "User operation receipt already exists",
         userOperationReceipt,
@@ -190,6 +198,7 @@ export const useUserOperationSend = ({
     }
 
     if (userOperation.status === "PENDING") {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info("User operation is pending", userOperation);
       // Refetch the user operation receipt again
       refetchUserOperationReceipt();
@@ -197,7 +206,9 @@ export const useUserOperationSend = ({
       // If the user operation receipt has failed to fetch every 3 times, then return
       // This is to prevent the user operation from being sent multiple times
       if (userOperationReceiptErrorUpdateCount % 3 !== 2) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.info("User operation receipt failed to fetch");
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.info(
           "User operation receipt error update count",
           userOperationReceiptErrorUpdateCount,
@@ -206,6 +217,7 @@ export const useUserOperationSend = ({
       }
     }
 
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("Sending user operation", hash);
     // Send the user operation if the user operation hasn't been sent yet
     userOperationSend({

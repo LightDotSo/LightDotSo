@@ -38,6 +38,7 @@ export const BetaVersion: FC = () => {
           >
             v
             {process.env.NEXT_PUBLIC_LIGHT_VERSION?.match(
+              // biome-ignore lint/performance/useTopLevelRegex: <explanation>
               /(\d+\.\d+\.\d+)/,
             )?.[0] ?? "0.0.0"}
           </a>

@@ -80,6 +80,7 @@ export async function getChat(_id: string, _userId: string) {
 
 // biome-ignore lint/suspicious/useAwait: <explanation>
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+// biome-ignore lint/correctness/noUnusedFunctionParameters: <explanation>
 export async function removeChat({ id, path }: { id: string; path: string }) {
   // const session = await auth();
 

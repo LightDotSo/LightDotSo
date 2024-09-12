@@ -27,7 +27,6 @@ export async function submitUserMessage(content: string) {
 
   // Get the current state of the AI
   const aiState = getMutableAIState<typeof AI>();
-  console.info("aiState", aiState.get());
 
   let threadId = aiState.get().threadId;
   if (threadId) {
@@ -47,7 +46,6 @@ export async function submitUserMessage(content: string) {
   } else {
     threadId = (await client.threads.create()).thread_id;
   }
-  console.info("threadId", threadId);
 
   const assistants = await client.assistants.search({
     metadata: null,

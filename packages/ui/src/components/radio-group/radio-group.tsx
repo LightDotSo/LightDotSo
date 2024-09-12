@@ -41,6 +41,7 @@ RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 const RadioGroupItem = forwardRef<
   ElementRef<typeof RadioGroupPrimitive.Item>,
   ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
+  // biome-ignore lint/correctness/noUnusedFunctionParameters: <explanation>
 >(({ className, children, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Item

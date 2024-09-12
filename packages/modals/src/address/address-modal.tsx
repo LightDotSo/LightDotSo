@@ -74,6 +74,7 @@ export function AddressModal() {
 
   const getEns = async ({ name }: { name: string }) =>
     publicClient.getEnsAddress({ name: normalize(name) }).then((addr) => {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.info(addr);
       return !!addr;
     });

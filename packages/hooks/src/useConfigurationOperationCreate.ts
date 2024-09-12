@@ -93,6 +93,7 @@ export const useConfigurationOperationCreate = ({
       return;
     }
 
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info(
       "configurationOperationSimulation:",
       configurationOperationSimulation,

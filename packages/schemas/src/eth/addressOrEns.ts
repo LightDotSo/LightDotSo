@@ -23,6 +23,7 @@ export const addressOrEns = Address.or(
   z.string().refine(
     (value) => {
       // Check if it's a possible ENS name
+      // biome-ignore lint/performance/useTopLevelRegex: <explanation>
       const dnsRegex = /^(?:(?:(?:\w[\w-]*\.)+[a-zA-Z]{2,}))/;
       if (dnsRegex.test(value)) {
         return true;

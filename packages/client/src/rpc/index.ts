@@ -24,6 +24,7 @@ import { zodJsonRpcFetch } from "../zod";
 
 const EthChainIdResponse = z
   .string()
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   .refine((value) => /^0x[0-9a-fA-F]+$/.test(value), {
     message: "ChainId must be a hexadecimal string",
   });
@@ -42,6 +43,7 @@ export const getChainId = async (chainId: number, clientType?: ClientType) => {
 
 const HexStringSchema = z
   .string()
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   .refine((value) => /^0x[0-9a-fA-F]*$/.test(value), {
     message: "Must be a hexadecimal string",
   });

@@ -47,7 +47,7 @@ export const ConnectButton: FC = () => {
           <Button disabled={isConnecting} onClick={show}>
             <Wallet className="mr-2 size-4" />
             {address
-              ? ens ?? shortenAddress(address as Address)
+              ? (ens ?? shortenAddress(address as Address))
               : "Connect Wallet"}
           </Button>
         );

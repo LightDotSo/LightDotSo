@@ -148,9 +148,10 @@ export const NftTable: FC<NftTableProps> = ({
 
   return (
     <NftsWrapper>
-      {table.getRowModel().rows?.length ? (
+      {table.getRowModel().rows?.length > 0 ? (
         table
           .getRowModel()
+          // biome-ignore lint/style/useExplicitLengthCheck: <explanation>
           .rows.slice(0, limit || table.getRowModel().rows?.length)
           .map((row) => (
             <NftCard
@@ -171,7 +172,7 @@ export const NftTable: FC<NftTableProps> = ({
             />
           ))
       ) : delayedIsLoading ? (
-        Array(pageSize)
+        new Array(pageSize)
           .fill(null)
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           .map((_, index) => <NftCardSkeleton key={index} />)

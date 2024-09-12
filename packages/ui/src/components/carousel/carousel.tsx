@@ -170,6 +170,7 @@ const Carousel = forwardRef<
         <div
           ref={ref}
           className={cn("relative", className)}
+          // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="region"
           aria-roledescription="carousel"
           onKeyDownCapture={handleKeyDown}

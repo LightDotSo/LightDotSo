@@ -90,7 +90,7 @@ export function Chat({ threadId, className }: ChatProps) {
         className={cn("pt-4 pb-[200px] md:pt-10", className)}
         ref={messagesRef}
       >
-        {messages.length ? (
+        {messages.length > 0 ? (
           <ChatList messages={messages} isShared={false} />
         ) : (
           <EmptyScreen />
