@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -27,7 +30,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "tailwind-merge": "^2.5.2",
-    "viem": "^2.21.5"
+    "viem": "^2.21.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

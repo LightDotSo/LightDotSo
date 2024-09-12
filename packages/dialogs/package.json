@@ -18,7 +18,10 @@
     "./*": "./src/*/index.ts"
   },
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -45,14 +48,14 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.439.0",
+    "lucide-react": "^0.441.0",
     "next": "15.0.0-canary.146",
-    "permissionless": "^0.2.0",
+    "permissionless": "^0.2.1",
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
     "react-hook-form": "^7.53.0",
     "react-is": "19.0.0-rc-7771d3a7-20240827",
-    "viem": "^2.21.5",
+    "viem": "^2.21.6",
     "zod": "^3.23.8"
   },
   "devDependencies": {

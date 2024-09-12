@@ -18,7 +18,10 @@
     "./*": "./src/*/index.ts"
   },
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup && tsx scripts/tsup.build.ts ",
     "clean": "rimraf -rf dist",
@@ -38,12 +41,12 @@
     "class-variance-authority": "^0.7.0",
     "glob": "^11.0.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.439.0",
+    "lucide-react": "^0.441.0",
     "next": "15.0.0-canary.146",
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-blurhash": "^0.3.0",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
-    "viem": "^2.21.5"
+    "viem": "^2.21.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
@@ -52,7 +55,7 @@
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
-    "tsx": "^4.19.0",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   },
   "publishConfig": {

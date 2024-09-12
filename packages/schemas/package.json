@@ -14,7 +14,10 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
@@ -24,7 +27,7 @@
   },
   "dependencies": {
     "abitype": "^1.0.6",
-    "viem": "^2.21.5",
+    "viem": "^2.21.6",
     "zod": "^3.23.8"
   },
   "devDependencies": {
