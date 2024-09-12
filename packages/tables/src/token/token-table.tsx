@@ -180,7 +180,8 @@ export const TokenTable: FC<TokenTableProps> = ({
         {table.getRowModel().rows?.length > 0 ? (
           table
             .getRowModel()
-            .rows.slice(0, limit || table.getRowModel().rows?.length > 0)
+            // biome-ignore lint/style/useExplicitLengthCheck: <explanation>
+            .rows.slice(0, limit || table.getRowModel().rows?.length)
             // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
             .map((row) => {
               let isLastExpanded = false;
