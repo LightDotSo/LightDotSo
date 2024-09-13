@@ -58,13 +58,19 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
     /// @param lightProtocolController The address of the light protocol controller (executor and canceler)
     /// @dev This function is called by the factory contract
     function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
+        // Initialize the proposers
+        address[] memory proposers = new address[](1);
+        proposers[0] = lightWallet;
+
+        // Initialize the executors
+        address[] memory executors = new address[](1);
+        executors[0] = lightProtocolController;
+
         // Initialize the timelock controller as in `__TimelockController_init_unchained`
         // Proposer `singletonArray(lightWallet)` is the proposer and canceller by default
         // Executor `singletonArray(lightProtocolController)` is the only executor by default
         // Admin `address(0)` is the default admin (set to the timelock controller itself)
-        __TimelockController_init(
-            MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
-        );
+        __TimelockController_init(MIN_DELAY, proposers, executors, address(0));
 
         // Revoke canceller role from the light wallet
         _revokeRole(CANCELLER_ROLE, lightWallet);
@@ -74,19 +80,6 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
 
         // Register canceler role to the light protocol controller
         _setupRole(CANCELLER_ROLE, lightProtocolController);
-    }
-
-    // -------------------------------------------------------------------------
-    // Utils
-    // -------------------------------------------------------------------------
-
-    /// @notice Helper function to create a single-element address array
-    /// @param element The address to create the array
-    /// @return The single-element address array
-    function _singletonArray(address element) private pure returns (address[] memory) {
-        address[] memory array = new address[](1);
-        array[0] = element;
-        return array;
     }
 
     // -------------------------------------------------------------------------
