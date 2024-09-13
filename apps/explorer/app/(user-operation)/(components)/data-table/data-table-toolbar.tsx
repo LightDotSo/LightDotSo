@@ -27,6 +27,7 @@ import {
 } from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { Label } from "@lightdotso/ui/components/label";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { Switch } from "@lightdotso/ui/components/switch";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { getChainNameWithChainId } from "@lightdotso/utils";
@@ -154,6 +155,22 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             timestamp: "Timestamp",
           }}
         />
+      </div>
+    </ToolbarSectionWrapper>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export function DataTableToolbarSkeleton() {
+  return (
+    <ToolbarSectionWrapper>
+      <div className="flex flex-1 items-center space-x-2">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24" />
       </div>
     </ToolbarSectionWrapper>
   );

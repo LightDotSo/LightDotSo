@@ -19,6 +19,8 @@ import { useTables } from "@lightdotso/stores";
 import { DataTableViewOptions } from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
 import { Input } from "@lightdotso/ui/components/input";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
+import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
@@ -84,5 +86,20 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         }}
       />
     </>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export function DataTableToolbarSkeleton() {
+  return (
+    <ToolbarSectionWrapper>
+      <div className="flex flex-1 items-center space-x-2">
+        <Skeleton className="h-8 w-24" />
+      </div>
+      <Skeleton className="h-8 w-24" />
+    </ToolbarSectionWrapper>
   );
 }

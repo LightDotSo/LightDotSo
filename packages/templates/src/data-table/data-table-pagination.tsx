@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { PAGINATION_SIZES } from "@lightdotso/const";
 import { Button } from "@lightdotso/ui/components/button";
 import {
@@ -50,6 +52,18 @@ export function DataTablePagination<TData>({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (
+    !table ||
+    typeof table.getIsSomeRowsSelected !== "function" ||
+    typeof table.getFilteredSelectedRowModel !== "function" ||
+    typeof table.getFilteredRowModel !== "function" ||
+    typeof table.getPageCount !== "function" ||
+    typeof table.getCanPreviousPage !== "function" ||
+    typeof table.getCanNextPage !== "function"
+  ) {
+    return null;
+  }
 
   return (
     <div className="flex items-center justify-between px-2 pb-1">

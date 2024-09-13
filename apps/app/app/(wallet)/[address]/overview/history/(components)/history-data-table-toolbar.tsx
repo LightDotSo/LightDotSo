@@ -14,7 +14,10 @@
 
 "use client";
 
-import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
+import {
+  DataTableToolbar,
+  DataTableToolbarSkeleton,
+} from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
 import { useTables } from "@lightdotso/stores";
 import { type FC, useEffect } from "react";
 
@@ -44,7 +47,7 @@ export const HistoryDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
 
   if (!(transactionTable && useTables.persist.hasHydrated())) {
-    return null;
+    return <DataTableToolbarSkeleton />;
   }
 
   return <DataTableToolbar table={transactionTable} />;
