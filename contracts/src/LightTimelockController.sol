@@ -19,6 +19,8 @@ pragma solidity ^0.8.18;
 import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
@@ -28,7 +30,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// This is the version 0.1.0 contract for Light Protocol.
 /// @dev The contract is the initial implementation of a timelock controller for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightTimelockController is Initializable, TimelockControllerUpgradeable {
+contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -56,13 +58,19 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     /// @param lightProtocolController The address of the light protocol controller (executor and canceler)
     /// @dev This function is called by the factory contract
     function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
+        // Initialize the proposers
+        address[] memory proposers = new address[](1);
+        proposers[0] = lightWallet;
+
+        // Initialize the executors
+        address[] memory executors = new address[](1);
+        executors[0] = lightProtocolController;
+
         // Initialize the timelock controller as in `__TimelockController_init_unchained`
         // Proposer `singletonArray(lightWallet)` is the proposer and canceller by default
         // Executor `singletonArray(lightProtocolController)` is the only executor by default
         // Admin `address(0)` is the default admin (set to the timelock controller itself)
-        __TimelockController_init(
-            MIN_DELAY, _singletonArray(lightWallet), _singletonArray(lightProtocolController), address(0)
-        );
+        __TimelockController_init(MIN_DELAY, proposers, executors, address(0));
 
         // Revoke canceller role from the light wallet
         _revokeRole(CANCELLER_ROLE, lightWallet);
@@ -75,15 +83,10 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
     }
 
     // -------------------------------------------------------------------------
-    // Utils
+    // Upgrades
     // -------------------------------------------------------------------------
 
-    /// @notice Helper function to create a single-element address array
-    /// @param element The address to create the array
-    /// @return The single-element address array
-    function _singletonArray(address element) private pure returns (address[] memory) {
-        address[] memory array = new address[](1);
-        array[0] = element;
-        return array;
-    }
+    /// @dev Only callable by the current contract
+    /// @inheritdoc UUPSUpgradeable
+    function _authorizeUpgrade(address) internal view override onlySelf {}
 }

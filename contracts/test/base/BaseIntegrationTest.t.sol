@@ -112,7 +112,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     }
 
     /// @dev Assert that the proxy admin is the zero address
-    function _noProxyAdmin(address _proxy) internal {
+    function _noProxyAdmin(address _proxy) internal view {
         // Assert that the proxy admin is the zero address
         assertEq(getProxyAdmin(_proxy), address(0));
     }
