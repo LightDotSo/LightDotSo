@@ -24,6 +24,8 @@
 | _timestamps   | mapping(bytes32 => uint256)                                  | 151  | 0      | 32    | contracts/src/LightTimelockController.sol:LightTimelockController |
 | _minDelay     | uint256                                                      | 152  | 0      | 32    | contracts/src/LightTimelockController.sol:LightTimelockController |
 | __gap         | uint256[48]                                                  | 153  | 0      | 1536  | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[50]                                                  | 201  | 0      | 1600  | contracts/src/LightTimelockController.sol:LightTimelockController |
+| __gap         | uint256[50]                                                  | 251  | 0      | 1600  | contracts/src/LightTimelockController.sol:LightTimelockController |
 =======================
  ➡ LightTimelockControllerFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
