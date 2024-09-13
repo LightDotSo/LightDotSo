@@ -36,7 +36,7 @@ contract LightTimelockControllerFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the factory can create a new account at the predicted address
-    function btestFork_createAccount_equalsGetAddress() public {
+    function testFork_timelock_createTimelockController_equalsGetAddress() public {
         // Create the account using the factory w/ hash 1, nonce 0
         timelock = timelockFactory.createTimelockController(
             address(account), address(lightProtocolController), bytes32(uint256(1))
@@ -47,6 +47,6 @@ contract LightTimelockControllerFactoryForkTest is BaseForkTest {
             timelockFactory.getAddress(address(account), address(lightProtocolController), bytes32(uint256(1)));
 
         // Assert that the predicted address matches the created account
-        assertEq(predicted, address(account));
+        assertEq(predicted, address(timelock));
     }
 }

@@ -18,6 +18,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
+import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
@@ -43,6 +44,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        // LightTimelockControllerFactory core contract
+        timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
         // LightPaymaster core contract
         paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
 
