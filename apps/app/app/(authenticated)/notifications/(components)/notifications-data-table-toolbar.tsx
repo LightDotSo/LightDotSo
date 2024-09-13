@@ -14,7 +14,10 @@
 
 "use client";
 
-import { DataTableToolbar } from "@/app/(authenticated)/notifications/(components)/data-table/data-table-toolbar";
+import {
+  DataTableToolbar,
+  DataTableToolbarSkeleton,
+} from "@/app/(authenticated)/notifications/(components)/data-table/data-table-toolbar";
 import { useAuth, useTables } from "@lightdotso/stores";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { type FC, useEffect } from "react";
@@ -47,7 +50,7 @@ export const NotificationsDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
 
   if (!(sessionId && notificationTable && useTables.persist.hasHydrated())) {
-    return null;
+    return <DataTableToolbarSkeleton />;
   }
 
   return (

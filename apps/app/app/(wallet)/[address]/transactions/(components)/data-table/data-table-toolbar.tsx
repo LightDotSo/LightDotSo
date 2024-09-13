@@ -26,6 +26,7 @@ import {
   DataTableViewOptions,
 } from "@lightdotso/templates/data-table";
 import { Button } from "@lightdotso/ui/components/button";
+import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import { getChainNameWithChainId } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
@@ -142,6 +143,22 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
           status: "Status",
         }}
       />
+    </>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Skeleton
+// -----------------------------------------------------------------------------
+
+export function DataTableToolbarSkeleton() {
+  return (
+    <>
+      <div className="flex flex-1 items-center space-x-2">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24" />
+      </div>
     </>
   );
 }

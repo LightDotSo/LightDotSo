@@ -15,7 +15,10 @@
 "use client";
 
 import { useAuth, useTables } from "@lightdotso/stores";
-import { DataTablePagination } from "@lightdotso/templates/data-table";
+import {
+  DataTablePagination,
+  DataTablePaginationSkeleton,
+} from "@lightdotso/templates/data-table";
 import { type FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
@@ -46,7 +49,7 @@ export const NotificationsDataTablePagination: FC = () => {
   // ---------------------------------------------------------------------------
 
   if (!(sessionId && notificationTable && useTables.persist.hasHydrated())) {
-    return null;
+    return <DataTablePaginationSkeleton />;
   }
 
   return <DataTablePagination table={notificationTable} />;

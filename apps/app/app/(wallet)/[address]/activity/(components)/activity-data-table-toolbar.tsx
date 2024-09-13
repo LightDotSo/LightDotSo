@@ -14,7 +14,10 @@
 
 "use client";
 
-import { DataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-toolbar";
+import {
+  DataTableToolbar,
+  DataTableToolbarSkeleton,
+} from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-toolbar";
 import { useAuth, useTables } from "@lightdotso/stores";
 import { type FC, useEffect } from "react";
 
@@ -46,7 +49,7 @@ export const ActivityDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
 
   if (!(sessionId && activityTable && useTables.persist.hasHydrated())) {
-    return null;
+    return <DataTableToolbarSkeleton />;
   }
 
   return <DataTableToolbar table={activityTable} />;
