@@ -19,6 +19,8 @@ pragma solidity ^0.8.18;
 import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
@@ -28,7 +30,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// This is the version 0.1.0 contract for Light Protocol.
 /// @dev The contract is the initial implementation of a timelock controller for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightTimelockController is Initializable, TimelockControllerUpgradeable {
+contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -86,4 +88,12 @@ contract LightTimelockController is Initializable, TimelockControllerUpgradeable
         array[0] = element;
         return array;
     }
+
+    // -------------------------------------------------------------------------
+    // Upgrades
+    // -------------------------------------------------------------------------
+
+    /// @dev Only callable by the current contract
+    /// @inheritdoc UUPSUpgradeable
+    function _authorizeUpgrade(address) internal view override onlySelf {}
 }

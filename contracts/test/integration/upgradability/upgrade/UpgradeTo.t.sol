@@ -17,6 +17,7 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
@@ -38,8 +39,8 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the factory reverts when trying to upgrade from outside address
-    function test_revertWhenNotSelf_upgradeTo() public {
+    /// Tests that the wallet reverts when trying to upgrade from outside address
+    function test_wallet_revertWhenNotSelf_upgradeTo() public {
         // Deploy new version of LightWallet
         LightWallet accountV2 = new LightWallet(entryPoint);
         // Revert for conventional upgrades w/o signature
@@ -48,8 +49,18 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         _upgradeTo(address(account), address(accountV2));
     }
 
+    /// Tests that the factory reverts when trying to upgrade from outside address
+    function test_timelock_revertWhenNotSelf_upgradeTo() public {
+        // Deploy new version of LightTimelockController
+        LightTimelockController timelockV2 = new LightTimelockController();
+        // Revert for conventional upgrades w/o signature
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(timelock)));
+        // Check that the account is the new implementation
+        _upgradeTo(address(timelock), address(timelockV2));
+    }
+
     /// Tests that the account can upgrade to a v2 version of LightWallet
-    function test_upgradeToV2() public {
+    function test_wallet_upgradeToV2() public {
         // Deploy new version of LightWallet to test upgrade to
         LightWallet accountV2 = new LightWallet(entryPoint);
 
@@ -75,8 +86,20 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         assertEq(getProxyImplementation(address(account)), address(accountV2));
     }
 
+    /// Tests that the timelock can upgrade to a v2 version of LightTimelockController
+    function test_timelock_upgradeToV2() public {
+        // Deploy new version of LightTimelockController to test upgrade to
+        LightTimelockController timelockV2 = new LightTimelockController();
+
+        vm.prank(address(timelock));
+        timelock.upgradeTo(address(timelockV2));
+
+        // Assert that the timelock is now immutable
+        assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
+    }
+
     /// Tests that the factory reverts when trying to upgrade to an immutable address
-    function test_revertWhenImmutable_upgradeToImmutable() public {
+    function test_wallet_revertWhenImmutable_upgradeToImmutable() public {
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
@@ -110,5 +133,17 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         );
         vm.expectRevert();
         entryPoint.handleOps(opsv2, beneficiary);
+    }
+
+    function test_timelock_revertWhenImmutable_upgradeToImmutable() public {
+        // Deploy new version of LightTimelockController to test upgrade to
+        LightTimelockController timelockV2 = new LightTimelockController();
+
+        vm.prank(address(timelock));
+        timelock.upgradeTo(address(immutableProxy));
+
+        vm.prank(address(timelock));
+        vm.expectRevert();
+        timelock.upgradeTo(address(timelockV2));
     }
 }
