@@ -67,6 +67,7 @@ export const BaseImage: FC<BaseImageProps> = ({
         src={src}
         alt={alt}
         onLoad={() => setIsImageLoaded(true)}
+        onError={() => setIsImageLoaded(true)}
         {...props}
       />
     </BaseImageContext.Provider>
