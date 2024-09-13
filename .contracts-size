@@ -23,7 +23,7 @@
 | LibOptim                       |       86 |     24,490 |
 | LightDAG                       |    1,542 |     23,034 |
 | LightPaymaster                 |    5,533 |     19,043 |
-| LightTimelockController        |   11,509 |     13,067 |
+| LightTimelockController        |   14,076 |     10,500 |
 | LightTimelockControllerFactory |    3,671 |     20,905 |
 | LightVerifyingPaymaster        |    5,533 |     19,043 |
 | LightWallet                    |   13,265 |     11,311 |
@@ -55,6 +55,7 @@
 | SimpleAccountV2                |    8,945 |     15,631 |
 | SimpleAccountV2Factory         |    3,206 |     21,370 |
 | StorageSlot                    |       86 |     24,490 |
+| StorageSlotUpgradeable         |       86 |     24,490 |
 | Strings                        |       86 |     24,490 |
 | StringsUpgradeable             |       86 |     24,490 |
 | TempKernel                     |    9,111 |     15,465 |
