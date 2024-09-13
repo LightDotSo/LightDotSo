@@ -16,7 +16,7 @@
 
 import { cn } from "@lightdotso/utils";
 import type { ImageProps } from "next/image";
-import { type FC, createContext, useContext, useState } from "react";
+import { type FC, createContext, useContext, useEffect, useState } from "react";
 import { NextImage } from "../next-image";
 
 // -----------------------------------------------------------------------------
@@ -48,6 +48,21 @@ export const BaseImage: FC<BaseImageProps> = ({
   // ---------------------------------------------------------------------------
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    // Set a timeout to force the image to be considered as loaded after 3 seconds
+    const timeoutId = setTimeout(() => {
+      if (!isImageLoaded) {
+        setIsImageLoaded(true);
+      }
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, [isImageLoaded]);
 
   // ---------------------------------------------------------------------------
   // Render
