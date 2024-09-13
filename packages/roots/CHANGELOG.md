@@ -1,5 +1,14 @@
 # @lightdotso/roots
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/forms@0.0.19
+  - @lightdotso/modals@0.0.19
+  - @lightdotso/templates@0.0.19
+
 ## 0.0.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @lightdotso/templates
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies [[`9ccee12`](https://github.com/LightDotSo/LightDotSo/commit/9ccee121208b9333a6e54a4cce04f8951ea711c5)]:
+  - @lightdotso/elements@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes
