@@ -16,13 +16,14 @@
 
 pragma solidity ^0.8.18;
 
+import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
 // LightTimelockControllerFactoryDeployer -- Deploys the LightTimelockControllerFactory contract
-contract LightTimelockControllerFactoryDeployer is Script {
+contract LightTimelockControllerFactoryDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Bytecode
     // -------------------------------------------------------------------------
@@ -40,7 +41,7 @@ contract LightTimelockControllerFactoryDeployer is Script {
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
         // The init code hash of the LightTimelockControllerFactory
-        bytes32 initCodeHash = 0x37f27db07e7024f891b7883da0f40c66e29ad2a4484c4bdee21ecff680658cfd;
+        bytes32 initCodeHash = 0x8d76161c978f900f81c8cdf224fd76ce0b63cf4ed4ed41ec66018480646a40df;
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
 

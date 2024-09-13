@@ -79,7 +79,7 @@ abstract contract BaseTest is Test {
 
     // LightTimelockControllerFactory address
     address internal constant LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS =
-        address(0x000000000003193FAcb32D1C120719892B7AE977);
+        address(0xA2448E1c8B2F22CC60938551abd63a7080bABA7b);
 
     // Light Master Wallet address
     address internal constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
