@@ -47,7 +47,7 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         // LightTimelockControllerFactory core contract
         timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
         // LightPaymaster core contract
-        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
 
         // Get network name
         string memory defaultName = "mainnet";

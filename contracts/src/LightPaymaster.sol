@@ -16,10 +16,10 @@
 
 pragma solidity ^0.8.27;
 
-import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
+import {MagicSpend} from "magic-spend/MagicSpend.sol";
 
-// LightPaymaster -- VerifyingPaymaster for Light
-contract LightPaymaster is VerifyingPaymaster {
+// LightPaymaster -- Paymaster for Light
+contract LightPaymaster is MagicSpend {
     // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
@@ -28,13 +28,11 @@ contract LightPaymaster is VerifyingPaymaster {
     string public constant NAME = "LightPaymaster";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.2.0";
+    string public constant VERSION = "0.3.0";
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
-        _transferOwnership(tx.origin);
-    }
+    constructor(address owner_, uint256 maxWithdrawDenominator_) MagicSpend(owner_, maxWithdrawDenominator_) {}
 }

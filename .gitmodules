@@ -22,6 +22,9 @@
 [submodule "lib/kernel"]
 	path = lib/kernel
 	url = https://github.com/zerodevapp/kernel
+[submodule "lib/magic-spend"]
+	path = lib/magic-spend
+	url = https://github.com/LightDotSo/magic-spend
 [submodule "lib/murky"]
 	path = lib/murky
 	url = https://github.com/dmfxyz/murky

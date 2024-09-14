@@ -82,7 +82,7 @@ abstract contract BaseTest is Test {
     // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
     // v2: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
     // v3: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000054230BA02ADD2d96fA4362A8606F97);
-    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
+    address internal constant LIGHT_PAYMASTER_ADDRESS = payable(address(0x000000000003193FAcb32D1C120719892B7AE977));
 
     // LightTimelockControllerFactory address
     address internal constant LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS =
