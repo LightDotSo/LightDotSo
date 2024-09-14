@@ -14,6 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
+import {ENTRY_POINT_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {PackedUserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";

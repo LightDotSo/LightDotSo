@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
+import {CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -44,6 +45,12 @@ interface ICREATE2Deployer {
 /// @notice BaseTest is a base contract for all tests
 abstract contract BaseTest is Test {
     // -------------------------------------------------------------------------
+    // Contracts
+    // -------------------------------------------------------------------------
+
+    ICREATE2Deployer constant CREATE2_DEPLOYER = ICREATE2Deployer(CREATE2_DEPLOYER_ADDRESS);
+
+    // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
 
@@ -58,46 +65,6 @@ abstract contract BaseTest is Test {
 
     // Upgraded Event from `ERC1967Upgrade.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/d00acef4059807535af0bd0dd0ddf619747a044b/contracts/proxy/ERC1967/ERC1967Upgrade.sol#L33
     event Upgraded(address implementation);
-
-    // -------------------------------------------------------------------------
-    // Addresses
-    // -------------------------------------------------------------------------
-
-    // OffchainVerifier address for paymaster
-    // v1: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
-    // v2: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-    // v3: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0618fE3A19a4980a0202aDBdb5201e74cD9908ff);
-    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-
-    // Deployer address
-    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
-
-    // EntryPoint address
-    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-
-    // LightWalletFactory address
-    address internal constant LIGHT_FACTORY_ADDRESS_V0_1_0 = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
-
-    // LightPaymaster address
-    // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
-    // v2: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
-    // v3: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000054230BA02ADD2d96fA4362A8606F97);
-    address internal constant LIGHT_PAYMASTER_ADDRESS = payable(address(0x000000000003193FAcb32D1C120719892B7AE977));
-
-    // LightTimelockControllerFactory address
-    address internal constant LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS =
-        address(0x0000000000f5A79Ab578707422Ec1BA4E5AfCb2d);
-
-    // Light Master Wallet address
-    address internal constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
-
-    // SimpleAccountFactory address
-    address internal constant SIMPLE_ACCOUNT_FACTORY_ADDRESS = address(0x223827826Fe82e8B445c3a5Fee6C7a8a4F1DEE9c);
-
-    // Create2Deployer address
-    address internal constant CREATE2_DEPLOYER_ADDRESS = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
-    ICREATE2Deployer internal constant CREATE2_DEPLOYER = ICREATE2Deployer(CREATE2_DEPLOYER_ADDRESS);
 
     // -------------------------------------------------------------------------
     // Constants
@@ -180,10 +147,10 @@ abstract contract BaseTest is Test {
     // From: https://github.com/SoulWallet/soulwallet-core/blob/7aac4a0a4d0f1054fd75d1ca09775c873b6bddab/test/dev/deployEntryPoint.sol#L2
     // License: GPL-3.0
     /// @dev Deploys a contract using create2
-    /// @param initCode The bytecode of the contract to deploy
-    /// @param salt The salt for the create2 call
-    function deployWithCreate2(bytes memory initCode, bytes32 salt) public payable returns (address) {
-        bytes memory deployCode = abi.encodePacked(salt, initCode);
+    /// @param _initCode The bytecode of the contract to deploy
+    /// @param _salt The salt for the create2 call
+    function deployWithCreate2(bytes memory _initCode, bytes32 _salt) public payable returns (address) {
+        bytes memory deployCode = abi.encodePacked(_salt, _initCode);
 
         address contractAddress;
         assembly {

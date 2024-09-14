@@ -33,6 +33,7 @@ surl/=lib/surl/src/
 @uniswap/v3-periphery/=lib/v3-periphery/
 @zerodevapp/contracts/=lib/kernel/src/
 @/bytecodes/=contracts/bytecodes/
+@/constants/=contracts/constants/
 @/contracts/=contracts/src/
 @/circuits/=contracts/circuits/
 @/test/=contracts/test/

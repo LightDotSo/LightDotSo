@@ -16,6 +16,7 @@
 
 pragma solidity ^0.8.27;
 
+import {ENTRY_POINT_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
