@@ -169,6 +169,9 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightWallet.sol
 	./contracts/build.sh LightWalletFactory.sol
 
+.PHONY: contracts-check
+contracts-check: contracts-size contracts-storage ## Check the contracts
+
 .PHONY: contracts-size
 contracts-size: ## Omits the current code size layout from the current contracts with foundry
 	./contracts/size.sh

@@ -27,17 +27,14 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
+ ➡ EntryPointv0.6.0
+=======================
  ➡ LightVerifyingPaymaster
 | Name   | Type    | Slot | Offset | Bytes | Contract                                                                   |
 |--------|---------|------|--------|-------|----------------------------------------------------------------------------|
 | _owner | address | 0    | 0      | 20    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
 =======================
  ➡ EntryPoint
-| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
-|---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
-| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 =======================
  ➡ VerifyingPaymaster
 | Name   | Type    | Slot | Offset | Bytes | Contract                                                                            |
