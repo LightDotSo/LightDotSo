@@ -10,10 +10,11 @@ export default defineConfig({
         build: true,
       },
       include: [
-        "EntryPoint.sol/**",
+        // "EntryPoint.sol/**",
         "LightDAG.sol/**",
         "LightPaymaster.sol/**",
-        "LightVerifyingPaymaster.sol/**",
+        "LightTimelockController.sol/**",
+        "LightTimelockControllerFactory.sol/**",
         "LightWallet.sol/**",
         "LightWalletFactory.sol/**",
       ],
