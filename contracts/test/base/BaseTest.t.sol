@@ -94,6 +94,7 @@ abstract contract BaseTest is Test {
     // SimpleAccountFactory address
     address internal constant SIMPLE_ACCOUNT_FACTORY_ADDRESS = address(0x223827826Fe82e8B445c3a5Fee6C7a8a4F1DEE9c);
 
+    // Create2Deployer address
     address internal constant CREATE2_DEPLOYER_ADDRESS = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
     ICREATE2Deployer internal constant CREATE2_DEPLOYER = ICREATE2Deployer(CREATE2_DEPLOYER_ADDRESS);
 
