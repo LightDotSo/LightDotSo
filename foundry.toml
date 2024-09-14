@@ -1,21 +1,6 @@
 [profile.default]
   auto_detect_remappings = false
   evm_version = "cancun"
-  libs = [
-    "lib/account-abstraction",
-    "lib/account-abstraction-v0.6",
-    "lib/account-abstraction-v0.7",
-    "lib/ds-test",
-    "lib/forge-std",
-    # "lib/kernel",
-    "lib/openzeppelin-contracts",
-    "lib/openzeppelin-contracts-upgradeable",
-    # "lib/safe-contracts",
-    # "lib/solady",
-    # "lib/solmate",
-    # "lib/soul-wallet-contract",
-    # "lib/v3-periphery",
-  ]
   gas_reports = ["LightWallet", "LightWalletFactory"]
   optimizer = true
   optimizer_runs = 10_000
@@ -29,7 +14,7 @@
 
 [profile.deploy]
   optimizer_runs = 4_294_967_295
-  via_ir = true
+  # via_ir = true
   out = 'optimized-out'
   script = 'contracts'
   bytecode_hash = 'none'

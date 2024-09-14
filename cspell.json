@@ -10,7 +10,13 @@
     }
   ],
   "useGitignore": true,
-  "ignorePaths": ["node_modules", "pnpm-lock.yaml", "assets/meta", "**.sql"],
+  "ignorePaths": [
+    "**.sql",
+    "pnpm-lock.yaml",
+    "node_modules",
+    "opt",
+    "assets/meta"
+  ],
   "enableFiletypes": ["mdx"],
   "enabled": true
 }

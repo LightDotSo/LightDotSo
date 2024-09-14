@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation, LightWallet} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
@@ -96,11 +96,11 @@ abstract contract BaseLightDeployer is BaseTest {
         internal
         returns (
             uint256 preVerificationGas,
-            uint256 verificationGasLimit,
-            uint256 callGasLimit,
+            uint128 verificationGasLimit,
+            uint128 callGasLimit,
             bytes memory paymasterAndData,
-            uint256 maxFeePerGas,
-            uint256 maxPriorityFeePerGas
+            uint128 maxFeePerGas,
+            uint128 maxPriorityFeePerGas
         )
     {
         // Perform a post request with headers and JSON body
@@ -137,12 +137,12 @@ abstract contract BaseLightDeployer is BaseTest {
 
         // Parse the params from `eth_estimateUserOperationGas` internal op
         preVerificationGas = json.readUint(".result.preVerificationGas");
-        verificationGasLimit = json.readUint(".result.verificationGasLimit");
-        callGasLimit = json.readUint(".result.callGasLimit");
+        verificationGasLimit = uint128(json.readUint(".result.verificationGasLimit"));
+        callGasLimit = uint128(json.readUint(".result.callGasLimit"));
 
         // Parse the params
-        maxFeePerGas = json.readUint(".result.maxFeePerGas");
-        maxPriorityFeePerGas = json.readUint(".result.maxPriorityFeePerGas");
+        maxFeePerGas = uint128(json.readUint(".result.maxFeePerGas"));
+        maxPriorityFeePerGas = uint128(json.readUint(".result.maxPriorityFeePerGas"));
         paymasterAndData = json.readBytes(".result.paymasterAndData");
     }
 
@@ -200,16 +200,12 @@ abstract contract BaseLightDeployer is BaseTest {
                 bytesToHexString(op.paymasterAndData),
                 '","signature":"',
                 bytesToHexString(op.signature),
-                '","maxFeePerGas":"',
-                uintToHexString(op.maxFeePerGas),
-                '","maxPriorityFeePerGas":"',
-                uintToHexString(op.maxPriorityFeePerGas),
+                '","accountGasLimits":"',
+                bytes32ToHexString(op.accountGasLimits),
                 '","preVerificationGas":"',
                 uintToHexString(op.preVerificationGas),
-                '","verificationGasLimit":"',
-                uintToHexString(op.verificationGasLimit),
-                '","callGasLimit":"',
-                uintToHexString(op.callGasLimit),
+                '","gasFees":"',
+                bytes32ToHexString(op.gasFees),
                 '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
@@ -239,11 +235,9 @@ abstract contract BaseLightDeployer is BaseTest {
         vm.writeJson(uintToHexString(op.nonce), "./tmp.json", ".nonce");
         vm.writeJson(bytesToHexString(op.initCode), "./tmp.json", ".initCode");
         vm.writeJson(bytesToHexString(op.callData), "./tmp.json", ".callData");
-        vm.writeJson(uintToHexString(op.callGasLimit), "./tmp.json", ".callGasLimit");
-        vm.writeJson(uintToHexString(op.verificationGasLimit), "./tmp.json", ".verificationGasLimit");
+        vm.writeJson(bytes32ToHexString(op.accountGasLimits), "./tmp.json", ".accountGasLimits");
         vm.writeJson(uintToHexString(op.preVerificationGas), "./tmp.json", ".preVerificationGas");
-        vm.writeJson(uintToHexString(op.maxFeePerGas), "./tmp.json", ".maxFeePerGas");
-        vm.writeJson(uintToHexString(op.maxPriorityFeePerGas), "./tmp.json", ".maxPriorityFeePerGas");
+        vm.writeJson(bytes32ToHexString(op.gasFees), "./tmp.json", ".gasFees");
         vm.writeJson(bytesToHexString(op.paymasterAndData), "./tmp.json", ".paymasterAndData");
         vm.writeJson(bytesToHexString(op.signature), "./tmp.json", ".signature");
     }
@@ -288,6 +282,11 @@ abstract contract BaseLightDeployer is BaseTest {
         }
         // revert("Invalid hex digit");
         revert();
+    }
+
+    /// @dev Converts bytes32 to hexadecimal string
+    function bytes32ToHexString(bytes32 data) public pure returns (string memory) {
+        return bytesToHexString(abi.encodePacked(data));
     }
 
     /// @dev Converts uint to hexadecimal string
