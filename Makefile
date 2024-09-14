@@ -160,6 +160,15 @@ cargo-fmt: cargo-setup ## Fix cargo.
 ##@ Contracts
 contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the contract generation scripts
 
+.PHONY: contracts-build
+contracts-build: ## Build the contracts
+	./contracts/build.sh LightDAG.sol
+	./contracts/build.sh LightPaymaster.sol
+	./contracts/build.sh LightTimelockController.sol
+	./contracts/build.sh LightTimelockControllerFactory.sol
+	./contracts/build.sh LightWallet.sol
+	./contracts/build.sh LightWalletFactory.sol
+
 .PHONY: contracts-size
 contracts-size: ## Omits the current code size layout from the current contracts with foundry
 	./contracts/size.sh
