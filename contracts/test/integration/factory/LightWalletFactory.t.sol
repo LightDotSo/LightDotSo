@@ -19,6 +19,7 @@ pragma solidity ^0.8.27;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Initializable} from "@/test/base/BaseTest.t.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -71,10 +72,10 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(hash);
-        vm.expectEmit(true, true, true, true);
-        emit Initialized(1);
         // vm.expectEmit(true, true, true, true);
         // emit LightWalletInitialized(address(entryPoint), hash);
+        vm.expectEmit(true, true, true, true);
+        emit Initialized(18446744073709551615);
         factory.createAccount(hash, 0);
     }
 
