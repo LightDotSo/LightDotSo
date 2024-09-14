@@ -11,7 +11,7 @@ overrides:
   react-dom: 19.0.0-rc-7771d3a7-20240827
   react-is: 19.0.0-rc-7771d3a7-20240827
   recharts: 2.13.0-alpha.4
-  solc: 0.8.18
+  solc: 0.8.27
 
 importers:
 
@@ -36,8 +36,8 @@ importers:
         specifier: 2.13.0-alpha.4
         version: 2.13.0-alpha.4(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       solc:
-        specifier: 0.8.18
-        version: 0.8.18(debug@4.3.6)
+        specifier: 0.8.27
+        version: 0.8.27(debug@4.3.6)
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.0
@@ -56,19 +56,19 @@ importers:
         version: 19.5.0
       '@evmts/config':
         specifier: ^0.10.0
-        version: 0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
+        version: 0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@evmts/core':
         specifier: ^0.11.2
         version: 0.11.2(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/ts-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))
+        version: 0.11.2(bufferutil@4.0.8)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/vite-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.4(@types/node@22.5.4)(less@4.2.0)(terser@5.31.5))(zod@3.23.8)
+        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.4(@types/node@22.5.4)(less@4.2.0)(terser@5.31.5))(zod@3.23.8)
       '@evmts/webpack-plugin':
         specifier: ^0.11.2
-        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.93.0(@swc/core@1.7.26(@swc/helpers@0.5.13))(esbuild@0.23.1))(zod@3.23.8)
+        version: 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.93.0(@swc/core@1.7.26(@swc/helpers@0.5.13))(esbuild@0.23.1))(zod@3.23.8)
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:packages/sequence
@@ -1596,6 +1596,8 @@ importers:
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
+
+  apps/llm: {}
 
   apps/open: {}
 
@@ -6624,12 +6626,12 @@ packages:
   '@evmts/bundler@0.11.2':
     resolution: {integrity: sha512-8LDAYcAqEROEVXlIYyM8IO4k0JotcsU+dDEKOB1WdIC/3Tluy7VIGjripi6niRnadgowhg5VszdPwKisU7lUvw==}
     peerDependencies:
-      solc: 0.8.18
+      solc: 0.8.27
 
   '@evmts/config@0.10.0':
     resolution: {integrity: sha512-R7swphpJe84K67I4alFYflbzNFYVUHCEUlw0clihmgjFsBCPOXuI85HvdPhP8uKqa1PUTBSm5noCwFih5qPfgg==}
     peerDependencies:
-      solc: 0.8.18
+      solc: 0.8.27
 
   '@evmts/core@0.11.2':
     resolution: {integrity: sha512-TWPdbJCO/L3tq0shBKo148738KTrxTiNGJeW+U4h9jf1M3Ei6NOPP/vl3rP56d+UorXZMH4h5HfhwPqtAN5PCw==}
@@ -6640,7 +6642,7 @@ packages:
     resolution: {integrity: sha512-jeLLSmu6JzDEiLBeV8hONSA43yJMe8Wc/8p/GZFnZ9ud0U1ne5v8qtMgIB/SXPeUk+AfXxsc4b84gev3vhwZ2Q==}
     hasBin: true
     peerDependencies:
-      solc: 0.8.18
+      solc: 0.8.27
       typescript: '>=5.0.0'
 
   '@evmts/tsconfig@0.8.1':
@@ -21638,8 +21640,8 @@ packages:
     resolution: {integrity: sha512-l5x7VUUWbjVFbafGLxPWkYsHIhEvmF85tbIeFZWc8ZPtoMyybuEhL7Jye/ooC4/d48FgOjSJXgsF/AJPYCW8Zw==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
 
-  solc@0.8.18:
-    resolution: {integrity: sha512-wVAa2Y3BYd64Aby5LsgS3g6YC2NvZ3bJ+A8TAIAukfVuQb3AjyGrLZpyxQk5YLn14G35uZtSnIgHEpab9klOLQ==}
+  solc@0.8.27:
+    resolution: {integrity: sha512-BNxMol2tUAbkH7HKlXBcBqrGi2aqgv+uMHz26mJyTtlVgWmBA4ktiw0qVKHfkjf2oaHbwtbtaSeE2dhn/gTAKw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
 
@@ -26499,16 +26501,16 @@ snapshots:
       '@ethersproject/properties': 5.7.0
       '@ethersproject/strings': 5.7.0
 
-  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
+  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
-      '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
+      '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@evmts/core': 0.11.2(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/tsconfig': 0.8.1
       '@types/node': 20.14.14
       '@types/resolve': 1.20.6
       glob: 10.4.5
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       solidity-ast: 0.4.56
       unplugin: 1.12.1
     transitivePeerDependencies:
@@ -26519,16 +26521,16 @@ snapshots:
       - viem
       - zod
 
-  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
+  '@evmts/bundler@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
-      '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
+      '@evmts/config': 0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@evmts/core': 0.11.2(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@evmts/tsconfig': 0.8.1
       '@types/node': 20.14.14
       '@types/resolve': 1.20.6
       glob: 10.4.5
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       solidity-ast: 0.4.56
       unplugin: 1.12.1
     transitivePeerDependencies:
@@ -26539,12 +26541,12 @@ snapshots:
       - viem
       - zod
 
-  '@evmts/config@0.10.0(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@evmts/config@0.10.0(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       '@types/node': 20.14.14
       bundle-require: 4.2.1(esbuild@0.19.2)
       jsonc-parser: 3.3.1
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -26553,12 +26555,12 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@evmts/config@0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@evmts/config@0.10.0(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       '@types/node': 20.14.14
       bundle-require: 4.2.1(esbuild@0.23.1)
       jsonc-parser: 3.3.1
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -26571,12 +26573,12 @@ snapshots:
     dependencies:
       viem: 2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
 
-  '@evmts/ts-plugin@0.11.2(bufferutil@4.0.8)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))':
+  '@evmts/ts-plugin@0.11.2(bufferutil@4.0.8)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       esbuild: 0.19.2
       glob: 10.4.5
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       solidity-ast: 0.4.56
       typescript: 5.6.2
       zod: 3.23.8
@@ -26587,9 +26589,9 @@ snapshots:
 
   '@evmts/tsconfig@0.8.1': {}
 
-  '@evmts/vite-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.4(@types/node@22.5.4)(less@4.2.0)(terser@5.31.5))(zod@3.23.8)':
+  '@evmts/vite-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(vite@5.4.4(@types/node@22.5.4)(less@4.2.0)(terser@5.31.5))(zod@3.23.8)':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       vite: 5.4.4(@types/node@22.5.4)(less@4.2.0)(terser@5.31.5)
     transitivePeerDependencies:
       - bufferutil
@@ -26600,9 +26602,9 @@ snapshots:
       - viem
       - zod
 
-  '@evmts/webpack-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.93.0(@swc/core@1.7.26(@swc/helpers@0.5.13))(esbuild@0.23.1))(zod@3.23.8)':
+  '@evmts/webpack-plugin@0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(webpack@5.93.0(@swc/core@1.7.26(@swc/helpers@0.5.13))(esbuild@0.23.1))(zod@3.23.8)':
     dependencies:
-      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.18)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.23.1)(solc@0.8.27)(typescript@5.6.2)(utf-8-validate@5.0.10)(viem@2.21.6(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       webpack: 5.93.0(@swc/core@1.7.26(@swc/helpers@0.5.13))(esbuild@0.23.1)
     transitivePeerDependencies:
       - bufferutil
@@ -39903,7 +39905,7 @@ snapshots:
       raw-body: 2.5.2
       resolve: 1.17.0
       semver: 6.3.1
-      solc: 0.8.18(debug@4.3.6)
+      solc: 0.8.27(debug@4.3.6)
       source-map-support: 0.5.21
       stacktrace-parser: 0.1.10
       tsort: 0.0.1
@@ -47010,7 +47012,7 @@ snapshots:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
 
-  solc@0.8.18(debug@4.3.6):
+  solc@0.8.27(debug@4.3.6):
     dependencies:
       command-exists: 1.2.9
       commander: 8.3.0
