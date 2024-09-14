@@ -20,6 +20,7 @@ import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
@@ -35,11 +36,9 @@ contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
             uint256(0),
             "",
             "",
+            bytes32(0),
             uint256(0),
-            uint256(0),
-            uint256(0),
-            uint256(0),
-            uint256(0),
+            bytes32(0),
             abi.encodePacked(
                 address(LIGHT_PAYMASTER_ADDRESS),
                 abi.encode(uint48(0), uint48(0)),
@@ -94,7 +93,7 @@ contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         console.logBytes32(beforeHash);
 
         writeUserOperationJson(op);
-        bytes32 hash = ECDSA.toEthSignedMessageHash(beforeHash);
+        bytes32 hash = MessageHashUtils.toEthSignedMessageHash(beforeHash);
 
         // solhint-disable-next-line no-console
         console.logBytes32(hash);

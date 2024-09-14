@@ -86,12 +86,15 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Get the paymaster request gas and paymaster and data
         (
             uint256 preVerificationGas,
-            uint256 verificationGasLimit,
-            uint256 callGasLimit,
+            uint128 verificationGasLimit,
+            uint128 callGasLimit,
             bytes memory paymasterAndData,
-            uint256 maxFeePerGas,
-            uint256 maxPriorityFeePerGas
+            uint128 maxFeePerGas,
+            uint128 maxPriorityFeePerGas
         ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData, isLightWallet);
+
+        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(verificationGasLimit, callGasLimit);
+        bytes32 gasFees = ERC4337Utils.packGasFees(maxPriorityFeePerGas, maxFeePerGas);
 
         // Get the gas estimation
         // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
@@ -103,16 +106,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             nonce,
             initCode,
             callData,
-            callGasLimit,
-            // 1_000_000,
-            verificationGasLimit,
-            // 1_000_000,
+            accountGasLimits,
             preVerificationGas,
-            // 500_000,
-            maxFeePerGas,
-            maxPriorityFeePerGas,
+            gasFees,
             paymasterAndData,
-            // signature should be empty
             ""
         );
     }
@@ -120,7 +117,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     /// @dev Handle the ops with the entryPoint
     function handleOps(PackedUserOperation memory op) internal {
         // Construct the ops
-        PackedUserOperation[] memory ops = new UserOperation[](1);
+        PackedUserOperation[] memory ops = new PackedUserOperation[](1);
         ops[0] = op;
 
         // Handle the ops
@@ -130,7 +127,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     /// @dev Simulate the ops with the entryPoint
     function simulateValidation(PackedUserOperation memory op) internal {
         // Simulate the UserOperation
-        entryPoint.simulateValidation(op);
+        // entryPoint.simulateValidation(op);
     }
 
     /// @dev Deploy the SimpleAccount contract
@@ -227,7 +224,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         writeUserOperationJson(op);
 
         // Construct the ops
-        PackedUserOperation[] memory ops = new UserOperation[](1);
+        PackedUserOperation[] memory ops = new PackedUserOperation[](1);
         ops[0] = op;
 
         // Handle the ops
