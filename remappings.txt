@@ -13,6 +13,7 @@ solmate/=lib/solmate/src/
 src/=lib/kernel/src/
 surl/=lib/surl/src/
 @0xsequence/wallet-contracts/=lib/wallet-contracts/
+@0xsequence/wallet-contracts0v3/=lib/wallet-contracts-v3/
 @account-abstraction/=lib/account-abstraction/
 @biconomy/account-contracts/=lib/scw-contracts/
 @eth-infinitism/account-abstraction/=lib/account-abstraction/
