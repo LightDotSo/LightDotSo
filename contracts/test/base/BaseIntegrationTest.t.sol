@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {PackedUserOperation} from "@/contracts/LightWallet.sol";
@@ -120,7 +121,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     /// @dev Check that the account is not initializable twice
     // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
     function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
-        vm.expectRevert(bytes("Initializable: contract is already initialized"));
+        vm.expectRevert(Initializable.InvalidInitialization.selector);
         // Check that the account is initializable
         (bool success,) = _proxy.call(_calldata);
         // Assert that the code was not reverted

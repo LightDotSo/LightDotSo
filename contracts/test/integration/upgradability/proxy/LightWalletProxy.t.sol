@@ -16,6 +16,7 @@
 
 pragma solidity ^0.8.27;
 
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -41,7 +42,7 @@ contract LightWalletProxyIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can not be initialized twice
     function test_revertWhenAlreadyInitialized_proxy() public {
         // Ensure that the account is not initializable on the implementation contract
-        vm.expectRevert(bytes("Initializable: contract is already initialized"));
+        vm.expectRevert(Initializable.InvalidInitialization.selector);
         account.initialize(bytes32(uint256(1)));
     }
 
