@@ -16,6 +16,7 @@
 
 pragma solidity ^0.8.27;
 
+import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -193,6 +194,10 @@ abstract contract BaseTest is Test {
         }
 
         return contractAddress;
+    }
+
+    function deployEntryPoint() internal {
+        entryPoint = EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
     }
 
     /// @dev Gets the pseudo-random number
