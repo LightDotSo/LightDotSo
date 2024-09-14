@@ -14,10 +14,10 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
@@ -58,7 +58,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
 
         // Example UserOperation to create the account
-        UserOperation[] memory ops =
+        PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(1), "", userKey, initCode, weight, threshold, checkpoint);
 
         // Revert for conventional upgrades w/o signature
@@ -69,7 +69,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     /// Tests that the factory revert when creating an account that already exists
     function test_revertWhenAlreadyExists_createAccountFromEntryPoint() public {
         // Example UserOperation to create the account w/ the same params
-        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
+        PackedUserOperation[] memory ops = _testSignPackUserOpWithInitCode();
 
         vm.expectRevert(
             abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed")
@@ -94,7 +94,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
-        UserOperation[] memory ops =
+        PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         vm.expectEmit(true, true, true, true);

@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable-v4.9/governance/TimelockControllerUpgradeable.sol";

@@ -18,9 +18,9 @@
 // From: https://eips.ethereum.org/EIPS/eip-1271
 // License: CC-BY-SA-4.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
-import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
 interface ILightWallet is IERC1271 {

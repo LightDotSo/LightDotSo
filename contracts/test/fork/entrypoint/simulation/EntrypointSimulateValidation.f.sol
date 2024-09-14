@@ -14,12 +14,12 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
 import {IStakeManager} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
@@ -58,7 +58,7 @@ contract SimulateValidationForkTest is BaseForkTest {
             abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
-        UserOperation memory op =
+        PackedUserOperation memory op =
             entryPoint.signPackUserOp(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         // IEntryPoint.ReturnInfo memory returnInfo =
@@ -72,8 +72,5 @@ contract SimulateValidationForkTest is BaseForkTest {
         //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
         //     )
         // );
-
-        vm.expectRevert();
-        entryPoint.simulateValidation(op);
     }
 }

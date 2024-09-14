@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {ECDSA} from "@openzeppelin/contracts-v4.9/utils/cryptography/ECDSA.sol";
 import {Test, Vm} from "forge-std/Test.sol";

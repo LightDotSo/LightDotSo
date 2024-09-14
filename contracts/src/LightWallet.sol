@@ -28,7 +28,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 // LightWallet.sol -- LightWallet initial implementation
 
@@ -42,14 +42,16 @@ pragma solidity ^0.8.18;
 
 // Thank you to both teams for the ever amazing work!
 
-import {Initializable} from "@openzeppelin/contracts-v4.9/proxy/utils/Initializable.sol";
-import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
-import {BaseAccount} from "@eth-infinitism/account-abstraction-v0.6/contracts/core/BaseAccount.sol";
-import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
-import {UserOperation} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/UserOperation.sol";
-import {TokenCallbackHandler} from
-    "@eth-infinitism/account-abstraction-v0.6/contracts/samples/callback/TokenCallbackHandler.sol";
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
+import {
+    SIG_VALIDATION_FAILED,
+    SIG_VALIDATION_SUCCESS
+} from "@eth-infinitism/account-abstraction/contracts/core/Helpers.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
 import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
@@ -57,14 +59,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// @title LightWallet
 /// @author @shunkakinoki
 /// @notice LightWallet is an account abstraction contract
-contract LightWallet is
-    ILightWallet,
-    ModuleAuthUpgradable,
-    BaseAccount,
-    TokenCallbackHandler,
-    UUPSUpgradeable,
-    Initializable
-{
+contract LightWallet is ILightWallet, ModuleAuthUpgradable, BaseAccount, UUPSUpgradeable, Initializable {
     // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
@@ -160,7 +155,7 @@ contract LightWallet is
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
+    function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
         internal
         virtual
         override
@@ -175,7 +170,7 @@ contract LightWallet is
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
-            return 0;
+            return SIG_VALIDATION_SUCCESS;
         }
 
         // If the signature type is 0x04, it is a merkle proof signature
@@ -204,7 +199,7 @@ contract LightWallet is
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
-            return 0;
+            return SIG_VALIDATION_SUCCESS;
         }
 
         // Return an error if the signature type is not recognized
@@ -249,7 +244,7 @@ contract LightWallet is
     function supportsInterface(bytes4 interfaceId)
         public
         pure
-        override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
+        override(ILightWallet, ModuleAuthUpgradable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

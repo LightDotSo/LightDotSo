@@ -14,12 +14,12 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {Merkle} from "murky/Merkle.sol";
 import "solidity-bytes-utils/BytesLib.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 // solhint-disable-next-line no-console
@@ -62,11 +62,11 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_merkle_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops =
+        PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
 
         // Get the first userOp
-        UserOperation memory op = ops[0];
+        PackedUserOperation memory op = ops[0];
 
         // Get the userOp hash
         bytes32 userOpHash = entryPoint.getUserOpHash(op);

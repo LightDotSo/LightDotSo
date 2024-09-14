@@ -14,10 +14,10 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -35,7 +35,7 @@ contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
         vm.assume(hash != bytes32(0));
 
         // Obtain the user operation w/ signature
-        UserOperation[] memory ops = entryPoint.signPackUserOps(
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
             address(account),
             abi.encodeWithSelector(

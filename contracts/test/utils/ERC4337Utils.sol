@@ -14,19 +14,21 @@
 
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/ERC4337Utils.sol
 // Thank you to the awesome folks at ZeroDev for this utility library!
 // License: MIT
 
-import {ECDSA} from "@openzeppelin/contracts-v4.9/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import {UserOperationLib} from "@eth-infinitism/account-abstraction/contracts/core/UserOperationLib.sol";
 import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 
+using UserOperationLib for PackedUserOperation;
 using ERC4337Utils for EntryPoint;
 
 /// @notice Utility functions for ERC4337
@@ -42,16 +44,14 @@ library ERC4337Utils {
     function fillUserOp(EntryPoint _entryPoint, address _account, bytes memory _data)
         internal
         view
-        returns (UserOperation memory op)
+        returns (PackedUserOperation memory op)
     {
         op.sender = _account;
         op.nonce = _entryPoint.getNonce(_account, 0);
         op.callData = _data;
-        op.callGasLimit = 10000000;
-        op.verificationGasLimit = 10000000;
+        op.accountGasLimits = bytes32(0);
         op.preVerificationGas = 50000;
-        op.maxFeePerGas = 50000;
-        op.maxPriorityFeePerGas = 1;
+        op.gasFees = bytes32(0);
     }
 
     /// @dev Signs the hash of a UserOperation
@@ -59,13 +59,13 @@ library ERC4337Utils {
     /// @param _vm The VM contract
     /// @param _key The user's private key to sign the UserOperation with
     /// @param _op The UserOperation to sign
-    function signUserOp(EntryPoint _entryPoint, Vm _vm, uint256 _key, UserOperation memory _op)
+    function signUserOp(EntryPoint _entryPoint, Vm _vm, uint256 _key, PackedUserOperation memory _op)
         internal
         view
         returns (bytes memory signature)
     {
         bytes32 hash = _entryPoint.getUserOpHash(_op);
-        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_key, ECDSA.toEthSignedMessageHash(hash));
+        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_key, MessageHashUtils.toEthSignedMessageHash(hash));
         signature = abi.encodePacked(r, s, v);
     }
 
@@ -116,7 +116,7 @@ library ERC4337Utils {
         uint8 _weight,
         uint16 _threshold,
         uint32 _checkpoint
-    ) internal view returns (UserOperation memory op) {
+    ) internal view returns (PackedUserOperation memory op) {
         // Example UserOperation to update the account to immutable address one
         op = _entryPoint.fillUserOp(address(_account), _data);
 
@@ -155,9 +155,9 @@ library ERC4337Utils {
         uint8 _weight,
         uint16 _threshold,
         uint32 _checkpoint
-    ) internal view returns (UserOperation[] memory ops) {
+    ) internal view returns (PackedUserOperation[] memory ops) {
         // Pack the UserOperation
-        ops = new UserOperation[](1);
+        ops = new PackedUserOperation[](1);
         ops[0] = signPackUserOp(_entryPoint, _vm, _account, _data, _key, _initCode, _weight, _threshold, _checkpoint);
     }
 }

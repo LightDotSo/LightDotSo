@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
 import {LightWalletDeployFlowScript} from "@/script/flow/LightWalletDeployFlow.s.sol";

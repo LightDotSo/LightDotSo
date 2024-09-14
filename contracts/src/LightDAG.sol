@@ -16,7 +16,7 @@
 
 import {IConditionChecker} from "@/contracts/interfaces/IConditionChecker.sol";
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 /// @title LightDAG
 /// @author @shunkakinoki

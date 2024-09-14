@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";

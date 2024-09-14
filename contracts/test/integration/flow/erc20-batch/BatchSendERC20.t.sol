@@ -14,12 +14,12 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {IERC20} from "@openzeppelin/contracts-v4.9/token/ERC20/IERC20.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -89,7 +89,7 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC20
     function test_revertWhenInvalidSignature_batchTransferERC20() public {
         // Example UserOperation to send 0 ERC20 to the address one
-        UserOperation[] memory ops =
+        PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
@@ -99,7 +99,7 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC20
     function test_batchTransferERC20() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops =
+        PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         entryPoint.handleOps(ops, beneficiary);
 

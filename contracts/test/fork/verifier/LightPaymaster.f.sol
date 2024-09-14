@@ -14,11 +14,11 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
-import {UserOperation} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/UserOperation.sol";
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
@@ -48,28 +48,25 @@ contract LightPaymasterForkTest is BaseForkTest {
         uint256 nonce = 0;
         bytes memory initCode = "";
         bytes memory callData = "";
-        uint256 callGasLimit;
-        uint256 verificationGasLimit = 0;
+        bytes32 accountGasLimits = bytes32(0);
         uint256 preVerificationGas = 0;
-        uint256 maxFeePerGas = 0;
-        uint256 maxPriorityFeePerGas = 0;
+        bytes32 gasFees = bytes32(0);
         bytes memory paymasterAndData =
             hex"000000000018d32df916ff115a25fbefc70baf8b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
         bytes memory signature = hex"";
 
-        UserOperation memory op = UserOperation(
+        PackedUserOperation memory op = PackedUserOperation(
             sender,
             nonce,
             initCode,
             callData,
-            callGasLimit,
-            verificationGasLimit,
+            accountGasLimits,
             preVerificationGas,
-            maxFeePerGas,
-            maxPriorityFeePerGas,
+            gasFees,
             paymasterAndData,
             signature
         );
+
         // Get the hash w/ custom operation
         bytes32 hash = paymaster.getHash(op, 0, 0);
 

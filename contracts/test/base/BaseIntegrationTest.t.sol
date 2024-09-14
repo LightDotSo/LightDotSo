@@ -14,12 +14,12 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
@@ -129,12 +129,12 @@ abstract contract BaseIntegrationTest is BaseTest {
 
     /// Utility function to create an account from the entry point
     function _testCreateAccountFromEntryPoint() internal {
-        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
+        PackedUserOperation[] memory ops = _testSignPackUserOpWithInitCode();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Utility function to run the signPackUserOp function
-    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
+    function _testSignPackUserOpWithInitCode() internal view returns (PackedUserOperation[] memory ops) {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),

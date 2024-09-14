@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";

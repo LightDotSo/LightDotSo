@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
@@ -30,7 +30,7 @@ contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
 
     function run() public {
-        UserOperation memory op = UserOperation(
+        PackedUserOperation memory op = PackedUserOperation(
             address(0),
             uint256(0),
             "",

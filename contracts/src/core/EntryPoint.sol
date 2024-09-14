@@ -14,6 +14,6 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
-import "@eth-infinitism/account-abstraction-v0.6/contracts/core/EntryPoint.sol";
+import "@eth-infinitism/account-abstraction/contracts/core/EntryPoint.sol";
