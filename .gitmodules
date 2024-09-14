@@ -4,8 +4,8 @@
 	branch = releases/v0.7
 [submodule "lib/account-abstraction-v0.6"]
 	path = lib/account-abstraction-v0.6
-	url = https://github.com/eth-infinitism/account-abstraction
-	branch = releases/v0.6
+	url = https://github.com/LightDotSo/account-abstraction
+	branch = releases/v0.6-patch
 [submodule "lib/account-abstraction-v0.7"]
 	path = lib/account-abstraction-v0.7
 	url = https://github.com/eth-infinitism/account-abstraction
