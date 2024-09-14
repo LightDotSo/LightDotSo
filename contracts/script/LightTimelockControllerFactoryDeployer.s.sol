@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash} from "@/bytecodes/LightTimelockControllerFactory/v0.1.0.b.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightTimelockControllerFactory/v0.1.0.b.sol";
 import {LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS} from "@/constants/addresses.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
@@ -36,9 +36,6 @@ contract LightTimelockControllerFactoryDeployer is BaseLightDeployer, Script {
         console.logBytes32(keccak256(initCode));
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
-
-        // Salt for deterministic deployment
-        bytes32 salt = 0x00000000000000000000000000000000000000000747fdf73ecc8327864a30e1;
 
         // // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {

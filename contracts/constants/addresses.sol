@@ -1,3 +1,17 @@
+// Copyright 2023-2024 LightDotSo.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 // SPDX-License-Identifier: Apache-2.0
 
 pragma solidity ^0.8.27;
@@ -21,8 +35,9 @@ address payable constant ENTRY_POINT_V060_ADDRESS = payable(address(0x5FF137D4b0
 address payable constant ENTRY_POINT_V070_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
 // LightWalletFactory address
-address constant LIGHT_FACTORY_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
+address constant LIGHT_FACTORY_ADDRESS = LIGHT_FACTORY_V020_ADDRESS;
 address constant LIGHT_FACTORY_V010_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+address constant LIGHT_FACTORY_V020_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
 
 // LightPaymaster address
 // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
