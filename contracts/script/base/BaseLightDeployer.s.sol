@@ -27,25 +27,10 @@ import {Surl} from "surl/Surl.sol";
 
 pragma solidity ^0.8.27;
 
-interface ImmutableCreate2Factory {
-    function safeCreate2(bytes32 salt, bytes calldata initializationCode)
-        external
-        payable
-        returns (address deploymentAddress);
-}
-
 // BaseLightDeployer - Create abstract contract of just immutable storages
 abstract contract BaseLightDeployer is BaseTest {
     using Surl for *;
     using stdJson for string;
-
-    // -------------------------------------------------------------------------
-    // Immutable Factory
-    // -------------------------------------------------------------------------
-
-    address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
-    ImmutableCreate2Factory internal constant IMMUTABLE_CREATE2_FACTORY =
-        ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     // -------------------------------------------------------------------------
     // Setup

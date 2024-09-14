@@ -34,6 +34,12 @@ import {Test} from "forge-std/Test.sol";
 
 using ERC4337Utils for EntryPoint;
 
+interface ICREATE2Deployer {
+    function deploy(uint256 salt, bytes calldata initializationCode)
+        external
+        returns (address payable deploymentAddress);
+}
+
 /// @notice BaseTest is a base contract for all tests
 abstract contract BaseTest is Test {
     // -------------------------------------------------------------------------
@@ -80,13 +86,16 @@ abstract contract BaseTest is Test {
 
     // LightTimelockControllerFactory address
     address internal constant LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS =
-        address(0x0000000000Ee0Fdc3Ea595eC27a1FeA72cB973f3);
+        address(0x0000000000f5A79Ab578707422Ec1BA4E5AfCb2d);
 
     // Light Master Wallet address
     address internal constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
 
     // SimpleAccountFactory address
     address internal constant SIMPLE_ACCOUNT_FACTORY_ADDRESS = address(0x223827826Fe82e8B445c3a5Fee6C7a8a4F1DEE9c);
+
+    address internal constant CREATE2_DEPLOYER_ADDRESS = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
+    ICREATE2Deployer internal constant CREATE2_DEPLOYER = ICREATE2Deployer(CREATE2_DEPLOYER_ADDRESS);
 
     // -------------------------------------------------------------------------
     // Constants
@@ -165,6 +174,25 @@ abstract contract BaseTest is Test {
     // -------------------------------------------------------------------------
     // Utility
     // -------------------------------------------------------------------------
+
+    // From: https://github.com/SoulWallet/soulwallet-core/blob/7aac4a0a4d0f1054fd75d1ca09775c873b6bddab/test/dev/deployEntryPoint.sol#L2
+    // License: GPL-3.0
+    /// @dev Deploys a contract using create2
+    /// @param initCode The bytecode of the contract to deploy
+    /// @param salt The salt for the create2 call
+    function deployWithCreate2(bytes memory initCode, bytes32 salt) public payable returns (address) {
+        bytes memory deployCode = abi.encodePacked(salt, initCode);
+
+        address contractAddress;
+        assembly {
+            mstore(0x00, 0)
+            let result := call(gas(), CREATE2_DEPLOYER_ADDRESS, 0, add(deployCode, 0x20), mload(deployCode), 12, 20)
+            if iszero(result) { revert(0, 0) }
+            contractAddress := mload(0)
+        }
+
+        return contractAddress;
+    }
 
     /// @dev Gets the pseudo-random number
     function randomSeed() internal view returns (uint256) {

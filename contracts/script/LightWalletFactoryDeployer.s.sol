@@ -65,7 +65,7 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             vm.startBroadcast();
 
             // Create LightWalletFactory
-            factory = LightWalletFactory(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, initCode));
+            factory = LightWalletFactory(deployWithCreate2(salt, initCode));
 
             // Assert that the factory is the expected address
             assert(address(factory) == LIGHT_FACTORY_ADDRESS);
