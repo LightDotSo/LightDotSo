@@ -1,5 +1,11 @@
 # @lightdotso/elements
 
+## 0.0.20
+
+### Patch Changes
+
+- [#2374](https://github.com/LightDotSo/LightDotSo/pull/2374) [`d64f4af`](https://github.com/LightDotSo/LightDotSo/commit/d64f4afdd00292a107dea2a13673cb1f1fa12829) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add update elements
+
 ## 0.0.19
 
 ### Patch Changes

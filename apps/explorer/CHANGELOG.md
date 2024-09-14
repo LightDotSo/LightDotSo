@@ -1,5 +1,14 @@
 # @lightdotso/web
 
+## 3.2.20
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/tables@0.1.20
+  - @lightdotso/templates@0.0.20
+  - @lightdotso/roots@0.0.6
+
 ## 3.2.19
 
 ### Patch Changes
