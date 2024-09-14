@@ -34,3 +34,5 @@ ignores:
   - react-is
   - "@storybook/theming"
   - esbuild
+  - vaul
+
