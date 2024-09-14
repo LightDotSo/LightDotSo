@@ -28,7 +28,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 // LightWallet.sol -- LightWallet initial implementation
 
@@ -46,10 +46,14 @@ import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.s
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
-import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
+import {
+    SIG_VALIDATION_FAILED,
+    SIG_VALIDATION_SUCCESS
+} from "@eth-infinitism/account-abstraction/contracts/core/Helpers.sol";
 import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
 import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
@@ -73,7 +77,7 @@ contract LightWallet is
     string public constant NAME = "LightWallet";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.3.0";
+    string public constant VERSION = "0.4.0";
 
     // -------------------------------------------------------------------------
     // Immutable Storage
@@ -160,7 +164,7 @@ contract LightWallet is
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
+    function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
         internal
         virtual
         override
@@ -175,7 +179,7 @@ contract LightWallet is
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
-            return 0;
+            return SIG_VALIDATION_SUCCESS;
         }
 
         // If the signature type is 0x04, it is a merkle proof signature
@@ -204,7 +208,7 @@ contract LightWallet is
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
-            return 0;
+            return SIG_VALIDATION_SUCCESS;
         }
 
         // Return an error if the signature type is not recognized

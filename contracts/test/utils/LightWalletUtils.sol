@@ -14,9 +14,9 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {Test, Vm} from "forge-std/Test.sol";
 
 /// @title LightWalletUtils
@@ -45,7 +45,7 @@ library LightWalletUtils {
         bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
 
         // The actual hash that was signed w/ EIP-191 flag
-        bytes32 signed_subdigest = isSign ? ECDSA.toEthSignedMessageHash(subdigest) : subdigest;
+        bytes32 signed_subdigest = isSign ? MessageHashUtils.toEthSignedMessageHash(subdigest) : subdigest;
 
         // Create the signature w/ the subdigest
         (uint8 v, bytes32 r, bytes32 s) = _vm.sign(userKey, signed_subdigest);

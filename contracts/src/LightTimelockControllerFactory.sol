@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
@@ -25,7 +25,7 @@ import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 /// @notice A factory contract for `LightTimelockController`
 contract LightTimelockControllerFactory {
     // -------------------------------------------------------------------------
-    // Constants
+    // Constant
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract

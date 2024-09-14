@@ -14,8 +14,9 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -39,16 +40,16 @@ contract LightTimelockControllerProxyIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account can not be initialized twice
-    function test_revertWhenAlreadyInitialized_proxy() public {
+    function test_timelock_revertWhenAlreadyInitialized_proxy() public {
         // Ensure that the account is not initializable on the implementation contract
-        vm.expectRevert(bytes("Initializable: contract is already initialized"));
+        vm.expectRevert(Initializable.InvalidInitialization.selector);
         account.initialize(bytes32(uint256(1)));
     }
 
     /// Tests that the account is initialized properly
-    function test_proxy_initialize() public {
+    function test_timelock_initialize() public {
         vm.expectEmit(true, true, true, true);
-        emit Initialized(255);
+        emit Initialized(type(uint64).max);
         // Create a new account for the implementation
         timelock = new LightTimelockController();
     }

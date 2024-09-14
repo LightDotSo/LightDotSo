@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
@@ -31,14 +31,8 @@ contract ERC165UnitTest is BaseTest {
 
         // ERC165 interface id
         bytes4 interfaceId165 = 0x01ffc9a7;
-        // ERC721 interface id
-        bytes4 interfaceId721 = 0x150b7a02;
-        // ERC1155 interface id
-        bytes4 interfaceId1155 = 0x4e2312e0;
 
         // Test that the account supports interfaces
         assertEq(account.supportsInterface(interfaceId165), true);
-        assertEq(account.supportsInterface(interfaceId721), true);
-        assertEq(account.supportsInterface(interfaceId1155), true);
     }
 }

@@ -14,11 +14,12 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Initializable} from "@/test/base/BaseTest.t.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -71,10 +72,10 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(hash);
-        vm.expectEmit(true, true, true, true);
-        emit Initialized(1);
         // vm.expectEmit(true, true, true, true);
         // emit LightWalletInitialized(address(entryPoint), hash);
+        vm.expectEmit(true, true, true, true);
+        emit Initialized(1);
         factory.createAccount(hash, 0);
     }
 
@@ -95,7 +96,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that there is no proxy admin for the account
-    function test_createAccount_noProxyAdmin() public {
+    function test_createAccount_noProxyAdmin() public view {
         // Check that no proxy admin exists
         _noProxyAdmin(address(account));
     }

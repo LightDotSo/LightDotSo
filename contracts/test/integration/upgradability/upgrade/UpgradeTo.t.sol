@@ -14,11 +14,11 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -65,14 +65,14 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightWallet accountV2 = new LightWallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory ops = entryPoint.signPackUserOps(
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
+                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes(""))
             ),
             userKey,
             "",
@@ -92,7 +92,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightTimelockController timelockV2 = new LightTimelockController();
 
         vm.prank(address(timelock));
-        timelock.upgradeTo(address(timelockV2));
+        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
 
         // Assert that the timelock is now immutable
         assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
@@ -101,14 +101,14 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     /// Tests that the factory reverts when trying to upgrade to an immutable address
     function test_wallet_revertWhenImmutable_upgradeToImmutable() public {
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory ops = entryPoint.signPackUserOps(
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
+                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(immutableProxy), bytes(""))
             ),
             userKey,
             "",
@@ -121,10 +121,10 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightWallet accountV2 = new LightWallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory opsv2 = entryPoint.signPackUserOps(
+        PackedUserOperation[] memory opsv2 = entryPoint.signPackUserOps(
             vm,
             address(account),
-            abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
+            abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes("")),
             userKey,
             "",
             weight,
@@ -140,10 +140,10 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightTimelockController timelockV2 = new LightTimelockController();
 
         vm.prank(address(timelock));
-        timelock.upgradeTo(address(immutableProxy));
+        timelock.upgradeToAndCall(address(immutableProxy), bytes(""));
 
         vm.prank(address(timelock));
         vm.expectRevert();
-        timelock.upgradeTo(address(timelockV2));
+        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
     }
 }

@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 // LightWallet.sol -- LightWallet initial implementation
 // Modified implementation on SimpleAccountFactory.sol from @eth-infinitism/account-abstraction
@@ -42,7 +42,7 @@ contract LightWalletFactory is ILightWalletFactory {
     string public constant NAME = "LightWalletFactory";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.3.0";
+    string public constant VERSION = "0.4.0";
 
     // -------------------------------------------------------------------------
     // Immutable Storage

@@ -19,7 +19,7 @@
 // Link: https://eips.ethereum.org/EIPS/eip-6492
 // License: CC-BY-SA-4.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 

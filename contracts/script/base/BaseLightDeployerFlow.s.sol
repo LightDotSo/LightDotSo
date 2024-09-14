@@ -14,13 +14,13 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -82,7 +82,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory initCode,
         bytes memory callData,
         bool isLightWallet
-    ) internal returns (UserOperation memory op) {
+    ) internal returns (PackedUserOperation memory op) {
         // Get the paymaster request gas and paymaster and data
         (
             uint256 preVerificationGas,
@@ -98,7 +98,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // getEthEstimateUserOperationGas(expectedAddress, initCode);
 
         // UserOperation to create the account
-        op = UserOperation(
+        op = PackedUserOperation(
             expectedAddress,
             nonce,
             initCode,
@@ -118,9 +118,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     }
 
     /// @dev Handle the ops with the entryPoint
-    function handleOps(UserOperation memory op) internal {
+    function handleOps(PackedUserOperation memory op) internal {
         // Construct the ops
-        UserOperation[] memory ops = new UserOperation[](1);
+        PackedUserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
 
         // Handle the ops
@@ -128,7 +128,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     }
 
     /// @dev Simulate the ops with the entryPoint
-    function simulateValidation(UserOperation memory op) internal {
+    function simulateValidation(PackedUserOperation memory op) internal {
         // Simulate the UserOperation
         entryPoint.simulateValidation(op);
     }
@@ -155,7 +155,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
+        PackedUserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
 
         // -------------------------------------------------------------------------
 
@@ -214,7 +214,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, true);
+        PackedUserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, true);
 
         // Sign the UserOperation
         bytes memory sig =
@@ -227,7 +227,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         writeUserOperationJson(op);
 
         // Construct the ops
-        UserOperation[] memory ops = new UserOperation[](1);
+        PackedUserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
 
         // Handle the ops

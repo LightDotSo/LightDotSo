@@ -14,12 +14,13 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
@@ -108,7 +109,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     /// @dev Just the plain upgradeTo function from UUPSUpgradeable
     function _upgradeTo(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
-        UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
+        UUPSUpgradeable(_proxy).upgradeToAndCall(address(_newImplementation), bytes(""));
     }
 
     /// @dev Assert that the proxy admin is the zero address
@@ -120,7 +121,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     /// @dev Check that the account is not initializable twice
     // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
     function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
-        vm.expectRevert(bytes("Initializable: contract is already initialized"));
+        vm.expectRevert(Initializable.InvalidInitialization.selector);
         // Check that the account is initializable
         (bool success,) = _proxy.call(_calldata);
         // Assert that the code was not reverted
@@ -129,12 +130,12 @@ abstract contract BaseIntegrationTest is BaseTest {
 
     /// Utility function to create an account from the entry point
     function _testCreateAccountFromEntryPoint() internal {
-        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
+        PackedUserOperation[] memory ops = _testSignPackUserOpWithInitCode();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Utility function to run the signPackUserOp function
-    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
+    function _testSignPackUserOpWithInitCode() internal view returns (PackedUserOperation[] memory ops) {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),

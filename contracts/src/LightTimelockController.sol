@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
@@ -32,7 +32,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
     // -------------------------------------------------------------------------
-    // Constants
+    // Constant
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract
@@ -76,10 +76,10 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
         _revokeRole(CANCELLER_ROLE, lightWallet);
 
         // Register executor role to the light wallet
-        _setupRole(EXECUTOR_ROLE, lightWallet);
+        _grantRole(EXECUTOR_ROLE, lightWallet);
 
         // Register canceler role to the light protocol controller
-        _setupRole(CANCELLER_ROLE, lightProtocolController);
+        _grantRole(CANCELLER_ROLE, lightProtocolController);
     }
 
     // -------------------------------------------------------------------------

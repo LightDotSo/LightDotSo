@@ -14,12 +14,22 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.27;
 
 import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
 
 // LightPaymaster -- VerifyingPaymaster for Light
 contract LightPaymaster is VerifyingPaymaster {
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /// @notice The name for this contract
+    string public constant NAME = "LightPaymaster";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.2.0";
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
