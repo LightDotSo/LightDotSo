@@ -292,3 +292,21 @@ test-anvil-run: ## Run the anvil for testing
 .PHONY: test-indexer-run
 test-indexer-run: ## Run the indexer test
 	cargo run --bin indexer -- --ws ws://localhost:8545 --rpc http://localhost:8545 --chain-id 31337
+
+##@ Update
+
+.PHONY: update
+update: update-npm update-rust update-submodules ## Update all dependencies
+
+.PHONY: update-npm
+update-npm: ## Update the npm dependencies
+	pnpm run ncu:upgrade
+
+.PHONY: update-rust
+update-rust: ## Update the rust dependencies
+	cargo +nightly update --breaking -Z unstable-options
+
+.PHONY: update-submodules
+update-submodules: ## Update the submodules
+	git submodule update --init --recursive
+	git submodule update --remote --merge

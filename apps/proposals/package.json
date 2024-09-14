@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
-    "@keystatic/core": "^0.5.34",
+    "@keystatic/core": "^0.5.35",
     "@keystatic/next": "^5.0.1",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.4",
+    "@types/node": "^22.5.5",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",

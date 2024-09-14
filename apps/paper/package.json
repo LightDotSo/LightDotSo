@@ -28,7 +28,7 @@
     "yaml": "^2.5.1"
   },
   "devDependencies": {
-    "@types/node": "^22.5.4",
+    "@types/node": "^22.5.5",
     "@types/react": "^18.3.5"
   }
 }
