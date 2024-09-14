@@ -34,6 +34,26 @@ using ERC4337Utils for EntryPoint;
 /// @notice Utility functions for ERC4337
 library ERC4337Utils {
     // -------------------------------------------------------------------------
+    // Utility Functions
+    // -------------------------------------------------------------------------
+
+    /// @dev Packs the account gas limits into a bytes32
+    /// @param verificationGasLimit The verification gas limit
+    /// @param callGasLimit The call gas limit
+    /// @return The packed account gas limits
+    function packAccountGasLimits(uint128 verificationGasLimit, uint128 callGasLimit) public pure returns (bytes32) {
+        return bytes32((uint256(verificationGasLimit) << 128) | uint256(callGasLimit));
+    }
+
+    /// @dev Packs the gas fees into a bytes32
+    /// @param maxPriorityFeePerGas The max priority fee per gas
+    /// @param maxFeePerGas The max fee per gas
+    /// @return The packed gas fees
+    function packGasFees(uint128 maxPriorityFeePerGas, uint128 maxFeePerGas) public pure returns (bytes32) {
+        return bytes32((uint256(maxPriorityFeePerGas) << 128) | uint256(maxFeePerGas));
+    }
+
+    // -------------------------------------------------------------------------
     // Internal Functions
     // -------------------------------------------------------------------------
 
@@ -49,9 +69,9 @@ library ERC4337Utils {
         op.sender = _account;
         op.nonce = _entryPoint.getNonce(_account, 0);
         op.callData = _data;
-        op.accountGasLimits = bytes32(0);
+        op.accountGasLimits = packAccountGasLimits(10000000, 10000000);
         op.preVerificationGas = 50000;
-        op.gasFees = bytes32(0);
+        op.gasFees = packGasFees(1, 50000);
     }
 
     /// @dev Signs the hash of a UserOperation
