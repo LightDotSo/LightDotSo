@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.18;
 
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {ECDSA} from "@openzeppelin/contracts-v4.9/utils/cryptography/ECDSA.sol";
 import {Test, Vm} from "forge-std/Test.sol";
 
 /// @title LightWalletUtils

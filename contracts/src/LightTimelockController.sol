@@ -17,11 +17,11 @@
 pragma solidity ^0.8.18;
 
 import {TimelockControllerUpgradeable} from
-    "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
-import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+    "@openzeppelin/contracts-upgradeable-v4.9/governance/TimelockControllerUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable-v4.9/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable-v4.9/proxy/utils/UUPSUpgradeable.sol";
 import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
-import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightTimelockController

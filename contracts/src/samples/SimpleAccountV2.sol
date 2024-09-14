@@ -21,14 +21,14 @@ pragma solidity ^0.8.18;
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
 
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
-import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
-import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
+import {ECDSA} from "@openzeppelin/contracts-v4.9/utils/cryptography/ECDSA.sol";
+import {Initializable} from "@openzeppelin/contracts-v4.9/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
+import {BaseAccount} from "@eth-infinitism/account-abstraction-v0.6/contracts/core/BaseAccount.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
+import {UserOperation} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
-    "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
+    "@eth-infinitism/account-abstraction-v0.6/contracts/samples/callback/TokenCallbackHandler.sol";
 
 /// @title SimpleAccountV2
 /// @author shunkakinoki

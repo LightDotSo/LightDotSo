@@ -16,4 +16,4 @@
 
 pragma solidity ^0.8.18;
 
-import "@eth-infinitism/account-abstraction/contracts/samples/SimpleAccountFactory.sol";
+import "@eth-infinitism/account-abstraction-v0.6/contracts/samples/SimpleAccountFactory.sol";

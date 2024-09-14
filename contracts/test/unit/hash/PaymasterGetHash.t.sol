@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.18;
 
-import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";

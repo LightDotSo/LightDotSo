@@ -16,8 +16,8 @@
 
 pragma solidity ^0.8.18;
 
-import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {IStakeManager} from "@eth-infinitism/account-abstraction/contracts/interfaces/IStakeManager.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
+import {IStakeManager} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";

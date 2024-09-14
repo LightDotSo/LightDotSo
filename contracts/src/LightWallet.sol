@@ -42,14 +42,14 @@ pragma solidity ^0.8.18;
 
 // Thank you to both teams for the ever amazing work!
 
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
-import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
-import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
+import {Initializable} from "@openzeppelin/contracts-v4.9/proxy/utils/Initializable.sol";
+import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
+import {BaseAccount} from "@eth-infinitism/account-abstraction-v0.6/contracts/core/BaseAccount.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
+import {UserOperation} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
-    "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
+    "@eth-infinitism/account-abstraction-v0.6/contracts/samples/callback/TokenCallbackHandler.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
 import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
