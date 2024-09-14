@@ -46,7 +46,7 @@ contract LightTimelockControllerFactoryDeployer is BaseLightDeployer, Script {
         assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
-        bytes32 salt = 0x0000000000000000000000000000000000000000000000000000000000000000;
+        bytes32 salt = 0x0000000000000000000000000000000000000000a6fa3810c1073401d735d2bc;
 
         // // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {
