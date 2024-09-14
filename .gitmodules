@@ -81,6 +81,10 @@
 	url = https://github.com/Uniswap/v3-periphery
 [submodule "lib/wallet-contracts"]
 	path = lib/wallet-contracts
+	url = https://github.com/LightDotSo/wallet-contracts
+	branch = patch
+[submodule "lib/wallet-contracts-v3"]
+	path = lib/wallet-contracts-v3
 	url = https://github.com/0xsequence/wallet-contracts
 [submodule "wiki"]
 	path = wiki
