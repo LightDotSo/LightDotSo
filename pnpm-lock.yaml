@@ -3943,7 +3943,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.11(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
       vaul:
-        specifier: ^0.9.3
+        specifier: ^0.9.2
         version: 0.9.3(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       viem:
         specifier: ^2.21.7

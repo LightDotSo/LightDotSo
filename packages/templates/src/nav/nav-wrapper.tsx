@@ -44,7 +44,7 @@ export function NavWrapper({
 
   return (
     <main>
-      <div className="flex flex-col bg-background-body">
+      <div className="flex flex-col">
         <div
           className={cn(
             "overflow-y-visible border-b border-b-border-weak py-2",
@@ -56,7 +56,7 @@ export function NavWrapper({
           </div>
           {navChildren}
         </div>
-        <body>{children}</body>
+        {children}
       </div>
     </main>
   );

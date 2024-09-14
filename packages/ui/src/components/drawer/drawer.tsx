@@ -33,6 +33,7 @@ const Drawer = ({
   ...props
 }: ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerPrimitive.Root
+    handleOnly={false}
     shouldScaleBackground={shouldScaleBackground}
     {...props}
   />
