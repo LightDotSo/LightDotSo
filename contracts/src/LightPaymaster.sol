@@ -21,6 +21,16 @@ import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymast
 // LightPaymaster -- VerifyingPaymaster for Light
 contract LightPaymaster is VerifyingPaymaster {
     // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /// @notice The name for this contract
+    string public constant NAME = "LightPaymaster";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.2.0";
+
+    // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 

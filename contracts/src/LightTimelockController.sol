@@ -32,7 +32,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
     // -------------------------------------------------------------------------
-    // Constants
+    // Constant
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract

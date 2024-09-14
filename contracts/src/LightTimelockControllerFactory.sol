@@ -25,7 +25,7 @@ import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 /// @notice A factory contract for `LightTimelockController`
 contract LightTimelockControllerFactory {
     // -------------------------------------------------------------------------
-    // Constants
+    // Constant
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract
