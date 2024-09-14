@@ -72,7 +72,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
+                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes(""))
             ),
             userKey,
             "",
@@ -108,7 +108,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
+                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(immutableProxy), bytes(""))
             ),
             userKey,
             "",
@@ -124,7 +124,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         PackedUserOperation[] memory opsv2 = entryPoint.signPackUserOps(
             vm,
             address(account),
-            abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
+            abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes("")),
             userKey,
             "",
             weight,
