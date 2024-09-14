@@ -1,0 +1,224 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "NAME",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "VERSION",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "addOperationRoot",
+      "inputs": [
+        {
+          "name": "operationRoot",
+          "type": "tuple",
+          "internalType": "struct LightDAG.OperationRoot",
+          "components": [
+            { "name": "root", "type": "bytes32", "internalType": "bytes32" },
+            {
+              "name": "operations",
+              "type": "tuple[]",
+              "internalType": "struct LightDAG.Operation[]",
+              "components": [
+                {
+                  "name": "hash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "conditionData",
+                  "type": "bytes[]",
+                  "internalType": "bytes[]"
+                },
+                {
+                  "name": "dependencies",
+                  "type": "bytes32[]",
+                  "internalType": "bytes32[]"
+                },
+                {
+                  "name": "fallbackOperation",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "pure"
+    }
+  ],
+  "bytecode": {
+    "object": "0x6080604052348015600e575f5ffd5b506105bf8061001c5f395ff3fe608060405234801561000f575f5ffd5b506004361061003f575f3560e01c8063a3f4df7e14610043578063bdc94c4c14610095578063ffa1ad74146100aa575b5f5ffd5b61007f6040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b60405161008c919061017b565b60405180910390f35b6100a86100a3366004610323565b6100e6565b005b61007f6040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b8051610178576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b50565b602081525f82518060208401528060208501604085015e5f6040828501015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011684010191505092915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b6040805190810167ffffffffffffffff8111828210171561021e5761021e6101ce565b60405290565b6040516080810167ffffffffffffffff8111828210171561021e5761021e6101ce565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561028e5761028e6101ce565b604052919050565b5f67ffffffffffffffff8211156102af576102af6101ce565b5060051b60200190565b5f82601f8301126102c8575f5ffd5b81356102db6102d682610296565b610247565b8082825260208201915060208360051b8601019250858311156102fc575f5ffd5b602085015b83811015610319578035835260209283019201610301565b5095945050505050565b5f60208284031215610333575f5ffd5b67ffffffffffffffff82351115610348575f5ffd5b813582016040818503121561035b575f5ffd5b6103636101fb565b8135815267ffffffffffffffff6020830135111561037f575f5ffd5b60208201358201915084601f830112610396575f5ffd5b6103a36102d68335610296565b82358082526020808301929160051b8501018710156103c0575f5ffd5b602084015b6020853560051b8601018110156105a35767ffffffffffffffff813511156103eb575f5ffd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b03011215610420575f5ffd5b610428610224565b6020820135815267ffffffffffffffff60408301351115610447575f5ffd5b602060408301358301018a601f82011261045f575f5ffd5b61046c6102d68235610296565b81358082526020808301929160051b8401018d1015610489575f5ffd5b602083015b6020843560051b8501018110156105515767ffffffffffffffff813511156104b4575f5ffd5b8d603f8235860101126104c5575f5ffd5b602081358501013567ffffffffffffffff8111156104e5576104e56101ce565b61051660207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610247565b8181528f6020808486358a01010101111561052f575f5ffd5b816040843588010160208301375f60209282018301528452928301920161048e565b506020840152505067ffffffffffffffff60608301351115610571575f5ffd5b6105848a602060608501358501016102b9565b60408201526080919091013560608201528352602092830192016103c5565b5060208301525094935050505056fea164736f6c634300081b000a",
+    "sourceMap": "1113:1198:0:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561000f575f5ffd5b506004361061003f575f3560e01c8063a3f4df7e14610043578063bdc94c4c14610095578063ffa1ad74146100aa575b5f5ffd5b61007f6040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b60405161008c919061017b565b60405180910390f35b6100a86100a3366004610323565b6100e6565b005b61007f6040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b8051610178576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b50565b602081525f82518060208401528060208501604085015e5f6040828501015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011684010191505092915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b6040805190810167ffffffffffffffff8111828210171561021e5761021e6101ce565b60405290565b6040516080810167ffffffffffffffff8111828210171561021e5761021e6101ce565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561028e5761028e6101ce565b604052919050565b5f67ffffffffffffffff8211156102af576102af6101ce565b5060051b60200190565b5f82601f8301126102c8575f5ffd5b81356102db6102d682610296565b610247565b8082825260208201915060208360051b8601019250858311156102fc575f5ffd5b602085015b83811015610319578035835260209283019201610301565b5095945050505050565b5f60208284031215610333575f5ffd5b67ffffffffffffffff82351115610348575f5ffd5b813582016040818503121561035b575f5ffd5b6103636101fb565b8135815267ffffffffffffffff6020830135111561037f575f5ffd5b60208201358201915084601f830112610396575f5ffd5b6103a36102d68335610296565b82358082526020808301929160051b8501018710156103c0575f5ffd5b602084015b6020853560051b8601018110156105a35767ffffffffffffffff813511156103eb575f5ffd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b03011215610420575f5ffd5b610428610224565b6020820135815267ffffffffffffffff60408301351115610447575f5ffd5b602060408301358301018a601f82011261045f575f5ffd5b61046c6102d68235610296565b81358082526020808301929160051b8401018d1015610489575f5ffd5b602083015b6020843560051b8501018110156105515767ffffffffffffffff813511156104b4575f5ffd5b8d603f8235860101126104c5575f5ffd5b602081358501013567ffffffffffffffff8111156104e5576104e56101ce565b61051660207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610247565b8181528f6020808486358a01010101111561052f575f5ffd5b816040843588010160208301375f60209282018301528452928301920161048e565b506020840152505067ffffffffffffffff60608301351115610571575f5ffd5b6105848a602060608501358501016102b9565b60408201526080919091013560608201528352602092830192016103c5565b5060208301525094935050505056fea164736f6c634300081b000a",
+    "sourceMap": "1113:1198:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1773:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;2092:217;;;;;;:::i;:::-;;:::i;:::-;;1866:40;;;;;;;;;;;;;;;;;;;;;2092:217;2232:18;;2224:78;;;;;;;6316:2:2;2224:78:0;;;6298:21:2;6355:2;6335:18;;;6328:30;6394:34;6374:18;;;6367:62;6465:3;6445:18;;;6438:31;6486:19;;2224:78:0;;;;;;;;2092:217;:::o;14:477:2:-;163:2;152:9;145:21;126:4;195:6;189:13;238:6;233:2;222:9;218:18;211:34;297:6;292:2;284:6;280:15;275:2;264:9;260:18;254:50;353:1;348:2;339:6;328:9;324:22;320:31;313:42;482:2;412:66;407:2;399:6;395:15;391:88;380:9;376:104;372:113;364:121;;;14:477;;;;:::o;496:184::-;548:77;545:1;538:88;645:4;642:1;635:15;669:4;666:1;659:15;685:257;757:4;751:11;;;789:17;;836:18;821:34;;857:22;;;818:62;815:88;;;883:18;;:::i;:::-;919:4;912:24;685:257;:::o;947:253::-;1019:2;1013:9;1061:4;1049:17;;1096:18;1081:34;;1117:22;;;1078:62;1075:88;;;1143:18;;:::i;1205:334::-;1276:2;1270:9;1332:2;1322:13;;1337:66;1318:86;1306:99;;1435:18;1420:34;;1456:22;;;1417:62;1414:88;;;1482:18;;:::i;:::-;1518:2;1511:22;1205:334;;-1:-1:-1;1205:334:2:o;1544:192::-;1613:4;1646:18;1638:6;1635:30;1632:56;;;1668:18;;:::i;:::-;-1:-1:-1;1713:1:2;1709:14;1725:4;1705:25;;1544:192::o;1741:732::-;1795:5;1848:3;1841:4;1833:6;1829:17;1825:27;1815:55;;1866:1;1863;1856:12;1815:55;1906:6;1893:20;1933:73;1949:56;1998:6;1949:56;:::i;:::-;1933:73;:::i;:::-;2030:3;2054:6;2049:3;2042:19;2086:4;2081:3;2077:14;2070:21;;2147:4;2137:6;2134:1;2130:14;2122:6;2118:27;2114:38;2100:52;;2175:3;2167:6;2164:15;2161:35;;;2192:1;2189;2182:12;2161:35;2228:4;2220:6;2216:17;2242:200;2258:6;2253:3;2250:15;2242:200;;;2350:17;;2380:18;;2427:4;2418:14;;;;2275;2242:200;;;-1:-1:-1;2460:7:2;1741:732;-1:-1:-1;;;;;1741:732:2:o;2478:3631::-;2566:6;2619:2;2607:9;2598:7;2594:23;2590:32;2587:52;;;2635:1;2632;2625:12;2587:52;2679:18;2667:9;2654:23;2651:47;2648:67;;;2711:1;2708;2701:12;2648:67;2762:9;2749:23;2738:9;2734:39;2807:4;2802:2;2793:7;2789:16;2785:27;2782:47;;;2825:1;2822;2815:12;2782:47;2851:22;;:::i;:::-;2918:16;;2943:22;;3007:18;3001:2;2993:11;;2980:25;2977:49;2974:69;;;3039:1;3036;3029:12;2974:69;3091:2;3087;3083:11;3070:25;3066:2;3062:34;3052:44;;3134:7;3127:4;3123:2;3119:13;3115:27;3105:55;;3156:1;3153;3146:12;3105:55;3180:83;3196:66;3258:2;3245:16;3196:66;:::i;3180:83::-;3309:16;;3297:29;;;3351:2;3342:12;;;;3285:3;3385:1;3381:24;3373:33;;3369:42;3366:55;-1:-1:-1;3363:75:2;;;3434:1;3431;3424:12;3363:75;3466:2;3462;3458:11;3478:2563;3541:2;3534;3521:16;3518:1;3514:24;3510:2;3506:33;3502:42;3497:3;3494:51;3478:2563;;;3625:18;3619:3;3606:17;3603:41;3600:61;;;3657:1;3654;3647:12;3600:61;3705:3;3692:17;3688:2;3684:26;3821:4;3752:66;3747:2;3738:7;3734:16;3730:89;3726:100;3723:120;;;3839:1;3836;3829:12;3723:120;3871:22;;:::i;:::-;3967:2;3959:11;;3946:25;3984:24;;4056:18;4048:4;4040:13;;4027:27;4024:51;4021:71;;;4088:1;4085;4078:12;4021:71;4157:2;4148:4;4144:2;4140:13;4127:27;4123:2;4119:36;4115:45;4202:7;4195:4;4191:2;4187:13;4183:27;4173:55;;4224:1;4221;4214:12;4173:55;4254:83;4270:66;4332:2;4319:16;4270:66;:::i;4254:83::-;4397:16;;4383:31;;;4447:2;4436:14;;;;4365:5;4485:1;4481:24;4473:33;;4469:42;4466:55;-1:-1:-1;4463:75:2;;;4534:1;4531;4524:12;4463:75;4572:2;4568;4564:11;4588:1001;4657:2;4650;4637:16;4634:1;4630:24;4626:2;4622:33;4618:42;4611:5;4608:53;4588:1001;;;4759:18;4751:5;4738:19;4735:43;4732:63;;;4791:1;4788;4781:12;4732:63;4865:7;4860:2;4851:5;4838:19;4834:2;4830:28;4826:37;4822:51;4812:79;;4887:1;4884;4877:12;4812:79;4969:2;4960:5;4947:19;4943:2;4939:28;4935:37;4922:51;5004:18;4996:6;4993:30;4990:56;;;5026:18;;:::i;:::-;5078:116;5190:2;5121:66;5114:4;5106:6;5102:17;5098:90;5094:99;5078:116;:::i;:::-;5227:6;5218:7;5211:23;5318:7;5313:2;5308;5299:6;5290:5;5277:19;5273:2;5269:28;5265:41;5261:50;5257:59;5254:72;5251:92;;;5339:1;5336;5329:12;5251:92;5432:6;5425:4;5416:5;5403:19;5399:2;5395:28;5391:39;5386:2;5377:7;5373:16;5360:79;5494:1;5489:2;5467:20;;;5463:29;;5456:40;5513:22;;5561:14;;;;4685;4588:1001;;;-1:-1:-1;5622:2:2;5609:16;;5602:33;-1:-1:-1;;5681:18:2;5675:2;5667:11;;5654:25;5651:49;5648:69;;;5713:1;5710;5703:12;5648:69;5757:82;5831:7;5826:2;5819;5815;5811:11;5798:25;5794:2;5790:34;5786:43;5757:82;:::i;:::-;5750:4;5737:18;;5730:110;5914:4;5906:13;;;;5893:27;5953:2;5940:16;;5933:33;5979:20;;6028:2;6019:12;;;;3563;3478:2563;;;-1:-1:-1;6068:2:2;6057:14;;6050:29;-1:-1:-1;6061:5:2;2478:3631;-1:-1:-1;;;;2478:3631:2:o",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "NAME()": "a3f4df7e",
+    "VERSION()": "ffa1ad74",
+    "addOperationRoot((bytes32,(bytes32,bytes[],bytes32[],bytes32)[]))": "bdc94c4c"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.27+commit.40a35a09\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"NAME\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"root\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes[]\",\"name\":\"conditionData\",\"type\":\"bytes[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"dependencies\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32\",\"name\":\"fallbackOperation\",\"type\":\"bytes32\"}],\"internalType\":\"struct LightDAG.Operation[]\",\"name\":\"operations\",\"type\":\"tuple[]\"}],\"internalType\":\"struct LightDAG.OperationRoot\",\"name\":\"operationRoot\",\"type\":\"tuple\"}],\"name\":\"addOperationRoot\",\"outputs\":[],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"@shunkakinoki\",\"details\":\"The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.Further implementations will be added in the future, and may be subject to change.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"LightDAG\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"NAME()\":{\"notice\":\"The name for this contract\"},\"VERSION()\":{\"notice\":\"The version for this contract\"}},\"notice\":\"LightDAG is an implementation contract for Light Protocol. This is the version 0.1.0 contract for Light Protocol.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/src/LightDAG.sol\":\"LightDAG\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\"},\"optimizer\":{\"enabled\":true,\"runs\":4294967295},\"remappings\":[\":@/circuits/=contracts/circuits/\",\":@/contracts/=contracts/src/\",\":@/script/=contracts/script/\",\":@/test/=contracts/test/\",\":@0xsequence/wallet-contracts/=lib/wallet-contracts/\",\":@0xsequence/wallet-contracts0v3/=lib/wallet-contracts-v3/\",\":@account-abstraction/=lib/account-abstraction/\",\":@biconomy/account-contracts/=lib/scw-contracts/\",\":@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/\",\":@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/\",\":@eth-infinitism/account-abstraction/=lib/account-abstraction/\",\":@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/\",\":@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/\",\":@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/\",\":@safe-global/safe-contracts/=lib/safe-contracts/\",\":@source/=lib/soul-wallet-contract/contracts/\",\":@uniswap/v3-core/=lib/v3-core/\",\":@uniswap/v3-periphery/=lib/v3-periphery/\",\":@zerodevapp/contracts/=lib/kernel/src/\",\":account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/\",\":account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/\",\":account-abstraction/=lib/account-abstraction/contracts/\",\":ds-test/=lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":murky/=lib/murky/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":seaport/=lib/seaport/\",\":solady/=lib/solady/src/\",\":solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/\",\":solmate/=lib/solmate/src/\",\":src/=lib/kernel/src/\",\":surl/=lib/surl/src/\"]},\"sources\":{\"contracts/src/LightDAG.sol\":{\"keccak256\":\"0x53d7011cae76a593709215c4e20c6f6089f82917242c2f37f5902a875c39dc37\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://e18e4a4c9471aa1b72f3f26779cfb72f44a13078cb1e417f253f61707d7ff330\",\"dweb:/ipfs/QmdHv5NLX8mWtXGXbkHcnGB5Bjv4rwQaZnLuZUU2wPboQ8\"]},\"contracts/src/interfaces/IConditionChecker.sol\":{\"keccak256\":\"0xe4900f39034042c7abbe158c7cbfd0e934ecce8745eefe4757e1e07e4ea80e1d\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://1ebcd78023f7d5b22a07b3b37179c8dc9aefed27542db0a9b54959997c0c052a\",\"dweb:/ipfs/QmXgu8Qm5SKn1UKiritRrb2H8XkWLSaBLxoGoHSdQegpC1\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": { "version": "0.8.27+commit.40a35a09" },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "NAME",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "VERSION",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "struct LightDAG.OperationRoot",
+              "name": "operationRoot",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "root",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "struct LightDAG.Operation[]",
+                  "name": "operations",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "bytes32",
+                      "name": "hash",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes[]",
+                      "name": "conditionData",
+                      "type": "bytes[]"
+                    },
+                    {
+                      "internalType": "bytes32[]",
+                      "name": "dependencies",
+                      "type": "bytes32[]"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "fallbackOperation",
+                      "type": "bytes32"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "addOperationRoot"
+        }
+      ],
+      "devdoc": { "kind": "dev", "methods": {}, "version": 1 },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "NAME()": { "notice": "The name for this contract" },
+          "VERSION()": { "notice": "The version for this contract" }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@/circuits/=contracts/circuits/",
+        "@/contracts/=contracts/src/",
+        "@/script/=contracts/script/",
+        "@/test/=contracts/test/",
+        "@0xsequence/wallet-contracts/=lib/wallet-contracts/",
+        "@0xsequence/wallet-contracts0v3/=lib/wallet-contracts-v3/",
+        "@account-abstraction/=lib/account-abstraction/",
+        "@biconomy/account-contracts/=lib/scw-contracts/",
+        "@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/",
+        "@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/",
+        "@eth-infinitism/account-abstraction/=lib/account-abstraction/",
+        "@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/",
+        "@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/",
+        "@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/",
+        "@safe-global/safe-contracts/=lib/safe-contracts/",
+        "@source/=lib/soul-wallet-contract/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/",
+        "@zerodevapp/contracts/=lib/kernel/src/",
+        "account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/",
+        "account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/",
+        "account-abstraction/=lib/account-abstraction/contracts/",
+        "ds-test/=lib/ds-test/src/",
+        "forge-std/=lib/forge-std/src/",
+        "murky/=lib/murky/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "seaport/=lib/seaport/",
+        "solady/=lib/solady/src/",
+        "solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/",
+        "solmate/=lib/solmate/src/",
+        "src/=lib/kernel/src/",
+        "surl/=lib/surl/src/"
+      ],
+      "optimizer": { "enabled": true, "runs": 4294967295 },
+      "metadata": { "bytecodeHash": "none" },
+      "compilationTarget": { "contracts/src/LightDAG.sol": "LightDAG" },
+      "evmVersion": "cancun",
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/src/LightDAG.sol": {
+        "keccak256": "0x53d7011cae76a593709215c4e20c6f6089f82917242c2f37f5902a875c39dc37",
+        "urls": [
+          "bzz-raw://e18e4a4c9471aa1b72f3f26779cfb72f44a13078cb1e417f253f61707d7ff330",
+          "dweb:/ipfs/QmdHv5NLX8mWtXGXbkHcnGB5Bjv4rwQaZnLuZUU2wPboQ8"
+        ],
+        "license": "Apache-2.0"
+      },
+      "contracts/src/interfaces/IConditionChecker.sol": {
+        "keccak256": "0xe4900f39034042c7abbe158c7cbfd0e934ecce8745eefe4757e1e07e4ea80e1d",
+        "urls": [
+          "bzz-raw://1ebcd78023f7d5b22a07b3b37179c8dc9aefed27542db0a9b54959997c0c052a",
+          "dweb:/ipfs/QmXgu8Qm5SKn1UKiritRrb2H8XkWLSaBLxoGoHSdQegpC1"
+        ],
+        "license": "Apache-2.0"
+      }
+    },
+    "version": 1
+  },
+  "id": 0
+}

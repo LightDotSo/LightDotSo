@@ -14,7 +14,7 @@
 
 [profile.deploy]
   optimizer_runs = 4_294_967_295
-  via_ir = true
+  # via_ir = true
   out = 'optimized-out'
   script = 'contracts'
   bytecode_hash = 'none'
