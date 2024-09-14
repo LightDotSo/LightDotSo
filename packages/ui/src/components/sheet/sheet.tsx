@@ -58,7 +58,6 @@ const Sheet = ({
 }: ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerPrimitive.Root
     direction="right"
-    handleOnly={false}
     shouldScaleBackground={shouldScaleBackground}
     {...props}
   />
