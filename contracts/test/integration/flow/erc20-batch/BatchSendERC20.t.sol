@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {IERC20} from "@openzeppelin/contracts-v4.9/token/ERC20/IERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";

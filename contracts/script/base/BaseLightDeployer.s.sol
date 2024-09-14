@@ -22,7 +22,7 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {stdJson} from "forge-std/StdJson.sol";
-import "@openzeppelin/contracts-v4.9/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import {Surl} from "surl/Surl.sol";
 
 pragma solidity ^0.8.27;

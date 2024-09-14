@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {Merkle} from "murky/Merkle.sol";
 import "solidity-bytes-utils/BytesLib.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";

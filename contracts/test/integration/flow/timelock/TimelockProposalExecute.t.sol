@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {TimelockControllerUpgradeable} from "@/contracts/LightTimelockController.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 // solhint-disable-next-line no-console
@@ -106,7 +107,7 @@ contract TimelockProposalExecuteEthIntegrationTest is BaseIntegrationTest {
 
         // Executes the operation
         vm.prank(address(lightProtocolController));
-        vm.expectRevert("TimelockController: operation is not ready");
+        vm.expectRevert(TimelockControllerUpgradeable.TimelockUnexpectedOperationState.selector);
         timelock.execute(address(1), 1, bytes(""), bytes32(0), bytes32(0));
     }
 

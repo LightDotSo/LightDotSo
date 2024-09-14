@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
@@ -109,7 +109,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     /// @dev Just the plain upgradeTo function from UUPSUpgradeable
     function _upgradeTo(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
-        UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
+        UUPSUpgradeable(_proxy).upgradeToAndCall(address(_newImplementation), bytes(""));
     }
 
     /// @dev Assert that the proxy admin is the zero address

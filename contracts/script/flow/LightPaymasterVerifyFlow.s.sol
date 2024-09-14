@@ -19,7 +19,7 @@ import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
-import {ECDSA} from "@openzeppelin/contracts-v4.9/utils/cryptography/ECDSA.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 

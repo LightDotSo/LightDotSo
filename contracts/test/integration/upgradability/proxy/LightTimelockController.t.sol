@@ -49,7 +49,7 @@ contract LightTimelockControllerProxyIntegrationTest is BaseIntegrationTest {
     /// Tests that the account is initialized properly
     function test_timelock_initialize() public {
         vm.expectEmit(true, true, true, true);
-        emit Initialized(255);
+        emit Initialized(type(uint64).max);
         // Create a new account for the implementation
         timelock = new LightTimelockController();
     }

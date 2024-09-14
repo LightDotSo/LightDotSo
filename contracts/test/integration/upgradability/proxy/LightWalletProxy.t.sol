@@ -49,7 +49,7 @@ contract LightWalletProxyIntegrationTest is BaseIntegrationTest {
     /// Tests that the account is initialized properly
     function test_proxy_initialize() public {
         vm.expectEmit(true, true, true, true);
-        emit Initialized(18446744073709551615);
+        emit Initialized(type(uint64).max);
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
     }

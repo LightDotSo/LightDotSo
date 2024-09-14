@@ -17,11 +17,11 @@
 pragma solidity ^0.8.27;
 
 import {TimelockControllerUpgradeable} from
-    "@openzeppelin/contracts-upgradeable-v4.9/governance/TimelockControllerUpgradeable.sol";
-import {Initializable} from "@openzeppelin/contracts-upgradeable-v4.9/proxy/utils/Initializable.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable-v4.9/proxy/utils/UUPSUpgradeable.sol";
+    "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
-import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightTimelockController
@@ -76,10 +76,10 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
         _revokeRole(CANCELLER_ROLE, lightWallet);
 
         // Register executor role to the light wallet
-        _setupRole(EXECUTOR_ROLE, lightWallet);
+        _grantRole(EXECUTOR_ROLE, lightWallet);
 
         // Register canceler role to the light protocol controller
-        _setupRole(CANCELLER_ROLE, lightProtocolController);
+        _grantRole(CANCELLER_ROLE, lightProtocolController);
     }
 
     // -------------------------------------------------------------------------

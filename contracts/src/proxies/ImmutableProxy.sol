@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts-v4.9/proxy/utils/UUPSUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 
 contract ImmutableProxy is UUPSUpgradeable {
     // -------------------------------------------------------------------------

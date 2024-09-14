@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {MerkleProof} from "@openzeppelin/contracts-v4.9/utils/cryptography/MerkleProof.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";

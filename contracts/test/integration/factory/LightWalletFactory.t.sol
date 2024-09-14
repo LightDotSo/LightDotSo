@@ -75,7 +75,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // vm.expectEmit(true, true, true, true);
         // emit LightWalletInitialized(address(entryPoint), hash);
         vm.expectEmit(true, true, true, true);
-        emit Initialized(18446744073709551615);
+        emit Initialized(1);
         factory.createAccount(hash, 0);
     }
 

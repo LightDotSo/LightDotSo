@@ -92,7 +92,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightTimelockController timelockV2 = new LightTimelockController();
 
         vm.prank(address(timelock));
-        timelock.upgradeTo(address(timelockV2));
+        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
 
         // Assert that the timelock is now immutable
         assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
@@ -140,10 +140,10 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightTimelockController timelockV2 = new LightTimelockController();
 
         vm.prank(address(timelock));
-        timelock.upgradeTo(address(immutableProxy));
+        timelock.upgradeToAndCall(address(immutableProxy), bytes(""));
 
         vm.prank(address(timelock));
         vm.expectRevert();
-        timelock.upgradeTo(address(timelockV2));
+        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
     }
 }

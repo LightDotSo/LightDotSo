@@ -50,6 +50,8 @@ import {
     SIG_VALIDATION_FAILED,
     SIG_VALIDATION_SUCCESS
 } from "@eth-infinitism/account-abstraction/contracts/core/Helpers.sol";
+import {TokenCallbackHandler} from
+    "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
@@ -59,7 +61,14 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 /// @title LightWallet
 /// @author @shunkakinoki
 /// @notice LightWallet is an account abstraction contract
-contract LightWallet is ILightWallet, ModuleAuthUpgradable, BaseAccount, UUPSUpgradeable, Initializable {
+contract LightWallet is
+    ILightWallet,
+    ModuleAuthUpgradable,
+    BaseAccount,
+    TokenCallbackHandler,
+    UUPSUpgradeable,
+    Initializable
+{
     // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
@@ -244,7 +253,7 @@ contract LightWallet is ILightWallet, ModuleAuthUpgradable, BaseAccount, UUPSUpg
     function supportsInterface(bytes4 interfaceId)
         public
         pure
-        override(ILightWallet, ModuleAuthUpgradable)
+        override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
