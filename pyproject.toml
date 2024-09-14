@@ -6,8 +6,8 @@
   readme = "README.md"
   requires-python = ">= 3.11"
   dependencies = [
-    "halmos <= 0.0.8",
-    "slither-analyzer <= 0.9.6",
+    "halmos <= 0.1.14",
+    "slither-analyzer <= 0.10.4",
     "setuptools>=68.0.0",
     "pusher>=3.3.2",
     "python-dotenv>=1.0.0",
