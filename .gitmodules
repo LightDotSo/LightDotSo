@@ -25,6 +25,7 @@
 [submodule "lib/magic-spend"]
 	path = lib/magic-spend
 	url = https://github.com/LightDotSo/magic-spend
+	branch = patch
 [submodule "lib/murky"]
 	path = lib/murky
 	url = https://github.com/dmfxyz/murky
