@@ -61,6 +61,9 @@
 [submodule "lib/seaport"]
 	path = lib/seaport
 	url = https://github.com/ProjectOpenSea/seaport
+[submodule "lib/singleton-paymaster"]
+	path = lib/singleton-paymaster
+	url = https://github.com/pimlicolabs/singleton-paymaster
 [submodule "lib/solady"]
 	path = lib/solady
 	url = https://github.com/Vectorized/solady
