@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@goldskycom/cli": "^9.7.1",
-    "@graphprotocol/graph-cli": "^0.81.0",
+    "@graphprotocol/graph-cli": "^0.82.0",
     "@graphprotocol/graph-ts": "^0.35.1",
     "yaml": "^2.5.1"
   },
