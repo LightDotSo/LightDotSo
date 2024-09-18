@@ -23,7 +23,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "viem": "^2.21.7"
+    "viem": "^2.21.9"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

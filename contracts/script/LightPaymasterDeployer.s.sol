@@ -17,7 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {initCode, initCodeHash, salt} from "@/bytecodes/LightPaymaster/v0.2.0.b.sol";
-import {ENTRY_POINT_ADDRESS} from "@/constants/addresses.sol";
+import {ENTRY_POINT_ADDRESS, LIGHT_PAYMASTER_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

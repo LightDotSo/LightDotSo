@@ -1360,9 +1360,9 @@ dependencies = [
 
 [[package]]
 name = "aws-sdk-kms"
-version = "1.43.0"
+version = "1.44.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9f7cb482caa5444d445c94417b9c74e49a849beb09ede4f2f4c3c15f8157387"
+checksum = "c6550445e0913c9383375f4a5a2f550817567a19a178107fce1e1afd767f802a"
 dependencies = [
  "aws-credential-types",
  "aws-runtime",
@@ -1382,9 +1382,9 @@ dependencies = [
 
 [[package]]
 name = "aws-sdk-sts"
-version = "1.42.0"
+version = "1.43.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d1c46924fb1add65bba55636e12812cae2febf68c0f37361766f627ddcca91ce"
+checksum = "cd7a4d279762a35b9df97209f6808b95d4fe78547fe2316b4d200a0283960c5a"
 dependencies = [
  "aws-credential-types",
  "aws-runtime",
@@ -2258,9 +2258,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.1.19"
+version = "1.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d74707dde2ba56f86ae90effb3b43ddd369504387e718014de010cec7959800"
+checksum = "45bcde016d64c21da4be18b655631e5ab6d3107607e71a73a9f53eb48aae23fb"
 dependencies = [
  "jobserver",
  "libc",
@@ -4216,9 +4216,9 @@ dependencies = [
 
 [[package]]
 name = "foundry-compilers"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3372aaa89b1653b61fb297dbc24e74ad727ff76cc4415f1a0ec5f802d24e0797"
+checksum = "6d91e510bd537970f68f8462dea0e8df0a2302d4749fb57bc8e10bbd32a283e2"
 dependencies = [
  "alloy-json-abi",
  "alloy-primitives",
@@ -4251,9 +4251,9 @@ dependencies = [
 
 [[package]]
 name = "foundry-compilers-artifacts"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76c4f9ac0ed5e695bbeb48ff0758ba31ce3d0d52b752aaa466f311f48ed772c0"
+checksum = "f9971eefe4eae1cf2ac707beb4d40f63304b34c81c0961d299e461c14a23b1e7"
 dependencies = [
  "foundry-compilers-artifacts-solc",
  "foundry-compilers-artifacts-vyper",
@@ -4261,9 +4261,9 @@ dependencies = [
 
 [[package]]
 name = "foundry-compilers-artifacts-solc"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ad6beeb057a8a58993d13841cffcb99e8aefdeb52ed9b368c85518747b467f9"
+checksum = "0cde3d12776c295ad85bcdbbae18f4601e384f40a62b0e3371d880bbcd91c65c"
 dependencies = [
  "alloy-json-abi",
  "alloy-primitives",
@@ -4285,9 +4285,9 @@ dependencies = [
 
 [[package]]
 name = "foundry-compilers-artifacts-vyper"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "442e5eb231aad523f0f3e26f9475ad9eab1aa2173a5991df1b7fa51f589f309f"
+checksum = "569a769f6105248816c253715ec39977d61d369e9c67e4774d6870da8f64dffc"
 dependencies = [
  "alloy-json-abi",
  "alloy-primitives",
@@ -4300,9 +4300,9 @@ dependencies = [
 
 [[package]]
 name = "foundry-compilers-core"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92049644ce2745c36be16f6406592155d4be2314306af2543c7d30a32b00d6ed"
+checksum = "5f10ade77fa0eab75e142a76711c42a258781bad0c4516ad64aa413297ebb72e"
 dependencies = [
  "alloy-primitives",
  "cfg-if",
@@ -4924,18 +4924,6 @@ dependencies = [
  "libc",
  "wasi 0.11.0+wasi-snapshot-preview1",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "getset"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f636605b743120a8d32ed92fc27b6cde1a769f8f936c065151eb66f88ded513c"
-dependencies = [
- "proc-macro-error2",
- "proc-macro2",
- "quote",
- "syn 2.0.77",
 ]
 
 [[package]]
@@ -5703,7 +5691,7 @@ dependencies = [
  "iana-time-zone-haiku",
  "js-sys",
  "wasm-bindgen",
- "windows-core",
+ "windows-core 0.52.0",
 ]
 
 [[package]]
@@ -6781,7 +6769,7 @@ dependencies = [
  "tower 0.5.1",
  "tower-http",
  "tower_governor",
- "vergen 9.0.0",
+ "vergen 9.0.1",
  "vergen-git2",
 ]
 
@@ -12525,9 +12513,9 @@ dependencies = [
 
 [[package]]
 name = "symbolic-common"
-version = "12.11.0"
+version = "12.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c1db5ac243c7d7f8439eb3b8f0357888b37cf3732957e91383b0ad61756374e"
+checksum = "9fdf97c441f18a4f92425b896a4ec7a27e03631a0b1047ec4e34e9916a9a167e"
 dependencies = [
  "debugid",
  "memmap2",
@@ -12537,9 +12525,9 @@ dependencies = [
 
 [[package]]
 name = "symbolic-demangle"
-version = "12.11.0"
+version = "12.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ea26e430c27d4a8a5dea4c4b81440606c7c1a415bd611451ef6af8c81416afc3"
+checksum = "bc8ece6b129e97e53d1fbb3f61d33a6a9e5369b11d01228c068094d6d134eaea"
 dependencies = [
  "cpp_demangle",
  "rustc-demangle",
@@ -12621,16 +12609,16 @@ dependencies = [
 
 [[package]]
 name = "sysinfo"
-version = "0.30.13"
+version = "0.31.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a5b4ddaee55fb2bea2bf0e5000747e5f5c0de765e5a5ff87f4cd106439f4bb3"
+checksum = "355dbe4f8799b304b05e1b0f05fc59b2a18d36645cf169607da45bde2f69a1be"
 dependencies = [
- "cfg-if",
  "core-foundation-sys",
  "libc",
+ "memchr",
  "ntapi",
- "once_cell",
- "windows 0.52.0",
+ "rayon",
+ "windows 0.57.0",
 ]
 
 [[package]]
@@ -12762,7 +12750,7 @@ dependencies = [
  "unicode-segmentation",
  "uuid 1.10.0",
  "windows 0.39.0",
- "windows-implement",
+ "windows-implement 0.39.0",
  "x11-dl",
 ]
 
@@ -14245,9 +14233,9 @@ checksum = "e91b56cd4cadaeb79bbf1a5645f6b4f8dc5bde8834ad5894a8db35fda9efa1fe"
 
 [[package]]
 name = "unicode-normalization"
-version = "0.1.23"
+version = "0.1.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a56d1686db2308d901306f92a263857ef59ea39678a5458e7cb17f01415101f5"
+checksum = "5033c97c4262335cded6d6fc3e5c18ab755e1a3dc96376350f3d8e9f009ad956"
 dependencies = [
  "tinyvec",
 ]
@@ -14617,14 +14605,13 @@ dependencies = [
 
 [[package]]
 name = "vergen"
-version = "9.0.0"
+version = "9.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c32e7318e93a9ac53693b6caccfb05ff22e04a44c7cf8a279051f24c09da286f"
+checksum = "349ed9e45296a581f455bc18039878f409992999bc1d5da12a6800eb18c8752f"
 dependencies = [
  "anyhow",
  "cargo_metadata 0.18.1",
  "derive_builder",
- "getset",
  "regex",
  "rustc_version 0.4.1",
  "rustversion",
@@ -14635,28 +14622,27 @@ dependencies = [
 
 [[package]]
 name = "vergen-git2"
-version = "1.0.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a62c52cd2b2b8b7ec75fc20111b3022ac3ff83e4fc14b9497cfcfd39c54f9c67"
+checksum = "e771aff771c0d7c2f42e434e2766d304d917e29b40f0424e8faaaa936bbc3f29"
 dependencies = [
  "anyhow",
  "derive_builder",
  "git2",
  "rustversion",
  "time",
- "vergen 9.0.0",
+ "vergen 9.0.1",
  "vergen-lib",
 ]
 
 [[package]]
 name = "vergen-lib"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e06bee42361e43b60f363bad49d63798d0f42fb1768091812270eca00c784720"
+checksum = "229eaddb0050920816cf051e619affaf18caa3dd512de8de5839ccbc8e53abb0"
 dependencies = [
  "anyhow",
  "derive_builder",
- "getset",
  "rustversion",
 ]
 
@@ -14927,7 +14913,7 @@ dependencies = [
  "webview2-com-macros",
  "webview2-com-sys",
  "windows 0.39.0",
- "windows-implement",
+ "windows-implement 0.39.0",
 ]
 
 [[package]]
@@ -15033,7 +15019,7 @@ version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1c4bd0a50ac6020f65184721f758dba47bb9fbc2133df715ec74a237b26794a"
 dependencies = [
- "windows-implement",
+ "windows-implement 0.39.0",
  "windows_aarch64_msvc 0.39.0",
  "windows_i686_gnu 0.39.0",
  "windows_i686_msvc 0.39.0",
@@ -15056,7 +15042,17 @@ version = "0.52.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e48a53791691ab099e5e2ad123536d0fff50652600abaf43bbf952894110d0be"
 dependencies = [
- "windows-core",
+ "windows-core 0.52.0",
+ "windows-targets 0.52.6",
+]
+
+[[package]]
+name = "windows"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "12342cb4d8e3b046f3d80effd474a7a02447231330ef77d71daa6fbc40681143"
+dependencies = [
+ "windows-core 0.57.0",
  "windows-targets 0.52.6",
 ]
 
@@ -15080,6 +15076,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "windows-core"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2ed2439a290666cd67ecce2b0ffaad89c2a56b976b736e6ece670297897832d"
+dependencies = [
+ "windows-implement 0.57.0",
+ "windows-interface",
+ "windows-result 0.1.2",
+ "windows-targets 0.52.6",
+]
+
+[[package]]
 name = "windows-implement"
 version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -15087,6 +15095,28 @@ checksum = "ba01f98f509cb5dc05f4e5fc95e535f78260f15fea8fe1a8abdd08f774f1cee7"
 dependencies = [
  "syn 1.0.109",
  "windows-tokens",
+]
+
+[[package]]
+name = "windows-implement"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9107ddc059d5b6fbfbffdfa7a7fe3e22a226def0b2608f72e9d552763d3e1ad7"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.77",
+]
+
+[[package]]
+name = "windows-interface"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29bee4b38ea3cde66011baa44dba677c432a78593e202392d1e9070cf2a7fca7"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.77",
 ]
 
 [[package]]
@@ -15101,8 +15131,17 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e400001bb720a623c1c69032f8e3e4cf09984deec740f007dd2b03ec864804b0"
 dependencies = [
- "windows-result",
+ "windows-result 0.2.0",
  "windows-strings",
+ "windows-targets 0.52.6",
+]
+
+[[package]]
+name = "windows-result"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5e383302e8ec8515204254685643de10811af0ed97ea37210dc26fb0032647f8"
+dependencies = [
  "windows-targets 0.52.6",
 ]
 
@@ -15121,7 +15160,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4cd9b125c486025df0eabcb585e62173c6c9eddcec5d117d3b6e8c30e2ee4d10"
 dependencies = [
- "windows-result",
+ "windows-result 0.2.0",
  "windows-targets 0.52.6",
 ]
 
@@ -15448,7 +15487,7 @@ dependencies = [
  "webkit2gtk-sys",
  "webview2-com",
  "windows 0.39.0",
- "windows-implement",
+ "windows-implement 0.39.0",
 ]
 
 [[package]]
