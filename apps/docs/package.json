@@ -16,8 +16,8 @@
   "files": ["CHANGELOG.md"],
   "scripts": {
     "build": "next build",
-    "build:docs": "node ./scripts/generate-docs.mjs",
     "dev": "next dev",
+    "generate": "node ./scripts/generate-docs.mjs",
     "lint": "next lint || exit 0",
     "start": "next start"
   },
