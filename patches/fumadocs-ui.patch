@@ -1,0 +1,13 @@
+diff --git a/dist/chunk-WLTWFYQA.js b/dist/chunk-WLTWFYQA.js
+index aede57171ed18f66e8e242d392292ff9e89d946b..2c2574734182b2c50c2916bbd645daabe12a532b 100644
+--- a/dist/chunk-WLTWFYQA.js
++++ b/dist/chunk-WLTWFYQA.js
+@@ -22,7 +22,7 @@ function Card({
+   ...props
+ }) {
+   return /* @__PURE__ */ jsxs(
+-    Link,
++    "a",
+     {
+       ...props,
+       className: twMerge(
