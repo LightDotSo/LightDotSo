@@ -12,7 +12,7 @@ rimrafSync("./content/docs/(api)", {
 // biome-ignore lint/complexity/noVoid: <explanation>
 void openApi.generateFiles({
   input: ["https://api.light.so/api-docs/openapi.json"],
-  output: "./content/(api)",
+  output: "./content/api",
   per: "operation",
   groupBy: "tag",
 });
