@@ -19,7 +19,9 @@
   "formatter": {
     "enabled": true,
     "formatWithErrors": true,
-    "useEditorconfig": true
+    "useEditorconfig": true,
+    "indentStyle": "space",
+    "indentWidth": 2
   },
   "linter": {
     "enabled": true,

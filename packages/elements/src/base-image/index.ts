@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { BaseImage, useBaseImageLoaded } from "./base-image";
+export { BaseImage, useBaseImageLoaded, useBaseImageError } from "./base-image";
 export type { BaseImageProps } from "./base-image";

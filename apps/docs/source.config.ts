@@ -17,10 +17,19 @@
 // Thank you to `fuma-nama` for the original implementation and great documentation.
 
 import {
+  fileGenerator,
+  remarkDocGen,
+  remarkInstall,
+  typescriptGenerator,
+} from "fumadocs-docgen";
+import {
   defineConfig,
   defineDocs,
   frontmatterSchema,
 } from "fumadocs-mdx/config";
+import rehypeKatex from "rehype-katex";
+import rehypeMermaid from "rehype-mermaid";
+import remarkMath from "remark-math";
 import { z } from "zod";
 
 export const { docs, meta } = defineDocs({
@@ -34,4 +43,31 @@ export const { docs, meta } = defineDocs({
   },
 });
 
-export default defineConfig();
+export default defineConfig({
+  generateManifest: true,
+  lastModifiedTime: "git",
+  mdxOptions: {
+    rehypeCodeOptions: {
+      inline: "tailing-curly-colon",
+      themes: {
+        light: "catppuccin-latte",
+        dark: "catppuccin-mocha",
+      },
+      // transformers: [
+      //   ...(rehypeCodeDefaultOptions.transformers ?? []),
+      //   transformerTwoslash(),
+      //   transformerRemoveNotationEscape(),
+      // ],
+    },
+    remarkPlugins: [
+      remarkMath,
+      [remarkInstall, { persist: { id: "package-manager" } }],
+      [remarkDocGen, { generators: [typescriptGenerator(), fileGenerator()] }],
+    ],
+    rehypePlugins: (v) => [
+      rehypeKatex,
+      [rehypeMermaid, { strategy: "inline-svg" }],
+      ...v,
+    ],
+  },
+});
