@@ -229,7 +229,7 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     /// @dev Gets the full URL of the RPC
-    function getFullUrl() public returns (string memory) {
+    function getFullUrl() public view returns (string memory) {
         string memory env = vm.envOr("ENVIRONMENT", string(""));
         // Workaround for comparing strings in solidity
         if (keccak256(abi.encodePacked(env)) == keccak256(abi.encodePacked(string("local")))) {
