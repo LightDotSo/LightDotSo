@@ -1,5 +1,19 @@
 # @lightdotso/docs
 
+## 3.1.22
+
+### Patch Changes
+
+- [#2385](https://github.com/LightDotSo/LightDotSo/pull/2385) [`4aaa168`](https://github.com/LightDotSo/LightDotSo/commit/4aaa168094655b32214949b973d0d026cedff24d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add sticky banner
+
+- [#2382](https://github.com/LightDotSo/LightDotSo/pull/2382) [`6280a1e`](https://github.com/LightDotSo/LightDotSo/commit/6280a1ecb9328cbc588fb9eb962e2504de79105f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add API docs
+
+- [#2388](https://github.com/LightDotSo/LightDotSo/pull/2388) [`b340232`](https://github.com/LightDotSo/LightDotSo/commit/b340232e63fb793e3ed2f4522af69e3f1fedc08a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix docs build
+
+- Updated dependencies [[`4aaa168`](https://github.com/LightDotSo/LightDotSo/commit/4aaa168094655b32214949b973d0d026cedff24d), [`0da040a`](https://github.com/LightDotSo/LightDotSo/commit/0da040aa37f7142273936dcdaa76092b793dbe25)]:
+  - @lightdotso/templates@0.0.22
+  - @lightdotso/roots@0.0.8
+
 ## 3.1.21
 
 ### Patch Changes

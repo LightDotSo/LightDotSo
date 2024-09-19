@@ -1,5 +1,12 @@
 # @lightdotso/forms
 
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies [[`3f0974d`](https://github.com/LightDotSo/LightDotSo/commit/3f0974da431476d167b89f2307ab80640c9f891d)]:
+  - @lightdotso/elements@0.0.22
+
 ## 0.0.21
 
 ### Patch Changes
