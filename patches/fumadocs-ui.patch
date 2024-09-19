@@ -11,3 +11,73 @@ index aede57171ed18f66e8e242d392292ff9e89d946b..2c2574734182b2c50c2916bbd645daab
      {
        ...props,
        className: twMerge(
+diff --git a/dist/components/layout/root-toggle.js b/dist/components/layout/root-toggle.js
+index 607eabf1e1886aaf31ee1f8a9368056447e5ddf4..20d5cf672c8888901d4bd82613a74505480676a3 100644
+--- a/dist/components/layout/root-toggle.js
++++ b/dist/components/layout/root-toggle.js
+@@ -49,7 +49,7 @@ function RootToggle({
+       }
+     ),
+     /* @__PURE__ */ jsx(PopoverContent, { className: "w-[var(--radix-popover-trigger-width)] overflow-hidden p-0", children: options.map((item) => /* @__PURE__ */ jsx(
+-      Link,
++      "a",
+       {
+         href: item.url,
+         onClick,
+diff --git a/dist/components/type-table.js b/dist/components/type-table.js
+index 3f1c2a32668c5b39220881e013ae16bbbe39dc7f..c923b6b8f41ea787db7c62b12794720e44d970a2 100644
+--- a/dist/components/type-table.js
++++ b/dist/components/type-table.js
+@@ -50,7 +50,7 @@ function TypeTable({
+       /* @__PURE__ */ jsx("td", { className: td(), children: /* @__PURE__ */ jsxs("div", { className: field(), children: [
+         /* @__PURE__ */ jsx("code", { className: code(), children: value.type }),
+         value.typeDescription ? /* @__PURE__ */ jsx(Info, { children: /* @__PURE__ */ jsx("pre", { className: "overflow-auto bg-fd-secondary text-fd-secondary-foreground", children: value.typeDescription }) }) : null,
+-        value.typeDescriptionLink ? /* @__PURE__ */ jsx(Link, { href: value.typeDescriptionLink, children: /* @__PURE__ */ jsx(InfoIcon, { className: "size-4" }) }) : null
++        value.typeDescriptionLink ? /* @__PURE__ */ jsx("a", { href: value.typeDescriptionLink, children: /* @__PURE__ */ jsx(InfoIcon, { className: "size-4" }) }) : null
+       ] }) }),
+       /* @__PURE__ */ jsx("td", { className: td(), children: value.default ? /* @__PURE__ */ jsx("code", { className: code(), children: value.default }) : /* @__PURE__ */ jsx("span", { children: "-" }) })
+     ] }, key)) })
+diff --git a/dist/layout.js b/dist/layout.js
+index 75c5c5d250ae70b229981f5cc473424ba0ab9872..2b6e0b2cc6fd3950587e8d4c7a071baabe7f0fc8 100644
+--- a/dist/layout.js
++++ b/dist/layout.js
+@@ -48,7 +48,7 @@ function DocsLayout({
+   if (nav?.title)
+     banner.push(
+       /* @__PURE__ */ jsx(
+-        Link,
++        "a",
+         {
+           href: nav.url ?? "/",
+           className: "inline-flex items-center gap-2.5 py-1 font-medium",
+diff --git a/dist/page.client.js b/dist/page.client.js
+index afc7e3ade971422fcae63ff7fb9f55d2d1c411dc..ff3630b6d3d7243fd9c74e87145d55fff3cdd919 100644
+--- a/dist/page.client.js
++++ b/dist/page.client.js
+@@ -164,7 +164,7 @@ function Breadcrumb({
+   return /* @__PURE__ */ jsx2("div", { className: "-mb-3 flex flex-row items-center gap-1 text-sm font-medium text-fd-muted-foreground", children: items.map((item, i) => /* @__PURE__ */ jsxs2(Fragment2, { children: [
+     i !== 0 && /* @__PURE__ */ jsx2(ChevronRight2, { className: "size-4 shrink-0 rtl:rotate-180" }),
+     item.url ? /* @__PURE__ */ jsx2(
+-      Link,
++      "a",
+       {
+         href: item.url,
+         className: "truncate hover:text-fd-accent-foreground",
+@@ -206,7 +206,7 @@ function Footer({ items }) {
+     };
+   }, [pathname, tree.navigation]);
+   return /* @__PURE__ */ jsxs3("div", { className: "grid grid-cols-2 gap-4 pb-6", children: [
+-    previous ? /* @__PURE__ */ jsxs3(Link2, { href: previous.url, className: twMerge(itemVariants()), children: [
++    previous ? /* @__PURE__ */ jsxs3("a", { href: previous.url, className: twMerge(itemVariants()), children: [
+       /* @__PURE__ */ jsxs3("div", { className: twMerge(itemLabel()), children: [
+         /* @__PURE__ */ jsx3(ChevronLeft, { className: "-ms-1 size-4 shrink-0 rtl:rotate-180" }),
+         /* @__PURE__ */ jsx3("p", { children: text.previousPage })
+@@ -214,7 +214,7 @@ function Footer({ items }) {
+       /* @__PURE__ */ jsx3("p", { className: "font-medium", children: previous.name })
+     ] }) : null,
+     next ? /* @__PURE__ */ jsxs3(
+-      Link2,
++      "a",
+       {
+         href: next.url,
+         className: twMerge(itemVariants({ className: "col-start-2 text-end" })),
