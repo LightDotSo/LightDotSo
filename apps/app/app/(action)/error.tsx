@@ -22,7 +22,6 @@ import { useEffect } from "react";
 
 interface ErrorProps {
   error: Error & { digest?: string };
-  resetAction: () => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -30,7 +29,7 @@ interface ErrorProps {
 // -----------------------------------------------------------------------------
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-export default function Error({ error, resetAction }: ErrorProps) {
+export default function Error({ error }: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
     // biome-ignore lint/suspicious/noConsole: <explanation>
@@ -44,15 +43,6 @@ export default function Error({ error, resetAction }: ErrorProps) {
   return (
     <div>
       <h2>Something went wrong!</h2>
-      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => resetAction()
-        }
-      >
-        Try again
-      </button>
     </div>
   );
 }
