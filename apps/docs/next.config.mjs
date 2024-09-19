@@ -24,8 +24,8 @@ const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath:
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "/docs" : undefined,
+  // basePath:
+  // process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "/docs" : undefined,
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/docs@${packageJson.version}`,
   },
