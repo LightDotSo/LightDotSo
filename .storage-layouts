@@ -7,9 +7,11 @@
 |------|------|------|--------|-------|----------|
 =======================
  ➡ LightPaymaster
-| Name   | Type    | Slot | Offset | Bytes | Contract                                        |
-|--------|---------|------|--------|-------|-------------------------------------------------|
-| _owner | address | 0    | 0      | 20    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| Name                   | Type                                         | Slot | Offset | Bytes | Contract                                        |
+|------------------------|----------------------------------------------|------|--------|-------|-------------------------------------------------|
+| maxWithdrawDenominator | uint256                                      | 0    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| _withdrawable          | mapping(address => uint256)                  | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| _nonceUsed             | mapping(uint256 => mapping(address => bool)) | 2    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
  ➡ LightTimelockController
 | Name | Type | Slot | Offset | Bytes | Contract |
