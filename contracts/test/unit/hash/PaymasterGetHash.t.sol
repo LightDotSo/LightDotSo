@@ -57,17 +57,17 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 
     /// Tests that the account complies w/ ERC-165
@@ -96,17 +96,17 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 
     /// Tests that the account complies w/ ERC-165
@@ -135,17 +135,17 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 
     /// Tests that the account complies w/ ERC-165
@@ -173,17 +173,17 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 
     /// Tests that the account complies w/ ERC-165
@@ -213,17 +213,17 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 
     /// Tests that the account complies w/ ERC-165
@@ -253,16 +253,16 @@ contract PaymasterGetHashUnitTest is BaseTest {
             signature
         );
 
-        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
+        // LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
-        // Log the paymaster address
-        // solhint-disable-next-line no-console
-        console.log(address(paymaster));
+        // // Log the paymaster address
+        // // solhint-disable-next-line no-console
+        // console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+        // bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
-        // Log the byte code hash
-        // solhint-disable-next-line no-console
-        console.logBytes32(hash);
+        // // Log the byte code hash
+        // // solhint-disable-next-line no-console
+        // console.logBytes32(hash);
     }
 }

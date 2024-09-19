@@ -14,6 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
+import {ENTRY_POINT_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {PackedUserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
@@ -27,25 +28,10 @@ import {Surl} from "surl/Surl.sol";
 
 pragma solidity ^0.8.27;
 
-interface ImmutableCreate2Factory {
-    function safeCreate2(bytes32 salt, bytes calldata initializationCode)
-        external
-        payable
-        returns (address deploymentAddress);
-}
-
 // BaseLightDeployer - Create abstract contract of just immutable storages
 abstract contract BaseLightDeployer is BaseTest {
     using Surl for *;
     using stdJson for string;
-
-    // -------------------------------------------------------------------------
-    // Immutable Factory
-    // -------------------------------------------------------------------------
-
-    address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
-    ImmutableCreate2Factory internal constant IMMUTABLE_CREATE2_FACTORY =
-        ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     // -------------------------------------------------------------------------
     // Setup
@@ -243,7 +229,7 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     /// @dev Gets the full URL of the RPC
-    function getFullUrl() public returns (string memory) {
+    function getFullUrl() public view returns (string memory) {
         string memory env = vm.envOr("ENVIRONMENT", string(""));
         // Workaround for comparing strings in solidity
         if (keccak256(abi.encodePacked(env)) == keccak256(abi.encodePacked(string("local")))) {

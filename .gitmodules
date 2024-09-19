@@ -22,9 +22,16 @@
 [submodule "lib/kernel"]
 	path = lib/kernel
 	url = https://github.com/zerodevapp/kernel
+[submodule "lib/magic-spend"]
+	path = lib/magic-spend
+	url = https://github.com/LightDotSo/magic-spend
+	branch = patch
 [submodule "lib/murky"]
 	path = lib/murky
 	url = https://github.com/dmfxyz/murky
+[submodule "lib/nexus"]
+	path = lib/nexus
+	url = https://github.com/bcnmy/nexus
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
@@ -58,6 +65,9 @@
 [submodule "lib/seaport"]
 	path = lib/seaport
 	url = https://github.com/ProjectOpenSea/seaport
+[submodule "lib/singleton-paymaster"]
+	path = lib/singleton-paymaster
+	url = https://github.com/pimlicolabs/singleton-paymaster
 [submodule "lib/solady"]
 	path = lib/solady
 	url = https://github.com/Vectorized/solady

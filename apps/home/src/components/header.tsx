@@ -31,7 +31,7 @@ export const Header: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-2 py-1">
+    <div className="sticky top-0 mx-auto flex h-16 max-w-5xl items-center justify-between px-2 py-1">
       <Link
         href="/"
         className="p-2 hover:rounded-md hover:bg-background-stronger"

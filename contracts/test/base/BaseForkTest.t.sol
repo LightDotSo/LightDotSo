@@ -16,6 +16,12 @@
 
 pragma solidity ^0.8.27;
 
+import {
+    ENTRY_POINT_ADDRESS,
+    LIGHT_FACTORY_ADDRESS,
+    LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS,
+    LIGHT_PAYMASTER_ADDRESS
+} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
@@ -47,7 +53,7 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         // LightTimelockControllerFactory core contract
         timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
         // LightPaymaster core contract
-        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
 
         // Get network name
         string memory defaultName = "mainnet";

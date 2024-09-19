@@ -42,17 +42,17 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@storybook/react": "^8.3.0",
-    "@tanstack/react-virtual": "^3.10.7",
+    "@storybook/react": "^8.3.1",
+    "@tanstack/react-virtual": "^3.10.8",
     "lucide-react": "^0.441.0",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.6",
+    "viem": "^2.21.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.4",
-    "@types/react": "^18.3.5",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.7",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.6.2"
   },

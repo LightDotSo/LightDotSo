@@ -70,13 +70,13 @@
   },
   "dependencies": {
     "@goldskycom/cli": "^9.7.1",
-    "@graphprotocol/graph-cli": "^0.81.0",
+    "@graphprotocol/graph-cli": "^0.82.0",
     "@graphprotocol/graph-ts": "^0.35.1",
     "yaml": "^2.5.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.4",
+    "@types/node": "^22.5.5",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.6.2",

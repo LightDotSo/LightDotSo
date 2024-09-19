@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
-    "@keystatic/core": "^0.5.34",
+    "@keystatic/core": "^0.5.35",
     "@keystatic/next": "^5.0.1",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -46,18 +46,18 @@
     "react": "19.0.0-rc-7771d3a7-20240827",
     "react-dom": "19.0.0-rc-7771d3a7-20240827",
     "react-error-boundary": "^4.0.13",
-    "tailwindcss": "^3.4.11",
+    "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.4",
-    "@types/react": "^18.3.5",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.7",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.11",
+    "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2"
   }
 }

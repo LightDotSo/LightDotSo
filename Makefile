@@ -170,23 +170,15 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightWalletFactory.sol
 
 .PHONY: contracts-check
-contracts-check: contracts-size contracts-storage ## Check the contracts
+contracts-check: contracts-size contracts-snapshot contracts-storage ## Check the contracts
+
+.PHONY: contracts-halmos
+contracts-halmos: ## Runs halmos on the contracts
+	rye run halmos
 
 .PHONY: contracts-size
 contracts-size: ## Omits the current code size layout from the current contracts with foundry
 	./contracts/size.sh
-
-.PHONY: contracts-storage
-contracts-storage: ## Omits the current storage layout from the current contracts with foundry
-	./contracts/storage.sh
-
-.PHONY: contracts-snapshot
-contracts-snapshot: ## Runs the snapshot generation script
-	forge snapshot
-
-.PHONY: contracts-snapshot-check
-contracts-snapshot-check: ## Runs the snapshot generation script w/ check
-	forge snapshot --check
 
 .PHONY: contracts-slither
 contracts-slither: ## Runs slither on the contracts
@@ -196,9 +188,17 @@ contracts-slither: ## Runs slither on the contracts
 contracts-slither-install: ## Installs slither on the contracts w/ solc version
 	rye run solc-select install $(SOLC_VERSION)
 
-.PHONY: contracts-halmos
-contracts-halmos: ## Runs halmos on the contracts
-	rye run halmos
+.PHONY: contracts-snapshot
+contracts-snapshot: ## Runs the snapshot generation script
+	forge snapshot
+
+.PHONY: contracts-snapshot-check
+contracts-snapshot-check: ## Runs the snapshot generation script w/ check
+	forge snapshot --check
+
+.PHONY: contracts-storage
+contracts-storage: ## Omits the current storage layout from the current contracts with foundry
+	./contracts/storage.sh
 
 #@ autometrics
 .PHONY: autometrics
@@ -292,3 +292,21 @@ test-anvil-run: ## Run the anvil for testing
 .PHONY: test-indexer-run
 test-indexer-run: ## Run the indexer test
 	cargo run --bin indexer -- --ws ws://localhost:8545 --rpc http://localhost:8545 --chain-id 31337
+
+##@ Update
+
+.PHONY: update
+update: update-npm update-rust update-submodules ## Update all dependencies
+
+.PHONY: update-npm
+update-npm: ## Update the npm dependencies
+	pnpm run ncu:upgrade
+
+.PHONY: update-rust
+update-rust: ## Update the rust dependencies
+	cargo +nightly update --breaking -Z unstable-options
+
+.PHONY: update-submodules
+update-submodules: ## Update the submodules
+	git submodule update --init --recursive
+	git submodule update --remote --merge
