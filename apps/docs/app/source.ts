@@ -17,6 +17,7 @@ import { loader } from "fumadocs-core/source";
 import { createMDXSource } from "fumadocs-mdx";
 import { attachFile, createOpenAPI } from "fumadocs-openapi/server";
 
+// -----------------------------------------------------------------------------
 // Source
 // -----------------------------------------------------------------------------
 
