@@ -11,6 +11,7 @@
   ],
   "useGitignore": true,
   "ignorePaths": [
+    "**.patch",
     "**.sql",
     "pnpm-lock.yaml",
     "node_modules",

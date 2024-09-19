@@ -285,11 +285,11 @@ importers:
         specifier: ^7.25.2
         version: 7.25.2
       '@langchain/core':
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.3.3
+        version: 0.3.3
       '@langchain/langgraph':
         specifier: ^0.2.8
-        version: 0.2.8(@langchain/core@0.3.2)
+        version: 0.2.8(@langchain/core@0.3.3)
       '@langchain/langgraph-sdk':
         specifier: ^0.0.10
         version: 0.0.10
@@ -3610,8 +3610,8 @@ importers:
   packages/templates:
     dependencies:
       '@calcom/embed-react':
-        specifier: ^1.5.0
-        version: 1.5.0(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+        specifier: ^1.5.1
+        version: 1.5.1(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       '@heroicons/react':
         specifier: ^2.1.5
         version: 2.1.5(react@19.0.0-rc-7771d3a7-20240827)
@@ -5088,17 +5088,17 @@ packages:
   '@bundled-es-modules/tough-cookie@0.1.6':
     resolution: {integrity: sha512-dvMHbL464C0zI+Yqxbz6kZ5TOEp7GLW+pry/RWndAR8MJQAXZ2rPmIs8tziTZjeIyhSNZgZbCePtfSbdWqStJw==}
 
-  '@calcom/embed-core@1.5.0':
-    resolution: {integrity: sha512-2R+u9tpsKl87AfNkZa2q+bZy4qM4wVNwU4xmlAXg2x9/vI8uhm7MmzctV1SdyhzR5jlwa5iD62+pzVQTgoj6ZA==}
+  '@calcom/embed-core@1.5.1':
+    resolution: {integrity: sha512-wykzh1GKj5xhGxDJeCRJ7OulAgn9GVMYD/mmOBbvn06c3m9Lqoqn09E5kJ+DY+aokUncQPcstNsdiHsURjMuVw==}
 
-  '@calcom/embed-react@1.5.0':
-    resolution: {integrity: sha512-HREjDsEu9cEuhbB0aP1nqzw+aW3J1LOutCap/i5EGGfAoxUQDvWekDViE8zFk9lsQ0HKZRBaSc73AsG6bc0B3Q==}
+  '@calcom/embed-react@1.5.1':
+    resolution: {integrity: sha512-vwRtaO/WbBLrXQbKek333BoY/0GMRVRxOva9VhRPmtC8kyT9pAw/IfKA+26gDtfE25XCx9nqdPIghUJQr+niUw==}
     peerDependencies:
       react: 19.0.0-rc-7771d3a7-20240827
       react-dom: 19.0.0-rc-7771d3a7-20240827
 
-  '@calcom/embed-snippet@1.3.0':
-    resolution: {integrity: sha512-g/JnC02VpDHIDLdRWbrh3/L2xLTTph46zojeH6y7O2GXAqQIDtCDOqakmng2zhvoLHt+cs7KuiiN4a/r+CswKg==}
+  '@calcom/embed-snippet@1.3.1':
+    resolution: {integrity: sha512-OmUAmwZt41I7vfKk9SqLMpCBxj91BHZ27NXFARSbECpw7MXcGHm2a4l1oqeuOe0vdRT27qDmKz/ccvKI0x/ttw==}
 
   '@changesets/apply-release-plan@7.0.5':
     resolution: {integrity: sha512-1cWCk+ZshEkSVEZrm2fSj1Gz8sYvxgUL4Q78+1ZZqeqfuevPTPk033/yUZ3df8BKMohkqqHfzj0HOOrG0KtXTw==}
@@ -7107,8 +7107,8 @@ packages:
     engines: {node: '>= 12'}
     deprecated: Use v12.0.2 or higher to fix the vulnerability issue
 
-  '@langchain/core@0.3.2':
-    resolution: {integrity: sha512-FeoDOStP8l1YdxgykpXnVoEnl4lxGNSOdYzUJN/EdFtkc6cIjDDS5+xewajme0+egaUsO4tGLezKaFpoWxAyQA==}
+  '@langchain/core@0.3.3':
+    resolution: {integrity: sha512-WAtkmhbdl2T41qzimTzhb3pXCHQxO4onqxzPxgdf3KftQdTwLq0YYBDhozRMZLNAd/+cfH0ymZGaZSsnc9Ogsg==}
     engines: {node: '>=18'}
 
   '@langchain/langgraph-checkpoint@0.0.6':
@@ -24980,18 +24980,18 @@ snapshots:
       '@types/tough-cookie': 4.0.5
       tough-cookie: 4.1.4
 
-  '@calcom/embed-core@1.5.0': {}
+  '@calcom/embed-core@1.5.1': {}
 
-  '@calcom/embed-react@1.5.0(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)':
+  '@calcom/embed-react@1.5.1(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)':
     dependencies:
-      '@calcom/embed-core': 1.5.0
-      '@calcom/embed-snippet': 1.3.0
+      '@calcom/embed-core': 1.5.1
+      '@calcom/embed-snippet': 1.3.1
       react: 19.0.0-rc-7771d3a7-20240827
       react-dom: 19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827)
 
-  '@calcom/embed-snippet@1.3.0':
+  '@calcom/embed-snippet@1.3.1':
     dependencies:
-      '@calcom/embed-core': 1.5.0
+      '@calcom/embed-core': 1.5.1
 
   '@changesets/apply-release-plan@7.0.5':
     dependencies:
@@ -27278,7 +27278,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@langchain/core@0.3.2':
+  '@langchain/core@0.3.3':
     dependencies:
       ansi-styles: 5.2.0
       camelcase: 6.3.0
@@ -27294,9 +27294,9 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/langgraph-checkpoint@0.0.6(@langchain/core@0.3.2)':
+  '@langchain/langgraph-checkpoint@0.0.6(@langchain/core@0.3.3)':
     dependencies:
-      '@langchain/core': 0.3.2
+      '@langchain/core': 0.3.3
       uuid: 10.0.0
 
   '@langchain/langgraph-sdk@0.0.10':
@@ -27306,10 +27306,10 @@ snapshots:
       p-retry: 4.6.2
       uuid: 9.0.1
 
-  '@langchain/langgraph@0.2.8(@langchain/core@0.3.2)':
+  '@langchain/langgraph@0.2.8(@langchain/core@0.3.3)':
     dependencies:
-      '@langchain/core': 0.3.2
-      '@langchain/langgraph-checkpoint': 0.0.6(@langchain/core@0.3.2)
+      '@langchain/core': 0.3.3
+      '@langchain/langgraph-checkpoint': 0.0.6(@langchain/core@0.3.3)
       double-ended-queue: 2.1.0-0
       uuid: 10.0.0
       zod: 3.23.8

@@ -24,7 +24,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",
     "@babel/core": "^7.25.2",
-    "@langchain/core": "^0.3.2",
+    "@langchain/core": "^0.3.3",
     "@langchain/langgraph": "^0.2.8",
     "@langchain/langgraph-sdk": "^0.0.10",
     "@lightdotso/const": "workspace:*",
