@@ -16,6 +16,7 @@ import { openapi, source } from "@/app/source";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import {
   DocsBody,
+  DocsCategory,
   DocsDescription,
   DocsPage,
   DocsTitle,
@@ -79,6 +80,9 @@ export default async function Page({
         <MDX
           components={{ ...defaultMdxComponents, APIPage: openapi.APIPage }}
         />
+        {page.data.index ? (
+          <DocsCategory page={page} pages={source.getPages()} />
+        ) : null}
       </DocsBody>
     </DocsPage>
   );
