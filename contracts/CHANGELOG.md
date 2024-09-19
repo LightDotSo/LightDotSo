@@ -1,5 +1,23 @@
 # @lightdotso/contracts
 
+## 4.0.0
+
+### Major Changes
+
+- [#2376](https://github.com/LightDotSo/LightDotSo/pull/2376) [`5ddef6b`](https://github.com/LightDotSo/LightDotSo/commit/5ddef6b96dbf74d34261c791e4acf4bc1cdec78a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Upgrade to 0.8.27
+
+### Patch Changes
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add updates
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#2378](https://github.com/LightDotSo/LightDotSo/pull/2378) [`cd3c4f5`](https://github.com/LightDotSo/LightDotSo/commit/cd3c4f5770acaabd2293b33a88325eaf5970ecec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Deploy LightTimelockController.sol
+
+- Updated dependencies [[`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5)]:
+  - @lightdotso/sequence@0.0.11
+  - @lightdotso/wagmi@3.1.13
+
 ## 3.1.13
 
 ### Patch Changes
