@@ -1,5 +1,19 @@
 # @lightdotso/app
 
+## 3.2.21
+
+### Patch Changes
+
+- Updated dependencies [[`4aaa168`](https://github.com/LightDotSo/LightDotSo/commit/4aaa168094655b32214949b973d0d026cedff24d), [`0da040a`](https://github.com/LightDotSo/LightDotSo/commit/0da040aa37f7142273936dcdaa76092b793dbe25), [`3f0974d`](https://github.com/LightDotSo/LightDotSo/commit/3f0974da431476d167b89f2307ab80640c9f891d)]:
+  - @lightdotso/templates@0.0.22
+  - @lightdotso/home@3.1.21
+  - @lightdotso/elements@0.0.22
+  - @lightdotso/dialogs@0.0.17
+  - @lightdotso/modals@0.0.22
+  - @lightdotso/roots@0.0.8
+  - @lightdotso/tables@0.1.22
+  - @lightdotso/forms@0.0.22
+
 ## 3.2.20
 
 ### Patch Changes

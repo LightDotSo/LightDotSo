@@ -1,5 +1,13 @@
 # @lightdotso/dialogs
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [[`4aaa168`](https://github.com/LightDotSo/LightDotSo/commit/4aaa168094655b32214949b973d0d026cedff24d), [`0da040a`](https://github.com/LightDotSo/LightDotSo/commit/0da040aa37f7142273936dcdaa76092b793dbe25), [`3f0974d`](https://github.com/LightDotSo/LightDotSo/commit/3f0974da431476d167b89f2307ab80640c9f891d)]:
+  - @lightdotso/templates@0.0.22
+  - @lightdotso/elements@0.0.22
+
 ## 0.0.16
 
 ### Patch Changes

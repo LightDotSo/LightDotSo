@@ -1,5 +1,14 @@
 # @lightdotso/roots
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`4aaa168`](https://github.com/LightDotSo/LightDotSo/commit/4aaa168094655b32214949b973d0d026cedff24d), [`0da040a`](https://github.com/LightDotSo/LightDotSo/commit/0da040aa37f7142273936dcdaa76092b793dbe25)]:
+  - @lightdotso/templates@0.0.22
+  - @lightdotso/modals@0.0.22
+  - @lightdotso/forms@0.0.22
+
 ## 0.0.7
 
 ### Patch Changes
