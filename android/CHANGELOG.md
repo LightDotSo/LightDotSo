@@ -1,5 +1,12 @@
 # @lightdotso/android
 
+## 3.0.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/crates@3.1.11
+
 ## 3.0.11
 
 ### Patch Changes

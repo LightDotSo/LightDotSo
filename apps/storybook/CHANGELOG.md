@@ -1,5 +1,31 @@
 # @lightdotso/storybook
 
+## 0.0.22
+
+### Patch Changes
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add updates
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
+- Updated dependencies [[`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5)]:
+  - @lightdotso/templates@0.0.21
+  - @lightdotso/elements@0.0.21
+  - @lightdotso/dialogs@0.0.16
+  - @lightdotso/modals@0.0.21
+  - @lightdotso/states@0.0.18
+  - @lightdotso/tables@0.1.21
+  - @lightdotso/const@3.1.12
+  - @lightdotso/forms@0.0.21
+  - @lightdotso/roots@0.0.7
+  - @lightdotso/wagmi@3.1.13
+  - @lightdotso/demo@0.0.14
+  - @lightdotso/msw@0.0.13
+  - @lightdotso/svg@0.0.15
+  - @lightdotso/ui@3.1.18
+
 ## 0.0.21
 
 ### Patch Changes
