@@ -123,7 +123,7 @@ export const NavTabs: FC<NavTabsProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 mt-2 mb-1.5 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
+      className="-mt-1.5 relative z-0 mb-1.5 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
       onPointerLeave={(_e) => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {

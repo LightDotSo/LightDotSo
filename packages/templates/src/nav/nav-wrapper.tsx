@@ -26,6 +26,7 @@ export interface NavWrapperProps {
   rootClassName?: string;
   navChildren?: ReactNode;
   children: ReactNode;
+  topNavChildren?: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
@@ -37,6 +38,7 @@ export function NavWrapper({
   className,
   navClassName,
   rootClassName,
+  topNavChildren,
   navChildren,
   children,
 }: NavWrapperProps) {
@@ -47,16 +49,19 @@ export function NavWrapper({
   return (
     <main>
       <div className={cn("flex flex-col", rootClassName)}>
-        <div
-          className={cn(
-            "sticky top-0 z-50 border-b border-b-border-weak bg-background-body",
-            className,
-          )}
-        >
-          <div className={cn("flex h-16 items-center", navClassName)}>
-            {nav}
+        <div className="sticky top-0 z-50">
+          {topNavChildren && <div className="w-full">{topNavChildren}</div>}
+          <div
+            className={cn(
+              "border-b border-b-border-weak bg-background-body",
+              className,
+            )}
+          >
+            <div className={cn("flex h-16 items-center", navClassName)}>
+              {nav}
+            </div>
+            {navChildren}
           </div>
-          {navChildren}
         </div>
         {children}
       </div>

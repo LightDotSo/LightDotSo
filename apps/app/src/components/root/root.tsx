@@ -38,10 +38,8 @@ export const Root: FC<RootProps> = ({ children }) => {
 
   return (
     <LightRoot>
-      {/* Banner */}
-      <AppBanner />
       {/* Layout */}
-      <Nav>{children}</Nav>
+      <Nav topNavChildren={<AppBanner />}>{children}</Nav>
       <Footer />
       {/* UI */}
       <RootWrapper />
