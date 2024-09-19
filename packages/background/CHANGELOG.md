@@ -1,5 +1,15 @@
 # @lightdotso/background
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add updates
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
 ## 3.1.9
 
 ### Patch Changes

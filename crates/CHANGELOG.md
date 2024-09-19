@@ -1,5 +1,12 @@
 # @lightdotso/crates
 
+## 3.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5)]:
+  - @lightdotso/prisma@3.1.10
+
 ## 3.1.10
 
 ### Patch Changes

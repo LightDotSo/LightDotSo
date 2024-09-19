@@ -1,5 +1,19 @@
 # @lightdotso/params
 
+## 0.1.13
+
+### Patch Changes
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add updates
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
+- Updated dependencies [[`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5)]:
+  - @lightdotso/schemas@3.1.12
+  - @lightdotso/data@0.1.12
+
 ## 0.1.12
 
 ### Patch Changes

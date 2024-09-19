@@ -1,5 +1,50 @@
 # @lightdotso/app
 
+## 3.2.20
+
+### Patch Changes
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add updates
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#2381](https://github.com/LightDotSo/LightDotSo/pull/2381) [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update npm
+
+- Updated dependencies [[`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5), [`e9ec53e`](https://github.com/LightDotSo/LightDotSo/commit/e9ec53ebb0c1b0860b0ad7861f9c796500e835a5)]:
+  - @lightdotso/kysely@3.1.10
+  - @lightdotso/prisma@3.1.10
+  - @lightdotso/query-keys@0.1.13
+  - @lightdotso/validators@0.0.11
+  - @lightdotso/templates@0.0.21
+  - @lightdotso/elements@0.0.21
+  - @lightdotso/sequence@0.0.11
+  - @lightdotso/services@0.0.14
+  - @lightdotso/dialogs@0.0.16
+  - @lightdotso/schemas@3.1.12
+  - @lightdotso/client@3.1.13
+  - @lightdotso/modals@0.0.21
+  - @lightdotso/params@0.1.13
+  - @lightdotso/pusher@0.0.9
+  - @lightdotso/states@0.0.18
+  - @lightdotso/stores@0.1.15
+  - @lightdotso/tables@0.1.21
+  - @lightdotso/const@3.1.12
+  - @lightdotso/forms@0.0.21
+  - @lightdotso/hooks@0.0.19
+  - @lightdotso/query@0.1.18
+  - @lightdotso/redis@0.0.9
+  - @lightdotso/roots@0.0.7
+  - @lightdotso/types@0.0.12
+  - @lightdotso/utils@3.1.14
+  - @lightdotso/wagmi@3.1.13
+  - @lightdotso/data@0.1.12
+  - @lightdotso/demo@0.0.14
+  - @lightdotso/nuqs@0.0.14
+  - @lightdotso/msw@0.0.13
+  - @lightdotso/svg@0.0.15
+  - @lightdotso/ui@3.1.18
+  - @lightdotso/home@3.1.20
+
 ## 3.2.19
 
 ### Patch Changes
