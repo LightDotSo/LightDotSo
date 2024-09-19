@@ -22,7 +22,6 @@ import {
   frontmatterSchema,
 } from "fumadocs-mdx/config";
 import rehypeKatex from "rehype-katex";
-import rehypeMermaid from "rehype-mermaid";
 import remarkMath from "remark-math";
 import { z } from "zod";
 
@@ -46,11 +45,6 @@ export default defineConfig({
       // [remarkInstall, { persist: { id: "package-manager" } }],
       // [remarkDocGen, { generators: [typescriptGenerator(), fileGenerator()] }],
     ],
-    // @ts-expect-error
-    rehypePlugins: (v) => [
-      rehypeKatex,
-      [rehypeMermaid, { strategy: "inline-svg" }],
-      ...v,
-    ],
+    rehypePlugins: (v) => [rehypeKatex, ...v],
   },
 });
