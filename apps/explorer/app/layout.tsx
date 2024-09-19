@@ -91,10 +91,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <Root>
-      {/* Banner */}
-      <Banner kind="beta" />
-      {/* Layout */}
-      <Nav tabs={EXPLORER_TABS}>{children}</Nav>
+      <Nav topNavChildren={<Banner kind="beta" />} tabs={EXPLORER_TABS}>
+        {children}
+      </Nav>
       <Footer />
     </Root>
   );

@@ -16,7 +16,6 @@
 // License: MIT
 
 "use client";
-
 import { NavApp } from "@/components/nav/nav-app";
 import { NavLogo } from "@/components/nav/nav-logo";
 import { NavTabs } from "@/components/nav/nav-tabs";
@@ -35,13 +34,14 @@ import type { FC, HTMLAttributes, ReactNode } from "react";
 
 type NavProps = HTMLAttributes<HTMLElement> & {
   children: ReactNode;
+  topNavChildren?: ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Nav: FC<NavProps> = ({ children }) => {
+export const Nav: FC<NavProps> = ({ children, topNavChildren }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -62,6 +62,7 @@ export const Nav: FC<NavProps> = ({ children }) => {
 
   return (
     <NavWrapper
+      topNavChildren={topNavChildren}
       nav={
         <>
           <div className="flex items-center">
