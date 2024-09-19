@@ -43,10 +43,12 @@ export const Nav: FC<NavProps> = ({
   className,
   wrapperClassName,
   layerClassName,
+  rootClassName,
 }) => {
   return (
     <NavWrapper
       className={wrapperClassName}
+      rootClassName={rootClassName}
       nav={
         <BaseLayerWrapper className={className} layerClassName={layerClassName}>
           <div className="flex items-center justify-between gap-2">

@@ -23,6 +23,7 @@ export interface NavWrapperProps {
   nav: ReactNode;
   className?: string;
   navClassName?: string;
+  rootClassName?: string;
   navChildren?: ReactNode;
   children: ReactNode;
 }
@@ -35,6 +36,7 @@ export function NavWrapper({
   nav,
   className,
   navClassName,
+  rootClassName,
   navChildren,
   children,
 }: NavWrapperProps) {
@@ -44,10 +46,10 @@ export function NavWrapper({
 
   return (
     <main>
-      <div className="flex flex-col">
+      <div className={cn("flex flex-col", rootClassName)}>
         <div
           className={cn(
-            "overflow-y-visible border-b border-b-border-weak py-2",
+            "sticky top-0 z-50 border-b border-b-border-weak bg-background-body",
             className,
           )}
         >
