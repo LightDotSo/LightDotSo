@@ -13,3 +13,4 @@
 // limitations under the License.
 
 export { BaseImage, useBaseImageLoaded } from "./base-image";
+export type { BaseImageProps } from "./base-image";

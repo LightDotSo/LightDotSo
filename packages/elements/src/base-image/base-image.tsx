@@ -23,7 +23,9 @@ import { NextImage } from "../next-image";
 // Props
 // -----------------------------------------------------------------------------
 
-type BaseImageProps = ImageProps;
+export type BaseImageProps = ImageProps & {
+  onErrorHide?: boolean;
+};
 
 // -----------------------------------------------------------------------------
 // Context
@@ -41,6 +43,7 @@ export const BaseImage: FC<BaseImageProps> = ({
   className,
   src,
   alt,
+  onErrorHide = false,
   ...props
 }) => {
   // ---------------------------------------------------------------------------
@@ -48,6 +51,7 @@ export const BaseImage: FC<BaseImageProps> = ({
   // ---------------------------------------------------------------------------
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isImageError, setIsImageError] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -68,6 +72,10 @@ export const BaseImage: FC<BaseImageProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
+  if (isImageError && onErrorHide) {
+    return null;
+  }
+
   return (
     <BaseImageContext.Provider value={isImageLoaded}>
       <NextImage
@@ -82,7 +90,10 @@ export const BaseImage: FC<BaseImageProps> = ({
         src={src}
         alt={alt}
         onLoad={() => setIsImageLoaded(true)}
-        onError={() => setIsImageLoaded(true)}
+        onError={() => {
+          setIsImageLoaded(true);
+          setIsImageError(true);
+        }}
         {...props}
       />
     </BaseImageContext.Provider>
