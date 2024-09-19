@@ -35,6 +35,10 @@ const BaseImageContext = createContext<boolean>(false);
 
 export const useBaseImageLoaded = () => useContext(BaseImageContext);
 
+const BaseImageErrorContext = createContext<boolean>(false);
+
+export const useBaseImageError = () => useContext(BaseImageErrorContext);
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -78,24 +82,26 @@ export const BaseImage: FC<BaseImageProps> = ({
 
   return (
     <BaseImageContext.Provider value={isImageLoaded}>
-      <NextImage
-        className={cn(
-          "absolute inset-0 w-full duration-500 ease-in-out",
-          !isImageLoaded && "animate-pulse bg-emphasis-medium",
-          isImageLoaded
-            ? "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0"
-            : "scale-90 blur-xl",
-          className,
-        )}
-        src={src}
-        alt={alt}
-        onLoad={() => setIsImageLoaded(true)}
-        onError={() => {
-          setIsImageLoaded(true);
-          setIsImageError(true);
-        }}
-        {...props}
-      />
+      <BaseImageErrorContext.Provider value={isImageError}>
+        <NextImage
+          className={cn(
+            "absolute inset-0 w-full duration-500 ease-in-out",
+            !isImageLoaded && "animate-pulse bg-emphasis-medium",
+            isImageLoaded
+              ? "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0"
+              : "scale-90 blur-xl",
+            className,
+          )}
+          src={src}
+          alt={alt}
+          onLoad={() => setIsImageLoaded(true)}
+          onError={() => {
+            setIsImageLoaded(true);
+            setIsImageError(true);
+          }}
+          {...props}
+        />
+      </BaseImageErrorContext.Provider>
     </BaseImageContext.Provider>
   );
 };
