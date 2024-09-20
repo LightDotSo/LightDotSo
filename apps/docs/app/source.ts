@@ -27,14 +27,6 @@ export const source = loader({
   pageTree: {
     attachFile,
   },
-  url: (slugs, _locale) => {
-    // Prefix /docs/ if in production
-    return process.env.VERCEL_ENV === "production"
-      ? `/docs/${slugs.length === 0 ? "" : slugs.join("/")}`
-      : slugs.length === 0
-        ? "/"
-        : slugs.join("/");
-  },
 });
 
 // -----------------------------------------------------------------------------
