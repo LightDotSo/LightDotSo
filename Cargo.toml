@@ -70,7 +70,7 @@
   opt-level = 2
 
   [workspace.dependencies]
-    alloy = { version = "0.3.3", features = ["full", "provider-debug-api"] }
+    alloy = { version = "0.3.6", features = ["full", "provider-debug-api"] }
     anyhow = "1.0.70"
     async-stream = "0.3.5"
     async-trait = "0.1.73"
@@ -90,9 +90,9 @@
     dotenvy = "0.15"
     enumset = "1.1.2"
     eyre = "0.6.8"
-    foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "2c73013a01264e8577e728bee33961845d126963", package = "foundry-config" }
-    foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "2c73013a01264e8577e728bee33961845d126963", package = "foundry-evm" }
-    foundry-evm-traces = { git = "https://github.com/foundry-rs/foundry", rev = "2c73013a01264e8577e728bee33961845d126963", package = "foundry-evm-traces" }
+    foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "0c7601a243d48b0b55ced0f286c3c41766f24a97", package = "foundry-config" }
+    foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0c7601a243d48b0b55ced0f286c3c41766f24a97", package = "foundry-evm" }
+    foundry-evm-traces = { git = "https://github.com/foundry-rs/foundry", rev = "0c7601a243d48b0b55ced0f286c3c41766f24a97", package = "foundry-evm-traces" }
     futures = "0.3.28"
     futures-util = "0.3.28"
     http = "1"
@@ -186,9 +186,9 @@
       "json",
       "stream",
     ], default-features = false }
-    revm = { version = "14.0.1", default-features = false }
-    revm-primitives = { version = "9.0.1", default-features = false }
-    revm-inspectors = { version = "0.6", features = ["serde"] }
+    revm = { version = "14.0.2", default-features = false }
+    revm-primitives = { version = "9.0.2", default-features = false }
+    revm-inspectors = { version = "0.7", features = ["serde"] }
     rmp-serde = "1.1.2"
     rustc-hex = "2.1.0"
     rustls = { version = "0.23.13", features = ["ring"] }
