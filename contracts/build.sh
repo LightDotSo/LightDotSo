@@ -19,7 +19,6 @@ core_solidity_files=(
     "LightDAG.sol"
     "LightPaymaster.sol"
     "LightTimelockController.sol"
-    "LightTimelockControllerFactory.sol"
     "LightWallet.sol"
     "LightWalletFactory.sol"
 )
@@ -56,7 +55,6 @@ declare -A dependencies
 dependencies["LightDAG.sol"]="interfaces/IConditionChecker.sol"
 dependencies["LightPaymaster.sol"]="core/VerifyingPaymaster.sol"
 dependencies["LightTimelockController.sol"]="interfaces/ILightWallet.sol interfaces/IERC1271.sol"
-dependencies["LightTimelockControllerFactory.sol"]="LightTimelockController.sol interfaces/IERC1271.sol interfaces/ILightWallet.sol"
 dependencies["LightWallet.sol"]="interfaces/IERC1271.sol interfaces/ILightWallet.sol core/EntryPoint.sol"
 dependencies["LightWalletFactory.sol"]="LightWallet.sol interfaces/IERC1271.sol interfaces/ILightWallet.sol interfaces/ILightWalletFactory.sol"
 

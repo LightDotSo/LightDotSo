@@ -16,16 +16,16 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightTimelockControllerFactory/v0.1.0.b.sol";
-import {LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS} from "@/constants/addresses.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightTimelockController/v0.1.0.b.sol";
+import {LIGHT_TIMELOCK_CONTROLLER_ADDRESS} from "@/constants/addresses.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
-import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
+import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightTimelockControllerFactoryDeployer -- Deploys the LightTimelockControllerFactory contract
-contract LightTimelockControllerFactoryDeployer is BaseLightDeployer, Script {
+// LightTimelockControllerDeployer -- Deploys the LightTimelockController contract
+contract LightTimelockControllerDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -43,17 +43,16 @@ contract LightTimelockControllerFactoryDeployer is BaseLightDeployer, Script {
             vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
             // Create the factory
-            LightTimelockControllerFactory timelockFactory = new LightTimelockControllerFactory();
+            LightTimelockController timelockController = new LightTimelockController();
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
             // Deploy the factory w/ salt using bytecode
-            LightTimelockControllerFactory timelockFactory =
-                LightTimelockControllerFactory(deployWithCreate2(initCode, salt));
+            LightTimelockController timelockController = LightTimelockController(deployWithCreate2(initCode, salt));
 
             // Assert that the factory is the expected address
-            assert(address(timelockFactory) == LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
+            assert(address(timelockController) == LIGHT_TIMELOCK_CONTROLLER_ADDRESS);
         }
 
         // Stop the broadcast

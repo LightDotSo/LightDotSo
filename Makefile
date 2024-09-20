@@ -165,7 +165,6 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightDAG.sol
 	./contracts/build.sh LightPaymaster.sol
 	./contracts/build.sh LightTimelockController.sol
-	./contracts/build.sh LightTimelockControllerFactory.sol
 	./contracts/build.sh LightWallet.sol
 	./contracts/build.sh LightWalletFactory.sol
 

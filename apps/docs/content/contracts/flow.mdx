@@ -1,0 +1,53 @@
+# Flow
+
+### Deposit
+
+User deposits the following information to the timelock contract.
+Note that the user does not need to specify a specific operation hash, as the filler will generate a new one for each execution.
+
+```solidity
+struct Deposit(
+    address inputToken;
+    uint256 inputAmount;
+    address userOpSender;
+)
+```
+
+### Execution 
+
+The execution is the process of transferring the funds from the filler to the user.
+This is done by the filler, which is the account that is receiving the funds from the user on origin chain(s).
+Since called by the account, this event is emitted by the account itself (intended for when the execution is atomic and the prior operations are successful).
+
+```solidity
+struct Execution(
+    address fillerRecipient;
+    bytes32 userOpHash;
+)
+```
+
+### Execution Intent
+
+The execution intent is the intent to execute a user operation.
+Execution intents are different in the sense that they are emitted by the filler when not able to guarantee the atomicity of the user operation.
+
+```solidity
+struct ExecutionIntent(
+    address fillerRecipient;
+    bytes32 userOpHash;
+)
+```
+
+### Withdrawal
+
+Users can request a withdrawal of their deposit at any time through our API.
+The withdrawal request is verified a proposer and then proposed to the timelock contract.
+
+### Withdrawal Request
+
+```solidity
+struct WithdrawalRequest(
+    address inputToken;
+    uint256 inputAmount;
+)
+```

@@ -22,7 +22,6 @@ import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.s
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
-import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -90,8 +89,6 @@ abstract contract BaseTest is Test {
     LightWallet internal wallet;
     // LightTimelockController core contract
     LightTimelockController internal timelock;
-    // LightTimelockControllerFactory core contract
-    LightTimelockControllerFactory internal timelockFactory;
 
     // SimpleAccountFactory core contract
     SimpleAccountFactory internal simpleAccountFactory;
@@ -130,8 +127,8 @@ abstract contract BaseTest is Test {
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
 
-        // Deploy the LightTimelockControllerFactory
-        timelockFactory = new LightTimelockControllerFactory();
+        // Deploy the LightTimelockController
+        timelock = new LightTimelockController();
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0

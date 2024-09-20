@@ -24,7 +24,6 @@ IsValidSignatureIntegrationTest:testFuzz_isValidSignature_predeployed_6492() (ga
 IsValidSignatureIntegrationTest:test_isValidSignature_eip_1271_6492() (gas: 63744)
 IsValidSignatureIntegrationTest:test_revertWhenInvalidSignature_isValidSignature_eip_1271_6492() (gas: 72874)
 IsValidSignatureIntegrationTest:test_revertWhenInvalidSignature_isValidSignature_predeployed_6492() (gas: 96372)
-LightTimelockControllerFactoryForkTest:testFork_timelock_createTimelockController_equalsGetAddress() (gas: 291503)
 LightTimelockControllerProxyIntegrationTest:test_timelock_initialize() (gas: 2392811)
 LightTimelockControllerProxyIntegrationTest:test_timelock_revertWhenAlreadyInitialized_proxy() (gas: 15539)
 LightWalletFactoryGetHashUnitTest:test_factory_create2() (gas: 3650)

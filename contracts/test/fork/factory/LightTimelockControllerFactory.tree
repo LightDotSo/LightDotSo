@@ -1,2 +1,0 @@
-LightTimelockControllerFactory.t.sol
-└── It should deploy a new LightTimelockController with the correct hash

@@ -17,10 +17,6 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ LightTimelockControllerFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
  ➡ LightWallet
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|

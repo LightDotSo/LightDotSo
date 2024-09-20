@@ -18,7 +18,6 @@
 | LightDAG                       |    1,512 |     23,064 |
 | LightPaymaster                 |    6,427 |     18,149 |
 | LightTimelockController        |   11,611 |     12,965 |
-| LightTimelockControllerFactory |    2,579 |     21,997 |
 | LightVerifyingPaymaster        |    5,076 |     19,500 |
 | LightWallet                    |   12,009 |     12,567 |
 | LightWalletFactory             |    2,311 |     22,265 |
