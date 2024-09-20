@@ -1,5 +1,11 @@
 # @lightdotso/crates
 
+## 3.1.12
+
+### Patch Changes
+
+- [#2396](https://github.com/LightDotSo/LightDotSo/pull/2396) [`03251e8`](https://github.com/LightDotSo/LightDotSo/commit/03251e8404804345bba893016794535424585928) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix crates version
+
 ## 3.1.11
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @lightdotso/forms
 
+## 0.0.23
+
+### Patch Changes
+
+- [#2394](https://github.com/LightDotSo/LightDotSo/pull/2394) [`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: add ncu update
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/elements@0.0.23
+  - @lightdotso/schemas@3.1.13
+  - @lightdotso/stores@0.1.16
+  - @lightdotso/const@3.1.13
+  - @lightdotso/hooks@0.0.20
+  - @lightdotso/query@0.1.19
+  - @lightdotso/utils@3.1.15
+  - @lightdotso/wagmi@3.1.14
+  - @lightdotso/nuqs@0.0.15
+  - @lightdotso/ui@3.1.19
+  - @lightdotso/client@3.1.14
+
 ## 0.0.22
 
 ### Patch Changes

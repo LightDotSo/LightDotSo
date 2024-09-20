@@ -1,5 +1,12 @@
 # @lightdotso/extension
 
+## 3.1.12
+
+### Patch Changes
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/popup@3.1.12
+
 ## 3.1.11
 
 ### Patch Changes

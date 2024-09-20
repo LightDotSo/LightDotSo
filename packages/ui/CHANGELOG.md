@@ -1,5 +1,21 @@
 # @lightdotso/ui
 
+## 3.1.19
+
+### Patch Changes
+
+- [#2394](https://github.com/LightDotSo/LightDotSo/pull/2394) [`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: add ncu update
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/stores@0.1.16
+  - @lightdotso/const@3.1.13
+  - @lightdotso/types@0.0.13
+  - @lightdotso/utils@3.1.15
+  - @lightdotso/wagmi@3.1.14
+  - @lightdotso/data@0.1.13
+  - @lightdotso/svg@0.0.16
+  - @lightdotso/demo@0.0.15
+
 ## 3.1.18
 
 ### Patch Changes

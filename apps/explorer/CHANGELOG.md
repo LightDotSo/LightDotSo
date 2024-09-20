@@ -1,5 +1,29 @@
 # @lightdotso/web
 
+## 3.2.23
+
+### Patch Changes
+
+- [#2394](https://github.com/LightDotSo/LightDotSo/pull/2394) [`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: add ncu update
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/validators@0.0.12
+  - @lightdotso/templates@0.0.23
+  - @lightdotso/services@0.0.15
+  - @lightdotso/params@0.1.14
+  - @lightdotso/states@0.0.19
+  - @lightdotso/stores@0.1.16
+  - @lightdotso/tables@0.1.23
+  - @lightdotso/query@0.1.19
+  - @lightdotso/roots@0.0.9
+  - @lightdotso/types@0.0.13
+  - @lightdotso/utils@3.1.15
+  - @lightdotso/data@0.1.13
+  - @lightdotso/nuqs@0.0.15
+  - @lightdotso/ui@3.1.19
+  - @lightdotso/client@3.1.14
+  - @lightdotso/query-keys@0.1.14
+
 ## 3.2.22
 
 ### Patch Changes
