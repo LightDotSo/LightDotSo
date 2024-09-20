@@ -31,14 +31,17 @@ interface ILightTimelockController {
         address userOpSender;
     }
 
-    struct Execution {
-        bytes32 userOpHash;
+    struct ExecutionIntent {
         address fillerRecipient;
+        address userOpSender;
+        ExecutionToken[] executionTokens;
     }
 
-    struct ExecutionIntent {
-        bytes32 userOpHash;
-        address fillerRecipient;
+    struct ExecutionToken {
+        address token;
+        uint256 amount;
+        uint256 chainId;
+        int64 executionFeePercentage;
     }
 
     // -------------------------------------------------------------------------
@@ -46,18 +49,16 @@ interface ILightTimelockController {
     // -------------------------------------------------------------------------
 
     event DepositMade(address indexed inputToken, uint256 inputAmount, address userOpSender);
-    event ExecutionCompleted(bytes32 indexed userOpHash, address fillerRecipient);
-    event ExecutionIntentEmitted(
-        bytes32 indexed userOpHash, bytes32 indexed executionIntentId, address fillerRecipient
+    event ExecutionIntentRecorded(
+        address indexed fillerRecipient, address indexed userOpSender, ExecutionToken[] executionTokens
     );
     event WithdrawCompleted(address indexed inputToken, uint256 amount, address userOpSender);
+
     // -------------------------------------------------------------------------
     // Functions
     // -------------------------------------------------------------------------
 
     function deposit(address inputToken, uint256 inputAmount, address userOpSender) external payable;
-    function recordExecution(PackedUserOperation calldata userOp, bytes32 userOpHash, address fillerRecipient)
-        external;
-    function emitExecutionIntent(bytes32 userOpHash, address fillerRecipient) external;
+    function recordExecutionIntent(ExecutionIntent calldata executionIntent) external;
     function withdraw(address inputToken, uint256 amount, address userOpSender) external;
 }

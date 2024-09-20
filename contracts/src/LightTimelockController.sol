@@ -39,13 +39,6 @@ contract LightTimelockController is
     UUPSUpgradeable
 {
     // -------------------------------------------------------------------------
-    // State Variables
-    // -------------------------------------------------------------------------
-
-    mapping(bytes32 => Execution) public executions;
-    mapping(bytes32 => ExecutionIntent) public executionIntents;
-
-    // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
 
@@ -113,31 +106,15 @@ contract LightTimelockController is
     // -------------------------------------------------------------------------
 
     /// @notice Records an execution by a filler
-    /// @param userOpHash The hash of the user operation
-    /// @param fillerRecipient The address of the filler recipient
-    function recordExecution(PackedUserOperation calldata userOp, bytes32 userOpHash, address fillerRecipient)
-        external
-    {
-        require(userOp.sender != msg.sender, "Invalid userOpSender");
+    /// @param executionIntent The execution intent to record
+    function recordExecutionIntent(ExecutionIntent calldata executionIntent) external {
+        require(executionIntent.executionTokens.length > 0, "Invalid executionTokens");
+        require(executionIntent.fillerRecipient != address(0), "Invalid fillerRecipient");
+        require(executionIntent.userOpSender != msg.sender, "Invalid userOpSender");
 
-        executions[userOpHash] = Execution(userOpHash, fillerRecipient);
-
-        emit ExecutionCompleted(userOpHash, fillerRecipient);
-    }
-
-    // -------------------------------------------------------------------------
-    // Execution Intent Function
-    // -------------------------------------------------------------------------
-
-    /// @notice Emits an execution intent by a filler
-    /// @param fillerRecipient The address of the filler recipient
-    /// @param userOpHash The hash of the user operation
-    function emitExecutionIntent(bytes32 userOpHash, address fillerRecipient) external {
-        bytes32 intentId = keccak256(abi.encodePacked(userOpHash, fillerRecipient, block.timestamp));
-
-        executionIntents[intentId] = ExecutionIntent(userOpHash, fillerRecipient);
-
-        emit ExecutionIntentEmitted(userOpHash, intentId, fillerRecipient);
+        emit ExecutionIntentRecorded(
+            executionIntent.fillerRecipient, executionIntent.userOpSender, executionIntent.executionTokens
+        );
     }
 
     // -------------------------------------------------------------------------
