@@ -45,6 +45,7 @@ export default defineConfig({
       // [remarkInstall, { persist: { id: "package-manager" } }],
       // [remarkDocGen, { generators: [typescriptGenerator(), fileGenerator()] }],
     ],
+    // @ts-ignore
     rehypePlugins: (v) => [rehypeKatex, ...v],
   },
 });
