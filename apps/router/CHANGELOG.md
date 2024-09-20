@@ -1,5 +1,15 @@
 # @lightdotso/router
 
+## 0.0.10
+
+### Patch Changes
+
+- [#2394](https://github.com/LightDotSo/LightDotSo/pull/2394) [`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: add ncu update
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/const@3.1.13
+  - @lightdotso/client@3.1.14
+
 ## 0.0.9
 
 ### Patch Changes

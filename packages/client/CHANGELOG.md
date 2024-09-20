@@ -1,5 +1,13 @@
 # @lightdotso/client
 
+## 3.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/schemas@3.1.13
+  - @lightdotso/data@0.1.13
+
 ## 3.1.13
 
 ### Patch Changes

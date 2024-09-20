@@ -1,5 +1,17 @@
 # @lightdotso/docs
 
+## 3.1.23
+
+### Patch Changes
+
+- [#2394](https://github.com/LightDotSo/LightDotSo/pull/2394) [`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: add ncu update
+
+- Updated dependencies [[`a42020d`](https://github.com/LightDotSo/LightDotSo/commit/a42020d8bfe4c2dc168b1d54f72a2e1372374def)]:
+  - @lightdotso/templates@0.0.23
+  - @lightdotso/const@3.1.13
+  - @lightdotso/roots@0.0.9
+  - @lightdotso/types@0.0.13
+
 ## 3.1.22
 
 ### Patch Changes
