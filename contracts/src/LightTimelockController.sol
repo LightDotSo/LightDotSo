@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import {TimelockControllerUpgradeable} from
@@ -50,6 +51,9 @@ contract LightTimelockController is
 
     /// @notice The minimum delay for the timelock
     uint256 public immutable MIN_DELAY = 300 seconds;
+
+    mapping(bytes32 => bool) public repaymentRoots;
+    mapping(bytes32 => mapping(uint256 => uint256)) private claimedBitMap;
 
     // -------------------------------------------------------------------------
     // Constructor + Functions
@@ -141,6 +145,78 @@ contract LightTimelockController is
         }
 
         emit WithdrawCompleted(inputToken, amount, userOpSender);
+    }
+
+    // -------------------------------------------------------------------------
+    // Repayment Function
+    // -------------------------------------------------------------------------
+
+    /// @notice Proposes a repayment root. Only callable by the executor role.
+    /// @param rootHash The Merkle root of the repayment tree
+    function proposeRepaymentRoot(bytes32 rootHash) external {
+        require(msg.sender == address(this), "Only callable by timelock");
+        require(rootHash != bytes32(0), "Invalid rootHash");
+        require(!repaymentRoots[rootHash], "Root already proposed");
+        repaymentRoots[rootHash] = true;
+
+        emit RepaymentRootProposed(rootHash, msg.sender);
+    }
+
+    // -------------------------------------------------------------------------
+    // Utils
+    // -------------------------------------------------------------------------
+
+    // From: https://github.com/Uniswap/merkle-distributor/blob/25a79e8ec8c22076a735b1a675b961c8184e7931/contracts/MerkleDistributor.sol#L25-L37
+    // License: GPL-3.0-or-later
+
+    /// @notice Allows a proposer to claim their repayment based on a Merkle proof
+    /// @param rootHash The Merkle root of the repayment tree
+    /// @param leaf The repayment leaf containing claim details
+    /// @param proof The Merkle proof for the claim
+    function claimRepayment(bytes32 rootHash, RepaymentLeaf memory leaf, bytes32[] memory proof)
+        external
+        nonReentrant
+    {
+        require(repaymentRoots[rootHash], "Invalid root");
+        require(!isClaimed(rootHash, leaf.index), "Already claimed");
+
+        // Verify the Merkle proof
+        bytes32 hashedLeaf = keccak256(abi.encode(leaf));
+        require(MerkleProof.verify(proof, rootHash, hashedLeaf), "Invalid proof");
+
+        // Mark as claimed
+        _setClaimed(rootHash, leaf.index);
+
+        // Transfer the tokens
+        if (leaf.token == address(0)) {
+            // Native token
+            (bool success,) = leaf.recipient.call{value: leaf.amount}("");
+            require(success, "Native token transfer failed");
+        } else {
+            // ERC20 token
+            IERC20(leaf.token).transfer(leaf.recipient, leaf.amount);
+        }
+
+        emit RepaymentClaimed(leaf.recipient, leaf.token, leaf.amount, leaf.index);
+    }
+
+    /// @notice Checks if a repayment has been claimed
+    /// @param index The index of the repayment
+    /// @return True if the repayment has been claimed, false otherwise
+    function isClaimed(bytes32 rootHash, uint256 index) public view returns (bool) {
+        uint256 claimedWordIndex = index / 256;
+        uint256 claimedBitIndex = index % 256;
+        uint256 claimedWord = claimedBitMap[rootHash][claimedWordIndex];
+        uint256 mask = (1 << claimedBitIndex);
+        return claimedWord & mask == mask;
+    }
+
+    /// @notice Sets a repayment as claimed
+    /// @param index The index of the repayment
+    function _setClaimed(bytes32 rootHash, uint256 index) private {
+        uint256 claimedWordIndex = index / 256;
+        uint256 claimedBitIndex = index % 256;
+        claimedBitMap[rootHash][claimedWordIndex] = claimedBitMap[rootHash][claimedWordIndex] | (1 << claimedBitIndex);
     }
 
     // -------------------------------------------------------------------------

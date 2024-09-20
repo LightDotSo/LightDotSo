@@ -44,6 +44,13 @@ interface ILightTimelockController {
         int64 executionFeePercentage;
     }
 
+    struct RepaymentLeaf {
+        address recipient;
+        address token;
+        uint256 amount;
+        uint256 index;
+    }
+
     // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
@@ -53,6 +60,8 @@ interface ILightTimelockController {
         address indexed fillerRecipient, address indexed userOpSender, ExecutionToken[] executionTokens
     );
     event WithdrawCompleted(address indexed inputToken, uint256 amount, address userOpSender);
+    event RepaymentClaimed(address indexed recipient, address indexed token, uint256 amount, uint256 index);
+    event RepaymentRootProposed(bytes32 rootHash, address indexed proposer);
 
     // -------------------------------------------------------------------------
     // Functions
