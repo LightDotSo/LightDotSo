@@ -32,3 +32,4 @@ ignores:
   - "fumadocs-twoslash"
   - "rehype-katex"
   - "remark-math"
+  - "rehype-mermaid"

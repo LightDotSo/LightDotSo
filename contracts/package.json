@@ -24,7 +24,7 @@
     "@lightdotso/wagmi": "workspace:*",
     "@openzeppelin/merkle-tree": "github:OpenZeppelin/merkle-tree#master",
     "merkletreejs": "^0.4.0",
-    "viem": "^2.21.9"
+    "viem": "^2.21.10"
   },
   "devDependencies": {
     "ts-node": "^10.9.2"
