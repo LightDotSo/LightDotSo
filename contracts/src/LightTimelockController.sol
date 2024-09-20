@@ -42,7 +42,6 @@ contract LightTimelockController is
     // State Variables
     // -------------------------------------------------------------------------
 
-    mapping(bytes32 => Deposit) public deposits;
     mapping(bytes32 => Execution) public executions;
     mapping(bytes32 => ExecutionIntent) public executionIntents;
 
@@ -139,6 +138,32 @@ contract LightTimelockController is
         executionIntents[intentId] = ExecutionIntent(userOpHash, fillerRecipient);
 
         emit ExecutionIntentEmitted(userOpHash, intentId, fillerRecipient);
+    }
+
+    // -------------------------------------------------------------------------
+    // Withdraw Function
+    // -------------------------------------------------------------------------
+
+    /// @notice Allows a user to withdraw their deposit
+    /// @dev This function is called by the TimelockController's `execute` function after the timelock period
+    /// @param inputToken The address of the token being withdrawn (address(0) for native tokens)
+    /// @param amount The amount of tokens being withdrawn
+    /// @param userOpSender The address of the user operation sender
+    function withdraw(address inputToken, uint256 amount, address userOpSender) external nonReentrant {
+        require(msg.sender == address(this), "Only callable by timelock");
+        require(userOpSender != address(0), "Invalid userOpSender");
+        require(amount > 0, "Withdraw amount must be greater than 0");
+
+        if (inputToken == address(0)) {
+            // Native token withdrawal
+            (bool success,) = userOpSender.call{value: amount}("");
+            require(success, "Native token transfer failed");
+        } else {
+            // ERC20 token withdrawal
+            require(IERC20(inputToken).transfer(userOpSender, amount), "ERC20 transfer failed");
+        }
+
+        emit WithdrawCompleted(inputToken, amount, userOpSender);
     }
 
     // -------------------------------------------------------------------------

@@ -50,7 +50,7 @@ interface ILightTimelockController {
     event ExecutionIntentEmitted(
         bytes32 indexed userOpHash, bytes32 indexed executionIntentId, address fillerRecipient
     );
-
+    event WithdrawCompleted(address indexed inputToken, uint256 amount, address userOpSender);
     // -------------------------------------------------------------------------
     // Functions
     // -------------------------------------------------------------------------
@@ -59,4 +59,5 @@ interface ILightTimelockController {
     function recordExecution(PackedUserOperation calldata userOp, bytes32 userOpHash, address fillerRecipient)
         external;
     function emitExecutionIntent(bytes32 userOpHash, address fillerRecipient) external;
+    function withdraw(address inputToken, uint256 amount, address userOpSender) external;
 }
