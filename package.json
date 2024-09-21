@@ -176,7 +176,8 @@
       "solc": "$solc"
     },
     "patchedDependencies": {
-      "fumadocs-ui": "patches/fumadocs-ui.patch"
+      "fumadocs-core@13.4.10": "patches/fumadocs-core@13.4.10.patch",
+      "fumadocs-ui@13.4.10": "patches/fumadocs-ui@13.4.10.patch"
     }
   }
 }

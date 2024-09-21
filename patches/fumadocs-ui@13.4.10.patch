@@ -1,3 +1,56 @@
+diff --git a/dist/chunk-ERUVE5R6.js b/dist/chunk-ERUVE5R6.js
+index dd237aa30fa845793db52a7abb82b68257cb54b9..b299c43781b5d935ca182b7e58e7dcc22e8647a9 100644
+--- a/dist/chunk-ERUVE5R6.js
++++ b/dist/chunk-ERUVE5R6.js
+@@ -19,7 +19,7 @@ function Heading({
+       ...props,
+       children: [
+         /* @__PURE__ */ jsx("a", { href: `#${props.id}`, className: "peer", children: props.children }),
+-        /* @__PURE__ */ jsx(
++        /* @ */ jsx(
+           Link,
+           {
+             "aria-label": "Link to section",
+diff --git a/dist/chunk-KCZRDPB4.js b/dist/chunk-KCZRDPB4.js
+index 46bc793a482a8155fef0d06ac16471c4392220b1..af212f3de70402168af9932250c39a7a56759b3b 100644
+--- a/dist/chunk-KCZRDPB4.js
++++ b/dist/chunk-KCZRDPB4.js
+@@ -112,7 +112,7 @@ function NavBox({
+   );
+ }
+ function Title({ title, url = "/" }) {
+-  return /* @__PURE__ */ jsx2(Link, { href: url, className: "inline-flex items-center gap-2 font-semibold", children: title });
++  return /* @__PURE__ */ jsx2("a", { href: url, className: "inline-flex items-center gap-2 font-semibold", children: title });
+ }
+ 
+ // src/components/layout/link-item.tsx
+@@ -180,7 +180,7 @@ function LinkItem({
+   }
+   if (item.type === "button") {
+     return /* @__PURE__ */ jsxs2(
+-      Link2,
++      "a",
+       {
+         href: item.url,
+         external: item.external,
+@@ -200,7 +200,7 @@ function LinkItem({
+   const active = activeType !== "none" && isActive(item.url, pathname, activeType === "nested-url");
+   if (item.type === "icon" && on === "nav") {
+     return /* @__PURE__ */ jsx3(
+-      Link2,
++      "a",
+       {
+         "aria-label": item.label,
+         href: item.url,
+@@ -218,7 +218,7 @@ function LinkItem({
+     );
+   }
+   return /* @__PURE__ */ jsxs2(
+-    Link2,
++    "a",
+     {
+       href: item.url,
+       external: item.external,
 diff --git a/dist/chunk-WLTWFYQA.js b/dist/chunk-WLTWFYQA.js
 index aede57171ed18f66e8e242d392292ff9e89d946b..2c2574734182b2c50c2916bbd645daabe12a532b 100644
 --- a/dist/chunk-WLTWFYQA.js
@@ -37,6 +90,28 @@ index 3f1c2a32668c5b39220881e013ae16bbbe39dc7f..c923b6b8f41ea787db7c62b12794720e
        ] }) }),
        /* @__PURE__ */ jsx("td", { className: td(), children: value.default ? /* @__PURE__ */ jsx("code", { className: code(), children: value.default }) : /* @__PURE__ */ jsx("span", { children: "-" }) })
      ] }, key)) })
+diff --git a/dist/docs-layout.client.js b/dist/docs-layout.client.js
+index 5fe85730adbbbe1cf8825b90894ffad79886b9f8..1ac6fec90a5a8b98e00177c34fbd18efbe1e527e 100644
+--- a/dist/docs-layout.client.js
++++ b/dist/docs-layout.client.js
+@@ -175,7 +175,7 @@ function PageNode({
+   const active = isActive(url, pathname, false);
+   const { prefetch } = useContext(Context);
+   return /* @__PURE__ */ jsxs(
+-    Link,
++    "a",
+     {
+       href: url,
+       external,
+@@ -229,7 +229,7 @@ function FolderNode({
+   ] });
+   return /* @__PURE__ */ jsxs(Collapsible, { open, onOpenChange: setOpen, children: [
+     item.index ? /* @__PURE__ */ jsx(
+-      Link,
++      "a",
+       {
+         className: twMerge(itemVariants({ active })),
+         href: item.index.url,
 diff --git a/dist/layout.js b/dist/layout.js
 index 75c5c5d250ae70b229981f5cc473424ba0ab9872..2b6e0b2cc6fd3950587e8d4c7a071baabe7f0fc8 100644
 --- a/dist/layout.js
@@ -50,6 +125,18 @@ index 75c5c5d250ae70b229981f5cc473424ba0ab9872..2b6e0b2cc6fd3950587e8d4c7a071baa
          {
            href: nav.url ?? "/",
            className: "inline-flex items-center gap-2.5 py-1 font-medium",
+diff --git a/dist/mdx.js b/dist/mdx.js
+index e11ab315d626545fb850ef703bd8815607242359..6350742d19a4c04fbccfc0f37d57b85aea533d69 100644
+--- a/dist/mdx.js
++++ b/dist/mdx.js
+@@ -38,7 +38,6 @@ var defaultMdxComponents = {
+   pre: Pre,
+   Card,
+   Cards,
+-  a: Link,
+   img: Image,
+   h1: (props) => /* @__PURE__ */ jsx(Heading, { as: "h1", ...props }),
+   h2: (props) => /* @__PURE__ */ jsx(Heading, { as: "h2", ...props }),
 diff --git a/dist/page.client.js b/dist/page.client.js
 index afc7e3ade971422fcae63ff7fb9f55d2d1c411dc..ff3630b6d3d7243fd9c74e87145d55fff3cdd919 100644
 --- a/dist/page.client.js
