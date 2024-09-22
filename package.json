@@ -174,10 +174,6 @@
       "react-is": "$react-is",
       "recharts": "$recharts",
       "solc": "$solc"
-    },
-    "patchedDependencies": {
-      "fumadocs-core@13.4.10": "patches/fumadocs-core@13.4.10.patch",
-      "fumadocs-ui@13.4.10": "patches/fumadocs-ui@13.4.10.patch"
     }
   }
 }
