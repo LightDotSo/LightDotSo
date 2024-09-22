@@ -55,17 +55,9 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
         assertEq(success, true);
     }
 
-    // -------------------------------------------------------------------------
-    // Modifiers
-    // -------------------------------------------------------------------------
-
     modifier whenTheSenderIsEntrypoint() {
         _;
     }
-
-    // -------------------------------------------------------------------------
-    // Tests
-    // -------------------------------------------------------------------------
 
     /// Tests that the account can correctly transfer ETH
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {

@@ -1,8 +1,9 @@
-BatchSendERC721.t.sol
+BatchSendERC721IntegrationTest
 ├── when the sender is not Entrypoint
 │  ├── it should revert
 └── when the sender is Entrypoint
    ├── when the signature is invalid
+   │  └── it should revert
    │  └── it should revert on a {InvalidSignature} error
    └── when the signature is valid
-      └── it should batch transfer the ERC20 to the recipient(s)
+      └── it should batch transfer the ERC721 to the recipient(s)
