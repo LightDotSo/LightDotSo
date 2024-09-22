@@ -301,7 +301,7 @@ jobs:
         uses: cargo-bins/cargo-binstall@main
       - name: Install and run Bulloak
         run: |
-          cargo binstall bulloak
+          cargo binstall bulloak -y
           pnpm run bulloak:cmd
   contracts-noir:
     if: needs.contracts-turbo.outputs.trigger == 'true'
