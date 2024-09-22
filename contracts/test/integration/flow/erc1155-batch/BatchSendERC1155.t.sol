@@ -83,28 +83,37 @@ contract BatchSendERC1155IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ERC1155 from a non-entrypoint
-    function test_revertWhenNotEntrypoint_batchTransferERC1155() public {
+    function test_RevertWhen_TheSenderIsNotEntrypoint() external {
+        // it should revert
         vm.expectRevert(bytes("account: not from EntryPoint"));
         (bool success,) = address(account).call(callData);
         assertEq(success, true);
     }
 
+    modifier whenTheSenderIsEntrypoint() {
+        _;
+    }
+
     /// Tests that the account can correctly transfer ERC1155
-    function test_revertWhenInvalidSignature_batchTransferERC1155() public {
+    function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC1155 to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
+
+        // it should revert
+        // it should revert with a {InvalidSignature} error
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the account can correctly transfer ERC1155
-    function test_batchTransferERC1155() public {
+    function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
 
+        //  it should batch transfer the ERC1155 to the recipient(s)
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the corresponding destinations are correct
