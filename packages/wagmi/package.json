@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
-    "@wagmi/core": "^2.13.5",
+    "@wagmi/core": "^2.13.6",
     "connectkit": "^1.8.2",
     "viem": "^2.21.10",
-    "wagmi": "^2.12.12"
+    "wagmi": "^2.12.13"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

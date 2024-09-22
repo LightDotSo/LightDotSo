@@ -33,7 +33,7 @@ export const source = loader({
       ? `/docs/${slugs.length === 0 ? "" : slugs.join("/")}`
       : slugs.length === 0
         ? "/"
-        : slugs.join("/");
+        : `/${slugs.join("/")}`;
   },
 });
 
