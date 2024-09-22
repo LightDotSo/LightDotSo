@@ -28,7 +28,6 @@ import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 // The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol

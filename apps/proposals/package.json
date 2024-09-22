@@ -38,7 +38,7 @@
     "@sentry/nextjs": "^8.30.0",
     "@tanstack/react-query": "^5.56.2",
     "autoprefixer": "^10.4.20",
-    "lucide-react": "^0.441.0",
+    "lucide-react": "^0.445.0",
     "mdx-bundler": "^10.0.3",
     "motion": "^10.18.0",
     "next": "15.0.0-canary.146",

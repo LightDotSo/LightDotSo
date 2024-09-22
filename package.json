@@ -104,7 +104,7 @@
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.0.2",
-    "@playwright/test": "^1.47.1",
+    "@playwright/test": "^1.47.2",
     "@swc/core": "^1.7.26",
     "@taplo/cli": "^0.7.0",
     "@thunderclient/cli": "^1.16.5",
@@ -130,15 +130,15 @@
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "dprint": "^0.47.2",
-    "esbuild": "^0.23.1",
+    "esbuild": "^0.24.0",
     "execa": "^9.4.0",
     "git-cz": "^4.9.0",
     "hardhat": "^2.22.11",
     "husky": "^9.1.6",
-    "inngest-cli": "^0.29.9",
+    "inngest-cli": "^1.0.0",
     "license-check-and-add": "^4.0.5",
     "lint-staged": "^15.2.10",
-    "nodemon": "^3.1.6",
+    "nodemon": "^3.1.7",
     "npm-check-updates": "^17.1.2",
     "npm-package-json-lint": "^8.0.0",
     "npm-package-json-lint-config-default": "^7.0.1",
@@ -157,14 +157,14 @@
     "tsup": "^8.3.0",
     "turbo": "^2.1.2",
     "typescript": "^5.6.2",
-    "vercel": "^37.5.2",
+    "vercel": "^37.5.3",
     "viem": "^2.21.10",
-    "vite": "^5.4.6",
+    "vite": "^5.4.7",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.1.1",
     "vitest-solidity-coverage": "^0.1.13"
   },
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "pnpm@9.11.0",
   "pnpm": {
     "overrides": {
       "@headlessui/react": "$@headlessui/react",
@@ -174,10 +174,6 @@
       "react-is": "$react-is",
       "recharts": "$recharts",
       "solc": "$solc"
-    },
-    "patchedDependencies": {
-      "fumadocs-core@13.4.10": "patches/fumadocs-core@13.4.10.patch",
-      "fumadocs-ui@13.4.10": "patches/fumadocs-ui@13.4.10.patch"
     }
   }
 }

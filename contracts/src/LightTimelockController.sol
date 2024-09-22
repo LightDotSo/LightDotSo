@@ -21,8 +21,6 @@ import {TimelockControllerUpgradeable} from
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
-import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightTimelockController
 /// @author @shunkakinoki
