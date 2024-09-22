@@ -51,6 +51,19 @@ index 46bc793a482a8155fef0d06ac16471c4392220b1..af212f3de70402168af9932250c39a7a
      {
        href: item.url,
        external: item.external,
+diff --git a/dist/chunk-UOD2T27N.js b/dist/chunk-UOD2T27N.js
+index b5e38263d4790ff69022aae542eebc2ef0ab766c..597548d5d1105260ecfcb7cb05a642a471381a0d 100644
+--- a/dist/chunk-UOD2T27N.js
++++ b/dist/chunk-UOD2T27N.js
+@@ -1,7 +1,7 @@
+ // src/utils/shared.ts
+ var defaultImageSizes = "(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 900px";
+ function isActive(url, pathname, nested = true) {
+-  return url === pathname || nested && pathname.startsWith(`${url}/`);
++  return url.replace("/docs", "") === pathname || nested && pathname.startsWith(`${url.replace("/docs", "")}/`);
+ }
+ function replaceOrDefault(obj, def) {
+   if (obj?.enabled === false) return;
 diff --git a/dist/chunk-WLTWFYQA.js b/dist/chunk-WLTWFYQA.js
 index aede57171ed18f66e8e242d392292ff9e89d946b..2c2574734182b2c50c2916bbd645daabe12a532b 100644
 --- a/dist/chunk-WLTWFYQA.js

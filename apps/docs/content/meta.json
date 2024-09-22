@@ -1,16 +1,4 @@
 {
   "title": "Light Protocol Docs",
-  "root": true,
-  "pages": [
-    "---Guide---",
-    "index",
-    "comparisons",
-    "...",
-    "---Protocol---",
-    "architecture",
-    "flow",
-    "---API---",
-    "api",
-    "[Light API](https://api.light.so/v1/swagger-ui/)"
-  ]
+  "root": true
 }
