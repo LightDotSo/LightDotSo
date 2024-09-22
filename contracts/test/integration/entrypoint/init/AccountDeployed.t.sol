@@ -51,7 +51,7 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the factory revert when creating an account with a hash that is 0
-    function test_revertWhenHashZero_createAccountFromEntryPoint() public {
+    function test_RevertWhen_IfTheHashIsZero() public {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, nonce)
@@ -63,22 +63,29 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
 
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
+        // it should revert
+        // it should revert on a {AA13 initCode failed or OOG} error
         entryPoint.handleOps(ops, beneficiary);
     }
 
+    modifier whenIfTheHashIsNotZero() {
+        _;
+    }
+
     /// Tests that the factory revert when creating an account that already exists
-    function test_revertWhenAlreadyExists_createAccountFromEntryPoint() public {
+    function test_WhenTheAddressAlreadyExists() external whenIfTheHashIsNotZero {
         // Example UserOperation to create the account w/ the same params
         PackedUserOperation[] memory ops = _testSignPackUserOpWithInitCode();
 
         vm.expectRevert(
             abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed")
         );
+        // it should revert on a {AA10 sender already constructed} error
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function test_createAccountFromEntryPoint_emitEvents() public {
+    function test_WhenTheAddressDoesNotExist() external whenIfTheHashIsNotZero {
         // Construct the new nonce
         nonce = bytes32(uint256(300_000));
 
@@ -104,31 +111,28 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
         // vm.expectEmit(true, false, false, false);
         // vm.expectEmit(true, true, true, true);
         // emit Initialized(18446744073709551615);
-        entryPoint.handleOps(ops, beneficiary);
-    }
 
-    /// Tests that the factory can create a new wallet at the predicted address
-    function test_createAccountFromEntryPoint_equalsGetAddress() public {
+        // it should deploy a new LightWallet with the correct hash
+        // it should deploy a new LightWallet
+        entryPoint.handleOps(ops, beneficiary);
+
         // Get the predicted address of the new account
         address predicted = factory.getAddress(expectedImageHash, bytes32(uint256(3)));
 
         // Assert that the predicted address matches the created account
+        // it should equal the {getAddress} function
         assertEq(predicted, address(wallet));
         // Get the immutable implementation in the factory
         LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
         assertEq(getProxyImplementation(address(wallet)), address(implementation));
-    }
 
-    /// Tests that there is no proxy admin for the wallet
-    function test_createAccountFromEntryPoint_noProxyAdmin() public {
         // Check that no proxy admin exists
+        // it should not have a proxy admin
         _noProxyAdmin(address(wallet));
-    }
 
-    /// Tests that the wallet is not initializable twice
-    function test_createAccountFromEntryPoint_noInitializeTwice() public {
         // Check that the wallet is not initializable twice
+        // it should not be able to initialize twice
         _noInitializeTwice(address(wallet), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
     }
 }
