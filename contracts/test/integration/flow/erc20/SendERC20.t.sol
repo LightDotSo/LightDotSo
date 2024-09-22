@@ -94,9 +94,11 @@ contract SendERC20IntegrationTest is BaseIntegrationTest {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
-        entryPoint.handleOps(ops, beneficiary);
 
         // it should transfer the ERC20 to the recipient
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the balance of the recipient is 1
         assertEq(token.balanceOf(address(1)), 1);
         // Assert that the balance of the account decreased by 1
         assertEq(token.balanceOf(address(account)), 1e18 - 1);

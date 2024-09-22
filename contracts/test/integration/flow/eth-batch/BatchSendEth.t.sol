@@ -99,9 +99,11 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
-        entryPoint.handleOps(ops, beneficiary);
 
         // it should batch transfer the ETH to the recipient
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the balance of the corresponding destinations are correct
         assertEq(address(1).balance, 1);
         assertEq(address(2).balance, 2);
         assertEq(address(3).balance, 3);

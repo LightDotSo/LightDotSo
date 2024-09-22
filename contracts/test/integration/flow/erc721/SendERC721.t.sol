@@ -94,11 +94,12 @@ contract SendERC721IntegrationTest is BaseIntegrationTest {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
-        entryPoint.handleOps(ops, beneficiary);
 
         // it should transfer the ERC721 to the recipient
-        assertEq(nft.balanceOf(address(1)), 1);
+        entryPoint.handleOps(ops, beneficiary);
 
+        // Assert that the balance of the recipient is 1
+        assertEq(nft.balanceOf(address(1)), 1);
         // Assert that the balance of the account is 0
         assertEq(nft.balanceOf(address(account)), 0);
     }

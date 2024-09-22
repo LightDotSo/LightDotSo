@@ -104,6 +104,7 @@ contract BatchSendERC1155IntegrationTest is BaseIntegrationTest {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the corresponding destinations are correct

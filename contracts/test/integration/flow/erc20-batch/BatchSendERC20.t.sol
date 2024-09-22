@@ -109,9 +109,11 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
-        entryPoint.handleOps(ops, beneficiary);
 
         // it should batch transfer the ERC20 to the recipient(s)
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the balance of the recipient(s) is correct
         assertEq(token.balanceOf(address(1)), 1);
         assertEq(token.balanceOf(address(2)), 2);
         assertEq(token.balanceOf(address(3)), 3);
