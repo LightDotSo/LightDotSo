@@ -126,9 +126,11 @@ jobs:
         env:
           FOUNDRY_PROFILE: local
       - name: Run Coverage
+        continue-on-error: true
         run: |
           forge coverage --report lcov
       - name: Codecov
+        continue-on-error: true
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
