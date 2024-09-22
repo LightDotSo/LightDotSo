@@ -198,11 +198,11 @@ contracts-slither-install: ## Installs slither on the contracts w/ solc version
 
 .PHONY: contracts-snapshot
 contracts-snapshot: ## Runs the snapshot generation script
-	forge snapshot
+	FOUNDRY_PROFILE=local forge snapshot
 
 .PHONY: contracts-snapshot-check
 contracts-snapshot-check: ## Runs the snapshot generation script w/ check
-	forge snapshot --check
+	FOUNDRY_PROFILE=local forge snapshot --check
 
 .PHONY: contracts-storage
 contracts-storage: ## Omits the current storage layout from the current contracts with foundry
