@@ -18,7 +18,7 @@ patchedDependencies:
     hash: ez2snxuqtiwawa42b547rkidfq
     path: patches/fumadocs-core@13.4.10.patch
   fumadocs-ui@13.4.10:
-    hash: yuow3fs2iffzusxz75vtlxkpou
+    hash: pont7tdtbo6vchg3qqjwpoxvbm
     path: patches/fumadocs-ui@13.4.10.patch
 
 importers:
@@ -1032,10 +1032,10 @@ importers:
         version: 5.4.14(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
       fumadocs-twoslash:
         specifier: ^1.1.3
-        version: 1.1.3(fumadocs-ui@13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))))(shiki@1.18.0)(typescript@5.6.2)
+        version: 1.1.3(fumadocs-ui@13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))))(shiki@1.18.0)(typescript@5.6.2)
       fumadocs-ui:
         specifier: ^13.4.10
-        version: 13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
+        version: 13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
       next:
         specifier: 15.0.0-canary.146
         version: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
@@ -39281,7 +39281,7 @@ snapshots:
       class-variance-authority: 0.7.0
       fast-glob: 3.3.2
       fumadocs-core: 13.4.10(patch_hash=ez2snxuqtiwawa42b547rkidfq)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
-      fumadocs-ui: 13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
+      fumadocs-ui: 13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
       github-slugger: 2.0.0
       hast-util-to-jsx-runtime: 2.3.0
       js-yaml: 4.1.0
@@ -39301,10 +39301,10 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  fumadocs-twoslash@1.1.3(fumadocs-ui@13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))))(shiki@1.18.0)(typescript@5.6.2):
+  fumadocs-twoslash@1.1.3(fumadocs-ui@13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))))(shiki@1.18.0)(typescript@5.6.2):
     dependencies:
       '@shikijs/twoslash': 1.16.2(typescript@5.6.2)
-      fumadocs-ui: 13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
+      fumadocs-ui: 13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2)))
       mdast-util-from-markdown: 2.0.1
       mdast-util-gfm: 3.0.0
       mdast-util-to-hast: 13.2.0
@@ -39324,7 +39324,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  fumadocs-ui@13.4.10(patch_hash=yuow3fs2iffzusxz75vtlxkpou)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))):
+  fumadocs-ui@13.4.10(patch_hash=pont7tdtbo6vchg3qqjwpoxvbm)(@types/react-dom@18.3.0)(@types/react@18.3.8)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.1)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.12(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@22.5.5)(typescript@5.6.2))):
     dependencies:
       '@radix-ui/react-accordion': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       '@radix-ui/react-collapsible': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
