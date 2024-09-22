@@ -1,8 +1,8 @@
-AccountDeployed.t.sol
-├── given if the hash is zero
+EntrypointInitAccountDeployedIntegrationTest
+├── when if the hash is zero
 │  ├── it should revert
 │  └── it should revert on a {AA13 initCode failed or OOG} error
-└── given if the hash is not zero
+└── when if the hash is not zero
    ├── when the address already exists
    │  └── it should revert on a {AA10 sender already constructed} error
    └── when the address does not exist

@@ -1,12 +1,12 @@
-LightWalletFactory.t.sol
-├── given if the entrypoint address is zero
+LightWalletFactoryIntegrationTest
+├── when the entrypoint address is zero
 │  ├── it should revert
 │  └── it should revert on a {EntrypointAddressZero} error
-└── given if the entrypoint address is not zero
-   ├── given if the hash is zero
+└── when the entrypoint address is not zero
+   ├── when the hash is zero
    │  ├── it should revert
    │  └── it should revert on a {ImageHashIsZero} error
-   └── given if the hash is not zero
+   └── when the hash is not zero
       ├── when the address already exists
       │  └── it should return the existing address
       └── when the address does not exist

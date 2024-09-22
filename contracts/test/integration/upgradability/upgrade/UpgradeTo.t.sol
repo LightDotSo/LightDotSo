@@ -39,28 +39,14 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the wallet reverts when trying to upgrade from outside address
-    function test_wallet_revertWhenNotSelf_upgradeTo() public {
-        // Deploy new version of LightWallet
-        LightWallet accountV2 = new LightWallet(entryPoint);
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
-        // Check that the account is the new implementation
-        _upgradeTo(address(account), address(accountV2));
-    }
-
-    /// Tests that the factory reverts when trying to upgrade from outside address
-    function test_timelock_revertWhenNotSelf_upgradeTo() public {
-        // Deploy new version of LightTimelockController
-        LightTimelockController timelockV2 = new LightTimelockController();
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(timelock)));
-        // Check that the account is the new implementation
-        _upgradeTo(address(timelock), address(timelockV2));
+    /// Tests that the account reverts when the caller is not self
+    function test_WalletRevertWhen_TheCallerIsNotSelf() external {
+        // it should revert
+        // it should revert with a {OnlySelfAuth} error
     }
 
     /// Tests that the account can upgrade to a v2 version of LightWallet
-    function test_wallet_upgradeToV2() public {
+    function test_WalletWhenTheCallerIsSelf() external {
         // Deploy new version of LightWallet to test upgrade to
         LightWallet accountV2 = new LightWallet(entryPoint);
 
@@ -80,26 +66,17 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             threshold,
             checkpoint
         );
+
+        // it should upgrade to a new implementation
+        // it should have the correct implementation address
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the account is now immutable
+        // Assert that the account is now the new implementation
         assertEq(getProxyImplementation(address(account)), address(accountV2));
     }
 
-    /// Tests that the timelock can upgrade to a v2 version of LightTimelockController
-    function test_timelock_upgradeToV2() public {
-        // Deploy new version of LightTimelockController to test upgrade to
-        LightTimelockController timelockV2 = new LightTimelockController();
-
-        vm.prank(address(timelock));
-        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
-
-        // Assert that the timelock is now immutable
-        assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
-    }
-
     /// Tests that the factory reverts when trying to upgrade to an immutable address
-    function test_wallet_revertWhenImmutable_upgradeToImmutable() public {
+    function test_WalletWhenTheImplementationIsImmutable() public {
         // Example UserOperation to update the account to immutable address one
         PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
@@ -131,17 +108,49 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             threshold,
             checkpoint
         );
+
+        // it should not be able to upgrade to a new implementation
+        // it should revert when attempting to upgrade
         vm.expectRevert();
         entryPoint.handleOps(opsv2, beneficiary);
     }
 
-    function test_timelock_revertWhenImmutable_upgradeToImmutable() public {
+    /// Tests that the factory reverts when trying to upgrade from outside address
+    function test_TimelockRevertWhen_TheCallerIsNotSelf() public {
+        // Deploy new version of LightTimelockController
+        LightTimelockController timelockV2 = new LightTimelockController();
+
+        // it should revert
+        // it should revert with a {OnlySelfAuth} error
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(timelock)));
+        // Revert for conventional upgrades w/o signature
+        // Check that the account is the new implementation
+        _upgradeTo(address(timelock), address(timelockV2));
+    }
+
+    /// Tests that the timelock can upgrade to a v2 version of LightTimelockController
+    function test_TimelockWhenTheCallerIsSelf() public {
+        // Deploy new version of LightTimelockController to test upgrade to
+        LightTimelockController timelockV2 = new LightTimelockController();
+
+        // it should upgrade to a new implementation
+        // it should have the correct implementation address
+        vm.prank(address(timelock));
+        timelock.upgradeToAndCall(address(timelockV2), bytes(""));
+
+        // Assert that the timelock is now immutable
+        assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
+    }
+
+    function test_TimelockWhenTheImplementationIsImmutable() public {
         // Deploy new version of LightTimelockController to test upgrade to
         LightTimelockController timelockV2 = new LightTimelockController();
 
         vm.prank(address(timelock));
         timelock.upgradeToAndCall(address(immutableProxy), bytes(""));
 
+        // it should not be able to upgrade to a new implementation
+        // it should revert when attempting to upgrade
         vm.prank(address(timelock));
         vm.expectRevert();
         timelock.upgradeToAndCall(address(timelockV2), bytes(""));

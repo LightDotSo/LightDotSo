@@ -80,30 +80,40 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ERC20 from a non-entrypoint
-    function test_revertWhenNotEntrypoint_batchTransferERC20() public {
+    function test_RevertWhen_TheSenderIsNotEntrypoint() public {
+        // it should revert
         vm.expectRevert(bytes("account: not from EntryPoint"));
         (bool success,) = address(account).call(callData);
         assertEq(success, true);
     }
 
+    modifier whenTheSenderIsEntrypoint() {
+        _;
+    }
+
     /// Tests that the account can correctly transfer ERC20
-    function test_revertWhenInvalidSignature_batchTransferERC20() public {
+    function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC20 to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
+
+        // it should revert
+        // it should revert with a {InvalidSignature} error
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the account can correctly transfer ERC20
-    function test_batchTransferERC20() public {
+    function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+
+        // it should batch transfer the ERC20 to the recipient(s)
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the balance of the corresponding destinations are correct
+        // Assert that the balance of the recipient(s) is correct
         assertEq(token.balanceOf(address(1)), 1);
         assertEq(token.balanceOf(address(2)), 2);
         assertEq(token.balanceOf(address(3)), 3);

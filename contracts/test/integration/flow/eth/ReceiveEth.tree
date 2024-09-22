@@ -1,7 +1,7 @@
-ReceiveEth.t.sol
-├── when the receiving ETH is through `send`
-│  ├── it should revert
-├── when the receiving ETH is through `transfer`
-│  ├── it should revert
-└── when the receiving ETH is through `call`
-   └── it should succeed
+ReceiveEthIntegrationTest
+├── when the receiving ETH is through send
+│   └── it should revert
+├── when the receiving ETH is through transfer
+│   └── it should revert
+└── when the receiving ETH is through call
+    └── it should succeed

@@ -1,2 +1,2 @@
-LightPaymaster.t.sol
-└── it should deploy a new LightWallet with the correct hash
+LightPaymasterForkTest
+└── it checks that the paymaster is properly deployed

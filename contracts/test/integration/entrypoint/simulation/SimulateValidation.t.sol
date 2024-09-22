@@ -27,7 +27,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -53,7 +53,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the entrypoint returns a correct revert code
-    function test_simulateValidation_revertWithValidationResult() public {
+    function test_WhenTheSignatureIsCorrect() public {
         // Construct the expected nonce
         nonce = bytes32(uint256(300));
 
@@ -84,11 +84,12 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
         //     )
         // );
+        // it should revert on a {ValidationResult} error
         // entryPoint.simulateValidation(op);
     }
 
     /// Tests that the entrypoint returns a correct revert code if incorrect params
-    function test_revertWhenIncorrectSignature_simulateValidation() public {
+    function test_WhenTheSignatureIsNotCorrect() public {
         // Construct the expected nonce
         bytes32 nonce = bytes32(uint256(123));
 
@@ -108,6 +109,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         // Revert for conventional upgrades w invalid signature
         // vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
+        // it should revert on a {AA23 initCode (or OOG)} error
+        // it should not be able to initialize twice
         // entryPoint.simulateValidation(op);
     }
 }

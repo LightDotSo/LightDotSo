@@ -1,8 +1,8 @@
-ImageHashUpgradabliity.t.sol
+ImageHashUpgradabliityIntegrationTest
 ├── when the signature is invalid
 │  └── it should revert
-└── when the signature is invalid
-   └── when the new image hash is zero
+└── when the signature is valid
+   ├── when the new image hash is zero
    │  └── it should revert on a {ImageHashZero} error
    └── when the new image hash is not zero
       ├── it should set the new image hash

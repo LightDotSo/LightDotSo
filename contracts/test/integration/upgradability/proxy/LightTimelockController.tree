@@ -1,6 +1,6 @@
-LightTimelockControllerProxy.t.sol
+LightTimelockControllerIntegrationTest
 ├── when the proxy is initialized
-│  ├── it should revert for initialize
+│  ├── it should revert 
 │  └── it should revert on a {Initializable} error
 └── when the proxy is not initialized
    ├── it should initialize

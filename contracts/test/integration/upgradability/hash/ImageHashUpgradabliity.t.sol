@@ -31,7 +31,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the transaction reverts when the signature is invalid
-    function test_revertWhenSignatureInvalid_updateImageHash() public {
+    function test_RevertWhen_TheSignatureIsInvalid() public {
         // Set the image hash to a random value
         bytes32 hash = bytes32(uint256(1));
 
@@ -57,16 +57,22 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
 
         // Handle the user operation
         vm.expectRevert();
+        // it should revert
         entryPoint.handleOps(ops, beneficiary);
     }
 
+    modifier whenTheSignatureIsValid() {
+        _;
+    }
+
     /// Tests that the transaction reverts when the image hash is zero
-    function test_revertWhenImageHashZero_updateImageHash() public {
+    function test_WhenTheNewImageHashIsZero() external whenTheSignatureIsValid {
         // Set the image hash to a random value
         bytes32 hash = bytes32(uint256(0));
 
         // Expect revert w/ `ImageHashIsZero` when the image hash is zero
         vm.prank(address(entryPoint));
+        // it should revert on a {ImageHashZero} error
         vm.expectRevert(bytes("ImageHashIsZero"));
         (bool success,) = address(account).call(
             abi.encodeWithSelector(
@@ -84,12 +90,13 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that the account can correctly update its image hash
-    function test_updateImageHash() public {
+    function test_WhenTheNewImageHashIsNotZero() external whenTheSignatureIsValid {
         // Set the image hash to a random value
         bytes32 hash = bytes32(uint256(1));
 
         // Expect emit the `ImageHashUpdated` event and handle the user operation
         vm.expectEmit(true, true, true, true);
+        // it should emit a {ImageHashUpdated} event
         emit ImageHashUpdated(hash);
         PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
@@ -108,6 +115,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         );
 
         // Handle the user operation
+        // it should set the new image hash
         entryPoint.handleOps(ops, beneficiary);
 
         // Expect that the image hash is the updated one

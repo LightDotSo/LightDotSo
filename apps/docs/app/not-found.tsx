@@ -1,28 +1,56 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 export default function NotFound() {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
   const pathname = usePathname();
 
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isRefreshed, setIsRefreshed] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const refreshKey = useMemo(() => `404_Refreshed_${pathname}`, [pathname]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
-    const refreshKey = `404_Refreshed_${pathname}`;
-    const shouldRefresh = sessionStorage.getItem(refreshKey) !== "true";
-
-    if (shouldRefresh) {
-      sessionStorage.setItem(refreshKey, "true");
-      router.refresh();
-    }
-
-    // Clean up the session storage when component unmounts
-    return () => {
-      sessionStorage.removeItem(refreshKey);
+    const checkAndRefresh = () => {
+      const shouldRefresh = !sessionStorage.getItem(refreshKey);
+      if (shouldRefresh) {
+        sessionStorage.setItem(refreshKey, "true");
+        router.refresh();
+      } else {
+        setIsRefreshed(true);
+      }
     };
-  }, [router, pathname]);
+
+    checkAndRefresh();
+
+    return () => sessionStorage.removeItem(refreshKey);
+  }, [router, refreshKey]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!isRefreshed) {
+    return null;
+  }
 
   return (
     <div>

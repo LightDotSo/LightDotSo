@@ -17,7 +17,6 @@
 pragma solidity ^0.8.27;
 
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
-import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 
 /// @notice Unit tests for `LightTimelockController` upgradeability
@@ -34,6 +33,10 @@ contract LightTimelockControllerFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    function test_ShouldDeployANewLightTimelockControllerWithTheCorrectHash() public {
+        // it should deploy a new LightTimelockController with the correct hash
+    }
 
     /// Tests that the factory can create a new account at the predicted address
     function testFork_timelock_createTimelockController_equalsGetAddress() public {

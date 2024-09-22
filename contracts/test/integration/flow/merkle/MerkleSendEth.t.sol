@@ -60,7 +60,7 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account can correctly transfer ETH
-    function test_merkle_transferEth() public {
+    function test_WhenTheSignatureIsValidWithAMerkleTree() public {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
@@ -119,6 +119,7 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         // Set the signature and proof
         op.signature = signatureAndProof;
 
+        // it should transfer the ETH to the recipient
         entryPoint.handleOps(ops, beneficiary);
 
         // Attempt to decode the signature and proof

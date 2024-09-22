@@ -20,7 +20,6 @@ import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 // solhint-disable-next-line no-console
@@ -42,6 +41,10 @@ contract LightPaymasterForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    function test_ChecksThatThePaymasterIsProperlyDeployed() external {
+        // it should deploy a new LightWallet with the correct hash
+    }
 
     /// Tests that the factory can create a new account at the predicted address
     function tmpDisable_testFork_paymaster_getHash() public {

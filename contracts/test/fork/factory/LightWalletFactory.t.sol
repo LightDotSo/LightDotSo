@@ -17,8 +17,6 @@
 pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -38,6 +36,10 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    function test_ShouldDeployANewLightWalletWithTheCorrectHash() external {
+        // it should deploy a new LightWallet with the correct hash
+    }
 
     /// Tests that the factory can create a new account at the predicted address
     function tmpDisable_testFork_wallet_createAccount_equalsGetAddress() public {
