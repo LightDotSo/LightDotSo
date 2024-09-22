@@ -1,5 +1,22 @@
 # @lightdotso/web
 
+## 3.2.24
+
+### Patch Changes
+
+- [#2401](https://github.com/LightDotSo/LightDotSo/pull/2401) [`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- Updated dependencies [[`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68), [`a1d59cf`](https://github.com/LightDotSo/LightDotSo/commit/a1d59cf63c964affe73dc27008ab3407cc77c549)]:
+  - @lightdotso/templates@0.0.24
+  - @lightdotso/client@3.1.15
+  - @lightdotso/tables@0.1.24
+  - @lightdotso/roots@0.0.10
+  - @lightdotso/ui@3.1.20
+  - @lightdotso/query@0.1.20
+  - @lightdotso/services@0.0.16
+  - @lightdotso/stores@0.1.17
+  - @lightdotso/states@0.0.20
+
 ## 3.2.23
 
 ### Patch Changes

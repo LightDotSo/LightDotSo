@@ -1,5 +1,16 @@
 # @lightdotso/contracts
 
+## 4.0.2
+
+### Patch Changes
+
+- [#2404](https://github.com/LightDotSo/LightDotSo/pull/2404) [`6285f7b`](https://github.com/LightDotSo/LightDotSo/commit/6285f7b1c04ebe29d1de24747cf4637572c83c07) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add bulloak test
+
+- [#2403](https://github.com/LightDotSo/LightDotSo/pull/2403) [`a1d59cf`](https://github.com/LightDotSo/LightDotSo/commit/a1d59cf63c964affe73dc27008ab3407cc77c549) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add contracts bulloak
+
+- Updated dependencies [[`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68)]:
+  - @lightdotso/wagmi@3.1.15
+
 ## 4.0.1
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # @lightdotso/storybook
 
+## 0.0.25
+
+### Patch Changes
+
+- [#2401](https://github.com/LightDotSo/LightDotSo/pull/2401) [`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- Updated dependencies [[`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68), [`a1d59cf`](https://github.com/LightDotSo/LightDotSo/commit/a1d59cf63c964affe73dc27008ab3407cc77c549)]:
+  - @lightdotso/templates@0.0.24
+  - @lightdotso/elements@0.0.24
+  - @lightdotso/dialogs@0.0.19
+  - @lightdotso/modals@0.0.24
+  - @lightdotso/tables@0.1.24
+  - @lightdotso/forms@0.0.24
+  - @lightdotso/roots@0.0.10
+  - @lightdotso/wagmi@3.1.15
+  - @lightdotso/ui@3.1.20
+  - @lightdotso/demo@0.0.16
+  - @lightdotso/states@0.0.20
+  - @lightdotso/msw@0.0.15
+
 ## 0.0.24
 
 ### Patch Changes

@@ -1600,8 +1600,6 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
 
-  apps/llm: {}
-
   apps/open: {}
 
   apps/paper:
