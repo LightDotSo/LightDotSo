@@ -1,6 +1,6 @@
 # Patching Fumadocs
 
-## Fumadocs UI
+## (deprecated) Fumadocs Core + Fumadocs UI
 
 ### Card
 
