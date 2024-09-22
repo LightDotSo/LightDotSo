@@ -18,6 +18,7 @@
     "biome:lint": "biome check --unsafe --no-errors-on-unmatched",
     "bulloak:cmd": "bulloak check",
     "bulloak:fix": "bulloak check --fix || exit 0",
+    "bulloak:lint": "bulloak check || exit 0",
     "cargo:fmt:cmd": "make cargo-fmt",
     "cargo:watch:api": "nodemon --watch crates/axum -e rs --exec cargo run --bin api",
     "cargo:watch:consumer": "nodemon --watch crates/consumer -e rs --exec cargo run --bin consumer",
