@@ -45,34 +45,44 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
+    // Modifiers
+    // -------------------------------------------------------------------------
+
+    modifier whenTheSenderIsEntrypoint() {
+        _;
+    }
+
+    // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ETH from a non-entrypoint
-    function test_revertWhenNotEntrypoint_transferEth() public {
+    function test_RevertWhen_TheSenderIsNotEntrypoint() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
         (bool success,) = address(account).call(callData);
         assertEq(success, true);
     }
 
     /// Tests that the account can correctly transfer ETH
-    function test_revertWhenInvalidSignature_transferEth() public {
+    function test_RevertWhenTheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
+
+        // it should revert on a {InvalidSignature} error
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the account can correctly transfer ETH
-    function test_transferEth() public {
+    function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the balance of the account is 1
+        // it should transfer the ETH to the recipient
         assertEq(address(1).balance, 1);
     }
 }
