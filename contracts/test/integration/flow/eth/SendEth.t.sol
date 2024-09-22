@@ -24,7 +24,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` sending ETH
-contract FlowSendEthIntegrationTest is BaseIntegrationTest {
+contract SendEthIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------

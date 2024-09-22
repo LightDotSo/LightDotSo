@@ -26,7 +26,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` sending ERC20
-contract FlowSendERC20IntegrationTest is BaseIntegrationTest {
+contract SendERC20IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
@@ -65,30 +65,38 @@ contract FlowSendERC20IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ERC20 from a non-entrypoint
-    function test_revertWhenNotEntrypoint_transferERC20() public {
+    function test_RevertWhen_TheSenderIsNotEntrypoint() public {
+        // it should revert
         vm.expectRevert(bytes("account: not from EntryPoint"));
         (bool success,) = address(account).call(callData);
         assertEq(success, true);
     }
 
+    modifier whenTheSenderIsEntrypoint() {
+        _;
+    }
+
     /// Tests that the account can correctly transfer ERC20
-    function test_revertWhenInvalidSignature_transferERC20() public {
+    function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC20 to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
+
+        // it should revert
+        // it should revert with a {InvalidSignature} error
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the account can correctly transfer ERC20
-    function test_transferERC20() public {
+    function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the balance of the destination is 1
+        // it should transfer the ERC20 to the recipient
         assertEq(token.balanceOf(address(1)), 1);
         // Assert that the balance of the account decreased by 1
         assertEq(token.balanceOf(address(account)), 1e18 - 1);

@@ -3,7 +3,7 @@ SendEthIntegrationTest
 │  ├── it should revert
 └── when the sender is Entrypoint
    ├── when the signature is invalid
-      ├── it should revert
-      └── it should revert with a {InvalidSignature} error
+   │  ├── it should revert
+   │  └── it should revert with a {InvalidSignature} error
    └── when the signature is valid
       └── it should transfer the ETH to the recipient

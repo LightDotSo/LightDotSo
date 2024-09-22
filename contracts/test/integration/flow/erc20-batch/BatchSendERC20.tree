@@ -3,6 +3,7 @@ BatchSendERC20IntegrationTest
 │  ├── it should revert
 └── when the sender is Entrypoint
    ├── when the signature is invalid
-   │  └── it should revert on a {InvalidSignature} error
+   │  ├── it should revert
+   │  └── it should revert with a {InvalidSignature} error
    └── when the signature is valid
       └── it should batch transfer the ERC20 to the recipient(s)
