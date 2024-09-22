@@ -42,7 +42,7 @@ contract LightPaymasterForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    function test_ChecksThatThePaymasterIsProperlydeployed() external {
+    function test_ChecksThatThePaymasterIsProperlyDeployed() external {
         // it should deploy a new LightWallet with the correct hash
     }
 

@@ -37,6 +37,10 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    function test_ShouldDeployANewLightWalletWithTheCorrectHash() external {
+        // it should deploy a new LightWallet with the correct hash
+    }
+
     /// Tests that the factory can create a new account at the predicted address
     function tmpDisable_testFork_wallet_createAccount_equalsGetAddress() public {
         // Create the account using the factory w/ hash 1, nonce 0
