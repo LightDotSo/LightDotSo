@@ -170,7 +170,7 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightWalletFactory.sol
 
 .PHONY: contracts-check
-contracts-check: contracts-size contracts-snapshot contracts-storage ## Check the contracts
+contracts-check: contracts-bulloak contracts-size contracts-snapshot contracts-storage ## Check the contracts
 
 .PHONY: contracts-halmos
 contracts-halmos: ## Runs halmos on the contracts
