@@ -1,2 +1,2 @@
 LightPaymasterForkTest
-└── it should deploy a new LightWallet with the correct hash
+└── it checks that the paymaster is properlydeployed

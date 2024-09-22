@@ -25,7 +25,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightTimelockController` upgradeability
-contract LightTimelockControllerProxyIntegrationTest is BaseIntegrationTest {
+contract LightTimelockControllerIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -40,15 +40,19 @@ contract LightTimelockControllerProxyIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account can not be initialized twice
-    function test_timelock_revertWhenAlreadyInitialized_proxy() public {
+    function test_RevertWhen_TheProxyIsInitialized() public {
         // Ensure that the account is not initializable on the implementation contract
         vm.expectRevert(Initializable.InvalidInitialization.selector);
+        // it should revert
+        // it should revert on a {Initializable} error
         account.initialize(bytes32(uint256(1)));
     }
 
     /// Tests that the account is initialized properly
-    function test_timelock_initialize() public {
+    function test_WhenTheProxyIsNotInitialized() public {
         vm.expectEmit(true, true, true, true);
+        // it should initialize
+        // it should emit a {Initialized} event
         emit Initialized(type(uint64).max);
         // Create a new account for the implementation
         timelock = new LightTimelockController();

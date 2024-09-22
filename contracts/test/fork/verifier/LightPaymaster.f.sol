@@ -42,6 +42,10 @@ contract LightPaymasterForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    function test_ChecksThatThePaymasterIsProperlydeployed() external {
+        // it should deploy a new LightWallet with the correct hash
+    }
+
     /// Tests that the factory can create a new account at the predicted address
     function tmpDisable_testFork_paymaster_getHash() public {
         address sender = address(0);
