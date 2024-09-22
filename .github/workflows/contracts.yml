@@ -300,7 +300,7 @@ jobs:
       - name: Install and run Bulloak
         uses: "smol-ninja/bulloak-toolchain@v1"
         with:
-          test-dir: "contracts/test/**/*.tree"
+          test-dir: "./contracts/test/**/*.tree"
   contracts-noir:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
