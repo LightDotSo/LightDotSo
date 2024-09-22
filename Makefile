@@ -170,7 +170,7 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightWalletFactory.sol
 
 .PHONY: contracts-check
-contracts-check: contracts-size contracts-snapshot contracts-storage ## Check the contracts
+contracts-check: contracts-bulloak contracts-size contracts-snapshot contracts-storage ## Check the contracts
 
 .PHONY: contracts-halmos
 contracts-halmos: ## Runs halmos on the contracts
@@ -186,9 +186,11 @@ contracts-slither: ## Runs slither on the contracts
 
 .PHONY: contracts-bulloak
 contracts-bulloak: ## Runs bulloak on the contracts
-	@echo "Current directory: $$(pwd)"
-	@echo "Bulloak version: $$(bulloak --version)"
-	bulloak check contracts/test/**/*.tree
+	@find contracts/test -name "*.tree" -type f | xargs -I {} sh -c 'echo "Checking {}"; bulloak check "{}"'
+
+.PHONY: contracts-bulloak-fix
+contracts-bulloak-fix: ## Runs bulloak on the contracts
+	@find contracts/test -name "*.tree" -type f | xargs -I {} sh -c 'echo "Fixing {}"; bulloak check --fix "{}"'
 
 .PHONY: contracts-slither-install
 contracts-slither-install: ## Installs slither on the contracts w/ solc version
@@ -196,11 +198,11 @@ contracts-slither-install: ## Installs slither on the contracts w/ solc version
 
 .PHONY: contracts-snapshot
 contracts-snapshot: ## Runs the snapshot generation script
-	forge snapshot
+	FOUNDRY_PROFILE=local forge snapshot
 
 .PHONY: contracts-snapshot-check
 contracts-snapshot-check: ## Runs the snapshot generation script w/ check
-	forge snapshot --check
+	FOUNDRY_PROFILE=local forge snapshot --check
 
 .PHONY: contracts-storage
 contracts-storage: ## Omits the current storage layout from the current contracts with foundry

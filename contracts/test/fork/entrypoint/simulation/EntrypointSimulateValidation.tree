@@ -1,2 +1,2 @@
 EntrypointSimulateValidationForkTest
-└── it should simulate correctly (returns ValidationResult)
+└── it should simulate correctly returns {ValidationResult}

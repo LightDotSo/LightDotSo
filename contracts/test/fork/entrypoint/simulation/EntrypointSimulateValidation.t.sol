@@ -41,7 +41,7 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    function test_ShouldSimulateCorrectlyreturnsValidationResult() external {
+    function test_ShouldSimulateCorrectlyReturnsValidationResult() external {
         // it should simulate correctly (returns ValidationResult)
     }
 
