@@ -45,6 +45,17 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     }
 
     // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
+    /// Tests that the account revert when sending ETH from a non-entrypoint
+    function test_RevertWhen_TheSenderIsNotEntrypoint() public {
+        vm.expectRevert(bytes("account: not from EntryPoint"));
+        (bool success,) = address(account).call(callData);
+        assertEq(success, true);
+    }
+
+    // -------------------------------------------------------------------------
     // Modifiers
     // -------------------------------------------------------------------------
 
@@ -56,15 +67,8 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account revert when sending ETH from a non-entrypoint
-    function test_RevertWhen_TheSenderIsNotEntrypoint() public {
-        vm.expectRevert(bytes("account: not from EntryPoint"));
-        (bool success,) = address(account).call(callData);
-        assertEq(success, true);
-    }
-
     /// Tests that the account can correctly transfer ETH
-    function test_RevertWhenTheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
+    function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
         PackedUserOperation[] memory ops =
             entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
