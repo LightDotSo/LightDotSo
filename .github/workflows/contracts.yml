@@ -297,10 +297,12 @@ jobs:
         continue-on-error: true
         with:
           submodules: recursive
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
       - name: Install and run Bulloak
-        uses: "smol-ninja/bulloak-toolchain@v1"
-        with:
-          test-dir: "./contracts/test/**/*.tree"
+        run: |
+          cargo binstall bulloak
+          pnpm run bulloak:cmd
   contracts-noir:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:

@@ -14,8 +14,9 @@ module.exports = {
   "*.{py,ipynb}": ["pnpm run ruff:lint:cmd", "pnpm run ruff:fmt:cmd"],
   "*.sol": [
     "pnpm run forge:fmt:cmd",
+    "pnpm run bulloak:fix",
     "pnpm run forge:snapshot:cmd",
-    "pnpm run solhint:cmd --fix",
+    "pnpm run solhint:fix",
   ],
   "*.toml": ["pnpm run taplo:cmd"],
   "package.json": [
