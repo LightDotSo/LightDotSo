@@ -23,7 +23,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` receive ETH
-contract FlowReceiveEthIntegrationTest is BaseIntegrationTest {
+contract ReceiveEthIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -38,20 +38,25 @@ contract FlowReceiveEthIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the account can correctly transfer ETH using `send`
-    function test_revertWhenReceiveEth_send() public {
+    function test_RevertWhen_TheReceivingETHIsThroughSend() external {
+        // Send ETH to the account w/ `send`
         bool sent = payable(address(account)).send(1_000_000_000);
+
+        // it should revert
         vm.expectRevert("Failed to send Ether");
         require(sent, "Failed to send Ether");
     }
 
     /// Tests that the account can correctly transfer ETH using `transfer`
-    function test_revertWhenReceiveEth_transfer() public {
+    function test_RevertWhen_TheReceivingETHIsThroughTransfer() external {
+        // it should revert
         vm.expectRevert();
         payable(address(account)).transfer(1_000_000_000);
     }
 
     /// Tests that the account can correctly transfer ETH using `call`
-    function test_receiveEth_call() public {
+    function test_WhenTheReceivingETHIsThroughCall() external {
+        // it should succeed
         (bool sent,) = payable(address(account)).call{value: 1 ether}("");
         require(sent, "Failed to send Ether");
     }
