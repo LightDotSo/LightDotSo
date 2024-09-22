@@ -27,7 +27,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract SimulateValidationForkTest is BaseForkTest {
+contract EntrypointSimulateValidationForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -40,6 +40,10 @@ contract SimulateValidationForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    function test_ShouldSimulateCorrectly() external {
+        // it should simulate correctly (returns ValidationResult)
+    }
 
     /// Tests that the factory can create a new account at the predicted address
     function tmpDisable_testFork_simulateValidation() public {

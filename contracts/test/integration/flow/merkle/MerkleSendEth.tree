@@ -1,3 +1,3 @@
 MerkleSendEth.t.sol
-└── When the signature is valid w/ a merkle tree
-   └── It should transfer the ETH to the recipient
+└── when the signature is valid w/ a merkle tree
+   └── it should transfer the ETH to the recipient

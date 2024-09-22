@@ -1,2 +1,2 @@
-EntrypointSimulateValidation.t.sol
-└── It should simulate correctly (returns ValidationResult)
+EntrypointSimulateValidationForkTest
+└── it should simulate correctly (returns ValidationResult)

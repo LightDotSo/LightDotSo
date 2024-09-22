@@ -14,8 +14,6 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {IConditionChecker} from "@/contracts/interfaces/IConditionChecker.sol";
-
 pragma solidity ^0.8.27;
 
 /// @title LightDAG

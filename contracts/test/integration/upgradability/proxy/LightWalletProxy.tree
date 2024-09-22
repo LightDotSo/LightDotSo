@@ -1,7 +1,7 @@
-LightWalletProxy.t.sol
-├── When the proxy is initialized
-│  ├── It should revert for initialize
-│  └── It should revert on a {Initializable} error
-└── When the proxy is not initialized
-   ├── It should initialize
-   └── It should emit a {Initialized} event
+LightWalletProxyIntegrationTest
+├── when the proxy is initialized
+│  ├── it should revert for initialize
+│  └── it should revert on a {Initializable} error
+└── when the proxy is not initialized
+   ├── it should initialize
+   └── it should emit a {Initialized} event

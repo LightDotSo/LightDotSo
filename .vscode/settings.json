@@ -27,7 +27,10 @@
     "**/crates/prisma/src/lib.rs": true
   },
   // Formatter settings on save
-  "editor.rulers": [80, 100],
+  "editor.rulers": [
+    80,
+    100
+  ],
   // Toml settings
   "evenBetterToml.taplo.configFile.path": ".taplo.toml",
   // Files linting
@@ -39,40 +42,71 @@
   // Inspired by License: AGPL-3.0
   "json.schemas": [
     {
-      "fileMatch": ["tsconfig.*.json"],
+      "fileMatch": [
+        "tsconfig.*.json"
+      ],
       "url": "https://json.schemastore.org/tsconfig"
     },
-    { "fileMatch": ["turbo.json"], "url": "https://turbo.build/schema.json" },
     {
-      "fileMatch": ["vercel.json"],
+      "fileMatch": [
+        "turbo.json"
+      ],
+      "url": "https://turbo.build/schema.json"
+    },
+    {
+      "fileMatch": [
+        "vercel.json"
+      ],
       "url": "https://openapi.vercel.sh/vercel.json"
     }
   ],
   // Npm settings
   "npm.exclude": "**/lib/**",
   // Rust settings
-  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
-  "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
+  "rust-analyzer.diagnostics.disabled": [
+    "unresolved-proc-macro"
+  ],
+  "rust-analyzer.rustfmt.extraArgs": [
+    "+nightly"
+  ],
   "rust-analyzer.showUnlinkedFileNotification": false,
   // Tailwind settings
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [
     // enable autocomplete in cx(...)
-    ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    [
+      "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
     // enable autocomplete in cva(...)
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "cva\\(((?:[^()]|\\([^()]*\\))*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
   ],
   "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.mjs",
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   // Cspell settings
-  "cSpell.files": ["**"],
+  "cSpell.files": [
+    "**"
+  ],
   "cSpell.enabled": true,
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "cSpell.autoFormatConfigFile": true
+  "cSpell.autoFormatConfigFile": true,
+  // Solidity settings
+  "solidity.packageDefaultDependenciesContractsDirectory": "contracts/src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.nodemodulespackage": "solc",
+  "solidity.defaultCompiler": "localNodeModule",
+  "solidity.compileUsingRemoteVersion": "v0.8.27+commit.40a35a09",
+  "solidity.formatter": "forge"
 }

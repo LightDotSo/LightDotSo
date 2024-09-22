@@ -1,11 +1,11 @@
 IsValidSignature.t.sol
-├── When the signature is invalid
-│  ├── It should revert
-│  ├── It should revert with ERC1271
-│  ├── It should revert with ERC6492
-│  ├── It should revert with predeployed contracts at ERC6492
-└── When the signature is valid
-   ├── It should return the magic value
-   ├── It should comply with ERC1271
-   ├── It should comply with ERC6492
-   └── It should comply with predeployed contracts at ERC6492
+├── when the signature is invalid
+│  ├── it should revert
+│  ├── it should revert with ERC1271
+│  ├── it should revert with ERC6492
+│  ├── it should revert with predeployed contracts at ERC6492
+└── when the signature is valid
+   ├── it should return the magic value
+   ├── it should comply with ERC1271
+   ├── it should comply with ERC6492
+   └── it should comply with predeployed contracts at ERC6492

@@ -184,6 +184,12 @@ contracts-size: ## Omits the current code size layout from the current contracts
 contracts-slither: ## Runs slither on the contracts
 	SOLC_VERSION=$(SOLC_VERSION) rye run slither contracts/src/ --config-file slither.config.json
 
+.PHONY: contracts-bulloak
+contracts-bulloak: ## Runs bulloak on the contracts
+	@echo "Current directory: $$(pwd)"
+	@echo "Bulloak version: $$(bulloak --version)"
+	bulloak check contracts/test/**/*.tree
+
 .PHONY: contracts-slither-install
 contracts-slither-install: ## Installs slither on the contracts w/ solc version
 	rye run solc-select install $(SOLC_VERSION)

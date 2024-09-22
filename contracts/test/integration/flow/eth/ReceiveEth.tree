@@ -1,7 +1,7 @@
 ReceiveEth.t.sol
-├── When the receiving ETH is through `send`
-│  ├── It should revert
-├── When the receiving ETH is through `transfer`
-│  ├── It should revert
-└── When the receiving ETH is through `call`
-   └── It should succeed
+├── when the receiving ETH is through `send`
+│  ├── it should revert
+├── when the receiving ETH is through `transfer`
+│  ├── it should revert
+└── when the receiving ETH is through `call`
+   └── it should succeed

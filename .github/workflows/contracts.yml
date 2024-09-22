@@ -285,6 +285,22 @@ jobs:
         name: Show Storage Changes
         run: |
           git diff
+  contracts-bulloak:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          submodules: recursive
+      - name: Install and run Bulloak
+        uses: "smol-ninja/bulloak-toolchain@v1"
+        with:
+          test-dir: "contracts/test"
   contracts-noir:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
@@ -359,6 +375,7 @@ jobs:
       - contracts-script
       - contracts-smt
       - contracts-storage
+      - contracts-bulloak
       - contracts-noir
       - contracts-slither
     runs-on: ubuntu-latest
@@ -367,5 +384,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: contracts-build,contracts-lint,contracts-test,contracts-fork,contracts-script,contracts-smt,contracts-storage,contracts-noir,contracts-slither
+          allowed-skips: contracts-build,contracts-lint,contracts-test,contracts-fork,contracts-script,contracts-smt,contracts-storage,contracts-bulloak,contracts-noir,contracts-slither
           jobs: ${{ toJSON(needs) }}

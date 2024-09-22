@@ -1,13 +1,13 @@
 AccountDeployed.t.sol
-├── If the hash is zero
-│  ├── It should revert
-│  └── It should revert on a {AA13 initCode failed or OOG} error
-└── If the hash is not zero
-   ├── When the address already exists
-   │  └── It should revert on a {AA10 sender already constructed} error
-   └── When the address does not exist
-      ├── It should deploy a new LightWallet
-      ├── It should deploy a new LightWallet with the correct hash
-      ├── It should equal the {getAddress} function
-      ├── It should not have a proxy admin
-      └── It should not be able to initialize twice
+├── given if the hash is zero
+│  ├── it should revert
+│  └── it should revert on a {AA13 initCode failed or OOG} error
+└── given if the hash is not zero
+   ├── when the address already exists
+   │  └── it should revert on a {AA10 sender already constructed} error
+   └── when the address does not exist
+      ├── it should deploy a new LightWallet
+      ├── it should deploy a new LightWallet with the correct hash
+      ├── it should equal the {getAddress} function
+      ├── it should not have a proxy admin
+      └── it should not be able to initialize twice

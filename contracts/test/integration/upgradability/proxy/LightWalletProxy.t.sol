@@ -39,6 +39,16 @@ contract LightWalletProxyIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    function test_WhenTheProxyIsInitialized() external {
+        // It should revert for initialize
+        // It should revert on a {Initializable} error
+    }
+
+    function test_WhenTheProxyIsNotInitialized() external {
+        // It should initialize
+        // It should emit a {Initialized} event
+    }
+
     /// Tests that the account can not be initialized twice
     function test_revertWhenAlreadyInitialized_proxy() public {
         // Ensure that the account is not initializable on the implementation contract

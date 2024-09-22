@@ -1,2 +1,2 @@
 LightPaymaster.t.sol
-└── It should deploy a new LightWallet with the correct hash
+└── it should deploy a new LightWallet with the correct hash
