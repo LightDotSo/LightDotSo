@@ -302,7 +302,7 @@ jobs:
       - name: Install and run Bulloak
         run: |
           cargo binstall bulloak -y
-          pnpm run bulloak:cmd
+          bulloak check contracts/test/**/*.tree
   contracts-noir:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
