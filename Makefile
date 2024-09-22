@@ -186,9 +186,11 @@ contracts-slither: ## Runs slither on the contracts
 
 .PHONY: contracts-bulloak
 contracts-bulloak: ## Runs bulloak on the contracts
-	@echo "Current directory: $$(pwd)"
-	@echo "Bulloak version: $$(bulloak --version)"
-	bulloak check contracts/test/**/*.tree
+	@find contracts/test -name "*.tree" -type f | xargs -I {} sh -c 'echo "Checking {}"; bulloak check "{}"'
+
+.PHONY: contracts-bulloak-fix
+contracts-bulloak-fix: ## Runs bulloak on the contracts
+	@find contracts/test -name "*.tree" -type f | xargs -I {} sh -c 'echo "Fixing {}"; bulloak check --fix "{}"'
 
 .PHONY: contracts-slither-install
 contracts-slither-install: ## Installs slither on the contracts w/ solc version
