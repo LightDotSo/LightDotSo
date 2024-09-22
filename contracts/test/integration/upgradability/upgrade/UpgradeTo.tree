@@ -1,8 +1,10 @@
 UpgradeToIntegrationTest
 ├── when the caller is not self
-│  ├── it should revert
-│  └── it should revert on a {OnlySelfAuth} error
-└── when the caller is self
-   ├── it should upgrade to a new implementation
-   ├── it should have the correct implementation address
-   └── it should not be able to upgrade to a new implementation
+│   ├── it should revert
+│   └── it should revert on a {OnlySelfAuth} error
+├── when the caller is self
+│   ├── it should upgrade to a new implementation
+│   └── it should have the correct implementation address
+└── when the implementation is immutable
+    ├── it should not be able to upgrade to a new implementation
+    └── it should revert for attempting to upgrade

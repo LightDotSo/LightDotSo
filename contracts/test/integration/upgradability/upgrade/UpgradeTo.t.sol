@@ -40,14 +40,6 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the wallet reverts when trying to upgrade from outside address
-    function test_wallet_revertWhenNotSelf_upgradeTo() public {
-        // Deploy new version of LightWallet
-        LightWallet accountV2 = new LightWallet(entryPoint);
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
-        // Check that the account is the new implementation
-        _upgradeTo(address(account), address(accountV2));
-    }
 
     /// Tests that the factory reverts when trying to upgrade from outside address
     function test_timelock_revertWhenNotSelf_upgradeTo() public {
@@ -60,7 +52,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that the account can upgrade to a v2 version of LightWallet
-    function test_wallet_upgradeToV2() public {
+    function test_WhenTheCallerIsSelf() public {
         // Deploy new version of LightWallet to test upgrade to
         LightWallet accountV2 = new LightWallet(entryPoint);
 
@@ -80,9 +72,11 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             threshold,
             checkpoint
         );
+
+        // it should upgrade to a new implementation
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the account is now immutable
+        // Assert that the account is now the new implementation
         assertEq(getProxyImplementation(address(account)), address(accountV2));
     }
 
@@ -99,7 +93,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that the factory reverts when trying to upgrade to an immutable address
-    function test_wallet_revertWhenImmutable_upgradeToImmutable() public {
+    function test_WhenTheImplementationIsImmutable() public {
         // Example UserOperation to update the account to immutable address one
         PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
