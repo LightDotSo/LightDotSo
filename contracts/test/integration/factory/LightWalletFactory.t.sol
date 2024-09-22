@@ -17,7 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {Initializable} from "@/test/base/BaseTest.t.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";

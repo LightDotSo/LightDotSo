@@ -17,7 +17,6 @@
 pragma solidity ^0.8.27;
 
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
-import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 
 /// @notice Unit tests for `LightTimelockController` upgradeability

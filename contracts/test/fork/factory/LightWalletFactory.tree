@@ -1,2 +1,2 @@
-LightWalletFactory.t.sol
+LightWalletFactoryForkTest
 └── it should deploy a new LightWallet with the correct hash

@@ -25,7 +25,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

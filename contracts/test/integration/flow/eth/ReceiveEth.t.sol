@@ -17,14 +17,13 @@
 pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` receive ETH
-contract ReceiveEthIntegrationTest is BaseIntegrationTest {
+contract FlowReceiveEthIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

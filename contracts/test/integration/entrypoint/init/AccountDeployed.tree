@@ -1,4 +1,4 @@
-AccountDeployed.t.sol
+EntrypointInitAccountDeployedIntegrationTest
 ├── when if the hash is zero
 │  ├── it should revert
 │  └── it should revert on a {AA13 initCode failed or OOG} error

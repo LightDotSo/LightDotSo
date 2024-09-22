@@ -1,4 +1,4 @@
-UpgradeTo.t.sol
+UpgradeToIntegrationTest
 ├── when the caller is not self
 │  ├── it should revert
 │  └── it should revert on a {OnlySelfAuth} error

@@ -1,4 +1,4 @@
-ReceiveEth.t.sol
+ReceiveEthIntegrationTest
 ├── when the receiving ETH is through `send`
 │  ├── it should revert
 ├── when the receiving ETH is through `transfer`

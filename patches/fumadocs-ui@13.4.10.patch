@@ -1,0 +1,183 @@
+diff --git a/dist/chunk-ERUVE5R6.js b/dist/chunk-ERUVE5R6.js
+index dd237aa30fa845793db52a7abb82b68257cb54b9..b299c43781b5d935ca182b7e58e7dcc22e8647a9 100644
+--- a/dist/chunk-ERUVE5R6.js
++++ b/dist/chunk-ERUVE5R6.js
+@@ -19,7 +19,7 @@ function Heading({
+       ...props,
+       children: [
+         /* @__PURE__ */ jsx("a", { href: `#${props.id}`, className: "peer", children: props.children }),
+-        /* @__PURE__ */ jsx(
++        /* @ */ jsx(
+           Link,
+           {
+             "aria-label": "Link to section",
+diff --git a/dist/chunk-KCZRDPB4.js b/dist/chunk-KCZRDPB4.js
+index 46bc793a482a8155fef0d06ac16471c4392220b1..af212f3de70402168af9932250c39a7a56759b3b 100644
+--- a/dist/chunk-KCZRDPB4.js
++++ b/dist/chunk-KCZRDPB4.js
+@@ -112,7 +112,7 @@ function NavBox({
+   );
+ }
+ function Title({ title, url = "/" }) {
+-  return /* @__PURE__ */ jsx2(Link, { href: url, className: "inline-flex items-center gap-2 font-semibold", children: title });
++  return /* @__PURE__ */ jsx2("a", { href: url, className: "inline-flex items-center gap-2 font-semibold", children: title });
+ }
+ 
+ // src/components/layout/link-item.tsx
+@@ -180,7 +180,7 @@ function LinkItem({
+   }
+   if (item.type === "button") {
+     return /* @__PURE__ */ jsxs2(
+-      Link2,
++      "a",
+       {
+         href: item.url,
+         external: item.external,
+@@ -200,7 +200,7 @@ function LinkItem({
+   const active = activeType !== "none" && isActive(item.url, pathname, activeType === "nested-url");
+   if (item.type === "icon" && on === "nav") {
+     return /* @__PURE__ */ jsx3(
+-      Link2,
++      "a",
+       {
+         "aria-label": item.label,
+         href: item.url,
+@@ -218,7 +218,7 @@ function LinkItem({
+     );
+   }
+   return /* @__PURE__ */ jsxs2(
+-    Link2,
++    "a",
+     {
+       href: item.url,
+       external: item.external,
+diff --git a/dist/chunk-UOD2T27N.js b/dist/chunk-UOD2T27N.js
+index b5e38263d4790ff69022aae542eebc2ef0ab766c..597548d5d1105260ecfcb7cb05a642a471381a0d 100644
+--- a/dist/chunk-UOD2T27N.js
++++ b/dist/chunk-UOD2T27N.js
+@@ -1,7 +1,7 @@
+ // src/utils/shared.ts
+ var defaultImageSizes = "(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 900px";
+ function isActive(url, pathname, nested = true) {
+-  return url === pathname || nested && pathname.startsWith(`${url}/`);
++  return url.replace("/docs", "") === pathname || nested && pathname.startsWith(`${url.replace("/docs", "")}/`);
+ }
+ function replaceOrDefault(obj, def) {
+   if (obj?.enabled === false) return;
+diff --git a/dist/chunk-WLTWFYQA.js b/dist/chunk-WLTWFYQA.js
+index aede57171ed18f66e8e242d392292ff9e89d946b..2c2574734182b2c50c2916bbd645daabe12a532b 100644
+--- a/dist/chunk-WLTWFYQA.js
++++ b/dist/chunk-WLTWFYQA.js
+@@ -22,7 +22,7 @@ function Card({
+   ...props
+ }) {
+   return /* @__PURE__ */ jsxs(
+-    Link,
++    "a",
+     {
+       ...props,
+       className: twMerge(
+diff --git a/dist/components/layout/root-toggle.js b/dist/components/layout/root-toggle.js
+index 607eabf1e1886aaf31ee1f8a9368056447e5ddf4..20d5cf672c8888901d4bd82613a74505480676a3 100644
+--- a/dist/components/layout/root-toggle.js
++++ b/dist/components/layout/root-toggle.js
+@@ -49,7 +49,7 @@ function RootToggle({
+       }
+     ),
+     /* @__PURE__ */ jsx(PopoverContent, { className: "w-[var(--radix-popover-trigger-width)] overflow-hidden p-0", children: options.map((item) => /* @__PURE__ */ jsx(
+-      Link,
++      "a",
+       {
+         href: item.url,
+         onClick,
+diff --git a/dist/components/type-table.js b/dist/components/type-table.js
+index 3f1c2a32668c5b39220881e013ae16bbbe39dc7f..c923b6b8f41ea787db7c62b12794720e44d970a2 100644
+--- a/dist/components/type-table.js
++++ b/dist/components/type-table.js
+@@ -50,7 +50,7 @@ function TypeTable({
+       /* @__PURE__ */ jsx("td", { className: td(), children: /* @__PURE__ */ jsxs("div", { className: field(), children: [
+         /* @__PURE__ */ jsx("code", { className: code(), children: value.type }),
+         value.typeDescription ? /* @__PURE__ */ jsx(Info, { children: /* @__PURE__ */ jsx("pre", { className: "overflow-auto bg-fd-secondary text-fd-secondary-foreground", children: value.typeDescription }) }) : null,
+-        value.typeDescriptionLink ? /* @__PURE__ */ jsx(Link, { href: value.typeDescriptionLink, children: /* @__PURE__ */ jsx(InfoIcon, { className: "size-4" }) }) : null
++        value.typeDescriptionLink ? /* @__PURE__ */ jsx("a", { href: value.typeDescriptionLink, children: /* @__PURE__ */ jsx(InfoIcon, { className: "size-4" }) }) : null
+       ] }) }),
+       /* @__PURE__ */ jsx("td", { className: td(), children: value.default ? /* @__PURE__ */ jsx("code", { className: code(), children: value.default }) : /* @__PURE__ */ jsx("span", { children: "-" }) })
+     ] }, key)) })
+diff --git a/dist/docs-layout.client.js b/dist/docs-layout.client.js
+index 5fe85730adbbbe1cf8825b90894ffad79886b9f8..1ac6fec90a5a8b98e00177c34fbd18efbe1e527e 100644
+--- a/dist/docs-layout.client.js
++++ b/dist/docs-layout.client.js
+@@ -175,7 +175,7 @@ function PageNode({
+   const active = isActive(url, pathname, false);
+   const { prefetch } = useContext(Context);
+   return /* @__PURE__ */ jsxs(
+-    Link,
++    "a",
+     {
+       href: url,
+       external,
+@@ -229,7 +229,7 @@ function FolderNode({
+   ] });
+   return /* @__PURE__ */ jsxs(Collapsible, { open, onOpenChange: setOpen, children: [
+     item.index ? /* @__PURE__ */ jsx(
+-      Link,
++      "a",
+       {
+         className: twMerge(itemVariants({ active })),
+         href: item.index.url,
+diff --git a/dist/layout.js b/dist/layout.js
+index 75c5c5d250ae70b229981f5cc473424ba0ab9872..2b6e0b2cc6fd3950587e8d4c7a071baabe7f0fc8 100644
+--- a/dist/layout.js
++++ b/dist/layout.js
+@@ -48,7 +48,7 @@ function DocsLayout({
+   if (nav?.title)
+     banner.push(
+       /* @__PURE__ */ jsx(
+-        Link,
++        "a",
+         {
+           href: nav.url ?? "/",
+           className: "inline-flex items-center gap-2.5 py-1 font-medium",
+diff --git a/dist/mdx.js b/dist/mdx.js
+index e11ab315d626545fb850ef703bd8815607242359..6350742d19a4c04fbccfc0f37d57b85aea533d69 100644
+--- a/dist/mdx.js
++++ b/dist/mdx.js
+@@ -38,7 +38,6 @@ var defaultMdxComponents = {
+   pre: Pre,
+   Card,
+   Cards,
+-  a: Link,
+   img: Image,
+   h1: (props) => /* @__PURE__ */ jsx(Heading, { as: "h1", ...props }),
+   h2: (props) => /* @__PURE__ */ jsx(Heading, { as: "h2", ...props }),
+diff --git a/dist/page.client.js b/dist/page.client.js
+index afc7e3ade971422fcae63ff7fb9f55d2d1c411dc..ff3630b6d3d7243fd9c74e87145d55fff3cdd919 100644
+--- a/dist/page.client.js
++++ b/dist/page.client.js
+@@ -164,7 +164,7 @@ function Breadcrumb({
+   return /* @__PURE__ */ jsx2("div", { className: "-mb-3 flex flex-row items-center gap-1 text-sm font-medium text-fd-muted-foreground", children: items.map((item, i) => /* @__PURE__ */ jsxs2(Fragment2, { children: [
+     i !== 0 && /* @__PURE__ */ jsx2(ChevronRight2, { className: "size-4 shrink-0 rtl:rotate-180" }),
+     item.url ? /* @__PURE__ */ jsx2(
+-      Link,
++      "a",
+       {
+         href: item.url,
+         className: "truncate hover:text-fd-accent-foreground",
+@@ -206,7 +206,7 @@ function Footer({ items }) {
+     };
+   }, [pathname, tree.navigation]);
+   return /* @__PURE__ */ jsxs3("div", { className: "grid grid-cols-2 gap-4 pb-6", children: [
+-    previous ? /* @__PURE__ */ jsxs3(Link2, { href: previous.url, className: twMerge(itemVariants()), children: [
++    previous ? /* @__PURE__ */ jsxs3("a", { href: previous.url, className: twMerge(itemVariants()), children: [
+       /* @__PURE__ */ jsxs3("div", { className: twMerge(itemLabel()), children: [
+         /* @__PURE__ */ jsx3(ChevronLeft, { className: "-ms-1 size-4 shrink-0 rtl:rotate-180" }),
+         /* @__PURE__ */ jsx3("p", { children: text.previousPage })
+@@ -214,7 +214,7 @@ function Footer({ items }) {
+       /* @__PURE__ */ jsx3("p", { className: "font-medium", children: previous.name })
+     ] }) : null,
+     next ? /* @__PURE__ */ jsxs3(
+-      Link2,
++      "a",
+       {
+         href: next.url,
+         className: twMerge(itemVariants({ className: "col-start-2 text-end" })),

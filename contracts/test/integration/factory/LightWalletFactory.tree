@@ -1,4 +1,4 @@
-LightWalletFactory.t.sol
+LightWalletFactoryIntegrationTest
 ├── when if the entrypoint address is zero
 │  ├── it should revert
 │  └── it should revert on a {EntrypointAddressZero} error

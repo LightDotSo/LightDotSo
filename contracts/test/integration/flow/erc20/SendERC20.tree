@@ -1,4 +1,4 @@
-SendERC20.t.sol
+SendERC20IntegrationTest
 ├── when the sender is not Entrypoint
 │  ├── it should revert
 └── when the sender is Entrypoint

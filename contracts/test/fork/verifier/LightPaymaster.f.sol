@@ -20,7 +20,6 @@ import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 // solhint-disable-next-line no-console

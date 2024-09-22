@@ -1,0 +1,20 @@
+diff --git a/dist/chunk-DVOZJZGH.js b/dist/chunk-DVOZJZGH.js
+index 7bbf58803d171df064eebfb667518454006df73f..8cc3ee5af083b8c5cf6d6476d9ec1f908f777af6 100644
+--- a/dist/chunk-DVOZJZGH.js
++++ b/dist/chunk-DVOZJZGH.js
+@@ -24,12 +24,12 @@ var Link = forwardRef(
+       );
+     }
+     return /* @__PURE__ */ jsx(
+-      Original,
++      "a",
+       {
+         ref,
+         href,
+-        prefetch,
+-        replace,
++        // prefetch,
++        // replace,
+         ...props
+       }
+     );
