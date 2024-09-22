@@ -1,10 +1,21 @@
-UpgradeToIntegrationTest
+UpgradeToIntegrationTest::Wallet
 ├── when the caller is not self
 │   ├── it should revert
-│   └── it should revert on a {OnlySelfAuth} error
+│   └── it should revert with a {OnlySelfAuth} error
 ├── when the caller is self
 │   ├── it should upgrade to a new implementation
 │   └── it should have the correct implementation address
 └── when the implementation is immutable
     ├── it should not be able to upgrade to a new implementation
-    └── it should revert for attempting to upgrade
+    └── it should revert when attempting to upgrade
+
+UpgradeToIntegrationTest::Timelock
+├── when the caller is not self
+│   ├── it should revert
+│   └── it should revert with a {OnlySelfAuth} error
+├── when the caller is self
+│   ├── it should upgrade to a new implementation
+│   └── it should have the correct implementation address
+└── when the implementation is immutable
+    ├── it should not be able to upgrade to a new implementation
+    └── it should revert when attempting to upgrade
