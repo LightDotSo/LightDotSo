@@ -1,6 +1,7 @@
 | Contract                       | Size (B) | Margin (B) |
 |--------------------------------|----------|------------|
 | Address                        |       85 |     24,491 |
+| AsyncVault                     |   22,740 |      1,836 |
 | BytesLib                       |       85 |     24,491 |
 | Create2                        |       85 |     24,491 |
 | ECDSA                          |       85 |     24,491 |
@@ -19,6 +20,8 @@
 | LightPaymaster                 |    6,427 |     18,149 |
 | LightTimelockController        |   11,611 |     12,965 |
 | LightTimelockControllerFactory |    2,579 |     21,997 |
+| LightVault                     |   22,882 |      1,694 |
+| LightVaultFactory              |    3,392 |     21,184 |
 | LightVerifyingPaymaster        |    5,076 |     19,500 |
 | LightWallet                    |   12,009 |     12,567 |
 | LightWalletFactory             |    2,311 |     22,265 |
@@ -34,6 +37,7 @@
 | ModuleSelfAuth                 |       62 |     24,514 |
 | ModuleStorage                  |       85 |     24,491 |
 | NonceManager                   |      642 |     23,934 |
+| SafeERC20                      |       85 |     24,491 |
 | SafeMath                       |       85 |     24,491 |
 | SafeProxy                      |      170 |     24,406 |
 | SafeProxyFactory               |    2,361 |     22,215 |
@@ -42,9 +46,11 @@
 | SequenceBaseSig                |       85 |     24,491 |
 | SequenceDynamicSig             |       85 |     24,491 |
 | SequenceNoChainIdSig           |       85 |     24,491 |
+| ShortStrings                   |       85 |     24,491 |
 | SignatureCheckerLib            |       85 |     24,491 |
 | SignatureValidator             |       85 |     24,491 |
 | SignedMath                     |       85 |     24,491 |
+| Silo                           |       62 |     24,514 |
 | SimpleAccount                  |    7,666 |     16,910 |
 | SimpleAccountFactory           |    2,186 |     22,390 |
 | StorageSlot                    |       85 |     24,491 |

@@ -38,6 +38,10 @@
 | lastDepositRequestId | mapping(address => uint256)          | 7    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
 | lastRedeemRequestId  | mapping(address => uint256)          | 8    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
 =======================
+ ➡ LightVaultFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightWallet
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
