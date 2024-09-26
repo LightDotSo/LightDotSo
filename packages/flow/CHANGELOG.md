@@ -1,5 +1,16 @@
 # @lightdotso/flow
 
+## 0.0.12
+
+### Patch Changes
+
+- [#2401](https://github.com/LightDotSo/LightDotSo/pull/2401) [`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
+- Updated dependencies [[`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68)]:
+  - @lightdotso/ui@3.1.20
+  - @lightdotso/hooks@0.0.21
+  - @lightdotso/query@0.1.20
+
 ## 0.0.11
 
 ### Patch Changes

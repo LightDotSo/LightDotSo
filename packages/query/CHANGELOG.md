@@ -1,5 +1,15 @@
 # @lightdotso/query
 
+## 0.1.20
+
+### Patch Changes
+
+- Updated dependencies [[`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68)]:
+  - @lightdotso/client@3.1.15
+  - @lightdotso/wagmi@3.1.15
+  - @lightdotso/ui@3.1.20
+  - @lightdotso/stores@0.1.17
+
 ## 0.1.19
 
 ### Patch Changes

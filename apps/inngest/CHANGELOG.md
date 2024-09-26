@@ -1,5 +1,11 @@
 # @lightdotso/inngest
 
+## 0.0.12
+
+### Patch Changes
+
+- [#2401](https://github.com/LightDotSo/LightDotSo/pull/2401) [`33f8e26`](https://github.com/LightDotSo/LightDotSo/commit/33f8e26c75c934fe8d1d6a1b442690d075a44e68) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset
+
 ## 0.0.11
 
 ### Patch Changes
