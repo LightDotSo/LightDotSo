@@ -30,6 +30,9 @@ const nextConfig = {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/docs@${packageJson.version}`,
   },
   reactStrictMode: true,
+  compiler: {
+    removeConsole: process.env.VERCEL_ENV === "production",
+  },
   transpilePackages: ["prettier", "shiki"],
 };
 

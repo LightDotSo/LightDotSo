@@ -22,6 +22,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  compiler: {
+    removeConsole: process.env.VERCEL_ENV === "production",
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
