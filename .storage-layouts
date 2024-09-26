@@ -21,6 +21,27 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
+ ➡ LightVault
+| Name                 | Type                                 | Slot | Offset | Bytes | Contract                                |
+|----------------------|--------------------------------------|------|--------|-------|-----------------------------------------|
+| feesInBps            | uint16                               | 0    | 0      | 2     | contracts/src/LightVault.sol:LightVault |
+| _maxDrawdown         | uint16                               | 0    | 2      | 2     | contracts/src/LightVault.sol:LightVault |
+| _underlyingDecimals  | uint8                                | 0    | 4      | 1     | contracts/src/LightVault.sol:LightVault |
+| _asset               | contract IERC20                      | 0    | 5      | 20    | contracts/src/LightVault.sol:LightVault |
+| vaultIsOpen          | bool                                 | 0    | 25     | 1     | contracts/src/LightVault.sol:LightVault |
+| lastSavedBalance     | uint256                              | 1    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
+| epochId              | uint256                              | 2    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
+| treasury             | address                              | 3    | 0      | 20    | contracts/src/LightVault.sol:LightVault |
+| pendingSilo          | contract Silo                        | 4    | 0      | 20    | contracts/src/LightVault.sol:LightVault |
+| claimableSilo        | contract Silo                        | 5    | 0      | 20    | contracts/src/LightVault.sol:LightVault |
+| epochs               | mapping(uint256 => struct EpochData) | 6    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
+| lastDepositRequestId | mapping(address => uint256)          | 7    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
+| lastRedeemRequestId  | mapping(address => uint256)          | 8    | 0      | 32    | contracts/src/LightVault.sol:LightVault |
+=======================
+ ➡ LightVaultFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightWallet
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
