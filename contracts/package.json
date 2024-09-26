@@ -13,7 +13,14 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
-  "files": ["CHANGELOG.md"],
+  "files": [
+    "abis/**",
+    "bytecodes/**",
+    "circuits/**",
+    "constants/**",
+    "src/**",
+    "test/**"
+  ],
   "scripts": {
     "compile": "cd .. && hardhat compile",
     "lint": "cd .. && pnpm run solhint:lint",

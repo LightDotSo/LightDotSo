@@ -160,6 +160,15 @@ cargo-fmt: cargo-setup ## Fix cargo.
 ##@ Contracts
 contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the contract generation scripts
 
+.PHONY: contracts-abi
+contracts-abi: ## Generate the contract ABIs
+	forge inspect LightDAG abi > contracts/abis/LightDAG/LightDAG.json
+	forge inspect LightPaymaster abi > contracts/abis/LightPaymaster/LightPaymaster.json
+	forge inspect LightTimelockController abi > contracts/abis/LightTimelockController/LightTimelockController.json
+	forge inspect LightTimelockControllerFactory abi > contracts/abis/LightTimelockControllerFactory/LightTimelockControllerFactory.json
+	forge inspect LightWallet abi > contracts/abis/LightWallet/LightWallet.json
+	forge inspect LightWalletFactory abi > contracts/abis/LightWalletFactory/LightWalletFactory.json
+
 .PHONY: contracts-build
 contracts-build: ## Build the contracts
 	./contracts/build.sh LightDAG.sol
