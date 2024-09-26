@@ -10,6 +10,13 @@
 	path = lib/account-abstraction-v0.7
 	url = https://github.com/eth-infinitism/account-abstraction
 	branch = releases/v0.7
+[submodule "lib/asynchronous-vault"]
+	path = lib/asynchronous-vault
+	url = https://github.com/AmphorProtocol/asynchronous-vault
+[submodule "lib/asynchronous-vault-patch"]
+	path = lib/asynchronous-vault-patch
+	url = https://github.com/LightDotSo/asynchronous-vault
+	branch = patch
 [submodule "lib/ds-test"]
 	path = lib/ds-test
 	url = https://github.com/dapphub/ds-test
