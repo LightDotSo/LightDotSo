@@ -60,7 +60,7 @@ dependencies["LightPaymaster.sol"]="core/VerifyingPaymaster.sol"
 dependencies["LightTimelockController.sol"]="interfaces/ILightWallet.sol interfaces/IERC1271.sol"
 dependencies["LightTimelockControllerFactory.sol"]="LightTimelockController.sol interfaces/IERC1271.sol interfaces/ILightWallet.sol"
 dependencies["LightVault.sol"]=""
-dependencies["LightVaultFactory.sol"]="LightVault.soll"
+dependencies["LightVaultFactory.sol"]="LightVault.sol"
 dependencies["LightWallet.sol"]="interfaces/IERC1271.sol interfaces/ILightWallet.sol core/EntryPoint.sol"
 dependencies["LightWalletFactory.sol"]="LightWallet.sol interfaces/IERC1271.sol interfaces/ILightWallet.sol interfaces/ILightWalletFactory.sol"
 
@@ -80,7 +80,7 @@ FOUNDRY_PROFILE=deploy forge build
 
 # Process each Solidity file
 if [ -f "optimized-out/$core_file_to_compile/$filename.json" ]; then
-    cp -fp "optimized-out/$core_file_to_compile/$filename.json" "opt/$filename/$filename.json"
+    cp -fp "optimized-out/$core_file_to_compile/$filename.json" "opt/$core_file_to_compile/$filename.json"
 else
     echo "Warning: Optimized output not found for $filename"
 fi
