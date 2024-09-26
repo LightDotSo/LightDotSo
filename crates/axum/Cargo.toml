@@ -14,7 +14,7 @@
   autometrics = { workspace = true }
   axum = { workspace = true }
   axum-extra = { version = "0.9.3", features = ["typed-header"] }
-  axum-tracing-opentelemetry = "0.19.1"
+  axum-tracing-opentelemetry = "0.21.1"
   clap = { workspace = true }
   eyre = { workspace = true }
   governor = "0.6.3"

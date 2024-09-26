@@ -23,6 +23,9 @@ import packageJson from "./package.json" assert { type: "json" };
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  compiler: {
+    removeConsole: process.env.VERCEL_ENV === "production",
+  },
   basePath:
     process.env.VERCEL_GIT_COMMIT_REF === "changeset-release/main"
       ? "/explorer"

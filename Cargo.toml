@@ -208,7 +208,7 @@
     tower = "0.5.1"
     tower-cookies = "0.10.0"
     tower_governor = "0.4.2"
-    tower-http = { version = "0.5", features = [
+    tower-http = { version = "0.6", features = [
       "trace",
       "auth",
       "request-id",
