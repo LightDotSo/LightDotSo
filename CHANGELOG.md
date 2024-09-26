@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.6](https://github.com/LightDotSo/LightDotSo/compare/v0.2.5...v0.2.6) (2024-09-26)
+
+
+### Features
+
+* ini nav ([#2403](https://github.com/LightDotSo/LightDotSo/issues/2403)) ([a1d59cf](https://github.com/LightDotSo/LightDotSo/commit/a1d59cf63c964affe73dc27008ab3407cc77c549))
+
+
+### Bug Fixes
+
+* ini docs href ([#2398](https://github.com/LightDotSo/LightDotSo/issues/2398)) ([b95eb33](https://github.com/LightDotSo/LightDotSo/commit/b95eb3390744d9e34594d0a03e0882cb32c940ec))
+* ini insane ([#2404](https://github.com/LightDotSo/LightDotSo/issues/2404)) ([6285f7b](https://github.com/LightDotSo/LightDotSo/commit/6285f7b1c04ebe29d1de24747cf4637572c83c07))
+* ini patch docs ([#2400](https://github.com/LightDotSo/LightDotSo/issues/2400)) ([d9f1db0](https://github.com/LightDotSo/LightDotSo/commit/d9f1db084b989ead9b7f6f6489a0c65e42ceec68))
+
 ## [0.2.5](https://github.com/LightDotSo/LightDotSo/compare/v0.2.4...v0.2.5) (2024-09-20)
 
 
