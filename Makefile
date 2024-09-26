@@ -217,6 +217,10 @@ contracts-snapshot-check: ## Runs the snapshot generation script w/ check
 contracts-storage: ## Omits the current storage layout from the current contracts with foundry
 	./contracts/storage.sh
 
+.PHONY: contracts-vscode-remappings
+contracts-vscode-remappings: ## Generate the vscode remappings
+	./scripts/sync_remappings.sh
+
 #@ autometrics
 .PHONY: autometrics
 autometrics: ## Run autometrics
