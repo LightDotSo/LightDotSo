@@ -15,6 +15,8 @@ export default defineConfig({
         "LightPaymaster.sol/**",
         "LightTimelockController.sol/**",
         "LightTimelockControllerFactory.sol/**",
+        "LightVault.sol/**",
+        "LightVaultFactory.sol/**",
         "LightWallet.sol/**",
         "LightWalletFactory.sol/**",
       ],
