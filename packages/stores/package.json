@@ -29,17 +29,17 @@
     "@lightdotso/types": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
-    "@types/lodash": "^4.17.7",
+    "@types/lodash": "^4.17.9",
     "lodash": "^4.17.21",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.10",
+    "viem": "^2.21.15",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.5.5",
-    "@types/react": "^18.3.8",
+    "@types/node": "^22.7.2",
+    "@types/react": "^18.3.9",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.6.2"
   },
