@@ -104,9 +104,10 @@
   "cSpell.autoFormatConfigFile": true,
   // Solidity settings
   "solidity.packageDefaultDependenciesContractsDirectory": "contracts/src",
-  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.packageDefaultDependenciesDirectory": "",
   "solidity.nodemodulespackage": "solc",
   "solidity.defaultCompiler": "localNodeModule",
   "solidity.compileUsingRemoteVersion": "v0.8.27+commit.40a35a09",
-  "solidity.formatter": "forge"
+  "solidity.formatter": "forge",
+  "solidity.monoRepoSupport": true
 }
