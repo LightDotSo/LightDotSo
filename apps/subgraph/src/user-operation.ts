@@ -32,8 +32,6 @@ class UserOperation {
   maxPriorityFeePerGas: BigInt;
   paymasterAndData: Bytes;
   signature: Bytes;
-  // Additional fields for v0.7
-  accountGasLimits: Bytes;
   gasFees: Bytes;
 
   constructor() {
@@ -48,7 +46,6 @@ class UserOperation {
     this.maxPriorityFeePerGas = BigInt.zero();
     this.paymasterAndData = new Bytes(0);
     this.signature = new Bytes(0);
-    this.accountGasLimits = new Bytes(0);
     this.gasFees = new Bytes(0);
   }
 }
@@ -119,8 +116,8 @@ export function handleUserOperationFromCalldata(
 
   // Find the matching UserOperation based on nonce
   let matchingUserOp: ethereum.Tuple | null = null;
-  // biome-ignore lint/style/useForOf: <explanation>
   for (let i = 0; i < userOpArray.length; i++) {
+    // biome-ignore lint/style/useForOf: <explanation>
     // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
     if (userOpArray[i][1].toBigInt() == nonce) {
       matchingUserOp = userOpArray[i];
@@ -159,7 +156,13 @@ export function handleUserOperationFromCalldata(
     userOperation.nonce = matchingUserOp[1].toBigInt();
     userOperation.initCode = matchingUserOp[2].toBytes();
     userOperation.callData = matchingUserOp[3].toBytes();
-    userOperation.accountGasLimits = matchingUserOp[4].toBytes();
+
+    // accountGasLimits is packed version of `callGasLimit` & `verificationGasLimit`
+    const accountGasLimits = matchingUserOp[4].toBytes();
+    const unpackedGasLimits = unpackAccountGasLimits(accountGasLimits);
+    userOperation.callGasLimit = unpackedGasLimits[0];
+    userOperation.verificationGasLimit = unpackedGasLimits[1];
+
     userOperation.preVerificationGas = matchingUserOp[5].toBigInt();
     userOperation.gasFees = matchingUserOp[6].toBytes();
     userOperation.paymasterAndData = matchingUserOp[7].toBytes();
@@ -174,6 +177,34 @@ export function handleUserOperationFromCalldata(
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
+
+function unpackAccountGasLimits(accountGasLimits: Bytes): [BigInt, BigInt] {
+  // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+  if (accountGasLimits.length != 32) {
+    log.warning("accountGasLimits has unexpected length: {}", [
+      accountGasLimits.length.toString(),
+    ]);
+    return [BigInt.zero(), BigInt.zero()];
+  }
+
+  // Unpack callGasLimit (first 16 bytes) and verificationGasLimit (last 16 bytes)
+  const callGasLimitBytes = Bytes.fromUint8Array(accountGasLimits.slice(0, 16));
+  const verificationGasLimitBytes = Bytes.fromUint8Array(
+    accountGasLimits.slice(16, 32),
+  );
+
+  const callGasLimit = BigInt.fromUnsignedBytes(callGasLimitBytes);
+  const verificationGasLimit = BigInt.fromUnsignedBytes(
+    verificationGasLimitBytes,
+  );
+
+  log.debug(
+    "Unpacked gas limits - callGasLimit: {}, verificationGasLimit: {}",
+    [callGasLimit.toString(), verificationGasLimit.toString()],
+  );
+
+  return [callGasLimit, verificationGasLimit];
+}
 
 function logUserOperation(
   userOperation: UserOperation,
@@ -204,13 +235,14 @@ function logUserOperation(
   } else {
     // v0.7 EntryPoint
     log.info(
-      "UserOperation v0.7: sender: {} nonce: {} initCode: {} callData: {} accountGasLimits: {} preVerificationGas: {} gasFees: {} paymasterAndData: {} signature: {}",
+      "UserOperation v0.7: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} gasFees: {} paymasterAndData: {} signature: {}",
       [
         userOperation.sender.toHexString(),
         userOperation.nonce.toString(),
         userOperation.initCode.toHexString(),
         userOperation.callData.toHexString(),
-        userOperation.accountGasLimits.toHexString(),
+        userOperation.callGasLimit.toString(),
+        userOperation.verificationGasLimit.toString(),
         userOperation.preVerificationGas.toString(),
         userOperation.gasFees.toHexString(),
         userOperation.paymasterAndData.toHexString(),
