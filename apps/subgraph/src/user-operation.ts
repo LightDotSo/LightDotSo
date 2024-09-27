@@ -50,6 +50,16 @@ class UserOperation {
   }
 }
 
+class AccountGasLimits {
+  callGasLimit: BigInt;
+  verificationGasLimit: BigInt;
+
+  constructor(callGasLimit: BigInt, verificationGasLimit: BigInt) {
+    this.callGasLimit = callGasLimit;
+    this.verificationGasLimit = verificationGasLimit;
+  }
+}
+
 // -----------------------------------------------------------------------------
 // Handlers
 // -----------------------------------------------------------------------------
@@ -159,9 +169,9 @@ export function handleUserOperationFromCalldata(
 
     // accountGasLimits is packed version of `callGasLimit` & `verificationGasLimit`
     const accountGasLimits = matchingUserOp[4].toBytes();
-    const unpackedGasLimits = unpackAccountGasLimits(accountGasLimits);
-    userOperation.callGasLimit = unpackedGasLimits[0];
-    userOperation.verificationGasLimit = unpackedGasLimits[1];
+    const gasLimits = unpackAccountGasLimits(accountGasLimits);
+    userOperation.callGasLimit = gasLimits.callGasLimit;
+    userOperation.verificationGasLimit = gasLimits.verificationGasLimit;
 
     userOperation.preVerificationGas = matchingUserOp[5].toBigInt();
     userOperation.gasFees = matchingUserOp[6].toBytes();
@@ -178,13 +188,13 @@ export function handleUserOperationFromCalldata(
 // Utils
 // -----------------------------------------------------------------------------
 
-function unpackAccountGasLimits(accountGasLimits: Bytes): [BigInt, BigInt] {
+function unpackAccountGasLimits(accountGasLimits: Bytes): AccountGasLimits {
   // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
   if (accountGasLimits.length != 32) {
-    log.warning("accountGasLimits has unexpected length: {}", [
-      accountGasLimits.length.toString(),
-    ]);
-    return [BigInt.zero(), BigInt.zero()];
+    // Throw an error if the accountGasLimits is not 32 bytes
+    throw new Error(
+      `accountGasLimits has unexpected length: ${accountGasLimits.length}`,
+    );
   }
 
   // Unpack callGasLimit (first 16 bytes) and verificationGasLimit (last 16 bytes)
@@ -203,7 +213,7 @@ function unpackAccountGasLimits(accountGasLimits: Bytes): [BigInt, BigInt] {
     [callGasLimit.toString(), verificationGasLimit.toString()],
   );
 
-  return [callGasLimit, verificationGasLimit];
+  return new AccountGasLimits(callGasLimit, verificationGasLimit);
 }
 
 function logUserOperation(

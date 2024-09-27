@@ -1589,6 +1589,7 @@ templatesettings
 temprary
 tempy
 testrpc
+textlint
 theguild
 thenify
 thirdweb
