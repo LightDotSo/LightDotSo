@@ -14,7 +14,7 @@
 
 // biome-ignore lint/style/useImportType: <explanation>
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { LightWallet as LightWaletInterface } from "../generated/EntryPointv0.6.0/LightWallet";
 import {
   LightWallet,
@@ -51,7 +51,7 @@ export function handleLightWalletDeployedGeneric(
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
   // If it is one of the factories, the index will be greater than -1
   // If it is not one of the factories, the index will be -1
-  if (lightWalletFactories.indexOf(factory) > -1) {
+  if (lightWalletFactories.indexOf(Address.fromBytes(factory)) > -1) {
     // Increment the wallet count
     incrementWalletCount();
 
@@ -71,7 +71,7 @@ export function handleLightWalletDeployedGeneric(
     lightWallet.userOperations = [];
 
     // Get the image hash of the LightWallet
-    const wallet = LightWaletInterface.bind(sender);
+    const wallet = LightWaletInterface.bind(Address.fromBytes(sender));
     const tryImageHash = wallet.try_imageHash();
     lightWallet.imageHash = tryImageHash.reverted
       ? new Bytes(0)
