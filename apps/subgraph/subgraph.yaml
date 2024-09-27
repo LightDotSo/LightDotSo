@@ -43,7 +43,49 @@ dataSources:
         - event: UserOperationRevertReason(indexed bytes32,indexed address,uint256,bytes)
           handler: handleUserOperationRevertReason
           receipt: true
-      file: ./src/entry-point.ts
+      file: ./src/entry-point-v0.6.0.ts
+  - kind: ethereum
+    name: EntryPointv0.7.0
+    network: celo
+    source:
+      abi: EntryPoint
+      address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      startBlock: 21062508
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AccountDeployed
+        - BeforeExecution
+        - Deposited
+        - SignatureAggregatorChanged
+        - StakeLocked
+        - StakeUnlocked
+        - StakeWithdrawn
+        - UserOperationEvent
+        - UserOperationRevertReason
+        - Withdrawn
+        - UserOperation
+        - Counter
+      abis:
+        - name: EntryPoint
+          file: ./abis/EntryPointv0.7.0.json
+        - name: LightWallet
+          file: ./abis/LightWalletv0.2.0.json
+        - name: LightWalletFactory
+          file: ./abis/LightWalletFactoryv0.2.0.json
+      eventHandlers:
+        - event: AccountDeployed(indexed bytes32,indexed address,address,address)
+          handler: handleAccountDeployed
+        - event: UserOperationEvent(indexed bytes32,indexed address,indexed
+            address,uint256,bool,uint256,uint256)
+          handler: handleUserOperationEvent
+          receipt: true
+        - event: UserOperationRevertReason(indexed bytes32,indexed address,uint256,bytes)
+          handler: handleUserOperationRevertReason
+          receipt: true
+      file: ./src/entry-point-v0.7.0.ts
   - kind: ethereum
     name: LightVaultv0.1.0
     network: celo

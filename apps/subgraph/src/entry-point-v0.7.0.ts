@@ -18,11 +18,11 @@ import {
   UserOperationEvent as UserOperationEventEvent,
   UserOperationRevertReason as UserOperationRevertReasonEvent,
   // Withdrawn as WithdrawnEvent,
-} from "../generated/EntryPointv0.6.0/EntryPoint";
+} from "../generated/EntryPointv0.7.0/EntryPoint";
 import {
-  handleLightWalletDeployed,
-  handleLightWalletUserOperationEvent,
-  handleLightWalletUserOperationRevertReason,
+  handleLightWalletDeployedGeneric,
+  handleLightWalletUserOperationEventGeneric,
+  handleLightWalletUserOperationRevertReasonGeneric,
 } from "./light-wallet";
 
 // -----------------------------------------------------------------------------
@@ -31,17 +31,38 @@ import {
 
 export function handleAccountDeployed(event: AccountDeployedEvent): void {
   // Handle if the account is LightWallet
-  handleLightWalletDeployed(event);
+  handleLightWalletDeployedGeneric(
+    event.params.userOpHash,
+    event.params.sender,
+    event.params.factory,
+    event.params.paymaster,
+    event,
+  );
 }
 
 export function handleUserOperationEvent(event: UserOperationEventEvent): void {
   // Handle if the account is LightWallet
-  handleLightWalletUserOperationEvent(event);
+  handleLightWalletUserOperationEventGeneric(
+    event.params.userOpHash,
+    event.params.sender,
+    event.params.paymaster,
+    event.params.nonce,
+    event.params.success,
+    event.params.actualGasCost,
+    event.params.actualGasUsed,
+    event,
+  );
 }
 
 export function handleUserOperationRevertReason(
   event: UserOperationRevertReasonEvent,
 ): void {
   // Handle if the account is LightWallet
-  handleLightWalletUserOperationRevertReason(event);
+  handleLightWalletUserOperationRevertReasonGeneric(
+    event.params.userOpHash,
+    event.params.sender,
+    event.params.nonce,
+    event.params.revertReason,
+    event,
+  );
 }
