@@ -13,3 +13,4 @@
 // limitations under the License.
 
 export { LightRoot } from "./light-root";
+export { LightRootWrapper } from "./light-root-wrapper";

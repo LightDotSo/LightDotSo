@@ -28,6 +28,5 @@ export function debounce<T extends (...args: any[]) => any>(
     clearTimeout(h);
     h = setTimeout(() => cb(...args), wait);
   };
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  return <T>(<any>callable);
+  return callable as unknown as T;
 }

@@ -14,22 +14,11 @@
 
 import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { ThemeProvider } from "@lightdotso/ui/providers/theme";
-import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
 import { RootDevWrapper } from "./root-dev-wrapper";
 import { RootProviderWrapper } from "./root-provider-wrapper";
 import { RootWrapper } from "./root-wrapper";
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 // -----------------------------------------------------------------------------
 // Props
@@ -49,21 +38,37 @@ export const Root: FC<RootProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <html
-      suppressHydrationWarning
-      lang="en"
-      className={`${inter.variable} font-sans`}
-    >
+    <html suppressHydrationWarning lang="en" className="font-sans">
       <body className="min-h-dvh bg-background-body">
-        <ThemeProvider attribute="class">
-          <ReactQueryProvider>
-            <RootProviderWrapper>{children}</RootProviderWrapper>
-          </ReactQueryProvider>
-        </ThemeProvider>
-        <RootWrapper />
-        <RootDevWrapper />
+        <InnerRoot>{children}</InnerRoot>
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface InnerRootProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------------
+
+export const InnerRoot: FC<InnerRootProps> = ({ children }) => {
+  return (
+    <>
+      <ThemeProvider attribute="class">
+        <ReactQueryProvider>
+          <RootProviderWrapper>{children}</RootProviderWrapper>
+        </ReactQueryProvider>
+      </ThemeProvider>
+      <RootWrapper />
+      <RootDevWrapper />
+    </>
   );
 };

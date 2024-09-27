@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "./storybook.css";
+import "tailwindcss/tailwind.css";
 import "@lightdotso/styles/global.css";
 import "reactflow/dist/style.css";
-import { LightRoot } from "@lightdotso/roots/light";
+import { InnerRoot, RootWrapper } from "@lightdotso/roots/root";
+import { Web3Provider } from "@lightdotso/ui/providers/web3";
 import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
@@ -74,10 +75,17 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
 
 export const decorators = [
   (Story) => (
+    // Don't render the `<Root />` component which contains the <body> element
+    // Fix: https://stackoverflow.com/questions/77647641/storybook-7-switching-stories-fails-due-to-missing-storybook-docs-element
+
     <AppRouterContext.Provider value={{} as AppRouterInstance}>
-      <LightRoot>
-        <Story />
-      </LightRoot>
+      <InnerRoot>
+        <Web3Provider>
+          <Story />
+          <RootWrapper />
+          {/* <LightRootWrapper /> */}
+        </Web3Provider>
+      </InnerRoot>
     </AppRouterContext.Provider>
   ),
 ];

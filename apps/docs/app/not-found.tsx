@@ -49,7 +49,7 @@ export default function NotFound() {
   // ---------------------------------------------------------------------------
 
   if (!isRefreshed) {
-    return null;
+    return <div className="h-screen w-full" />;
   }
 
   return (

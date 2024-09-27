@@ -30,6 +30,7 @@ export { MobileAppDrawer } from "./mobile-app-drawer";
 export { Nav } from "./nav";
 export { Loading } from "./loading";
 export { Login } from "./login";
+export { NotFound } from "./not-found";
 export type { ModalProps } from "./modal";
 export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";

@@ -12,7 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { StorybookConfig } from "@storybook/nextjs";
+// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import { dirname, join } from "path";
+// import type { StorybookConfig } from "@storybook/nextjs";
+import type { StorybookConfig } from "@storybook/react-vite";
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
+}
 
 const config: StorybookConfig = {
   stories: [
@@ -29,21 +37,25 @@ const config: StorybookConfig = {
     "../../../packages/ui/src/colors/**/*.@(js|jsx|ts|tsx|mdx)",
   ],
   addons: [
-    "@storybook/addon-viewport",
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-styling",
-    "storybook-dark-mode",
-    "msw-storybook-addon",
+    getAbsolutePath("@storybook/addon-viewport"),
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
+    // getAbsolutePath("@storybook/addon-styling"),
+    getAbsolutePath("storybook-dark-mode"),
+    // getAbsolutePath("msw-storybook-addon"),
   ],
+  // framework: {
+  //   name: "@storybook/nextjs",
+  //   options: {
+  //     builder: {
+  //       useSWC: true,
+  //     },
+  //   },
+  // },
   framework: {
-    name: "@storybook/nextjs",
-    options: {
-      builder: {
-        useSWC: true,
-      },
-    },
+    name: "@storybook/react-vite",
+    options: {},
   },
   docs: {
     autodocs: true,
