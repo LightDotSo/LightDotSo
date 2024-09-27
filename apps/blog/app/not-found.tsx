@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { InnerRoot, Root } from "./root";
-export { RootDevWrapper } from "./root-dev-wrapper";
-export { RootWrapper } from "./root-wrapper";
+import { NotFound as NotFoundTemplate } from "@lightdotso/templates/not-found";
+
+// -----------------------------------------------------------------------------
+// Not Found
+// -----------------------------------------------------------------------------
+
+export default function NotFound() {
+  return <NotFoundTemplate />;
+}

@@ -9,3 +9,4 @@ ignores:
   - react-is
   - "@lightdotso/utils"
   - "@storybook/react"
+  - "geist"

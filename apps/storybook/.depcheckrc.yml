@@ -68,3 +68,6 @@ ignores:
   - "@lightdotso/states"
   - "@types/react"
   - "@lightdotso/ui"
+  - "@vitejs/plugin-react"
+  - "@vitejs/plugin-react-swc"
+  - "@storybook/experimental-nextjs-vite"
