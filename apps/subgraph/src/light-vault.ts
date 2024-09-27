@@ -20,8 +20,12 @@ import type {
 import { LightVault } from "../generated/schema";
 import { incrementVaultCount } from "./counter";
 
+// -----------------------------------------------------------------------------
+// Handlers
+// -----------------------------------------------------------------------------
+
 export function handleDeposit(event: DepositEvent): void {
-  // Get the LightWallet entity
+  // Get the LightVault entity
   const lightVault = LightVault.load(event.address);
 
   // Handle if the vault exists
@@ -32,7 +36,7 @@ export function handleDeposit(event: DepositEvent): void {
 }
 
 export function handleWithdraw(event: WithdrawEvent): void {
-  // Get the LightWallet entity
+  // Get the LightVault entity
   const lightVault = LightVault.load(event.address);
 
   // Handle if the vault exists

@@ -17,6 +17,10 @@
 import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 
+// -----------------------------------------------------------------------------
+// Handlers
+// -----------------------------------------------------------------------------
+
 export function handleUserOperationFromCalldata(
   callData: string,
   nonce: BigInt,

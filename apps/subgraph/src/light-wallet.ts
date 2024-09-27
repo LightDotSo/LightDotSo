@@ -41,6 +41,10 @@ import { handleUserOperationLogs } from "./log";
 import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
 
+// -----------------------------------------------------------------------------
+// Handlers
+// -----------------------------------------------------------------------------
+
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
   // If it is one of the factories, the index will be greater than -1

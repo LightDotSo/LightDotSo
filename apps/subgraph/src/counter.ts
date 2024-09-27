@@ -16,6 +16,10 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Counter } from "../generated/schema";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export function getCounter(): Counter {
   let counter = Counter.load("singleton");
   if (counter == null) {
