@@ -38,13 +38,17 @@ contract LightTimelockControllerFactory {
     // Immutable Storage
     // -------------------------------------------------------------------------
 
+    /// @notice The implementation contract for `LightTimelockController`
     LightTimelockController public immutable timelockImplementation;
 
     // -------------------------------------------------------------------------
     // Errors
     // -------------------------------------------------------------------------
 
+    /// @notice The LightWallet address is zero
     error LightWalletAddressZero();
+
+    /// @notice The LightProtocolController address is zero
     error LightProtocolControllerAddressZero();
 
     // -------------------------------------------------------------------------

@@ -27,6 +27,7 @@ contract LightDAG {
     // Types
     // -------------------------------------------------------------------------
 
+    /// @notice The operation struct
     struct Operation {
         bytes32 hash;
         bytes[] conditionData;
@@ -34,10 +35,34 @@ contract LightDAG {
         bytes32 fallbackOperation;
     }
 
+    /// @notice The root of the operation
     struct OperationRoot {
         bytes32 root;
         Operation[] operations;
     }
+
+    // -------------------------------------------------------------------------
+    // Events
+    // -------------------------------------------------------------------------
+
+    /// @notice Emitted when an operation root is called
+    /// @param root The root of the operation
+    /// @param caller The address that called the operation root
+    event OperationRootCalled(bytes32 indexed root, address indexed caller);
+
+    /// @notice Emitted when an operation is called
+    /// @param operation The operation
+    /// @param caller The address that called the operation
+    /// @param conditionData The condition data for the operation
+    /// @param dependencies The dependencies for the operation
+    /// @param fallbackOperation The fallback operation for the operation
+    event OperationCalled(
+        bytes32 indexed operation,
+        address indexed caller,
+        bytes[] conditionData,
+        bytes32[] dependencies,
+        bytes32 fallbackOperation
+    );
 
     // -------------------------------------------------------------------------
     // Constant
@@ -53,8 +78,22 @@ contract LightDAG {
     // Constant
     // -------------------------------------------------------------------------
 
-    function addOperationRoot(OperationRoot memory operationRoot) public pure {
+    function callOperationRoot(OperationRoot memory operationRoot) public {
         // Check if the operation root is valid
         require(operationRoot.root != bytes32(0), "LightDAG: Operation root is empty");
+
+        // Call the operation root event
+        emit OperationRootCalled(operationRoot.root, msg.sender);
+
+        // Call the operations
+        for (uint256 i = 0; i < operationRoot.operations.length; i++) {
+            emit OperationCalled(
+                operationRoot.operations[i].hash,
+                msg.sender,
+                operationRoot.operations[i].conditionData,
+                operationRoot.operations[i].dependencies,
+                operationRoot.operations[i].fallbackOperation
+            );
+        }
     }
 }
