@@ -14,6 +14,7 @@ Agusx
 Airg
 Alfajores
 Amountsout
+Amphor
 Ankit
 Anyswap
 Appfile
@@ -97,6 +98,7 @@ EVMOS
 Embla
 Errormessage
 Etherspot
+Eventv
 Evmts
 Executoraddress
 FARCASTER
@@ -349,11 +351,13 @@ Utxo
 Uuid
 Uwzh
 VVBN
+Vaultv
 Vitest
 WAAVE
 WAGUMI
 Walelt
 Walet
+Walletv
 Wault
 Withdrawns
 Wpxc
@@ -1585,6 +1589,7 @@ templatesettings
 temprary
 tempy
 testrpc
+textlint
 theguild
 thenify
 thirdweb

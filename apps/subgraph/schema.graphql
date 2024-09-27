@@ -215,5 +215,14 @@ type Counter @entity {
   userOpCount: BigInt!
   userOpRevertCount: BigInt!
   userOpSuccessCount: BigInt!
+  vaultCount: BigInt!
   walletCount: BigInt!
+}
+
+type LightVault @entity {
+  id: Bytes! # address
+  address: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }

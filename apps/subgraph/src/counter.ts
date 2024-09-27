@@ -16,6 +16,10 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Counter } from "../generated/schema";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export function getCounter(): Counter {
   let counter = Counter.load("singleton");
   if (counter == null) {
@@ -47,6 +51,12 @@ export function getWalletCount(): BigInt {
 export function incrementUserOpCount(): void {
   const counter = getCounter();
   counter.userOpCount = counter.userOpCount.plus(BigInt.fromI32(1));
+  counter.save();
+}
+
+export function incrementVaultCount(): void {
+  const counter = getCounter();
+  counter.vaultCount = counter.vaultCount.plus(BigInt.fromI32(1));
   counter.save();
 }
 

@@ -4,9 +4,9 @@ module.exports = {
     // "pnpm run cspell:cmd",
   ],
   "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,css,graphql}": [
-    "pnpm biome:cmd",
+    "pnpm run biome:cmd",
   ],
-  // "*.{md,mdx}": ["pnpm dprint fmt"],
+  "*.mdx": ["pnpm run textlint:cmd"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
     "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",

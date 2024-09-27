@@ -1,0 +1,9 @@
+{
+  "plugins": {
+    "mdx": true
+  },
+  "filters": {},
+  "rules": {
+    "editorconfig": true
+  }
+}

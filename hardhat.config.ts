@@ -1,20 +1,20 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("@nomicfoundation/hardhat-foundry");
-require("@nomiclabs/hardhat-ethers");
-require("solidity-docgen");
-require("vitest-solidity-coverage/hardhat");
+import type { HardhatUserConfig } from "hardhat/config";
+// import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-foundry";
+// import "@nomiclabs/hardhat-ethers";
+import "solidity-docgen";
+// import "vitest-solidity-coverage/hardhat";
 
-const config = {
-  solidity: "0.8.18",
+const config: HardhatUserConfig = {
+  solidity: "0.8.27",
   paths: {
     tests: "contracts/spec",
   },
   docgen: {
-    outputDir: "apps/content/hardhat",
-    exclude: ["proxies", "samples", "utils"],
+    outputDir: "apps/docs/content/contracts",
     pages: "items",
     pageExtension: ".mdx",
   },
 };
 
-module.exports = config;
+export default config;

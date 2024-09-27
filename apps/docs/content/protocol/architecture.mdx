@@ -1,0 +1,13 @@
+---
+title: Architecture
+description: Architecture of the Light Protocol
+---
+
+See the [paper](https://paper.light.so) for more details.
+
+
+### ERC7540 Vaults
+
+Light takes use of [Amphor Protocol](https://amphor.io/)'s ERC7540 vaults to store the assets of the vault across all chains.
+Since the opening of the vault is permissionless, anyone can theoretically create a "solver market" to attract inflow for new chains and earn fees.
+Also, since the repayment of the solvers is done directly by the vault, market forces naturally drive solver filling to chains with the highest inflow, where outflows or origin chain deposits can be netted across multiple chains, leading to a more efficient allocation of the assets.
