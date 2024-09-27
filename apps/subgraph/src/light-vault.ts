@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
+// biome-ignore lint/style/useImportType: <explanation>
+import {
   Deposit as DepositEvent,
   EpochEnd as EpochEndEvent,
   Withdraw as WithdrawEvent,
