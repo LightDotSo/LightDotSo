@@ -46,6 +46,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a user
+///
+/// Gets a user by address or user id.
 #[utoipa::path(
         get,
         path = "/user/get",

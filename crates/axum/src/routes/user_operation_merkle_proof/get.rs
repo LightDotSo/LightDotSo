@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a user operation merkle proof
+///
+/// Gets a user operation merkle proof by id.
 #[utoipa::path(
         get,
         path = "/user_operation_merkle_proof/get",

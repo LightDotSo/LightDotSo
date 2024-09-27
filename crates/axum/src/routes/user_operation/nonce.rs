@@ -56,6 +56,8 @@ pub(crate) struct UserOperationNonce {
 // -----------------------------------------------------------------------------
 
 /// Get a user operation nonce
+///
+/// Gets a user operation nonce by address.
 #[utoipa::path(
         get,
         path = "/user_operation/nonce",

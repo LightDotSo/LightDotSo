@@ -61,7 +61,9 @@ pub(crate) struct ConfigurationOperationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretation actions
+/// List configuration operations
+///
+/// Returns a list of configuration operations with optional filtering.
 #[utoipa::path(
         get,
         path = "/configuration_operation/list",

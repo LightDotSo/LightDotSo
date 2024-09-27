@@ -40,7 +40,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of owners
+/// List owners
+///
+/// Returns a list of owners with optional filtering.
 #[utoipa::path(
         get,
         path = "/owner/list",

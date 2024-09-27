@@ -89,6 +89,8 @@ pub struct SignatureCreateParams {
 // -----------------------------------------------------------------------------
 
 /// Create a signature
+///
+/// Creates a signature with the given parameters.
 #[utoipa::path(
         post,
         path = "/signature/create",

@@ -46,6 +46,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a user operation
+///
+/// Gets a user operation by hash.
 #[utoipa::path(
         get,
         path = "/user_operation/get",

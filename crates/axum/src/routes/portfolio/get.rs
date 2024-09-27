@@ -66,6 +66,8 @@ impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
 // -----------------------------------------------------------------------------
 
 /// Get a portfolio
+///
+/// Gets a portfolio by address.
 #[utoipa::path(
         get,
         path = "/portfolio/get",

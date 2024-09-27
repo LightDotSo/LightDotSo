@@ -63,6 +63,8 @@ pub struct UserSettingsUpdateRequestParams {
 // -----------------------------------------------------------------------------
 
 /// Update the user settings
+///
+/// Updates the user settings for the authenticated user.
 #[utoipa::path(
         put,
         path = "/user/settings/update",

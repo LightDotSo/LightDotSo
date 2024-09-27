@@ -49,6 +49,8 @@ pub(crate) struct NotificationReadParams {
 // -----------------------------------------------------------------------------
 
 /// Read a list of notifications
+///
+/// Reads a list of notifications by id.
 #[utoipa::path(
         post,
         path = "/notification/read",

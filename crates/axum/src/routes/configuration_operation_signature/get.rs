@@ -46,7 +46,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a signature
+/// Get a configuration operation signature
+///
+/// Gets a configuration operation signature by id.
 #[utoipa::path(
         get,
         path = "/configuration_operation_signature/get",

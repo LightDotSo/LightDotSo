@@ -51,7 +51,9 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue interpretation handler
+/// Queue interpretation
+///
+/// Queues an interpretation for processing.
 #[utoipa::path(
         post,
         path = "/queue/interpretation",

@@ -44,6 +44,8 @@ pub(crate) struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a notification
+///
+/// Gets a notification by id.
 #[utoipa::path(
         get,
         path = "/notification/get",

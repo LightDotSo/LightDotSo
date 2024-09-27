@@ -55,7 +55,9 @@ pub(crate) struct NotificationSettingsListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of notification settingss
+/// List notification settingss
+///
+/// Returns a list of notification settingss with optional filtering.
 #[utoipa::path(
         get,
         path = "/notification_settings/list",

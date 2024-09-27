@@ -72,6 +72,8 @@ pub(crate) struct ActivityListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of activities
+///
+/// Gets a list of activities with optional filtering.
 #[utoipa::path(
         get,
         path = "/activity/list",
@@ -138,6 +140,8 @@ pub(crate) async fn v1_activity_list_handler(
 }
 
 /// Returns a count of list of activities
+///
+/// Gets a count of activities with optional filtering.
 #[utoipa::path(
         get,
         path = "/activity/list/count",

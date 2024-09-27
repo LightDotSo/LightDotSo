@@ -44,7 +44,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of signatures
+/// List configuration operation signatures
+///
+/// Returns a list of configuration operation signatures with optional filtering.
 #[utoipa::path(
         get,
         path = "/configuration_operation_signature/list",

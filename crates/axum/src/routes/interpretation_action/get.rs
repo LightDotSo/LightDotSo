@@ -42,7 +42,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a interpretation action
+/// Get an interpretation action
+///
+/// Gets an interpretation action by id.
 #[utoipa::path(
         get,
         path = "/interpretation_action/get",

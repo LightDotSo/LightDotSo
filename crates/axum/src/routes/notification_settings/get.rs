@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a notification settings
+///
+/// Gets a notification settings by id.
 #[utoipa::path(
         get,
         path = "/notification_settings/get",

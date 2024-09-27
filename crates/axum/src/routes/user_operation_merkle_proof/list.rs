@@ -41,6 +41,8 @@ pub struct ListQuery {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of user operation merkle proofs
+///
+/// Returns a list of user operation merkle proofs with optional filtering.
 #[utoipa::path(
         get,
         path = "/user_operation_merkle_proof/list",

@@ -137,6 +137,8 @@ impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
 // -----------------------------------------------------------------------------
 
 /// Create a user operation
+///
+/// Creates a user operation with the given parameters.
 #[utoipa::path(
         post,
         path = "/user_operation/create",
@@ -484,6 +486,8 @@ pub(crate) async fn v1_user_operation_create_handler(
 // -----------------------------------------------------------------------------
 
 /// Create a user operation
+///
+/// Creates a user operation with the given parameters.
 #[utoipa::path(
         post,
         path = "/user_operation/create/batch",

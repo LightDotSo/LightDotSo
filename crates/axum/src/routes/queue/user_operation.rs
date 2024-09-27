@@ -46,7 +46,9 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue user operation handler
+/// Queue user operation
+///
+/// Queues a user operation for processing.
 #[utoipa::path(
         post,
         path = "/queue/user_operation",

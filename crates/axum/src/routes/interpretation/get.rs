@@ -43,7 +43,9 @@ pub(crate) struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a interpretation
+/// Get an interpretation
+///
+/// Gets an interpretation by id.
 #[utoipa::path(
         get,
         path = "/interpretation/get",

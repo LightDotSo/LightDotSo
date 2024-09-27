@@ -41,7 +41,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of protocol groups
+/// Returns a list of user operation merkle trees
+///
+/// Returns a list of user operation merkle trees with optional filtering.
 #[utoipa::path(
         get,
         path = "/user_operation_merkle/list",

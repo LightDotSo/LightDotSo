@@ -72,7 +72,9 @@ pub(crate) struct NotificationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of notifications
+/// List notifications
+///
+/// Returns a list of notifications with optional filtering.
 #[utoipa::path(
         get,
         path = "/notification/list",

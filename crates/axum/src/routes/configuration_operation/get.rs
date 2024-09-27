@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a configuration_operation
+///
+/// Gets a configuration operation by id.
 #[utoipa::path(
         get,
         path = "/configuration_operation/get",

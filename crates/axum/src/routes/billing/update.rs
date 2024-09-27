@@ -69,6 +69,8 @@ pub enum BillingQueryStatus {
 // -----------------------------------------------------------------------------
 
 /// Update a billing
+///
+/// Updates a billing by id.
 #[utoipa::path(
         put,
         path = "/billing/update",

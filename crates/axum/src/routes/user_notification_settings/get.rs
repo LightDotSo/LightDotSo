@@ -53,6 +53,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a user settings
+///
+/// Gets the user settings for the authenticated user.
 #[utoipa::path(
         get,
         path = "/user/notification/settings/get",

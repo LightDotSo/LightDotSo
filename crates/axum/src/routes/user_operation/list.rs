@@ -92,6 +92,8 @@ pub(crate) struct UserOperationListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of user operations
+///
+/// Returns a list of user operations with optional filtering.
 #[utoipa::path(
         get,
         path = "/user_operation/list",
@@ -177,6 +179,8 @@ pub(crate) async fn v1_user_operation_list_handler(
 }
 
 /// Returns a count of user operations
+///
+/// Returns a count of user operations with optional filtering.
 #[utoipa::path(
         get,
         path = "/user_operation/list/count",

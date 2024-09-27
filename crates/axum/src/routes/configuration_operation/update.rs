@@ -57,7 +57,9 @@ pub struct PutQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a configuration signature
+/// Update a configuration operation
+///
+/// Updates a configuration operation by id.
 #[utoipa::path(
         put,
         path = "/configuration_operation/update",

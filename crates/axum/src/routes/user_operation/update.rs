@@ -43,7 +43,9 @@ pub struct PutQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a user operation
+/// Update a user operation
+///
+/// Updates a user operation by address.
 #[utoipa::path(
         put,
         path = "/user_operation/update",

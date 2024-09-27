@@ -24,6 +24,8 @@ use tower_sessions::Session;
 // -----------------------------------------------------------------------------
 
 /// Logout a session
+///
+/// Logs out a session and clears the cookies.
 #[utoipa::path(
         post,
         path = "/auth/logout",

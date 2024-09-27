@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get an invite code
+///
+/// Gets an invite code by code.
 #[utoipa::path(
         get,
         path = "/invite_code/get",

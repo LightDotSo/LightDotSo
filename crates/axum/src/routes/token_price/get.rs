@@ -70,6 +70,8 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
 // -----------------------------------------------------------------------------
 
 /// Get a token_price
+///
+/// Gets a token_price by address and chain id.
 #[utoipa::path(
         get,
         path = "/token_price/get",

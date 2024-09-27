@@ -56,7 +56,9 @@ impl From<String> for AuthNonce {
 // From: https://github.com/valorem-labs-inc/quay/blob/c3bd80f993e4da735c164c0b66f4bee1d23d5486/src/routes/sessions.rs#L12-L45
 // License: MIT
 // Gets a nonce from the session, or generates a new one if it doesn't exist.
-/// Get a auth nonce
+/// Get an auth nonce
+///
+/// Gets a nonce from the session, or generates a new one if it doesn't exist.
 #[utoipa::path(
         get,
         path = "/auth/nonce",
