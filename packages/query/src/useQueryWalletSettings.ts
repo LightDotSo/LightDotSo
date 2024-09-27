@@ -40,40 +40,44 @@ export const useQueryWalletSettings = (params: WalletSettingsParams) => {
     queryKeys.wallet.settings({ address: params.address }).queryKey,
   );
 
-  const { data: walletSettings, failureCount } =
-    useQuery<WalletSettingsData | null>({
-      queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
-      queryFn: async () => {
-        if (!params.address) {
-          return null;
-        }
+  const {
+    data: walletSettings,
+    isLoading: isWalletSettingsLoading,
+    failureCount,
+  } = useQuery<WalletSettingsData | null>({
+    queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
+    queryFn: async () => {
+      if (!params.address) {
+        return null;
+      }
 
-        const res = await getWalletSettings(
-          {
-            params: {
-              query: {
-                address: params.address,
-              },
+      const res = await getWalletSettings(
+        {
+          params: {
+            query: {
+              address: params.address,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        return res.match(
-          (data) => {
-            return data;
-          },
-          (err) => {
-            if (failureCount % 3 !== 2) {
-              throw err;
-            }
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        (data) => {
+          return data;
+        },
+        (err) => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     walletSettings: walletSettings,
+    isWalletSettingsLoading: isWalletSettingsLoading,
   };
 };
