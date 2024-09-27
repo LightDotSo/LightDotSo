@@ -14,8 +14,44 @@
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 // biome-ignore lint/style/useImportType: <explanation>
-import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
-import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
+import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+
+// -----------------------------------------------------------------------------
+// Class
+// -----------------------------------------------------------------------------
+
+class UserOperation {
+  sender: Address;
+  nonce: BigInt;
+  initCode: Bytes;
+  callData: Bytes;
+  callGasLimit: BigInt;
+  verificationGasLimit: BigInt;
+  preVerificationGas: BigInt;
+  maxFeePerGas: BigInt;
+  maxPriorityFeePerGas: BigInt;
+  paymasterAndData: Bytes;
+  signature: Bytes;
+  // Additional fields for v0.7
+  accountGasLimits: Bytes;
+  gasFees: Bytes;
+
+  constructor() {
+    this.sender = Address.zero();
+    this.nonce = BigInt.zero();
+    this.initCode = new Bytes(0);
+    this.callData = new Bytes(0);
+    this.callGasLimit = BigInt.zero();
+    this.verificationGasLimit = BigInt.zero();
+    this.preVerificationGas = BigInt.zero();
+    this.maxFeePerGas = BigInt.zero();
+    this.maxPriorityFeePerGas = BigInt.zero();
+    this.paymasterAndData = new Bytes(0);
+    this.signature = new Bytes(0);
+    this.accountGasLimits = new Bytes(0);
+    this.gasFees = new Bytes(0);
+  }
+}
 
 // -----------------------------------------------------------------------------
 // Handlers
@@ -24,7 +60,8 @@ import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple 
 export function handleUserOperationFromCalldata(
   callData: string,
   nonce: BigInt,
-): UserOperationStructTuple {
+  entrypoint: Address,
+): UserOperation {
   // Decode the user operation from the input
   log.info("callData: {}", [callData.toString()]);
 
@@ -42,50 +79,143 @@ export function handleUserOperationFromCalldata(
     decodedFunctionParameters.toHexString(),
   ]);
 
+  // Determine the EntryPoint version and set the appropriate decode format
+  let decodeFormat: string;
+  if (
+    entrypoint.equals(
+      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
+    )
+  ) {
+    // v0.6 EntryPoint
+    decodeFormat =
+      "(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[]";
+  } else if (
+    entrypoint.equals(
+      Address.fromString("0x0000000071727de22e5e9d8baf0edac6f37da032"),
+    )
+  ) {
+    // v0.7 EntryPoint
+    decodeFormat =
+      "(address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[]";
+  } else {
+    log.error("Unknown EntryPoint address: {}", [entrypoint.toHexString()]);
+    return new UserOperation();
+  }
+
   // Decode the hex function parameters to the user operation params
-  const decoded = ethereum.decode(
-    "(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[]",
-    decodedFunctionParameters,
-  );
+  const decoded = ethereum.decode(decodeFormat, decodedFunctionParameters);
 
-  // Create a new user operation struct tuple
-  let userOperationStructTuple = new UserOperationStructTuple();
+  // Create a new user operation struct
+  const userOperation = new UserOperation();
 
-  // If failed to decode, return null
+  // If failed to decode, return empty UserOperation
   if (decoded == null) {
     log.info("Failed to decode user operation params", []);
-    return userOperationStructTuple;
+    return userOperation;
   }
 
   // Parse the decoded user operation params
-  const userOpStructTupletArray =
-    decoded.toTupleArray<UserOperationStructTuple>();
+  const userOpArray = decoded.toTupleArray<ethereum.Tuple>();
 
-  // Return the decoded user operation params w/ the matching nonce
+  // Find the matching UserOperation based on nonce
+  let matchingUserOp: ethereum.Tuple | null = null;
   // biome-ignore lint/style/useForOf: <explanation>
-  for (let i = 0; i < userOpStructTupletArray.length; i++) {
+  for (let i = 0; i < userOpArray.length; i++) {
     // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
-    if (userOpStructTupletArray[i].nonce == nonce) {
-      userOperationStructTuple = userOpStructTupletArray[i];
+    if (userOpArray[i][1].toBigInt() == nonce) {
+      matchingUserOp = userOpArray[i];
+      break;
     }
   }
 
-  log.info(
-    "userOperationStructTuple: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
-    [
-      userOperationStructTuple.sender.toHexString(),
-      userOperationStructTuple.nonce.toHexString(),
-      userOperationStructTuple.initCode.toHexString(),
-      userOperationStructTuple.callData.toHexString(),
-      userOperationStructTuple.callGasLimit.toString(),
-      userOperationStructTuple.verificationGasLimit.toString(),
-      userOperationStructTuple.preVerificationGas.toString(),
-      userOperationStructTuple.maxFeePerGas.toString(),
-      userOperationStructTuple.maxPriorityFeePerGas.toString(),
-      userOperationStructTuple.paymasterAndData.toHexString(),
-      userOperationStructTuple.signature.toHexString(),
-    ],
-  );
+  if (matchingUserOp === null) {
+    log.info("No matching UserOperation found for nonce: {}", [
+      nonce.toString(),
+    ]);
+    return userOperation;
+  }
 
-  return userOperationStructTuple;
+  // Populate the UserOperation struct based on the EntryPoint version
+  if (
+    entrypoint.equals(
+      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
+    )
+  ) {
+    // v0.6 EntryPoint
+    userOperation.sender = matchingUserOp[0].toAddress();
+    userOperation.nonce = matchingUserOp[1].toBigInt();
+    userOperation.initCode = matchingUserOp[2].toBytes();
+    userOperation.callData = matchingUserOp[3].toBytes();
+    userOperation.callGasLimit = matchingUserOp[4].toBigInt();
+    userOperation.verificationGasLimit = matchingUserOp[5].toBigInt();
+    userOperation.preVerificationGas = matchingUserOp[6].toBigInt();
+    userOperation.maxFeePerGas = matchingUserOp[7].toBigInt();
+    userOperation.maxPriorityFeePerGas = matchingUserOp[8].toBigInt();
+    userOperation.paymasterAndData = matchingUserOp[9].toBytes();
+    userOperation.signature = matchingUserOp[10].toBytes();
+  } else {
+    // v0.7 EntryPoint
+    userOperation.sender = matchingUserOp[0].toAddress();
+    userOperation.nonce = matchingUserOp[1].toBigInt();
+    userOperation.initCode = matchingUserOp[2].toBytes();
+    userOperation.callData = matchingUserOp[3].toBytes();
+    userOperation.accountGasLimits = matchingUserOp[4].toBytes();
+    userOperation.preVerificationGas = matchingUserOp[5].toBigInt();
+    userOperation.gasFees = matchingUserOp[6].toBytes();
+    userOperation.paymasterAndData = matchingUserOp[7].toBytes();
+    userOperation.signature = matchingUserOp[8].toBytes();
+  }
+
+  logUserOperation(userOperation, entrypoint);
+
+  return userOperation;
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+function logUserOperation(
+  userOperation: UserOperation,
+  entrypoint: Address,
+): void {
+  if (
+    entrypoint.equals(
+      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
+    )
+  ) {
+    // v0.6 EntryPoint
+    log.info(
+      "UserOperation v0.6: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
+      [
+        userOperation.sender.toHexString(),
+        userOperation.nonce.toString(),
+        userOperation.initCode.toHexString(),
+        userOperation.callData.toHexString(),
+        userOperation.callGasLimit.toString(),
+        userOperation.verificationGasLimit.toString(),
+        userOperation.preVerificationGas.toString(),
+        userOperation.maxFeePerGas.toString(),
+        userOperation.maxPriorityFeePerGas.toString(),
+        userOperation.paymasterAndData.toHexString(),
+        userOperation.signature.toHexString(),
+      ],
+    );
+  } else {
+    // v0.7 EntryPoint
+    log.info(
+      "UserOperation v0.7: sender: {} nonce: {} initCode: {} callData: {} accountGasLimits: {} preVerificationGas: {} gasFees: {} paymasterAndData: {} signature: {}",
+      [
+        userOperation.sender.toHexString(),
+        userOperation.nonce.toString(),
+        userOperation.initCode.toHexString(),
+        userOperation.callData.toHexString(),
+        userOperation.accountGasLimits.toHexString(),
+        userOperation.preVerificationGas.toString(),
+        userOperation.gasFees.toHexString(),
+        userOperation.paymasterAndData.toHexString(),
+        userOperation.signature.toHexString(),
+      ],
+    );
+  }
 }

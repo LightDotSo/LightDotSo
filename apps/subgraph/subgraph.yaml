@@ -49,7 +49,7 @@ dataSources:
     network: celo
     source:
       abi: EntryPoint
-      address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      address: "0x0000000071727de22e5e9d8baf0edac6f37da032"
       startBlock: 21062508
     mapping:
       kind: ethereum/events

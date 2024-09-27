@@ -126,6 +126,7 @@ export function handleLightWalletUserOperationEventGeneric(
       const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),
         nonce,
+        event.address,
       );
       op.sender = struct.sender;
       op.nonce = struct.nonce;
@@ -228,6 +229,7 @@ export function handleLightWalletUserOperationRevertReasonGeneric(
       const struct = handleUserOperationFromCalldata(
         event.transaction.input.toHexString(),
         nonce,
+        event.address,
       );
       op.sender = struct.sender;
       op.nonce = struct.nonce;
