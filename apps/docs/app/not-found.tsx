@@ -1,8 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { NotFound as NotFoundTemplate } from "@lightdotso/templates/not-found";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+
+// -----------------------------------------------------------------------------
+// Not Found
+// -----------------------------------------------------------------------------
 
 export default function NotFound() {
   // ---------------------------------------------------------------------------
@@ -52,11 +56,5 @@ export default function NotFound() {
     return <div className="h-screen w-full" />;
   }
 
-  return (
-    <div>
-      <h2>Not Found</h2>
-      <p>Could not find requested resource: {pathname}</p>
-      <Link href="/">Return Home</Link>
-    </div>
-  );
+  return <NotFoundTemplate />;
 }

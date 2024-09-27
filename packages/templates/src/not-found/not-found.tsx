@@ -20,6 +20,7 @@ import {
   RssIcon,
 } from "@heroicons/react/24/solid";
 import { INTERNAL_LINKS } from "@lightdotso/const";
+import { LightLogo } from "@lightdotso/svg";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 
@@ -77,19 +78,15 @@ export function NotFound() {
   return (
     <div>
       <main className="mx-auto w-full max-w-7xl px-6 pt-10 pb-16 sm:pb-24 lg:px-8">
-        <img
-          alt="Your Company"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          className="mx-auto h-10 w-auto sm:h-12"
-        />
-        <div className="mx-auto mt-20 max-w-2xl text-center sm:mt-24">
-          <p className="font-semibold text-base text-indigo-600 leading-8">
+        <LightLogo className="mx-auto h-10 w-auto sm:h-12 md:h-16" />
+        <div className="mx-auto mt-6 max-w-2xl text-center md:mt-8">
+          <p className="font-semibold text-base text-text-strong leading-8">
             404
           </p>
-          <h1 className="mt-4 font-bold text-3xl text-gray-900 tracking-tight sm:text-5xl">
+          <h1 className="mt-4 font-bold text-3xl text-text tracking-tight sm:text-5xl">
             This page does not exist
           </h1>
-          <p className="mt-4 text-base text-gray-600 leading-7 sm:mt-6 sm:text-lg sm:leading-8">
+          <p className="mt-4 text-base text-text-weak leading-7 sm:mt-6 sm:text-lg sm:leading-8">
             Sorry, we couldn't find the page you're looking for.
           </p>
         </div>
@@ -99,33 +96,36 @@ export function NotFound() {
             // biome-ignore lint/a11y/noRedundantRoles: <explanation>
             // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="list"
-            className="-mt-6 divide-y divide-gray-900/5 border-gray-900/5 border-b"
+            className="-mt-6 divide-y divide-border-weak border-border-weak border-b"
           >
             {links.map((link, linkIdx) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <li key={linkIdx} className="relative flex gap-x-6 py-6">
-                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg shadow-sm ring-1 ring-gray-900/10">
+              <li
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                key={linkIdx}
+                className="relative flex gap-x-6 rounded-md px-4 py-6 hover:bg-background-stronger"
+              >
+                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg shadow-sm ring-1 ring-border-weak">
                   <link.icon
                     aria-hidden="true"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-text-info"
                   />
                 </div>
                 <div className="flex-auto">
-                  <h3 className="font-semibold text-gray-900 text-sm leading-6">
+                  <h3 className="font-semibold text-sm text-text-weak leading-6">
                     <a href={link.href}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {link.name}
                     </a>
                   </h3>
                   {/* biome-ignore lint/nursery/useSortedClasses: <explanation> */}
-                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                  <p className="mt-2 text-sm leading-6 text-text-weak">
                     {link.description}
                   </p>
                 </div>
                 <div className="flex-none self-center">
                   <ChevronRightIcon
                     aria-hidden="true"
-                    className="h-5 w-5 text-gray-400"
+                    className="h-5 w-5 text-text-weak"
                   />
                 </div>
               </li>
@@ -134,10 +134,9 @@ export function NotFound() {
           <div className="mt-10 flex justify-center">
             <Link
               href="/"
-              className="font-semibold text-indigo-600 text-sm leading-6"
+              className="font-semibold text-sm text-text-info leading-6 hover:text-text-info-weaker"
             >
-              <span aria-hidden="true">&larr;</span>
-              Back to home
+              <span aria-hidden="true">&larr;</span> Back to home
             </Link>
           </div>
         </div>
