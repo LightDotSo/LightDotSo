@@ -57,6 +57,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a wallet notification settings
+///
+/// Gets a wallet notification settings by address.
 #[utoipa::path(
         get,
         path = "/wallet/notification/settings/get",

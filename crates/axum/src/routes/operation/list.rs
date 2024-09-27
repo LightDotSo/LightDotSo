@@ -97,6 +97,9 @@ pub(crate) struct OperationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
+/// List operations
+///
+/// Returns a list of operations with optional filtering.
 #[utoipa::path(
     get,
     path = "/operation/list",
@@ -207,6 +210,9 @@ pub(crate) async fn v1_operation_list_handler(
     Ok(Json::from(operations))
 }
 
+/// Count operations
+///
+/// Counts the number of operations with optional filtering.
 #[utoipa::path(
     get,
     path = "/operation/list/count",

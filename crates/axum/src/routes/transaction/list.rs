@@ -64,6 +64,8 @@ pub(crate) struct TransactionListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of transactions
+///
+/// Returns a list of transactions with optional filtering.
 #[utoipa::path(
         get,
         path = "/transaction/list",
@@ -139,6 +141,8 @@ pub(crate) async fn v1_transaction_list_handler(
 }
 
 /// Returns a count of list of transactions
+///
+/// Returns a count of transactions with optional filtering.
 #[utoipa::path(
         get,
         path = "/transaction/list/count",

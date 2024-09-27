@@ -40,7 +40,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of protocol groups
+/// List protocol groups
+///
+/// Returns a list of protocol groups with optional filtering.
 #[utoipa::path(
         get,
         path = "/protocol/group/list",

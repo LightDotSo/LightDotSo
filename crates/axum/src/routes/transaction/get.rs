@@ -44,6 +44,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a transaction
+///
+/// Gets a transaction by hash.
 #[utoipa::path(
         get,
         path = "/transaction/get",

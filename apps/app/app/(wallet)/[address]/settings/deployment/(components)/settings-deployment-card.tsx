@@ -17,6 +17,8 @@
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
   LATEST_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
@@ -38,6 +40,7 @@ import {
   shortenBytes32,
 } from "@lightdotso/utils";
 import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import Link from "next/link";
 import { type FC, useMemo } from "react";
 import { type Address, type Chain, type Hex, encodeFunctionData } from "viem";
@@ -74,15 +77,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useQueryWallet({
+  const { wallet, isWalletLoading } = useQueryWallet({
     address: address as Address,
   });
 
-  const { walletSettings } = useQueryWalletSettings({
+  const { walletSettings, isWalletSettingsLoading } = useQueryWalletSettings({
     address: address as Address,
   });
 
-  const { userOperations } = useQueryUserOperations({
+  const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address: address as Address,
     status: "history",
     order: "asc",
@@ -110,6 +113,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     chainId: Number(chain.id),
   });
 
+  // Get the bytecode for the light wallet
+  const {
+    data: immutableCreate2FactoryBytecode,
+    isFetching: isImmutableCreate2FactoryBytecodeFetching,
+  } = useBytecode({
+    address: "0xcfA3A7637547094fF06246817a35B8333C315196" as Address,
+    chainId: Number(chain.id),
+  });
+
   // ---------------------------------------------------------------------------
   // Local Variables
   // ---------------------------------------------------------------------------
@@ -120,6 +132,45 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return (
+      isWalletLoading ||
+      isWalletSettingsLoading ||
+      isUserOperationsLoading ||
+      isImmutableCreate2FactoryBytecodeFetching
+    );
+  }, [
+    isWalletLoading,
+    isWalletSettingsLoading,
+    isUserOperationsLoading,
+    isImmutableCreate2FactoryBytecodeFetching,
+  ]);
+
+  const isDeployable = useMemo(() => {
+    if (!wallet) {
+      return false;
+    }
+
+    const factoryAddress = findContractAddressByAddress(
+      wallet.factory_address as Address,
+    );
+    if (!factoryAddress) {
+      return false;
+    }
+    const entryPointAddress = WALLET_FACTORY_ENTRYPOINT_MAPPING[factoryAddress];
+    if (
+      entryPointAddress === CONTRACT_ADDRESSES[ContractAddress.V010_FACTORY] ||
+      entryPointAddress === CONTRACT_ADDRESSES[ContractAddress.V020_FACTORY]
+    ) {
+      return (
+        immutableCreate2FactoryBytecode &&
+        immutableCreate2FactoryBytecode?.length > 0
+      );
+    }
+
+    return true;
+  }, [wallet, immutableCreate2FactoryBytecode]);
 
   const implVersion = useMemo(() => {
     if (!implAddress) {
@@ -199,18 +250,23 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const SettingsDeploymentCardSubmitButton: FC = () => {
     return (
       <Button
+        isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
-        disabled={deployedOp && callData === "0x"}
+        disabled={(deployedOp && callData === "0x") || !isDeployable}
       >
         <Link
           href={`/${address}/create?userOperations=${deployedUserOperation}`}
         >
-          {typeof deployedOp !== "undefined"
-            ? callData === "0x"
-              ? "Already Deployed"
-              : "Upgrade"
-            : "Deploy"}
+          {isLoading
+            ? "Loading..."
+            : typeof deployedOp !== "undefined"
+              ? callData === "0x"
+                ? "Already Deployed"
+                : "Upgrade"
+              : isDeployable
+                ? "Deploy"
+                : "Not Deployable"}
         </Link>
       </Button>
     );

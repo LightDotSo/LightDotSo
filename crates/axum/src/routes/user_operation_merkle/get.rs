@@ -45,7 +45,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a protocol group
+/// Get a user operation merkle tree
+///
+/// Gets a user operation merkle tree by root.
 #[utoipa::path(
         get,
         path = "/user_operation_merkle/get",

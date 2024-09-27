@@ -42,7 +42,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a activity
+/// Get an activity
+///
+/// Gets an activity by id.
 #[utoipa::path(
         get,
         path = "/activity/get",

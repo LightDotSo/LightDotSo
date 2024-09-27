@@ -50,7 +50,9 @@ pub struct AuthVerifyCreateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Verify a auth
+/// Verify an auth
+///
+/// Verifies a signed message and upserts the user.
 #[utoipa::path(
         post,
         path = "/auth/verify",

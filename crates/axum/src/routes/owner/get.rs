@@ -42,6 +42,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a owner
+///
+/// Gets a owner by id.
 #[utoipa::path(
         get,
         path = "/owner/get",

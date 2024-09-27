@@ -110,6 +110,8 @@ pub struct ConfigurationOperationSignatureCreateParams {
 // -----------------------------------------------------------------------------
 
 /// Create a configuration signature
+///
+/// Creates a configuration operation with the given parameters.
 #[utoipa::path(
         post,
         path = "/configuration_operation/create",

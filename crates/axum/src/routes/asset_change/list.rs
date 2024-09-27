@@ -42,6 +42,8 @@ pub struct ListQuery {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of assets
+///
+/// Gets a list of asset changes with optional filtering.
 #[utoipa::path(
         get,
         path = "/asset_change/list",

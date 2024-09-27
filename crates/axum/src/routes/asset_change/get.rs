@@ -42,7 +42,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a asset
+/// Get an asset change
+///
+/// Gets an asset change by id.
 #[utoipa::path(
         get,
         path = "/asset_change/get",

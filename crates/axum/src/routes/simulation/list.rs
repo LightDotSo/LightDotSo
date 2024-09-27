@@ -60,6 +60,8 @@ pub(crate) struct SimulationListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of simulations
+///
+/// Returns a list of simulations with optional filtering.
 #[utoipa::path(
         get,
         path = "/simulation/list",
@@ -122,6 +124,8 @@ pub(crate) async fn v1_simulation_list_handler(
 }
 
 /// Returns a count of list of simulations
+///
+/// Returns a count of simulations with optional filtering.
 #[utoipa::path(
         get,
         path = "/simulation/list/count",

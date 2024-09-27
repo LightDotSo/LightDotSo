@@ -19,7 +19,9 @@ use axum::response::IntoResponse;
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Check if the server is running
+/// Check the server
+///
+/// Checks if the server is running.
 #[utoipa::path(
         get,
         path = "/check",

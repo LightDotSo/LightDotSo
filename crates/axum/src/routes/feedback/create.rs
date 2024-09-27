@@ -42,6 +42,8 @@ pub struct FeedbackCreateRequestParams {
 // -----------------------------------------------------------------------------
 
 /// Create a feedback
+///
+/// Creates a feedback for the application.
 #[utoipa::path(
         post,
         path = "/feedback/create",

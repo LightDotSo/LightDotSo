@@ -64,7 +64,9 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Check a user operation for its validity and return the computed signature if valid
+/// Check a user operation signature
+///
+/// Checks a user operation for its validity and returns the computed signature if valid.
 #[utoipa::path(
         get,
         path = "/user_operation/signature",

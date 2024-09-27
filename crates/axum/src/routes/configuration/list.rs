@@ -42,7 +42,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of configurations
+/// List configurations
+///
+/// Returns a list of configurations with optional filtering.
 #[utoipa::path(
         get,
         path = "/configuration/list",

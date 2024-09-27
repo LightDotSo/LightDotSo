@@ -40,7 +40,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of owners
+/// List configuration operation owners
+///
+/// Returns a list of configuration operation owners with optional filtering.
 #[utoipa::path(
         get,
         path = "/configuration_operation_owner/list",

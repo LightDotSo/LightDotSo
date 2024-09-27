@@ -40,7 +40,9 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of paymasters
+/// List paymasters
+///
+/// Returns a list of paymasters with optional filtering.
 #[utoipa::path(
         get,
         path = "/paymaster/list",

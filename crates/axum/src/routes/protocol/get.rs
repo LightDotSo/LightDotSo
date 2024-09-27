@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a protocol
+///
+/// Gets a protocol by id.
 #[utoipa::path(
         get,
         path = "/protocol/get",

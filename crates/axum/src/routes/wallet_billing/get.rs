@@ -47,6 +47,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a wallet billing
+///
+/// Gets a wallet billing by address.
 #[utoipa::path(
         get,
         path = "/wallet/billing/get",

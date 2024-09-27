@@ -40,7 +40,11 @@ export const useQueryWallet = (params: WalletParams) => {
     queryKeys.wallet.get({ address: params.address }).queryKey,
   );
 
-  const { data: wallet, failureCount } = useQuery<WalletData | null>({
+  const {
+    data: wallet,
+    isLoading: isWalletLoading,
+    failureCount,
+  } = useQuery<WalletData | null>({
     queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {
@@ -74,5 +78,6 @@ export const useQueryWallet = (params: WalletParams) => {
 
   return {
     wallet: wallet,
+    isWalletLoading: isWalletLoading,
   };
 };

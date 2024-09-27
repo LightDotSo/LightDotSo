@@ -73,6 +73,8 @@ pub(crate) struct TokenListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of tokens
+///
+/// Returns a list of tokens with optional filtering.
 #[utoipa::path(
         get,
         path = "/token/list",
@@ -308,6 +310,8 @@ pub(crate) async fn v1_token_list_handler(
 }
 
 /// Returns a count of list of tokens
+///
+/// Returns a count of list of tokens with optional filtering.
 #[utoipa::path(
         get,
         path = "/token/list/count",

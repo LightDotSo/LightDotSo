@@ -46,6 +46,8 @@ pub(crate) struct AuthSession {
 // -----------------------------------------------------------------------------
 
 /// Get a session
+///
+/// Gets the session information.
 #[utoipa::path(
         get,
         path = "/auth/session",

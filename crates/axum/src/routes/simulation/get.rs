@@ -44,6 +44,8 @@ pub(crate) struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a simulation
+///
+/// Gets a simulation by id.
 #[utoipa::path(
         get,
         path = "/simulation/get",

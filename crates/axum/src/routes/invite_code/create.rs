@@ -36,6 +36,8 @@ use tower_sessions_core::Session;
 // -----------------------------------------------------------------------------
 
 /// Create an invite code
+///
+/// Creates an invite code for the application.
 #[utoipa::path(
         post,
         path = "/invite_code/create",

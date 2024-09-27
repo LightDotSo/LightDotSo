@@ -45,6 +45,8 @@ pub struct ListQuery {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of signatures
+///
+/// Returns a list of signatures with optional filtering.
 #[utoipa::path(
         get,
         path = "/signature/list",

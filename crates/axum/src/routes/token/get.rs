@@ -48,6 +48,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a token
+///
+/// Gets a token by address and chain id.
 #[utoipa::path(
         get,
         path = "/token/get",

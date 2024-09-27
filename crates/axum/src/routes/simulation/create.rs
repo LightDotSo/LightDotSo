@@ -83,6 +83,8 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationUserOperationRequest {
 // -----------------------------------------------------------------------------
 
 /// Create a simulation
+///
+/// Creates a simulation with the given parameters.
 #[utoipa::path(
         post,
         path = "/simulation/create",

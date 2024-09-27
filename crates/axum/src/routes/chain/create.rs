@@ -52,6 +52,8 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 /// Create a chain
+///
+/// Creates a chain w/ the given id and name.
 #[utoipa::path(
         post,
         path = "/chain/create",

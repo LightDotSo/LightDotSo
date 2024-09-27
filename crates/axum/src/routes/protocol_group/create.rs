@@ -47,6 +47,8 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 /// Create a protocol group
+///
+/// Creates a protocol group with the given parameters.
 #[utoipa::path(
         post,
         path = "/protocol/group/create",

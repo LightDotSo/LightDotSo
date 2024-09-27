@@ -72,6 +72,8 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
 // -----------------------------------------------------------------------------
 
 /// Update the wallet notification settings
+///
+/// Updates the wallet notification settings for a given wallet address.
 #[utoipa::path(
         put,
         path = "/wallet/notification/settings/update",

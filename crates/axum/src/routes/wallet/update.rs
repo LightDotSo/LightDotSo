@@ -64,6 +64,8 @@ pub struct WalletUpdateRequestParams {
 // -----------------------------------------------------------------------------
 
 /// Update a wallet
+///
+/// Updates a wallet by address.
 #[utoipa::path(
         put,
         path = "/wallet/update",

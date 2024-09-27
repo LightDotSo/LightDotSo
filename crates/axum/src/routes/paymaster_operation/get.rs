@@ -52,6 +52,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a paymaster operation
+///
+/// Gets a paymaster operation by id.
 #[utoipa::path(
         get,
         path = "/paymaster_operation/get",

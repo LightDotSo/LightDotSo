@@ -50,6 +50,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a configuration
+///
+/// Gets a configuration by address, image_hash, or checkpoint.
 #[utoipa::path(
         get,
         path = "/configuration/get",

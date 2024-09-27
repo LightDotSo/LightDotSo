@@ -41,6 +41,8 @@ pub struct ListQuery {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of billings
+///
+/// Gets a list of billings with optional filtering.
 #[utoipa::path(
         get,
         path = "/billing/list",

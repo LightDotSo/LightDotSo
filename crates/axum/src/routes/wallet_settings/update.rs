@@ -60,6 +60,8 @@ pub struct WalletSettingsUpdateRequestParams {
 // -----------------------------------------------------------------------------
 
 /// Update the wallet settings
+///
+/// Updates the wallet settings for a given wallet address.
 #[utoipa::path(
         put,
         path = "/wallet/settings/update",

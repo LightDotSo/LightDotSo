@@ -54,6 +54,8 @@ pub struct SupportRequestCreateRequestParams {
 }
 
 /// Create a support_request
+///
+/// Creates a support_request with the given parameters.
 #[utoipa::path(
         post,
         path = "/support_request/create",

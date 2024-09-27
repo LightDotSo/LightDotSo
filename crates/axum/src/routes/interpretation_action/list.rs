@@ -58,7 +58,9 @@ pub(crate) struct InterpretationActionListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretation actions
+/// List interpretation actions
+///
+/// Returns a list of interpretation actions with optional filtering.
 #[utoipa::path(
         get,
         path = "/interpretation_action/list",
@@ -114,7 +116,9 @@ pub(crate) async fn v1_interpretation_action_list_handler(
     Ok(Json::from(interpretation_actions))
 }
 
-/// Returns a count of list of interpretation actions
+/// Count of list of interpretation actions
+///
+/// Returns a count of list of interpretation actions with optional filtering.
 #[utoipa::path(
         get,
         path = "/interpretation_action/list/count",

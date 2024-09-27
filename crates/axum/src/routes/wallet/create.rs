@@ -104,6 +104,8 @@ pub(crate) struct WalletCreateOwnerParams {
 // -----------------------------------------------------------------------------
 
 /// Create a wallet
+///
+/// Creates a new wallet with the given parameters.
 #[utoipa::path(
         post,
         path = "/wallet/create",

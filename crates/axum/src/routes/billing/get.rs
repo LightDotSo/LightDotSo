@@ -42,6 +42,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a billing
+///
+/// Gets a billing by id.
 #[utoipa::path(
         get,
         path = "/billing/get",

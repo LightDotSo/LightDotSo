@@ -40,6 +40,8 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 /// Create a user operation merkle
+///
+/// Creates a user operation merkle tree with the given root.
 #[utoipa::path(
         post,
         path = "/user_operation_merkle/create",

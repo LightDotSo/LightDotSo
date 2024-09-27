@@ -60,7 +60,9 @@ pub(crate) struct InviteCodeListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of invite codes
+/// List invite codes
+///
+/// Returns a list of invite codes with optional filtering.
 #[utoipa::path(
         get,
         path = "/invite_code/list",

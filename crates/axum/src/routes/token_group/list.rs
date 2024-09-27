@@ -42,6 +42,8 @@ pub struct ListQuery {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of token groups
+///
+/// Returns a list of token groups with optional filtering.
 #[utoipa::path(
         get,
         path = "/token/group/list",

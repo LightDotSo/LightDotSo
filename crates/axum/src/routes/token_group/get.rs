@@ -43,6 +43,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a token group
+///
+/// Gets a token group by id.
 #[utoipa::path(
         get,
         path = "/token/group/get",

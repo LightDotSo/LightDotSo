@@ -46,6 +46,8 @@ pub struct GetQuery {
 // -----------------------------------------------------------------------------
 
 /// Get a signature
+///
+/// Gets a signature by owner id and user operation hash.
 #[utoipa::path(
         get,
         path = "/signature/get",

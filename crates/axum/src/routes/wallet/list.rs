@@ -70,6 +70,8 @@ pub(crate) struct WalletListCount {
 // -----------------------------------------------------------------------------
 
 /// Returns a list of wallets
+///
+/// Gets a list of wallets with optional filtering.
 #[utoipa::path(
         get,
         path = "/wallet/list",
@@ -139,6 +141,8 @@ pub(crate) async fn v1_wallet_list_handler(
 }
 
 /// Returns a count of list of wallets
+///
+/// Gets a count of wallets with optional filtering.
 #[utoipa::path(
         get,
         path = "/wallet/list/count",
