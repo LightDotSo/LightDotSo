@@ -40,9 +40,16 @@ contract LightVaultFactory {
     // Immutable Storage
     // -------------------------------------------------------------------------
 
+    /// @notice The implementation contract for `LightVault`
     LightVault public immutable vaultImplementation;
+
+    /// @notice The fees for the Light Protocol
     uint16 public immutable LIGHT_PROTOCOL_FEES;
+
+    /// @notice The owner of the Light Protocol
     address public immutable LIGHT_PROTOCOL_OWNER;
+
+    /// @notice The treasury of the Light Protocol
     address public immutable LIGHT_PROTOCOL_TREASURY;
 
     // -------------------------------------------------------------------------

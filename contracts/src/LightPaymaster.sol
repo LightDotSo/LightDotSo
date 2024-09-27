@@ -28,7 +28,14 @@ contract LightPaymaster is MagicSpend {
     string public constant NAME = "LightPaymaster";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.3.0";
+    string public constant VERSION = "0.1.0";
+
+    // -------------------------------------------------------------------------
+    // Immutable
+    // -------------------------------------------------------------------------
+
+    /// @notice The minimum delay for the timelock
+    uint256 public immutable MIN_DELAY = 300 seconds;
 
     // -------------------------------------------------------------------------
     // Constructor

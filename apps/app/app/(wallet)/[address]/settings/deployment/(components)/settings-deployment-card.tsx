@@ -118,7 +118,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     data: immutableCreate2FactoryBytecode,
     isFetching: isImmutableCreate2FactoryBytecodeFetching,
   } = useBytecode({
-    address: "0xcfA3A7637547094fF06246817a35B8333C315196" as Address,
+    address:
+      CONTRACT_ADDRESSES[ContractAddress.IMMUTABLE_CREATE2_FACTORY_ADDRESS],
     chainId: Number(chain.id),
   });
 
@@ -135,16 +136,18 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
 
   const isLoading = useMemo(() => {
     return (
-      isWalletLoading ||
-      isWalletSettingsLoading ||
-      isUserOperationsLoading ||
-      isImmutableCreate2FactoryBytecodeFetching
+      (isWalletLoading ||
+        isWalletSettingsLoading ||
+        isUserOperationsLoading ||
+        isImmutableCreate2FactoryBytecodeFetching) &&
+      typeof deployedOp === "undefined"
     );
   }, [
     isWalletLoading,
     isWalletSettingsLoading,
     isUserOperationsLoading,
     isImmutableCreate2FactoryBytecodeFetching,
+    deployedOp,
   ]);
 
   const isDeployable = useMemo(() => {
@@ -152,16 +155,12 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       return false;
     }
 
-    const factoryAddress = findContractAddressByAddress(
-      wallet.factory_address as Address,
-    );
-    if (!factoryAddress) {
-      return false;
-    }
-    const entryPointAddress = WALLET_FACTORY_ENTRYPOINT_MAPPING[factoryAddress];
+    // The v0.1.0 and v0.2.0 factories are the only factories that are deployable through the immutable create2 factory
     if (
-      entryPointAddress === CONTRACT_ADDRESSES[ContractAddress.V010_FACTORY] ||
-      entryPointAddress === CONTRACT_ADDRESSES[ContractAddress.V020_FACTORY]
+      wallet.factory_address ===
+        CONTRACT_ADDRESSES[ContractAddress.V010_FACTORY] ||
+      wallet.factory_address ===
+        CONTRACT_ADDRESSES[ContractAddress.V020_FACTORY]
     ) {
       return (
         immutableCreate2FactoryBytecode &&

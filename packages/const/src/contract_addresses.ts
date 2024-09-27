@@ -20,6 +20,8 @@ export enum ContractAddress {
   V010_IMPLEMENTATION = "v0.1.0 Implementation",
   V020_IMPLEMENTATION = "v0.2.0 Implementation",
   V060_ENTRYPOINT = "v0.6.0 Entrypoint",
+  V070_ENTRYPOINT = "v0.7.0 Entrypoint",
+  IMMUTABLE_CREATE2_FACTORY_ADDRESS = "Immutable Create2 Factory Address",
 }
 
 export const CONTRACT_ADDRESSES: {
@@ -33,6 +35,10 @@ export const CONTRACT_ADDRESSES: {
     "0x040D53C5DDE1762F7cac48d5467E88236d4873d7",
   [ContractAddress.V060_ENTRYPOINT]:
     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+  [ContractAddress.V070_ENTRYPOINT]:
+    "0x0000000071727de22e5e9d8baf0edac6f37da032",
+  [ContractAddress.IMMUTABLE_CREATE2_FACTORY_ADDRESS]:
+    "0x0000000000ffe8b47b3e2130213b802212439497",
 };
 
 // @ts-expect-error
