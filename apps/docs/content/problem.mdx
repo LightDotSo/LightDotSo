@@ -21,3 +21,9 @@ Light Protocol aims to provide a middleware layer that allows users to configure
 - Atomic cross-chain transactions through intents/commitments
 - Secure and accessible user assets through trusted timelock contracts
 - Lower costs benefiting from economics of scale and netted settlement
+
+### Current Intent Based Systems' Limitations
+
+Currently, intent based systems are 1to1, meaning that there can be only one origin and destination chain for a single bridge transaction.
+This not only lacks flexibility and is not scalable in a world with thousands of chains, where complex transactions may span multiple hops, and thus require a new bridge for each pair. Moreover, it becomes impossible for a single entity to verify all of the deposit transactions due to the large number of chains and the computational expense + chain finality differences.
+
