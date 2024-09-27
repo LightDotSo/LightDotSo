@@ -106,7 +106,7 @@ export function NotFound() {
               <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg shadow-sm ring-1 ring-border-weak">
                 <link.icon
                   aria-hidden="true"
-                  className="h-6 w-6 text-text-info"
+                  className="h-6 w-6 text-text-strong"
                 />
               </div>
               <div className="flex-auto">
@@ -133,7 +133,7 @@ export function NotFound() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/"
-            className="font-semibold text-sm text-text-info leading-6 hover:text-text-info-weaker"
+            className="font-semibold text-sm text-text leading-6 hover:text-text-weak hover:underline"
           >
             <span aria-hidden="true">&larr;</span> Back to home
           </Link>
