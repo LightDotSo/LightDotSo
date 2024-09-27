@@ -16,7 +16,8 @@
 // biome-ignore lint/correctness/noNodejsModules: <explanation>
 import { dirname, join } from "path";
 // import type { StorybookConfig } from "@storybook/nextjs";
-import type { StorybookConfig } from "@storybook/react-vite";
+// import type { StorybookConfig } from "@storybook/react-vite";
+import type { StorybookConfig } from "@storybook/experimental-nextjs-vite";
 
 function getAbsolutePath(value) {
   return dirname(require.resolve(join(value, "package.json")));

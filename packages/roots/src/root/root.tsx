@@ -14,6 +14,8 @@
 
 import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { ThemeProvider } from "@lightdotso/ui/providers/theme";
+// import { GeistSans } from "geist/font/sans";
+// import { Inter } from "next/font/google";
 import Script from "next/script";
 import type { FC, ReactNode } from "react";
 import { RootDevWrapper } from "./root-dev-wrapper";
@@ -29,6 +31,16 @@ interface RootProps {
 }
 
 // -----------------------------------------------------------------------------
+// Font
+// -----------------------------------------------------------------------------
+
+// const inter = Inter({
+//   variable: "--font-inter",
+//   subsets: ["latin"],
+//   display: "swap",
+// });
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
@@ -38,7 +50,12 @@ export const Root: FC<RootProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <html suppressHydrationWarning lang="en" className="font-sans">
+    <html
+      suppressHydrationWarning
+      lang="en"
+      // className={`${inter.variable} font-sans`}
+      className="font-sans"
+    >
       <body className="min-h-dvh bg-background-body">
         <InnerRoot>{children}</InnerRoot>
       </body>

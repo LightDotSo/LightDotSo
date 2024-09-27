@@ -1822,6 +1822,9 @@ importers:
       '@tremor/react':
         specifier: ^3.18.3
         version: 3.18.3(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.28(@swc/helpers@0.5.13))(@types/node@22.7.2)(typescript@5.6.2)))
+      next:
+        specifier: 15.0.0-canary.146
+        version: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       react:
         specifier: 19.0.0-rc-7771d3a7-20240827
         version: 19.0.0-rc-7771d3a7-20240827
@@ -1904,9 +1907,12 @@ importers:
       '@storybook/client-api':
         specifier: ^7.6.17
         version: 7.6.17
+      '@storybook/experimental-nextjs-vite':
+        specifier: ^8.3.3
+        version: 8.3.3(@babel/core@7.25.2)(@storybook/test@8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5))
       '@storybook/nextjs':
         specifier: ^8.3.3
-        version: 8.3.3(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)(next@15.0.0-rc.0(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.26.1)(typescript@5.6.2)(webpack-hot-middleware@2.26.1)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))
+        version: 8.3.3(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.26.1)(typescript@5.6.2)(webpack-hot-middleware@2.26.1)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))
       '@storybook/preview-api':
         specifier: ^8.3.3
         version: 8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))
@@ -1952,9 +1958,6 @@ importers:
       postcss:
         specifier: ^8.4.41
         version: 8.4.41
-      postcss-loader:
-        specifier: ^8.1.1
-        version: 8.1.1(postcss@8.4.41)(typescript@5.6.2)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))
       shadcn-ui:
         specifier: ^0.9.1
         version: 0.9.1(typescript@5.6.2)
@@ -3220,6 +3223,9 @@ importers:
       framer-motion:
         specifier: ^11.8.0
         version: 11.8.0(@emotion/is-prop-valid@1.3.0)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+      geist:
+        specifier: ^1.3.1
+        version: 1.3.1(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))
       next:
         specifier: 15.0.0-canary.146
         version: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
@@ -7576,6 +7582,9 @@ packages:
   '@next/bundle-analyzer@15.0.0-canary.146':
     resolution: {integrity: sha512-BID1uscLGHhPQyTurtd+cth3Ra5tcGTgZqhk9E3EIRse5eWEceciyyGmZ01PvWpLCdao7xgHyeBXz3sjTYysyQ==}
 
+  '@next/env@14.2.13':
+    resolution: {integrity: sha512-s3lh6K8cbW1h5Nga7NNeXrbe0+2jIIYK9YaA9T7IufDWnZpozdFUp6Hf0d5rNWUKu4fEuSX2rCKlGjCrtylfDw==}
+
   '@next/env@15.0.0-canary.146':
     resolution: {integrity: sha512-C8F8PibNFcO/YsFVN9KI5Gn+2Cq4+zzu/erILyNBXHdyLJ1qnvbF1rQmodgCps/FrKhwfQRBS5WnVUuavbZPhA==}
 
@@ -10811,6 +10820,21 @@ packages:
   '@storybook/csf@0.1.11':
     resolution: {integrity: sha512-dHYFQH3mA+EtnCkHXzicbLgsvzYjcDJ1JWsogbItZogkPHgSJM/Wr71uMkcvw8v9mmCyP4NpXJuu6bPoVsOnzg==}
 
+  '@storybook/experimental-nextjs-vite@8.3.3':
+    resolution: {integrity: sha512-gSHAmUyabuh7srLBHrW8Tfy6FWduOtUbTaN+fL/18PihRhuGMuj7TdfuWU1d+PeERCZ3CLv26vr11bTthdAlzQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@storybook/test': 8.3.3
+      next: 15.0.0-canary.146
+      react: 19.0.0-rc-7771d3a7-20240827
+      react-dom: 19.0.0-rc-7771d3a7-20240827
+      storybook: ^8.3.3
+      typescript: '*'
+      vite: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   '@storybook/global@5.0.0':
     resolution: {integrity: sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==}
 
@@ -11039,9 +11063,6 @@ packages:
 
   '@swc/helpers@0.5.11':
     resolution: {integrity: sha512-YNlnKRWF2sVojTpIyzwou9XoTNbzbzONwRhOoniEioF1AtaitTvVZblaQRrAzChWQ1bLYyYSWzM18y4WwgzJ+A==}
-
-  '@swc/helpers@0.5.12':
-    resolution: {integrity: sha512-KMZNXiGibsW9kvZAO1Pam2JPTDBm+KSHMMHWdsyI/1DbIZjT2A6Gy3hblVXUMEDvUAKq+e0vL0X0o54owWji7g==}
 
   '@swc/helpers@0.5.13':
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
@@ -18851,6 +18872,9 @@ packages:
   modern-ahocorasick@1.0.1:
     resolution: {integrity: sha512-yoe+JbhTClckZ67b2itRtistFKf8yPYelHLc7e5xAwtNAXxM6wJTUx2C7QeVSJFDzKT7bCIFyBVybPMKvmB9AA==}
 
+  module-alias@2.2.3:
+    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
+
   module-details-from-path@1.0.3:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
 
@@ -23362,6 +23386,14 @@ packages:
 
   vite-plugin-env-compatible@2.0.1:
     resolution: {integrity: sha512-DRrOZTg/W44ojVQQfGSMPEgYQGzp5TeIpt9cpaK35hTOC/b2D7Ffl8/RIgK8vQ0mlnDIUgETcA173bnMEkyzdw==}
+
+  vite-plugin-storybook-nextjs@1.0.11:
+    resolution: {integrity: sha512-iyKiakLufUUDjUYSNtt5CusL24Y78+1A0dTH4ElvN0MwYiDSGOBpDAD5B921v/wb5FMVSHTI2Fc+jNnL9pupOw==}
+    peerDependencies:
+      '@storybook/test': ^8.3.0-alpha.3
+      next: 15.0.0-canary.146
+      storybook: ^8.3.0-alpha.3
+      vite: ^5.0.0
 
   vite-tsconfig-paths@4.3.2:
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
@@ -28037,6 +28069,8 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@next/env@14.2.13': {}
+
   '@next/env@15.0.0-canary.146': {}
 
   '@next/env@15.0.0-rc.0': {}
@@ -30409,7 +30443,7 @@ snapshots:
       '@react-aria/interactions': 3.22.1(react@19.0.0-rc-7771d3a7-20240827)
       '@react-aria/utils': 3.25.1(react@19.0.0-rc-7771d3a7-20240827)
       '@react-types/shared': 3.24.1(react@19.0.0-rc-7771d3a7-20240827)
-      '@swc/helpers': 0.5.12
+      '@swc/helpers': 0.5.13
       clsx: 2.1.1
       react: 19.0.0-rc-7771d3a7-20240827
 
@@ -30482,7 +30516,7 @@ snapshots:
       '@react-aria/ssr': 3.9.5(react@19.0.0-rc-7771d3a7-20240827)
       '@react-aria/utils': 3.25.1(react@19.0.0-rc-7771d3a7-20240827)
       '@react-types/shared': 3.24.1(react@19.0.0-rc-7771d3a7-20240827)
-      '@swc/helpers': 0.5.12
+      '@swc/helpers': 0.5.13
       react: 19.0.0-rc-7771d3a7-20240827
 
   '@react-aria/interactions@3.22.2(react@19.0.0-rc-7771d3a7-20240827)':
@@ -30681,7 +30715,7 @@ snapshots:
 
   '@react-aria/ssr@3.9.5(react@19.0.0-rc-7771d3a7-20240827)':
     dependencies:
-      '@swc/helpers': 0.5.12
+      '@swc/helpers': 0.5.13
       react: 19.0.0-rc-7771d3a7-20240827
 
   '@react-aria/switch@3.6.7(react@19.0.0-rc-7771d3a7-20240827)':
@@ -30793,7 +30827,7 @@ snapshots:
       '@react-aria/ssr': 3.9.5(react@19.0.0-rc-7771d3a7-20240827)
       '@react-stately/utils': 3.10.3(react@19.0.0-rc-7771d3a7-20240827)
       '@react-types/shared': 3.24.1(react@19.0.0-rc-7771d3a7-20240827)
-      '@swc/helpers': 0.5.12
+      '@swc/helpers': 0.5.13
       clsx: 2.1.1
       react: 19.0.0-rc-7771d3a7-20240827
 
@@ -32639,6 +32673,28 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
+  '@storybook/experimental-nextjs-vite@8.3.3(@babel/core@7.25.2)(@storybook/test@8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5))':
+    dependencies:
+      '@storybook/builder-vite': 8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5))
+      '@storybook/react': 8.3.3(@storybook/test@8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(typescript@5.6.2)
+      '@storybook/test': 8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      next: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+      react: 19.0.0-rc-7771d3a7-20240827
+      react-dom: 19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827)
+      storybook: 8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      styled-jsx: 5.1.6(@babel/core@7.25.2)(react@19.0.0-rc-7771d3a7-20240827)
+      vite: 5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5)
+      vite-plugin-storybook-nextjs: 1.0.11(@storybook/test@8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5))
+    optionalDependencies:
+      sharp: 0.33.5
+      typescript: 5.6.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@preact/preset-vite'
+      - babel-plugin-macros
+      - supports-color
+      - vite-plugin-glimmerx
+
   '@storybook/global@5.0.0': {}
 
   '@storybook/icons@1.2.10(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)':
@@ -32701,7 +32757,7 @@ snapshots:
     dependencies:
       storybook: 8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
-  '@storybook/nextjs@8.3.3(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)(next@15.0.0-rc.0(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.26.1)(typescript@5.6.2)(webpack-hot-middleware@2.26.1)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))':
+  '@storybook/nextjs@8.3.3(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(type-fest@4.26.1)(typescript@5.6.2)(webpack-hot-middleware@2.26.1)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.25.2)
@@ -32729,7 +32785,7 @@ snapshots:
       fs-extra: 11.2.0
       image-size: 1.1.1
       loader-utils: 3.3.1
-      next: 15.0.0-rc.0(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+      next: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1))
       pnp-webpack-plugin: 1.7.0(typescript@5.6.2)
       postcss: 8.4.44
@@ -33039,10 +33095,6 @@ snapshots:
   '@swc/counter@0.1.3': {}
 
   '@swc/helpers@0.5.11':
-    dependencies:
-      tslib: 2.7.0
-
-  '@swc/helpers@0.5.12':
     dependencies:
       tslib: 2.7.0
 
@@ -43692,6 +43744,8 @@ snapshots:
 
   modern-ahocorasick@1.0.1: {}
 
+  module-alias@2.2.3: {}
+
   module-details-from-path@1.0.3: {}
 
   moo@0.5.2: {}
@@ -43976,7 +44030,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@15.0.0-rc.0(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827):
+  next@15.0.0-rc.0(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827):
     dependencies:
       '@next/env': 15.0.0-rc.0
       '@swc/helpers': 0.5.11
@@ -43986,7 +44040,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.0.0-rc-7771d3a7-20240827
       react-dom: 19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827)
-      styled-jsx: 5.1.3(@babel/core@7.25.2)(react@19.0.0-rc-7771d3a7-20240827)
+      styled-jsx: 5.1.3(react@19.0.0-rc-7771d3a7-20240827)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.0.0-rc.0
       '@next/swc-darwin-x64': 15.0.0-rc.0
@@ -44345,7 +44399,7 @@ snapshots:
   nuqs@1.19.3(next@15.0.0-rc.0(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)):
     dependencies:
       mitt: 3.0.1
-      next: 15.0.0-rc.0(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+      next: 15.0.0-rc.0(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
 
   ob1@0.80.10:
     dependencies:
@@ -45161,17 +45215,6 @@ snapshots:
       jiti: 1.21.6
       postcss: 8.4.41
       semver: 7.6.3
-      webpack: 5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)
-    transitivePeerDependencies:
-      - typescript
-
-  postcss-loader@8.1.1(postcss@8.4.41)(typescript@5.6.2)(webpack@5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)):
-    dependencies:
-      cosmiconfig: 9.0.0(typescript@5.6.2)
-      jiti: 1.21.6
-      postcss: 8.4.41
-      semver: 7.6.3
-    optionalDependencies:
       webpack: 5.93.0(@swc/core@1.7.28(@swc/helpers@0.5.13))(esbuild@0.23.1)
     transitivePeerDependencies:
       - typescript
@@ -47667,12 +47710,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
 
-  styled-jsx@5.1.3(@babel/core@7.25.2)(react@19.0.0-rc-7771d3a7-20240827):
+  styled-jsx@5.1.3(react@19.0.0-rc-7771d3a7-20240827):
     dependencies:
       client-only: 0.0.1
       react: 19.0.0-rc-7771d3a7-20240827
-    optionalDependencies:
-      '@babel/core': 7.25.2
 
   styled-jsx@5.1.6(@babel/core@7.25.2)(react@19.0.0-rc-7771d3a7-20240827):
     dependencies:
@@ -49008,6 +49049,20 @@ snapshots:
     dependencies:
       dotenv: 8.2.0
       dotenv-expand: 5.1.0
+
+  vite-plugin-storybook-nextjs@1.0.11(@storybook/test@8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(next@15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827))(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5)):
+    dependencies:
+      '@next/env': 14.2.13
+      '@storybook/test': 8.3.3(storybook@8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      image-size: 1.1.1
+      magic-string: 0.30.11
+      module-alias: 2.2.3
+      next: 15.0.0-canary.146(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-7771d3a7-20240827(react@19.0.0-rc-7771d3a7-20240827))(react@19.0.0-rc-7771d3a7-20240827)
+      storybook: 8.3.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ts-dedent: 2.2.0
+      vite: 5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5)
+    optionalDependencies:
+      sharp: 0.33.5
 
   vite-tsconfig-paths@4.3.2(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2)(less@4.2.0)(terser@5.31.5)):
     dependencies:
