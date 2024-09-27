@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "clean"],
+      "dependsOn": ["^build"],
       "inputs": [],
       "outputs": ["chrome.zip"]
     },
