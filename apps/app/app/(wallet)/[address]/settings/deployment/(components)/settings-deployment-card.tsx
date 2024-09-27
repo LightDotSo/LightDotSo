@@ -135,9 +135,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
 
   const isLoading = useMemo(() => {
     return (
-      isWalletLoading || isWalletSettingsLoading || isUserOperationsLoading
+      isWalletLoading ||
+      isWalletSettingsLoading ||
+      isUserOperationsLoading ||
+      isImmutableCreate2FactoryBytecodeFetching
     );
-  }, [isWalletLoading, isWalletSettingsLoading, isUserOperationsLoading]);
+  }, [
+    isWalletLoading,
+    isWalletSettingsLoading,
+    isUserOperationsLoading,
+    isImmutableCreate2FactoryBytecodeFetching,
+  ]);
 
   const isDeployable = useMemo(() => {
     if (!wallet) {
