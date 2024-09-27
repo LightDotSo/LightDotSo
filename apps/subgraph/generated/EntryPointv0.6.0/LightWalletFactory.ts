@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class LightWalletFactory extends ethereum.SmartContract {
@@ -49,7 +49,7 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.call(
       "accountImplementation",
       "accountImplementation():(address)",
-      []
+      [],
     );
 
     return result[0].toAddress();
@@ -59,7 +59,7 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "accountImplementation",
       "accountImplementation():(address)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -72,7 +72,10 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.call(
       "createAccount",
       "createAccount(bytes32,bytes32):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromFixedBytes(salt)]
+      [
+        ethereum.Value.fromFixedBytes(hash),
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
 
     return result[0].toAddress();
@@ -82,7 +85,10 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "createAccount",
       "createAccount(bytes32,bytes32):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromFixedBytes(salt)]
+      [
+        ethereum.Value.fromFixedBytes(hash),
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -95,7 +101,10 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.call(
       "getAddress",
       "getAddress(bytes32,bytes32):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromFixedBytes(salt)]
+      [
+        ethereum.Value.fromFixedBytes(hash),
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
 
     return result[0].toAddress();
@@ -105,7 +114,10 @@ export class LightWalletFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "getAddress",
       "getAddress(bytes32,bytes32):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromFixedBytes(salt)]
+      [
+        ethereum.Value.fromFixedBytes(hash),
+        ethereum.Value.fromFixedBytes(salt),
+      ],
     );
     if (result.reverted) {
       return new ethereum.CallResult();

@@ -50,6 +50,12 @@ export function incrementUserOpCount(): void {
   counter.save();
 }
 
+export function incrementVaultCount(): void {
+  const counter = getCounter();
+  counter.vaultCount = counter.vaultCount.plus(BigInt.fromI32(1));
+  counter.save();
+}
+
 export function incrementUserOpRevertCount(): void {
   const counter = getCounter();
   counter.userOpRevertCount = counter.userOpRevertCount.plus(BigInt.fromI32(1));

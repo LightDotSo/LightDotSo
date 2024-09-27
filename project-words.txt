@@ -349,11 +349,13 @@ Utxo
 Uuid
 Uwzh
 VVBN
+Vaultv
 Vitest
 WAAVE
 WAGUMI
 Walelt
 Walet
+Walletv
 Wault
 Withdrawns
 Wpxc

@@ -28,11 +28,11 @@ dataSources:
         - Counter
       abis:
         - name: EntryPoint
-          file: ./abis/EntryPoint.json
+          file: ./abis/EntryPointv0.6.0.json
         - name: LightWallet
-          file: ./abis/LightWallet.json
+          file: ./abis/LightWalletv0.2.0.json
         - name: LightWalletFactory
-          file: ./abis/LightWalletFactory.json
+          file: ./abis/LightWalletFactoryv0.2.0.json
       eventHandlers:
         - event: AccountDeployed(indexed bytes32,indexed address,address,address)
           handler: handleAccountDeployed
@@ -44,3 +44,29 @@ dataSources:
           handler: handleUserOperationRevertReason
           receipt: true
       file: ./src/entry-point.ts
+  - kind: ethereum
+    name: LightVaultv0.1.0
+    network: celo
+    source:
+      abi: LightVault
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+      abis:
+        - name: IERC20
+          file: ./abis/IERC20.json
+        - name: LightVault
+          file: ./abis/LightVaultv0.1.0.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleWithdraw
+        - event: EpochEnd(indexed uint256,uint256,uint256,uint256,uint256)
+          handler: handleEpochEnd
+      file: ./src/light-vault.ts
