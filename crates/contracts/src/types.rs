@@ -24,6 +24,10 @@ use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
+
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/primitives/src/user_operation.rs#L32
 // License: MIT
 

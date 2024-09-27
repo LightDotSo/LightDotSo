@@ -17,6 +17,10 @@ use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTr
 use eyre::Result;
 use EntryPoint::EntryPointInstance;
 
+// -----------------------------------------------------------------------------
+// Contract
+// -----------------------------------------------------------------------------
+
 sol!(
     #[sol(rpc)]
     EntryPoint,

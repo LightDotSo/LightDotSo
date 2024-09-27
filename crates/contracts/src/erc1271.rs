@@ -17,6 +17,10 @@ use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTr
 use eyre::Result;
 use ERC1271::ERC1271Instance;
 
+// -----------------------------------------------------------------------------
+// Contract
+// -----------------------------------------------------------------------------
+
 sol!(
     #[sol(rpc)]
     ERC1271,

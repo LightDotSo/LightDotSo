@@ -34,6 +34,10 @@ use alloy::{
     sol_types::{ContractError, SolError},
 };
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 /// Gets the revert data from a contract error if it is a revert error,
 /// otherwise returns the original error.
 /// From: https://github.com/alchemyplatform/rundler/blob/ae615d0faa97b61a7e0a3d0a21793f383560ae35/crates/utils/src/eth.rs#L31-37

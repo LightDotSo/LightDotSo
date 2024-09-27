@@ -26,7 +26,7 @@ import type { ReactNode } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const transactionsNavItems = [

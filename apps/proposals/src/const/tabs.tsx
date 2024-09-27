@@ -25,7 +25,7 @@ import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 export const PROPOSAL_TABS: Tab[] = [

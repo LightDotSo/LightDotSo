@@ -75,7 +75,7 @@ export interface FeatureCardProps {
 }
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const COLLABORATION_FEATURE_LIST: FeatureList = {

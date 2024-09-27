@@ -22,7 +22,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const navSidebarItems = [

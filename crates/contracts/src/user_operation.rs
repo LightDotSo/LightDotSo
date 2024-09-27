@@ -50,6 +50,10 @@ use core::fmt::Debug;
 use eyre::{eyre, Result};
 use std::str::FromStr;
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 /// A trait for types (events) that can be decoded from a `RawLog`
 pub trait EthLogDecode: Send + Sync {
     /// decode from a `RawLog`

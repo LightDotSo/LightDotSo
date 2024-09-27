@@ -30,6 +30,10 @@ use alloy::rpc::types::trace::geth::GethTrace;
 use eyre::format_err;
 use serde::Deserialize;
 
+// -----------------------------------------------------------------------------
+// Tracer
+// -----------------------------------------------------------------------------
+
 // From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L5-L8
 // License: Apache-2.0
 

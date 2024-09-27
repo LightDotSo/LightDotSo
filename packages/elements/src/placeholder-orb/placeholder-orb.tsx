@@ -18,7 +18,7 @@ import type { FC, InsHTMLAttributes } from "react";
 import s from "./placeholder-orb.module.css";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const colors = [

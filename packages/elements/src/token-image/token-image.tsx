@@ -23,7 +23,7 @@ import { type FC, memo, useEffect, useMemo, useState } from "react";
 import { NextImage } from "../next-image/next-image";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 export const parseTokenAddress = (token: TokenData) => {

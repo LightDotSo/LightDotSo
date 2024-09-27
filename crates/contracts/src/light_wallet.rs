@@ -17,6 +17,10 @@ use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTr
 use eyre::Result;
 use LightWallet::LightWalletInstance;
 
+// -----------------------------------------------------------------------------
+// Contract
+// -----------------------------------------------------------------------------
+
 sol!(
     #[sol(rpc)]
     LightWallet,
