@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
@@ -21,5 +23,5 @@ export default function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <div />;
+  return null;
 }
