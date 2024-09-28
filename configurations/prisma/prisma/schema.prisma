@@ -1663,6 +1663,12 @@ model Timelock {
   // ---------------------------------------------------------------------------
 
   operations TimelockOperation[]
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
 }
 
 model TimelockOperation {
@@ -1689,6 +1695,12 @@ model TimelockOperation {
   // ---------------------------------------------------------------------------
 
   calls TimelockCall[]
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
 
   // ---------------------------------------------------------------------------
   // None-to-one
@@ -2605,6 +2617,9 @@ model Activity {
   wallet        Wallet? @relation(fields: [walletAddress], references: [address], onDelete: NoAction, onUpdate: NoAction)
   walletAddress String?
 
+  timelock        Timelock? @relation(fields: [timelockAddress], references: [address], onDelete: NoAction, onUpdate: NoAction)
+  timelockAddress String?
+
   // ---------------------------------------------------------------------------
   // Mutable Relations None-to-many
   // ---------------------------------------------------------------------------
@@ -2623,6 +2638,9 @@ model Activity {
 
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   supportRequestId String?
+
+  timelockOperation   TimelockOperation? @relation(fields: [timelockOperationId], references: [id])
+  timelockOperationId String?
 
   userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userSettingsId String?
@@ -2663,11 +2681,13 @@ model Activity {
   // Relations
   @@index([userId])
   @@index([walletAddress])
+  @@index([timelockAddress])
   @@index([billingId])
   @@index([billingOperationId])
   @@index([configurationOperationId])
   @@index([inviteCodeId])
   @@index([supportRequestId])
+  @@index([timelockOperationId])
   @@index([userSettingsId])
   @@index([userNotificationSettingsId])
   @@index([walletBillingId])
@@ -2723,6 +2743,10 @@ enum ActivityEntity {
   CONFIGURATION_OPERATION
   // Immutable
   CONFIGURATION_OPERATION_SIGNATURE
+  // Core
+  TIMELOCk
+  // Immutable
+  TIMELOCK_OPERATION
 }
 
 enum ActivityOperation {
