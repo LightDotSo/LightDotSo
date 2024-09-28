@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OriginalDefault from "@/app/(wallet)/@op/default";
+import OriginalPage from "@/app/(wallet)/[address]/overview/@nav/[...catchAll]/page";
 
 // -----------------------------------------------------------------------------
-// Original Default
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default OriginalDefault;
+export default OriginalPage;

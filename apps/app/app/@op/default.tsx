@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import OriginalDefault from "@/app/(wallet)/@send/default";
+
 // -----------------------------------------------------------------------------
-// Default
+// Original Default
 // -----------------------------------------------------------------------------
 
-export default function Default() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return null;
-}
+export default OriginalDefault;
