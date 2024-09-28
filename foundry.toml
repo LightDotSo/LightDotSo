@@ -13,7 +13,7 @@
   # ignored_error_codes = ["license", "code-size"]
 
 [profile.check]
-  verbosity = 2
+  verbosity = 0
 
 [profile.deploy]
   optimizer_runs = 4_294_967_295
