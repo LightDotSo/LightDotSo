@@ -32,19 +32,25 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Promise<{ slug: string[] }>;
+};
+
+// -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] };
-}): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.posts.read(params.slug.join("/"));
+  const proposal = await reader.collections.posts.read(
+    (await props.params).slug.join("/"),
+  );
   if (!proposal) {
     return notFound();
   }
@@ -80,14 +86,17 @@ export async function generateStaticParams() {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const proposal = await reader.collections.posts.read(params.slug.join("/"), {
-    resolveLinkedFiles: true,
-  });
+  const proposal = await reader.collections.posts.read(
+    (await params).slug.join("/"),
+    {
+      resolveLinkedFiles: true,
+    },
+  );
   if (!proposal) {
     return notFound();
   }

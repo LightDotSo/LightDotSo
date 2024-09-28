@@ -23,12 +23,12 @@ import {
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = (searchParams: { pagination?: string }) => {
+export const preloader = async (searchParams: { pagination?: string }) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
 
-  const userId = getUserIdCookie();
+  const userId = await getUserIdCookie();
 
   // ---------------------------------------------------------------------------
   // Parsers

@@ -42,7 +42,7 @@ export default async function Page({ searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(searchParams);
+  await preloader(searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers

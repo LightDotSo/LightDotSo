@@ -42,8 +42,8 @@ type Session = {
 // Cookie
 // -----------------------------------------------------------------------------
 
-export const getSessionCookie = () => {
-  const cookieStore = cookies();
+export const getSessionCookie = async () => {
+  const cookieStore = await cookies();
   return cookieStore.get(COOKIES.SESSION_COOKIE_ID)?.value;
 };
 
@@ -51,9 +51,8 @@ export const getSessionCookie = () => {
 // Auth
 // -----------------------------------------------------------------------------
 
-// biome-ignore lint/suspicious/useAwait: <explanation>
 export const getSession = async (): Promise<Session | null | undefined> => {
-  const sessionId = getSessionCookie();
+  const sessionId = await getSessionCookie();
 
   if (!sessionId) {
     return undefined;

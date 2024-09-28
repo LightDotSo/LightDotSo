@@ -20,8 +20,8 @@ import { cookies } from "next/headers";
 // Cookie
 // -----------------------------------------------------------------------------
 
-export const getUserIdCookie = () => {
-  const cookieStore = cookies();
+export const getUserIdCookie = async () => {
+  const cookieStore = await cookies();
   return cookieStore.get(COOKIES.USER_COOKIE_ID)?.value;
 };
 
@@ -30,7 +30,7 @@ export const getUserIdCookie = () => {
 // -----------------------------------------------------------------------------
 
 export const verifyUserId = async () => {
-  const userId = getUserIdCookie();
+  const userId = await getUserIdCookie();
   const session = await getSession();
 
   if (!session) {

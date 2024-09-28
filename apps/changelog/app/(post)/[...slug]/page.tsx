@@ -37,6 +37,14 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Promise<{ slug: string[] }>;
+};
+
+// -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
 
@@ -63,14 +71,12 @@ async function fetchChangelog(params: { slug: string[] }) {
 
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string[] };
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await fetchChangelog(params);
+  const changelog = await fetchChangelog(await params);
 
   if (!changelog) {
     return notFound();
@@ -119,12 +125,12 @@ export async function generateStaticParams() {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const changelog = await fetchChangelog(params);
+  const changelog = await fetchChangelog(await params);
 
   if (!changelog) {
     return notFound();
