@@ -26,11 +26,11 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     isTestnet?: string;
     pagination?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
@@ -53,7 +53,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     paginationState,
     userOperations,
     userOperationsCount,
-  } = await handler(params, searchParams);
+  } = await handler(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,7 +63,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       status: "history",
       order: "asc",
       limit: paginationState.pageSize,
@@ -75,7 +75,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
-      address: params.address as Address,
+      address: (await params).address as Address,
       status: "history",
       is_testnet: isTestnetState ?? false,
     }).queryKey,
@@ -88,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UserOperationsDataTable address={params.address as Address} />
+      <UserOperationsDataTable address={(await params).address as Address} />
       <UserOperationsDataTablePagination />
     </HydrationBoundary>
   );

@@ -19,10 +19,10 @@ import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfer?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------

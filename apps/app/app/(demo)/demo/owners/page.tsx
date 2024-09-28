@@ -20,9 +20,9 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS },
+    params: Promise.resolve({ address: DEMO_WALLET_ADDRESS }),
     searchParams: searchParams,
   });
 }

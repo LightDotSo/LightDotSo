@@ -40,10 +40,10 @@ export const metadata: Metadata = {
 
 interface UserOperationLayoutProps {
   children: ReactNode;
-  params: {
+  params: Promise<{
     address: string;
     userOperationHash: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ export default async function UserOperationLayout({
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -74,8 +74,8 @@ export default async function UserOperationLayout({
         <MiddleLayerWrapper size="sm">
           <div className="flex w-full justify-end">
             <OpInvokeButton
-              address={params.address as Address}
-              userOperationHash={params.userOperationHash as Hex}
+              address={(await params).address as Address}
+              userOperationHash={(await params).userOperationHash as Hex}
             />
           </div>
         </MiddleLayerWrapper>

@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
+  params: Promise<{ address: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,13 +37,13 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletNotifications } = await handler(params);
+  const { walletNotifications } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.wallet.notificationSettings({
-      address: params.address as Address,
+      address: (await params).address as Address,
     }).queryKey,
     walletNotifications,
   );
@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} />
+      <Loader params={await params} />
     </HydrationBoundary>
   );
 }

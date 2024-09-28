@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/op/[userOperationHash]/loading";
-import type { PageProps as OpPageProps } from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
 import type { WalletSettingsData } from "@lightdotso/data";
 import dynamic from "next/dynamic";
 import type { Hex } from "viem";
@@ -39,7 +39,8 @@ const OpDataTable = dynamic(
 // Props
 // -----------------------------------------------------------------------------
 
-export type PageProps = OpPageProps & {
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
   walletSettings: WalletSettingsData;
 };
 

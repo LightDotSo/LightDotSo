@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfer?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -41,15 +41,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { transfer, walletSettings, nfts, balances } = await handler(
-    params,
-    searchParams,
+  const { walletSettings, nfts, balances } = await handler(
+    await params,
+    await searchParams,
   );
 
   // ---------------------------------------------------------------------------
@@ -59,20 +59,21 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
     queryKeys.socket.balance({
-      address: params.address as Address,
+      address: (await params).address as Address,
     }).queryKey,
     balances,
   );
 
   queryClient.setQueryData(
     queryKeys.nft.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: SIMPLEHASH_MAX_COUNT,
       cursor: null,
@@ -86,7 +87,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} searchParams={searchParams} transfer={transfer} />
+      <Loader params={await params} searchParams={await searchParams} />
     </HydrationBoundary>
   );
 }

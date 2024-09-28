@@ -21,6 +21,6 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 
 export default async function Page() {
   return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS, isDemo: true },
+    params: Promise.resolve({ address: DEMO_WALLET_ADDRESS, isDemo: true }),
   });
 }

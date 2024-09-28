@@ -41,7 +41,7 @@ type LayoutProps = {
 
 export default async function Layout({ children, nav }: LayoutProps) {
   return OriginalLayout({
-    params: { address: DEMO_WALLET_ADDRESS },
+    params: Promise.resolve({ address: DEMO_WALLET_ADDRESS }),
     children: children,
     nav: nav,
   });

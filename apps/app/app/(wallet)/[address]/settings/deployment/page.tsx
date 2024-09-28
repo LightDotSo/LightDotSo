@@ -25,7 +25,7 @@ import type { Address, Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
+  params: Promise<{ address: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,14 +37,14 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { wallet, configuration, walletSettings, userOperations } =
-    await handler(params);
+    await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       status: "history",
       order: "asc",
       limit: Number.MAX_SAFE_INTEGER,
@@ -71,7 +71,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Loader
-        params={params}
+        params={await params}
         image_hash={configuration.image_hash as Hex}
         salt={wallet.salt as Hex}
         is_enabled_testnet={walletSettings?.is_enabled_testnet ?? false}

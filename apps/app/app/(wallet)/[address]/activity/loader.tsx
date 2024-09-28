@@ -15,7 +15,7 @@
 "use client";
 
 import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
-import type { PageProps } from "@/app/(wallet)/[address]/activity/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/activity/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -32,6 +32,15 @@ const ActivityDataTable = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+  searchParams: Awaited<OriginalPageProps["searchParams"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

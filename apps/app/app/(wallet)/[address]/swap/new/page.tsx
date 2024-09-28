@@ -19,10 +19,10 @@ import OriginalPage from "@/app/(wallet)/[address]/swap/page";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfers?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------

@@ -28,10 +28,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface PageProps {
-  params: { address: Address };
-  searchParams: {
+  params: Promise<{ address: Address }>;
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -43,14 +43,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { paginationState, walletSettings, tokens, tokensCount, portfolio } =
-    await handler(params, searchParams);
+    await handler(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -59,18 +59,20 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
-    queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
+    queryKeys.portfolio.get({ address: (await params).address as Address })
+      .queryKey,
     portfolio,
   );
 
   queryClient.setQueryData(
     queryKeys.token.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -82,7 +84,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.token.listCount({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       chain_ids: null,
     }).queryKey,
@@ -96,9 +98,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PortfolioSection title="Total Token Value">
-        <TokenPortfolio address={params.address as Address} />
+        <TokenPortfolio address={(await params).address as Address} />
       </PortfolioSection>
-      <TokensDataTable address={params.address as Address} />
+      <TokensDataTable address={(await params).address as Address} />
       <TokensDataTablePagination />
     </HydrationBoundary>
   );

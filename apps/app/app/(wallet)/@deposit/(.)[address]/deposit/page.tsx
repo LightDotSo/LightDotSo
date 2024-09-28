@@ -25,10 +25,10 @@ import {
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfer?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------

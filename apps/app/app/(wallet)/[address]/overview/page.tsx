@@ -26,7 +26,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface PageProps {
-  params: { address: Address; isDemo?: boolean };
+  params: Promise<{ address: Address; isDemo?: boolean }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
@@ -51,7 +51,7 @@ export default async function Page({ params }: PageProps) {
     portfolio,
     nfts,
     nftValuation,
-  } = await handler(params);
+  } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -60,18 +60,20 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
-    queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
+    queryKeys.portfolio.get({ address: (await params).address as Address })
+      .queryKey,
     portfolio,
   );
 
   queryClient.setQueryData(
     queryKeys.token.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -82,14 +84,14 @@ export default async function Page({ params }: PageProps) {
   );
 
   queryClient.setQueryData(
-    queryKeys.nft_valuation.get({ address: params.address as Address })
+    queryKeys.nft_valuation.get({ address: (await params).address as Address })
       .queryKey,
     nftValuation,
   );
 
   queryClient.setQueryData(
     queryKeys.nft.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: SIMPLEHASH_MAX_COUNT,
       cursor: null,
@@ -99,7 +101,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.transaction.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -113,7 +115,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} />
+      <Loader params={await params} />
     </HydrationBoundary>
   );
 }

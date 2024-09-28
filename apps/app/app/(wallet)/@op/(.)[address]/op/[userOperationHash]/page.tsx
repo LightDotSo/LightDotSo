@@ -23,7 +23,7 @@ import type { Address, Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string; userOperationHash: string };
+  params: Promise<{ address: string; userOperationHash: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -45,8 +45,8 @@ export default async function Page({ params }: PageProps) {
     <ModalInterception
       footerContent={
         <ModalInterceptionFooter
-          address={params.address as Address}
-          userOperationHash={params.userOperationHash as Hex}
+          address={(await params).address as Address}
+          userOperationHash={(await params).userOperationHash as Hex}
         />
       }
       type="op"

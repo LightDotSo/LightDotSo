@@ -24,7 +24,7 @@ import { cookies } from "next/headers";
 // biome-ignore lint/suspicious/useAwait: <explanation>
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default async function action() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   cookieStore.delete(COOKIES.USER_COOKIE_ID);
   cookieStore.delete(COOKIES.WALLETS_COOKIE_ID);

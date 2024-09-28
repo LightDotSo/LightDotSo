@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -47,13 +47,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration, walletSettings } = await handler(params, searchParams);
+  const { configuration, walletSettings } = await handler(
+    await params,
+    await searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -62,13 +65,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
     queryKeys.configuration.get({
-      address: params.address as Address,
+      address: (await params).address as Address,
     }).queryKey,
     configuration,
   );
@@ -79,7 +83,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OwnersDataTable address={params.address as Address} />
+      <OwnersDataTable address={(await params).address as Address} />
     </HydrationBoundary>
   );
 }

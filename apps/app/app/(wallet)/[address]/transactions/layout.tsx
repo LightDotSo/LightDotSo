@@ -63,16 +63,16 @@ export const metadata: Metadata = {
 interface TransactionsLayoutProps {
   children: ReactNode;
   nav: ReactNode;
-  params: {
+  params: Promise<{
     address: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function TransactionsLayout({
+export default async function TransactionsLayout({
   children,
   nav,
   params,
@@ -90,7 +90,7 @@ export default function TransactionsLayout({
         <MiddleLayerWrapper>
           <LinkButtonGroup items={transactionsNavItems}>
             {nav}
-            <OverviewInvokeButton address={params.address as Address} />
+            <OverviewInvokeButton address={(await params).address as Address} />
           </LinkButtonGroup>
         </MiddleLayerWrapper>
       </BannerSection>

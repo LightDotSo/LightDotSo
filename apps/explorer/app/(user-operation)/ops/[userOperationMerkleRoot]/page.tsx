@@ -25,7 +25,7 @@ import type { Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { userOperationMerkleRoot: string };
+  params: Promise<{ userOperationMerkleRoot: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,13 +37,13 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperationMerkle } = await handler(params);
+  const { userOperationMerkle } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation_merkle.get({
-      root: params.userOperationMerkleRoot as Hex,
+      root: (await params).userOperationMerkleRoot as Hex,
     }).queryKey,
     userOperationMerkle,
   );
@@ -65,7 +65,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <OpsDataTable
-        userOperationMerkleRoot={params.userOperationMerkleRoot as Hex}
+        userOperationMerkleRoot={(await params).userOperationMerkleRoot as Hex}
       />
     </HydrationBoundary>
   );

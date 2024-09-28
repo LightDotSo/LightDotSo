@@ -45,11 +45,10 @@ contract LightTimelockControllerFactory {
     // Errors
     // -------------------------------------------------------------------------
 
-    /// @notice The LightWallet address is zero
-    error LightWalletAddressZero();
+    /// @notice The wallet address is zero
+    error WalletAddressZero();
 
-    /// @notice The LightProtocolController address is zero
-    error LightProtocolControllerAddressZero();
+    // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -64,17 +63,12 @@ contract LightTimelockControllerFactory {
     // -------------------------------------------------------------------------
 
     /// @notice Creates a LightTimelockController, and return its address.
-    /// @param lightWallet The address of the LightWallet.
-    /// @param lightProtocolController The address of the LightProtocolController.
+    /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
-    function createTimelockController(address lightWallet, address lightProtocolController, bytes32 salt)
-        public
-        returns (LightTimelockController ret)
-    {
-        if (lightWallet == address(0)) revert LightWalletAddressZero();
-        if (lightProtocolController == address(0)) revert LightProtocolControllerAddressZero();
+    function createTimelockController(address wallet, bytes32 salt) public returns (LightTimelockController ret) {
+        if (wallet == address(0)) revert WalletAddressZero();
 
-        address addr = getAddress(lightWallet, lightProtocolController, salt);
+        address addr = getAddress(wallet, salt);
         uint256 codeSize = addr.code.length;
         // If the timelock controller already exists, return it
         if (codeSize > 0) {
@@ -85,8 +79,7 @@ contract LightTimelockControllerFactory {
             payable(
                 address(
                     new ERC1967Proxy{salt: salt}(
-                        address(timelockImplementation),
-                        abi.encodeCall(LightTimelockController.initialize, (lightWallet, lightProtocolController))
+                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )
@@ -94,22 +87,16 @@ contract LightTimelockControllerFactory {
     }
 
     /// @notice Calculate the counterfactual address of the timelock controller as it would be returned by createTimelockController()
-    /// @param lightWallet The address of the LightWallet.
-    /// @param lightProtocolController The address of the LightProtocolController.
+    /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
-    function getAddress(address lightWallet, address lightProtocolController, bytes32 salt)
-        public
-        view
-        returns (address)
-    {
+    function getAddress(address wallet, bytes32 salt) public view returns (address) {
         return Create2.computeAddress(
             salt,
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
                     abi.encode(
-                        address(timelockImplementation),
-                        abi.encodeCall(LightTimelockController.initialize, (lightWallet, lightProtocolController))
+                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )

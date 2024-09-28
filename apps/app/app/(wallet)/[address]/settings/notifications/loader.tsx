@@ -14,7 +14,7 @@
 
 "use client";
 
-import type { PageProps } from "@/app/(wallet)/[address]/settings/notifications/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/settings/notifications/page";
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import {} from "@lightdotso/const";
 import dynamic from "next/dynamic";
@@ -34,6 +34,15 @@ const SettingsNotificationsSettingsCard = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
+
 // -----------------------------------------------------------------------------
 // Loader
 // -----------------------------------------------------------------------------

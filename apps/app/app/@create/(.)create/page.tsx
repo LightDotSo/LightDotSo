@@ -22,10 +22,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     address: string;
     userOperations?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -42,7 +42,9 @@ export default async function Page({ searchParams }: PageProps) {
       isOverflowHidden
       isHeightFixed
       footerContent={
-        <ModalInterceptionFooter address={searchParams.address as Address} />
+        <ModalInterceptionFooter
+          address={(await searchParams).address as Address}
+        />
       }
       type="create"
     >

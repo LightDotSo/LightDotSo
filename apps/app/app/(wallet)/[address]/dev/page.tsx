@@ -21,7 +21,7 @@ import { preloader } from "@/preloaders/[address]/dev/preloader";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
+  params: Promise<{ address: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -33,17 +33,17 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Loader params={params} />;
+  return <Loader params={await params} />;
 }

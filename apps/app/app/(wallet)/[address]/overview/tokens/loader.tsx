@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/overview/tokens/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/overview/tokens/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/overview/tokens/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +33,14 @@ const TokensDataTable = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

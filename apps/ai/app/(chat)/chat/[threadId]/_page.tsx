@@ -26,69 +26,69 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AI } from "@/ai/client";
-import { Chat } from "@/components/chat";
-import type { Metadata } from "next";
+// import { AI } from "@/ai/client";
+// import { Chat } from "@/components/chat";
+// import type { Metadata } from "next";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export interface ChatPageProps {
-  params: {
-    threadId: string;
-  };
-}
+// export interface ChatPageProps {
+//   params: {
+//     threadId: string;
+//   };
+// }
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
-export async function generateMetadata(
-  _params: ChatPageProps,
-): Promise<Metadata> {
-  // const session = await auth();
+// export async function generateMetadata(
+//   _params: ChatPageProps,
+// ): Promise<Metadata> {
+// const session = await auth();
 
-  // if (!session?.user) {
-  //   return {};
-  // }
+// if (!session?.user) {
+//   return {};
+// }
 
-  // const chat = await getChat(params.id, session.user.id);
-  // return {
-  //   title: chat?.title.toString().slice(0, 50) ?? "Chat",
-  // };
-  return {
-    title: "Chat",
-  };
-}
+// const chat = await getChat(params.id, session.user.id);
+// return {
+//   title: chat?.title.toString().slice(0, 50) ?? "Chat",
+// };
+//   return {
+//     title: "Chat",
+//   };
+// }
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function ChatPage({
-  params: { threadId },
-}: ChatPageProps) {
-  // const session = (await auth()) as Session;
+// export default async function ChatPage({
+//   params: { threadId },
+// }: ChatPageProps) {
+// const session = (await auth()) as Session;
 
-  // if (!session?.user) {
-  //   redirect(`/login?next=/chat/${params.id}`);
-  // }
+// if (!session?.user) {
+//   redirect(`/login?next=/chat/${params.id}`);
+// }
 
-  // const userId = session.user.id as string;
-  // const chat = await getChat(params.id, userId);
+// const userId = session.user.id as string;
+// const chat = await getChat(params.id, userId);
 
-  // if (!chat) {
-  //   redirect("/");
-  // }
+// if (!chat) {
+//   redirect("/");
+// }
 
-  // if (chat?.userId !== session?.user?.id) {
-  //   notFound();
-  // }
+// if (chat?.userId !== session?.user?.id) {
+//   notFound();
+// }
 
-  return (
-    <AI initialAIState={{ threadId: threadId, messages: [] }}>
-      <Chat id={threadId} />
-    </AI>
-  );
-}
+//   return (
+//     <AI initialAIState={{ threadId: threadId, messages: [] }}>
+//       <Chat id={threadId} />
+//     </AI>
+//   );
+// }

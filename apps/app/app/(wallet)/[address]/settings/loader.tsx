@@ -17,7 +17,7 @@
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
-import type { PageProps } from "./page";
+import type { PageProps as OriginalPageProps } from "./page";
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -57,15 +57,23 @@ const SettingsTestnetCard = dynamic(
 );
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
+
+// -----------------------------------------------------------------------------
 // Loader
 // -----------------------------------------------------------------------------
 
-export function Loader({ params }: { params: PageProps["params"] }) {
+export function Loader({ params: { address } }: PageProps) {
   return (
     <>
-      <SettingsNameCard address={params.address as Address} />
-      <SettingsDevCard address={params.address as Address} />
-      <SettingsTestnetCard address={params.address as Address} />
+      <SettingsNameCard address={address as Address} />
+      <SettingsDevCard address={address as Address} />
+      <SettingsTestnetCard address={address as Address} />
     </>
   );
 }

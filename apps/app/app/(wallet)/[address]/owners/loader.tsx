@@ -14,7 +14,7 @@
 
 "use client";
 import { Loading } from "@/app/(wallet)/[address]/owners/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/owners/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/owners/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -32,6 +32,14 @@ const OwnersDataTable = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

@@ -33,19 +33,29 @@ import keystaticConfig from "~/keystatic.config";
 const reader = createReader(process.cwd(), keystaticConfig);
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Promise<{ slug: string[] }>;
+};
+
+// -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] };
-}): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(params.slug.join("/"));
+  const blog = await reader.collections.posts.read(
+    (await params).slug.join("/"),
+    {
+      resolveLinkedFiles: true,
+    },
+  );
   if (!blog) {
     return notFound();
   }
@@ -81,14 +91,17 @@ export async function generateStaticParams() {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const blog = await reader.collections.posts.read(params.slug.join("/"), {
-    resolveLinkedFiles: true,
-  });
+  const blog = await reader.collections.posts.read(
+    (await params).slug.join("/"),
+    {
+      resolveLinkedFiles: true,
+    },
+  );
   if (!blog) {
     return notFound();
   }

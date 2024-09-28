@@ -25,7 +25,7 @@ import type { Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string; userOperationHash: string };
+  params: Promise<{ address: string; userOperationHash: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,13 +37,13 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperation, walletSettings } = await handler(params);
+  const { userOperation, walletSettings } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.get({
-      hash: params.userOperationHash as Hex,
+      hash: (await params).userOperationHash as Hex,
     }).queryKey,
     userOperation,
   );
@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} walletSettings={walletSettings} />
+      <Loader params={await params} walletSettings={walletSettings} />
     </HydrationBoundary>
   );
 }
