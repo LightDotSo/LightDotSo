@@ -1622,7 +1622,7 @@ enum SignatureProcedure {
   ERC_1271
 }
 
-model TimelockController {
+model Timelock {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -1635,7 +1635,9 @@ model TimelockController {
   // Fields
   // ---------------------------------------------------------------------------
 
-  minDelay BigInt
+  authorizedAddress String
+  salt              String
+  minDelay          BigInt
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1673,7 +1675,7 @@ model TimelockOperation {
   // None-to-one
   // ---------------------------------------------------------------------------
 
-  controller        TimelockController @relation(fields: [controllerAddress], references: [address])
+  controller        Timelock @relation(fields: [controllerAddress], references: [address])
   controllerAddress String
 
   // ---------------------------------------------------------------------------
