@@ -78,14 +78,14 @@ interface InnerRootProps {
 
 export const InnerRoot: FC<InnerRootProps> = ({ children }) => {
   return (
-    <>
-      <ThemeProvider attribute="class">
-        <ReactQueryProvider>
-          <RootProviderWrapper>{children}</RootProviderWrapper>
-        </ReactQueryProvider>
-      </ThemeProvider>
-      <RootWrapper />
-      <RootDevWrapper />
-    </>
+    <ThemeProvider attribute="class">
+      <ReactQueryProvider>
+        <RootProviderWrapper>
+          {children}
+          <RootWrapper />
+          <RootDevWrapper />
+        </RootProviderWrapper>
+      </ReactQueryProvider>
+    </ThemeProvider>
   );
 };
