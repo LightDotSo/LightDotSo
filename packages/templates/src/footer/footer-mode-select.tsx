@@ -26,7 +26,7 @@ import type { FC, SVGProps } from "react";
 import { FaMoon, FaRegLightbulb, FaSun } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const themes = [

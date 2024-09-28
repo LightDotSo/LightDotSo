@@ -21,7 +21,7 @@ import type { RefAttributes } from "react";
 import { MobileAppDrawer } from "./mobile-app-drawer";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const tabs: Tab[] = [

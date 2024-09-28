@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 import { type FC, type ReactNode, useEffect, useState } from "react";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const variants = {

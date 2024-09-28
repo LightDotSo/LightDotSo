@@ -17,6 +17,10 @@
 use alloy::primitives::Address;
 use lazy_static::lazy_static;
 
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
 // The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
@@ -46,7 +50,7 @@ lazy_static! {
     ];
 }
 
-// The factory addresses
+// The factory addresses (v0.1.0)
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_V010_ADDRESS: Address =
@@ -54,15 +58,22 @@ lazy_static! {
       "0x0000000000756D3E6464f5efe7e413a0Af1C7474".parse().unwrap();
 }
 
-// The factory addresses
+// The factory addresses (v0.2.0)
 lazy_static! {
     #[derive(Debug)]
-    pub static ref LIGHT_WALLET_FACTORY_ADDRESS: Address =
+    pub static ref LIGHT_WALLET_FACTORY_V020_ADDRESS: Address =
       // v0.2.0
       "0x00000000001269b052C004FFB71B47AB22C898B0".parse().unwrap();
 }
 
-// The factory implementation addresses
+// The factory addresses (latest)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_ADDRESS: Address =
+      *LIGHT_WALLET_FACTORY_V020_ADDRESS;
+}
+
+// The factory implementation addresses (v0.1.0)
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_V010_ADDRESS: Address =
@@ -70,12 +81,19 @@ lazy_static! {
       "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
 }
 
-// The factory implementation addresses
+// The factory implementation addresses (v0.2.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_V020_ADDRESS: Address =
+      // v0.2.0
+      "0x040d53c5dde1762f7cac48d5467e88236d4873d7".parse().unwrap();
+}
+
+// The factory implementation addresses (latest)
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
-      // v0.2.0
-      "0x040d53c5dde1762f7cac48d5467e88236d4873d7".parse().unwrap();
+      *LIGHT_WALLET_FACTORY_IMPLEMENTATION_V020_ADDRESS;
 }
 
 // The example wallet addresses
@@ -86,12 +104,27 @@ lazy_static! {
       "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse().unwrap();
 }
 
-// The entrypoint addresses
+// The entrypoint addresses (v0.6.0)
 lazy_static! {
     #[derive(Debug)]
     pub static ref ENTRYPOINT_V060_ADDRESS: Address =
       // v0.6.0
       "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse().unwrap();
+}
+
+// The entrypoint addresses (v0.7.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref ENTRYPOINT_V070_ADDRESS: Address =
+      // v0.7.0
+      "0x0000000071727de22e5e9d8baf0edac6f37da032".parse().unwrap();
+}
+
+// The entrypoint addresses (latest)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref ENTRYPOINT_ADDRESS: Address =
+      *ENTRYPOINT_V070_ADDRESS;
 }
 
 // The alchemy v0.6.0 gas manager address

@@ -19,6 +19,10 @@ use prisma_client_rust::chrono::NaiveDateTime;
 use std::convert::TryInto;
 use LightPaymaster::LightPaymasterInstance;
 
+// -----------------------------------------------------------------------------
+// Contract
+// -----------------------------------------------------------------------------
+
 sol!(
     #[sol(rpc)]
     LightPaymaster,

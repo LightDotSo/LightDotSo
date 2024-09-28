@@ -28,7 +28,7 @@ import { PlayCircleIcon } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 export const DEFAULT_TABS: Tab[] = [

@@ -28,7 +28,7 @@ import type { RefAttributes } from "react";
 import { FaTelegram } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 export const HOME_TABS: Tab[] = [

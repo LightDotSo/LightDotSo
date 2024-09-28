@@ -91,7 +91,7 @@ const TransactionsList = dynamic(
 );
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const initialItems = Object.keys(TITLES.Overview.subcategories).filter(

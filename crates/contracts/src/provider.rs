@@ -18,6 +18,10 @@ use alloy::{
 };
 use eyre::{eyre, Result};
 
+// -----------------------------------------------------------------------------
+// Provider
+// -----------------------------------------------------------------------------
+
 /// Returns a provider for the given chain ID w/ fallbacks
 pub async fn get_provider(chain_id: u64) -> Result<(RootProvider<BoxTransport>, String)> {
     // If env `ENVIRONMENT` is `development`, use the local anvil fork

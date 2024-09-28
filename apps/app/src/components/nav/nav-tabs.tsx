@@ -25,7 +25,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Const
+// Constants
 // -----------------------------------------------------------------------------
 
 const transition = {
