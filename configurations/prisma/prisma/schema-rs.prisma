@@ -320,8 +320,8 @@ model WalletBilling {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities      Activity[]
-  walletTimelocks WalletTimelock[]
+  activities Activity[]
+  timelocks  Timelock[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -448,44 +448,6 @@ model WalletNotificationSettings {
   // Relations
   @@index([userId])
   @@index([walletAddress])
-}
-
-model WalletTimelock {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
-  walletBillingId String?
-
-  // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  timelock        Timelock @relation(fields: [timelockAddress], references: [address])
-  timelockAddress String
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  activities Activity[]
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Relations
-  @@index([walletBillingId])
-  @@index([timelockAddress])
 }
 
 // -----------------------------------------------------------------------------
@@ -1455,8 +1417,9 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities      Activity[]
-  billingBalances BillingBalance[]
+  activities         Activity[]
+  billingBalances    BillingBalance[]
+  timelockOperations TimelockOperation[]
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -1684,7 +1647,7 @@ model Timelock {
 
   activities         Activity[]
   timelockOperations TimelockOperation[]
-  walletTimelocks    WalletTimelock[]
+  walletBillings     WalletBilling[]
 }
 
 model TimelockOperation {
@@ -1707,6 +1670,20 @@ model TimelockOperation {
   salt        String
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  timelock        Timelock @relation(fields: [timelockAddress], references: [address])
+  timelockAddress String
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1719,18 +1696,12 @@ model TimelockOperation {
   activities Activity[]
 
   // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  controller        Timelock @relation(fields: [controllerAddress], references: [address])
-  controllerAddress String
-
-  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([controllerAddress])
+  @@index([billingOperationId])
+  @@index([timelockAddress])
 }
 
 model TimelockCall {
@@ -2655,7 +2626,7 @@ model Activity {
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   supportRequestId String?
 
-  timelockOperation   TimelockOperation? @relation(fields: [timelockOperationId], references: [id])
+  timelockOperation   TimelockOperation? @relation(fields: [timelockOperationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   timelockOperationId String?
 
   userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -2675,9 +2646,6 @@ model Activity {
 
   walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletSettingsId String?
-
-  walletTimelock   WalletTimelock? @relation(fields: [walletTimelockId], references: [id])
-  walletTimelockId String?
 
   // ---------------------------------------------------------------------------
   // Immutable Relations None-to-none
@@ -2713,7 +2681,6 @@ model Activity {
   @@index([walletFeaturesId])
   @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
-  @@index([walletTimelockId])
 }
 
 enum ActivityEntity {

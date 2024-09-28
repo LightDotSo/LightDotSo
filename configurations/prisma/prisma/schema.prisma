@@ -1436,8 +1436,9 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities      Activity[]
-  billingBalances BillingBalance[]
+  activities         Activity[]
+  billingBalances    BillingBalance[]
+  timelockOperations TimelockOperation[]
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -1688,6 +1689,20 @@ model TimelockOperation {
   salt        String
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  timelock        Timelock @relation(fields: [timelockAddress], references: [address])
+  timelockAddress String
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1700,18 +1715,12 @@ model TimelockOperation {
   activities Activity[]
 
   // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  controller        Timelock @relation(fields: [controllerAddress], references: [address])
-  controllerAddress String
-
-  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([controllerAddress])
+  @@index([billingOperationId])
+  @@index([timelockAddress])
 }
 
 model TimelockCall {
@@ -2636,7 +2645,7 @@ model Activity {
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   supportRequestId String?
 
-  timelockOperation   TimelockOperation? @relation(fields: [timelockOperationId], references: [id])
+  timelockOperation   TimelockOperation? @relation(fields: [timelockOperationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   timelockOperationId String?
 
   userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
