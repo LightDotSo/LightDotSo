@@ -29,11 +29,11 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface PageProps {
-  params: { address: Address };
-  searchParams: {
+  params: Promise<{ address: Address }>;
+  searchParams: Promise<{
     cursor?: string;
     pagination?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -45,14 +45,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { cursorState, paginationState, walletSettings, nfts, nftValuation } =
-    await handler(params, searchParams);
+    await handler(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -61,19 +61,20 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
-    queryKeys.nft_valuation.get({ address: params.address as Address })
+    queryKeys.nft_valuation.get({ address: (await params).address as Address })
       .queryKey,
     nftValuation,
   );
 
   queryClient.setQueryData(
     queryKeys.nft.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: SIMPLEHASH_MAX_COUNT,
       cursor: paginationState.pageIndex === 0 ? null : cursorState,
@@ -88,9 +89,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PortfolioSection title="Total NFTs Value">
-        <NftPortfolio address={params.address as Address} />
+        <NftPortfolio address={(await params).address as Address} />
       </PortfolioSection>
-      <NftsDataTable address={params.address as Address} />
+      <NftsDataTable address={(await params).address as Address} />
       <NftsDataTablePagination />
     </HydrationBoundary>
   );

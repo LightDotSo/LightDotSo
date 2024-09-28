@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/transactions/history/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/transactions/history/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/transactions/history/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +33,15 @@ const TransactionsDataTable = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+  searchParams: Awaited<OriginalPageProps["searchParams"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

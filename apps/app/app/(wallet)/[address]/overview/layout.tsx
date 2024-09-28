@@ -43,10 +43,10 @@ export const metadata: Metadata = {
 type OverviewLayoutProps = {
   children: ReactNode;
   nav: ReactNode;
-  params: {
+  params: Promise<{
     address: string;
     isDemo?: boolean;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------

@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/dev/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/dev/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/dev/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +33,14 @@ const DevForm = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

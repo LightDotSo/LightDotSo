@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface PageProps {
-  params: { address: Address };
-  searchParams: {
+  params: Promise<{ address: Address }>;
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -47,15 +47,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { activities, activitiesCount, paginationState } = await handler(
-    params,
-    searchParams,
+    await params,
+    await searchParams,
   );
 
   // ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.activity.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
     }).queryKey,
@@ -75,7 +75,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.activity.listCount({
-      address: params.address as Address,
+      address: (await params).address as Address,
     }).queryKey,
     activitiesCount,
   );
@@ -86,7 +86,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} searchParams={searchParams} />
+      <Loader params={await params} searchParams={await searchParams} />
     </HydrationBoundary>
   );
 }

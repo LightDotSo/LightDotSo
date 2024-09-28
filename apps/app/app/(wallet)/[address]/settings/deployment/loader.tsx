@@ -45,7 +45,8 @@ type PageProps = {
   salt: Hex;
   // biome-ignore lint/style/useNamingConvention: <explanation>
   is_enabled_testnet: boolean;
-} & OriginalPageProps;
+  params: Awaited<OriginalPageProps["params"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

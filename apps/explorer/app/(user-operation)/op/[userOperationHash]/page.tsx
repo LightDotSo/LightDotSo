@@ -25,7 +25,7 @@ import type { Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { userOperationHash: string };
+  params: Promise<{ userOperationHash: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,13 +37,13 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperation } = await handler(params);
+  const { userOperation } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.get({
-      hash: params.userOperationHash as Hex,
+      hash: (await params).userOperationHash as Hex,
     }).queryKey,
     userOperation,
   );
@@ -64,7 +64,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OpDataTable userOperationHash={params.userOperationHash as Hex} />
+      <OpDataTable
+        userOperationHash={(await params).userOperationHash as Hex}
+      />
     </HydrationBoundary>
   );
 }

@@ -21,9 +21,9 @@ import { ModalInterception } from "@lightdotso/templates/modal-interception";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------

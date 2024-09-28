@@ -63,9 +63,9 @@ export const metadata: Metadata = {
 interface TransactionsLayoutProps {
   children: ReactNode;
   nav: ReactNode;
-  params: {
+  params: Promise<{
     address: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------

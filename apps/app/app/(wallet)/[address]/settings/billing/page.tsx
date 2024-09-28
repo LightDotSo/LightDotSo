@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
+  params: Promise<{ address: string }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,13 +37,13 @@ export default async function Page({ params }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletBilling } = await handler(params);
+  const { walletBilling } = await handler(await params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.wallet.billing({
-      address: params.address as Address,
+      address: (await params).address as Address,
     }).queryKey,
     walletBilling,
   );
@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsBillingBalanceCard address={params.address as Address} />
+      <SettingsBillingBalanceCard address={(await params).address as Address} />
     </HydrationBoundary>
   );
 }

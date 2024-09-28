@@ -21,10 +21,10 @@ import { ModalInterception } from "@lightdotso/templates/modal-interception";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfers?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------

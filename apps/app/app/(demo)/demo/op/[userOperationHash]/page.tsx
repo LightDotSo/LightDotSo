@@ -20,7 +20,7 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  params: { userOperationHash: string };
+  params: Promise<{ userOperationHash: string }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -28,10 +28,14 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
+  const resolvedParams = await params;
+
   return OriginalPage({
-    params: {
-      address: DEMO_WALLET_ADDRESS,
-      userOperationHash: params.userOperationHash,
-    },
+    params: new Promise((resolve) =>
+      resolve({
+        address: DEMO_WALLET_ADDRESS,
+        userOperationHash: resolvedParams.userOperationHash,
+      }),
+    ),
   });
 }

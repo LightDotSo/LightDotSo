@@ -27,9 +27,9 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -43,14 +43,15 @@ export default async function Page({ searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  await preloader(searchParams);
+  await preloader(await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { paginationState, user, wallets, walletsCount } =
-    await handler(searchParams);
+  const { paginationState, user, wallets, walletsCount } = await handler(
+    await searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query

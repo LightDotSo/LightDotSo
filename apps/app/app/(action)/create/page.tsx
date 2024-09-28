@@ -36,10 +36,10 @@ export const metadata: Metadata = {
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     address?: string;
     userOperations?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -51,13 +51,13 @@ export default async function Page({ searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(searchParams);
+  preloader(await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration } = await handler(searchParams);
+  const { configuration } = await handler(await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -68,7 +68,7 @@ export default async function Page({ searchParams }: PageProps) {
   if (configuration) {
     queryClient.setQueryData(
       queryKeys.configuration.get({
-        address: searchParams.address as Address,
+        address: (await searchParams).address as Address,
         checkpoint: 0,
       }).queryKey,
       configuration,
@@ -81,7 +81,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader searchParams={searchParams} />
+      <Loader searchParams={await searchParams} />
     </HydrationBoundary>
   );
 }

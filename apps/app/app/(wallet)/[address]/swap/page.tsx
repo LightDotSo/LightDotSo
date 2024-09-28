@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     transfers?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -41,13 +41,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { tokens, nfts, walletSettings } = await handler(params, searchParams);
+  const { tokens, nfts, walletSettings } = await handler(
+    await params,
+    await searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -56,13 +59,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
     queryKeys.token.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -74,7 +78,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.nft.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: SIMPLEHASH_MAX_COUNT,
       cursor: null,

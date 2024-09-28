@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(wallet)/[address]/create/loading";
-import type { PageProps } from "@/app/(wallet)/[address]/create/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/create/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +33,15 @@ const CreateDialog = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+  searchParams: Awaited<OriginalPageProps["searchParams"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

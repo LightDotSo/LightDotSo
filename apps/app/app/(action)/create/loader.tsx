@@ -15,7 +15,7 @@
 "use client";
 
 import { Loading } from "@/app/(action)/create/loading";
-import type { PageProps } from "@/app/(action)/create/page";
+import type { PageProps as OriginalPageProps } from "@/app/(action)/create/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
 
@@ -33,6 +33,14 @@ const TransactionDialog = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  searchParams: Awaited<OriginalPageProps["searchParams"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader

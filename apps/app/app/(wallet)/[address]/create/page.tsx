@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type PageProps = {
-  params: { address: string };
-  searchParams: {
+  params: Promise<{ address: string }>;
+  searchParams: Promise<{
     userOperations?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -47,13 +47,13 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration } = await handler(params, searchParams);
+  const { configuration } = await handler(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,7 +63,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.configuration.get({
-      address: params.address as Address,
+      address: (await params).address as Address,
       checkpoint: 0,
     }).queryKey,
     configuration,
@@ -75,7 +75,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} searchParams={searchParams} />
+      <Loader params={await params} searchParams={await searchParams} />
     </HydrationBoundary>
   );
 }

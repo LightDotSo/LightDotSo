@@ -25,10 +25,10 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     isTestnet?: string;
     pagination?: string;
-  };
+  }>;
 };
 
 // -----------------------------------------------------------------------------
@@ -40,14 +40,14 @@ export default async function Page({ searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(searchParams);
+  preloader(await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { isTestnetState, paginationState, transactions, transactionsCount } =
-    await handler(searchParams);
+    await handler(await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query

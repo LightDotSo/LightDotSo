@@ -26,10 +26,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface PageProps {
-  params: { address: Address };
-  searchParams: {
+  params: Promise<{ address: Address }>;
+  searchParams: Promise<{
     pagination?: string;
-  };
+  }>;
 }
 
 // -----------------------------------------------------------------------------
@@ -41,14 +41,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { paginationState, walletSettings, transactions, transactionsCount } =
-    await handler(params, searchParams);
+    await handler(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -57,13 +57,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: (await params).address as Address })
+      .queryKey,
     walletSettings,
   );
 
   queryClient.setQueryData(
     queryKeys.transaction.list({
-      address: params.address as Address,
+      address: (await params).address as Address,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -73,7 +74,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.transaction.listCount({
-      address: params.address as Address,
+      address: (await params).address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactionsCount,
@@ -85,7 +86,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={params} searchParams={searchParams} />
+      <Loader params={await params} searchParams={await searchParams} />
       <HistoryDataTablePagination />
     </HydrationBoundary>
   );

@@ -14,7 +14,7 @@
 
 "use client";
 
-import type { PageProps } from "@/app/(wallet)/[address]/settings/billing/page";
+import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/settings/billing/page";
 import { SettingsCardSkeleton } from "@/components/settings/settings-card";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
@@ -33,6 +33,14 @@ const SettingsBillingBalanceCard = dynamic(
     ssr: false,
   },
 );
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Awaited<OriginalPageProps["params"]>;
+};
 
 // -----------------------------------------------------------------------------
 // Loader
