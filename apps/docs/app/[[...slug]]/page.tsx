@@ -25,11 +25,19 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: Promise<{ slug: string[] }>;
+};
+
+// -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
-export function generateMetadata({ params }: { params: { slug?: string[] } }) {
-  const page = source.getPage(params.slug);
+export async function generateMetadata({ params }: PageProps) {
+  const page = source.getPage((await params).slug);
   if (!page) {
     notFound();
   }
@@ -52,16 +60,12 @@ export async function generateStaticParams() {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({
-  params,
-}: {
-  params: { slug?: string[] };
-}) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Reader
   // ---------------------------------------------------------------------------
 
-  const page = source.getPage(params.slug);
+  const page = source.getPage((await params).slug);
   if (!page) {
     notFound();
   }
