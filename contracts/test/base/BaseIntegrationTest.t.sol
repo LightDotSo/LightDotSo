@@ -75,9 +75,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Create the account using the factory w/ nonce and hash
         account = factory.createAccount(expectedImageHash, nonce);
         // Create the timelock controller
-        timelock = timelockFactory.createTimelockController(
-            address(account), address(lightProtocolController), bytes32(uint256(1))
-        );
+        timelock = timelockFactory.createTimelockController(address(account), bytes32(uint256(1)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);
