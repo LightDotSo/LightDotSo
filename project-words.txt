@@ -1597,6 +1597,7 @@ thiserror
 thunderclient
 timeago
 timelock
+timelocks
 timepicker
 timsort
 tinybench

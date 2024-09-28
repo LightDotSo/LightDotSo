@@ -45,8 +45,8 @@
     "motion": "^10.18.0",
     "next": "15.0.0-canary.172",
     "next-themes": "^0.3.0",
-    "react": "19.0.0-rc-3edc000d-20240926",
-    "react-dom": "19.0.0-rc-3edc000d-20240926",
+    "react": "19.0.0-rc-e740d4b1-20240919",
+    "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "react-error-boundary": "^4.0.13",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2"

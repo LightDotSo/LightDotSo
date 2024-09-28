@@ -31,8 +31,8 @@
     "@vercel/og": "^0.6.2",
     "critters": "^0.0.24",
     "next": "15.0.0-canary.172",
-    "react": "19.0.0-rc-3edc000d-20240926",
-    "react-dom": "19.0.0-rc-3edc000d-20240926",
+    "react": "19.0.0-rc-e740d4b1-20240919",
+    "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "viem": "^2.21.15"
   },
   "devDependencies": {
