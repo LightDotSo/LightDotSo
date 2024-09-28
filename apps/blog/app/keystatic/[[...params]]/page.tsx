@@ -17,5 +17,5 @@ export default function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <div />;
+  return null;
 }
