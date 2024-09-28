@@ -45,8 +45,8 @@ contract LightTimelockControllerFactory {
     // Errors
     // -------------------------------------------------------------------------
 
-    /// @notice The authorized account address is zero
-    error AuthorizedAccountAddressZero();
+    /// @notice The wallet address is zero
+    error WalletAddressZero();
 
     // -------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ contract LightTimelockControllerFactory {
     /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
     function createTimelockController(address wallet, bytes32 salt) public returns (LightTimelockController ret) {
-        if (wallet == address(0)) revert AuthorizedAccountAddressZero();
+        if (wallet == address(0)) revert WalletAddressZero();
 
         address addr = getAddress(wallet, salt);
         uint256 codeSize = addr.code.length;

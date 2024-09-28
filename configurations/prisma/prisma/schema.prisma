@@ -282,6 +282,13 @@ model Wallet {
   name           String @default("")
 
   // ---------------------------------------------------------------------------
+  // Nne-to-one
+  // ---------------------------------------------------------------------------
+
+  timelock        Timelock? @relation(fields: [timelockAddress], references: [address])
+  timelockAddress String?
+
+  // ---------------------------------------------------------------------------
   // None-to-none
   // ---------------------------------------------------------------------------
 
@@ -306,6 +313,13 @@ model Wallet {
   users                      User[]
   walletBalances             WalletBalance[]
   walletNotificationSettings WalletNotificationSettings[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([timelockAddress])
 }
 
 // -----------------------------------------------------------------------------
@@ -1656,7 +1670,6 @@ model Timelock {
   // Fields
   // ---------------------------------------------------------------------------
 
-  wallet   String
   salt     String
   minDelay BigInt
 
@@ -1666,6 +1679,7 @@ model Timelock {
 
   activities         Activity[]
   timelockOperations TimelockOperation[]
+  wallets            Wallet[]
   walletBillings     WalletBilling[]
 }
 
