@@ -252,7 +252,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
-        disabled={(deployedOp && callData === "0x") || !isDeployable}
+        disabled={
+          isLoading || (deployedOp && callData === "0x") || !isDeployable
+        }
       >
         <Link
           href={`/${address}/create?userOperations=${deployedUserOperation}`}
