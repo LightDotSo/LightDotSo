@@ -63,15 +63,12 @@ contract LightTimelockControllerFactory {
     // -------------------------------------------------------------------------
 
     /// @notice Creates a LightTimelockController, and return its address.
-    /// @param authorizedAccount The address of the authorized account (proposer and executor).
+    /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
-    function createTimelockController(address authorizedAccount, bytes32 salt)
-        public
-        returns (LightTimelockController ret)
-    {
-        if (authorizedAccount == address(0)) revert AuthorizedAccountAddressZero();
+    function createTimelockController(address wallet, bytes32 salt) public returns (LightTimelockController ret) {
+        if (wallet == address(0)) revert AuthorizedAccountAddressZero();
 
-        address addr = getAddress(authorizedAccount, salt);
+        address addr = getAddress(wallet, salt);
         uint256 codeSize = addr.code.length;
         // If the timelock controller already exists, return it
         if (codeSize > 0) {
@@ -82,8 +79,7 @@ contract LightTimelockControllerFactory {
             payable(
                 address(
                     new ERC1967Proxy{salt: salt}(
-                        address(timelockImplementation),
-                        abi.encodeCall(LightTimelockController.initialize, (authorizedAccount))
+                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )
@@ -91,17 +87,16 @@ contract LightTimelockControllerFactory {
     }
 
     /// @notice Calculate the counterfactual address of the timelock controller as it would be returned by createTimelockController()
-    /// @param authorizedAccount The address of the authorized account (proposer and executor).
+    /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
-    function getAddress(address authorizedAccount, bytes32 salt) public view returns (address) {
+    function getAddress(address wallet, bytes32 salt) public view returns (address) {
         return Create2.computeAddress(
             salt,
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
                     abi.encode(
-                        address(timelockImplementation),
-                        abi.encodeCall(LightTimelockController.initialize, (authorizedAccount))
+                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )

@@ -59,12 +59,12 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
     }
 
     /// @notice Initialize the timelock controller
-    /// @param authorizedAccount The address of the authorized account (proposer and executor)
+    /// @param wallet The address of the authorized wallet (proposer and executor)
     /// @dev This function is called by the factory contract
-    function initialize(address authorizedAccount) public virtual initializer {
+    function initialize(address wallet) public virtual initializer {
         // Initialize the proposers
         address[] memory proposers = new address[](1);
-        proposers[0] = authorizedAccount;
+        proposers[0] = wallet;
 
         // Initialize the executors
         address[] memory executors = new address[](1);
@@ -76,11 +76,11 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
         // Admin `address(0)` is the default admin (set to the timelock controller itself)
         __TimelockController_init(MIN_DELAY, proposers, executors, address(0));
 
-        // Revoke canceller role from the light wallet
-        _revokeRole(CANCELLER_ROLE, authorizedAccount);
+        // Revoke canceller role from the wallet
+        _revokeRole(CANCELLER_ROLE, wallet);
 
         // Register executor role to the light wallet
-        _grantRole(EXECUTOR_ROLE, authorizedAccount);
+        _grantRole(EXECUTOR_ROLE, wallet);
 
         // Register canceler role to the light protocol controller
         _grantRole(CANCELLER_ROLE, LIGHT_PROTOCOL_CONTROLLER);
