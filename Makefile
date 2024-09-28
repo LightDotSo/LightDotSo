@@ -191,7 +191,7 @@ contracts-halmos: ## Runs halmos on the contracts
 
 .PHONY: contracts-size
 contracts-size: ## Omits the current code size layout from the current contracts with foundry
-	./contracts/size.sh
+	FOUNDRY_PROFILE=check ./contracts/size.sh
 
 .PHONY: contracts-slither
 contracts-slither: ## Runs slither on the contracts
@@ -219,7 +219,7 @@ contracts-snapshot-check: ## Runs the snapshot generation script w/ check
 
 .PHONY: contracts-storage
 contracts-storage: ## Omits the current storage layout from the current contracts with foundry
-	./contracts/storage.sh
+	FOUNDRY_PROFILE=check ./contracts/storage.sh
 
 .PHONY: contracts-vscode-remappings
 contracts-vscode-remappings: ## Generate the vscode remappings

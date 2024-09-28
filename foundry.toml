@@ -12,6 +12,9 @@
   # known error codes are: ["unreachable", "unused-return", "unused-param", "unused-var", "code-size", "shadowing", "func-mutability", "license", "pragma-solidity", "virtual-interfaces", "same-varname"]
   # ignored_error_codes = ["license", "code-size"]
 
+[profile.check]
+  verbosity = 2
+
 [profile.deploy]
   optimizer_runs = 4_294_967_295
   # via_ir = true
