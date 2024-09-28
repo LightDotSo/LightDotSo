@@ -1637,9 +1637,9 @@ model Timelock {
   // Fields
   // ---------------------------------------------------------------------------
 
-  authorizedAddress String
-  salt              String
-  minDelay          BigInt
+  wallet   String
+  salt     String
+  minDelay BigInt
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1687,7 +1687,7 @@ model TimelockOperation {
   // One-to-many
   // ---------------------------------------------------------------------------
 
-  calls TimelockCall[]
+  timelockCalls TimelockCall[]
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1704,6 +1704,17 @@ model TimelockOperation {
   @@index([timelockAddress])
 }
 
+enum TimelockOperationState {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  DRAFTED
+  PROPOSED
+  CANCELLED
+  EXECUTED
+}
+
 model TimelockCall {
   // ---------------------------------------------------------------------------
   // Core
@@ -1717,37 +1728,24 @@ model TimelockCall {
   // Fields
   // ---------------------------------------------------------------------------
 
-  index  BigInt
+  index  Int
   target String
   value  String
   data   Bytes
-
-  executedAt DateTime?
 
   // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
-  operation   TimelockOperation @relation(fields: [operationId], references: [id])
-  operationId String
+  timelockOperation   TimelockOperation @relation(fields: [timelockOperationId], references: [id])
+  timelockOperationId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([operationId])
-}
-
-enum TimelockOperationState {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  DRAFTED
-  PROPOSED
-  CANCELLED
-  EXECUTED
+  @@index([timelockOperationId])
 }
 
 // -----------------------------------------------------------------------------
