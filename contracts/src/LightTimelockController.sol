@@ -46,6 +46,9 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
     /// @notice The minimum delay for the timelock
     uint256 public immutable MIN_DELAY = 300 seconds;
 
+    /// @notice The address of the light protocol controller
+    address public immutable LIGHT_PROTOCOL_CONTROLLER = address(0);
+
     // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
@@ -56,17 +59,16 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
     }
 
     /// @notice Initialize the timelock controller
-    /// @param lightWallet The address of the light wallet (proposer and executor)
-    /// @param lightProtocolController The address of the light protocol controller (executor and canceler)
+    /// @param authorizedAccount The address of the authorized account (proposer and executor)
     /// @dev This function is called by the factory contract
-    function initialize(address lightWallet, address lightProtocolController) public virtual initializer {
+    function initialize(address authorizedAccount) public virtual initializer {
         // Initialize the proposers
         address[] memory proposers = new address[](1);
-        proposers[0] = lightWallet;
+        proposers[0] = authorizedAccount;
 
         // Initialize the executors
         address[] memory executors = new address[](1);
-        executors[0] = lightProtocolController;
+        executors[0] = LIGHT_PROTOCOL_CONTROLLER;
 
         // Initialize the timelock controller as in `__TimelockController_init_unchained`
         // Proposer `singletonArray(lightWallet)` is the proposer and canceller by default
@@ -75,13 +77,13 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
         __TimelockController_init(MIN_DELAY, proposers, executors, address(0));
 
         // Revoke canceller role from the light wallet
-        _revokeRole(CANCELLER_ROLE, lightWallet);
+        _revokeRole(CANCELLER_ROLE, authorizedAccount);
 
         // Register executor role to the light wallet
-        _grantRole(EXECUTOR_ROLE, lightWallet);
+        _grantRole(EXECUTOR_ROLE, authorizedAccount);
 
         // Register canceler role to the light protocol controller
-        _grantRole(CANCELLER_ROLE, lightProtocolController);
+        _grantRole(CANCELLER_ROLE, LIGHT_PROTOCOL_CONTROLLER);
     }
 
     // -------------------------------------------------------------------------
