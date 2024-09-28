@@ -31,7 +31,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   return OriginalPage({
-    params: new Promise((resolve) => resolve({ address: DEMO_WALLET_ADDRESS })),
+    params: Promise.resolve({ address: DEMO_WALLET_ADDRESS }),
     searchParams: searchParams,
   });
 }

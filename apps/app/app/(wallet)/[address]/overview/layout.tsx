@@ -53,7 +53,7 @@ type OverviewLayoutProps = {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function OverviewLayout({
+export default async function OverviewLayout({
   children,
   nav,
   params,
@@ -66,14 +66,14 @@ export default function OverviewLayout({
     <>
       <LargeLayerWrapper>
         <WalletOverviewBanner
-          address={params.address as Address}
-          isDemo={params.isDemo}
+          address={(await params).address as Address}
+          isDemo={(await params).isDemo}
         />
       </LargeLayerWrapper>
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
           {nav}
-          <OverviewInvokeButton address={params.address as Address} />
+          <OverviewInvokeButton address={(await params).address as Address} />
         </LinkButtonGroup>
       </MiddleLayerWrapper>
       <BaseLayerWrapper>

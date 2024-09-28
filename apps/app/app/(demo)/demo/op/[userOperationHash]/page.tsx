@@ -31,11 +31,9 @@ export default async function Page({ params }: PageProps) {
   const resolvedParams = await params;
 
   return OriginalPage({
-    params: new Promise((resolve) =>
-      resolve({
-        address: DEMO_WALLET_ADDRESS,
-        userOperationHash: resolvedParams.userOperationHash,
-      }),
-    ),
+    params: Promise.resolve({
+      address: DEMO_WALLET_ADDRESS,
+      userOperationHash: resolvedParams.userOperationHash,
+    }),
   });
 }

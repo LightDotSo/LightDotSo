@@ -40,6 +40,7 @@ const DepositDialog = dynamic(
 
 type PageProps = {
   params: Awaited<OriginalPageProps["params"]>;
+  searchParams: Awaited<OriginalPageProps["searchParams"]>;
 };
 
 // -----------------------------------------------------------------------------

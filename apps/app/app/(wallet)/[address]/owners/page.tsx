@@ -47,13 +47,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(await params, await searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration, walletSettings } = await handler(params, searchParams);
+  const { configuration, walletSettings } = await handler(
+    await params,
+    await searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query

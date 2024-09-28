@@ -47,7 +47,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { transfer, walletSettings, nfts, balances } = await handler(
+  const { walletSettings, nfts, balances } = await handler(
     await params,
     await searchParams,
   );
@@ -87,11 +87,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader
-        params={await params}
-        searchParams={await searchParams}
-        transfer={transfer}
-      />
+      <Loader params={await params} searchParams={await searchParams} />
     </HydrationBoundary>
   );
 }

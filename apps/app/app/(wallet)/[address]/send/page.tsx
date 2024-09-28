@@ -41,15 +41,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(await params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { transfers, tokens, nfts, walletSettings } = await handler(
-    params,
-    searchParams,
+    await params,
+    await searchParams,
   );
 
   // ---------------------------------------------------------------------------

@@ -71,7 +71,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Loader
-        params={params}
+        params={await params}
         image_hash={configuration.image_hash as Hex}
         salt={wallet.salt as Hex}
         is_enabled_testnet={walletSettings?.is_enabled_testnet ?? false}
