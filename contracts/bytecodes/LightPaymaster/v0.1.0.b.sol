@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {ENTRY_POINT_V070_ADDRESS, OFFCHAIN_VERIFIER_ADDRESS} from "@/constants/addresses.sol";
+import {ENTRY_POINT_V070_ADDRESS} from "@/constants/addresses.sol";
 
 pragma solidity ^0.8.27;
 
@@ -24,3 +24,4 @@ bytes constant byteCode =
 bytes constant initCode = abi.encodePacked(byteCode, abi.encode(ENTRY_POINT_V070_ADDRESS));
 bytes32 constant initCodeHash = 0x28632802a909ea7b5c027f1ae914952d727bd21730b1b58c80d16125c7cdbe93;
 bytes32 constant salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
+bytes32 constant proxySalt = 0x0000000000000000000000000000000000000000000000000000000000000000;

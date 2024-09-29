@@ -16,8 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
-import {LIGHT_PAYMASTER_ADDRESS} from "@/constants/addresses.sol";
+import {initCode, initCodeHash, salt, proxySalt} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
+import {LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
@@ -53,8 +53,20 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightPaymaster
-            paymaster = LightPaymaster(payable(deployWithCreate2(initCode, salt)));
+            // Deploy the implementation
+            LightPaymaster paymasterImplementation = new LightPaymaster(deployWithCreate2(initCode, salt));
+
+            // Assert that the paymaster is the expected address
+            assert(address(paymasterImplementation) == LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS);
+
+            // Deploy the paymaster
+            bytes constant initCode = abi.encodePacked(
+                type(ERC1967Proxy).creationCode,
+                abi.encode(address(paymasterImplementation), abi.encodeCall(LightPaymaster.initialize, (address(0), 100, address(0)))
+            ));
+
+            // Deploy the proxy
+            paymaster = LightPaymaster(payable(deployWithCreate2(initCode, proxySalt)));
 
             // Assert that the paymaster is the expected address
             assert(address(paymaster) == LIGHT_PAYMASTER_ADDRESS);

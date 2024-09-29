@@ -57,8 +57,6 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
 
             // Assert that the factory is the expected address
             assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);
-
-            factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
         }
 
         // Stop the broadcast

@@ -34,7 +34,6 @@ import {
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui/components/button";
 import {
-  cn,
   findContractAddressByAddress,
   getEtherscanUrl,
   shortenAddress,
@@ -162,9 +161,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     // The v0.1.0 and v0.2.0 factories are the only factories that are deployable through the immutable create2 factory
     if (
       wallet.factory_address ===
-        CONTRACT_ADDRESSES[ContractAddress.V010_FACTORY] ||
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V010_ADDRESS] ||
       wallet.factory_address ===
-        CONTRACT_ADDRESSES[ContractAddress.V020_FACTORY]
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V020_ADDRESS]
     ) {
       return (
         immutableCreate2FactoryBytecode &&
@@ -172,6 +171,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       );
     }
 
+    // Default to true
     return true;
   }, [wallet, immutableCreate2FactoryBytecode]);
 
@@ -255,28 +255,41 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const SettingsDeploymentCardSubmitButton: FC = () => {
+    // -------------------------------------------------------------------------
+    // Local Variables
+    // -------------------------------------------------------------------------
+
+    const buttonContent = isLoading
+      ? "Loading..."
+      : typeof deployedOp !== "undefined"
+        ? callData === "0x"
+          ? "Already Deployed"
+          : "Upgrade"
+        : isDeployable
+          ? "Deploy"
+          : "Not Deployable";
+
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
     return (
       <Button
+        asChild
         isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
         disabled={isDisabled}
       >
-        <Link
-          aria-disabled={isDisabled}
-          href={`/${address}/create?userOperations=${deployedUserOperation}`}
-          className={cn(isDisabled && "cursor-not-allowed")}
-        >
-          {isLoading
-            ? "Loading..."
-            : typeof deployedOp !== "undefined"
-              ? callData === "0x"
-                ? "Already Deployed"
-                : "Upgrade"
-              : isDeployable
-                ? "Deploy"
-                : "Not Deployable"}
-        </Link>
+        {isDisabled ? (
+          <span>{buttonContent}</span>
+        ) : (
+          <Link
+            href={`/${address}/create?userOperations=${deployedUserOperation}`}
+          >
+            {buttonContent}
+          </Link>
+        )}
       </Button>
     );
   };

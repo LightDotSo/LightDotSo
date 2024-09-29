@@ -17,7 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
-import {CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
+import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
@@ -169,7 +169,7 @@ abstract contract BaseTest is Test {
         address contractAddress;
         assembly {
             mstore(0x00, 0)
-            let result := call(gas(), CREATE2_DEPLOYER_ADDRESS, 0, add(deployCode, 0x20), mload(deployCode), 12, 20)
+            let result := call(gas(), CREATE2_DEPLOYER_ADDRESS_RAW, 0, add(deployCode, 0x20), mload(deployCode), 12, 20)
             if iszero(result) { revert(0, 0) }
             contractAddress := mload(0)
         }
