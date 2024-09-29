@@ -1586,7 +1586,11 @@ export const lightDagAbi = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightPaymasterAbi = [
-  { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
+  {
+    type: 'constructor',
+    inputs: [{ name: 'entryPoint', internalType: 'address', type: 'address' }],
+    stateMutability: 'nonpayable',
+  },
   { type: 'receive', stateMutability: 'payable' },
   {
     type: 'function',
@@ -1628,7 +1632,7 @@ export const lightPaymasterAbi = [
     inputs: [],
     name: 'entryPoint',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'pure',
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -1706,6 +1710,13 @@ export const lightPaymasterAbi = [
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'signer', internalType: 'address', type: 'address' }],
+    name: 'isSigner',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -1815,13 +1826,6 @@ export const lightPaymasterAbi = [
     name: 'setMaxWithdrawDenominator',
     outputs: [],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'signers',
-    outputs: [{ name: 'isValidSigner', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -2007,23 +2011,11 @@ export const lightPaymasterAbi = [
         name: 'signer',
         internalType: 'address',
         type: 'address',
-        indexed: false,
+        indexed: true,
       },
+      { name: 'isValid', internalType: 'bool', type: 'bool', indexed: false },
     ],
-    name: 'SignerAdded',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'signer',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'SignerRemoved',
+    name: 'SignerSet',
   },
   {
     type: 'event',
@@ -5651,6 +5643,15 @@ export const useReadLightPaymasterGetHash = /*#__PURE__*/ createUseReadContract(
 )
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"isSigner"`
+ */
+export const useReadLightPaymasterIsSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'isSigner',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"isValidWithdrawSignature"`
  */
 export const useReadLightPaymasterIsValidWithdrawSignature =
@@ -5702,13 +5703,6 @@ export const useReadLightPaymasterProxiableUuid =
     abi: lightPaymasterAbi,
     functionName: 'proxiableUUID',
   })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"signers"`
- */
-export const useReadLightPaymasterSigners = /*#__PURE__*/ createUseReadContract(
-  { abi: lightPaymasterAbi, functionName: 'signers' },
-)
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__
@@ -6100,21 +6094,12 @@ export const useWatchLightPaymasterOwnershipTransferred =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerAdded"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerSet"`
  */
-export const useWatchLightPaymasterSignerAdded =
+export const useWatchLightPaymasterSignerSet =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightPaymasterAbi,
-    eventName: 'SignerAdded',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerRemoved"`
- */
-export const useWatchLightPaymasterSignerRemoved =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: lightPaymasterAbi,
-    eventName: 'SignerRemoved',
+    eventName: 'SignerSet',
   })
 
 /**

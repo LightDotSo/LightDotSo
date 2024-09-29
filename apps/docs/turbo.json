@@ -20,6 +20,8 @@
       "cache": false,
       "persistent": true
     },
-    "lint": {}
+    "generate": {
+      "outputs": ["content/api/**"]
+    }
   }
 }

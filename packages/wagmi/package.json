@@ -26,10 +26,10 @@
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist",
+    "generate": "cd ../.. && pnpm wagmi:generate",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
-    "tsc": "tsc --noEmit",
-    "wagmi": "cd ../.. && pnpm wagmi:generate"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
