@@ -71,7 +71,7 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             console.logBytes(proxyInitCode);
 
             // Assert that the proxy init code is the expected value
-            assert(keccak256(proxyInitCode) == initCodeHash);
+            assert(keccak256(proxyInitCode) == proxyInitCodeHash);
 
             // Deploy the proxy
             paymaster = LightPaymaster(payable(deployWithCreate2(proxyInitCode, proxySalt)));
