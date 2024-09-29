@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  ChainLogo,
-  chainLogoVariants,
-  chainLogoConfig,
-} from "./chain";
-export { HistoryIcon, NftIcon, TokenIcon } from "./icon";
-export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";
+export { HistoryIcon } from "./history-icon";
+export { NftIcon } from "./nft-icon";
+export { TokenIcon } from "./token-icon";
