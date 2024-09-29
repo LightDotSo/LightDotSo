@@ -34,7 +34,7 @@ import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
   useReadEntryPointv060GetNonce,
   useReadLightWalletImageHash,
-} from "@lightdotso/wagmi";
+} from "@lightdotso/wagmi/generated";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import { type FC, useEffect, useMemo, useState } from "react";
 import { type Address, type Hex, fromHex } from "viem";

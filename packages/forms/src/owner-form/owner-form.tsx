@@ -50,7 +50,7 @@ import {
 import { Separator } from "@lightdotso/ui/components/separator";
 import { toast } from "@lightdotso/ui/components/toast";
 import { cn, debounce } from "@lightdotso/utils";
-import { publicClient } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi/client";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useEffect, useMemo } from "react";

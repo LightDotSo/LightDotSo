@@ -67,7 +67,8 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui/components/tabs";
 import { cn, getChainWithChainId, refineNumberFormat } from "@lightdotso/utils";
-import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi/client";
+import { lightWalletAbi } from "@lightdotso/wagmi/generated";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";

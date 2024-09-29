@@ -5,6 +5,7 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2020"],
     "module": "commonjs",
+    "moduleResolution": "NodeNext",
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"

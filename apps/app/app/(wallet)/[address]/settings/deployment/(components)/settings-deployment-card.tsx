@@ -39,7 +39,10 @@ import {
   shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
-import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import {
+  lightWalletAbi,
+  useReadLightWalletImageHash,
+} from "@lightdotso/wagmi/generated";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import Link from "next/link";
 import { type FC, useMemo } from "react";

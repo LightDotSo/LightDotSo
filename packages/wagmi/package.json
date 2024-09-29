@@ -15,8 +15,10 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
+    "./client": "./src/client.ts",
     "./config": "./src/config.ts",
     "./connectkit": "./src/connectkit.ts",
+    "./generated": "./src/generated.ts",
     "./wagmi": "./src/wagmi.ts"
   },
   "main": "./src/index.ts",
@@ -35,7 +37,7 @@
     "@wagmi/core": "^2.13.8",
     "connectkit": "^1.8.2",
     "viem": "^2.21.15",
-    "wagmi": "^2.12.16"
+    "wagmi": "^2.13.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

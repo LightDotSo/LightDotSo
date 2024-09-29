@@ -22,7 +22,7 @@ import {
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
-import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
 
