@@ -58,14 +58,16 @@
     timeout = 300_000
 
     [profile.smt.model_checker.contracts]
+      "contracts/src/LightDAG.sol" = ["LightDAG"]
+      "contracts/src/LightPaymaster.sol" = ["LightPaymaster"]
+      "contracts/src/LightTimelockController.sol" = ["LightTimelockController"]
+      "contracts/src/LightTimelockControllerFactory.sol" = [
+        "LightTimelockControllerFactory",
+      ]
       "contracts/src/LightWallet.sol" = ["LightWallet"]
       "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
-
-[fmt]
-  ignore = [
-    "contracts/src/LightWallet.sol",
-    "contracts/src/LightWalletFactory.sol",
-  ]
+      "contracts/src/LightVault.sol" = ["LightVault"]
+      "contracts/src/LightVaultFactory.sol" = ["LightVaultFactory"]
 
 [doc]
   ignore = ["**/*.t.sol"]
@@ -73,6 +75,7 @@
   repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
+  anvil = "http://localhost:8545"
   localhost = "http://localhost:8545"
   mainnet = "${PROTECTED_RPC_URL}/1"
   optimism = "${PROTECTED_RPC_URL}/10"

@@ -16,17 +16,17 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightWalletFactory/v0.3.0.b.sol";
-import {LIGHT_WALLET_FACTORY_ADDRESS} from "@/constants/addresses.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightVaultFactory/v0.1.0.b.sol";
+import {LIGHT_VAULT_FACTORY_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
+// LightVaultFactoryDeployer -- Deploys the LightVaultFactory contract
+contract LightVaultFactoryDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -47,18 +47,16 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             entryPoint = deployEntryPoint();
 
             // Create the factory
-            factory = new LightWalletFactory(entryPoint);
+            vaultFactory = new LightVaultFactory(0, address(0), address(0));
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightWalletFactory
-            factory = LightWalletFactory(deployWithCreate2(initCode, salt));
+            // Create LightVaultFactory
+            vaultFactory = LightVaultFactory(deployWithCreate2(initCode, salt));
 
             // Assert that the factory is the expected address
-            assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);
-
-            factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
+            assert(address(factory) == LIGHT_VAULT_FACTORY_ADDRESS);
         }
 
         // Stop the broadcast

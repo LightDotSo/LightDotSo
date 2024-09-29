@@ -9,7 +9,9 @@ export default defineConfig({
   plugins: [
     foundry({
       forge: {
-        build: true,
+        build: false,
+        clean: false,
+        rebuild: false,
       },
       include: [
         "EntryPointv0.6.0.sol/EntryPointv060.json",

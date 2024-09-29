@@ -15,9 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.27;
 
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
-import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
@@ -35,7 +33,7 @@ contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
         console.log(paymaster.owner());
 
         // Add stake
-        paymaster.addStake{value: 1 ether}(86_400);
+        paymaster.entryPointAddStake{value: 1 ether}(1_000_000_000, 86_400);
 
         // Stop the broadcast
         vm.stopBroadcast();

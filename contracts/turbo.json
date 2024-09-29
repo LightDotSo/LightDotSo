@@ -11,7 +11,7 @@
         "../foundry.toml",
         "../remappings.txt"
       ],
-      "outputs": []
+      "outputs": ["../opt/**"]
     },
     "lint": {
       "dependsOn": ["^build"]

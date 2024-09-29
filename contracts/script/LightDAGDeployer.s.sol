@@ -16,17 +16,17 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightWalletFactory/v0.3.0.b.sol";
-import {LIGHT_WALLET_FACTORY_ADDRESS} from "@/constants/addresses.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightDAG/v0.1.0.b.sol";
+import {LIGHT_DAG_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightDAG} from "@/contracts/LightDAG.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
+// LightDAGDeployer -- Deploys the LightDAG contract
+contract LightDAGDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -35,6 +35,7 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
         // Log the byte code hash
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
+
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
 
@@ -46,19 +47,17 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             // Construct the entrypoint
             entryPoint = deployEntryPoint();
 
-            // Create the factory
-            factory = new LightWalletFactory(entryPoint);
+            // Create the dag
+            dag = new LightDAG();
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightWalletFactory
-            factory = LightWalletFactory(deployWithCreate2(initCode, salt));
+            // Create LightDAG
+            dag = LightDAG(deployWithCreate2(initCode, salt));
 
-            // Assert that the factory is the expected address
-            assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);
-
-            factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
+            // Assert that the dag is the expected address
+            assert(address(dag) == LIGHT_DAG_ADDRESS);
         }
 
         // Stop the broadcast

@@ -18,7 +18,7 @@ pragma solidity ^0.8.27;
 
 import {
     ENTRY_POINT_ADDRESS,
-    LIGHT_FACTORY_ADDRESS,
+    LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS,
     SIMPLE_ACCOUNT_FACTORY_ADDRESS
 } from "@/constants/addresses.sol";
@@ -65,7 +65,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
 
         // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
 
         // LightPaymaster core contract
         paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
@@ -205,7 +205,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
-            LIGHT_FACTORY_ADDRESS,
+            LIGHT_WALLET_FACTORY_ADDRESS,
             abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 

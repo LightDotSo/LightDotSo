@@ -16,6 +16,7 @@
 
 pragma solidity ^0.8.27;
 
+import {LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_PAYMASTER_ADDRESS} from "@/constants/addresses.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
@@ -36,7 +37,7 @@ abstract contract BaseLightDeployerOps is BaseLightDeployer, Script {
         BaseLightDeployer.setUp();
 
         // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
 
         // LightPaymaster core contract
         paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
