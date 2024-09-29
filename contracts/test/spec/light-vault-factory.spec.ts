@@ -21,7 +21,7 @@ test("LightVaultFactory: Correct humanReadableAbi", () => {
     Object.values(LightVaultFactory.humanReadableAbi),
   ).toMatchInlineSnapshot(`
     [
-      "constructor(uint16 _fees, address _owner, address _treasury)",
+      "constructor()",
       "error Create2EmptyBytecode()",
       "error Create2FailedDeployment()",
       "error Create2InsufficientBalance(uint256 balance, uint256 needed)",

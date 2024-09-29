@@ -20,7 +20,7 @@
 | LibBytesPointer                |       86 |     24,490 |
 | LibOptim                       |       86 |     24,490 |
 | LightDAG                       |    2,116 |     22,460 |
-| LightPaymaster                 |    9,672 |     14,904 |
+| LightPaymaster                 |    9,694 |     14,882 |
 | LightPaymasterUtils            |    1,449 |     23,127 |
 | LightTimelockController        |   11,956 |     12,620 |
 | LightTimelockControllerFactory |    2,579 |     21,997 |
@@ -30,7 +30,7 @@
 | LightWallet                    |   12,277 |     12,299 |
 | LightWalletFactory             |    2,428 |     22,148 |
 | LightWalletUtils               |       86 |     24,490 |
-| MagicSpend                     |    9,504 |     15,072 |
+| MagicSpend                     |    9,526 |     15,050 |
 | Math                           |       86 |     24,490 |
 | Merkle                         |    2,526 |     22,050 |
 | MerkleProof                    |       86 |     24,490 |

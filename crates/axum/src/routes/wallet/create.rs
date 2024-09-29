@@ -32,7 +32,7 @@ use axum_extra::{
     TypedHeader,
 };
 use eyre::{eyre, Result};
-use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
+use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESS, create2::get_address};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -42,7 +42,6 @@ use lightdotso_redis::query::wallet::add_to_wallets;
 use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
-    hash::get_address,
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::tracing::{error, info, trace};
