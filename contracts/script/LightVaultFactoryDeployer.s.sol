@@ -16,16 +16,16 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightWalletFactory/v0.3.0.b.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightVaultFactory/v0.1.0.b.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
+// LightVaultFactoryDeployer -- Deploys the LightVaultFactory contract
+contract LightVaultFactoryDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -46,13 +46,13 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             entryPoint = new EntryPoint();
 
             // Create the factory
-            factory = new LightWalletFactory(entryPoint);
+            factory = new LightVaultFactory(entryPoint);
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightWalletFactory
-            factory = LightWalletFactory(deployWithCreate2(salt, initCode));
+            // Create LightVaultFactory
+            factory = LightVaultFactory(deployWithCreate2(salt, initCode));
 
             // Assert that the factory is the expected address
             assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);

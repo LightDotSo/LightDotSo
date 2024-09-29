@@ -173,6 +173,7 @@ contracts-abi: ## Generate the contract ABIs
 
 .PHONY: contracts-build
 contracts-build: ## Build the contracts
+	./contracts/build.sh ERC1967Proxy.sol
 	./contracts/build.sh LightDAG.sol
 	./contracts/build.sh LightPaymaster.sol
 	./contracts/build.sh LightTimelockController.sol

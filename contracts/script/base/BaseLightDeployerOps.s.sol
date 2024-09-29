@@ -36,7 +36,7 @@ abstract contract BaseLightDeployerOps is BaseLightDeployer, Script {
         BaseLightDeployer.setUp();
 
         // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
 
         // LightPaymaster core contract
         paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);

@@ -54,7 +54,7 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             vm.startBroadcast();
 
             // Create LightPaymaster
-            paymaster = LightPaymaster(deployWithCreate2(salt, initCode));
+            paymaster = LightPaymaster(deployWithCreate2(initCode, salt));
 
             // Assert that the paymaster is the expected address
             assert(address(paymaster) == LIGHT_PAYMASTER_ADDRESS);

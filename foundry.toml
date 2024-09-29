@@ -58,14 +58,16 @@
     timeout = 300_000
 
     [profile.smt.model_checker.contracts]
+      "contracts/src/LightDAG.sol" = ["LightDAG"]
+      "contracts/src/LightPaymaster.sol" = ["LightPaymaster"]
+      "contracts/src/LightTimelockController.sol" = ["LightTimelockController"]
+      "contracts/src/LightTimelockControllerFactory.sol" = [
+        "LightTimelockControllerFactory",
+      ]
       "contracts/src/LightWallet.sol" = ["LightWallet"]
       "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
-
-[fmt]
-  ignore = [
-    "contracts/src/LightWallet.sol",
-    "contracts/src/LightWalletFactory.sol",
-  ]
+      "contracts/src/LightVault.sol" = ["LightVault"]
+      "contracts/src/LightVaultFactory.sol" = ["LightVaultFactory"]
 
 [doc]
   ignore = ["**/*.t.sol"]

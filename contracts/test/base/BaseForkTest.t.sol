@@ -18,7 +18,7 @@ pragma solidity ^0.8.27;
 
 import {
     ENTRY_POINT_ADDRESS,
-    LIGHT_FACTORY_ADDRESS,
+    LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS
 } from "@/constants/addresses.sol";
@@ -49,7 +49,7 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         // EntryPoint from eth-inifinitism
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
         // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
         // LightTimelockControllerFactory core contract
         timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
         // LightPaymaster core contract
