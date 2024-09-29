@@ -102,7 +102,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const implAddress = useProxyImplementationAddress({
+  const implementationAddress = useProxyImplementationAddress({
     address: address as Address,
     chainId: chain.id,
   });
@@ -175,16 +175,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     return true;
   }, [wallet, immutableCreate2FactoryBytecode]);
 
-  const implVersion = useMemo(() => {
-    if (!implAddress) {
+  const implementationVersion = useMemo(() => {
+    if (!implementationAddress) {
       return;
     }
 
     // Get the version of the implementation
     return (
-      PROXY_IMPLEMENTAION_VERSION_MAPPING[implAddress as Address] ?? "Unknown"
+      PROXY_IMPLEMENTAION_VERSION_MAPPING[implementationAddress as Address] ??
+      "Unknown"
     );
-  }, [implAddress]);
+  }, [implementationAddress]);
 
   const initCode = useMemo(() => {
     if (!wallet) {
@@ -203,7 +204,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   }, [image_hash, salt, wallet]);
 
   const callData = useMemo(() => {
-    if (implAddress === LATEST_IMPLEMENTATION_ADDRESS) {
+    if (implementationAddress === LATEST_IMPLEMENTATION_ADDRESS) {
       return "0x";
     }
 
@@ -234,7 +235,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         }),
       ],
     });
-  }, [implAddress, address]);
+  }, [implementationAddress, address]);
 
   const isDisabled = useMemo(() => {
     return isLoading || (deployedOp && callData === "0x") || !isDeployable;
@@ -308,11 +309,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       chainId={chain.id}
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      {deployedOp && implAddress && (
+      {deployedOp && implementationAddress && (
         <div className="flex items-center gap-2">
-          Version: {implVersion}
+          Version: {implementationVersion}
           <span className="text-sm text-text-weak">
-            {shortenAddress(implAddress)}
+            {shortenAddress(implementationAddress)}
           </span>
         </div>
       )}

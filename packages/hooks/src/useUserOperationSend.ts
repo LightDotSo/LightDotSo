@@ -25,6 +25,7 @@ import {
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
+import { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -59,6 +60,15 @@ export const useUserOperationSend = ({
   });
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation", userOperation);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const implementationAddress = useProxyImplementationAddress({
+    address: address as Address,
+    chainId: userOperation?.chain_id ?? 0,
+  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -102,6 +112,7 @@ export const useUserOperationSend = ({
       address: address as Address,
       configuration: configuration,
       hash: userOperation?.hash as Hex,
+      implementation_address: implementationAddress as Address,
     });
 
   // ---------------------------------------------------------------------------

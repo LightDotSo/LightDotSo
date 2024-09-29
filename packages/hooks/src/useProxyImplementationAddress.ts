@@ -39,37 +39,41 @@ export const useProxyImplementationAddress = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: implAddressBytes32, isSuccess: isImplAddressBytes32Success } =
-    useStorageAt({
-      address: address as Address,
-      chainId: chainId,
-      // The logic address as defined in the 1967 EIP
-      // From: https://eips.ethereum.org/EIPS/eip-1967
-      slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-    });
+  const {
+    data: implementationAddressBytes32,
+    isSuccess: isImplementationAddressBytes32Success,
+  } = useStorageAt({
+    address: address as Address,
+    chainId: chainId,
+    // The logic address as defined in the 1967 EIP
+    // From: https://eips.ethereum.org/EIPS/eip-1967
+    slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const implAddress = useMemo(() => {
+  const implementationAddress = useMemo(() => {
     // Don't continue if the impl address is not available or the call failed
-    if (!(implAddressBytes32 && isImplAddressBytes32Success)) {
+    if (
+      !(implementationAddressBytes32 && isImplementationAddressBytes32Success)
+    ) {
       return;
     }
 
     // Don't continue if the impl address is not the correct length
-    if (implAddressBytes32.length !== 66) {
+    if (implementationAddressBytes32.length !== 66) {
       return;
     }
 
     // Convert the bytes32 impl address to an address
-    return getAddress(`0x${implAddressBytes32.slice(26)}`);
-  }, [implAddressBytes32, isImplAddressBytes32Success]);
+    return getAddress(`0x${implementationAddressBytes32.slice(26)}`);
+  }, [implementationAddressBytes32, isImplementationAddressBytes32Success]);
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  return implAddress;
+  return implementationAddress;
 };
