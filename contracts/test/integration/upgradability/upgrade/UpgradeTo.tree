@@ -21,10 +21,10 @@ UpgradeToIntegrationTest::Timelock
     └── it should revert when attempting to upgrade
 
 UpgradeToIntegrationTest::Paymaster
-├── when the caller is not self
+├── when the caller is not owner
 │   ├── it should revert
 │   └── it should revert with a {OwnableUnauthorizedAccount} error
-├── when the caller is self
+├── when the caller is owner
 │   ├── it should upgrade to a new implementation
 │   └── it should have the correct implementation address
 └── when the implementation is immutable

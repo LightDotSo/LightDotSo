@@ -19,6 +19,7 @@ pragma solidity ^0.8.27;
 import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
 import {IStakeManager} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -79,13 +80,13 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
 
-        // vm.expectRevert(
-        //     abi.encodeWithSelector(
-        //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
-        //     )
-        // );
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
+            )
+        );
         // it should revert on a {ValidationResult} error
-        // entryPoint.simulateValidation(op);
+        entryPointSimulations.simulateValidation(op);
     }
 
     /// Tests that the entrypoint returns a correct revert code if incorrect params
@@ -108,9 +109,9 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
         op.signature = "";
 
         // Revert for conventional upgrades w invalid signature
-        // vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
+        vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
         // it should revert on a {AA23 initCode (or OOG)} error
         // it should not be able to initialize twice
-        // entryPoint.simulateValidation(op);
+        entryPointSimulations.simulateValidation(op);
     }
 }

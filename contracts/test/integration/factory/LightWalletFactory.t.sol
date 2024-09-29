@@ -16,10 +16,10 @@
 
 pragma solidity ^0.8.27;
 
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {Initializable} from "@/test/base/BaseTest.t.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 

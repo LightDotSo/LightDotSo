@@ -18,8 +18,8 @@ pragma solidity ^0.8.27;
 
 import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
 import {CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
@@ -79,6 +79,8 @@ abstract contract BaseTest is Test {
 
     // EntryPoint from eth-inifinitism
     EntryPoint internal entryPoint;
+    // EntryPointSimulations from eth-inifinitism
+    EntryPointSimulations internal entryPointSimulations;
     // LightWallet core contract
     LightWallet internal account;
     // LightWalletFactory core contract
@@ -122,6 +124,9 @@ abstract contract BaseTest is Test {
     function setUp() public virtual {
         // Deploy the EntryPoint
         entryPoint = deployEntryPoint();
+
+        // Deploy the EntryPointSimulations
+        entryPointSimulations = new EntryPointSimulations();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
