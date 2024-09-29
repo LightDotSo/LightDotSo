@@ -234,6 +234,61 @@ pub struct PackedUserOperation {
     pub signature: Bytes,
 }
 
+impl From<UserOperation> for PackedUserOperation {
+    fn from(user_op: UserOperation) -> Self {
+        // Pack call_gas_limit and verification_gas_limit into a single U256
+        let _account_gas_limits =
+            U256::from(user_op.verification_gas_limit) << 128 | U256::from(user_op.call_gas_limit);
+
+        // Pack max_priority_fee_per_gas and max_fee_per_gas into a single U256
+        let _gas_fees = U256::from(user_op.max_priority_fee_per_gas) << 128 |
+            U256::from(user_op.max_fee_per_gas);
+
+        // Extract paymaster information from paymaster_and_data
+        let (
+            paymaster,
+            paymaster_verification_gas_limit,
+            paymaster_post_op_gas_limit,
+            paymaster_data,
+        ) = if user_op.paymaster_and_data.len() >= 52 {
+            (
+                Some(Address::from_slice(&user_op.paymaster_and_data[..20])),
+                Some(U256::from_be_slice(&user_op.paymaster_and_data[20..36])),
+                Some(U256::from_be_slice(&user_op.paymaster_and_data[36..52])),
+                Some(Bytes::copy_from_slice(&user_op.paymaster_and_data[52..])),
+            )
+        } else {
+            (None, None, None, None)
+        };
+
+        PackedUserOperation {
+            sender: user_op.sender,
+            nonce: user_op.nonce,
+            factory: if user_op.init_code.is_empty() {
+                None
+            } else {
+                Some(Address::from_slice(&user_op.init_code[..20]))
+            },
+            factory_data: if user_op.init_code.len() > 20 {
+                Some(Bytes::copy_from_slice(&user_op.init_code[20..]))
+            } else {
+                None
+            },
+            call_data: user_op.call_data,
+            call_gas_limit: user_op.call_gas_limit,
+            verification_gas_limit: user_op.verification_gas_limit,
+            max_fee_per_gas: user_op.max_fee_per_gas,
+            max_priority_fee_per_gas: user_op.max_priority_fee_per_gas,
+            pre_verification_gas: user_op.pre_verification_gas,
+            paymaster,
+            paymaster_verification_gas_limit,
+            paymaster_post_op_gas_limit,
+            paymaster_data,
+            signature: user_op.signature,
+        }
+    }
+}
+
 /// User operation required for the request.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
