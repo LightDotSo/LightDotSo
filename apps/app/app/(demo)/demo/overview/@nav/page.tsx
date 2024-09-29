@@ -12,16 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import OriginalPage from "@/app/(wallet)/[address]/overview/@nav/page";
+import OriginalPage from "@/app/(wallet)/[address]/overview/@nav/page";
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return null;
-}
+export default OriginalPage;
