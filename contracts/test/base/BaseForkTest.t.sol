@@ -20,11 +20,15 @@ import {
     ENTRY_POINT_ADDRESS,
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS,
-    LIGHT_PAYMASTER_ADDRESS
+    LIGHT_PAYMASTER_ADDRESS,
+    LIGHT_VAULT_FACTORY_ADDRESS,
+    LIGHT_DAG_ADDRESS
 } from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
+import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
@@ -49,6 +53,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         // EntryPoint from eth-inifinitism
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
 
+        // LightDAG core contract
+        dag = LightDAG(LIGHT_DAG_ADDRESS);
         // LightPaymaster core contract
         paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
         // LightTimelockControllerFactory core contract
