@@ -12,16 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import OriginalPage from "@/app/(wallet)/[address]/transactions/@nav/page";
+import { type Result, err, ok } from "neverthrow";
 
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
+export const withTimeout = <T>(
+  promise: Promise<T>,
+  ms: number,
+  errorMessage?: string,
+): Promise<Result<T, Error>> => {
+  const timeoutPromise = new Promise<Result<T, Error>>((resolve) => {
+    setTimeout(
+      () => resolve(err(new Error(errorMessage ?? `Timeout after ${ms}ms`))),
+      ms,
+    );
+  });
 
-export default function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return null;
-}
+  return Promise.race([promise.then((value) => ok(value)), timeoutPromise]);
+};

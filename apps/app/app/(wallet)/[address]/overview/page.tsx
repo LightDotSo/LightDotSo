@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Loader } from "@/app/(wallet)/[address]/overview/loader";
+// import { Loader } from "@/app/(wallet)/[address]/overview/loader";
 import { handler } from "@/handlers/[address]/overview/handler";
 import { preloader } from "@/preloaders/[address]/overview/preloader";
 import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
@@ -34,15 +34,7 @@ export interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
   preloader(await params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
 
   const {
     walletSettings,
@@ -52,10 +44,6 @@ export default async function Page({ params }: PageProps) {
     nfts,
     nftValuation,
   } = await handler(await params);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
 
   const queryClient = getQueryClient();
 
@@ -115,7 +103,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Loader params={await params} />
+      {/* <Loader params={await params} /> */}
     </HydrationBoundary>
   );
 }

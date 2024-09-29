@@ -20,5 +20,6 @@ export * from "./llama";
 export * from "./rpc";
 export * from "./simplehash";
 export * from "./socket";
+export * from "./timeout";
 export * from "./utils";
 export * from "./zod";
