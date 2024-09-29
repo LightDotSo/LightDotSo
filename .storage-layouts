@@ -2,6 +2,10 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
+ ➡ ERC1967Proxy
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightDAG
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
