@@ -42,6 +42,21 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
 
     // -------------------------------------------------------------------------
+    // Modifiers
+    // -------------------------------------------------------------------------
+
+    modifier onlyForkProfile() {
+        try vm.envString("FOUNDRY_PROFILE") returns (string memory currentProfile) {
+            if (keccak256(abi.encodePacked(currentProfile)) == keccak256(abi.encodePacked("fork"))) {
+                _;
+                return;
+            }
+        } catch {}
+
+        vm.skip(true);
+    }
+
+    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 

@@ -135,9 +135,6 @@ abstract contract BaseTest is Test {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
 
-        // Deploy the EntryPointSimulations
-        entryPointSimulations = new EntryPointSimulations();
-
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
 

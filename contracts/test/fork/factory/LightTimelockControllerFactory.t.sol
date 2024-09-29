@@ -34,8 +34,10 @@ contract LightTimelockControllerFactoryForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    function test_ShouldDeployANewLightTimelockControllerWithTheCorrectHash() public {
+    /// Same as `testFork_timelock_createTimelockController_equalsGetAddress`
+    function test_ShouldDeployANewLightTimelockControllerWithTheCorrectHash() external onlyForkProfile {
         // it should deploy a new LightTimelockController with the correct hash
+        testFork_timelock_createTimelockController_equalsGetAddress();
     }
 
     /// Tests that the factory can create a new account at the predicted address
