@@ -6,9 +6,7 @@
       "contractName": "LightWalletFactory",
       "contractAddress": "0x000000000048c2e27c97b9978c9b27f6937a40db",
       "function": null,
-      "arguments": [
-        "0x2eee565B60006020828403121561306857600080"
-      ],
+      "arguments": ["0x2eee565B60006020828403121561306857600080"],
       "transaction": {
         "from": "0x066bf31ef72480ef2fc54eb7d76c6f023a74a12f",
         "to": "0x4e59b44847b379578588920ca78fbf26c0b4956c",
