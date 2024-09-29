@@ -19,7 +19,9 @@ import { startProxy } from "@viem/anvil";
 export default async function () {
   // Start a proxy server on port 8585
   return await startProxy({
-    port: 8585,
+    port: process.env.VITEST_PORT
+      ? Number.parseInt(process.env.VITEST_PORT)
+      : 8585,
     host: "::",
   });
 }

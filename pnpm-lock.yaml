@@ -2007,6 +2007,9 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
     devDependencies:
+      '@lightdotso/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig

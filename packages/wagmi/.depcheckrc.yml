@@ -3,3 +3,4 @@ ignores:
   - tsup
   - "@types/node"
   - vitest
+  - "@lightdotso/contracts"

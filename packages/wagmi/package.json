@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
+    "@lightdotso/contracts": "workspace:*",
     "@wagmi/core": "^2.13.8",
     "connectkit": "^1.8.2",
     "viem": "^2.21.15",
