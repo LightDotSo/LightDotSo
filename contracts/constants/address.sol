@@ -20,12 +20,6 @@ pragma solidity ^0.8.27;
 // Addresses
 // -------------------------------------------------------------------------
 
-// OffchainVerifier address for paymaster
-// v1: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
-// v2: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-// v3: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0618fE3A19a4980a0202aDBdb5201e74cD9908ff);
-address constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-
 // Deployer address
 address constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
@@ -71,3 +65,9 @@ address constant LIGHT_WALLET_FACTORY_ADDRESS = LIGHT_WALLET_FACTORY_V030_ADDRES
 
 // Light Master Wallet address
 address constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
+
+// OffchainVerifier address for paymaster
+// v1: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
+// v2: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
+// v3: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0618fE3A19a4980a0202aDBdb5201e74cD9908ff);
+address constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
