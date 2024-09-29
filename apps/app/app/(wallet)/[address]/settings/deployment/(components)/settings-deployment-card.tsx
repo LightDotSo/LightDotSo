@@ -161,9 +161,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     // The v0.1.0 and v0.2.0 factories are the only factories that are deployable through the immutable create2 factory
     if (
       wallet.factory_address ===
-        CONTRACT_ADDRESSES[ContractAddress.V010_FACTORY] ||
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V010_ADDRESS] ||
       wallet.factory_address ===
-        CONTRACT_ADDRESSES[ContractAddress.V020_FACTORY]
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V020_ADDRESS]
     ) {
       return (
         immutableCreate2FactoryBytecode &&
@@ -171,6 +171,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       );
     }
 
+    // Default to true
     return true;
   }, [wallet, immutableCreate2FactoryBytecode]);
 
