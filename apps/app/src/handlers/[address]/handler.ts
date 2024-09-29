@@ -69,7 +69,26 @@ export const handler = async (params: { address: string }) => {
       };
     },
     () => {
-      return notFound();
+      return {
+        wallet: {
+          address: params.address,
+          name: "",
+          factory_address: "",
+          salt: "",
+        },
+        configuration: {
+          address: params.address,
+          checkpoint: 0,
+          id: "",
+          image_hash: "",
+          owners: [],
+          threshold: 0,
+        },
+        walletSettings: {
+          is_enabled_dev: false,
+          is_enabled_testnet: false,
+        },
+      };
     },
   );
 };
