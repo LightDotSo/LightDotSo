@@ -14,7 +14,7 @@
 
 use alloy::primitives::{Address, B256};
 use eyre::Result;
-use lightdotso_contracts::create2::get_address;
+use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_V020_ADDRESS, create2::get_address};
 use lightdotso_sequence::{
     config::WalletConfig,
     types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},
@@ -58,7 +58,8 @@ async fn test_integration_hash_first() -> Result<()> {
         "0x0000000000000000000000000000000000000000000000000000000000000001".parse()?;
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
+    let new_wallet_address =
+        get_address(*LIGHT_WALLET_FACTORY_V020_ADDRESS, image_hash_bytes, salt_bytes)?;
 
     // Check the new wallet address.
     let expected: Address = "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse()?;

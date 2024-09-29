@@ -202,7 +202,8 @@ pub(crate) async fn v1_wallet_create_handler(
     let image_hash_bytes: B256 = image_hash.into();
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
+    let new_wallet_address =
+        get_address(*LIGHT_WALLET_FACTORY_ADDRESS, image_hash_bytes, salt_bytes)?;
 
     // Check if the wallet configuration is valid.
     let valid = config.is_wallet_valid();
