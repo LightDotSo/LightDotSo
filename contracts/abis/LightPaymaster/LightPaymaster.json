@@ -1,7 +1,13 @@
 [
   {
     "type": "constructor",
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "entryPoint",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
     "stateMutability": "nonpayable"
   },
   {
@@ -78,7 +84,7 @@
         "internalType": "address"
       }
     ],
-    "stateMutability": "pure"
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -222,6 +228,25 @@
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "isSigner",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -380,7 +405,7 @@
         "internalType": "uint256"
       },
       {
-        "name": "actualUserOpFeePerGas",
+        "name": "",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -433,25 +458,6 @@
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "signers",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "isValidSigner",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -709,26 +715,19 @@
   },
   {
     "type": "event",
-    "name": "SignerAdded",
+    "name": "SignerSet",
     "inputs": [
       {
         "name": "signer",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "SignerRemoved",
-    "inputs": [
+      },
       {
-        "name": "signer",
-        "type": "address",
+        "name": "isValid",
+        "type": "bool",
         "indexed": false,
-        "internalType": "address"
+        "internalType": "bool"
       }
     ],
     "anonymous": false
