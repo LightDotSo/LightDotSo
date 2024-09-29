@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { publicClient } from "./client";
-export { projectId, wagmiConfig } from "./config";
-export {
-  lightWalletAbi,
-  lightWalletFactoryAbi,
-  useReadEntryPointv060GetNonce,
-  useReadLightWalletImageHash,
-} from "./generated";
+// SPDX-License-Identifier: Apache-2.0
+
+pragma solidity ^0.8.27;
+
+import "@eth-infinitism/account-abstraction/contracts/core/EntryPoint.sol";
+
+contract EntryPointv070 is EntryPoint {}

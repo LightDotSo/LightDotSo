@@ -9,6 +9,7 @@
       "apps/extension/chrome/**",
       "apps/extension/firefox/**",
       "ios/LightWalletSafariExtension/Resources/**",
+      "packages/wagmi/src/generated.ts",
       "**/.source/**",
       "**/_next/static/**",
       "**/generated/**",

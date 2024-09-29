@@ -25,8 +25,6 @@ import {
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
-  // useReadLightVerifyingPaymasterGetHash,
-  // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -141,34 +139,6 @@ export const useUserOperationsCreate = ({
 
   // Sign the message of the subdigest
   const { data, signMessage } = useSignMessage();
-
-  // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
-  //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
-  //   chainId: Number(userOperation.chainId),
-  //   args: [userOperation.sender as Address],
-  // });
-
-  // const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
-  //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
-  //   chainId: Number(userOperation.chainId),
-  //   args: [
-  //     {
-  //       sender: userOperation.sender as Address,
-  //       nonce: userOperation.nonce,
-  //       initCode: userOperation.initCode as Hex,
-  //       callData: userOperation.callData as Hex,
-  //       callGasLimit: userOperation.callGasLimit,
-  //       verificationGasLimit: userOperation.verificationGasLimit,
-  //       preVerificationGas: userOperation.preVerificationGas,
-  //       maxFeePerGas: userOperation.maxFeePerGas,
-  //       maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
-  //       paymasterAndData: userOperation.paymasterAndData as Hex,
-  //       signature: toHex(new Uint8Array([2])),
-  //     },
-  //     fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
-  //     fromHex(`0x${userOperation.paymasterAndData.slice(162, 170)}`, "number"),
-  //   ],
-  // });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

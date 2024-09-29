@@ -32,7 +32,7 @@ import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
-  useReadEntryPointGetNonce,
+  useReadEntryPointv060GetNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
@@ -107,7 +107,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Get the nonce for the entry point
   const { data: entryPointNonce, isFetched: isEntryPointNonceFetched } =
-    useReadEntryPointGetNonce({
+    useReadEntryPointv060GetNonce({
       address:
         WALLET_FACTORY_ENTRYPOINT_MAPPING[
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
