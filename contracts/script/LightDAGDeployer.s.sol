@@ -16,17 +16,17 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightPaymaster/v0.2.0.b.sol";
-import {LIGHT_PAYMASTER_ADDRESS} from "@/constants/addresses.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightDAG/v0.1.0.b.sol";
+import {LIGHT_DAG_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
+import {LightDAG} from "@/contracts/LightDAG.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightPaymasterDeployer -- Deploys the LightPaymaster contract
-contract LightPaymasterDeployer is BaseLightDeployer, Script {
+// LightDAGDeployer -- Deploys the LightDAG contract
+contract LightDAGDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -57,7 +57,7 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             paymaster = LightPaymaster(deployWithCreate2(initCode, salt));
 
             // Assert that the paymaster is the expected address
-            assert(address(paymaster) == LIGHT_PAYMASTER_ADDRESS);
+            assert(address(paymaster) == LIGHT_DAG_ADDRESS);
         }
 
         // Stop the broadcast

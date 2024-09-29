@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {initCode, initCodeHash, salt} from "@/bytecodes/LightVaultFactory/v0.1.0.b.sol";
+import {LIGHT_VAULT_FACTORY_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
@@ -55,7 +56,7 @@ contract LightVaultFactoryDeployer is BaseLightDeployer, Script {
             factory = LightVaultFactory(deployWithCreate2(salt, initCode));
 
             // Assert that the factory is the expected address
-            assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);
+            assert(address(factory) == LIGHT_VAULT_FACTORY_ADDRESS);
         }
 
         // Stop the broadcast
