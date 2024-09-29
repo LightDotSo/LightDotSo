@@ -77,6 +77,7 @@
     "tsc": "tsc --noEmit",
     "turbo:build": "dotenv -- turbo run build",
     "vitest": "VITEST_PORT=8584 vitest --run",
+    "vitest:client": "vitest run -w --project \"client\"",
     "vitest:contracts": "VITEST_PORT=8585 vitest run -w --project \"contracts\"",
     "vitest:coverage": "vitest --coverage",
     "vitest:typecheck": "vitest typecheck",
