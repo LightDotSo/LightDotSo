@@ -34,7 +34,6 @@ import {
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui/components/button";
 import {
-  cn,
   findContractAddressByAddress,
   getEtherscanUrl,
   shortenAddress,
@@ -255,28 +254,41 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const SettingsDeploymentCardSubmitButton: FC = () => {
+    // -------------------------------------------------------------------------
+    // Local Variables
+    // -------------------------------------------------------------------------
+
+    const buttonContent = isLoading
+      ? "Loading..."
+      : typeof deployedOp !== "undefined"
+        ? callData === "0x"
+          ? "Already Deployed"
+          : "Upgrade"
+        : isDeployable
+          ? "Deploy"
+          : "Not Deployable";
+
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
     return (
       <Button
+        asChild
         isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
         disabled={isDisabled}
       >
-        <Link
-          aria-disabled={isDisabled}
-          href={`/${address}/create?userOperations=${deployedUserOperation}`}
-          className={cn(isDisabled && "cursor-not-allowed")}
-        >
-          {isLoading
-            ? "Loading..."
-            : typeof deployedOp !== "undefined"
-              ? callData === "0x"
-                ? "Already Deployed"
-                : "Upgrade"
-              : isDeployable
-                ? "Deploy"
-                : "Not Deployable"}
-        </Link>
+        {isDisabled ? (
+          <span>{buttonContent}</span>
+        ) : (
+          <Link
+            href={`/${address}/create?userOperations=${deployedUserOperation}`}
+          >
+            {buttonContent}
+          </Link>
+        )}
       </Button>
     );
   };

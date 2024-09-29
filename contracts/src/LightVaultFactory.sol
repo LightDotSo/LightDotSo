@@ -44,13 +44,13 @@ contract LightVaultFactory {
     LightVault public immutable vaultImplementation;
 
     /// @notice The fees for the Light Protocol
-    uint16 public immutable LIGHT_PROTOCOL_FEES;
+    uint16 public immutable LIGHT_PROTOCOL_FEES = 3;
 
     /// @notice The owner of the Light Protocol
-    address public immutable LIGHT_PROTOCOL_OWNER;
+    address public immutable LIGHT_PROTOCOL_OWNER = address(0);
 
     /// @notice The treasury of the Light Protocol
-    address public immutable LIGHT_PROTOCOL_TREASURY;
+    address public immutable LIGHT_PROTOCOL_TREASURY = address(0);
 
     // -------------------------------------------------------------------------
     // Errors
@@ -62,11 +62,8 @@ contract LightVaultFactory {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(uint16 _fees, address _owner, address _treasury) {
+    constructor() {
         vaultImplementation = new LightVault();
-        LIGHT_PROTOCOL_FEES = _fees;
-        LIGHT_PROTOCOL_OWNER = _owner;
-        LIGHT_PROTOCOL_TREASURY = _treasury;
     }
 
     // -------------------------------------------------------------------------
