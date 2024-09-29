@@ -58,7 +58,7 @@ test("LightPaymaster: Correct humanReadableAbi", () => {
       "function entryPointWithdraw(address to, uint256 amount)",
       "function entryPointWithdrawStake(address to)",
       "function getHash(address account, (bytes signature, address asset, uint256 amount, uint256 nonce, uint48 expiry) withdrawRequest) view returns (bytes32)",
-      "function initialize(address owner_, uint256 maxWithdrawDenominator_, address signer_)",
+      "function initialize(address owner, uint256 maxWithdrawDenominator, address signer)",
       "function isSigner(address signer) view returns (bool)",
       "function isValidWithdrawSignature(address account, (bytes signature, address asset, uint256 amount, uint256 nonce, uint48 expiry) withdrawRequest) view returns (bool)",
       "function maxWithdrawDenominator() view returns (uint256)",
