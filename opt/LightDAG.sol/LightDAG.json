@@ -1,1 +1,340 @@
-{"abi":[{"type":"function","name":"NAME","inputs":[],"outputs":[{"name":"","type":"string","internalType":"string"}],"stateMutability":"view"},{"type":"function","name":"VERSION","inputs":[],"outputs":[{"name":"","type":"string","internalType":"string"}],"stateMutability":"view"},{"type":"function","name":"callOperationRoot","inputs":[{"name":"operationRoot","type":"tuple","internalType":"struct LightDAG.OperationRoot","components":[{"name":"root","type":"bytes32","internalType":"bytes32"},{"name":"operations","type":"tuple[]","internalType":"struct LightDAG.Operation[]","components":[{"name":"hash","type":"bytes32","internalType":"bytes32"},{"name":"conditionData","type":"bytes[]","internalType":"bytes[]"},{"name":"dependencies","type":"bytes32[]","internalType":"bytes32[]"},{"name":"fallbackOperation","type":"bytes32","internalType":"bytes32"}]}]}],"outputs":[],"stateMutability":"nonpayable"},{"type":"event","name":"OperationCalled","inputs":[{"name":"operation","type":"bytes32","indexed":true,"internalType":"bytes32"},{"name":"caller","type":"address","indexed":true,"internalType":"address"},{"name":"conditionData","type":"bytes[]","indexed":false,"internalType":"bytes[]"},{"name":"dependencies","type":"bytes32[]","indexed":false,"internalType":"bytes32[]"},{"name":"fallbackOperation","type":"bytes32","indexed":false,"internalType":"bytes32"}],"anonymous":false},{"type":"event","name":"OperationRootCalled","inputs":[{"name":"root","type":"bytes32","indexed":true,"internalType":"bytes32"},{"name":"caller","type":"address","indexed":true,"internalType":"address"}],"anonymous":false}],"bytecode":{"object":"0x6080604052348015600f57600080fd5b5061081b8061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806376a9140814610046578063a3f4df7e1461005b578063ffa1ad74146100ad575b600080fd5b6100596100543660046103f7565b6100e9565b005b6100976040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b6040516100a491906106fb565b60405180910390f35b6100976040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b805161017b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b80516040513391907ff95dd2a06a22e482ba3fe223c3feffb28e2e77786e4908143fb6c04f7059540490600090a360005b816020015151811015610298573373ffffffffffffffffffffffffffffffffffffffff16826020015182815181106101e6576101e6610715565b6020026020010151600001517f374a0b1be17c1252cdb48db98472ffe0646a4557067d3b6a29ff740c380497c58460200151848151811061022957610229610715565b6020026020010151602001518560200151858151811061024b5761024b610715565b6020026020010151604001518660200151868151811061026d5761026d610715565b60200260200101516060015160405161028893929190610744565b60405180910390a36001016101ac565b5050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040805190810167ffffffffffffffff811182821017156102ee576102ee61029c565b60405290565b6040516080810167ffffffffffffffff811182821017156102ee576102ee61029c565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561035e5761035e61029c565b604052919050565b600067ffffffffffffffff8211156103805761038061029c565b5060051b60200190565b600082601f83011261039b57600080fd5b81356103ae6103a982610366565b610317565b8082825260208201915060208360051b8601019250858311156103d057600080fd5b602085015b838110156103ed5780358352602092830192016103d5565b5095945050505050565b60006020828403121561040957600080fd5b67ffffffffffffffff8235111561041f57600080fd5b813582016040818503121561043357600080fd5b61043b6102cb565b8135815267ffffffffffffffff6020830135111561045857600080fd5b60208201358201915084601f83011261047057600080fd5b61047d6103a98335610366565b82358082526020808301929160051b85010187101561049b57600080fd5b602084015b6020853560051b8601018110156106885767ffffffffffffffff813511156104c757600080fd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b030112156104fd57600080fd5b6105056102f4565b6020820135815267ffffffffffffffff6040830135111561052557600080fd5b602060408301358301018a601f82011261053e57600080fd5b61054b6103a98235610366565b81358082526020808301929160051b8401018d101561056957600080fd5b602083015b6020843560051b8501018110156106355767ffffffffffffffff8135111561059557600080fd5b8d603f8235860101126105a757600080fd5b602081358501013567ffffffffffffffff8111156105c7576105c761029c565b6105f860207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610317565b8181528f6020808486358a01010101111561061257600080fd5b81604084358801016020830137600060209282018301528452928301920161056e565b506020840152505067ffffffffffffffff6060830135111561065657600080fd5b6106698a6020606085013585010161038a565b60408201526080919091013560608201528352602092830192016104a0565b50602083015250949350505050565b6000815180845260005b818110156106bd576020818501810151868301820152016106a1565b5060006020828601015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011685010191505092915050565b60208152600061070e6020830184610697565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b6000606082016060835280865180835260808501915060808160051b86010192506020880160005b828110156107bb577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff808786030184526107a6858351610697565b9450602093840193919091019060010161076c565b50505050828103602084015280855180835260208301915060208701925060005b818110156107fa5783518352602093840193909201916001016107dc565b50506040939093019390935250939250505056fea164736f6c634300081b000a","sourceMap":"1032:2777:0:-:0;;;;;;;;;;;;;;;;;;;","linkReferences":{}},"deployedBytecode":{"object":"0x608060405234801561001057600080fd5b50600436106100415760003560e01c806376a9140814610046578063a3f4df7e1461005b578063ffa1ad74146100ad575b600080fd5b6100596100543660046103f7565b6100e9565b005b6100976040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b6040516100a491906106fb565b60405180910390f35b6100976040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b805161017b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b80516040513391907ff95dd2a06a22e482ba3fe223c3feffb28e2e77786e4908143fb6c04f7059540490600090a360005b816020015151811015610298573373ffffffffffffffffffffffffffffffffffffffff16826020015182815181106101e6576101e6610715565b6020026020010151600001517f374a0b1be17c1252cdb48db98472ffe0646a4557067d3b6a29ff740c380497c58460200151848151811061022957610229610715565b6020026020010151602001518560200151858151811061024b5761024b610715565b6020026020010151604001518660200151868151811061026d5761026d610715565b60200260200101516060015160405161028893929190610744565b60405180910390a36001016101ac565b5050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040805190810167ffffffffffffffff811182821017156102ee576102ee61029c565b60405290565b6040516080810167ffffffffffffffff811182821017156102ee576102ee61029c565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561035e5761035e61029c565b604052919050565b600067ffffffffffffffff8211156103805761038061029c565b5060051b60200190565b600082601f83011261039b57600080fd5b81356103ae6103a982610366565b610317565b8082825260208201915060208360051b8601019250858311156103d057600080fd5b602085015b838110156103ed5780358352602092830192016103d5565b5095945050505050565b60006020828403121561040957600080fd5b67ffffffffffffffff8235111561041f57600080fd5b813582016040818503121561043357600080fd5b61043b6102cb565b8135815267ffffffffffffffff6020830135111561045857600080fd5b60208201358201915084601f83011261047057600080fd5b61047d6103a98335610366565b82358082526020808301929160051b85010187101561049b57600080fd5b602084015b6020853560051b8601018110156106885767ffffffffffffffff813511156104c757600080fd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b030112156104fd57600080fd5b6105056102f4565b6020820135815267ffffffffffffffff6040830135111561052557600080fd5b602060408301358301018a601f82011261053e57600080fd5b61054b6103a98235610366565b81358082526020808301929160051b8401018d101561056957600080fd5b602083015b6020843560051b8501018110156106355767ffffffffffffffff8135111561059557600080fd5b8d603f8235860101126105a757600080fd5b602081358501013567ffffffffffffffff8111156105c7576105c761029c565b6105f860207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610317565b8181528f6020808486358a01010101111561061257600080fd5b81604084358801016020830137600060209282018301528452928301920161056e565b506020840152505067ffffffffffffffff6060830135111561065657600080fd5b6106698a6020606085013585010161038a565b60408201526080919091013560608201528352602092830192016104a0565b50602083015250949350505050565b6000815180845260005b818110156106bd576020818501810151868301820152016106a1565b5060006020828601015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011685010191505092915050565b60208152600061070e6020830184610697565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b6000606082016060835280865180835260808501915060808160051b86010192506020880160005b828110156107bb577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff808786030184526107a6858351610697565b9450602093840193919091019060010161076c565b50505050828103602084015280855180835260208301915060208701925060005b818110156107fa5783518352602093840193909201916001016107dc565b50506040939093019390935250939250505056fea164736f6c634300081b000a","sourceMap":"1032:2777:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3066:741;;;;;;:::i;:::-;;:::i;:::-;;2747:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;2840;;;;;;;;;;;;;;;;;;;;;3066:741;3202:18;;3194:78;;;;;;;6523:2:2;3194:78:0;;;6505:21:2;6562:2;6542:18;;;6535:30;6601:34;6581:18;;;6574:62;6672:3;6652:18;;;6645:31;6693:19;;3194:78:0;;;;;;;;3349:18;;3329:51;;3369:10;;3349:18;3329:51;;3349:18;;3329:51;3427:9;3422:379;3446:13;:24;;;:31;3442:1;:35;3422:379;;;3586:10;3503:287;;3536:13;:24;;;3561:1;3536:27;;;;;;;;:::i;:::-;;;;;;;:32;;;3503:287;3614:13;:24;;;3639:1;3614:27;;;;;;;;:::i;:::-;;;;;;;:41;;;3673:13;:24;;;3698:1;3673:27;;;;;;;;:::i;:::-;;;;;;;:40;;;3731:13;:24;;;3756:1;3731:27;;;;;;;;:::i;:::-;;;;;;;:45;;;3503:287;;;;;;;;:::i;:::-;;;;;;;;3479:3;;3422:379;;;;3066:741;:::o;14:184:2:-;66:77;63:1;56:88;163:4;160:1;153:15;187:4;184:1;177:15;203:257;275:4;269:11;;;307:17;;354:18;339:34;;375:22;;;336:62;333:88;;;401:18;;:::i;:::-;437:4;430:24;203:257;:::o;465:253::-;537:2;531:9;579:4;567:17;;614:18;599:34;;635:22;;;596:62;593:88;;;661:18;;:::i;723:334::-;794:2;788:9;850:2;840:13;;855:66;836:86;824:99;;953:18;938:34;;974:22;;;935:62;932:88;;;1000:18;;:::i;:::-;1036:2;1029:22;723:334;;-1:-1:-1;723:334:2:o;1062:192::-;1131:4;1164:18;1156:6;1153:30;1150:56;;;1186:18;;:::i;:::-;-1:-1:-1;1231:1:2;1227:14;1243:4;1223:25;;1062:192::o;1259:732::-;1313:5;1366:3;1359:4;1351:6;1347:17;1343:27;1333:55;;1384:1;1381;1374:12;1333:55;1424:6;1411:20;1451:73;1467:56;1516:6;1467:56;:::i;:::-;1451:73;:::i;:::-;1548:3;1572:6;1567:3;1560:19;1604:4;1599:3;1595:14;1588:21;;1665:4;1655:6;1652:1;1648:14;1640:6;1636:27;1632:38;1618:52;;1693:3;1685:6;1682:15;1679:35;;;1710:1;1707;1700:12;1679:35;1746:4;1738:6;1734:17;1760:200;1776:6;1771:3;1768:15;1760:200;;;1868:17;;1898:18;;1945:4;1936:14;;;;1793;1760:200;;;-1:-1:-1;1978:7:2;1259:732;-1:-1:-1;;;;;1259:732:2:o;1996:3631::-;2084:6;2137:2;2125:9;2116:7;2112:23;2108:32;2105:52;;;2153:1;2150;2143:12;2105:52;2197:18;2185:9;2172:23;2169:47;2166:67;;;2229:1;2226;2219:12;2166:67;2280:9;2267:23;2256:9;2252:39;2325:4;2320:2;2311:7;2307:16;2303:27;2300:47;;;2343:1;2340;2333:12;2300:47;2369:22;;:::i;:::-;2436:16;;2461:22;;2525:18;2519:2;2511:11;;2498:25;2495:49;2492:69;;;2557:1;2554;2547:12;2492:69;2609:2;2605;2601:11;2588:25;2584:2;2580:34;2570:44;;2652:7;2645:4;2641:2;2637:13;2633:27;2623:55;;2674:1;2671;2664:12;2623:55;2698:83;2714:66;2776:2;2763:16;2714:66;:::i;2698:83::-;2827:16;;2815:29;;;2869:2;2860:12;;;;2803:3;2903:1;2899:24;2891:33;;2887:42;2884:55;-1:-1:-1;2881:75:2;;;2952:1;2949;2942:12;2881:75;2984:2;2980;2976:11;2996:2563;3059:2;3052;3039:16;3036:1;3032:24;3028:2;3024:33;3020:42;3015:3;3012:51;2996:2563;;;3143:18;3137:3;3124:17;3121:41;3118:61;;;3175:1;3172;3165:12;3118:61;3223:3;3210:17;3206:2;3202:26;3339:4;3270:66;3265:2;3256:7;3252:16;3248:89;3244:100;3241:120;;;3357:1;3354;3347:12;3241:120;3389:22;;:::i;:::-;3485:2;3477:11;;3464:25;3502:24;;3574:18;3566:4;3558:13;;3545:27;3542:51;3539:71;;;3606:1;3603;3596:12;3539:71;3675:2;3666:4;3662:2;3658:13;3645:27;3641:2;3637:36;3633:45;3720:7;3713:4;3709:2;3705:13;3701:27;3691:55;;3742:1;3739;3732:12;3691:55;3772:83;3788:66;3850:2;3837:16;3788:66;:::i;3772:83::-;3915:16;;3901:31;;;3965:2;3954:14;;;;3883:5;4003:1;3999:24;3991:33;;3987:42;3984:55;-1:-1:-1;3981:75:2;;;4052:1;4049;4042:12;3981:75;4090:2;4086;4082:11;4106:1001;4175:2;4168;4155:16;4152:1;4148:24;4144:2;4140:33;4136:42;4129:5;4126:53;4106:1001;;;4277:18;4269:5;4256:19;4253:43;4250:63;;;4309:1;4306;4299:12;4250:63;4383:7;4378:2;4369:5;4356:19;4352:2;4348:28;4344:37;4340:51;4330:79;;4405:1;4402;4395:12;4330:79;4487:2;4478:5;4465:19;4461:2;4457:28;4453:37;4440:51;4522:18;4514:6;4511:30;4508:56;;;4544:18;;:::i;:::-;4596:116;4708:2;4639:66;4632:4;4624:6;4620:17;4616:90;4612:99;4596:116;:::i;:::-;4745:6;4736:7;4729:23;4836:7;4831:2;4826;4817:6;4808:5;4795:19;4791:2;4787:28;4783:41;4779:50;4775:59;4772:72;4769:92;;;4857:1;4854;4847:12;4769:92;4950:6;4943:4;4934:5;4921:19;4917:2;4913:28;4909:39;4904:2;4895:7;4891:16;4878:79;5012:1;5007:2;4985:20;;;4981:29;;4974:40;5031:22;;5079:14;;;;4203;4106:1001;;;-1:-1:-1;5140:2:2;5127:16;;5120:33;-1:-1:-1;;5199:18:2;5193:2;5185:11;;5172:25;5169:49;5166:69;;;5231:1;5228;5221:12;5166:69;5275:82;5349:7;5344:2;5337;5333;5329:11;5316:25;5312:2;5308:34;5304:43;5275:82;:::i;:::-;5268:4;5255:18;;5248:110;5432:4;5424:13;;;;5411:27;5471:2;5458:16;;5451:33;5497:20;;5546:2;5537:12;;;;3081;2996:2563;;;-1:-1:-1;5586:2:2;5575:14;;5568:29;-1:-1:-1;5579:5:2;1996:3631;-1:-1:-1;;;;1996:3631:2:o;5632:459::-;5674:3;5712:5;5706:12;5739:6;5734:3;5727:19;5764:1;5774:139;5788:6;5785:1;5782:13;5774:139;;;5896:4;5881:13;;;5877:24;;5871:31;5851:11;;;5847:22;;5840:63;5803:12;5774:139;;;5778:3;5958:1;5951:4;5942:6;5937:3;5933:16;5929:27;5922:38;6080:4;6010:66;6005:2;5997:6;5993:15;5989:88;5984:3;5980:98;5976:109;5969:116;;;5632:459;;;;:::o;6096:220::-;6245:2;6234:9;6227:21;6208:4;6265:45;6306:2;6295:9;6291:18;6283:6;6265:45;:::i;:::-;6257:53;6096:220;-1:-1:-1;;;6096:220:2:o;6723:184::-;6775:77;6772:1;6765:88;6872:4;6869:1;6862:15;6896:4;6893:1;6886:15;6912:1455;7178:4;7226:2;7215:9;7211:18;7256:2;7245:9;7238:21;7279:6;7314;7308:13;7345:6;7337;7330:22;7383:3;7372:9;7368:19;7361:26;;7446:3;7436:6;7433:1;7429:14;7418:9;7414:30;7410:40;7396:54;;7485:4;7477:6;7473:17;7508:1;7518:318;7532:6;7529:1;7526:13;7518:318;;;7621:66;7609:9;7601:6;7597:22;7593:95;7588:3;7581:108;7712:40;7745:6;7736;7730:13;7712:40;:::i;:::-;7702:50;-1:-1:-1;7787:4:2;7812:14;;;;7775:17;;;;;7554:1;7547:9;7518:318;;;7522:3;;;;7886:9;7878:6;7874:22;7867:4;7856:9;7852:20;7845:52;7919:6;7956;7950:13;7987:8;7979:6;7972:24;8026:4;8018:6;8014:17;8005:26;;8068:4;8060:6;8056:17;8040:33;;8093:1;8103:193;8119:8;8114:3;8111:17;8103:193;;;8188:15;;8174:30;;8237:4;8267:19;;;;8226:16;;;;8147:1;8138:11;8103:193;;;-1:-1:-1;;8349:2:2;8334:18;;;;8327:34;;;;-1:-1:-1;8313:5:2;6912:1455;-1:-1:-1;;;6912:1455:2:o","linkReferences":{}},"methodIdentifiers":{"NAME()":"a3f4df7e","VERSION()":"ffa1ad74","callOperationRoot((bytes32,(bytes32,bytes[],bytes32[],bytes32)[]))":"76a91408"},"rawMetadata":"{\"compiler\":{\"version\":\"0.8.27+commit.40a35a09\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"operation\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes[]\",\"name\":\"conditionData\",\"type\":\"bytes[]\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"dependencies\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"fallbackOperation\",\"type\":\"bytes32\"}],\"name\":\"OperationCalled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"root\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"}],\"name\":\"OperationRootCalled\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"NAME\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"root\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes[]\",\"name\":\"conditionData\",\"type\":\"bytes[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"dependencies\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32\",\"name\":\"fallbackOperation\",\"type\":\"bytes32\"}],\"internalType\":\"struct LightDAG.Operation[]\",\"name\":\"operations\",\"type\":\"tuple[]\"}],\"internalType\":\"struct LightDAG.OperationRoot\",\"name\":\"operationRoot\",\"type\":\"tuple\"}],\"name\":\"callOperationRoot\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"@shunkakinoki\",\"details\":\"The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.Further implementations will be added in the future, and may be subject to change.\",\"events\":{\"OperationCalled(bytes32,address,bytes[],bytes32[],bytes32)\":{\"params\":{\"caller\":\"The address that called the operation\",\"conditionData\":\"The condition data for the operation\",\"dependencies\":\"The dependencies for the operation\",\"fallbackOperation\":\"The fallback operation for the operation\",\"operation\":\"The operation\"}},\"OperationRootCalled(bytes32,address)\":{\"params\":{\"caller\":\"The address that called the operation root\",\"root\":\"The root of the operation\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"LightDAG\",\"version\":1},\"userdoc\":{\"events\":{\"OperationCalled(bytes32,address,bytes[],bytes32[],bytes32)\":{\"notice\":\"Emitted when an operation is called\"},\"OperationRootCalled(bytes32,address)\":{\"notice\":\"Emitted when an operation root is called\"}},\"kind\":\"user\",\"methods\":{\"NAME()\":{\"notice\":\"The name for this contract\"},\"VERSION()\":{\"notice\":\"The version for this contract\"}},\"notice\":\"LightDAG is an implementation contract for Light Protocol. This is the version 0.1.0 contract for Light Protocol.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/src/LightDAG.sol\":\"LightDAG\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\"},\"optimizer\":{\"enabled\":true,\"runs\":4294967295},\"remappings\":[\":@/bytecodes/=contracts/bytecodes/\",\":@/circuits/=contracts/circuits/\",\":@/constants/=contracts/constants/\",\":@/contracts/=contracts/src/\",\":@/script/=contracts/script/\",\":@/test/=contracts/test/\",\":@0xsequence/wallet-contracts-v3/=lib/wallet-contracts-v3/\",\":@0xsequence/wallet-contracts/=lib/wallet-contracts/\",\":@account-abstraction-v6/=lib/account-abstraction-v0.6/contracts/\",\":@account-abstraction-v7/=lib/account-abstraction-v0.7/contracts/\",\":@account-abstraction/=lib/account-abstraction/contracts/\",\":@asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/\",\":@asynchronous-vault/=lib/asynchronous-vault/src/\",\":@biconomy/account-contracts/=lib/scw-contracts/\",\":@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/\",\":@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/\",\":@eth-infinitism/account-abstraction/=lib/account-abstraction/\",\":@openzeppelin-v5.0.2/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/\",\":@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/\",\":@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/\",\":@safe-global/safe-contracts/=lib/safe-contracts/\",\":@source/=lib/soul-wallet-contract/contracts/\",\":@uniswap/v3-core/=lib/v3-core/\",\":@uniswap/v3-periphery/=lib/v3-periphery/\",\":@zerodevapp/contracts/=lib/kernel/src/\",\":account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/\",\":account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/\",\":account-abstraction/=lib/account-abstraction/contracts/\",\":asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/\",\":asynchronous-vault/=lib/asynchronous-vault/src/\",\":ds-test/=lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":magic-spend/=lib/magic-spend/src/\",\":murky/=lib/murky/src/\",\":nexus/=lib/nexus/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":seaport/=lib/seaport/\",\":singleton-paymaster/=lib/singleton-paymaster/src/\",\":solady/=lib/solady/\",\":solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/\",\":solmate/=lib/solmate/src/\",\":src/=lib/kernel/src/\",\":surl/=lib/surl/src/\"]},\"sources\":{\"contracts/src/LightDAG.sol\":{\"keccak256\":\"0xdb9a3e17a7f0ba91ca7637c0e2f8760df4e8889df6d56e82ac11dd6b96ea6736\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://1b21167689bd83f7f15b48764eb6f1d1e5bfd14ba4e176f4d83f521c2f665c8b\",\"dweb:/ipfs/QmV1K8CoJ6QZsQseewXr3pF6Fhb4WMigiy51W115owAKsL\"]}},\"version\":1}","metadata":{"compiler":{"version":"0.8.27+commit.40a35a09"},"language":"Solidity","output":{"abi":[{"inputs":[{"internalType":"bytes32","name":"operation","type":"bytes32","indexed":true},{"internalType":"address","name":"caller","type":"address","indexed":true},{"internalType":"bytes[]","name":"conditionData","type":"bytes[]","indexed":false},{"internalType":"bytes32[]","name":"dependencies","type":"bytes32[]","indexed":false},{"internalType":"bytes32","name":"fallbackOperation","type":"bytes32","indexed":false}],"type":"event","name":"OperationCalled","anonymous":false},{"inputs":[{"internalType":"bytes32","name":"root","type":"bytes32","indexed":true},{"internalType":"address","name":"caller","type":"address","indexed":true}],"type":"event","name":"OperationRootCalled","anonymous":false},{"inputs":[],"stateMutability":"view","type":"function","name":"NAME","outputs":[{"internalType":"string","name":"","type":"string"}]},{"inputs":[],"stateMutability":"view","type":"function","name":"VERSION","outputs":[{"internalType":"string","name":"","type":"string"}]},{"inputs":[{"internalType":"struct LightDAG.OperationRoot","name":"operationRoot","type":"tuple","components":[{"internalType":"bytes32","name":"root","type":"bytes32"},{"internalType":"struct LightDAG.Operation[]","name":"operations","type":"tuple[]","components":[{"internalType":"bytes32","name":"hash","type":"bytes32"},{"internalType":"bytes[]","name":"conditionData","type":"bytes[]"},{"internalType":"bytes32[]","name":"dependencies","type":"bytes32[]"},{"internalType":"bytes32","name":"fallbackOperation","type":"bytes32"}]}]}],"stateMutability":"nonpayable","type":"function","name":"callOperationRoot"}],"devdoc":{"kind":"dev","methods":{},"version":1},"userdoc":{"kind":"user","methods":{"NAME()":{"notice":"The name for this contract"},"VERSION()":{"notice":"The version for this contract"}},"version":1}},"settings":{"remappings":["@/bytecodes/=contracts/bytecodes/","@/circuits/=contracts/circuits/","@/constants/=contracts/constants/","@/contracts/=contracts/src/","@/script/=contracts/script/","@/test/=contracts/test/","@0xsequence/wallet-contracts-v3/=lib/wallet-contracts-v3/","@0xsequence/wallet-contracts/=lib/wallet-contracts/","@account-abstraction-v6/=lib/account-abstraction-v0.6/contracts/","@account-abstraction-v7/=lib/account-abstraction-v0.7/contracts/","@account-abstraction/=lib/account-abstraction/contracts/","@asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/","@asynchronous-vault/=lib/asynchronous-vault/src/","@biconomy/account-contracts/=lib/scw-contracts/","@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/","@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/","@eth-infinitism/account-abstraction/=lib/account-abstraction/","@openzeppelin-v5.0.2/=lib/openzeppelin-contracts/","@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/","@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/","@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/","@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/","@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/","@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/","@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/","@safe-global/safe-contracts/=lib/safe-contracts/","@source/=lib/soul-wallet-contract/contracts/","@uniswap/v3-core/=lib/v3-core/","@uniswap/v3-periphery/=lib/v3-periphery/","@zerodevapp/contracts/=lib/kernel/src/","account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/","account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/","account-abstraction/=lib/account-abstraction/contracts/","asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/","asynchronous-vault/=lib/asynchronous-vault/src/","ds-test/=lib/ds-test/src/","forge-std/=lib/forge-std/src/","magic-spend/=lib/magic-spend/src/","murky/=lib/murky/src/","nexus/=lib/nexus/src/","openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/","openzeppelin-contracts/=lib/openzeppelin-contracts/","seaport/=lib/seaport/","singleton-paymaster/=lib/singleton-paymaster/src/","solady/=lib/solady/","solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/","solmate/=lib/solmate/src/","src/=lib/kernel/src/","surl/=lib/surl/src/"],"optimizer":{"enabled":true,"runs":4294967295},"metadata":{"bytecodeHash":"none"},"compilationTarget":{"contracts/src/LightDAG.sol":"LightDAG"},"evmVersion":"london","libraries":{}},"sources":{"contracts/src/LightDAG.sol":{"keccak256":"0xdb9a3e17a7f0ba91ca7637c0e2f8760df4e8889df6d56e82ac11dd6b96ea6736","urls":["bzz-raw://1b21167689bd83f7f15b48764eb6f1d1e5bfd14ba4e176f4d83f521c2f665c8b","dweb:/ipfs/QmV1K8CoJ6QZsQseewXr3pF6Fhb4WMigiy51W115owAKsL"],"license":"Apache-2.0"}},"version":1},"id":0}
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "NAME",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "VERSION",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "callOperationRoot",
+      "inputs": [
+        {
+          "name": "operationRoot",
+          "type": "tuple",
+          "internalType": "struct LightDAG.OperationRoot",
+          "components": [
+            { "name": "root", "type": "bytes32", "internalType": "bytes32" },
+            {
+              "name": "operations",
+              "type": "tuple[]",
+              "internalType": "struct LightDAG.Operation[]",
+              "components": [
+                {
+                  "name": "hash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "conditionData",
+                  "type": "bytes[]",
+                  "internalType": "bytes[]"
+                },
+                {
+                  "name": "dependencies",
+                  "type": "bytes32[]",
+                  "internalType": "bytes32[]"
+                },
+                {
+                  "name": "fallbackOperation",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "OperationCalled",
+      "inputs": [
+        {
+          "name": "operation",
+          "type": "bytes32",
+          "indexed": true,
+          "internalType": "bytes32"
+        },
+        {
+          "name": "caller",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "conditionData",
+          "type": "bytes[]",
+          "indexed": false,
+          "internalType": "bytes[]"
+        },
+        {
+          "name": "dependencies",
+          "type": "bytes32[]",
+          "indexed": false,
+          "internalType": "bytes32[]"
+        },
+        {
+          "name": "fallbackOperation",
+          "type": "bytes32",
+          "indexed": false,
+          "internalType": "bytes32"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OperationRootCalled",
+      "inputs": [
+        {
+          "name": "root",
+          "type": "bytes32",
+          "indexed": true,
+          "internalType": "bytes32"
+        },
+        {
+          "name": "caller",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    }
+  ],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b5061081b8061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806376a9140814610046578063a3f4df7e1461005b578063ffa1ad74146100ad575b600080fd5b6100596100543660046103f7565b6100e9565b005b6100976040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b6040516100a491906106fb565b60405180910390f35b6100976040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b805161017b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b80516040513391907ff95dd2a06a22e482ba3fe223c3feffb28e2e77786e4908143fb6c04f7059540490600090a360005b816020015151811015610298573373ffffffffffffffffffffffffffffffffffffffff16826020015182815181106101e6576101e6610715565b6020026020010151600001517f374a0b1be17c1252cdb48db98472ffe0646a4557067d3b6a29ff740c380497c58460200151848151811061022957610229610715565b6020026020010151602001518560200151858151811061024b5761024b610715565b6020026020010151604001518660200151868151811061026d5761026d610715565b60200260200101516060015160405161028893929190610744565b60405180910390a36001016101ac565b5050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040805190810167ffffffffffffffff811182821017156102ee576102ee61029c565b60405290565b6040516080810167ffffffffffffffff811182821017156102ee576102ee61029c565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561035e5761035e61029c565b604052919050565b600067ffffffffffffffff8211156103805761038061029c565b5060051b60200190565b600082601f83011261039b57600080fd5b81356103ae6103a982610366565b610317565b8082825260208201915060208360051b8601019250858311156103d057600080fd5b602085015b838110156103ed5780358352602092830192016103d5565b5095945050505050565b60006020828403121561040957600080fd5b67ffffffffffffffff8235111561041f57600080fd5b813582016040818503121561043357600080fd5b61043b6102cb565b8135815267ffffffffffffffff6020830135111561045857600080fd5b60208201358201915084601f83011261047057600080fd5b61047d6103a98335610366565b82358082526020808301929160051b85010187101561049b57600080fd5b602084015b6020853560051b8601018110156106885767ffffffffffffffff813511156104c757600080fd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b030112156104fd57600080fd5b6105056102f4565b6020820135815267ffffffffffffffff6040830135111561052557600080fd5b602060408301358301018a601f82011261053e57600080fd5b61054b6103a98235610366565b81358082526020808301929160051b8401018d101561056957600080fd5b602083015b6020843560051b8501018110156106355767ffffffffffffffff8135111561059557600080fd5b8d603f8235860101126105a757600080fd5b602081358501013567ffffffffffffffff8111156105c7576105c761029c565b6105f860207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610317565b8181528f6020808486358a01010101111561061257600080fd5b81604084358801016020830137600060209282018301528452928301920161056e565b506020840152505067ffffffffffffffff6060830135111561065657600080fd5b6106698a6020606085013585010161038a565b60408201526080919091013560608201528352602092830192016104a0565b50602083015250949350505050565b6000815180845260005b818110156106bd576020818501810151868301820152016106a1565b5060006020828601015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011685010191505092915050565b60208152600061070e6020830184610697565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b6000606082016060835280865180835260808501915060808160051b86010192506020880160005b828110156107bb577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff808786030184526107a6858351610697565b9450602093840193919091019060010161076c565b50505050828103602084015280855180835260208301915060208701925060005b818110156107fa5783518352602093840193909201916001016107dc565b50506040939093019390935250939250505056fea164736f6c634300081b000a",
+    "sourceMap": "1032:2777:0:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c806376a9140814610046578063a3f4df7e1461005b578063ffa1ad74146100ad575b600080fd5b6100596100543660046103f7565b6100e9565b005b6100976040518060400160405280600881526020017f4c6967687444414700000000000000000000000000000000000000000000000081525081565b6040516100a491906106fb565b60405180910390f35b6100976040518060400160405280600581526020017f302e312e3000000000000000000000000000000000000000000000000000000081525081565b805161017b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4c696768744441473a204f7065726174696f6e20726f6f7420697320656d707460448201527f7900000000000000000000000000000000000000000000000000000000000000606482015260840160405180910390fd5b80516040513391907ff95dd2a06a22e482ba3fe223c3feffb28e2e77786e4908143fb6c04f7059540490600090a360005b816020015151811015610298573373ffffffffffffffffffffffffffffffffffffffff16826020015182815181106101e6576101e6610715565b6020026020010151600001517f374a0b1be17c1252cdb48db98472ffe0646a4557067d3b6a29ff740c380497c58460200151848151811061022957610229610715565b6020026020010151602001518560200151858151811061024b5761024b610715565b6020026020010151604001518660200151868151811061026d5761026d610715565b60200260200101516060015160405161028893929190610744565b60405180910390a36001016101ac565b5050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040805190810167ffffffffffffffff811182821017156102ee576102ee61029c565b60405290565b6040516080810167ffffffffffffffff811182821017156102ee576102ee61029c565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561035e5761035e61029c565b604052919050565b600067ffffffffffffffff8211156103805761038061029c565b5060051b60200190565b600082601f83011261039b57600080fd5b81356103ae6103a982610366565b610317565b8082825260208201915060208360051b8601019250858311156103d057600080fd5b602085015b838110156103ed5780358352602092830192016103d5565b5095945050505050565b60006020828403121561040957600080fd5b67ffffffffffffffff8235111561041f57600080fd5b813582016040818503121561043357600080fd5b61043b6102cb565b8135815267ffffffffffffffff6020830135111561045857600080fd5b60208201358201915084601f83011261047057600080fd5b61047d6103a98335610366565b82358082526020808301929160051b85010187101561049b57600080fd5b602084015b6020853560051b8601018110156106885767ffffffffffffffff813511156104c757600080fd5b8035850160807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828b030112156104fd57600080fd5b6105056102f4565b6020820135815267ffffffffffffffff6040830135111561052557600080fd5b602060408301358301018a601f82011261053e57600080fd5b61054b6103a98235610366565b81358082526020808301929160051b8401018d101561056957600080fd5b602083015b6020843560051b8501018110156106355767ffffffffffffffff8135111561059557600080fd5b8d603f8235860101126105a757600080fd5b602081358501013567ffffffffffffffff8111156105c7576105c761029c565b6105f860207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601610317565b8181528f6020808486358a01010101111561061257600080fd5b81604084358801016020830137600060209282018301528452928301920161056e565b506020840152505067ffffffffffffffff6060830135111561065657600080fd5b6106698a6020606085013585010161038a565b60408201526080919091013560608201528352602092830192016104a0565b50602083015250949350505050565b6000815180845260005b818110156106bd576020818501810151868301820152016106a1565b5060006020828601015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f83011685010191505092915050565b60208152600061070e6020830184610697565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b6000606082016060835280865180835260808501915060808160051b86010192506020880160005b828110156107bb577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff808786030184526107a6858351610697565b9450602093840193919091019060010161076c565b50505050828103602084015280855180835260208301915060208701925060005b818110156107fa5783518352602093840193909201916001016107dc565b50506040939093019390935250939250505056fea164736f6c634300081b000a",
+    "sourceMap": "1032:2777:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3066:741;;;;;;:::i;:::-;;:::i;:::-;;2747:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;2840;;;;;;;;;;;;;;;;;;;;;3066:741;3202:18;;3194:78;;;;;;;6523:2:2;3194:78:0;;;6505:21:2;6562:2;6542:18;;;6535:30;6601:34;6581:18;;;6574:62;6672:3;6652:18;;;6645:31;6693:19;;3194:78:0;;;;;;;;3349:18;;3329:51;;3369:10;;3349:18;3329:51;;3349:18;;3329:51;3427:9;3422:379;3446:13;:24;;;:31;3442:1;:35;3422:379;;;3586:10;3503:287;;3536:13;:24;;;3561:1;3536:27;;;;;;;;:::i;:::-;;;;;;;:32;;;3503:287;3614:13;:24;;;3639:1;3614:27;;;;;;;;:::i;:::-;;;;;;;:41;;;3673:13;:24;;;3698:1;3673:27;;;;;;;;:::i;:::-;;;;;;;:40;;;3731:13;:24;;;3756:1;3731:27;;;;;;;;:::i;:::-;;;;;;;:45;;;3503:287;;;;;;;;:::i;:::-;;;;;;;;3479:3;;3422:379;;;;3066:741;:::o;14:184:2:-;66:77;63:1;56:88;163:4;160:1;153:15;187:4;184:1;177:15;203:257;275:4;269:11;;;307:17;;354:18;339:34;;375:22;;;336:62;333:88;;;401:18;;:::i;:::-;437:4;430:24;203:257;:::o;465:253::-;537:2;531:9;579:4;567:17;;614:18;599:34;;635:22;;;596:62;593:88;;;661:18;;:::i;723:334::-;794:2;788:9;850:2;840:13;;855:66;836:86;824:99;;953:18;938:34;;974:22;;;935:62;932:88;;;1000:18;;:::i;:::-;1036:2;1029:22;723:334;;-1:-1:-1;723:334:2:o;1062:192::-;1131:4;1164:18;1156:6;1153:30;1150:56;;;1186:18;;:::i;:::-;-1:-1:-1;1231:1:2;1227:14;1243:4;1223:25;;1062:192::o;1259:732::-;1313:5;1366:3;1359:4;1351:6;1347:17;1343:27;1333:55;;1384:1;1381;1374:12;1333:55;1424:6;1411:20;1451:73;1467:56;1516:6;1467:56;:::i;:::-;1451:73;:::i;:::-;1548:3;1572:6;1567:3;1560:19;1604:4;1599:3;1595:14;1588:21;;1665:4;1655:6;1652:1;1648:14;1640:6;1636:27;1632:38;1618:52;;1693:3;1685:6;1682:15;1679:35;;;1710:1;1707;1700:12;1679:35;1746:4;1738:6;1734:17;1760:200;1776:6;1771:3;1768:15;1760:200;;;1868:17;;1898:18;;1945:4;1936:14;;;;1793;1760:200;;;-1:-1:-1;1978:7:2;1259:732;-1:-1:-1;;;;;1259:732:2:o;1996:3631::-;2084:6;2137:2;2125:9;2116:7;2112:23;2108:32;2105:52;;;2153:1;2150;2143:12;2105:52;2197:18;2185:9;2172:23;2169:47;2166:67;;;2229:1;2226;2219:12;2166:67;2280:9;2267:23;2256:9;2252:39;2325:4;2320:2;2311:7;2307:16;2303:27;2300:47;;;2343:1;2340;2333:12;2300:47;2369:22;;:::i;:::-;2436:16;;2461:22;;2525:18;2519:2;2511:11;;2498:25;2495:49;2492:69;;;2557:1;2554;2547:12;2492:69;2609:2;2605;2601:11;2588:25;2584:2;2580:34;2570:44;;2652:7;2645:4;2641:2;2637:13;2633:27;2623:55;;2674:1;2671;2664:12;2623:55;2698:83;2714:66;2776:2;2763:16;2714:66;:::i;2698:83::-;2827:16;;2815:29;;;2869:2;2860:12;;;;2803:3;2903:1;2899:24;2891:33;;2887:42;2884:55;-1:-1:-1;2881:75:2;;;2952:1;2949;2942:12;2881:75;2984:2;2980;2976:11;2996:2563;3059:2;3052;3039:16;3036:1;3032:24;3028:2;3024:33;3020:42;3015:3;3012:51;2996:2563;;;3143:18;3137:3;3124:17;3121:41;3118:61;;;3175:1;3172;3165:12;3118:61;3223:3;3210:17;3206:2;3202:26;3339:4;3270:66;3265:2;3256:7;3252:16;3248:89;3244:100;3241:120;;;3357:1;3354;3347:12;3241:120;3389:22;;:::i;:::-;3485:2;3477:11;;3464:25;3502:24;;3574:18;3566:4;3558:13;;3545:27;3542:51;3539:71;;;3606:1;3603;3596:12;3539:71;3675:2;3666:4;3662:2;3658:13;3645:27;3641:2;3637:36;3633:45;3720:7;3713:4;3709:2;3705:13;3701:27;3691:55;;3742:1;3739;3732:12;3691:55;3772:83;3788:66;3850:2;3837:16;3788:66;:::i;3772:83::-;3915:16;;3901:31;;;3965:2;3954:14;;;;3883:5;4003:1;3999:24;3991:33;;3987:42;3984:55;-1:-1:-1;3981:75:2;;;4052:1;4049;4042:12;3981:75;4090:2;4086;4082:11;4106:1001;4175:2;4168;4155:16;4152:1;4148:24;4144:2;4140:33;4136:42;4129:5;4126:53;4106:1001;;;4277:18;4269:5;4256:19;4253:43;4250:63;;;4309:1;4306;4299:12;4250:63;4383:7;4378:2;4369:5;4356:19;4352:2;4348:28;4344:37;4340:51;4330:79;;4405:1;4402;4395:12;4330:79;4487:2;4478:5;4465:19;4461:2;4457:28;4453:37;4440:51;4522:18;4514:6;4511:30;4508:56;;;4544:18;;:::i;:::-;4596:116;4708:2;4639:66;4632:4;4624:6;4620:17;4616:90;4612:99;4596:116;:::i;:::-;4745:6;4736:7;4729:23;4836:7;4831:2;4826;4817:6;4808:5;4795:19;4791:2;4787:28;4783:41;4779:50;4775:59;4772:72;4769:92;;;4857:1;4854;4847:12;4769:92;4950:6;4943:4;4934:5;4921:19;4917:2;4913:28;4909:39;4904:2;4895:7;4891:16;4878:79;5012:1;5007:2;4985:20;;;4981:29;;4974:40;5031:22;;5079:14;;;;4203;4106:1001;;;-1:-1:-1;5140:2:2;5127:16;;5120:33;-1:-1:-1;;5199:18:2;5193:2;5185:11;;5172:25;5169:49;5166:69;;;5231:1;5228;5221:12;5166:69;5275:82;5349:7;5344:2;5337;5333;5329:11;5316:25;5312:2;5308:34;5304:43;5275:82;:::i;:::-;5268:4;5255:18;;5248:110;5432:4;5424:13;;;;5411:27;5471:2;5458:16;;5451:33;5497:20;;5546:2;5537:12;;;;3081;2996:2563;;;-1:-1:-1;5586:2:2;5575:14;;5568:29;-1:-1:-1;5579:5:2;1996:3631;-1:-1:-1;;;;1996:3631:2:o;5632:459::-;5674:3;5712:5;5706:12;5739:6;5734:3;5727:19;5764:1;5774:139;5788:6;5785:1;5782:13;5774:139;;;5896:4;5881:13;;;5877:24;;5871:31;5851:11;;;5847:22;;5840:63;5803:12;5774:139;;;5778:3;5958:1;5951:4;5942:6;5937:3;5933:16;5929:27;5922:38;6080:4;6010:66;6005:2;5997:6;5993:15;5989:88;5984:3;5980:98;5976:109;5969:116;;;5632:459;;;;:::o;6096:220::-;6245:2;6234:9;6227:21;6208:4;6265:45;6306:2;6295:9;6291:18;6283:6;6265:45;:::i;:::-;6257:53;6096:220;-1:-1:-1;;;6096:220:2:o;6723:184::-;6775:77;6772:1;6765:88;6872:4;6869:1;6862:15;6896:4;6893:1;6886:15;6912:1455;7178:4;7226:2;7215:9;7211:18;7256:2;7245:9;7238:21;7279:6;7314;7308:13;7345:6;7337;7330:22;7383:3;7372:9;7368:19;7361:26;;7446:3;7436:6;7433:1;7429:14;7418:9;7414:30;7410:40;7396:54;;7485:4;7477:6;7473:17;7508:1;7518:318;7532:6;7529:1;7526:13;7518:318;;;7621:66;7609:9;7601:6;7597:22;7593:95;7588:3;7581:108;7712:40;7745:6;7736;7730:13;7712:40;:::i;:::-;7702:50;-1:-1:-1;7787:4:2;7812:14;;;;7775:17;;;;;7554:1;7547:9;7518:318;;;7522:3;;;;7886:9;7878:6;7874:22;7867:4;7856:9;7852:20;7845:52;7919:6;7956;7950:13;7987:8;7979:6;7972:24;8026:4;8018:6;8014:17;8005:26;;8068:4;8060:6;8056:17;8040:33;;8093:1;8103:193;8119:8;8114:3;8111:17;8103:193;;;8188:15;;8174:30;;8237:4;8267:19;;;;8226:16;;;;8147:1;8138:11;8103:193;;;-1:-1:-1;;8349:2:2;8334:18;;;;8327:34;;;;-1:-1:-1;8313:5:2;6912:1455;-1:-1:-1;;;6912:1455:2:o",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "NAME()": "a3f4df7e",
+    "VERSION()": "ffa1ad74",
+    "callOperationRoot((bytes32,(bytes32,bytes[],bytes32[],bytes32)[]))": "76a91408"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.27+commit.40a35a09\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"operation\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes[]\",\"name\":\"conditionData\",\"type\":\"bytes[]\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"dependencies\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"fallbackOperation\",\"type\":\"bytes32\"}],\"name\":\"OperationCalled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"root\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"}],\"name\":\"OperationRootCalled\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"NAME\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"root\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes[]\",\"name\":\"conditionData\",\"type\":\"bytes[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"dependencies\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32\",\"name\":\"fallbackOperation\",\"type\":\"bytes32\"}],\"internalType\":\"struct LightDAG.Operation[]\",\"name\":\"operations\",\"type\":\"tuple[]\"}],\"internalType\":\"struct LightDAG.OperationRoot\",\"name\":\"operationRoot\",\"type\":\"tuple\"}],\"name\":\"callOperationRoot\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"@shunkakinoki\",\"details\":\"The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light Protocol.Further implementations will be added in the future, and may be subject to change.\",\"events\":{\"OperationCalled(bytes32,address,bytes[],bytes32[],bytes32)\":{\"params\":{\"caller\":\"The address that called the operation\",\"conditionData\":\"The condition data for the operation\",\"dependencies\":\"The dependencies for the operation\",\"fallbackOperation\":\"The fallback operation for the operation\",\"operation\":\"The operation\"}},\"OperationRootCalled(bytes32,address)\":{\"params\":{\"caller\":\"The address that called the operation root\",\"root\":\"The root of the operation\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"LightDAG\",\"version\":1},\"userdoc\":{\"events\":{\"OperationCalled(bytes32,address,bytes[],bytes32[],bytes32)\":{\"notice\":\"Emitted when an operation is called\"},\"OperationRootCalled(bytes32,address)\":{\"notice\":\"Emitted when an operation root is called\"}},\"kind\":\"user\",\"methods\":{\"NAME()\":{\"notice\":\"The name for this contract\"},\"VERSION()\":{\"notice\":\"The version for this contract\"}},\"notice\":\"LightDAG is an implementation contract for Light Protocol. This is the version 0.1.0 contract for Light Protocol.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/src/LightDAG.sol\":\"LightDAG\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\"},\"optimizer\":{\"enabled\":true,\"runs\":4294967295},\"remappings\":[\":@/bytecodes/=contracts/bytecodes/\",\":@/circuits/=contracts/circuits/\",\":@/constants/=contracts/constants/\",\":@/contracts/=contracts/src/\",\":@/script/=contracts/script/\",\":@/test/=contracts/test/\",\":@0xsequence/wallet-contracts-v3/=lib/wallet-contracts-v3/\",\":@0xsequence/wallet-contracts/=lib/wallet-contracts/\",\":@account-abstraction-v6/=lib/account-abstraction-v0.6/contracts/\",\":@account-abstraction-v7/=lib/account-abstraction-v0.7/contracts/\",\":@account-abstraction/=lib/account-abstraction/contracts/\",\":@asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/\",\":@asynchronous-vault/=lib/asynchronous-vault/src/\",\":@biconomy/account-contracts/=lib/scw-contracts/\",\":@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/\",\":@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/\",\":@eth-infinitism/account-abstraction/=lib/account-abstraction/\",\":@openzeppelin-v5.0.2/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/\",\":@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/\",\":@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/\",\":@safe-global/safe-contracts/=lib/safe-contracts/\",\":@source/=lib/soul-wallet-contract/contracts/\",\":@uniswap/v3-core/=lib/v3-core/\",\":@uniswap/v3-periphery/=lib/v3-periphery/\",\":@zerodevapp/contracts/=lib/kernel/src/\",\":account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/\",\":account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/\",\":account-abstraction/=lib/account-abstraction/contracts/\",\":asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/\",\":asynchronous-vault/=lib/asynchronous-vault/src/\",\":ds-test/=lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":magic-spend/=lib/magic-spend/src/\",\":murky/=lib/murky/src/\",\":nexus/=lib/nexus/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":seaport/=lib/seaport/\",\":singleton-paymaster/=lib/singleton-paymaster/src/\",\":solady/=lib/solady/\",\":solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/\",\":solmate/=lib/solmate/src/\",\":src/=lib/kernel/src/\",\":surl/=lib/surl/src/\"]},\"sources\":{\"contracts/src/LightDAG.sol\":{\"keccak256\":\"0xdb9a3e17a7f0ba91ca7637c0e2f8760df4e8889df6d56e82ac11dd6b96ea6736\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://1b21167689bd83f7f15b48764eb6f1d1e5bfd14ba4e176f4d83f521c2f665c8b\",\"dweb:/ipfs/QmV1K8CoJ6QZsQseewXr3pF6Fhb4WMigiy51W115owAKsL\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": { "version": "0.8.27+commit.40a35a09" },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "operation",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "conditionData",
+              "type": "bytes[]",
+              "indexed": false
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "dependencies",
+              "type": "bytes32[]",
+              "indexed": false
+            },
+            {
+              "internalType": "bytes32",
+              "name": "fallbackOperation",
+              "type": "bytes32",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "OperationCalled",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "root",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "OperationRootCalled",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "NAME",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "VERSION",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "struct LightDAG.OperationRoot",
+              "name": "operationRoot",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "root",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "struct LightDAG.Operation[]",
+                  "name": "operations",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "bytes32",
+                      "name": "hash",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes[]",
+                      "name": "conditionData",
+                      "type": "bytes[]"
+                    },
+                    {
+                      "internalType": "bytes32[]",
+                      "name": "dependencies",
+                      "type": "bytes32[]"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "fallbackOperation",
+                      "type": "bytes32"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "callOperationRoot"
+        }
+      ],
+      "devdoc": { "kind": "dev", "methods": {}, "version": 1 },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "NAME()": { "notice": "The name for this contract" },
+          "VERSION()": { "notice": "The version for this contract" }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@/bytecodes/=contracts/bytecodes/",
+        "@/circuits/=contracts/circuits/",
+        "@/constants/=contracts/constants/",
+        "@/contracts/=contracts/src/",
+        "@/script/=contracts/script/",
+        "@/test/=contracts/test/",
+        "@0xsequence/wallet-contracts-v3/=lib/wallet-contracts-v3/",
+        "@0xsequence/wallet-contracts/=lib/wallet-contracts/",
+        "@account-abstraction-v6/=lib/account-abstraction-v0.6/contracts/",
+        "@account-abstraction-v7/=lib/account-abstraction-v0.7/contracts/",
+        "@account-abstraction/=lib/account-abstraction/contracts/",
+        "@asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/",
+        "@asynchronous-vault/=lib/asynchronous-vault/src/",
+        "@biconomy/account-contracts/=lib/scw-contracts/",
+        "@eth-infinitism/account-abstraction-v0.6/=lib/account-abstraction-v0.6/",
+        "@eth-infinitism/account-abstraction-v0.7/=lib/account-abstraction-v0.7/",
+        "@eth-infinitism/account-abstraction/=lib/account-abstraction/",
+        "@openzeppelin-v5.0.2/=lib/openzeppelin-contracts/",
+        "@openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/",
+        "@openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts-v4.9/=lib/openzeppelin-contracts-v4.9/contracts/",
+        "@openzeppelin/contracts-v5.0/=lib/openzeppelin-contracts-v5.0/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@proofofsoulprotocol/soul-wallet-contract/=lib/soul-wallet-contract/",
+        "@safe-global/safe-contracts/=lib/safe-contracts/",
+        "@source/=lib/soul-wallet-contract/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/",
+        "@zerodevapp/contracts/=lib/kernel/src/",
+        "account-abstraction-v0.6/=lib/account-abstraction-v0.6/contracts/",
+        "account-abstraction-v0.7/=lib/account-abstraction-v0.7/contracts/",
+        "account-abstraction/=lib/account-abstraction/contracts/",
+        "asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/",
+        "asynchronous-vault/=lib/asynchronous-vault/src/",
+        "ds-test/=lib/ds-test/src/",
+        "forge-std/=lib/forge-std/src/",
+        "magic-spend/=lib/magic-spend/src/",
+        "murky/=lib/murky/src/",
+        "nexus/=lib/nexus/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "seaport/=lib/seaport/",
+        "singleton-paymaster/=lib/singleton-paymaster/src/",
+        "solady/=lib/solady/",
+        "solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/",
+        "solmate/=lib/solmate/src/",
+        "src/=lib/kernel/src/",
+        "surl/=lib/surl/src/"
+      ],
+      "optimizer": { "enabled": true, "runs": 4294967295 },
+      "metadata": { "bytecodeHash": "none" },
+      "compilationTarget": { "contracts/src/LightDAG.sol": "LightDAG" },
+      "evmVersion": "london",
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/src/LightDAG.sol": {
+        "keccak256": "0xdb9a3e17a7f0ba91ca7637c0e2f8760df4e8889df6d56e82ac11dd6b96ea6736",
+        "urls": [
+          "bzz-raw://1b21167689bd83f7f15b48764eb6f1d1e5bfd14ba4e176f4d83f521c2f665c8b",
+          "dweb:/ipfs/QmV1K8CoJ6QZsQseewXr3pF6Fhb4WMigiy51W115owAKsL"
+        ],
+        "license": "Apache-2.0"
+      }
+    },
+    "version": 1
+  },
+  "id": 0
+}
