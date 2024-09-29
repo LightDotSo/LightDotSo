@@ -35,13 +35,13 @@ contract LightTimelockControllerFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
 
     /// Same as `testFork_timelock_createTimelockController_equalsGetAddress`
-    function test_ShouldDeployANewLightTimelockControllerWithTheCorrectHash() external onlyForkProfile {
+    function test_ShouldDeployANewLightTimelockControllerWithTheCorrectHash() external {
         // it should deploy a new LightTimelockController with the correct hash
         testFork_timelock_createTimelockController_equalsGetAddress();
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function testFork_timelock_createTimelockController_equalsGetAddress() public {
+    function testFork_timelock_createTimelockController_equalsGetAddress() public onlyForkProfile {
         // Create the account using the factory w/ hash 1, nonce 0
         timelock = timelockFactory.createTimelockController(address(account), bytes32(uint256(1)));
 

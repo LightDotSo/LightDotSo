@@ -22,6 +22,7 @@ import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.s
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
@@ -71,6 +72,9 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Base test setup
         BaseTest.setUp();
 
+        // Deploy the entrypoint simulation contract
+        entryPointSimulations = new EntryPointSimulations();
+
         // Deploy the immutable proxy
         immutableProxy = new ImmutableProxy();
 
@@ -78,12 +82,14 @@ abstract contract BaseIntegrationTest is BaseTest {
         (user, userKey) = makeAddrAndKey("user");
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
+
         // Set the light protocol controller
         lightProtocolController = address(makeAddr("lightProtocolController"));
         // Set the light paymaster owner
         lightPaymasterOwner = address(makeAddr("lightPaymasterOwner"));
         // Set the light paymaster signer
         lightPaymasterSigner = address(makeAddr("lightPaymasterSigner"));
+
         // Get the expected image hash
         expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
 

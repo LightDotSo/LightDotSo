@@ -38,13 +38,13 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
 
     /// Same as `testFork_wallet_createAccount_equalsGetAddress`
-    function test_ShouldDeployANewLightWalletWithTheCorrectHash() external onlyForkProfile {
+    function test_ShouldDeployANewLightWalletWithTheCorrectHash() external {
         // it should deploy a new LightWallet with the correct hash
         testFork_wallet_createAccount_equalsGetAddress();
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function testFork_wallet_createAccount_equalsGetAddress() public {
+    function testFork_wallet_createAccount_equalsGetAddress() public onlyForkProfile {
         // Create the account using the factory w/ hash 1, nonce 0
         account = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(0)));
 
