@@ -34,6 +34,7 @@ import {
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui/components/button";
 import {
+  cn,
   findContractAddressByAddress,
   getEtherscanUrl,
   shortenAddress,
@@ -235,6 +236,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     });
   }, [implAddress, address]);
 
+  const isDisabled = useMemo(() => {
+    return isLoading || (deployedOp && callData === "0x") || !isDeployable;
+  }, [isLoading, deployedOp, callData, isDeployable]);
+
   const deployedUserOperation = useMemo(() => {
     return userOperationsParser.serialize([
       {
@@ -252,16 +257,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const SettingsDeploymentCardSubmitButton: FC = () => {
     return (
       <Button
-        asChild
         isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
-        disabled={
-          isLoading || (deployedOp && callData === "0x") || !isDeployable
-        }
+        disabled={isDisabled}
       >
         <Link
+          aria-disabled={isDisabled}
           href={`/${address}/create?userOperations=${deployedUserOperation}`}
+          className={cn(isDisabled && "cursor-not-allowed")}
         >
           {isLoading
             ? "Loading..."
@@ -312,7 +316,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
           <div className="flex items-center gap-2">
             Tx:{" "}
             <ExternalLink
-              className="text-sm text-text-weak hover:underline"
+              className="text-sm text-text-weak hover:text-text-weaker hover:underline"
               href={`${getEtherscanUrl(chain)}/tx/${deployedOp.transaction?.hash}`}
             >
               {shortenBytes32(deployedOp.transaction?.hash)}
