@@ -41,7 +41,7 @@
       "inputs": ["Makefile", "configurations/prisma/prisma/schema-rs.prisma"],
       "outputs": ["crates/prisma/src/lib.rs"]
     },
-    "//#test": {
+    "//#vitest": {
       "dependsOn": [],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
@@ -65,7 +65,7 @@
       "dependsOn": ["^start"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^vitest"]
     },
     "tsc": {
       "dependsOn": ["^build", "^tsc"]

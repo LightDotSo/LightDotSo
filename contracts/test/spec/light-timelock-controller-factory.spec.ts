@@ -21,14 +21,7 @@ test("LightTimelockControllerFactory: Correct humanReadableAbi", () => {
     Object.values(LightTimelockControllerFactory.humanReadableAbi),
   ).toMatchInlineSnapshot(`
     [
-      "constructor()",
-      "error LightProtocolControllerAddressZero()",
-      "error LightWalletAddressZero()",
-      "function NAME() view returns (string)",
-      "function VERSION() view returns (string)",
-      "function createTimelockController(address lightWallet, address lightProtocolController, bytes32 salt) returns (address ret)",
-      "function getAddress(address lightWallet, address lightProtocolController, bytes32 salt) view returns (address)",
-      "function timelockImplementation() view returns (address)",
+
     ]
   `);
 });

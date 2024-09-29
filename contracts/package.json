@@ -24,6 +24,7 @@
   "scripts": {
     "compile": "cd .. && hardhat compile",
     "lint": "cd .. && pnpm run solhint:lint",
+    "test": "cd .. && pnpm vitest run -w --project \"contracts\"",
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
