@@ -34,5 +34,5 @@ contract LightPaymaster is MagicSpend {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor() MagicSpend() {}
+    constructor(address entryPoint) MagicSpend(entryPoint) {}
 }

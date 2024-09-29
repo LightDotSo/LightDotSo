@@ -29,11 +29,11 @@ contract PaymasterGetHashUnitTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account complies w/ ERC-165
+    /// Tests that the paymaster getHash function works correctly
     function test_paymaster_getHash() public {
         address sender = address(0xF46D20dC61A5f43773Ad172602647f194a69a16d);
 
-        LightPaymaster paymaster = new LightPaymaster();
+        LightPaymaster paymaster = new LightPaymaster(address(entryPoint));
 
         MagicSpend.WithdrawRequest memory request = MagicSpend.WithdrawRequest({
             asset: address(0),

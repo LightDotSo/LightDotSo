@@ -121,16 +121,16 @@ abstract contract BaseTest is Test {
     /// @dev BaseTest setup
     function setUp() public virtual {
         // Deploy the EntryPoint
-        entryPoint = new EntryPoint();
-
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
+        entryPoint = deployEntryPoint();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
 
         // Deploy the LightTimelockControllerFactory
         timelockFactory = new LightTimelockControllerFactory();
+
+        // Deploy the LightWalletFactory w/ EntryPoint
+        factory = new LightWalletFactory(entryPoint);
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0
@@ -162,8 +162,9 @@ abstract contract BaseTest is Test {
         return contractAddress;
     }
 
-    function deployEntryPoint() internal {
-        entryPoint = EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
+    /// @dev Deploys the EntryPoint
+    function deployEntryPoint() internal returns (EntryPoint) {
+        return EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
     }
 
     /// @dev Gets the pseudo-random number

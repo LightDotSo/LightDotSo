@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es2020"
   },
-  "exclude": ["dist", "build", "node_modules"],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ],
   "extends": "@lightdotso/tsconfig/node.json",
-  "include": ["."]
+  "include": [
+    "."
+  ]
 }
