@@ -133,7 +133,7 @@ abstract contract BaseTest is Test {
     /// @dev BaseTest setup
     function setUp() public virtual {
         // Deploy the EntryPoint
-        entryPoint = deployEntryPoint();
+        entryPoint = new EntryPoint();
 
         // Deploy the EntryPointSimulations
         entryPointSimulations = new EntryPointSimulations();

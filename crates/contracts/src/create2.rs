@@ -15,6 +15,7 @@
 use crate::constants::{
     LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
     LIGHT_WALLET_FACTORY_V010_ADDRESS, LIGHT_WALLET_FACTORY_V020_ADDRESS,
+    LIGHT_WALLET_FACTORY_V030_ADDRESS,
 };
 use alloy::{
     dyn_abi::DynSolValue,
@@ -57,8 +58,10 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
         factory == *LIGHT_WALLET_FACTORY_V020_ADDRESS
     {
         PROXY_CREATION_CODE_V1
-    } else {
+    } else if factory == *LIGHT_WALLET_FACTORY_V030_ADDRESS {
         PROXY_CREATION_CODE_V2
+    } else {
+        return Err(eyre!("Invalid factory address"));
     };
 
     let init_code_hash = keccak256(
