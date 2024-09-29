@@ -13,7 +13,10 @@
 // limitations under the License.
 
 import { sendUserOperation } from "@lightdotso/client";
-import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import {
+  TRANSACTION_ROW_COUNT,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationSendBodyParams,
@@ -21,6 +24,7 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui/components/toast";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
@@ -84,7 +88,12 @@ export const useMutationUserOperationSend = (
           signature: userOperationSignature,
         },
         // Hardcoded to use the latest version of the wallet factory
-        CONTRACT_ADDRESSES["v0.6.0 Entrypoint"],
+        WALLET_FACTORY_ENTRYPOINT_MAPPING[
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          findContractAddressByAddress(
+            params.implementation_address as Address,
+          )!
+        ],
       ]);
 
       toast.dismiss(loadingToast);

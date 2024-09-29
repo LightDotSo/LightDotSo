@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import type { UserOperation } from "@lightdotso/schemas";
 import type { ExecutionWithChainId } from "@lightdotso/types";
 import { lightWalletAbi } from "@lightdotso/wagmi/generated";
@@ -45,8 +45,10 @@ export const generatePartialUserOperations = (
     // Check if the wallet factory for abi v0.1.0 or v0.2.0
     if (
       !walletFactory ||
-      walletFactory === CONTRACT_ADDRESSES["v0.1.0 Implementation"] ||
-      walletFactory === CONTRACT_ADDRESSES["v0.2.0 Implementation"]
+      walletFactory ===
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V010_ADDRESS] ||
+      walletFactory ===
+        CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V020_ADDRESS]
     ) {
       // Check if there's more than one execution for the same chainId
       const executionCallData =
