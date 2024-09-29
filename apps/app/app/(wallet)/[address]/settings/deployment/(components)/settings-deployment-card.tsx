@@ -249,6 +249,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const SettingsDeploymentCardSubmitButton: FC = () => {
     return (
       <Button
+        asChild
         isLoading={isLoading}
         type="submit"
         form="settings-deployment-card-form"
