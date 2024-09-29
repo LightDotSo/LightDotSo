@@ -28,11 +28,11 @@
     },
     "//#fix": {
       "dependsOn": [],
-      "inputs": ["**"]
+      "inputs": []
     },
     "//#lint": {
       "dependsOn": [],
-      "inputs": ["**"],
+      "inputs": [],
       "outputs": []
     },
     "//#prisma": {
@@ -47,8 +47,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"],
-      "inputs": ["!package.json", "!pnpm-lock.yaml"]
+      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"]
     },
     "dev": {
       "cache": false,
@@ -65,7 +64,7 @@
       "dependsOn": ["^start"]
     },
     "test": {
-      "dependsOn": ["^vitest"]
+      "dependsOn": ["//#vitest", "^test"]
     },
     "tsc": {
       "dependsOn": ["^build", "^tsc"]

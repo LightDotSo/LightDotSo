@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "inputs": [
-        "**",
+        "*",
         "../.cargo/**",
         "../apps/desktop/src-tauri/**",
         "../bin/**",

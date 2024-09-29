@@ -22,9 +22,10 @@
     "test/**"
   ],
   "scripts": {
+    "build": "cd .. && make contracts-build || exit 0",
     "compile": "cd .. && hardhat compile",
     "lint": "cd .. && pnpm run solhint:lint",
-    "test": "cd .. && pnpm vitest run -w --project \"contracts\"",
+    "test": "cd .. && pnpm run vitest:contracts",
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {

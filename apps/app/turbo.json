@@ -41,10 +41,6 @@
     "lint": {},
     "start": {
       "dependsOn": ["build"]
-    },
-    "test": {
-      "dependsOn": ["build"],
-      "env": ["ENVIRONMENT_URL", "NODE_ENV"]
     }
   }
 }

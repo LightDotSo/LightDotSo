@@ -14,10 +14,10 @@
       "outputs": []
     },
     "lint": {
-      "dependsOn": ["build"]
+      "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": ["^build"],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     }
   }

@@ -1638,8 +1638,8 @@ model Timelock {
   // Fields
   // ---------------------------------------------------------------------------
 
-  salt     String
-  minDelay BigInt
+  salt           String
+  factoryAddress String
 
   // ---------------------------------------------------------------------------
   // Many-to-many
