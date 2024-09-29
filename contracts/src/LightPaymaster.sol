@@ -16,9 +16,16 @@
 
 pragma solidity ^0.8.27;
 
+// Coinbase's magic-spend library is used to handle the flexible payment paymaster functionality for 4337 compatible wallets.
+// Link: https://github.com/coinbase/magic-spend/blob/122a58ddb8c6a99dd54585357e877ae8d0cbc9a7/src/MagicSpend.sol
+// License: MIT
+
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 
-// LightPaymaster -- Paymaster for Light
+/// @title LightPaymaster
+/// @author @shunkakinoki
+/// @notice LightPaymaster is a paymaster for Light Protocol.
+/// @dev This contract is used to handle the flexible payment paymaster functionality for 4337 compatible wallets.
 contract LightPaymaster is MagicSpend {
     // -------------------------------------------------------------------------
     // Constant

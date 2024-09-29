@@ -26,6 +26,9 @@ We would like to acknowledge the projects below whose work has been instrumental
 - [0xsequence](https://github.com/0xsequence/wallet-contracts): The core signature smart contracts, signature implementation as described in [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) are all based on the work done by 0xsequence.
 - [4337](https://github.com/eth-infinitism/account-abstraction): The account abstraction standard set by 4337 has been instrumental in making this project a reality, and all infrastructure providers whose work has been possible for smart contract wallets to thrive.
 - [@shadcn/ui](https://github.com/shadcn/ui): The web UI is all based on the work done by @shadcn, and we are grateful for the work that he has done to provide a beautiful and functional UI foundation for us to build upon.
+- [asynchronous-vault](https://github.com/AmphorProtocol/asynchronous-vault): Amphor's asynchronous vault implementation is used to handle our ERC4626 compatible protocol token vaults.
+- [magic-spend](https://github.com/coinbase/magic-spend): Coinbase's magic-spend library is used to handle the flexible payment paymaster functionality for 4337 compatible wallets.
+- [openzeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts): OpenZeppelin's contracts are used for the implementation of the Timelock contracts.
 
 See more in [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) and [REFERENCES.md](REFERENCES.md) for more details.
 

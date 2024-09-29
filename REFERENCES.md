@@ -8,6 +8,8 @@
 
 - [0xsequence/wallet-contracts](https://github.com/0xsequence/wallet-contracts) for base `MainModuleUpgradable.sol` for [LightWallet.sol](./contracts/src/LightWallet.sol)
 - [0xsequence/wallet-contracts](https://github.com/0xsequence/wallet-contracts) for entirety of rust implementation of signature decoding/encoding from [go-sequence](https://github.com/0xsequence/go-sequence) in rust at [./crates/sequence](./crates/sequence) and typescript at [./packages/sequence](./packages/sequence)
+- [Amphor Protocol](https://github.com/amphor-protocol/asynchronous-vault) for the ERC4626 and ERC7540 compatible asynchronous token vault implementation which is used to handle our protocol token vaults in [./contracts/src/LightVault.sol](./contracts/src/LightVault.sol)
+- [Coinbase](https://github.com/coinbase/magic-spend) for the flexible payment paymaster implementation which is used to handle the flexible payment paymaster functionality for 4337 compatible wallets in [./contracts/src/LightPaymaster.sol](./contracts/src/LightPaymaster.sol)
 
 ## UI
 

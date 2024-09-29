@@ -16,6 +16,10 @@
 
 pragma solidity ^0.8.27;
 
+// Modified implementation on TimelockControllerUpgradeable.sol from @openzeppelin
+// Link: https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/3fdb6ca9acf1d79ecedcbc97f9b63195fe14fcb7/contracts/governance/TimelockControllerUpgradeable.sol
+// License: MIT
+
 import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";

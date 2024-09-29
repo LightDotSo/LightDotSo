@@ -16,7 +16,6 @@
 
 pragma solidity ^0.8.27;
 
-// LightWallet.sol -- LightWallet initial implementation
 // Modified implementation on SimpleAccountFactory.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccountFactory.sol
 // License: GPL-3.0
