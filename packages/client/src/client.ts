@@ -174,11 +174,11 @@ export const getClient: (
       : process.env.LOCAL_ENV === "dev" ||
           process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
         ? localApiClient
-        : typeof clientType === "undefined"
-          ? publicApiClient
+        : clientType === "admin"
+          ? adminApiClient
           : clientType === "authenticated"
             ? authenticatedApiClient
-            : adminApiClient;
+            : publicApiClient;
 
 // -----------------------------------------------------------------------------
 // RPC
