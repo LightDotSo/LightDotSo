@@ -33,7 +33,7 @@ use axum::{
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
-    constants::ENTRYPOINT_V060_ADDRESS, merkle_tree::MerkleTree,
+    address::ENTRYPOINT_V060_ADDRESS, merkle_tree::MerkleTree,
     paymaster::decode_paymaster_and_data, types::UserOperation as BaseUserOperation,
 };
 use lightdotso_db::models::activity::CustomParams;

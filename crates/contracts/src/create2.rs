@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::constants::{
+use crate::address::{
     LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
     LIGHT_WALLET_FACTORY_V010_ADDRESS, LIGHT_WALLET_FACTORY_V020_ADDRESS,
     LIGHT_WALLET_FACTORY_V030_ADDRESS,
@@ -91,7 +91,7 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
 
 #[cfg(test)]
 mod tests {
-    use crate::constants::LIGHT_WALLET_FACTORY_V010_ADDRESS;
+    use crate::address::LIGHT_WALLET_FACTORY_V010_ADDRESS;
 
     use super::*;
     use alloy::primitives::B256;

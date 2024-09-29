@@ -32,7 +32,7 @@ use axum_extra::{
     TypedHeader,
 };
 use eyre::{eyre, Result};
-use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESS, create2::get_address};
+use lightdotso_contracts::{address::LIGHT_WALLET_FACTORY_ADDRESS, create2::get_address};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,

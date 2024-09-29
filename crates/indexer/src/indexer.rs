@@ -50,7 +50,7 @@ use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use eyre::{eyre, Result};
 use futures::StreamExt;
 use lightdotso_constants::chains::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
-use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESSES;
+use lightdotso_contracts::address::LIGHT_WALLET_FACTORY_ADDRESSES;
 use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{
     get_producer, rdkafka::producer::FutureProducer,

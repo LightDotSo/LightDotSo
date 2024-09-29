@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{constants::ALCHEMY_V060_GAS_MANAGER_ADDRESS, provider::get_provider};
+use crate::{address::ALCHEMY_V060_GAS_MANAGER_ADDRESS, provider::get_provider};
 use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
 use eyre::{eyre, Context, Result};
 use prisma_client_rust::chrono::NaiveDateTime;
@@ -122,7 +122,7 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::constants::LIGHT_PAYMASTER_ADDRESSES;
+    use crate::address::LIGHT_PAYMASTER_ADDRESSES;
     use alloy::hex;
     use eyre::Result;
 

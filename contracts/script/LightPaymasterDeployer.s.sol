@@ -19,7 +19,7 @@ pragma solidity ^0.8.27;
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {byteCode} from "@/bytecodes/ERC1967Proxy/v0.3.0.b.sol";
 import {initCode, initCodeHash, salt, proxySalt} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
-import {LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/addresses.sol";
+import {LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

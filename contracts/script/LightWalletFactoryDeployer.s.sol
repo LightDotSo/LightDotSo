@@ -17,7 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {initCode, initCodeHash, salt} from "@/bytecodes/LightWalletFactory/v0.3.0.b.sol";
-import {LIGHT_WALLET_FACTORY_ADDRESS} from "@/constants/addresses.sol";
+import {LIGHT_WALLET_FACTORY_ADDRESS} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

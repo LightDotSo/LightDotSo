@@ -37,7 +37,7 @@ use axum::{
     response::IntoResponse,
 };
 use http_body_util::BodyExt;
-use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
+use lightdotso_contracts::{address::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
 use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_kafka::{

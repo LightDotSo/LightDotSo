@@ -14,7 +14,7 @@
 
 use alloy::primitives::{Address, B256};
 use eyre::Result;
-use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_V020_ADDRESS, create2::get_address};
+use lightdotso_contracts::{address::LIGHT_WALLET_FACTORY_V020_ADDRESS, create2::get_address};
 use lightdotso_sequence::{
     config::WalletConfig,
     types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},

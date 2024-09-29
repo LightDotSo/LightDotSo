@@ -44,7 +44,7 @@ pub async fn get_erc_1271_wallet(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::constants::LIGHT_WALLET_EXAMPLE_ADDRESS;
+    use crate::address::LIGHT_WALLET_EXAMPLE_ADDRESS;
 
     #[ignore]
     #[tokio::test]
