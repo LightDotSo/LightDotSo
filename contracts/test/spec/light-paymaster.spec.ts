@@ -19,7 +19,7 @@ import { expect, test } from "vitest";
 test("LightPaymaster: Correct humanReadableAbi", () => {
   expect(Object.values(LightPaymaster.humanReadableAbi)).toMatchInlineSnapshot(`
     [
-      "constructor()",
+      "constructor(address entryPoint)",
       "error AddressEmptyCode(address target)",
       "error ERC1967InvalidImplementation(address implementation)",
       "error ERC1967NonPayable()",
@@ -44,15 +44,14 @@ test("LightPaymaster: Correct humanReadableAbi", () => {
       "event MaxWithdrawDenominatorSet(uint256 newDenominator)",
       "event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner)",
       "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
-      "event SignerAdded(address signer)",
-      "event SignerRemoved(address signer)",
+      "event SignerSet(address indexed signer, bool isValid)",
       "event Upgraded(address indexed implementation)",
       "function NAME() view returns (string)",
       "function UPGRADE_INTERFACE_VERSION() view returns (string)",
       "function VERSION() view returns (string)",
       "function acceptOwnership()",
       "function addSigner(address signer_)",
-      "function entryPoint() pure returns (address)",
+      "function entryPoint() view returns (address)",
       "function entryPointAddStake(uint256 amount, uint32 unstakeDelaySeconds) payable",
       "function entryPointDeposit(uint256 amount) payable",
       "function entryPointUnlockStake()",
