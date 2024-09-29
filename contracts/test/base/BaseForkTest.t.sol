@@ -48,12 +48,15 @@ abstract contract BaseForkTest is BaseIntegrationTest {
 
         // EntryPoint from eth-inifinitism
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
-        // LightTimelockControllerFactory core contract
-        timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
+
         // LightPaymaster core contract
         paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
+        // LightTimelockControllerFactory core contract
+        timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
+        // LightVaultFactory core contract
+        vaultFactory = LightVaultFactory(LIGHT_VAULT_FACTORY_ADDRESS);
+        // LightWalletFactory core contract
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
 
         // Get network name
         string memory defaultName = "mainnet";
