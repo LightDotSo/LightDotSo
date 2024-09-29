@@ -1586,7 +1586,11 @@ export const lightDagAbi = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightPaymasterAbi = [
-  { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
+  {
+    type: 'constructor',
+    inputs: [{ name: 'entryPoint', internalType: 'address', type: 'address' }],
+    stateMutability: 'nonpayable',
+  },
   { type: 'receive', stateMutability: 'payable' },
   {
     type: 'function',
@@ -1628,7 +1632,7 @@ export const lightPaymasterAbi = [
     inputs: [],
     name: 'entryPoint',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'pure',
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -2007,23 +2011,11 @@ export const lightPaymasterAbi = [
         name: 'signer',
         internalType: 'address',
         type: 'address',
-        indexed: false,
+        indexed: true,
       },
+      { name: 'isValid', internalType: 'bool', type: 'bool', indexed: false },
     ],
-    name: 'SignerAdded',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'signer',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'SignerRemoved',
+    name: 'SignerSet',
   },
   {
     type: 'event',
@@ -6100,21 +6092,12 @@ export const useWatchLightPaymasterOwnershipTransferred =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerAdded"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerSet"`
  */
-export const useWatchLightPaymasterSignerAdded =
+export const useWatchLightPaymasterSignerSet =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightPaymasterAbi,
-    eventName: 'SignerAdded',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"SignerRemoved"`
- */
-export const useWatchLightPaymasterSignerRemoved =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: lightPaymasterAbi,
-    eventName: 'SignerRemoved',
+    eventName: 'SignerSet',
   })
 
 /**

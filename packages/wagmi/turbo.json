@@ -4,9 +4,9 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"],
-      "inputs": ["src/**"],
-      "outputs": ["dist/**"]
+      "env": ["NODE_ENV"],
+      "inputs": ["src/**", "!src/generated.ts"],
+      "outputs": ["dist/**", "src/generated.ts"]
     },
     "clean": {
       "cache": false
@@ -14,11 +14,6 @@
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "lint": {},
-    "wagmi": {
-      "inputs": ["src/**"],
-      "outputs": ["src/generated.ts"]
     }
   }
 }

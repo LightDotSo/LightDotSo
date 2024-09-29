@@ -19,7 +19,6 @@
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "lint": {}
+    }
   }
 }
