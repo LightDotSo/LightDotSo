@@ -1,18 +1,7 @@
 [
   {
     "type": "constructor",
-    "inputs": [
-      {
-        "name": "owner_",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "maxWithdrawDenominator_",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable"
   },
   {
@@ -22,6 +11,19 @@
   {
     "type": "function",
     "name": "NAME",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "UPGRADE_INTERFACE_VERSION",
     "inputs": [],
     "outputs": [
       {
@@ -47,23 +49,23 @@
   },
   {
     "type": "function",
-    "name": "cancelOwnershipHandover",
+    "name": "acceptOwnership",
     "inputs": [],
     "outputs": [],
-    "stateMutability": "payable"
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "completeOwnershipHandover",
+    "name": "addSigner",
     "inputs": [
       {
-        "name": "pendingOwner",
+        "name": "signer_",
         "type": "address",
         "internalType": "address"
       }
     ],
     "outputs": [],
-    "stateMutability": "payable"
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -200,6 +202,29 @@
   },
   {
     "type": "function",
+    "name": "initialize",
+    "inputs": [
+      {
+        "name": "owner_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "maxWithdrawDenominator_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "signer_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "isValidWithdrawSignature",
     "inputs": [
       {
@@ -292,7 +317,7 @@
     "inputs": [],
     "outputs": [
       {
-        "name": "result",
+        "name": "",
         "type": "address",
         "internalType": "address"
       }
@@ -324,19 +349,13 @@
   },
   {
     "type": "function",
-    "name": "ownershipHandoverExpiresAt",
-    "inputs": [
-      {
-        "name": "pendingOwner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
+    "name": "pendingOwner",
+    "inputs": [],
     "outputs": [
       {
-        "name": "result",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "",
+        "type": "address",
+        "internalType": "address"
       }
     ],
     "stateMutability": "view"
@@ -371,17 +390,36 @@
   },
   {
     "type": "function",
-    "name": "renounceOwnership",
+    "name": "proxiableUUID",
     "inputs": [],
-    "outputs": [],
-    "stateMutability": "payable"
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "requestOwnershipHandover",
+    "name": "removeSigner",
+    "inputs": [
+      {
+        "name": "signer_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "renounceOwnership",
     "inputs": [],
     "outputs": [],
-    "stateMutability": "payable"
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -398,12 +436,49 @@
   },
   {
     "type": "function",
+    "name": "signers",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isValidSigner",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "transferOwnership",
     "inputs": [
       {
         "name": "newOwner",
         "type": "address",
         "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "upgradeToAndCall",
+    "inputs": [
+      {
+        "name": "newImplementation",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "data",
+        "type": "bytes",
+        "internalType": "bytes"
       }
     ],
     "outputs": [],
@@ -539,6 +614,19 @@
   },
   {
     "type": "event",
+    "name": "Initialized",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "MagicSpendWithdrawal",
     "inputs": [
       {
@@ -583,36 +671,10 @@
   },
   {
     "type": "event",
-    "name": "OwnershipHandoverCanceled",
+    "name": "OwnershipTransferStarted",
     "inputs": [
       {
-        "name": "pendingOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "OwnershipHandoverRequested",
-    "inputs": [
-      {
-        "name": "pendingOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "OwnershipTransferred",
-    "inputs": [
-      {
-        "name": "oldOwner",
+        "name": "previousOwner",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -627,13 +689,103 @@
     "anonymous": false
   },
   {
+    "type": "event",
+    "name": "OwnershipTransferred",
+    "inputs": [
+      {
+        "name": "previousOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SignerAdded",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SignerRemoved",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Upgraded",
+    "inputs": [
+      {
+        "name": "implementation",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
     "type": "error",
-    "name": "AlreadyInitialized",
+    "name": "AddressEmptyCode",
+    "inputs": [
+      {
+        "name": "target",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC1967InvalidImplementation",
+    "inputs": [
+      {
+        "name": "implementation",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC1967NonPayable",
     "inputs": []
   },
   {
     "type": "error",
     "name": "Expired",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FailedInnerCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidInitialization",
     "inputs": []
   },
   {
@@ -654,18 +806,35 @@
   },
   {
     "type": "error",
-    "name": "NewOwnerIsZeroAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "NoExcess",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NoHandoverRequest",
+    "name": "NotInitializing",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OwnableInvalidOwner",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OwnableUnauthorizedAccount",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
   },
   {
     "type": "error",
@@ -680,6 +849,22 @@
         "name": "maxCost",
         "type": "uint256",
         "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UUPSUnauthorizedCallContext",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "UUPSUnsupportedProxiableUUID",
+    "inputs": [
+      {
+        "name": "slot",
+        "type": "bytes32",
+        "internalType": "bytes32"
       }
     ]
   },

@@ -20,7 +20,6 @@ import {TimelockControllerUpgradeable} from
     "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleSelfAuth.sol";
 
 /// @title LightTimelockController
 /// @author @shunkakinoki
@@ -28,7 +27,7 @@ import {ModuleSelfAuth} from "@0xsequence/wallet-contracts/contracts/modules/com
 /// This is the version 0.1.0 contract for Light Protocol.
 /// @dev The contract is the initial implementation of a timelock controller for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
+contract LightTimelockController is Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
     // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
@@ -90,7 +89,7 @@ contract LightTimelockController is ModuleSelfAuth, Initializable, TimelockContr
     // Upgrades
     // -------------------------------------------------------------------------
 
-    /// @dev Only callable by the current contract
+    /// @dev Only callable by the admin role (default admin is the timelock controller itself)
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address) internal view override onlySelf {}
+    function _authorizeUpgrade(address) internal view override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }

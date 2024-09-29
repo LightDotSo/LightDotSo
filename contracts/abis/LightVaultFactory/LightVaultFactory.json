@@ -92,7 +92,7 @@
       {
         "name": "underlying",
         "type": "address",
-        "internalType": "contract IERC20"
+        "internalType": "address"
       },
       {
         "name": "bootstrapAmount",

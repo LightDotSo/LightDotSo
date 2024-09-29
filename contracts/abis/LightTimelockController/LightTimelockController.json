@@ -49,6 +49,19 @@
   },
   {
     "type": "function",
+    "name": "LIGHT_PROTOCOL_CONTROLLER",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "MIN_DELAY",
     "inputs": [],
     "outputs": [
@@ -386,12 +399,7 @@
     "name": "initialize",
     "inputs": [
       {
-        "name": "lightWallet",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "lightProtocolController",
+        "name": "wallet",
         "type": "address",
         "internalType": "address"
       }
@@ -1062,22 +1070,6 @@
     "type": "error",
     "name": "NotInitializing",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "OnlySelfAuth",
-    "inputs": [
-      {
-        "name": "_sender",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "_self",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
   },
   {
     "type": "error",

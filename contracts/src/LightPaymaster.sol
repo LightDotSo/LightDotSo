@@ -31,15 +31,8 @@ contract LightPaymaster is MagicSpend {
     string public constant VERSION = "0.1.0";
 
     // -------------------------------------------------------------------------
-    // Immutable
-    // -------------------------------------------------------------------------
-
-    /// @notice The minimum delay for the timelock
-    uint256 public immutable MIN_DELAY = 300 seconds;
-
-    // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(address owner_, uint256 maxWithdrawDenominator_) MagicSpend(owner_, maxWithdrawDenominator_) {}
+    constructor() MagicSpend() {}
 }

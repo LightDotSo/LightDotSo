@@ -27,7 +27,7 @@
   },
   {
     "type": "function",
-    "name": "addOperationRoot",
+    "name": "callOperationRoot",
     "inputs": [
       {
         "name": "operationRoot",
@@ -70,6 +70,62 @@
       }
     ],
     "outputs": [],
-    "stateMutability": "pure"
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "OperationCalled",
+    "inputs": [
+      {
+        "name": "operation",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "conditionData",
+        "type": "bytes[]",
+        "indexed": false,
+        "internalType": "bytes[]"
+      },
+      {
+        "name": "dependencies",
+        "type": "bytes32[]",
+        "indexed": false,
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "fallbackOperation",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OperationRootCalled",
+    "inputs": [
+      {
+        "name": "root",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
   }
 ]
