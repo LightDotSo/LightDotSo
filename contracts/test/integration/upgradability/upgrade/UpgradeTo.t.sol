@@ -121,8 +121,12 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightTimelockController timelockV2 = new LightTimelockController();
 
         // it should revert
-        // it should revert with a {OnlySelfAuth} error
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(timelock)));
+        // it should revert with a {AccessControlUnauthorizedAccount} error
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "AccessControlUnauthorizedAccount(address,bytes32)", address(this), bytes32(uint256(0))
+            )
+        );
         // Revert for conventional upgrades w/o signature
         // Check that the account is the new implementation
         _upgradeTo(address(timelock), address(timelockV2));

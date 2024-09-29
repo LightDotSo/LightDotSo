@@ -12,7 +12,7 @@ UpgradeToIntegrationTest::Wallet
 UpgradeToIntegrationTest::Timelock
 ├── when the caller is not self
 │   ├── it should revert
-│   └── it should revert with a {OnlySelfAuth} error
+│   └── it should revert with a {AccessControlUnauthorizedAccount} error
 ├── when the caller is self
 │   ├── it should upgrade to a new implementation
 │   └── it should have the correct implementation address
