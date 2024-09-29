@@ -283,7 +283,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         disabled={isDisabled}
       >
         {isDisabled ? (
-          <span>{buttonContent}</span>
+          <>{buttonContent}</>
         ) : (
           <Link
             href={`/${address}/create?userOperations=${deployedUserOperation}`}
