@@ -16,7 +16,7 @@ module.exports = {
     "pnpm run forge:fmt:cmd",
     "pnpm run bulloak:fix",
     "pnpm run forge:snapshot:cmd",
-    'pnpm run solhint:fix:cmd && echo ""',
+    "pnpm run solhint:cmd",
   ],
   "*.toml": ["pnpm run taplo:cmd"],
   "package.json": [

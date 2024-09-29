@@ -18,7 +18,7 @@ The below table shows the versions of the contract and versions of the factory a
 | ------- | -------------------------------------------------------------------------------------------------------------------------- |
 | 0.1.0   | [0x8FB3cFDf2082C2be7D3205D361067748Ea1aBF63](https://contractscan.xyz/contract/0x8FB3cFDf2082C2be7D3205D361067748Ea1aBF63) |
 | 0.2.0   | [0x040D53C5DDE1762F7cac48d5467E88236d4873d7](https://contractscan.xyz/contract/0x040D53C5DDE1762F7cac48d5467E88236d4873d7) |
-| 0.3.0   | [0x5d02b6345898b193b66ca89e7a693cc11dc72954](https://contractscan.xyz/contract/0x5d02b6345898b193b66ca89e7a693cc11dc72954) |
+| 0.3.0   | [0x5d02B6345898b193B66CA89E7A693CC11DC72954](https://contractscan.xyz/contract/0x5d02B6345898b193B66CA89E7A693CC11DC72954) |
 
 ## Deployments
 

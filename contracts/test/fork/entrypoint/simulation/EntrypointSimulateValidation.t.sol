@@ -41,12 +41,14 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    /// Same as `testFork_simulateValidation`
     function test_ShouldSimulateCorrectlyReturnsValidationResult() external {
         // it should simulate correctly (returns ValidationResult)
+        testFork_simulateValidation();
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function tmpDisable_testFork_simulateValidation() public {
+    function testFork_simulateValidation() public onlyForkProfile {
         // Create a random nonce
         nonce = randomNonce();
 

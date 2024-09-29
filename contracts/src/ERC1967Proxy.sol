@@ -12,16 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod constants;
-pub mod create2;
-pub mod dag;
-pub mod entrypoint;
-pub mod erc1271;
-pub mod light_wallet;
-pub mod merkle_tree;
-pub mod paymaster;
-pub mod provider;
-pub mod tracer;
-pub mod types;
-pub mod user_operation;
-pub mod utils;
+// SPDX-License-Identifier: Apache-2.0
+
+pragma solidity ^0.8.27;
+
+import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";

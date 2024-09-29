@@ -211,17 +211,17 @@
     "name": "initialize",
     "inputs": [
       {
-        "name": "owner_",
+        "name": "owner",
         "type": "address",
         "internalType": "address"
       },
       {
-        "name": "maxWithdrawDenominator_",
+        "name": "initialMaxWithdrawDenominator",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "signer_",
+        "name": "signer",
         "type": "address",
         "internalType": "address"
       }

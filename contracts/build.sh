@@ -16,6 +16,7 @@
 
 # Array of Solidity files to keep
 core_solidity_files=(
+    "ERC1967Proxy.sol"
     "LightDAG.sol"
     "LightPaymaster.sol"
     "LightTimelockController.sol"
@@ -55,6 +56,7 @@ fi
 
 # Dependencies for each core file
 declare -A dependencies
+dependencies["ERC1967Proxy.sol"]=""
 dependencies["LightDAG.sol"]="interfaces/IConditionChecker.sol"
 dependencies["LightPaymaster.sol"]="core/VerifyingPaymaster.sol"
 dependencies["LightTimelockController.sol"]="interfaces/ILightWallet.sol interfaces/IERC1271.sol"

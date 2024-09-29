@@ -32,7 +32,7 @@ use axum_extra::{
     TypedHeader,
 };
 use eyre::{eyre, Result};
-use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
+use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESS, create2::get_address};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -42,7 +42,6 @@ use lightdotso_redis::query::wallet::add_to_wallets;
 use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
-    hash::get_address,
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::tracing::{error, info, trace};
@@ -203,7 +202,8 @@ pub(crate) async fn v1_wallet_create_handler(
     let image_hash_bytes: B256 = image_hash.into();
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
+    let new_wallet_address =
+        get_address(*LIGHT_WALLET_FACTORY_ADDRESS, image_hash_bytes, salt_bytes)?;
 
     // Check if the wallet configuration is valid.
     let valid = config.is_wallet_valid();

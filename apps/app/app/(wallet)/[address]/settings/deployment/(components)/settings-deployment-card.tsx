@@ -255,6 +255,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Submit Button
   // ---------------------------------------------------------------------------
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const SettingsDeploymentCardSubmitButton: FC = () => {
     // -------------------------------------------------------------------------
     // Local Variables
@@ -274,23 +275,21 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     // Render
     // -------------------------------------------------------------------------
 
+    if (isLoading || isDisabled) {
+      return (
+        <Button disabled={isDisabled} isLoading={isLoading}>
+          {buttonContent}
+        </Button>
+      );
+    }
+
     return (
-      <Button
-        asChild
-        isLoading={isLoading}
-        type="submit"
-        form="settings-deployment-card-form"
-        disabled={isDisabled}
-      >
-        {isDisabled ? (
-          <span>{buttonContent}</span>
-        ) : (
-          <Link
-            href={`/${address}/create?userOperations=${deployedUserOperation}`}
-          >
-            {buttonContent}
-          </Link>
-        )}
+      <Button asChild type="submit" form="settings-deployment-card-form">
+        <Link
+          href={`/${address}/create?userOperations=${deployedUserOperation}`}
+        >
+          {buttonContent}
+        </Link>
       </Button>
     );
   };

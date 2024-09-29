@@ -37,17 +37,19 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    /// Same as `testFork_wallet_createAccount_equalsGetAddress`
     function test_ShouldDeployANewLightWalletWithTheCorrectHash() external {
         // it should deploy a new LightWallet with the correct hash
+        testFork_wallet_createAccount_equalsGetAddress();
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function tmpDisable_testFork_wallet_createAccount_equalsGetAddress() public {
+    function testFork_wallet_createAccount_equalsGetAddress() public onlyForkProfile {
         // Create the account using the factory w/ hash 1, nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(8)));
+        account = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(0)));
 
         // Get the predicted address of the new account
-        address predicted = factory.getAddress(bytes32(uint256(1)), bytes32(uint256(8)));
+        address predicted = factory.getAddress(bytes32(uint256(1)), bytes32(uint256(0)));
 
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));

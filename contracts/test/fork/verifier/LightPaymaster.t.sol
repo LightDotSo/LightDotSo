@@ -42,12 +42,14 @@ contract LightPaymasterForkTest is BaseForkTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    /// Same as `testFork_paymaster_getHash`
     function test_ChecksThatThePaymasterIsProperlyDeployed() external {
         // it should deploy a new LightWallet with the correct hash
+        testFork_paymaster_getHash();
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function tmpDisable_testFork_paymaster_getHash() public {
+    function testFork_paymaster_getHash() public onlyForkProfile {
         address sender = address(0);
         uint256 nonce = 0;
         bytes memory initCode = "";
@@ -83,10 +85,5 @@ contract LightPaymasterForkTest is BaseForkTest {
         // Log the byte code hash
         // solhint-disable-next-line no-console
         console.logBytes32(hash);
-    }
-
-    /// Tests that the `verifyingSigner` is set correctly
-    function tmpDisable_testFork_paymaster_verifyingSigner() public {
-        // assertEq(paymaster.verifyingSigner(), OFFCHAIN_VERIFIER_ADDRESS);
     }
 }

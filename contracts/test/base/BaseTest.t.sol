@@ -133,10 +133,7 @@ abstract contract BaseTest is Test {
     /// @dev BaseTest setup
     function setUp() public virtual {
         // Deploy the EntryPoint
-        entryPoint = deployEntryPoint();
-
-        // Deploy the EntryPointSimulations
-        entryPointSimulations = new EntryPointSimulations();
+        entryPoint = new EntryPoint();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();

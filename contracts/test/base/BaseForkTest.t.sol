@@ -20,11 +20,15 @@ import {
     ENTRY_POINT_ADDRESS,
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS,
-    LIGHT_PAYMASTER_ADDRESS
+    LIGHT_PAYMASTER_ADDRESS,
+    LIGHT_VAULT_FACTORY_ADDRESS,
+    LIGHT_DAG_ADDRESS
 } from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
+import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
@@ -38,6 +42,21 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
 
     // -------------------------------------------------------------------------
+    // Modifiers
+    // -------------------------------------------------------------------------
+
+    modifier onlyForkProfile() {
+        try vm.envString("FOUNDRY_PROFILE") returns (string memory currentProfile) {
+            if (keccak256(abi.encodePacked(currentProfile)) == keccak256(abi.encodePacked("fork"))) {
+                _;
+                return;
+            }
+        } catch {}
+
+        vm.skip(true);
+    }
+
+    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
@@ -48,12 +67,17 @@ abstract contract BaseForkTest is BaseIntegrationTest {
 
         // EntryPoint from eth-inifinitism
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
-        // LightTimelockControllerFactory core contract
-        timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
+
+        // LightDAG core contract
+        dag = LightDAG(LIGHT_DAG_ADDRESS);
         // LightPaymaster core contract
         paymaster = LightPaymaster(payable(LIGHT_PAYMASTER_ADDRESS));
+        // LightTimelockControllerFactory core contract
+        timelockFactory = LightTimelockControllerFactory(LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS);
+        // LightVaultFactory core contract
+        vaultFactory = LightVaultFactory(LIGHT_VAULT_FACTORY_ADDRESS);
+        // LightWalletFactory core contract
+        factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);
 
         // Get network name
         string memory defaultName = "mainnet";
