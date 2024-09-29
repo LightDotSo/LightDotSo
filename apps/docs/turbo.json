@@ -19,6 +19,9 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "generate": {
+      "outputs": ["content/api/**"]
     }
   }
 }

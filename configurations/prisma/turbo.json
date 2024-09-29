@@ -20,6 +20,9 @@
     "dev:prisma": {
       "cache": false,
       "persistent": true
+    },
+    "generate": {
+      "outputs": ["prisma/schema-rs.prisma", "src/zod/**"]
     }
   }
 }

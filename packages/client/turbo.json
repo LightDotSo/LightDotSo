@@ -23,6 +23,9 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "generate": {
+      "outputs": ["src/types/api/**"]
     }
   }
 }
