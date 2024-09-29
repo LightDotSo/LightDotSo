@@ -12,6 +12,7 @@
 | maxWithdrawDenominator | uint256                                      | 0    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 | _withdrawable          | mapping(address => uint256)                  | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 | _nonceUsed             | mapping(uint256 => mapping(address => bool)) | 2    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| _signers               | mapping(address => bool)                     | 3    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
  ➡ LightTimelockController
 | Name | Type | Slot | Offset | Bytes | Contract |
@@ -58,6 +59,17 @@
 | _owner | address | 0    | 0      | 20    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
 =======================
  ➡ EntryPoint
+=======================
+ ➡ EntryPointSimulations
+| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                                               |
+|---------------------|------------------------------------------------------|------|--------|-------|----------------------------------------------------------------------------------------|
+| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPointSimulations.sol:EntryPointSimulations |
+| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPointSimulations.sol:EntryPointSimulations |
+| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPointSimulations.sol:EntryPointSimulations |
+| NOT_AGGREGATED      | struct IEntryPoint.AggregatorStakeInfo               | 3    | 0      | 96    | lib/account-abstraction/contracts/core/EntryPointSimulations.sol:EntryPointSimulations |
+| _senderCreator      | contract SenderCreator                               | 6    | 0      | 20    | lib/account-abstraction/contracts/core/EntryPointSimulations.sol:EntryPointSimulations |
+=======================
+ ➡ EntryPointv0.7.0
 =======================
  ➡ VerifyingPaymaster
 | Name   | Type    | Slot | Offset | Bytes | Contract                                                                            |

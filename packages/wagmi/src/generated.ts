@@ -1713,6 +1713,13 @@ export const lightPaymasterAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: 'signer', internalType: 'address', type: 'address' }],
+    name: 'isSigner',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'account', internalType: 'address', type: 'address' },
       {
@@ -1819,13 +1826,6 @@ export const lightPaymasterAbi = [
     name: 'setMaxWithdrawDenominator',
     outputs: [],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'signers',
-    outputs: [{ name: 'isValidSigner', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -5643,6 +5643,15 @@ export const useReadLightPaymasterGetHash = /*#__PURE__*/ createUseReadContract(
 )
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"isSigner"`
+ */
+export const useReadLightPaymasterIsSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'isSigner',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"isValidWithdrawSignature"`
  */
 export const useReadLightPaymasterIsValidWithdrawSignature =
@@ -5694,13 +5703,6 @@ export const useReadLightPaymasterProxiableUuid =
     abi: lightPaymasterAbi,
     functionName: 'proxiableUUID',
   })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"signers"`
- */
-export const useReadLightPaymasterSigners = /*#__PURE__*/ createUseReadContract(
-  { abi: lightPaymasterAbi, functionName: 'signers' },
-)
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__

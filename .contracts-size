@@ -1,62 +1,134 @@
+Solc 0.8.27 finished in 35.35s
+Compiler run successful with warnings:
+Warning (9432): "prevrandao" is not supported by the VM version and will be treated as "difficulty".
+   --> contracts/test/base/BaseTest.t.sol:177:68:
+    |
+177 |         return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    |                                                                    ^^^^^^^^^^^^^^^^
+
+Warning (5740): Unreachable code.
+  --> lib/openzeppelin-contracts/contracts/proxy/utils/UUPSUpgradeable.sol:88:9:
+   |
+88 |         _upgradeToAndCallUUPS(newImplementation, data);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning (2072): Unused local variable.
+  --> contracts/test/fork/entrypoint/simulation/EntrypointSimulateValidation.t.sol:65:9:
+   |
+65 |         PackedUserOperation memory op =
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning (2072): Unused local variable.
+  --> contracts/test/fork/verifier/LightPaymaster.t.sol:62:9:
+   |
+62 |         PackedUserOperation memory op = PackedUserOperation(
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to view
+  --> contracts/test/fork/verifier/LightPaymaster.t.sol:50:5:
+   |
+50 |     function tmpDisable_testFork_paymaster_getHash() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> contracts/test/unit/merkle/MerkleProof.t.sol:30:5:
+   |
+30 |     function test_merkle_verify_empty_fail() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> contracts/test/unit/merkle/MerkleProof.t.sol:38:5:
+   |
+38 |     function test_simple_merkle() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> contracts/test/unit/merkle/MerkleProof.t.sol:46:5:
+   |
+46 |     function test_not_sorted_merkle() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> contracts/test/unit/merkle/MerkleProof.t.sol:54:5:
+   |
+54 |     function test_simple_nested_merkle() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> contracts/test/unit/merkle/MerkleProof.t.sol:76:5:
+   |
+76 |     function test_simple_deep_merkle() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+   --> contracts/test/unit/merkle/MerkleProof.t.sol:116:5:
+    |
+116 |     function test_simple_deep_nested_merkle() public {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
 | Contract                       | Size (B) | Margin (B) |
 |--------------------------------|----------|------------|
-| Address                        |       85 |     24,491 |
-| AsyncVault                     |   22,740 |      1,836 |
-| BytesLib                       |       85 |     24,491 |
-| Create2                        |       85 |     24,491 |
-| ECDSA                          |       85 |     24,491 |
-| ERC1967Proxy                   |      176 |     24,400 |
-| ERC1967Utils                   |       85 |     24,491 |
-| ERC4337Utils                   |      288 |     24,288 |
-| EntryPoint                     |   17,719 |      6,857 |
-| Enum                           |       85 |     24,491 |
-| Exec                           |       85 |     24,491 |
-| ISignatureValidatorConstants   |       62 |     24,514 |
-| ImmutableProxy                 |    2,280 |     22,296 |
-| LibBytes                       |       85 |     24,491 |
-| LibBytesPointer                |       85 |     24,491 |
-| LibOptim                       |       85 |     24,491 |
-| LightDAG                       |    2,057 |     22,519 |
-| LightPaymaster                 |    6,489 |     18,087 |
-| LightTimelockController        |   11,757 |     12,819 |
-| LightTimelockControllerFactory |    2,460 |     22,116 |
-| LightVault                     |   22,882 |      1,694 |
-| LightVaultFactory              |    3,392 |     21,184 |
-| LightVerifyingPaymaster        |    5,076 |     19,500 |
-| LightWallet                    |   12,009 |     12,567 |
-| LightWalletFactory             |    2,311 |     22,265 |
-| LightWalletUtils               |       85 |     24,491 |
-| MagicSpend                     |    6,211 |     18,365 |
-| Math                           |       85 |     24,491 |
-| Merkle                         |    2,479 |     22,097 |
-| MerkleProof                    |       85 |     24,491 |
-| MessageHashUtils               |       85 |     24,491 |
-| MockERC1155                    |    6,989 |     17,587 |
-| MockERC20                      |    3,482 |     21,094 |
-| MockERC721                     |    5,573 |     19,003 |
-| ModuleSelfAuth                 |       62 |     24,514 |
-| ModuleStorage                  |       85 |     24,491 |
-| NonceManager                   |      642 |     23,934 |
-| SafeERC20                      |       85 |     24,491 |
-| SafeMath                       |       85 |     24,491 |
-| SafeProxy                      |      170 |     24,406 |
-| SafeProxyFactory               |    2,361 |     22,215 |
-| SafeTransferLib                |       85 |     24,491 |
-| SenderCreator                  |      546 |     24,030 |
-| SequenceBaseSig                |       85 |     24,491 |
-| SequenceDynamicSig             |       85 |     24,491 |
-| SequenceNoChainIdSig           |       85 |     24,491 |
-| ShortStrings                   |       85 |     24,491 |
-| SignatureCheckerLib            |       85 |     24,491 |
-| SignatureValidator             |       85 |     24,491 |
-| SignedMath                     |       85 |     24,491 |
-| Silo                           |       62 |     24,514 |
-| SimpleAccount                  |    7,666 |     16,910 |
-| SimpleAccountFactory           |    2,186 |     22,390 |
-| StorageSlot                    |       85 |     24,491 |
-| Strings                        |       85 |     24,491 |
-| TimelockControllerUpgradeable  |    8,376 |     16,200 |
-| UniversalSigValidator          |    3,226 |     21,350 |
-| UserOperationLib               |       85 |     24,491 |
-| ValidateSigOffchain            |       62 |     24,514 |
-| VerifyingPaymaster             |    5,076 |     19,500 |
+| Address                        |       86 |     24,490 |
+| AsyncVault                     |   23,223 |      1,353 |
+| BytesLib                       |       86 |     24,490 |
+| Create2                        |       86 |     24,490 |
+| ECDSA                          |       86 |     24,490 |
+| ERC1967Proxy                   |      183 |     24,393 |
+| ERC1967Utils                   |       86 |     24,490 |
+| ERC4337Utils                   |      293 |     24,283 |
+| EntryPoint                     |   18,115 |      6,461 |
+| EntryPointSimulations          |   19,201 |      5,375 |
+| EntryPointv060                 |   18,115 |      6,461 |
+| EntryPointv070                 |   16,293 |      8,283 |
+| Enum                           |       86 |     24,490 |
+| Exec                           |       86 |     24,490 |
+| ISignatureValidatorConstants   |       63 |     24,513 |
+| ImmutableProxy                 |    2,342 |     22,234 |
+| LibBytes                       |       86 |     24,490 |
+| LibBytesPointer                |       86 |     24,490 |
+| LibOptim                       |       86 |     24,490 |
+| LightDAG                       |    2,116 |     22,460 |
+| LightPaymaster                 |    9,672 |     14,904 |
+| LightPaymasterUtils            |    1,449 |     23,127 |
+| LightTimelockController        |   11,956 |     12,620 |
+| LightTimelockControllerFactory |    2,579 |     21,997 |
+| LightVault                     |   23,365 |      1,211 |
+| LightVaultFactory              |    3,522 |     21,054 |
+| LightVerifyingPaymaster        |    5,221 |     19,355 |
+| LightWallet                    |   12,277 |     12,299 |
+| LightWalletFactory             |    2,428 |     22,148 |
+| LightWalletUtils               |       86 |     24,490 |
+| MagicSpend                     |    9,504 |     15,072 |
+| Math                           |       86 |     24,490 |
+| Merkle                         |    2,526 |     22,050 |
+| MerkleProof                    |       86 |     24,490 |
+| MessageHashUtils               |       86 |     24,490 |
+| MockERC1155                    |    7,156 |     17,420 |
+| MockERC20                      |    3,562 |     21,014 |
+| MockERC721                     |    5,679 |     18,897 |
+| ModuleSelfAuth                 |       63 |     24,513 |
+| ModuleStorage                  |       86 |     24,490 |
+| NonceManager                   |      657 |     23,919 |
+| SafeERC20                      |       86 |     24,490 |
+| SafeMath                       |       86 |     24,490 |
+| SafeProxy                      |      180 |     24,396 |
+| SafeProxyFactory               |    2,457 |     22,119 |
+| SafeTransferLib                |       86 |     24,490 |
+| SenderCreator                  |      563 |     24,013 |
+| SequenceBaseSig                |       86 |     24,490 |
+| SequenceDynamicSig             |       86 |     24,490 |
+| SequenceNoChainIdSig           |       86 |     24,490 |
+| ShortStrings                   |       86 |     24,490 |
+| SignatureCheckerLib            |       86 |     24,490 |
+| SignatureValidator             |       86 |     24,490 |
+| SignedMath                     |       86 |     24,490 |
+| Silo                           |       63 |     24,513 |
+| SimpleAccount                  |    7,855 |     16,721 |
+| SimpleAccountFactory           |    2,294 |     22,282 |
+| StorageSlot                    |       86 |     24,490 |
+| Strings                        |       86 |     24,490 |
+| TimelockControllerUpgradeable  |    8,554 |     16,022 |
+| UniversalSigValidator          |    3,337 |     21,239 |
+| UserOperationLib               |       86 |     24,490 |
+| ValidateSigOffchain            |       63 |     24,513 |
+| VerifyingPaymaster             |    5,221 |     19,355 |
