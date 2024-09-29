@@ -37,15 +37,15 @@ address constant CREATE2_DEPLOYER_ADDRESS = 0x4e59b44847b379578588920cA78FbF26c0
 
 // EntryPoint address
 address payable constant ENTRY_POINT_V060_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-address payable constant ENTRY_POINT_V070_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+address payable constant ENTRY_POINT_V070_ADDRESS = payable(address(0x0000000071727De22E5E9d8BAf0edAc6f37da032));
 address payable constant ENTRY_POINT_ADDRESS = ENTRY_POINT_V070_ADDRESS;
 
 // LightDAG address
 address constant LIGHT_DAG_ADDRESS = address(0x0000000000000000000000000000000000000000);
 
 // LightPaymaster address
-address constant LIGHT_PAYMASTER_V010_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
-address constant LIGHT_PAYMASTER_ADDRESS = LIGHT_PAYMASTER_V010_ADDRESS;
+address payable constant LIGHT_PAYMASTER_V010_ADDRESS = payable(address(0x000000000018d32DF916ff115A25fbeFC70bAf8b));
+address payable constant LIGHT_PAYMASTER_ADDRESS = LIGHT_PAYMASTER_V010_ADDRESS;
 
 // LightTimelockControllerFactory address
 address constant LIGHT_TIMELOCK_CONTROLLER_FACTORY_V010_ADDRESS = address(0x0000000000f5A79Ab578707422Ec1BA4E5AfCb2d);

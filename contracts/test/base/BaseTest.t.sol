@@ -20,9 +20,12 @@ import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
 import {CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
+import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
+import {LightVault} from "@/contracts/LightVault.sol";
+import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -81,18 +84,25 @@ abstract contract BaseTest is Test {
     EntryPoint internal entryPoint;
     // EntryPointSimulations from eth-inifinitism
     EntryPointSimulations internal entryPointSimulations;
-    // LightWallet core contract
-    LightWallet internal account;
-    // LightWalletFactory core contract
-    LightWalletFactory internal factory;
+
+    // LightDAG core contract
+    LightDAG internal dag;
     // LightPaymaster core contract
     LightPaymaster internal paymaster;
-    // LightWallet for deployed account
-    LightWallet internal wallet;
     // LightTimelockController core contract
     LightTimelockController internal timelock;
     // LightTimelockControllerFactory core contract
     LightTimelockControllerFactory internal timelockFactory;
+    // LightVault core contract
+    LightVault internal vault;
+    // LightVaultFactory core contract
+    LightVaultFactory internal vaultFactory;
+    // LightWallet core contract
+    LightWallet internal account;
+    // LightWallet for deployed account
+    LightWallet internal wallet;
+    // LightWalletFactory core contract
+    LightWalletFactory internal factory;
 
     // SimpleAccountFactory core contract
     SimpleAccountFactory internal simpleAccountFactory;
@@ -174,7 +184,7 @@ abstract contract BaseTest is Test {
 
     /// @dev Gets the pseudo-random number
     function randomSeed() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+        return uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 4337;
     }
 
     /// @dev Gets the pseudo-random salt in bytes32

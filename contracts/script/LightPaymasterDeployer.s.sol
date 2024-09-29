@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightPaymaster/v0.2.0.b.sol";
+import {initCode, initCodeHash, salt} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
 import {LIGHT_PAYMASTER_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -45,16 +45,16 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
             // Construct the entrypoint
-            entryPoint = new EntryPoint();
+            entryPoint = deployEntryPoint();
 
             // Create the paymaster
-            paymaster = new LightPaymaster(entryPoint, address(0x0));
+            paymaster = new LightPaymaster(address(entryPoint));
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
             // Create LightPaymaster
-            paymaster = LightPaymaster(deployWithCreate2(initCode, salt));
+            paymaster = LightPaymaster(payable(deployWithCreate2(initCode, salt)));
 
             // Assert that the paymaster is the expected address
             assert(address(paymaster) == LIGHT_PAYMASTER_ADDRESS);

@@ -15,9 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.27;
 
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
-import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 
 // PaymasterUnlockStake -- Test Deployment
 contract PaymasterUnlockStakeOpsScript is BaseLightDeployerOps {
@@ -30,7 +28,7 @@ contract PaymasterUnlockStakeOpsScript is BaseLightDeployerOps {
         vm.startBroadcast();
 
         // Unlock stake
-        paymaster.unlockStake();
+        paymaster.entryPointUnlockStake();
 
         // Stop the broadcast
         vm.stopBroadcast();

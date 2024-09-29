@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {initCode, initCodeHash, salt} from "@/bytecodes/LightWalletFactory/v0.3.0.b.sol";
+import {LIGHT_WALLET_FACTORY_ADDRESS} from "@/constants/addresses.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
@@ -43,7 +44,7 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
             // Construct the entrypoint
-            entryPoint = new EntryPoint();
+            entryPoint = deployEntryPoint();
 
             // Create the factory
             factory = new LightWalletFactory(entryPoint);
@@ -52,7 +53,7 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             vm.startBroadcast();
 
             // Create LightWalletFactory
-            factory = LightWalletFactory(deployWithCreate2(salt, initCode));
+            factory = LightWalletFactory(deployWithCreate2(initCode, salt));
 
             // Assert that the factory is the expected address
             assert(address(factory) == LIGHT_WALLET_FACTORY_ADDRESS);

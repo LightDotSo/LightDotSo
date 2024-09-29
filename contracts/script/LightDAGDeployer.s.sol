@@ -45,19 +45,19 @@ contract LightDAGDeployer is BaseLightDeployer, Script {
             vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
             // Construct the entrypoint
-            entryPoint = new EntryPoint();
+            entryPoint = deployEntryPoint();
 
-            // Create the paymaster
-            paymaster = new LightPaymaster(entryPoint, address(0x0));
+            // Create the dag
+            dag = new LightDAG();
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightPaymaster
-            paymaster = LightPaymaster(deployWithCreate2(initCode, salt));
+            // Create LightDAG
+            dag = LightDAG(deployWithCreate2(initCode, salt));
 
-            // Assert that the paymaster is the expected address
-            assert(address(paymaster) == LIGHT_DAG_ADDRESS);
+            // Assert that the dag is the expected address
+            assert(address(dag) == LIGHT_DAG_ADDRESS);
         }
 
         // Stop the broadcast

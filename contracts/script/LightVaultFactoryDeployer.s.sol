@@ -44,16 +44,16 @@ contract LightVaultFactoryDeployer is BaseLightDeployer, Script {
             vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
             // Construct the entrypoint
-            entryPoint = new EntryPoint();
+            entryPoint = deployEntryPoint();
 
             // Create the factory
-            factory = new LightVaultFactory(entryPoint);
+            vaultFactory = new LightVaultFactory(0, address(0), address(0));
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
             // Create LightVaultFactory
-            factory = LightVaultFactory(deployWithCreate2(salt, initCode));
+            vaultFactory = LightVaultFactory(deployWithCreate2(initCode, salt));
 
             // Assert that the factory is the expected address
             assert(address(factory) == LIGHT_VAULT_FACTORY_ADDRESS);

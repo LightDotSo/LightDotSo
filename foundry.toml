@@ -75,6 +75,7 @@
   repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
+  anvil = "http://localhost:8545"
   localhost = "http://localhost:8545"
   mainnet = "${PROTECTED_RPC_URL}/1"
   optimism = "${PROTECTED_RPC_URL}/10"
