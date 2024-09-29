@@ -52,6 +52,25 @@ export const CONTRACT_ADDRESSES: {
     "0x0000000000ffe8b47b3e2130213b802212439497",
 };
 
+export enum LatestContractAddress {
+  ENTRYPOINT_ADDRESS = "Entrypoint",
+  LIGHT_WALLET_FACTORY_ADDRESS = "Light Wallet Factory",
+  LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS = "Light Wallet Factory Implementation",
+}
+
+export const LATEST_CONTRACT_ADDRESSES: {
+  readonly [key in LatestContractAddress]: Address;
+} = {
+  [LatestContractAddress.ENTRYPOINT_ADDRESS]:
+    CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
+  [LatestContractAddress.LIGHT_WALLET_FACTORY_ADDRESS]:
+    CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V030_ADDRESS],
+  [LatestContractAddress.LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS]:
+    CONTRACT_ADDRESSES[
+      ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION
+    ],
+};
+
 // @ts-expect-error
 export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
   readonly [key in ContractAddress]: Address;

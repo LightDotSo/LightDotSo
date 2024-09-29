@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod constants;
+pub mod address;
 pub mod create2;
 pub mod dag;
 pub mod entrypoint;

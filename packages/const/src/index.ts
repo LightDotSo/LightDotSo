@@ -13,6 +13,14 @@
 // limitations under the License.
 
 export { Action, ACTION_LABELS } from "./actions";
+export { ContractAddress } from "./address";
+export {
+  CONTRACT_ADDRESSES,
+  PROXY_IMPLEMENTAION_VERSION_MAPPING,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+  WALLET_FACTORY_IMPLEMENTATION_MAPPING,
+  LATEST_IMPLEMENTATION_ADDRESS,
+} from "./address";
 export { API_URLS, BASE_API_URLS } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export {
@@ -27,14 +35,6 @@ export {
   CONFIGURATION_MAX_WEIGHT,
   CONFIGURATION_MAX_THRESHOLD,
 } from "./configuration";
-export { ContractAddress } from "./contract_addresses";
-export {
-  CONTRACT_ADDRESSES,
-  PROXY_IMPLEMENTAION_VERSION_MAPPING,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-  WALLET_FACTORY_IMPLEMENTATION_MAPPING,
-  LATEST_IMPLEMENTATION_ADDRESS,
-} from "./contract_addresses";
 export { COOKIES } from "./cookies";
 export { GAS_SPEED_BUMP } from "./gas";
 export { GITHUB_LINKS } from "./github_links";

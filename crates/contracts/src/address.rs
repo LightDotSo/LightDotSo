@@ -57,6 +57,21 @@ lazy_static! {
     ];
 }
 
+// The light paymaster address (v0.1.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_PAYMASTER_V010_ADDRESS: Address =
+    // v0.1.0
+    "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap();
+}
+
+// The light paymaster address (latest)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
+    *LIGHT_PAYMASTER_V010_ADDRESS;
+}
+
 // The factory addresses
 lazy_static! {
     pub static ref LIGHT_WALLET_FACTORY_ADDRESSES: [Address; 5] = [

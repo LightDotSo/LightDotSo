@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.27;
 
-import {LIGHT_MASTER_WALLET_ADDRESS} from "@/constants/addresses.sol";
+import {LIGHT_MASTER_WALLET_ADDRESS} from "@/constants/address.sol";
 import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
 
 // PaymasterOwnershipTransfer -- Test Deployment

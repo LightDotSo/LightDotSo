@@ -21,7 +21,7 @@ import {
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS,
     SIMPLE_ACCOUNT_FACTORY_ADDRESS
-} from "@/constants/addresses.sol";
+} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
