@@ -59,7 +59,7 @@ export const useMutationAuthVerify = (params: AuthParams) => {
 
       const res = await authVerify(
         {
-          params: { query: { user_address: params.address } },
+          params: {},
           body: { message: body.message, signature: body.signature },
         },
         clientType,

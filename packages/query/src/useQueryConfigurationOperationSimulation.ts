@@ -60,7 +60,6 @@ export const useQueryConfigurationOperationSimulation = (
           params: {
             query: {
               address: params.address as Address,
-              simulate: true,
             },
           },
           body: {
