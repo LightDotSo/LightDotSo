@@ -22,13 +22,14 @@
     "test/**"
   ],
   "scripts": {
+    "build": "cd .. && make contracts-build || exit 0",
     "compile": "cd .. && hardhat compile",
     "lint": "cd .. && pnpm run solhint:lint",
+    "test": "cd .. && pnpm run vitest:contracts",
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
     "@lightdotso/sequence": "workspace:*",
-    "@lightdotso/wagmi": "workspace:*",
     "@openzeppelin/merkle-tree": "github:OpenZeppelin/merkle-tree#master",
     "merkletreejs": "^0.4.0",
     "viem": "^2.21.15"

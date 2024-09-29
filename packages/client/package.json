@@ -33,6 +33,7 @@
     "generate:socket": "npx openapi-typescript https://raw.githubusercontent.com/SocketDotTech/socket-v2-sdk/927c8ae8726d3bcee198ad1891327697e60523ee/spec.json -o ./src/types/socket/v1.d.ts",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
+    "test": "cd ../.. && pnpm run vitest:client",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {

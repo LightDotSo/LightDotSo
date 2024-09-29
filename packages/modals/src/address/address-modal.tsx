@@ -31,7 +31,7 @@ import {
 } from "@lightdotso/ui/components/command";
 import { Form } from "@lightdotso/ui/components/form";
 import { cn } from "@lightdotso/utils";
-import { publicClient } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi/client";
 import { useEnsAddress } from "@lightdotso/wagmi/wagmi";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";

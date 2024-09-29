@@ -48,7 +48,7 @@ import {
   FormLabel,
 } from "@lightdotso/ui/components/form";
 import { toast } from "@lightdotso/ui/components/toast";
-import { publicClient } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi/client";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";

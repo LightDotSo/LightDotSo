@@ -18,8 +18,8 @@ pragma solidity ^0.8.27;
 
 import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
 import {CREATE2_DEPLOYER_ADDRESS} from "@/constants/addresses.sol";
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
@@ -79,6 +79,8 @@ abstract contract BaseTest is Test {
 
     // EntryPoint from eth-inifinitism
     EntryPoint internal entryPoint;
+    // EntryPointSimulations from eth-inifinitism
+    EntryPointSimulations internal entryPointSimulations;
     // LightWallet core contract
     LightWallet internal account;
     // LightWalletFactory core contract
@@ -121,16 +123,19 @@ abstract contract BaseTest is Test {
     /// @dev BaseTest setup
     function setUp() public virtual {
         // Deploy the EntryPoint
-        entryPoint = new EntryPoint();
+        entryPoint = deployEntryPoint();
 
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
+        // Deploy the EntryPointSimulations
+        entryPointSimulations = new EntryPointSimulations();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
 
         // Deploy the LightTimelockControllerFactory
         timelockFactory = new LightTimelockControllerFactory();
+
+        // Deploy the LightWalletFactory w/ EntryPoint
+        factory = new LightWalletFactory(entryPoint);
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0
@@ -162,8 +167,9 @@ abstract contract BaseTest is Test {
         return contractAddress;
     }
 
-    function deployEntryPoint() internal {
-        entryPoint = EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
+    /// @dev Deploys the EntryPoint
+    function deployEntryPoint() internal returns (EntryPoint) {
+        return EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
     }
 
     /// @dev Gets the pseudo-random number

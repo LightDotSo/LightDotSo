@@ -12,16 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// From: https://github.com/wagmi-dev/anvil.js/blob/main/examples/example-vitest/tests/globalSetup.ts
-import { startProxy } from "@viem/anvil";
+// SPDX-License-Identifier: Apache-2.0
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default async function () {
-  // Start a proxy server on port 8585
-  return await startProxy({
-    port: process.env.VITEST_PORT
-      ? Number.parseInt(process.env.VITEST_PORT)
-      : 8585,
-    host: "::",
-  });
-}
+pragma solidity ^0.8.27;
+
+import "@eth-infinitism/account-abstraction/contracts/core/EntryPoint.sol";
+
+contract EntryPointv070 is EntryPoint {}

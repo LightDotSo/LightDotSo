@@ -2007,6 +2007,9 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
     devDependencies:
+      '@lightdotso/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
@@ -2130,9 +2133,6 @@ importers:
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:../packages/sequence
-      '@lightdotso/wagmi':
-        specifier: workspace:*
-        version: link:../packages/wagmi
       '@openzeppelin/merkle-tree':
         specifier: github:OpenZeppelin/merkle-tree#master
         version: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71
@@ -4104,6 +4104,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
       '@wagmi/core':
         specifier: ^2.13.8
         version: 2.13.8(@tanstack/query-core@5.56.2)(@types/react@18.3.10)(immer@10.1.1)(react@19.0.0-rc-e740d4b1-20240919)(typescript@5.6.2)(viem@2.21.15(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))

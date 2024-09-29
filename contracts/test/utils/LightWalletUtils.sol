@@ -17,46 +17,67 @@
 pragma solidity ^0.8.27;
 
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-import {Test, Vm} from "forge-std/Test.sol";
+import {Vm} from "forge-std/Test.sol";
 
 /// @title LightWalletUtils
 /// @author shunkakinoki
 /// @notice LightWalletUtils is a utility library for the wallet
+
 library LightWalletUtils {
-    function getExpectedImageHash(address user, uint8 weight, uint16 threshold, uint32 checkpoint)
+    // -------------------------------------------------------------------------
+    // Utility Functions
+    // -------------------------------------------------------------------------
+
+    /// @notice Gets the expected image hash
+    /// @param _user The user address
+    /// @param _weight The weight
+    /// @param _threshold The threshold
+    /// @param _checkpoint The checkpoint
+    function getExpectedImageHash(address _user, uint8 _weight, uint16 _threshold, uint32 _checkpoint)
         internal
         pure
         returns (bytes32)
     {
         // Calculate the image hash
-        bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
-        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
-        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
+        bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(_weight), _user), (bytes32));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(_threshold)));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(_checkpoint)));
 
         return expectedImageHash;
     }
 
-    function signDigest(Vm _vm, bytes32 hash, address account, uint256 userKey, bool isSign)
+    /// @notice Signs a digest
+    /// @param _vm The VM instance for signing
+    /// @param _hash The hash to sign
+    /// @param _account The account address
+    /// @param _userKey The user key
+    /// @param _isSign Whether to sign with EIP-191 flag
+    function signDigest(Vm _vm, bytes32 _hash, address _account, uint256 _userKey, bool _isSign)
         internal
         view
         returns (bytes memory)
     {
         // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
+        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(_account), _hash));
 
         // The actual hash that was signed w/ EIP-191 flag
-        bytes32 signed_subdigest = isSign ? MessageHashUtils.toEthSignedMessageHash(subdigest) : subdigest;
+        bytes32 signed_subdigest = _isSign ? MessageHashUtils.toEthSignedMessageHash(subdigest) : subdigest;
 
         // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(userKey, signed_subdigest);
+        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_userKey, signed_subdigest);
 
         // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(isSign ? 2 : 1));
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(_isSign ? 2 : 1));
 
         return sig;
     }
 
-    function packLegacySignature(bytes memory sig, uint8 weight, uint16 threshold, uint32 checkpoint)
+    /// @notice Packs the legacy signature
+    /// @param _sig The signature
+    /// @param _weight The weight
+    /// @param _threshold The threshold
+    /// @param _checkpoint The checkpoint
+    function packLegacySignature(bytes memory _sig, uint8 _weight, uint16 _threshold, uint32 _checkpoint)
         internal
         pure
         returns (bytes memory)
@@ -65,7 +86,7 @@ library LightWalletUtils {
         uint8 legacySignatureFlag = uint8(0);
 
         // Pack the signature w/ flag, weight, threshold, checkpoint
-        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
+        bytes memory encoded = abi.encodePacked(_threshold, _checkpoint, legacySignatureFlag, _weight, _sig);
 
         return encoded;
     }

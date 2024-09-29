@@ -20,6 +20,7 @@
     "clean": "rimraf -rf dist",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
+    "test": "cd ../.. && pnpm run vitest:sequence",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {

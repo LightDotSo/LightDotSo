@@ -64,7 +64,7 @@ import {
 } from "@lightdotso/ui/components/select";
 import { Separator } from "@lightdotso/ui/components/separator";
 import { cn, debounce } from "@lightdotso/utils";
-import { publicClient } from "@lightdotso/wagmi";
+import { publicClient } from "@lightdotso/wagmi/client";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";

@@ -13,21 +13,17 @@
 // limitations under the License.
 
 //@ts-expect-error
-import { LightTimelockControllerFactory } from "@/contracts/LightTimelockControllerFactory.sol";
+import { LightDAG } from "@/contracts/LightDAG.sol";
 import { expect, test } from "vitest";
 
-test("LightTimelockControllerFactory: Correct humanReadableAbi", () => {
-  expect(
-    Object.values(LightTimelockControllerFactory.humanReadableAbi),
-  ).toMatchInlineSnapshot(`
+test("LightDAG: Correct humanReadableAbi", () => {
+  expect(Object.values(LightDAG.humanReadableAbi)).toMatchInlineSnapshot(`
     [
-      "constructor()",
-      "error WalletAddressZero()",
+      "event OperationCalled(bytes32 indexed operation, address indexed caller, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)",
+      "event OperationRootCalled(bytes32 indexed root, address indexed caller)",
       "function NAME() view returns (string)",
       "function VERSION() view returns (string)",
-      "function createTimelockController(address wallet, bytes32 salt) returns (address ret)",
-      "function getAddress(address wallet, bytes32 salt) view returns (address)",
-      "function timelockImplementation() view returns (address)",
+      "function callOperationRoot((bytes32 root, (bytes32 hash, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)[] operations) operationRoot)",
     ]
   `);
 });

@@ -17,3 +17,5 @@
 pragma solidity ^0.8.27;
 
 import "@eth-infinitism/account-abstraction-v0.6/contracts/core/EntryPoint.sol";
+
+contract EntryPointv060 is EntryPoint {}

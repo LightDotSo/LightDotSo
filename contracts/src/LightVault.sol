@@ -16,9 +16,18 @@
 
 pragma solidity ^0.8.27;
 
+// Core is forked from the work of Amphor Protocol
+// Link: https://github.com/AmphorProtocol/asynchronous-vault/blob/e2f030244f43a651031598bd2051de029628154e/src/AsyncVault.sol
+// License: MIT
+
 import {AsyncVault} from "asynchronous-vault-patch/AsyncVault.sol";
 
-// LightVault -- Vault for Light
+/// @title LightVault
+/// @author @shunkakinoki
+/// @notice LightVault is an implementation contract for Light Protocol.
+/// This is the version 0.1.0 contract for Light Protocol.
+/// @dev The contract is the initial implementation of a vault for Light Protocol.
+/// @dev Further implementations will be added in the future, and may be subject to change.
 contract LightVault is AsyncVault {
     // -------------------------------------------------------------------------
     // Constant

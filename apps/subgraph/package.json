@@ -75,6 +75,7 @@
     "yaml": "^2.5.1"
   },
   "devDependencies": {
+    "@lightdotso/contracts": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.7.4",
     "assemblyscript": "^0.19.20",

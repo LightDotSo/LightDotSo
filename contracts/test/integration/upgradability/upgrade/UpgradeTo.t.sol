@@ -17,10 +17,13 @@
 pragma solidity ^0.8.27;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightTimelockController} from "@/contracts/LightTimelockController.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 using ERC4337Utils for EntryPoint;
 
@@ -41,8 +44,15 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the account reverts when the caller is not self
     function test_WalletRevertWhen_TheCallerIsNotSelf() external {
+        // Deploy new version of LightWallet to test upgrade to
+        LightWallet accountV2 = new LightWallet(entryPoint);
+
         // it should revert
         // it should revert with a {OnlySelfAuth} error
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
+
+        // Attempt to call upgradeToAndCall directly, which should fail
+        account.upgradeToAndCall(address(accountV2), bytes(""));
     }
 
     /// Tests that the account can upgrade to a v2 version of LightWallet
@@ -146,6 +156,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         assertEq(getProxyImplementation(address(timelock)), address(timelockV2));
     }
 
+    /// Tests that the timelock reverts when trying to upgrade to an immutable address
     function test_TimelockWhenTheImplementationIsImmutable() public {
         // Deploy new version of LightTimelockController to test upgrade to
         LightTimelockController timelockV2 = new LightTimelockController();
@@ -158,5 +169,50 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         vm.prank(address(timelock));
         vm.expectRevert();
         timelock.upgradeToAndCall(address(timelockV2), bytes(""));
+    }
+
+    /// Tests that the paymaster reverts when the caller is not the owner
+    function test_PaymasterRevertWhen_TheCallerIsNotOwner() external {
+        // Deploy new version of LightPaymaster
+        LightPaymaster paymasterV2 = new LightPaymaster(address(entryPoint));
+
+        // Log the address of the paymaster
+        // solhint-disable-next-line no-console
+        console.logAddress(address(this));
+
+        // it should revert
+        // it should revert with an {OwnableUnauthorizedAccount} error
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(this)));
+        paymaster.upgradeToAndCall(address(paymasterV2), bytes(""));
+    }
+
+    /// Tests that the paymaster can upgrade to a v2 version of LightPaymaster
+    function test_PaymasterWhenTheCallerIsOwner() external {
+        // Deploy new version of LightPaymaster to test upgrade to
+        LightPaymaster paymasterV2 = new LightPaymaster(address(entryPoint));
+
+        // it should upgrade to a new implementation
+        // it should have the correct implementation address
+        vm.prank(lightPaymasterOwner);
+        paymaster.upgradeToAndCall(address(paymasterV2), bytes(""));
+
+        // Assert that the paymaster is now the new implementation
+        assertEq(getProxyImplementation(address(paymaster)), address(paymasterV2));
+    }
+
+    /// Tests that the paymaster reverts when trying to upgrade to an immutable address
+    function test_PaymasterWhenTheImplementationIsImmutable() public {
+        // First, upgrade to immutable proxy
+        vm.prank(lightPaymasterOwner);
+        paymaster.upgradeToAndCall(address(immutableProxy), bytes(""));
+
+        // Deploy new version of LightPaymaster to test upgrade to
+        LightPaymaster paymasterV2 = new LightPaymaster(address(entryPoint));
+
+        // it should not be able to upgrade to a new implementation
+        // it should revert when attempting to upgrade
+        vm.prank(lightPaymasterOwner);
+        vm.expectRevert();
+        paymaster.upgradeToAndCall(address(paymasterV2), bytes(""));
     }
 }

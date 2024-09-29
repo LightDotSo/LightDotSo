@@ -2,5 +2,5 @@ EntrypointSimulationSimulateValidationIntegrationTest
 ├── when the signature is correct
 │  └── it should revert on a {ValidationResult} error
 └── when the signature is not correct
-   ├── it should revert on a {AA23 initCode (or OOG)} error
+   ├── it should revert on a {AA23 reverted} error
    └── it should not be able to initialize twice

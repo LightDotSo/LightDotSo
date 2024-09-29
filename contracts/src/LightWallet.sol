@@ -30,8 +30,6 @@
 
 pragma solidity ^0.8.27;
 
-// LightWallet.sol -- LightWallet initial implementation
-
 // Core is heavily based by the work of @0xsequence (especially @Agusx1211)
 // Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
 // License: Apache-2.0
@@ -40,7 +38,7 @@ pragma solidity ^0.8.27;
 // Link: https://raw.githubusercontent.com/bcnmy/scw-contracts/8c71c2a6404feb3eef85d1a2707042114b204878/contracts/smart-account/modules/MultichainECDSAValidator.sol
 // License: MIT
 
-// Thank you to both teams for the ever amazing work!
+// Thank you to both teams for the ever amazing work!j
 
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";

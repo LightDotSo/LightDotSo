@@ -6,3 +6,4 @@ ignores:
   - "wabt"
   - "yaml"
   - "@goldskycom/cli"
+  - "@lightdotso/contracts"

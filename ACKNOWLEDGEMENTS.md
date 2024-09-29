@@ -22,6 +22,18 @@ Thank you to [shadcn/ui](https://ui.shadcn.com/) for providing the beautiful UI 
 
 All of our up-to-date UI components are available in the [storybook](https://storybook.light.so) located [here](./packages/ui/).
 
-## References
+## Amphor Protocol
+
+Thank you to [Amphor Protocol](https://github.com/amphor-protocol) for providing the ERC4626 and ERC7540 compatible asynchronous token vault implementation which is used to handle our protocol token vaults.
+
+## Coinbase
+
+Thank you to [Coinbase](https://github.com/coinbase/magic-spend) for providing the magic-spend library which is used to handle the flexible payment paymaster functionality for 4337 compatible wallets.
+
+## OpenZeppelin
+
+Thank you to [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts) for providing the open-source implementation of Timelock contracts which is used to handle the timelock functionality for our protocol.
+
+### References
 
 All of the references used in this project are located [here](./REFERENCES.md).

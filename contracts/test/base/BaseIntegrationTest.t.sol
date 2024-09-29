@@ -16,10 +16,13 @@
 
 pragma solidity ^0.8.27;
 
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
@@ -41,8 +44,16 @@ abstract contract BaseIntegrationTest is BaseTest {
     uint256 internal userKey;
     // Address of the beneficiary of the account
     address payable internal beneficiary;
+
     // Address of the light protocol controller
     address internal lightProtocolController;
+
+    // Address of the LightPaymaster owner
+    address internal lightPaymasterOwner;
+    // Address of the LightPaymaster signer
+    address internal lightPaymasterSigner;
+    // Private key of the LightPaymaster signer
+    uint256 internal lightPaymasterSignerKey;
 
     // -------------------------------------------------------------------------
     // Utility Contracts
@@ -69,6 +80,10 @@ abstract contract BaseIntegrationTest is BaseTest {
         beneficiary = payable(address(makeAddr("beneficiary")));
         // Set the light protocol controller
         lightProtocolController = address(makeAddr("lightProtocolController"));
+        // Set the light paymaster owner
+        lightPaymasterOwner = address(makeAddr("lightPaymasterOwner"));
+        // Set the light paymaster signer
+        lightPaymasterSigner = address(makeAddr("lightPaymasterSigner"));
         // Get the expected image hash
         expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
 
@@ -76,6 +91,17 @@ abstract contract BaseIntegrationTest is BaseTest {
         account = factory.createAccount(expectedImageHash, nonce);
         // Create the timelock controller
         timelock = timelockFactory.createTimelockController(address(account), bytes32(uint256(1)));
+
+        // Deploy the LightPaymaster
+        address paymasterImplementation = address(new LightPaymaster(address(entryPoint)));
+        paymaster = LightPaymaster(
+            payable(
+                new ERC1967Proxy{salt: bytes32(0)}(
+                    address(paymasterImplementation),
+                    abi.encodeCall(MagicSpend.initialize, (lightPaymasterOwner, 300, lightPaymasterSigner))
+                )
+            )
+        );
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);

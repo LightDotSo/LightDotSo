@@ -28,11 +28,11 @@
     },
     "//#fix": {
       "dependsOn": [],
-      "inputs": ["**"]
+      "inputs": []
     },
     "//#lint": {
       "dependsOn": [],
-      "inputs": ["**"],
+      "inputs": [],
       "outputs": []
     },
     "//#prisma": {
@@ -41,14 +41,13 @@
       "inputs": ["Makefile", "configurations/prisma/prisma/schema-rs.prisma"],
       "outputs": ["crates/prisma/src/lib.rs"]
     },
-    "//#test": {
+    "//#vitest": {
       "dependsOn": [],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"],
-      "inputs": ["!package.json", "!pnpm-lock.yaml"]
+      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"]
     },
     "dev": {
       "cache": false,
@@ -65,7 +64,7 @@
       "dependsOn": ["^start"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["//#vitest", "^test"]
     },
     "tsc": {
       "dependsOn": ["^build", "^tsc"]

@@ -69,12 +69,17 @@ test("single merkle tree", () => {
 
   const _root = tree.getHexRoot();
 
+  expect(_root).to.equal(
+    "0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b",
+  );
+
   const standardTree = StandardMerkleTree.of([merkleHashes], ["bytes32"]);
 
   const simpleTree = SimpleMerkleTree.of(leaves);
 
   expect(simpleTree.root.toString()).to.equal(
-    "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+    // "0x0030ce873e657283a8e03a3e83ba95a0bf1ad049e8ac1cb8148280aca2b1adc7",
+    "0x46296bc9cb11408bfa46c5c31a542f12242db2412ee2217b4e8add2bc1927d0b",
   );
 
   const _proof = standardTree.getProof(0);

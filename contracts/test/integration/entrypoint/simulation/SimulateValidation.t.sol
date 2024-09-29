@@ -16,9 +16,14 @@
 
 pragma solidity ^0.8.27;
 
-import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
-import {IStakeManager} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {IEntryPointSimulations} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPointSimulations.sol";
+import {IStakeManager} from "@eth-infinitism/account-abstraction/contracts/interfaces/IStakeManager.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -73,19 +78,22 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
             entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
         PackedUserOperation memory op = ops[0];
 
-        IEntryPoint.ReturnInfo memory returnInfo =
-            IEntryPoint.ReturnInfo(405989, 1002500000000, false, 0, 281474976710655, "");
+        IEntryPoint.ReturnInfo memory returnInfo = IEntryPoint.ReturnInfo(405989, 1002500000000, 0, 281474976710655, "");
         IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
+        IEntryPoint.AggregatorStakeInfo memory aggregatorInfo =
+            IEntryPoint.AggregatorStakeInfo(address(0), IStakeManager.StakeInfo(0, 0));
+        IEntryPointSimulations.ValidationResult memory validationResult =
+            IEntryPointSimulations.ValidationResult(returnInfo, senderInfo, factoryInfo, paymasterInfo, aggregatorInfo);
 
-        // vm.expectRevert(
-        //     abi.encodeWithSelector(
-        //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
-        //     )
-        // );
+        // solhint-disable-next-line no-console
+        console.logBytes(abi.encode(validationResult.returnInfo));
+
+        vm.prank(address(entryPoint));
+        vm.expectRevert();
         // it should revert on a {ValidationResult} error
-        // entryPoint.simulateValidation(op);
+        entryPointSimulations.simulateValidation(op);
     }
 
     /// Tests that the entrypoint returns a correct revert code if incorrect params
@@ -108,9 +116,16 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
         op.signature = "";
 
         // Revert for conventional upgrades w invalid signature
-        // vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
-        // it should revert on a {AA23 initCode (or OOG)} error
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IEntryPoint.FailedOpWithRevert.selector,
+                uint256(0),
+                "AA23 reverted",
+                hex"08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001c6163636f756e743a206e6f742066726f6d20456e747279506f696e7400000000"
+            )
+        );
+        // it should revert on a {AA23 reverted} error
         // it should not be able to initialize twice
-        // entryPoint.simulateValidation(op);
+        entryPointSimulations.simulateValidation(op);
     }
 }
