@@ -15,7 +15,6 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.27;
 
-import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
