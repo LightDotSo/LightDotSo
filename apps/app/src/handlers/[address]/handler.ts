@@ -14,12 +14,11 @@
 
 import { withTimeout } from "@lightdotso/client";
 import {
-  getCachedConfiguration,
-  getCachedWallet,
-  getCachedWalletSettings,
+  getConfigurationWithBackoff,
+  getWalletSettingsWithBackoff,
+  getWalletWithBackoff,
 } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
-import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 
@@ -40,19 +39,19 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getCachedWallet({
+  const walletPromise = getWalletWithBackoff({
     address: params.address as Address,
   });
 
-  const configurationPromise = getCachedConfiguration({
+  const configurationPromise = getConfigurationWithBackoff({
     address: params.address as Address,
   });
 
-  const walletSettingsPromise = getCachedWalletSettings({
+  const walletSettingsPromise = getWalletSettingsWithBackoff({
     address: params.address as Address,
   });
 
-  const timeoutResult = await withTimeout(
+  const res = await withTimeout(
     Promise.all([walletPromise, configurationPromise, walletSettingsPromise]),
     10000,
   );
@@ -60,10 +59,6 @@ export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
-
-  const res = timeoutResult.andThen(([wallet, configuration, walletSettings]) =>
-    Result.combineWithAllErrors([wallet, configuration, walletSettings]),
-  );
 
   return res.match(
     ([wallet, configuration, walletSettings]) => {
