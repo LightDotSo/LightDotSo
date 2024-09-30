@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { getPaymasterGasAndPaymasterAndDataV06 } from "@lightdotso/client";
-import type { PaymasterAndData } from "@lightdotso/data";
-import type { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
+import type { PaymasterAndDataV06 } from "@lightdotso/data";
+import type { RpcPaymasterGasAndPaymasterAndDataV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +26,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
-  params: RpcPaymasterGasAndPaymasterAndDataParams,
+  params: RpcPaymasterGasAndPaymasterAndDataV06Params,
   isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
@@ -43,11 +43,11 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
     data: gasAndPaymasterAndData,
     isLoading: isGasAndPaymasterAndDataLoading,
     error: gasAndPaymasterAndDataError,
-  } = useQuery<PaymasterAndData | null>({
+  } = useQuery<PaymasterAndDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
     enabled: isEnabled,
-    queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
+    queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data_v06({
       chainId: params?.chainId,
       nonce: params?.nonce,
       initCode: params?.initCode,

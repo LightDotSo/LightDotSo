@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { sendUserOperationV06 } from "@lightdotso/client";
+import { sendUserOperationV07 } from "@lightdotso/client";
 import {
   CONTRACT_ADDRESSES,
   ContractAddress,
@@ -72,19 +72,35 @@ export const useMutationUserOperationSendV07 = (
 
       const { userOperation, userOperationSignature } = body;
 
+      const factory = userOperation.init_code.slice(0, 20);
+      const factoryData = userOperation.init_code.slice(20);
+
+      const paymaster = userOperation.paymaster_and_data.slice(0, 20);
+      const paymasterVerificationGasLimit =
+        userOperation.paymaster_and_data.slice(20, 36);
+      const paymasterPostOpGasLimit = userOperation.paymaster_and_data.slice(
+        36,
+        52,
+      );
+      const paymasterData = userOperation.paymaster_and_data.slice(52);
+
       // Sned the user operation
-      const res = await sendUserOperationV06(userOperation.chain_id, [
+      const res = await sendUserOperationV07(userOperation.chain_id, [
         {
           sender: userOperation.sender,
           nonce: toHex(userOperation.nonce),
-          initCode: userOperation.init_code,
           callData: userOperation.call_data,
-          paymasterAndData: userOperation.paymaster_and_data,
+          factory: factory,
+          factoryData: factoryData,
           callGasLimit: toHex(userOperation.call_gas_limit),
           verificationGasLimit: toHex(userOperation.verification_gas_limit),
           preVerificationGas: toHex(userOperation.pre_verification_gas),
           maxFeePerGas: toHex(userOperation.max_fee_per_gas),
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
+          paymaster: toHex(paymaster),
+          paymasterVerificationGasLimit: toHex(paymasterVerificationGasLimit),
+          paymasterPostOpGasLimit: toHex(paymasterPostOpGasLimit),
+          paymasterData: toHex(paymasterData),
           signature: userOperationSignature,
         },
         CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],

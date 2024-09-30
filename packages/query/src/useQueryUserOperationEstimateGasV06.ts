@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { estimateUserOperationGasV06 } from "@lightdotso/client";
-import type { EstimateUserOperationGasData } from "@lightdotso/data";
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
+import type { EstimateUserOperationGasDataV06 } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
@@ -43,11 +44,11 @@ export const useQueryUserOperationEstimateGasV06 = (
     data: estimateUserOperationGasData,
     isLoading: isEstimateUserOperationGasDataLoading,
     error: estimateUserOperationGasDataError,
-  } = useQuery<EstimateUserOperationGasData | null>({
+  } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
     enabled: isEnabled,
-    queryKey: queryKeys.rpc.estimate_user_operation_gas({
+    queryKey: queryKeys.rpc.estimate_user_operation_gas_v06({
       chainId: params?.chainId,
       nonce: params?.nonce,
       initCode: params?.initCode,
@@ -78,7 +79,7 @@ export const useQueryUserOperationEstimateGasV06 = (
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },
-          "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+          CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
         ],
         clientType,
       );

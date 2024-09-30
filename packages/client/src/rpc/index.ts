@@ -356,8 +356,8 @@ const paymasterGasAndPaymasterAndDataV07Request = z.array(
   z.object({
     sender: HexStringSchema,
     nonce: HexStringSchema,
-    factory: HexStringSchema,
-    factoryData: HexStringSchema,
+    factory: HexStringSchema.optional(),
+    factoryData: HexStringSchema.optional(),
     callData: HexStringSchema,
     callGasLimit: HexStringSchema.optional(),
     verificationGasLimit: HexStringSchema.optional(),
@@ -376,7 +376,7 @@ type PaymasterGasAndPaymasterAndDataV07RequestType = z.infer<
   typeof paymasterGasAndPaymasterAndDataV07Request
 >;
 
-export const getPaymasterGasAndPaymasterAndData = async (
+export const getPaymasterGasAndPaymasterAndDataV07 = async (
   chainId: number,
   params: PaymasterGasAndPaymasterAndDataV07RequestType,
   clientType?: ClientType,

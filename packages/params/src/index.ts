@@ -42,7 +42,8 @@ export type {
 export type {
   RpcGasEstimationParams,
   RpcEstimateUserOperationGasParams,
-  RpcPaymasterGasAndPaymasterAndDataParams,
+  RpcPaymasterGasAndPaymasterAndDataV06Params,
+  RpcPaymasterGasAndPaymasterAndDataV07Params,
   RpcUserOperationReceiptParams,
 } from "./rpc";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
