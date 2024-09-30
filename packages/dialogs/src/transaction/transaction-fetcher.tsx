@@ -36,7 +36,11 @@ import {
   useQueryWallet,
 } from "@lightdotso/query";
 import type { PackedUserOperation, UserOperation } from "@lightdotso/schemas";
-import { decodePaymasterAndData } from "@lightdotso/sdk";
+import {
+  decodePaymasterAndData,
+  isEntryPointV06Implementation,
+  isEntryPointV07Implementation,
+} from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -188,25 +192,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const isEntryPointV06 = useMemo(() => {
-    return (
-      implementationAddress ===
-        CONTRACT_ADDRESSES[
-          ContractAddress.LIGHT_WALLET_FACTORY_V010_IMPLEMENTATION
-        ] ||
-      implementationAddress ===
-        CONTRACT_ADDRESSES[
-          ContractAddress.LIGHT_WALLET_FACTORY_V020_IMPLEMENTATION
-        ]
-    );
+    return isEntryPointV06Implementation(implementationAddress);
   }, [implementationAddress]);
 
   const isEntryPointV07 = useMemo(() => {
-    return (
-      implementationAddress ===
-      CONTRACT_ADDRESSES[
-        ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION
-      ]
-    );
+    return isEntryPointV07Implementation(implementationAddress);
   }, [implementationAddress]);
 
   /// This is the initial boolean to check if the initial fetch is done

@@ -14,7 +14,6 @@
 
 "use client";
 
-import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSendV06,
@@ -24,6 +23,10 @@ import {
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
+import {
+  isEntryPointV06Implementation,
+  isEntryPointV07Implementation,
+} from "@lightdotso/sdk";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
@@ -245,26 +248,12 @@ export const useUserOperationSend = ({
     console.info("Sending user operation", hash);
 
     // Send the user operation if the user operation hasn't been sent yet
-    if (
-      implementationAddress ===
-        CONTRACT_ADDRESSES[
-          ContractAddress.LIGHT_WALLET_FACTORY_V010_IMPLEMENTATION
-        ] ||
-      implementationAddress ===
-        CONTRACT_ADDRESSES[
-          ContractAddress.LIGHT_WALLET_FACTORY_V020_IMPLEMENTATION
-        ]
-    ) {
+    if (isEntryPointV06Implementation(implementationAddress)) {
       userOperationSendV06({
         userOperation: userOperation,
         userOperationSignature: userOperationSignature as Hex,
       });
-    } else if (
-      implementationAddress ===
-      CONTRACT_ADDRESSES[
-        ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION
-      ]
-    ) {
+    } else if (isEntryPointV07Implementation(implementationAddress)) {
       userOperationSendV07({
         userOperation: userOperation,
         userOperationSignature: userOperationSignature as Hex,
