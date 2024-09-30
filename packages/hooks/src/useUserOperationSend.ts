@@ -23,14 +23,10 @@ import {
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
-import {
-  isEntryPointV06Implementation,
-  isEntryPointV07Implementation,
-} from "@lightdotso/sdk";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
-import { useProxyImplementationAddress } from "./useProxyImplementationAddress";
+import { useEntryPointVersion } from "./useEntryPointVersion";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -70,7 +66,7 @@ export const useUserOperationSend = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const implementationAddress = useProxyImplementationAddress({
+  const { isEntryPointV06, isEntryPointV07 } = useEntryPointVersion({
     address: address as Address,
     chainId: userOperation?.chain_id ?? 0,
   });
@@ -248,12 +244,12 @@ export const useUserOperationSend = ({
     console.info("Sending user operation", hash);
 
     // Send the user operation if the user operation hasn't been sent yet
-    if (isEntryPointV06Implementation(implementationAddress)) {
+    if (isEntryPointV06) {
       userOperationSendV06({
         userOperation: userOperation,
         userOperationSignature: userOperationSignature as Hex,
       });
-    } else if (isEntryPointV07Implementation(implementationAddress)) {
+    } else if (isEntryPointV07) {
       userOperationSendV07({
         userOperation: userOperation,
         userOperationSignature: userOperationSignature as Hex,

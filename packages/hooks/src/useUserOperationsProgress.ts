@@ -16,6 +16,10 @@ import type { UserOperation } from "@lightdotso/schemas";
 import { useUserOperations } from "@lightdotso/stores";
 import { useMemo } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export const useUserOperationsProgress = () => {
   // ---------------------------------------------------------------------------
   // Stores

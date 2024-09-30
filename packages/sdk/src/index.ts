@@ -13,8 +13,10 @@
 // limitations under the License.
 
 export {
-  isEntryPointV06Implementation,
-  isEntryPointV07Implementation,
+  isEntryPointV06LightWalletFactory,
+  isEntryPointV07LightWalletFactory,
+  isEntryPointV06LightWalletFactoryImplementation,
+  isEntryPointV07LightWalletFactoryImplementation,
 } from "./contracts";
 export { decodePaymasterAndData } from "./paymaster";
 export { generatePartialUserOperations } from "./partial-user-operations";

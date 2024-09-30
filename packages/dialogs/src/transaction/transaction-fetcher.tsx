@@ -19,10 +19,8 @@ import {
   ContractAddress,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
-import {
-  useDebouncedValue,
-  useProxyImplementationAddress,
-} from "@lightdotso/hooks";
+import { useDebouncedValue } from "@lightdotso/hooks";
+import { useEntryPointVersion } from "@lightdotso/hooks/src/useEntryPointVersion";
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndDataV06,
@@ -36,11 +34,7 @@ import {
   useQueryWallet,
 } from "@lightdotso/query";
 import type { PackedUserOperation, UserOperation } from "@lightdotso/schemas";
-import {
-  decodePaymasterAndData,
-  isEntryPointV06Implementation,
-  isEntryPointV07Implementation,
-} from "@lightdotso/sdk";
+import { decodePaymasterAndData } from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -143,7 +137,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const implementationAddress = useProxyImplementationAddress({
+  const { isEntryPointV06, isEntryPointV07 } = useEntryPointVersion({
     address: address as Address,
     chainId: Number(initialUserOperation.chainId),
   });
@@ -190,14 +184,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const isEntryPointV06 = useMemo(() => {
-    return isEntryPointV06Implementation(implementationAddress);
-  }, [implementationAddress]);
-
-  const isEntryPointV07 = useMemo(() => {
-    return isEntryPointV07Implementation(implementationAddress);
-  }, [implementationAddress]);
 
   /// This is the initial boolean to check if the initial fetch is done
   /// The `entryPointNonce` and `userOperationNonce` are required to compute the `updatedMinimumNonce`

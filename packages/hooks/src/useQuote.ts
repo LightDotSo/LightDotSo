@@ -27,7 +27,7 @@ import {
 // Hook Props
 // -----------------------------------------------------------------------------
 
-export type QuoteParams = {
+export type QuoteProps = {
   fromAddress: Address;
   fromChainId: number | undefined;
   fromTokenAddress: Address;
@@ -49,7 +49,7 @@ export const useQuote = ({
   toChainId,
   toTokenAddress,
   fromAmount,
-}: QuoteParams) => {
+}: QuoteProps) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------

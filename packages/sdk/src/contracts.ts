@@ -15,7 +15,7 @@
 import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import type { Address } from "viem";
 
-export const isEntryPointV06Implementation = (
+export const isEntryPointV06LightWalletFactory = (
   implementationAddress: Address | undefined,
 ) => {
   if (!implementationAddress) {
@@ -34,7 +34,39 @@ export const isEntryPointV06Implementation = (
   );
 };
 
-export const isEntryPointV07Implementation = (
+export const isEntryPointV07LightWalletFactory = (
+  implementationAddress: Address | undefined,
+) => {
+  if (!implementationAddress) {
+    return false;
+  }
+
+  return (
+    implementationAddress ===
+    CONTRACT_ADDRESSES[ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION]
+  );
+};
+
+export const isEntryPointV06LightWalletFactoryImplementation = (
+  implementationAddress: Address | undefined,
+) => {
+  if (!implementationAddress) {
+    return false;
+  }
+
+  return (
+    implementationAddress ===
+      CONTRACT_ADDRESSES[
+        ContractAddress.LIGHT_WALLET_FACTORY_V010_IMPLEMENTATION
+      ] ||
+    implementationAddress ===
+      CONTRACT_ADDRESSES[
+        ContractAddress.LIGHT_WALLET_FACTORY_V020_IMPLEMENTATION
+      ]
+  );
+};
+
+export const isEntryPointV07LightWalletFactoryImplementation = (
   implementationAddress: Address | undefined,
 ) => {
   if (!implementationAddress) {
