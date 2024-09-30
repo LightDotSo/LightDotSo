@@ -53,6 +53,21 @@ library ERC4337Utils {
         return bytes32((uint256(maxPriorityFeePerGas) << 128) | uint256(maxFeePerGas));
     }
 
+    /// @dev Packs the paymaster and data
+    /// @param paymaster The paymaster address
+    /// @param validationGasLimit The validation gas limit
+    /// @param postOpGasLimit The post-operation gas limit
+    /// @param paymasterData The paymaster data
+    /// @return The packed paymaster and data
+    function packPaymasterAndData(
+        address paymaster,
+        uint256 validationGasLimit,
+        uint256 postOpGasLimit,
+        bytes memory paymasterData
+    ) public pure returns (bytes memory) {
+        return abi.encodePacked(paymaster, uint128(validationGasLimit), uint128(postOpGasLimit), paymasterData);
+    }
+
     // -------------------------------------------------------------------------
     // Internal Functions
     // -------------------------------------------------------------------------
