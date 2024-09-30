@@ -20,9 +20,10 @@
 
 ## Twitter
 
-- Chain Abstraction projects on DappList - https://x.com/thedapplist/status/1832014155177767151
 - The Chain Abstraction Market Map - https://x.com/therollupco/status/1821909421967970649
+- Chain Abstraction projects on DappList - https://x.com/thedapplist/status/1832014155177767151
 - Zordcrypt - https://x.com/zordcrypt/status/1834227697222037698
+- Chain Abstraction Ecosystem on Coin Sixty Eight - https://x.com/kudodefi/status/1840624198378807589
 
 ## Youtube
 
