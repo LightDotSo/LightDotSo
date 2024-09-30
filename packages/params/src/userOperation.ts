@@ -36,7 +36,6 @@ export type UserOperationNonceParams = {
 
 export type UserOperationSendParams = UserOperationGetParams & {
   address: Address | null | undefined;
-  implementation_address: Address | null | undefined;
   configuration: ConfigurationData | null | undefined;
   is_testnet?: boolean;
 };

@@ -16,7 +16,7 @@
 
 import {
   useMutationQueueUserOperation,
-  useMutationUserOperationSend,
+  useMutationUserOperationSendV06,
   useQueryConfiguration,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
@@ -25,7 +25,6 @@ import {
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
-import { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -60,15 +59,6 @@ export const useUserOperationSend = ({
   });
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation", userOperation);
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const implementationAddress = useProxyImplementationAddress({
-    address: address as Address,
-    chainId: userOperation?.chain_id ?? 0,
-  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -107,12 +97,11 @@ export const useUserOperationSend = ({
     hash: hash,
   });
 
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
+  const { userOperationSendV06, isUserOperationSendV06Pending } =
+    useMutationUserOperationSendV06({
       address: address as Address,
       configuration: configuration,
       hash: userOperation?.hash as Hex,
-      implementation_address: implementationAddress as Address,
     });
 
   // ---------------------------------------------------------------------------
@@ -137,13 +126,13 @@ export const useUserOperationSend = ({
   const isUserOperationSendLoading = useMemo(
     () =>
       isQueueUserOperationPending ||
-      isUserOperationSendPending ||
+      isUserOperationSendV06Pending ||
       isUserOperationLoading ||
       isUserOperationSignatureLoading ||
       isUserOperationReceiptLoading,
     [
       isQueueUserOperationPending,
-      isUserOperationSendPending,
+      isUserOperationSendV06Pending,
       isUserOperationLoading,
       isUserOperationSignatureLoading,
       isUserOperationReceiptLoading,
@@ -231,7 +220,7 @@ export const useUserOperationSend = ({
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("Sending user operation", hash);
     // Send the user operation if the user operation hasn't been sent yet
-    userOperationSend({
+    userOperationSendV06({
       userOperation: userOperation,
       userOperationSignature: userOperationSignature as Hex,
     });
@@ -246,7 +235,7 @@ export const useUserOperationSend = ({
     isUserOperationSendValid: isUserOperationSendValid,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendPending: isUserOperationSendPending,
+    isUserOperationSendPending: isUserOperationSendV06Pending,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
     isUserOperationSendReady: isUserOperationSendReady,
   };

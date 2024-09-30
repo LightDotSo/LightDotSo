@@ -14,8 +14,9 @@
 
 import { sendUserOperationV06 } from "@lightdotso/client";
 import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
   TRANSACTION_ROW_COUNT,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
@@ -24,7 +25,6 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui/components/toast";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
@@ -56,8 +56,8 @@ export const useMutationUserOperationSendV07 = (
   // ---------------------------------------------------------------------------
 
   const {
-    mutate: userOperationSend,
-    isPending: isUserOperationSendPending,
+    mutate: userOperationSendV07,
+    isPending: isUserOperationSendV07Pending,
     failureCount,
   } = useMutation({
     retryDelay: 1000,
@@ -87,13 +87,7 @@ export const useMutationUserOperationSendV07 = (
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
           signature: userOperationSignature,
         },
-        // Hardcoded to use the latest version of the wallet factory
-        WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          findContractAddressByAddress(
-            params.implementation_address as Address,
-          )!
-        ],
+        CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
       ]);
 
       toast.dismiss(loadingToast);
@@ -190,7 +184,7 @@ export const useMutationUserOperationSendV07 = (
   });
 
   return {
-    userOperationSend: userOperationSend,
-    isUserOperationSendPending: isUserOperationSendPending,
+    userOperationSendV07: userOperationSendV07,
+    isUserOperationSendV07Pending: isUserOperationSendV07Pending,
   };
 };
