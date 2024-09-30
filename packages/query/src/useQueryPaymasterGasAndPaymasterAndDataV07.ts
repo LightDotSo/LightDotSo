@@ -27,6 +27,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 
 export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
   params: RpcPaymasterGasAndPaymasterAndDataV07Params,
+  isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -39,12 +40,13 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: gasAndPaymasterAndData,
-    isLoading: isGasAndPaymasterAndDataLoading,
-    error: gasAndPaymasterAndDataError,
+    data: gasAndPaymasterAndDataV07,
+    isLoading: isGasAndPaymasterAndDataLoadingV07,
+    error: gasAndPaymasterAndDataErrorV07,
   } = useQuery<PaymasterAndDataV07 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
+    enabled: isEnabled,
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data_v07({
       chainId: params?.chainId,
       nonce: params?.nonce,
@@ -100,47 +102,48 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
   });
 
   return {
-    gasAndPaymasterAndData: gasAndPaymasterAndData,
-    callGasLimit: gasAndPaymasterAndData?.callGasLimit
-      ? fromHex(gasAndPaymasterAndData?.callGasLimit as Hex, {
+    gasAndPaymasterAndDataV07: gasAndPaymasterAndDataV07,
+    callGasLimitV07: gasAndPaymasterAndDataV07?.callGasLimit
+      ? fromHex(gasAndPaymasterAndDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: gasAndPaymasterAndData?.preVerificationGas
-      ? fromHex(gasAndPaymasterAndData?.preVerificationGas as Hex, {
+    preVerificationGasV07: gasAndPaymasterAndDataV07?.preVerificationGas
+      ? fromHex(gasAndPaymasterAndDataV07?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: gasAndPaymasterAndData?.verificationGasLimit
-      ? fromHex(gasAndPaymasterAndData?.verificationGasLimit as Hex, {
+    verificationGasLimitV07: gasAndPaymasterAndDataV07?.verificationGasLimit
+      ? fromHex(gasAndPaymasterAndDataV07?.verificationGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    paymaster: gasAndPaymasterAndData?.paymaster
-      ? (fromHex(gasAndPaymasterAndData?.paymaster as Hex, {
+    paymasterV07: gasAndPaymasterAndDataV07?.paymaster
+      ? (fromHex(gasAndPaymasterAndDataV07?.paymaster as Hex, {
           to: "string",
         }) as Address)
       : undefined,
-    paymasterVerificationGasLimit:
-      gasAndPaymasterAndData?.paymasterVerificationGasLimit
+    paymasterVerificationGasLimitV07:
+      gasAndPaymasterAndDataV07?.paymasterVerificationGasLimit
         ? fromHex(
-            gasAndPaymasterAndData?.paymasterVerificationGasLimit as Hex,
+            gasAndPaymasterAndDataV07?.paymasterVerificationGasLimit as Hex,
             {
               to: "bigint",
             },
           )
         : undefined,
-    paymasterPostOpGasLimit: gasAndPaymasterAndData?.paymasterPostOpGasLimit
-      ? fromHex(gasAndPaymasterAndData?.paymasterPostOpGasLimit as Hex, {
-          to: "bigint",
-        })
-      : undefined,
-    paymasterData: gasAndPaymasterAndData?.paymasterData
-      ? fromHex(gasAndPaymasterAndData?.paymasterData as Hex, {
+    paymasterPostOpGasLimitV07:
+      gasAndPaymasterAndDataV07?.paymasterPostOpGasLimit
+        ? fromHex(gasAndPaymasterAndDataV07?.paymasterPostOpGasLimit as Hex, {
+            to: "bigint",
+          })
+        : undefined,
+    paymasterDataV07: gasAndPaymasterAndDataV07?.paymasterData
+      ? fromHex(gasAndPaymasterAndDataV07?.paymasterData as Hex, {
           to: "string",
         })
       : undefined,
-    isGasAndPaymasterAndDataLoading: isGasAndPaymasterAndDataLoading,
-    gasAndPaymasterAndDataError: gasAndPaymasterAndDataError,
+    isGasAndPaymasterAndDataLoadingV07: isGasAndPaymasterAndDataLoadingV07,
+    gasAndPaymasterAndDataErrorV07: gasAndPaymasterAndDataErrorV07,
   };
 };

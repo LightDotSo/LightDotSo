@@ -41,9 +41,9 @@ export const useQueryUserOperationEstimateGasV06 = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: estimateUserOperationGasData,
-    isLoading: isEstimateUserOperationGasDataLoading,
-    error: estimateUserOperationGasDataError,
+    data: estimateUserOperationGasDataV06,
+    isLoading: isEstimateUserOperationGasDataLoadingV06,
+    error: estimateUserOperationGasDataErrorV06,
   } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
@@ -90,22 +90,27 @@ export const useQueryUserOperationEstimateGasV06 = (
   });
 
   return {
-    isUserOperationEstimateGasLoading: isEstimateUserOperationGasDataLoading,
-    userOperationEstimateGasError: estimateUserOperationGasDataError,
-    callGasLimit: estimateUserOperationGasData?.callGasLimit
-      ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+    isEstimateUserOperationGasDataLoadingV06:
+      isEstimateUserOperationGasDataLoadingV06,
+    estimateUserOperationGasDataErrorV06: estimateUserOperationGasDataErrorV06,
+    callGasLimitV06: estimateUserOperationGasDataV06?.callGasLimit
+      ? fromHex(estimateUserOperationGasDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: estimateUserOperationGasData?.preVerificationGas
-      ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+    preVerificationGasV06: estimateUserOperationGasDataV06?.preVerificationGas
+      ? fromHex(estimateUserOperationGasDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
-      ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
-          to: "bigint",
-        })
-      : undefined,
+    verificationGasLimitV06:
+      estimateUserOperationGasDataV06?.verificationGasLimit
+        ? fromHex(
+            estimateUserOperationGasDataV06?.verificationGasLimit as Hex,
+            {
+              to: "bigint",
+            },
+          )
+        : undefined,
   };
 };

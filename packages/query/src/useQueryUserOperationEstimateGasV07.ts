@@ -41,9 +41,9 @@ export const useQueryUserOperationEstimateGasV07 = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: estimateUserOperationGasData,
-    isLoading: isEstimateUserOperationGasDataLoading,
-    error: estimateUserOperationGasDataError,
+    data: estimateUserOperationGasDataV07,
+    isLoading: isEstimateUserOperationGasDataLoadingV07,
+    error: estimateUserOperationGasDataErrorV07,
   } = useQuery<EstimateUserOperationGasDataV07 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
@@ -91,27 +91,32 @@ export const useQueryUserOperationEstimateGasV07 = (
   });
 
   return {
-    isUserOperationEstimateGasLoading: isEstimateUserOperationGasDataLoading,
-    userOperationEstimateGasError: estimateUserOperationGasDataError,
-    callGasLimit: estimateUserOperationGasData?.callGasLimit
-      ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+    isEstimateUserOperationGasDataLoadingV07:
+      isEstimateUserOperationGasDataLoadingV07,
+    estimateUserOperationGasDataErrorV07: estimateUserOperationGasDataErrorV07,
+    callGasLimitV07: estimateUserOperationGasDataV07?.callGasLimit
+      ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: estimateUserOperationGasData?.preVerificationGas
-      ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+    preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
+      ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
-      ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
-          to: "bigint",
-        })
-      : undefined,
-    paymasterVerificationGasLimit:
-      estimateUserOperationGasData?.paymasterVerificationGasLimit
+    verificationGasLimitV07:
+      estimateUserOperationGasDataV07?.verificationGasLimit
         ? fromHex(
-            estimateUserOperationGasData?.paymasterVerificationGasLimit as Hex,
+            estimateUserOperationGasDataV07?.verificationGasLimit as Hex,
+            {
+              to: "bigint",
+            },
+          )
+        : undefined,
+    paymasterVerificationGasLimitV07:
+      estimateUserOperationGasDataV07?.paymasterVerificationGasLimit
+        ? fromHex(
+            estimateUserOperationGasDataV07?.paymasterVerificationGasLimit as Hex,
             {
               to: "bigint",
             },

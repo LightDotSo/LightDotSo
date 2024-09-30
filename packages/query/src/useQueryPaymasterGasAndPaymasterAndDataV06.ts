@@ -40,9 +40,9 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: gasAndPaymasterAndData,
-    isLoading: isGasAndPaymasterAndDataLoading,
-    error: gasAndPaymasterAndDataError,
+    data: gasAndPaymasterAndDataV06,
+    isLoading: isGasAndPaymasterAndDataLoadingV06,
+    error: gasAndPaymasterAndDataErrorV06,
   } = useQuery<PaymasterAndDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
@@ -102,24 +102,24 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
   });
 
   return {
-    gasAndPaymasterAndData: gasAndPaymasterAndData,
-    paymasterAndData: gasAndPaymasterAndData?.paymasterAndData,
-    callGasLimit: gasAndPaymasterAndData?.callGasLimit
-      ? fromHex(gasAndPaymasterAndData?.callGasLimit as Hex, {
+    gasAndPaymasterAndDataV06: gasAndPaymasterAndDataV06,
+    paymasterAndDataV06: gasAndPaymasterAndDataV06?.paymasterAndData,
+    callGasLimitV06: gasAndPaymasterAndDataV06?.callGasLimit
+      ? fromHex(gasAndPaymasterAndDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: gasAndPaymasterAndData?.preVerificationGas
-      ? fromHex(gasAndPaymasterAndData?.preVerificationGas as Hex, {
+    preVerificationGasV06: gasAndPaymasterAndDataV06?.preVerificationGas
+      ? fromHex(gasAndPaymasterAndDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: gasAndPaymasterAndData?.verificationGasLimit
-      ? fromHex(gasAndPaymasterAndData?.verificationGasLimit as Hex, {
+    verificationGasLimitV06: gasAndPaymasterAndDataV06?.verificationGasLimit
+      ? fromHex(gasAndPaymasterAndDataV06?.verificationGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    isGasAndPaymasterAndDataLoading: isGasAndPaymasterAndDataLoading,
-    gasAndPaymasterAndDataError: gasAndPaymasterAndDataError,
+    isGasAndPaymasterAndDataLoadingV06: isGasAndPaymasterAndDataLoadingV06,
+    gasAndPaymasterAndDataErrorV06: gasAndPaymasterAndDataErrorV06,
   };
 };

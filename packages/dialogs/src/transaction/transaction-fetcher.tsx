@@ -26,14 +26,16 @@ import {
 import {
   useQueryConfiguration,
   useQueryPaymasterGasAndPaymasterAndDataV06,
+  useQueryPaymasterGasAndPaymasterAndDataV07,
   useQueryPaymasterOperation,
   useQueryUserOperationEstimateFeesPerGas,
   useQueryUserOperationEstimateGasV06,
+  useQueryUserOperationEstimateGasV07,
   useQueryUserOperationNonce,
   useQueryUserOperations,
   useQueryWallet,
 } from "@lightdotso/query";
-import type { UserOperation } from "@lightdotso/schemas";
+import type { PackedUserOperation, UserOperation } from "@lightdotso/schemas";
 import { decodePaymasterAndData } from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
@@ -73,6 +75,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
+
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+  const [packedUserOperationWithHash, setPackedUserOperationWithHash] =
+    useState<PackedUserOperation>();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -195,6 +201,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     );
   }, [implementationAddress]);
 
+  const isEntryPointV07 = useMemo(() => {
+    return (
+      implementationAddress ===
+      CONTRACT_ADDRESSES[
+        ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION
+      ]
+    );
+  }, [implementationAddress]);
+
   /// This is the initial boolean to check if the initial fetch is done
   /// The `entryPointNonce` and `userOperationNonce` are required to compute the `updatedMinimumNonce`
   const isInitialFetched = useMemo(() => {
@@ -305,10 +320,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Gets the gas estimate for the user operation
   const {
-    callGasLimit,
-    preVerificationGas,
-    verificationGasLimit,
-    isUserOperationEstimateGasLoading,
+    callGasLimitV06,
+    preVerificationGasV06,
+    verificationGasLimitV06,
+    isEstimateUserOperationGasDataLoadingV06,
   } = useQueryUserOperationEstimateGasV06(
     {
       sender: address as Address,
@@ -320,16 +335,50 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV06,
   );
 
+  // Get the gas estimate for the user operation v07
+  const {
+    callGasLimitV07,
+    preVerificationGasV07,
+    verificationGasLimitV07,
+    paymasterVerificationGasLimitV07,
+    isEstimateUserOperationGasDataLoadingV07,
+  } = useQueryUserOperationEstimateGasV07(
+    {
+      sender: address as Address,
+      chainId: targetUserOperation?.chainId,
+      nonce: targetUserOperation?.nonce,
+      initCode: targetUserOperation?.initCode,
+      callData: targetUserOperation?.callData,
+    },
+    isEntryPointV07,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const callGasLimit = useMemo(() => {
+    return isEntryPointV06 ? callGasLimitV06 : callGasLimitV07;
+  }, [isEntryPointV06, callGasLimitV06, callGasLimitV07]);
+
+  const preVerificationGas = useMemo(() => {
+    return isEntryPointV06 ? preVerificationGasV06 : preVerificationGasV07;
+  }, [isEntryPointV06, preVerificationGasV06, preVerificationGasV07]);
+
+  const verificationGasLimit = useMemo(() => {
+    return isEntryPointV06 ? verificationGasLimitV06 : verificationGasLimitV07;
+  }, [isEntryPointV06, verificationGasLimitV06, verificationGasLimitV07]);
+
+  const paymasterVerificationGasLimit = useMemo(() => {
+    return isEntryPointV07 ? paymasterVerificationGasLimitV07 : undefined;
+  }, [isEntryPointV07, paymasterVerificationGasLimitV07]);
+
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("callGasLimit", callGasLimit);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("preVerificationGas", preVerificationGas);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("verificationGasLimit", verificationGasLimit);
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
 
   // Construct the updated user operation
   // This is the final layer of computation until getting the hash for paymaster and data
@@ -338,6 +387,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     "hash" | "signature" | "paymasterAndData"
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
+    if (!isEntryPointV06) {
+      return null;
+    }
+
     if (
       !(
         targetUserOperation?.sender &&
@@ -392,6 +445,80 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("updatedUserOperation", updatedUserOperation);
 
+  // Construct the packed user operation
+  const updatedPackedUserOperation: Omit<
+    PackedUserOperation,
+    | "hash"
+    | "signature"
+    | "paymaster"
+    | "paymasterPostOpGasLimit"
+    | "paymasterData"
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  > | null = useMemo(() => {
+    if (!isEntryPointV07) {
+      return null;
+    }
+
+    if (
+      !(
+        targetUserOperation?.sender &&
+        targetUserOperation?.chainId &&
+        targetUserOperation?.initCode
+      ) ||
+      typeof targetUserOperation?.nonce === "undefined" ||
+      targetUserOperation?.nonce === null ||
+      !targetUserOperation?.callData ||
+      !maxFeePerGas ||
+      !maxPriorityFeePerGas ||
+      !callGasLimit ||
+      !preVerificationGas ||
+      !verificationGasLimit
+    ) {
+      return null;
+    }
+
+    // Bump the verification gas limit depending on the configuration threshold
+    const updatedVerificationGasLimit =
+      currentConfiguration?.threshold && verificationGasLimit
+        ? verificationGasLimit * BigInt(currentConfiguration?.threshold)
+        : verificationGasLimit;
+
+    // Bump the pre-verification gas limit to handle lesser used chains
+    const updatedPreVerificationGas = preVerificationGas
+      ? (preVerificationGas * BigInt(120)) / BigInt(100)
+      : preVerificationGas;
+
+    return {
+      sender: targetUserOperation?.sender,
+      chainId: targetUserOperation?.chainId,
+      nonce: targetUserOperation?.nonce,
+      // factory: targetUserOperation?.factory,
+      // factoryData: targetUserOperation?.factoryData,
+      callData: targetUserOperation?.callData,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      callGasLimit: callGasLimit,
+      preVerificationGas: updatedPreVerificationGas,
+      verificationGasLimit: updatedVerificationGasLimit,
+      // TODO
+      factory: "0x",
+      factoryData: "0x",
+      paymaster: "0x",
+      paymasterVerificationGasLimit: 0n,
+      paymasterPostOpGasLimit: 0n,
+      paymasterData: "0x",
+    };
+  }, [
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    callGasLimit,
+    preVerificationGas,
+    verificationGasLimit,
+    paymasterVerificationGasLimit,
+  ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("updatedPackedUserOperation", updatedPackedUserOperation);
+
   // ---------------------------------------------------------------------------
   // Debounce
   // ---------------------------------------------------------------------------
@@ -403,17 +530,22 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("debouncedUserOperation", debouncedUserOperation);
 
+  const [debouncedPackedUserOperation, isDebouncingPackedUserOperation] =
+    useDebouncedValue(updatedPackedUserOperation, 300);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("debouncedPackedUserOperation", debouncedPackedUserOperation);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   // Get the paymaster and data from the target user operation
   const {
-    paymasterAndData,
-    callGasLimit: gasAndPaymasterCallGasLimit,
-    preVerificationGas: gasAndPaymasterPreVerificationGas,
-    verificationGasLimit: gasAndPaymasterVerificationGasLimit,
-    isGasAndPaymasterAndDataLoading,
+    paymasterAndDataV06,
+    callGasLimitV06: gasAndPaymasterCallGasLimitV06,
+    preVerificationGasV06: gasAndPaymasterPreVerificationGasV06,
+    verificationGasLimitV06: gasAndPaymasterVerificationGasLimitV06,
+    isGasAndPaymasterAndDataLoadingV06,
   } = useQueryPaymasterGasAndPaymasterAndDataV06(
     {
       sender: address as Address,
@@ -430,6 +562,27 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV06,
   );
 
+  // Get the paymaster and data from the target user operation v07
+  const {
+    paymasterDataV07,
+    callGasLimitV07: gasAndPaymasterCallGasLimitV07,
+    preVerificationGasV07: gasAndPaymasterPreVerificationGasV07,
+    verificationGasLimitV07: gasAndPaymasterVerificationGasLimitV07,
+    isGasAndPaymasterAndDataLoadingV07,
+  } = useQueryPaymasterGasAndPaymasterAndDataV07(
+    {
+      sender: address as Address,
+      chainId: debouncedPackedUserOperation?.chainId,
+      nonce: debouncedPackedUserOperation?.nonce,
+      // initCode: debouncedPackedUserOperation?.initCode,
+      callData: debouncedPackedUserOperation?.callData,
+      callGasLimit: debouncedPackedUserOperation?.callGasLimit,
+      preVerificationGas: debouncedPackedUserOperation?.preVerificationGas,
+      verificationGasLimit: debouncedPackedUserOperation?.verificationGasLimit,
+    },
+    isEntryPointV07,
+  );
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -440,6 +593,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     "hash" | "signature"
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
+    if (!isEntryPointV06) {
+      return null;
+    }
+
     if (
       !(
         debouncedUserOperation?.sender &&
@@ -454,7 +611,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !debouncedUserOperation?.callGasLimit ||
       !debouncedUserOperation?.preVerificationGas ||
       !debouncedUserOperation?.verificationGasLimit ||
-      !paymasterAndData
+      !paymasterAndDataV06
     ) {
       return null;
     }
@@ -468,26 +625,89 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
       maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
       callGasLimit:
-        gasAndPaymasterCallGasLimit ?? debouncedUserOperation?.callGasLimit,
+        gasAndPaymasterCallGasLimitV06 ?? debouncedUserOperation?.callGasLimit,
       preVerificationGas:
-        gasAndPaymasterPreVerificationGas ??
+        gasAndPaymasterPreVerificationGasV06 ??
         debouncedUserOperation?.preVerificationGas,
       verificationGasLimit:
-        gasAndPaymasterVerificationGasLimit ??
+        gasAndPaymasterVerificationGasLimitV06 ??
         debouncedUserOperation?.verificationGasLimit,
-      paymasterAndData: paymasterAndData ?? "0x",
+      paymasterAndData: paymasterAndDataV06 ?? "0x",
     };
   }, [
     // Only paymaster and data is required to compute the gas limits and paymaster
     // The rest of the values are dependencies of the paymaster and data
     // As it is the final layer of computation
-    gasAndPaymasterCallGasLimit,
-    gasAndPaymasterPreVerificationGas,
-    gasAndPaymasterVerificationGasLimit,
-    paymasterAndData,
+    gasAndPaymasterCallGasLimitV06,
+    gasAndPaymasterPreVerificationGasV06,
+    gasAndPaymasterVerificationGasLimitV06,
+    paymasterAndDataV06,
   ]);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("finalizedUserOperation", finalizedUserOperation);
+
+  // Construct the finalized packed user operation
+  const finalizedPackedUserOperation: Omit<
+    PackedUserOperation,
+    "hash" | "signature"
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  > | null = useMemo(() => {
+    if (!isEntryPointV07) {
+      return null;
+    }
+
+    if (
+      !(
+        debouncedUserOperation?.sender &&
+        debouncedUserOperation?.chainId &&
+        debouncedUserOperation?.initCode
+      ) ||
+      typeof debouncedUserOperation?.nonce === "undefined" ||
+      debouncedUserOperation?.nonce === null ||
+      !debouncedUserOperation?.callData ||
+      !debouncedUserOperation?.maxFeePerGas ||
+      !debouncedUserOperation?.maxPriorityFeePerGas ||
+      !debouncedUserOperation?.callGasLimit ||
+      !debouncedUserOperation?.preVerificationGas ||
+      !debouncedUserOperation?.verificationGasLimit ||
+      !paymasterDataV07
+    ) {
+      return null;
+    }
+
+    return {
+      sender: debouncedUserOperation?.sender,
+      chainId: debouncedUserOperation?.chainId,
+      initCode: debouncedUserOperation?.initCode,
+      nonce: debouncedUserOperation?.nonce,
+      callData: debouncedUserOperation?.callData,
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+      callGasLimit:
+        gasAndPaymasterCallGasLimitV07 ?? debouncedUserOperation?.callGasLimit,
+      preVerificationGas:
+        gasAndPaymasterPreVerificationGasV07 ??
+        debouncedUserOperation?.preVerificationGas,
+      verificationGasLimit:
+        gasAndPaymasterVerificationGasLimitV07 ??
+        debouncedUserOperation?.verificationGasLimit,
+      // TODO
+      factory: "0x",
+      factoryData: "0x",
+      paymaster: "0x",
+      paymasterVerificationGasLimit: 0n,
+      paymasterPostOpGasLimit: 0n,
+      paymasterData: paymasterDataV07 ?? "0x",
+    };
+  }, [
+    // Only paymaster and data is required to compute the gas limits and paymaster
+    // The rest of the values are dependencies of the paymaster and data
+    // As it is the final layer of computation
+    gasAndPaymasterCallGasLimitV07,
+    gasAndPaymasterPreVerificationGasV07,
+    gasAndPaymasterVerificationGasLimitV07,
+    paymasterDataV07,
+  ]);
 
   const decodedPaymasterAndData = useMemo(() => {
     if (
@@ -523,7 +743,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
-      if (!finalizedUserOperation) {
+      if (!(finalizedUserOperation && isEntryPointV06)) {
         return;
       }
 
@@ -550,17 +770,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         userOperation: userOperation as ViemUserOperation<"0.6">,
         chainId: Number(finalizedUserOperation.chainId) as number,
         entryPointAddress:
-          WALLET_FACTORY_ENTRYPOINT_MAPPING[
-            // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            findContractAddressByAddress(wallet?.factory_address as Address)!
-          ],
-        entryPointVersion:
-          WALLET_FACTORY_ENTRYPOINT_MAPPING[
-            // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            findContractAddressByAddress(wallet?.factory_address as Address)!
-          ] === CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS]
-            ? "0.6"
-            : "0.7",
+          CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
+        entryPointVersion: "0.6",
       });
 
       // Don't update the user operation if the hash is same as the previous one
@@ -582,6 +793,58 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     finalizedUserOperation,
   ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const fetchHashAndUpdatePackedOperation = async () => {
+      if (!(finalizedPackedUserOperation && isEntryPointV07)) {
+        return;
+      }
+
+      // Don't update the user operation if the below required fields are empty
+      if (
+        finalizedPackedUserOperation.callGasLimit === 0n ||
+        finalizedPackedUserOperation.verificationGasLimit === 0n ||
+        finalizedPackedUserOperation.preVerificationGas === 0n ||
+        finalizedPackedUserOperation.maxFeePerGas === 0n ||
+        finalizedPackedUserOperation.maxPriorityFeePerGas === 0n
+      ) {
+        return;
+      }
+
+      // Add the dummy signature to get the hash for the user operation
+      const packedUserOperation = {
+        ...finalizedPackedUserOperation,
+        signature: "0x",
+      };
+
+      // Get the hash for the user operation w/ the corresponding entry point
+      const hash = await getUserOperationHash({
+        userOperation: packedUserOperation as ViemUserOperation<"0.7">,
+        chainId: Number(finalizedPackedUserOperation.chainId) as number,
+        entryPointAddress:
+          CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
+        entryPointVersion: "0.7",
+      });
+
+      // Don't update the user operation if the hash is same as the previous one
+      if (hash === userOperationWithHash?.hash) {
+        return;
+      }
+
+      // Update the user operation hash state for computation
+      setPackedUserOperationWithHash({
+        ...packedUserOperation,
+        hash: hash,
+      });
+    };
+
+    // Run the async function
+    fetchHashAndUpdatePackedOperation();
+  }, [
+    // Sole dependency is the updated user operation w/ paymaster and data values
+    finalizedUserOperation,
+  ]);
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -589,15 +852,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const isTransactionFetcherLoading = useMemo(() => {
     return (
       isDebouncingUserOperation ||
+      isDebouncingPackedUserOperation ||
       isUserOperationEstimateFeesPerGasLoading ||
-      isUserOperationEstimateGasLoading ||
-      isGasAndPaymasterAndDataLoading
+      isEstimateUserOperationGasDataLoadingV06 ||
+      isEstimateUserOperationGasDataLoadingV07 ||
+      isGasAndPaymasterAndDataLoadingV06 ||
+      isGasAndPaymasterAndDataLoadingV07
     );
   }, [
     isDebouncingUserOperation,
+    isDebouncingPackedUserOperation,
     isUserOperationEstimateFeesPerGasLoading,
-    isUserOperationEstimateGasLoading,
-    isGasAndPaymasterAndDataLoading,
+    isEstimateUserOperationGasDataLoadingV06,
+    isEstimateUserOperationGasDataLoadingV07,
+    isGasAndPaymasterAndDataLoadingV06,
+    isGasAndPaymasterAndDataLoadingV07,
   ]);
 
   // ---------------------------------------------------------------------------
