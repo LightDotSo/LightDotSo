@@ -22,6 +22,7 @@ pub mod authentication;
 pub mod constants;
 pub mod cookies;
 pub mod error;
+pub mod headers;
 pub mod internal;
 pub mod prometheus;
 pub mod result;
