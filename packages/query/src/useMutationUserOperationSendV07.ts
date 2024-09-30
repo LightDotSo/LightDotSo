@@ -70,19 +70,20 @@ export const useMutationUserOperationSendV07 = (
 
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      // Get the user operation and user operation signature
       const { userOperation, userOperationSignature } = body;
 
-      const factory = userOperation.init_code.slice(0, 20);
-      const factoryData = userOperation.init_code.slice(20);
+      // Remove the 0x prefix from the init_code
+      const initCode = userOperation.init_code.slice(2);
+      const factory = `0x${initCode.slice(0, 20)}`;
+      const factoryData = `0x${initCode.slice(20)}`;
 
-      const paymaster = userOperation.paymaster_and_data.slice(0, 20);
-      const paymasterVerificationGasLimit =
-        userOperation.paymaster_and_data.slice(20, 36);
-      const paymasterPostOpGasLimit = userOperation.paymaster_and_data.slice(
-        36,
-        52,
-      );
-      const paymasterData = userOperation.paymaster_and_data.slice(52);
+      // Remove the 0x prefix from the paymaster_and_data
+      const paymasterAndData = userOperation.paymaster_and_data.slice(2);
+      const paymaster = `0x${paymasterAndData.slice(0, 20)}`;
+      const paymasterVerificationGasLimit = `0x${paymasterAndData.slice(20, 36)}`;
+      const paymasterPostOpGasLimit = `0x${paymasterAndData.slice(36, 52)}`;
+      const paymasterData = `0x${paymasterAndData.slice(52)}`;
 
       // Sned the user operation
       const res = await sendUserOperationV07(userOperation.chain_id, [
@@ -97,10 +98,10 @@ export const useMutationUserOperationSendV07 = (
           preVerificationGas: toHex(userOperation.pre_verification_gas),
           maxFeePerGas: toHex(userOperation.max_fee_per_gas),
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
-          paymaster: toHex(paymaster),
-          paymasterVerificationGasLimit: toHex(paymasterVerificationGasLimit),
-          paymasterPostOpGasLimit: toHex(paymasterPostOpGasLimit),
-          paymasterData: toHex(paymasterData),
+          paymaster: paymaster,
+          paymasterVerificationGasLimit: paymasterVerificationGasLimit,
+          paymasterPostOpGasLimit: paymasterPostOpGasLimit,
+          paymasterData: paymasterData,
           signature: userOperationSignature,
         },
         CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],

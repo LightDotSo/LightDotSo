@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RpcUserOperationReceiptParams } from "@lightdotso/params";
 import type {
   RpcEstimateUserOperationGasV06Params,
   RpcEstimateUserOperationGasV07Params,
   RpcGasEstimationParams,
   RpcPaymasterGasAndPaymasterAndDataV06Params,
   RpcPaymasterGasAndPaymasterAndDataV07Params,
-} from "@lightdotso/params/src/rpc";
+  RpcUserOperationReceiptParams,
+} from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 

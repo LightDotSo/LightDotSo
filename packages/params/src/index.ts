@@ -41,7 +41,8 @@ export type {
 } from "./queue";
 export type {
   RpcGasEstimationParams,
-  RpcEstimateUserOperationGasParams,
+  RpcEstimateUserOperationGasV06Params,
+  RpcEstimateUserOperationGasV07Params,
   RpcPaymasterGasAndPaymasterAndDataV06Params,
   RpcPaymasterGasAndPaymasterAndDataV07Params,
   RpcUserOperationReceiptParams,

@@ -440,6 +440,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     | "hash"
     | "signature"
     | "paymaster"
+    | "paymasterVerificationGasLimit"
     | "paymasterPostOpGasLimit"
     | "paymasterData"
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -477,25 +478,23 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ? (preVerificationGas * BigInt(120)) / BigInt(100)
       : preVerificationGas;
 
+    // Remove the 0x prefix from the init_code
+    const initCode = targetUserOperation?.initCode.slice(2);
+    const factory = `0x${initCode.slice(0, 20)}`;
+    const factoryData = `0x${initCode.slice(20)}`;
+
     return {
       sender: targetUserOperation?.sender,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      // factory: targetUserOperation?.factory,
-      // factoryData: targetUserOperation?.factoryData,
+      factory: factory,
+      factoryData: factoryData,
       callData: targetUserOperation?.callData,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
       callGasLimit: callGasLimit,
       preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
-      // TODO
-      factory: "0x",
-      factoryData: "0x",
-      paymaster: "0x",
-      paymasterVerificationGasLimit: 0n,
-      paymasterPostOpGasLimit: 0n,
-      paymasterData: "0x",
     };
   }, [
     maxFeePerGas,
@@ -557,6 +556,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     callGasLimitV07: gasAndPaymasterCallGasLimitV07,
     preVerificationGasV07: gasAndPaymasterPreVerificationGasV07,
     verificationGasLimitV07: gasAndPaymasterVerificationGasLimitV07,
+    paymasterV07: gasAndPaymasterPaymasterV07,
+    paymasterVerificationGasLimitV07:
+      gasAndPaymasterPaymasterVerificationGasLimitV07,
+    paymasterPostOpGasLimitV07: gasAndPaymasterPostOpGasLimitV07,
+    paymasterDataV07: gasAndPaymasterPaymasterDataV07,
     isGasAndPaymasterAndDataLoadingV07,
   } = useQueryPaymasterGasAndPaymasterAndDataV07(
     {
@@ -621,7 +625,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit:
         gasAndPaymasterVerificationGasLimitV06 ??
         debouncedUserOperation?.verificationGasLimit,
-      paymasterAndData: paymasterAndDataV06 ?? "0x",
+      paymasterAndData: paymasterAndDataV06,
     };
   }, [
     // Only paymaster and data is required to compute the gas limits and paymaster
@@ -654,24 +658,28 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       typeof debouncedUserOperation?.nonce === "undefined" ||
       debouncedUserOperation?.nonce === null ||
       !debouncedUserOperation?.callData ||
-      !debouncedUserOperation?.maxFeePerGas ||
-      !debouncedUserOperation?.maxPriorityFeePerGas ||
       !debouncedUserOperation?.callGasLimit ||
       !debouncedUserOperation?.preVerificationGas ||
       !debouncedUserOperation?.verificationGasLimit ||
+      !debouncedUserOperation?.maxFeePerGas ||
+      !debouncedUserOperation?.maxPriorityFeePerGas ||
       !paymasterDataV07
     ) {
       return null;
     }
 
+    // Remove the 0x prefix from the init_code
+    const initCode = debouncedUserOperation?.initCode.slice(2);
+    const factory = `0x${initCode.slice(0, 20)}`;
+    const factoryData = `0x${initCode.slice(20)}`;
+
     return {
       sender: debouncedUserOperation?.sender,
       chainId: debouncedUserOperation?.chainId,
-      initCode: debouncedUserOperation?.initCode,
       nonce: debouncedUserOperation?.nonce,
+      factory: factory,
+      factoryData: factoryData,
       callData: debouncedUserOperation?.callData,
-      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
-      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
       callGasLimit:
         gasAndPaymasterCallGasLimitV07 ?? debouncedUserOperation?.callGasLimit,
       preVerificationGas:
@@ -680,13 +688,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit:
         gasAndPaymasterVerificationGasLimitV07 ??
         debouncedUserOperation?.verificationGasLimit,
-      // TODO
-      factory: "0x",
-      factoryData: "0x",
-      paymaster: "0x",
-      paymasterVerificationGasLimit: 0n,
-      paymasterPostOpGasLimit: 0n,
-      paymasterData: paymasterDataV07 ?? "0x",
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+      paymaster: gasAndPaymasterPaymasterV07 ?? "0x",
+      paymasterVerificationGasLimit:
+        gasAndPaymasterPaymasterVerificationGasLimitV07 ?? 0n,
+      paymasterPostOpGasLimit: gasAndPaymasterPostOpGasLimitV07 ?? 0n,
+      paymasterData: gasAndPaymasterPaymasterDataV07 ?? "0x",
     };
   }, [
     // Only paymaster and data is required to compute the gas limits and paymaster
@@ -742,8 +750,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         finalizedUserOperation.verificationGasLimit === 0n ||
         finalizedUserOperation.preVerificationGas === 0n ||
         finalizedUserOperation.maxFeePerGas === 0n ||
-        finalizedUserOperation.maxPriorityFeePerGas === 0n ||
-        finalizedUserOperation.paymasterAndData === "0x"
+        finalizedUserOperation.maxPriorityFeePerGas === 0n
       ) {
         return;
       }
@@ -816,7 +823,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       });
 
       // Don't update the user operation if the hash is same as the previous one
-      if (hash === userOperationWithHash?.hash) {
+      if (hash === packedUserOperationWithHash?.hash) {
         return;
       }
 
@@ -925,15 +932,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       return;
     }
 
+    // Remove the 0x prefix from the init_code
+    const initCode = `0x${debouncedPackedUserOperation?.factory.slice(2)}${debouncedPackedUserOperation?.factoryData.slice(2)}`;
+
     setPartialUserOperationByChainIdAndNonce(
       debouncedPackedUserOperation?.chainId,
       debouncedPackedUserOperation?.nonce,
       {
         sender: debouncedPackedUserOperation?.sender,
         chainId: debouncedPackedUserOperation?.chainId,
-        initCode: `${debouncedPackedUserOperation?.factory}${debouncedPackedUserOperation?.factoryData}`,
+        initCode: initCode,
         nonce: debouncedPackedUserOperation?.nonce,
-        callData: `${debouncedPackedUserOperation?.callData}`,
+        callData: debouncedPackedUserOperation?.callData,
         maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
         maxPriorityFeePerGas:
           debouncedPackedUserOperation?.maxPriorityFeePerGas,
@@ -971,6 +981,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       return;
     }
 
+    // Remove the 0x prefix from the init_code
+    const initCode = `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`;
+
+    // Remove the 0x prefix from the paymaster and data
+    const paymasterAndData = `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit)}${packedUserOperationWithHash?.paymasterData.slice(2)}`;
+
     setUserOperationByChainIdAndNonce(
       packedUserOperationWithHash?.chainId,
       packedUserOperationWithHash?.nonce,
@@ -979,14 +995,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         chainId: packedUserOperationWithHash?.chainId,
         sender: packedUserOperationWithHash?.sender,
         nonce: packedUserOperationWithHash?.nonce,
-        initCode: `${packedUserOperationWithHash?.factory}${packedUserOperationWithHash?.factoryData}`,
-        callData: `${packedUserOperationWithHash?.callData}`,
+        initCode: initCode,
+        callData: packedUserOperationWithHash?.callData,
         maxFeePerGas: packedUserOperationWithHash?.maxFeePerGas,
         maxPriorityFeePerGas: packedUserOperationWithHash?.maxPriorityFeePerGas,
         callGasLimit: packedUserOperationWithHash?.callGasLimit,
         verificationGasLimit: packedUserOperationWithHash?.verificationGasLimit,
         preVerificationGas: packedUserOperationWithHash?.preVerificationGas,
-        paymasterAndData: `${packedUserOperationWithHash?.paymaster}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit)}${packedUserOperationWithHash?.paymasterData}`,
+        paymasterAndData: paymasterAndData,
         signature: packedUserOperationWithHash?.signature,
       },
     );
