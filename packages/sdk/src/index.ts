@@ -17,4 +17,4 @@ export {
   isEntryPointV07Implementation,
 } from "./contracts";
 export { decodePaymasterAndData } from "./paymaster";
-export { generatePartialUserOperations } from "./partial_user_operations";
+export { generatePartialUserOperations } from "./partial-user-operations";

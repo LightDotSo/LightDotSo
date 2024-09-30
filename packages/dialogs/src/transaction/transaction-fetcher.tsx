@@ -985,7 +985,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     const initCode = `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`;
 
     // Remove the 0x prefix from the paymaster and data
-    const paymasterAndData = `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit)}${packedUserOperationWithHash?.paymasterData.slice(2)}`;
+    const paymasterAndData = `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`;
 
     setUserOperationByChainIdAndNonce(
       packedUserOperationWithHash?.chainId,
