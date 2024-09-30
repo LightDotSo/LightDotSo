@@ -143,7 +143,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         isWalletSettingsLoading ||
         isUserOperationsLoading ||
         isImmutableCreate2FactoryBytecodeFetching) &&
-      typeof deployedOp === "undefined"
+      // If the user operation is defined, then we are already loaded
+      typeof deployedOp !== "undefined"
     );
   }, [
     isWalletLoading,
