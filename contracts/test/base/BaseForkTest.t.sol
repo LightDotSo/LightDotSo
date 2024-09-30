@@ -17,7 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {
-    ENTRY_POINT_ADDRESS,
+    ENTRYPOINT_ADDRESS,
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS,
@@ -66,7 +66,7 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         BaseIntegrationTest.setUp();
 
         // EntryPoint from eth-inifinitism
-        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
+        entryPoint = EntryPoint(ENTRYPOINT_ADDRESS);
 
         // LightDAG core contract
         dag = LightDAG(LIGHT_DAG_ADDRESS);

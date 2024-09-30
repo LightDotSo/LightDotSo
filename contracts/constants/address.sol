@@ -34,9 +34,9 @@ address constant CREATE2_DEPLOYER_ADDRESS_RAW = 0x4e59b44847b379578588920cA78FbF
 address constant CREATE2_DEPLOYER_ADDRESS = address(CREATE2_DEPLOYER_ADDRESS_RAW);
 
 // EntryPoint address
-address payable constant ENTRY_POINT_V060_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-address payable constant ENTRY_POINT_V070_ADDRESS = payable(address(0x0000000071727De22E5E9d8BAf0edAc6f37da032));
-address payable constant ENTRY_POINT_ADDRESS = ENTRY_POINT_V070_ADDRESS;
+address payable constant ENTRYPOINT_V060_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+address payable constant ENTRYPOINT_V070_ADDRESS = payable(address(0x0000000071727De22E5E9d8BAf0edAc6f37da032));
+address payable constant ENTRYPOINT_ADDRESS = ENTRYPOINT_V070_ADDRESS;
 
 // LightDAG address
 address constant LIGHT_DAG_ADDRESS = address(0x0000000000000000000000000000000000000000);

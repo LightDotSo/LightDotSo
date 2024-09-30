@@ -22,9 +22,9 @@ pragma solidity ^0.8.27;
 
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {UserOperationLib} from "@eth-infinitism/account-abstraction/contracts/core/UserOperationLib.sol";
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 

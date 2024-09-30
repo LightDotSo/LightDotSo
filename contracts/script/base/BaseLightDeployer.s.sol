@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {ENTRY_POINT_ADDRESS} from "@/constants/address.sol";
+import {ENTRYPOINT_ADDRESS} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {PackedUserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
@@ -40,7 +40,7 @@ abstract contract BaseLightDeployer is BaseTest {
     /// @dev BaseTest setup
     function setUp() public virtual override {
         // Get the entry point
-        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
+        entryPoint = EntryPoint(ENTRYPOINT_ADDRESS);
     }
 
     // -------------------------------------------------------------------------
