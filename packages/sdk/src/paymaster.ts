@@ -15,9 +15,17 @@
 import { type Result, err, ok } from "neverthrow";
 import { type Address, fromBytes, isAddressEqual } from "viem";
 
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
 // Define the Alchemy v0.6.0 Gas Manager address
 export const ALCHEMY_V060_GAS_MANAGER_ADDRESS: Address =
   "0x4Fd9098af9ddcB41DA48A1d78F91F1398965addc";
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 export const decodePaymasterAndData = (
   msg: Uint8Array,

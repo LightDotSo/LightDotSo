@@ -18,6 +18,10 @@ import type { ExecutionWithChainId } from "@lightdotso/types";
 import { lightWalletAbi } from "@lightdotso/wagmi/generated";
 import { type Address, type Hex, encodeFunctionData } from "viem";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const generatePartialUserOperations = (
   sender: Address,
   executions: ExecutionWithChainId[],
