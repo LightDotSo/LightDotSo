@@ -117,23 +117,47 @@ export const getUserOperationReceipt = async (
 
 const sendUserOperationResponse = z.string();
 
-const sendUserOperationRequest = z.array(
-  z
-    .object({
-      sender: HexStringSchema,
-      nonce: HexStringSchema,
-      initCode: HexStringSchema,
-      callData: HexStringSchema,
-      signature: HexStringSchema,
-      paymasterAndData: HexStringSchema,
-      callGasLimit: HexStringSchema.optional(),
-      verificationGasLimit: HexStringSchema.optional(),
-      preVerificationGas: HexStringSchema.optional(),
-      maxFeePerGas: HexStringSchema.optional(),
-      maxPriorityFeePerGas: HexStringSchema.optional(),
-    })
-    .or(z.string()),
-);
+const sendUserOperationRequest = z
+  .array(
+    z
+      .object({
+        sender: HexStringSchema,
+        nonce: HexStringSchema,
+        initCode: HexStringSchema,
+        callData: HexStringSchema,
+        callGasLimit: HexStringSchema.optional(),
+        verificationGasLimit: HexStringSchema.optional(),
+        preVerificationGas: HexStringSchema.optional(),
+        maxFeePerGas: HexStringSchema.optional(),
+        maxPriorityFeePerGas: HexStringSchema.optional(),
+        paymasterAndData: HexStringSchema,
+        signature: HexStringSchema,
+      })
+      .or(z.string()),
+  )
+  .or(
+    z.array(
+      z
+        .object({
+          sender: HexStringSchema,
+          nonce: HexStringSchema,
+          factory: HexStringSchema,
+          factoryData: HexStringSchema,
+          callData: HexStringSchema,
+          callGasLimit: HexStringSchema.optional(),
+          verificationGasLimit: HexStringSchema.optional(),
+          preVerificationGas: HexStringSchema.optional(),
+          maxFeePerGas: HexStringSchema.optional(),
+          maxPriorityFeePerGas: HexStringSchema.optional(),
+          paymaster: HexStringSchema.optional(),
+          paymasterVerificationGasLimit: HexStringSchema.optional(),
+          paymasterPostOpGasLimit: HexStringSchema.optional(),
+          paymasterData: HexStringSchema.optional(),
+          signature: HexStringSchema,
+        })
+        .or(z.string()),
+    ),
+  );
 
 type SendUserOperationRequestType = z.infer<typeof sendUserOperationRequest>;
 

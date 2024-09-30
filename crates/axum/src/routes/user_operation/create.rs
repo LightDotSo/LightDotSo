@@ -21,9 +21,8 @@ use crate::{
     state::AppState,
 };
 use alloy::{
-    hex,
-    hex::ToHexExt,
-    primitives::{Address, FixedBytes, U256},
+    hex::{self, ToHexExt},
+    primitives::{Address, FixedBytes, B256, U256},
 };
 use autometrics::autometrics;
 use axum::{
@@ -50,6 +49,7 @@ use lightdotso_tracing::tracing::{error, info};
 use lightdotso_utils::is_testnet;
 use prisma_client_rust::{chrono::DateTime, Direction};
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -178,7 +178,9 @@ pub(crate) async fn v1_user_operation_create_handler(
     let sig = params.signature;
 
     let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
-    let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+    let base_hash = B256::from_str(&user_operation_hash)?;
+    let entrypoint = base_user_operation.try_valid_op_hash(chain_id as u64, base_hash)?;
+    info!(?entrypoint);
 
     // Assert that the hex hash of base_hash is the same as the user_operation_hash (prefix 0x)
     if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {
@@ -535,7 +537,9 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let user_operation_hash = user_operation.clone().hash;
 
         let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
-        let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+        let base_hash = B256::from_str(&user_operation_hash)?;
+        let entrypoint = base_user_operation.try_valid_op_hash(chain_id as u64, base_hash)?;
+        info!(?entrypoint);
 
         // Assert that the hex hash of base_hash is the same as the user_operation_hash
         if (format!("0x{}", hex::encode(base_hash)) != user_operation_hash) {

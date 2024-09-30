@@ -31,19 +31,19 @@ pub fn parse_u256(s: &str) -> Result<U256, String> {
     U256::from_str_radix(s, 10).map_err(|_| format!("String {s} is not a valid U256"))
 }
 
-/// Utility function to get the native token symbol for a given chain ID.
+/// Utility function to get the native token symbol for a given chain id.
 /// Returns a fallback message for chains that use ETH or are not listed.
 pub fn get_native_token_symbol(chain_id: u64) -> &'static str {
     NATIVE_TOKEN_SYMBOLS.get(&chain_id).unwrap_or(&"ETH")
 }
 
-/// Returns `true` if the chain ID is a testnet chain ID.
-/// Falls back to `true` if the chain ID is not a mainnet chain ID.
+/// Returns `true` if the chain ID is a testnet chain id.
+/// Falls back to `true` if the chain ID is not a mainnet chain id.
 pub fn is_testnet(chain_id: u64) -> bool {
     TESTNET_CHAIN_IDS.contains_key(&chain_id) || !MAINNET_CHAIN_IDS.contains_key(&chain_id)
 }
 
-/// Get the chain seconds to sleep for a given chain ID.
+/// Get the chain seconds to sleep for a given chain id.
 /// Returns a fallback value for chains that are not listed.
 pub fn get_chain_block_seconds(chain_id: u64) -> u64 {
     *CHAIN_BLOCK_SECONDS.get(&chain_id).unwrap_or(if !is_testnet(chain_id) {
