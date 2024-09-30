@@ -334,19 +334,41 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const callGasLimit = useMemo(() => {
-    return isEntryPointV06 ? callGasLimitV06 : callGasLimitV07;
-  }, [isEntryPointV06, callGasLimitV06, callGasLimitV07]);
+    return isEntryPointV06
+      ? callGasLimitV06
+      : isEntryPointV07
+        ? callGasLimitV07
+        : null;
+  }, [isEntryPointV06, isEntryPointV07, callGasLimitV06, callGasLimitV07]);
 
   const preVerificationGas = useMemo(() => {
-    return isEntryPointV06 ? preVerificationGasV06 : preVerificationGasV07;
-  }, [isEntryPointV06, preVerificationGasV06, preVerificationGasV07]);
+    return isEntryPointV06
+      ? preVerificationGasV06
+      : isEntryPointV07
+        ? preVerificationGasV07
+        : null;
+  }, [
+    isEntryPointV06,
+    isEntryPointV07,
+    preVerificationGasV06,
+    preVerificationGasV07,
+  ]);
 
   const verificationGasLimit = useMemo(() => {
-    return isEntryPointV06 ? verificationGasLimitV06 : verificationGasLimitV07;
-  }, [isEntryPointV06, verificationGasLimitV06, verificationGasLimitV07]);
+    return isEntryPointV06
+      ? verificationGasLimitV06
+      : isEntryPointV07
+        ? verificationGasLimitV07
+        : null;
+  }, [
+    isEntryPointV06,
+    isEntryPointV07,
+    verificationGasLimitV06,
+    verificationGasLimitV07,
+  ]);
 
   const paymasterVerificationGasLimit = useMemo(() => {
-    return isEntryPointV07 ? paymasterVerificationGasLimitV07 : undefined;
+    return isEntryPointV07 ? paymasterVerificationGasLimitV07 : null;
   }, [isEntryPointV07, paymasterVerificationGasLimitV07]);
 
   // biome-ignore lint/suspicious/noConsole: <explanation>
