@@ -20,6 +20,7 @@ export {
   asset,
   swap,
   transfer,
+  packedUserOperation,
   userOperation,
 } from "./eth";
 export type {
@@ -31,6 +32,7 @@ export type {
   Swap,
   Transfer,
   UserOperation,
+  PackedUserOperation,
 } from "./eth";
 export {
   confirmFormSchema,

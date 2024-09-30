@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
-import type { PaymasterAndData } from "@lightdotso/data";
-import type { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
+import { getPaymasterGasAndPaymasterAndDataV06 } from "@lightdotso/client";
+import type { PaymasterAndDataV06 } from "@lightdotso/data";
+import type { RpcPaymasterGasAndPaymasterAndDataV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
@@ -25,8 +25,9 @@ import { USER_OPERATION_CONFIG } from "./config";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryPaymasterGasAndPaymasterAndData = (
-  params: RpcPaymasterGasAndPaymasterAndDataParams,
+export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
+  params: RpcPaymasterGasAndPaymasterAndDataV06Params,
+  isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -39,13 +40,14 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: gasAndPaymasterAndData,
-    isLoading: isGasAndPaymasterAndDataLoading,
-    error: gasAndPaymasterAndDataError,
-  } = useQuery<PaymasterAndData | null>({
+    data: gasAndPaymasterAndDataV06,
+    isLoading: isGasAndPaymasterAndDataLoadingV06,
+    error: gasAndPaymasterAndDataErrorV06,
+  } = useQuery<PaymasterAndDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
-    queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
+    enabled: isEnabled,
+    queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data_v06({
       chainId: params?.chainId,
       nonce: params?.nonce,
       initCode: params?.initCode,
@@ -73,7 +75,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
         return null;
       }
 
-      const res = await getPaymasterGasAndPaymasterAndData(
+      const res = await getPaymasterGasAndPaymasterAndDataV06(
         Number(params?.chainId) as number,
         [
           {
@@ -100,24 +102,24 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   });
 
   return {
-    gasAndPaymasterAndData: gasAndPaymasterAndData,
-    paymasterAndData: gasAndPaymasterAndData?.paymasterAndData,
-    callGasLimit: gasAndPaymasterAndData?.callGasLimit
-      ? fromHex(gasAndPaymasterAndData?.callGasLimit as Hex, {
+    gasAndPaymasterAndDataV06: gasAndPaymasterAndDataV06,
+    paymasterAndDataV06: gasAndPaymasterAndDataV06?.paymasterAndData,
+    callGasLimitV06: gasAndPaymasterAndDataV06?.callGasLimit
+      ? fromHex(gasAndPaymasterAndDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: gasAndPaymasterAndData?.preVerificationGas
-      ? fromHex(gasAndPaymasterAndData?.preVerificationGas as Hex, {
+    preVerificationGasV06: gasAndPaymasterAndDataV06?.preVerificationGas
+      ? fromHex(gasAndPaymasterAndDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: gasAndPaymasterAndData?.verificationGasLimit
-      ? fromHex(gasAndPaymasterAndData?.verificationGasLimit as Hex, {
+    verificationGasLimitV06: gasAndPaymasterAndDataV06?.verificationGasLimit
+      ? fromHex(gasAndPaymasterAndDataV06?.verificationGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    isGasAndPaymasterAndDataLoading: isGasAndPaymasterAndDataLoading,
-    gasAndPaymasterAndDataError: gasAndPaymasterAndDataError,
+    isGasAndPaymasterAndDataLoadingV06: isGasAndPaymasterAndDataLoadingV06,
+    gasAndPaymasterAndDataErrorV06: gasAndPaymasterAndDataErrorV06,
   };
 };

@@ -39,7 +39,11 @@
 // You should have received a copy of the GNU General Public License along with Rundler.
 // If not, see https://www.gnu.org/licenses/.
 
-use crate::{tracer::LogInfo, types::UserOperation};
+use crate::{
+    address::{ENTRYPOINT_V060_ADDRESS, ENTRYPOINT_V070_ADDRESS},
+    tracer::LogInfo,
+    types::{PackedUserOperation, UserOperation},
+};
 use alloy::{
     dyn_abi::DynSolValue,
     hex,
@@ -111,7 +115,7 @@ pub struct UserOperationId {
 }
 
 impl UserOperation {
-    /// Hash a user operation with the given entry point and chain ID.
+    /// Hash a user operation with the given entry point and chain id.
     ///
     /// The hash is used to uniquely identify a user operation in the entry point.
     /// It does not include the signature field.
@@ -127,6 +131,34 @@ impl UserOperation {
             ])
             .abi_encode(),
         )
+    }
+
+    /// Try to obtain the hash w/ operation and determine the entry point contract.
+    ///
+    /// The hash to encode the user operation differs from the hash in the packed user operation.
+    pub fn try_valid_op_hash(&self, chain_id: u64, hash: B256) -> Result<Address> {
+        // Get the hash of the user operation with the entrypoint v060 address
+        let uop_hash = self.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id);
+
+        // Check if the hash is the same as the hash in the user operation, return the v0.6
+        // entrypoint address
+        if uop_hash == hash {
+            return Ok(*ENTRYPOINT_V060_ADDRESS);
+        }
+
+        // Convert the user operation to a packed user operation
+        let packed_user_operation: PackedUserOperation = self.clone().into();
+
+        // Get the hash of the packed user operation
+        let packed_uop_hash = packed_user_operation.op_hash(*ENTRYPOINT_V070_ADDRESS, chain_id);
+
+        // Check if the hash is the same as the hash in the user operation, return the v0.7
+        // entrypoint address
+        if packed_uop_hash == hash {
+            return Ok(*ENTRYPOINT_V070_ADDRESS);
+        }
+
+        Err(eyre!("Invalid hash"))
     }
 
     /// Get the unique identifier for this user operation from its sender

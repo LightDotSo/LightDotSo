@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  isEntryPointV06Implementation,
-  isEntryPointV07Implementation,
-} from "./contracts";
-export { decodePaymasterAndData } from "./paymaster";
-export { generatePartialUserOperations } from "./partial-user-operations";
+// SPDX-License-Identifier: Apache-2.0
+
+pragma solidity ^0.8.27;
+
+// -------------------------------------------------------------------------
+// Config
+// -------------------------------------------------------------------------
+
+uint16 constant LIGHT_PAYMASTER_MAX_WITHDRAWAL_DENOMINATOR = 3;

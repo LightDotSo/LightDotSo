@@ -7,7 +7,7 @@
 | ECDSA                          |       86 |     24,490 |
 | ERC1967Proxy                   |      183 |     24,393 |
 | ERC1967Utils                   |       86 |     24,490 |
-| ERC4337Utils                   |      293 |     24,283 |
+| ERC4337Utils                   |    1,035 |     23,541 |
 | EntryPoint                     |   18,115 |      6,461 |
 | EntryPointSimulations          |   19,201 |      5,375 |
 | EntryPointv060                 |   18,115 |      6,461 |

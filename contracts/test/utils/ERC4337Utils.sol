@@ -22,9 +22,9 @@ pragma solidity ^0.8.27;
 
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {UserOperationLib} from "@eth-infinitism/account-abstraction/contracts/core/UserOperationLib.sol";
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 
@@ -51,6 +51,21 @@ library ERC4337Utils {
     /// @return The packed gas fees
     function packGasFees(uint128 maxPriorityFeePerGas, uint128 maxFeePerGas) public pure returns (bytes32) {
         return bytes32((uint256(maxPriorityFeePerGas) << 128) | uint256(maxFeePerGas));
+    }
+
+    /// @dev Packs the paymaster and data
+    /// @param paymaster The paymaster address
+    /// @param validationGasLimit The validation gas limit
+    /// @param postOpGasLimit The post-operation gas limit
+    /// @param paymasterData The paymaster data
+    /// @return The packed paymaster and data
+    function packPaymasterAndData(
+        address paymaster,
+        uint256 validationGasLimit,
+        uint256 postOpGasLimit,
+        bytes memory paymasterData
+    ) public pure returns (bytes memory) {
+        return abi.encodePacked(paymaster, uint128(validationGasLimit), uint128(postOpGasLimit), paymasterData);
     }
 
     // -------------------------------------------------------------------------

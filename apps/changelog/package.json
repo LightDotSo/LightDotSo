@@ -18,7 +18,6 @@
     "analyze": "ANALYZE=true next build",
     "build": "next build",
     "dev": "next dev --turbo",
-    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },

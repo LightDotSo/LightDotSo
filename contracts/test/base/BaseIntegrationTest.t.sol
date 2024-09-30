@@ -16,6 +16,7 @@
 
 pragma solidity ^0.8.27;
 
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
@@ -24,7 +25,6 @@ import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";

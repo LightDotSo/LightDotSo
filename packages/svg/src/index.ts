@@ -17,4 +17,5 @@ export {
   chainLogoVariants,
   chainLogoConfig,
 } from "./chain";
+export { HistoryIcon, NftIcon, TokenIcon } from "./icon";
 export { LightAppLogo, LightLogo, LightHorizontalLogo } from "./logo";

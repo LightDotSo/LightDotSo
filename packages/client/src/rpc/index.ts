@@ -117,29 +117,73 @@ export const getUserOperationReceipt = async (
 
 const sendUserOperationResponse = z.string();
 
-const sendUserOperationRequest = z.array(
+const sendUserOperationV06Request = z.array(
   z
     .object({
       sender: HexStringSchema,
       nonce: HexStringSchema,
       initCode: HexStringSchema,
       callData: HexStringSchema,
-      signature: HexStringSchema,
-      paymasterAndData: HexStringSchema,
       callGasLimit: HexStringSchema.optional(),
       verificationGasLimit: HexStringSchema.optional(),
       preVerificationGas: HexStringSchema.optional(),
       maxFeePerGas: HexStringSchema.optional(),
       maxPriorityFeePerGas: HexStringSchema.optional(),
+      paymasterAndData: HexStringSchema,
+      signature: HexStringSchema,
     })
     .or(z.string()),
 );
 
-type SendUserOperationRequestType = z.infer<typeof sendUserOperationRequest>;
+type SendUserOperationV06RequestType = z.infer<
+  typeof sendUserOperationV06Request
+>;
 
-export const sendUserOperation = async (
+export const sendUserOperationV06 = async (
   chainId: number,
-  params: SendUserOperationRequestType,
+  params: SendUserOperationV06RequestType,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "eth_sendUserOperation",
+      params,
+      sendUserOperationResponse,
+    ),
+    (e) => e,
+  );
+};
+
+const sendUserOperationV07Request = z.array(
+  z
+    .object({
+      sender: HexStringSchema,
+      nonce: HexStringSchema,
+      factory: HexStringSchema,
+      factoryData: HexStringSchema,
+      callData: HexStringSchema,
+      callGasLimit: HexStringSchema.optional(),
+      verificationGasLimit: HexStringSchema.optional(),
+      preVerificationGas: HexStringSchema.optional(),
+      maxFeePerGas: HexStringSchema.optional(),
+      maxPriorityFeePerGas: HexStringSchema.optional(),
+      paymaster: HexStringSchema.optional(),
+      paymasterVerificationGasLimit: HexStringSchema.optional(),
+      paymasterPostOpGasLimit: HexStringSchema.optional(),
+      paymasterData: HexStringSchema.optional(),
+      signature: HexStringSchema,
+    })
+    .or(z.string()),
+);
+
+type SendUserOperationV07RequestType = z.infer<
+  typeof sendUserOperationV07Request
+>;
+
+export const sendUserOperationV07 = async (
+  chainId: number,
+  params: SendUserOperationV07RequestType,
   clientType?: ClientType,
 ) => {
   return ResultAsync.fromPromise(
@@ -157,38 +201,38 @@ export const sendUserOperation = async (
 // EstimateUserOperationGas
 // -----------------------------------------------------------------------------
 
-const estimateUserOperationGasResponse = z.object({
+const estimateUserOperationGasV06Response = z.object({
   callGasLimit: HexStringSchema,
   verificationGas: HexStringSchema.nullable().optional(),
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
 });
 
-const estimateUserOperationGasRequest = z.array(
+const estimateUserOperationGasV06Request = z.array(
   z
     .object({
       sender: HexStringSchema,
       nonce: HexStringSchema,
       initCode: HexStringSchema,
       callData: HexStringSchema,
-      signature: HexStringSchema,
-      paymasterAndData: HexStringSchema,
       callGasLimit: HexStringSchema.optional(),
       verificationGasLimit: HexStringSchema.optional(),
       preVerificationGas: HexStringSchema.optional(),
       maxFeePerGas: HexStringSchema.optional(),
       maxPriorityFeePerGas: HexStringSchema.optional(),
+      paymasterAndData: HexStringSchema,
+      signature: HexStringSchema,
     })
     .or(z.string()),
 );
 
-type EstimateUserOperationGasRequestType = z.infer<
-  typeof estimateUserOperationGasRequest
+type EstimateUserOperationGasV06RequestType = z.infer<
+  typeof estimateUserOperationGasV06Request
 >;
 
-export const estimateUserOperationGas = async (
+export const estimateUserOperationGasV06 = async (
   chainId: number,
-  params: EstimateUserOperationGasRequestType,
+  params: EstimateUserOperationGasV06RequestType,
   clientType?: ClientType,
 ) => {
   return ResultAsync.fromPromise(
@@ -196,7 +240,56 @@ export const estimateUserOperationGas = async (
       rpcClient(chainId, clientType),
       "eth_estimateUserOperationGas",
       params,
-      estimateUserOperationGasResponse,
+      estimateUserOperationGasV06Response,
+    ),
+    (e) => e,
+  );
+};
+
+const estimateUserOperationGasV07Response = z.object({
+  callGasLimit: HexStringSchema,
+  verificationGasLimit: HexStringSchema,
+  preVerificationGas: HexStringSchema,
+  paymasterVerificationGasLimit: HexStringSchema,
+});
+
+const estimateUserOperationGasV07Request = z.array(
+  z
+    .object({
+      sender: HexStringSchema,
+      nonce: HexStringSchema,
+      factory: HexStringSchema,
+      factoryData: HexStringSchema,
+      callData: HexStringSchema,
+      callGasLimit: HexStringSchema.optional(),
+      verificationGasLimit: HexStringSchema.optional(),
+      preVerificationGas: HexStringSchema.optional(),
+      maxFeePerGas: HexStringSchema.optional(),
+      maxPriorityFeePerGas: HexStringSchema.optional(),
+      paymaster: HexStringSchema.optional(),
+      paymasterVerificationGasLimit: HexStringSchema.optional(),
+      paymasterPostOpGasLimit: HexStringSchema.optional(),
+      paymasterData: HexStringSchema.optional(),
+      signature: HexStringSchema,
+    })
+    .or(z.string()),
+);
+
+type EstimateUserOperationGasV07RequestType = z.infer<
+  typeof estimateUserOperationGasV07Request
+>;
+
+export const estimateUserOperationGasV07 = async (
+  chainId: number,
+  params: EstimateUserOperationGasV07RequestType,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "eth_estimateUserOperationGas",
+      params,
+      estimateUserOperationGasV07Response,
     ),
     (e) => e,
   );
@@ -206,36 +299,36 @@ export const estimateUserOperationGas = async (
 // Paymaster
 // -----------------------------------------------------------------------------
 
-const paymasterGasAndPaymasterAndDataResponse = z.object({
+const paymasterGasAndPaymasterAndDataV06Response = z.object({
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
 });
 
-const paymasterGasAndPaymasterAndDataRequest = z.array(
+const paymasterGasAndPaymasterAndDataV06Request = z.array(
   z.object({
     sender: HexStringSchema,
     nonce: HexStringSchema,
     initCode: HexStringSchema,
     callData: HexStringSchema,
-    signature: HexStringSchema,
-    paymasterAndData: HexStringSchema,
     callGasLimit: HexStringSchema.optional(),
     verificationGasLimit: HexStringSchema.optional(),
     preVerificationGas: HexStringSchema.optional(),
     maxFeePerGas: HexStringSchema.optional(),
     maxPriorityFeePerGas: HexStringSchema.optional(),
+    paymasterAndData: HexStringSchema,
+    signature: HexStringSchema,
   }),
 );
 
-type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
-  typeof paymasterGasAndPaymasterAndDataRequest
+type PaymasterGasAndPaymasterAndDataV06RequestType = z.infer<
+  typeof paymasterGasAndPaymasterAndDataV06Request
 >;
 
-export const getPaymasterGasAndPaymasterAndData = async (
+export const getPaymasterGasAndPaymasterAndDataV06 = async (
   chainId: number,
-  params: PaymasterGasAndPaymasterAndDataRequestType,
+  params: PaymasterGasAndPaymasterAndDataV06RequestType,
   clientType?: ClientType,
 ) => {
   return ResultAsync.fromPromise(
@@ -243,7 +336,57 @@ export const getPaymasterGasAndPaymasterAndData = async (
       rpcClient(chainId, clientType),
       "paymaster_requestGasAndPaymasterAndData",
       params,
-      paymasterGasAndPaymasterAndDataResponse,
+      paymasterGasAndPaymasterAndDataV06Response,
+    ),
+    (e) => e,
+  );
+};
+
+const paymasterGasAndPaymasterAndDataV07Response = z.object({
+  callGasLimit: HexStringSchema,
+  verificationGasLimit: HexStringSchema,
+  preVerificationGas: HexStringSchema,
+  paymaster: HexStringSchema,
+  paymasterVerificationGasLimit: HexStringSchema,
+  paymasterPostOpGasLimit: HexStringSchema,
+  paymasterData: HexStringSchema,
+});
+
+const paymasterGasAndPaymasterAndDataV07Request = z.array(
+  z.object({
+    sender: HexStringSchema,
+    nonce: HexStringSchema,
+    factory: HexStringSchema.optional(),
+    factoryData: HexStringSchema.optional(),
+    callData: HexStringSchema,
+    callGasLimit: HexStringSchema.optional(),
+    verificationGasLimit: HexStringSchema.optional(),
+    preVerificationGas: HexStringSchema.optional(),
+    maxFeePerGas: HexStringSchema.optional(),
+    maxPriorityFeePerGas: HexStringSchema.optional(),
+    paymaster: HexStringSchema.optional(),
+    paymasterVerificationGasLimit: HexStringSchema.optional(),
+    paymasterPostOpGasLimit: HexStringSchema.optional(),
+    paymasterData: HexStringSchema.optional(),
+    signature: HexStringSchema,
+  }),
+);
+
+type PaymasterGasAndPaymasterAndDataV07RequestType = z.infer<
+  typeof paymasterGasAndPaymasterAndDataV07Request
+>;
+
+export const getPaymasterGasAndPaymasterAndDataV07 = async (
+  chainId: number,
+  params: PaymasterGasAndPaymasterAndDataV07RequestType,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "paymaster_requestGasAndPaymasterAndData",
+      params,
+      paymasterGasAndPaymasterAndDataV07Response,
     ),
     (e) => e,
   );

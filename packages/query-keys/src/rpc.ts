@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RpcUserOperationReceiptParams } from "@lightdotso/params";
 import type {
-  RpcEstimateUserOperationGasParams,
+  RpcEstimateUserOperationGasV06Params,
+  RpcEstimateUserOperationGasV07Params,
   RpcGasEstimationParams,
-  RpcPaymasterGasAndPaymasterAndDataParams,
-} from "@lightdotso/params/src/rpc";
+  RpcPaymasterGasAndPaymasterAndDataV06Params,
+  RpcPaymasterGasAndPaymasterAndDataV07Params,
+  RpcUserOperationReceiptParams,
+} from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -26,14 +28,26 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // -----------------------------------------------------------------------------
 
 export const rpc = createQueryKeys("rpc", {
-  estimate_user_operation_gas: (params: RpcEstimateUserOperationGasParams) => ({
+  estimate_user_operation_gas_v06: (
+    params: RpcEstimateUserOperationGasV06Params,
+  ) => ({
+    queryKey: [{ params: params }],
+  }),
+  estimate_user_operation_gas_v07: (
+    params: RpcEstimateUserOperationGasV07Params,
+  ) => ({
     queryKey: [{ params: params }],
   }),
   get_gas_estimation: (params: RpcGasEstimationParams) => ({
     queryKey: [{ params: params }],
   }),
-  get_paymaster_gas_and_paymaster_and_data: (
-    params: RpcPaymasterGasAndPaymasterAndDataParams,
+  get_paymaster_gas_and_paymaster_and_data_v06: (
+    params: RpcPaymasterGasAndPaymasterAndDataV06Params,
+  ) => ({
+    queryKey: [{ params: params }],
+  }),
+  get_paymaster_gas_and_paymaster_and_data_v07: (
+    params: RpcPaymasterGasAndPaymasterAndDataV07Params,
   ) => ({
     queryKey: [{ params: params }],
   }),

@@ -16,9 +16,14 @@
 
 pragma solidity ^0.8.27;
 
-import {MagicSpend} from "magic-spend/MagicSpend.sol";
-import {byteCode} from "@/bytecodes/ERC1967Proxy/v0.3.0.b.sol";
-import {initCode, initCodeHash, salt, proxySalt} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
+import {
+    initCode,
+    initCodeHash,
+    salt,
+    proxyInitCode,
+    proxyInitCodeHash,
+    proxySalt
+} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
 import {LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -61,14 +66,12 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             // Assert that the paymaster is the expected address
             assert(address(paymasterImplementation) == LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS);
 
-            // Deploy the paymaster
-            bytes memory proxyInitCode = abi.encodePacked(
-                byteCode,
-                abi.encode(
-                    address(paymasterImplementation),
-                    abi.encodeCall(MagicSpend.initialize, (address(0), 100, address(0)))
-                )
-            );
+            // Log the proxy init code
+            // solhint-disable-next-line no-console
+            console.logBytes(proxyInitCode);
+
+            // Assert that the proxy init code is the expected value
+            assert(keccak256(proxyInitCode) == proxyInitCodeHash);
 
             // Deploy the proxy
             paymaster = LightPaymaster(payable(deployWithCreate2(proxyInitCode, proxySalt)));

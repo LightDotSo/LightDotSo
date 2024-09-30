@@ -118,20 +118,34 @@ pub struct BiconomyGasAndPaymasterAndData {
     pub mode: Option<String>,
 }
 
-/// User operation required for the request.
-#[derive(Clone, Serialize, Deserialize)]
+// From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L48-L76
+// License: MIT
+/// [`UserOperation`] in the spec: Entry Point V0.6
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperation {
+    /// The address of the smart contract account
     pub sender: Address,
+    /// Anti-replay protection; also used as the salt for first-time account creation
     pub nonce: U256,
+    /// Code used to deploy the account if not yet on-chain
     pub init_code: Bytes,
+    /// Data that's passed to the sender for execution
     pub call_data: Bytes,
+    /// Gas limit for execution phase
     pub call_gas_limit: U256,
+    /// Gas limit for verification phase
     pub verification_gas_limit: U256,
+    /// Gas to compensate the bundler
     pub pre_verification_gas: U256,
+    /// Maximum fee per gas
     pub max_fee_per_gas: U256,
+    /// Maximum priority fee per gas
     pub max_priority_fee_per_gas: U256,
+    /// Paymaster Contract address and any extra data required for verification and execution
+    /// (empty for self-sponsored transaction)
     pub paymaster_and_data: Bytes,
+    /// Used to validate a UserOperation along with the nonce during verification
     pub signature: Bytes,
 }
 
@@ -153,24 +167,6 @@ impl From<UserOperation> for EntryPointUserOperation {
     }
 }
 
-impl fmt::Debug for UserOperation {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("UserOperation")
-            .field("sender", &format!("{:#x}", self.sender))
-            .field("nonce", &format!("{:#x}", self.nonce))
-            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
-            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
-            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
-            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
-            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
-            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
-            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
-            .field("paymaster_and_data", &format!("0x{}", hex::encode(&self.paymaster_and_data)))
-            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
-            .finish()
-    }
-}
-
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
@@ -185,6 +181,110 @@ impl From<user_operation::Data> for UserOperation {
             max_priority_fee_per_gas: U256::from(user_operation.max_priority_fee_per_gas),
             paymaster_and_data: user_operation.paymaster_and_data.into(),
             signature: user_operation.signature.unwrap_or_default().into(),
+        }
+    }
+}
+
+// From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L78C1-L124C2
+// License: MIT
+/// [`PackedUserOperation`] in the spec: Entry Point V0.7
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedUserOperation {
+    /// The account making the operation.
+    pub sender: Address,
+    /// Prevents message replay attacks and serves as a randomizing element for initial user
+    /// registration.
+    pub nonce: U256,
+    /// Deployer contract address: Required exclusively for deploying new accounts that don't yet
+    /// exist on the blockchain.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub factory: Option<Address>,
+    /// Factory data for the account creation process, applicable only when using a deployer
+    /// contract.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub factory_data: Option<Bytes>,
+    /// The call data.
+    pub call_data: Bytes,
+    /// The gas limit for the call.
+    pub call_gas_limit: U256,
+    /// The gas limit for the verification.
+    pub verification_gas_limit: U256,
+    /// Prepaid gas fee: Covers the bundler's costs for initial transaction validation and data
+    /// transmission.
+    pub pre_verification_gas: U256,
+    /// The maximum fee per gas.
+    pub max_fee_per_gas: U256,
+    /// The maximum priority fee per gas.
+    pub max_priority_fee_per_gas: U256,
+    /// Paymaster contract address: Needed if a third party is covering transaction costs; left
+    /// blank for self-funded accounts.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub paymaster: Option<Address>,
+    /// The gas limit for the paymaster verification.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub paymaster_verification_gas_limit: Option<U256>,
+    /// The gas limit for the paymaster post-operation.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub paymaster_post_op_gas_limit: Option<U256>,
+    /// The paymaster data.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub paymaster_data: Option<Bytes>,
+    /// The signature of the transaction.
+    pub signature: Bytes,
+}
+
+impl From<UserOperation> for PackedUserOperation {
+    fn from(user_op: UserOperation) -> Self {
+        // Pack call_gas_limit and verification_gas_limit into a single U256
+        let _account_gas_limits =
+            U256::from(user_op.verification_gas_limit) << 128 | U256::from(user_op.call_gas_limit);
+
+        // Pack max_priority_fee_per_gas and max_fee_per_gas into a single U256
+        let _gas_fees = U256::from(user_op.max_priority_fee_per_gas) << 128 |
+            U256::from(user_op.max_fee_per_gas);
+
+        // Extract paymaster information from paymaster_and_data
+        let (
+            paymaster,
+            paymaster_verification_gas_limit,
+            paymaster_post_op_gas_limit,
+            paymaster_data,
+        ) = if user_op.paymaster_and_data.len() >= 52 {
+            (
+                Some(Address::from_slice(&user_op.paymaster_and_data[..20])),
+                Some(U256::from_be_slice(&user_op.paymaster_and_data[20..36])),
+                Some(U256::from_be_slice(&user_op.paymaster_and_data[36..52])),
+                Some(Bytes::copy_from_slice(&user_op.paymaster_and_data[52..])),
+            )
+        } else {
+            (None, None, None, None)
+        };
+
+        PackedUserOperation {
+            sender: user_op.sender,
+            nonce: user_op.nonce,
+            factory: if user_op.init_code.is_empty() {
+                None
+            } else {
+                Some(Address::from_slice(&user_op.init_code[..20]))
+            },
+            factory_data: if user_op.init_code.len() > 20 {
+                Some(Bytes::copy_from_slice(&user_op.init_code[20..]))
+            } else {
+                None
+            },
+            call_data: user_op.call_data,
+            call_gas_limit: user_op.call_gas_limit,
+            verification_gas_limit: user_op.verification_gas_limit,
+            max_fee_per_gas: user_op.max_fee_per_gas,
+            max_priority_fee_per_gas: user_op.max_priority_fee_per_gas,
+            pre_verification_gas: user_op.pre_verification_gas,
+            paymaster,
+            paymaster_verification_gas_limit,
+            paymaster_post_op_gas_limit,
+            paymaster_data,
+            signature: user_op.signature,
         }
     }
 }

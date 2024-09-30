@@ -22,6 +22,8 @@ export type { Asset } from "./asset";
 export { asset } from "./asset";
 export type { Transfer } from "./transfer";
 export { transfer } from "./transfer";
+export type { PackedUserOperation } from "./packedUserOperation";
+export { packedUserOperation } from "./packedUserOperation";
 export type { Swap } from "./swap";
 export { swap } from "./swap";
 export type { UserOperation } from "./userOperation";

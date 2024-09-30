@@ -24,11 +24,13 @@
   },
   "dependencies": {
     "@lightdotso/client": "workspace:*",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/sdk": "workspace:*",
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/types": "workspace:*",

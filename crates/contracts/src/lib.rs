@@ -19,6 +19,7 @@ pub mod entrypoint;
 pub mod erc1271;
 pub mod light_wallet;
 pub mod merkle_tree;
+pub mod packed_user_operation;
 pub mod paymaster;
 pub mod provider;
 pub mod tracer;

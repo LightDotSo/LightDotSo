@@ -16,8 +16,9 @@
 
 pragma solidity ^0.8.27;
 
+import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {
-    ENTRY_POINT_ADDRESS,
+    ENTRYPOINT_ADDRESS,
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS,
     SIMPLE_ACCOUNT_FACTORY_ADDRESS
@@ -26,7 +27,6 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -62,7 +62,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         BaseLightDeployer.setUp();
 
         // Specify the entryPoint
-        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
+        entryPoint = EntryPoint(payable(address(ENTRYPOINT_ADDRESS)));
 
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_WALLET_FACTORY_ADDRESS);

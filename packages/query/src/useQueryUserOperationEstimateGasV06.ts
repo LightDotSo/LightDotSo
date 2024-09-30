@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { estimateUserOperationGas } from "@lightdotso/client";
-import type { EstimateUserOperationGasData } from "@lightdotso/data";
-import type { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
+import { estimateUserOperationGasV06 } from "@lightdotso/client";
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
+import type { EstimateUserOperationGasDataV06 } from "@lightdotso/data";
+import type { RpcEstimateUserOperationGasV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
@@ -25,8 +26,9 @@ import { USER_OPERATION_CONFIG } from "./config";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryUserOperationEstimateGas = (
-  params: RpcEstimateUserOperationGasParams,
+export const useQueryUserOperationEstimateGasV06 = (
+  params: RpcEstimateUserOperationGasV06Params,
+  isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -39,13 +41,14 @@ export const useQueryUserOperationEstimateGas = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: estimateUserOperationGasData,
-    isLoading: isEstimateUserOperationGasDataLoading,
-    error: estimateUserOperationGasDataError,
-  } = useQuery<EstimateUserOperationGasData | null>({
+    data: estimateUserOperationGasDataV06,
+    isLoading: isEstimateUserOperationGasDataLoadingV06,
+    error: estimateUserOperationGasDataErrorV06,
+  } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
-    queryKey: queryKeys.rpc.estimate_user_operation_gas({
+    enabled: isEnabled,
+    queryKey: queryKeys.rpc.estimate_user_operation_gas_v06({
       chainId: params?.chainId,
       nonce: params?.nonce,
       initCode: params?.initCode,
@@ -64,7 +67,7 @@ export const useQueryUserOperationEstimateGas = (
         return null;
       }
 
-      const res = await estimateUserOperationGas(
+      const res = await estimateUserOperationGasV06(
         Number(params?.chainId) as number,
         [
           {
@@ -76,7 +79,7 @@ export const useQueryUserOperationEstimateGas = (
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },
-          "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+          CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
         ],
         clientType,
       );
@@ -87,22 +90,27 @@ export const useQueryUserOperationEstimateGas = (
   });
 
   return {
-    isUserOperationEstimateGasLoading: isEstimateUserOperationGasDataLoading,
-    userOperationEstimateGasError: estimateUserOperationGasDataError,
-    callGasLimit: estimateUserOperationGasData?.callGasLimit
-      ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+    isEstimateUserOperationGasDataLoadingV06:
+      isEstimateUserOperationGasDataLoadingV06,
+    estimateUserOperationGasDataErrorV06: estimateUserOperationGasDataErrorV06,
+    callGasLimitV06: estimateUserOperationGasDataV06?.callGasLimit
+      ? fromHex(estimateUserOperationGasDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
       : undefined,
-    preVerificationGas: estimateUserOperationGasData?.preVerificationGas
-      ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+    preVerificationGasV06: estimateUserOperationGasDataV06?.preVerificationGas
+      ? fromHex(estimateUserOperationGasDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
       : undefined,
-    verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
-      ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
-          to: "bigint",
-        })
-      : undefined,
+    verificationGasLimitV06:
+      estimateUserOperationGasDataV06?.verificationGasLimit
+        ? fromHex(
+            estimateUserOperationGasDataV06?.verificationGasLimit as Hex,
+            {
+              to: "bigint",
+            },
+          )
+        : undefined,
   };
 };

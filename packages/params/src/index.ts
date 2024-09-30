@@ -41,8 +41,10 @@ export type {
 } from "./queue";
 export type {
   RpcGasEstimationParams,
-  RpcEstimateUserOperationGasParams,
-  RpcPaymasterGasAndPaymasterAndDataParams,
+  RpcEstimateUserOperationGasV06Params,
+  RpcEstimateUserOperationGasV07Params,
+  RpcPaymasterGasAndPaymasterAndDataV06Params,
+  RpcPaymasterGasAndPaymasterAndDataV07Params,
   RpcUserOperationReceiptParams,
 } from "./rpc";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";

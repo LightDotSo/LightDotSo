@@ -16,15 +16,33 @@
 // Data
 // -----------------------------------------------------------------------------
 
-export type EstimateUserOperationGasData = {
+export type EstimateUserOperationGasDataV06 = {
   callGasLimit: string;
   verificationGasLimit: string;
   preVerificationGas: string;
+  // verificationGas: string | null | undefined;
 };
 
-export type PaymasterAndData = {
+export type EstimateUserOperationGasDataV07 = {
+  callGasLimit: string;
+  verificationGasLimit: string;
+  preVerificationGas: string;
+  paymasterVerificationGasLimit: string;
+};
+
+export type PaymasterAndDataV06 = {
   callGasLimit: string;
   verificationGasLimit: string;
   preVerificationGas: string;
   paymasterAndData: string;
+};
+
+export type PaymasterAndDataV07 = {
+  callGasLimit: string;
+  verificationGasLimit: string;
+  preVerificationGas: string;
+  paymaster: string;
+  paymasterVerificationGasLimit: string;
+  paymasterPostOpGasLimit: string;
+  paymasterData: string;
 };

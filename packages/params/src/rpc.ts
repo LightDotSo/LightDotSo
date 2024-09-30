@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { UserOperation } from "@lightdotso/schemas";
+import type { PackedUserOperation, UserOperation } from "@lightdotso/schemas";
 import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params
 // -----------------------------------------------------------------------------
 
-export type RpcEstimateUserOperationGasParams = Partial<
+export type RpcEstimateUserOperationGasV06Params = Partial<
   Omit<
     UserOperation,
     | "hash"
@@ -33,8 +33,29 @@ export type RpcEstimateUserOperationGasParams = Partial<
   >
 >;
 
-export type RpcPaymasterGasAndPaymasterAndDataParams = Partial<
+export type RpcEstimateUserOperationGasV07Params = Partial<
+  Omit<
+    PackedUserOperation,
+    | "hash"
+    | "signature"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+    | "paymaster"
+    | "paymasterVerificationGasLimit"
+    | "paymasterPostOpGasLimit"
+    | "paymasterData"
+  >
+>;
+
+export type RpcPaymasterGasAndPaymasterAndDataV06Params = Partial<
   Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
+>;
+
+export type RpcPaymasterGasAndPaymasterAndDataV07Params = Partial<
+  Omit<PackedUserOperation, "hash" | "paymasterAndData" | "signature">
 >;
 
 export type RpcGasEstimationParams = {

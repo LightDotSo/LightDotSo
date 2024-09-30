@@ -16,12 +16,17 @@
 
 import {
   useMutationQueueUserOperation,
-  useMutationUserOperationSend,
+  useMutationUserOperationSendV06,
+  useMutationUserOperationSendV07,
   useQueryConfiguration,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
   useQueryUserOperationSignature,
 } from "@lightdotso/query";
+import {
+  isEntryPointV06Implementation,
+  isEntryPointV07Implementation,
+} from "@lightdotso/sdk";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
@@ -107,12 +112,18 @@ export const useUserOperationSend = ({
     hash: hash,
   });
 
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
+  const { userOperationSendV06, isUserOperationSendV06Pending } =
+    useMutationUserOperationSendV06({
       address: address as Address,
       configuration: configuration,
       hash: userOperation?.hash as Hex,
-      implementation_address: implementationAddress as Address,
+    });
+
+  const { userOperationSendV07, isUserOperationSendV07Pending } =
+    useMutationUserOperationSendV07({
+      address: address as Address,
+      configuration: configuration,
+      hash: userOperation?.hash as Hex,
     });
 
   // ---------------------------------------------------------------------------
@@ -133,6 +144,11 @@ export const useUserOperationSend = ({
         }, 0) >= (configuration ? configuration.threshold : 0)
       : false;
   }, [userOperation, userOperationSignature, configuration]);
+
+  const isUserOperationSendPending = useMemo(
+    () => isUserOperationSendV06Pending || isUserOperationSendV07Pending,
+    [isUserOperationSendV06Pending, isUserOperationSendV07Pending],
+  );
 
   const isUserOperationSendLoading = useMemo(
     () =>
@@ -230,11 +246,19 @@ export const useUserOperationSend = ({
 
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("Sending user operation", hash);
+
     // Send the user operation if the user operation hasn't been sent yet
-    userOperationSend({
-      userOperation: userOperation,
-      userOperationSignature: userOperationSignature as Hex,
-    });
+    if (isEntryPointV06Implementation(implementationAddress)) {
+      userOperationSendV06({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
+    } else if (isEntryPointV07Implementation(implementationAddress)) {
+      userOperationSendV07({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
+    }
   }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------

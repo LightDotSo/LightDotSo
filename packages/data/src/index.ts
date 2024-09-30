@@ -27,7 +27,12 @@ export type { NonceData } from "./nonce";
 export type { NotificationData, NotificationCountData } from "./notification";
 export type { NotificationSettingsData } from "./notificationSettings";
 export type { NftData, NftDataPage } from "./nft";
-export type { EstimateUserOperationGasData, PaymasterAndData } from "./rpc";
+export type {
+  EstimateUserOperationGasDataV06,
+  EstimateUserOperationGasDataV07,
+  PaymasterAndDataV06,
+  PaymasterAndDataV07,
+} from "./rpc";
 export type { LifiQuotePageData, LifiTokensPageData } from "./lifi";
 export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";

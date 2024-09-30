@@ -18,19 +18,39 @@ import { z } from "zod";
 // Schema
 // -----------------------------------------------------------------------------
 
-export const userOperation = z.object({
+// sender: HexStringSchema, nonce;
+// : HexStringSchema,
+//     factory: HexStringSchema,
+//     factoryData: HexStringSchema,
+//     callData: HexStringSchema,
+//     callGasLimit: HexStringSchema.optional(),
+//     verificationGasLimit: HexStringSchema.optional(),
+//     preVerificationGas: HexStringSchema.optional(),
+//     maxFeePerGas: HexStringSchema.optional(),
+//     maxPriorityFeePerGas: HexStringSchema.optional(),
+//     paymaster: HexStringSchema.optional(),
+//     paymasterVerificationGasLimit: HexStringSchema.optional(),
+//     paymasterPostOpGasLimit: HexStringSchema.optional(),
+//     paymasterData: HexStringSchema.optional(),
+//     signature: HexStringSchema,
+
+export const packedUserOperation = z.object({
   chainId: z.bigint(),
   hash: z.string(),
   sender: z.string(),
   nonce: z.bigint(),
-  initCode: z.string(),
+  factory: z.string(),
+  factoryData: z.string(),
   callData: z.string(),
   callGasLimit: z.bigint(),
   verificationGasLimit: z.bigint(),
   preVerificationGas: z.bigint(),
   maxFeePerGas: z.bigint(),
   maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
+  paymaster: z.string(),
+  paymasterVerificationGasLimit: z.bigint(),
+  paymasterPostOpGasLimit: z.bigint(),
+  paymasterData: z.string(),
   signature: z.string(),
 });
 
@@ -38,4 +58,4 @@ export const userOperation = z.object({
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
+export type PackedUserOperation = z.infer<typeof packedUserOperation>;

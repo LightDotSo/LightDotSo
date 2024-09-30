@@ -12,30 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
+import type { Meta, StoryObj } from "@storybook/react";
+import { NftIcon } from "./nft-icon";
 
 // -----------------------------------------------------------------------------
-// Schema
+// Meta
 // -----------------------------------------------------------------------------
 
-export const userOperation = z.object({
-  chainId: z.bigint(),
-  hash: z.string(),
-  sender: z.string(),
-  nonce: z.bigint(),
-  initCode: z.string(),
-  callData: z.string(),
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
-  signature: z.string(),
-});
+const meta: Meta<typeof NftIcon> = {
+  title: "svg/NftIcon",
+  component: NftIcon,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
+type Story = StoryObj<typeof NftIcon>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: (args) => <NftIcon className="h-4 w-4 fill-text" {...args} />,
+  args: {},
+};

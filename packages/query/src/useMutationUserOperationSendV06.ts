@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { sendUserOperation } from "@lightdotso/client";
+import { sendUserOperationV06 } from "@lightdotso/client";
 import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
   TRANSACTION_ROW_COUNT,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
@@ -24,7 +25,6 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui/components/toast";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
@@ -35,7 +35,7 @@ import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationSend = (
+export const useMutationUserOperationSendV06 = (
   params: UserOperationSendParams,
 ) => {
   // ---------------------------------------------------------------------------
@@ -56,8 +56,8 @@ export const useMutationUserOperationSend = (
   // ---------------------------------------------------------------------------
 
   const {
-    mutate: userOperationSend,
-    isPending: isUserOperationSendPending,
+    mutate: userOperationSendV06,
+    isPending: isUserOperationSendV06Pending,
     failureCount,
   } = useMutation({
     retryDelay: 1000,
@@ -73,7 +73,7 @@ export const useMutationUserOperationSend = (
       const { userOperation, userOperationSignature } = body;
 
       // Sned the user operation
-      const res = await sendUserOperation(userOperation.chain_id, [
+      const res = await sendUserOperationV06(userOperation.chain_id, [
         {
           sender: userOperation.sender,
           nonce: toHex(userOperation.nonce),
@@ -87,13 +87,7 @@ export const useMutationUserOperationSend = (
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
           signature: userOperationSignature,
         },
-        // Hardcoded to use the latest version of the wallet factory
-        WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          findContractAddressByAddress(
-            params.implementation_address as Address,
-          )!
-        ],
+        CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
       ]);
 
       toast.dismiss(loadingToast);
@@ -190,7 +184,7 @@ export const useMutationUserOperationSend = (
   });
 
   return {
-    userOperationSend: userOperationSend,
-    isUserOperationSendPending: isUserOperationSendPending,
+    userOperationSendV06: userOperationSendV06,
+    isUserOperationSendV06Pending: isUserOperationSendV06Pending,
   };
 };

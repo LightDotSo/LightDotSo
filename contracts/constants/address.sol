@@ -20,12 +20,6 @@ pragma solidity ^0.8.27;
 // Addresses
 // -------------------------------------------------------------------------
 
-// OffchainVerifier address for paymaster
-// v1: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
-// v2: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-// v3: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0618fE3A19a4980a0202aDBdb5201e74cD9908ff);
-address constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
-
 // Deployer address
 address constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
@@ -40,9 +34,9 @@ address constant CREATE2_DEPLOYER_ADDRESS_RAW = 0x4e59b44847b379578588920cA78FbF
 address constant CREATE2_DEPLOYER_ADDRESS = address(CREATE2_DEPLOYER_ADDRESS_RAW);
 
 // EntryPoint address
-address payable constant ENTRY_POINT_V060_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-address payable constant ENTRY_POINT_V070_ADDRESS = payable(address(0x0000000071727De22E5E9d8BAf0edAc6f37da032));
-address payable constant ENTRY_POINT_ADDRESS = ENTRY_POINT_V070_ADDRESS;
+address payable constant ENTRYPOINT_V060_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+address payable constant ENTRYPOINT_V070_ADDRESS = payable(address(0x0000000071727De22E5E9d8BAf0edAc6f37da032));
+address payable constant ENTRYPOINT_ADDRESS = ENTRYPOINT_V070_ADDRESS;
 
 // LightDAG address
 address constant LIGHT_DAG_ADDRESS = address(0x0000000000000000000000000000000000000000);
@@ -71,3 +65,9 @@ address constant LIGHT_WALLET_FACTORY_ADDRESS = LIGHT_WALLET_FACTORY_V030_ADDRES
 
 // Light Master Wallet address
 address constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
+
+// OffchainVerifier address for paymaster
+// v1: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
+// v2: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
+// v3: address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0618fE3A19a4980a0202aDBdb5201e74cD9908ff);
+address constant OFFCHAIN_VERIFIER_ADDRESS = address(0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17);
