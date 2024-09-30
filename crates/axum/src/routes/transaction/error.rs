@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Transaction operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Transaction operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum TransactionError {
     /// Transaction query error.
     #[schema(example = "Bad request")]

@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Configuration owner operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Configuration owner operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationOperationOwnerError {
     /// Owner query error.
     #[schema(example = "Bad request")]

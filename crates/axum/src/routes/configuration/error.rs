@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Configuration errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Configuration error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationError {
     /// Configuration query error.
     #[schema(example = "Bad request")]

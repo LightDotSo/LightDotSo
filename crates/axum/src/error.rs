@@ -566,6 +566,69 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
 
 impl std::fmt::Debug for RouteError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "RouteError: {:?}", self)
+        match self {
+            RouteError::ActivityError(err) => write!(f, "ActivityError: {:?}", err),
+            RouteError::AssetChangeError(err) => write!(f, "AssetChangeError: {:?}", err),
+            RouteError::AuthError(err) => write!(f, "AuthError: {:?}", err),
+            RouteError::BillingError(err) => write!(f, "BillingError: {:?}", err),
+            RouteError::BillingOperationError(err) => write!(f, "BillingOperationError: {:?}", err),
+            RouteError::ChainError(err) => write!(f, "ChainError: {:?}", err),
+            RouteError::ConfigurationError(err) => write!(f, "ConfigurationError: {:?}", err),
+            RouteError::ConfigurationOperationError(err) => {
+                write!(f, "ConfigurationOperationError: {:?}", err)
+            }
+            RouteError::ConfigurationOperationOwnerError(err) => {
+                write!(f, "ConfigurationOperationOwnerError: {:?}", err)
+            }
+            RouteError::ConfigurationOperationSignatureError(err) => {
+                write!(f, "ConfigurationOperationSignatureError: {:?}", err)
+            }
+            RouteError::FeedbackError(err) => write!(f, "FeedbackError: {:?}", err),
+            RouteError::InterpretationError(err) => write!(f, "InterpretationError: {:?}", err),
+            RouteError::InterpretationActionError(err) => {
+                write!(f, "InterpretationActionError: {:?}", err)
+            }
+            RouteError::InviteCodeError(err) => write!(f, "InviteCodeError: {:?}", err),
+            RouteError::NotificationError(err) => write!(f, "NotificationError: {:?}", err),
+            RouteError::NotificationSettingsError(err) => {
+                write!(f, "NotificationSettingsError: {:?}", err)
+            }
+            RouteError::OperationError(err) => write!(f, "OperationError: {:?}", err),
+            RouteError::OwnerError(err) => write!(f, "OwnerError: {:?}", err),
+            RouteError::PaymasterError(err) => write!(f, "PaymasterError: {:?}", err),
+            RouteError::PaymasterOperationError(err) => {
+                write!(f, "PaymasterOperationError: {:?}", err)
+            }
+            RouteError::PortfolioError(err) => write!(f, "PortfolioError: {:?}", err),
+            RouteError::ProtocolError(err) => write!(f, "ProtocolError: {:?}", err),
+            RouteError::ProtocolGroupError(err) => write!(f, "ProtocolGroupError: {:?}", err),
+            RouteError::QueueError(err) => write!(f, "QueueError: {:?}", err),
+            RouteError::SignatureError(err) => write!(f, "SignatureError: {:?}", err),
+            RouteError::SimulationError(err) => write!(f, "SimulationError: {:?}", err),
+            RouteError::SupportRequestError(err) => write!(f, "SupportRequestError: {:?}", err),
+            RouteError::TokenError(err) => write!(f, "TokenError: {:?}", err),
+            RouteError::TokenGroupError(err) => write!(f, "TokenGroupError: {:?}", err),
+            RouteError::TokenPriceError(err) => write!(f, "TokenPriceError: {:?}", err),
+            RouteError::TransactionError(err) => write!(f, "TransactionError: {:?}", err),
+            RouteError::UserError(err) => write!(f, "UserError: {:?}", err),
+            RouteError::UserNotificationSettingsError(err) => {
+                write!(f, "UserNotificationSettingsError: {:?}", err)
+            }
+            RouteError::UserOperationError(err) => write!(f, "UserOperationError: {:?}", err),
+            RouteError::UserOperationMerkleError(err) => {
+                write!(f, "UserOperationMerkleError: {:?}", err)
+            }
+            RouteError::UserOperationMerkleProofError(err) => {
+                write!(f, "UserOperationMerkleProofError: {:?}", err)
+            }
+            RouteError::UserSettingsError(err) => write!(f, "UserSettingsError: {:?}", err),
+            RouteError::WalletError(err) => write!(f, "WalletError: {:?}", err),
+            RouteError::WalletBillingError(err) => write!(f, "WalletBillingError: {:?}", err),
+            RouteError::WalletFeaturesError(err) => write!(f, "WalletFeaturesError: {:?}", err),
+            RouteError::WalletNotificationSettingsError(err) => {
+                write!(f, "WalletNotificationSettingsError: {:?}", err)
+            }
+            RouteError::WalletSettingsError(err) => write!(f, "WalletSettingsError: {:?}", err),
+        }
     }
 }

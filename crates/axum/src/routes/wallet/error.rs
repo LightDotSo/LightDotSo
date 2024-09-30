@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Wallet operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Wallet operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum WalletError {
     /// Wallet query error.
     #[schema(example = "Bad request")]

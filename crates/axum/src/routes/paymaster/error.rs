@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Paymaster operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Paymaster operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum PaymasterError {
     /// Paymaster query error.
     #[schema(example = "Bad request")]

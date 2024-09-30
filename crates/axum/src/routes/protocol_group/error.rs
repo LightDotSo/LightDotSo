@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// ProtocolGroup errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// ProtocolGroup error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ProtocolGroupError {
     /// ProtocolGroup query error.
     #[schema(example = "Bad request")]

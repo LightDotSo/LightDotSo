@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Queue operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Queue operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum QueueError {
     /// Queue query error.
     #[schema(example = "Bad request")]

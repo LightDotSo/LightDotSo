@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Chain errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Chain error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ChainError {
     /// Chain query error.
     #[schema(example = "Bad request")]

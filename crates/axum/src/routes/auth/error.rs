@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Auth operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Auth operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum AuthError {
     // Auth query error.
     #[schema(example = "Bad request")]

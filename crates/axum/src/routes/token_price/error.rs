@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// TokenPrice error.
-#[derive(Serialize, Deserialize, ToSchema)]
+/// TokenPrice error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum TokenPriceError {
     /// TokenPrice query error.
     #[schema(example = "Bad request")]

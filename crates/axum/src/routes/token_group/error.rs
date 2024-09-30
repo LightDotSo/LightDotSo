@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// TokenGroup errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// TokenGroup error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum TokenGroupError {
     /// TokenGroup query error.
     #[schema(example = "Bad request")]

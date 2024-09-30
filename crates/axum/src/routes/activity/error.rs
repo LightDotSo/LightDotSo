@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Activity errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Activity error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ActivityError {
     /// Activity query error.
     #[schema(example = "Bad request")]

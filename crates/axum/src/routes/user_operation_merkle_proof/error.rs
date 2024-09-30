@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// UserOperationMerkleProof errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// UserOperationMerkleProof error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserOperationMerkleProofError {
     /// UserOperationMerkleProof query error.
     #[schema(example = "Bad request")]

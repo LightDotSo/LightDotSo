@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// ConfigurationOperationSignature operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// ConfigurationOperationSignature operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationOperationSignatureError {
     /// ConfigurationOperationSignature query error.
     #[schema(example = "Bad request")]

@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// InviteCode errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// InviteCode error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum InviteCodeError {
     /// InviteCode query error.
     #[schema(example = "Bad request")]
