@@ -34,7 +34,7 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.56.2",
-    "viem": "^2.21.15"
+    "viem": "^2.21.16"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

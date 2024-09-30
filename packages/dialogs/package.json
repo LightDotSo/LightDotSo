@@ -49,12 +49,12 @@
     "next": "15.0.0-canary.172",
     "permissionless": "^0.2.3",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.15",
+    "viem": "^2.21.16",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.3.3",
+    "@storybook/react": "^8.3.4",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",

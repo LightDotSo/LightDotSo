@@ -64,7 +64,7 @@
     "react-error-boundary": "^4.0.13",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
-    "viem": "^2.21.15"
+    "viem": "^2.21.16"
   },
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",

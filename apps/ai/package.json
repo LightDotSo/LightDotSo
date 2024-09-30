@@ -23,9 +23,9 @@
   "dependencies": {
     "@ai-sdk/openai": "^0.0.63",
     "@babel/core": "^7.25.2",
-    "@langchain/core": "^0.3.3",
+    "@langchain/core": "^0.3.4",
     "@langchain/langgraph": "^0.2.9",
-    "@langchain/langgraph-sdk": "^0.0.11",
+    "@langchain/langgraph-sdk": "^0.0.13",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/roots": "workspace:*",
@@ -58,7 +58,7 @@
     "remark-math": "^6.0.0",
     "server-only": "^0.0.1",
     "usehooks-ts": "^3.1.0",
-    "viem": "^2.21.15",
+    "viem": "^2.21.16",
     "zod": "^3.23.8"
   },
   "devDependencies": {
