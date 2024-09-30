@@ -13,6 +13,7 @@
 // limitations under the License.
 
 "use client";
+
 import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/activity/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
