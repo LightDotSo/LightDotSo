@@ -32,6 +32,7 @@ use crate::{
     admin::admin,
     constants::SESSION_COOKIE_ID,
     handle_error,
+    headers::add_version_headers,
     routes::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
         configuration_operation, configuration_operation_owner, configuration_operation_signature,
@@ -584,6 +585,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
+                .layer(middleware::from_fn(add_version_headers))
                 .into_inner(),
         )
         .route("/", get("api.light.so"))
@@ -608,7 +610,8 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(metrics.clone())
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
-                .layer(cors.clone()),
+                .layer(cors.clone())
+                .layer(middleware::from_fn(add_version_headers)),
         )
         .nest(
             "/authenticated/v1",
@@ -622,7 +625,8 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
-                    .layer(cors.clone()),
+                    .layer(cors.clone())
+                    .layer(middleware::from_fn(add_version_headers)),
             ),
         )
         .nest(
@@ -634,10 +638,16 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(middleware::from_fn(admin))
                     .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
-                    .layer(OtelAxumLayer::default()),
+                    .layer(OtelAxumLayer::default())
+                    .layer(middleware::from_fn(add_version_headers)),
             ),
         )
-        .layer(ServiceBuilder::new().layer(cors).into_inner())
+        .layer(
+            ServiceBuilder::new()
+                .layer(cors)
+                .layer(middleware::from_fn(add_version_headers))
+                .into_inner(),
+        )
         .with_state(state);
 
     let socket_addr = "[::]:3000";
