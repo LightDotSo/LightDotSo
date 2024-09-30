@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { estimateUserOperationGas } from "@lightdotso/client";
+import { estimateUserOperationGasV06 } from "@lightdotso/client";
 import type { EstimateUserOperationGasData } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -64,7 +64,7 @@ export const useQueryUserOperationEstimateGas = (
         return null;
       }
 
-      const res = await estimateUserOperationGas(
+      const res = await estimateUserOperationGasV06(
         Number(params?.chainId) as number,
         [
           {

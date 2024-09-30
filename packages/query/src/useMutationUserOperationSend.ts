@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { sendUserOperation } from "@lightdotso/client";
+import { sendUserOperationV06 } from "@lightdotso/client";
 import {
   TRANSACTION_ROW_COUNT,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
@@ -73,7 +73,7 @@ export const useMutationUserOperationSend = (
       const { userOperation, userOperationSignature } = body;
 
       // Sned the user operation
-      const res = await sendUserOperation(userOperation.chain_id, [
+      const res = await sendUserOperationV06(userOperation.chain_id, [
         {
           sender: userOperation.sender,
           nonce: toHex(userOperation.nonce),

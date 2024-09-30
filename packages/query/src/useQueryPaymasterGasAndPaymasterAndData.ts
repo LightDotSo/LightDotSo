@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import { getPaymasterGasAndPaymasterAndDataV06 } from "@lightdotso/client";
 import type { PaymasterAndData } from "@lightdotso/data";
 import type { RpcPaymasterGasAndPaymasterAndDataParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -73,7 +73,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
         return null;
       }
 
-      const res = await getPaymasterGasAndPaymasterAndData(
+      const res = await getPaymasterGasAndPaymasterAndDataV06(
         Number(params?.chainId) as number,
         [
           {
