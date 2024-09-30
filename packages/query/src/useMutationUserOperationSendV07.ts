@@ -74,16 +74,14 @@ export const useMutationUserOperationSendV07 = (
       const { userOperation, userOperationSignature } = body;
 
       // Remove the 0x prefix from the init_code
-      const initCode = userOperation.init_code.slice(2);
-      const factory = `0x${initCode.slice(0, 20)}`;
-      const factoryData = `0x${initCode.slice(20)}`;
+      const factory = `0x${userOperation.init_code.slice(2).slice(0, 40)}`;
+      const factoryData = `0x${userOperation.init_code.slice(2).slice(40)}`;
 
       // Remove the 0x prefix from the paymaster_and_data
-      const paymasterAndData = userOperation.paymaster_and_data.slice(2);
-      const paymaster = `0x${paymasterAndData.slice(0, 20)}`;
-      const paymasterVerificationGasLimit = `0x${paymasterAndData.slice(20, 36)}`;
-      const paymasterPostOpGasLimit = `0x${paymasterAndData.slice(36, 52)}`;
-      const paymasterData = `0x${paymasterAndData.slice(52)}`;
+      const paymaster = `0x${userOperation.paymaster_and_data.slice(2).slice(0, 40)}`;
+      const paymasterVerificationGasLimit = `0x${userOperation.paymaster_and_data.slice(2).slice(40, 72)}`;
+      const paymasterPostOpGasLimit = `0x${userOperation.paymaster_and_data.slice(2).slice(72, 104)}`;
+      const paymasterData = `0x${userOperation.paymaster_and_data.slice(2).slice(104)}`;
 
       // Sned the user operation
       const res = await sendUserOperationV07(userOperation.chain_id, [

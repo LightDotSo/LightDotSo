@@ -322,8 +322,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: targetUserOperation?.initCode?.slice(2).slice(0, 20),
-      factoryData: targetUserOperation?.initCode?.slice(2).slice(20),
+      factory: `0x${targetUserOperation?.initCode?.slice(2).slice(0, 40)}`,
+      factoryData: `0x${targetUserOperation?.initCode?.slice(2).slice(40)}`,
       callData: targetUserOperation?.callData,
     },
     isEntryPointV07,
@@ -488,9 +488,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       : preVerificationGas;
 
     // Remove the 0x prefix from the init_code
-    const initCode = targetUserOperation?.initCode.slice(2);
-    const factory = `0x${initCode.slice(0, 20)}`;
-    const factoryData = `0x${initCode.slice(20)}`;
+    const factory = `0x${targetUserOperation?.initCode.slice(2).slice(0, 40)}`;
+    const factoryData = `0x${targetUserOperation?.initCode.slice(2).slice(40)}`;
 
     return {
       sender: targetUserOperation?.sender,
@@ -681,9 +680,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     // Remove the 0x prefix from the init_code
-    const initCode = debouncedUserOperation?.initCode.slice(2);
-    const factory = `0x${initCode.slice(0, 20)}`;
-    const factoryData = `0x${initCode.slice(20)}`;
+    const factory = `0x${debouncedUserOperation?.initCode.slice(2).slice(0, 40)}`;
+    const factoryData = `0x${debouncedUserOperation?.initCode.slice(2).slice(40)}`;
 
     return {
       sender: debouncedUserOperation?.sender,
