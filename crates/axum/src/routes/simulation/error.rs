@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Simulation operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Simulation operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum SimulationError {
     /// Simulation query error.
     #[schema(example = "Bad request")]

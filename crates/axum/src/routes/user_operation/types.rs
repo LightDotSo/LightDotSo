@@ -52,7 +52,7 @@ pub(crate) struct UserOperationTransaction {
     pub hash: String,
 }
 
-/// User operation operation errors
+/// User operation operation success
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserOperationSuccess {
     /// User operation updated successfully.

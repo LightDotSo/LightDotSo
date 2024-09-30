@@ -20,7 +20,7 @@ use utoipa::ToSchema;
 // -----------------------------------------------------------------------------
 
 /// Feedback error
-#[derive(Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum FeedbackError {
     /// Feedback bad request error.
     #[schema(example = "Bad request")]

@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Notification operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Notification operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum NotificationError {
     /// Notification query error.
     #[schema(example = "Bad request")]

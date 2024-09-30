@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// WalletNotificationSettings operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// WalletNotificationSettings operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum WalletNotificationSettingsError {
     // WalletNotificationSettings query error.
     #[schema(example = "Bad request")]

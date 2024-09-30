@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// AssetChange errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// AssetChange error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum AssetChangeError {
     /// AssetChange query error.
     #[schema(example = "Bad request")]

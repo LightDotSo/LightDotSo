@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Protocol errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Protocol error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ProtocolError {
     /// Protocol query error.
     #[schema(example = "Bad request")]

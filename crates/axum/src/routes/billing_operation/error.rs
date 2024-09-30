@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// BillingOperation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// BillingOperation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum BillingOperationError {
     /// BillingOperation query error.
     #[schema(example = "Bad request")]

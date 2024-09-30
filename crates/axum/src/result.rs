@@ -150,3 +150,22 @@ impl IntoResponse for AppError {
         status.into_response()
     }
 }
+
+impl std::fmt::Debug for AppError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            AppError::EyreError(err) => write!(f, "EyreError: {:?}", err),
+            AppError::PrismaError(err) => write!(f, "PrismaError: {:?}", err),
+            AppError::RedisError(err) => write!(f, "RedisError: {:?}", err),
+            AppError::SerdeJsonError(err) => write!(f, "SerdeJsonError: {:?}", err),
+            AppError::FromHexError(err) => write!(f, "FromHexError: {:?}", err),
+            AppError::RustHexError(err) => write!(f, "RustHexError: {:?}", err),
+            AppError::RouteError(err) => write!(f, "RouteError: {:?}", err),
+            AppError::AuthError(msg) => write!(f, "AuthError: {}", msg),
+            AppError::BadRequest => write!(f, "BadRequest"),
+            AppError::NotFound => write!(f, "NotFound"),
+            AppError::InternalError => write!(f, "InternalError"),
+            AppError::Conflict => write!(f, "Conflict"),
+        }
+    }
+}

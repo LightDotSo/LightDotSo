@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Portfolio operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Portfolio operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum PortfolioError {
     /// Portfolio query error.
     #[schema(example = "Bad request")]

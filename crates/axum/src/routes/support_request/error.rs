@@ -19,8 +19,8 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Support_request operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
+/// Support_request operation error
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum SupportRequestError {
     /// Support_request query error.
     #[schema(example = "Bad request")]
