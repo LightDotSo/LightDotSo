@@ -250,7 +250,8 @@ const estimateUserOperationGasV07Response = z.object({
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
-  paymasterVerificationGasLimit: HexStringSchema,
+  paymasterVerificationGasLimit: HexStringSchema.nullable().optional(),
+  paymasterPostOpGasLimit: HexStringSchema.nullable().optional(),
 });
 
 const estimateUserOperationGasV07Request = z.array(

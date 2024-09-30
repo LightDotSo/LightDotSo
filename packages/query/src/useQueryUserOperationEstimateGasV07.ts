@@ -123,5 +123,14 @@ export const useQueryUserOperationEstimateGasV07 = (
             },
           )
         : undefined,
+    paymasterPostOpGasLimitV07:
+      estimateUserOperationGasDataV07?.paymasterPostOpGasLimit
+        ? fromHex(
+            estimateUserOperationGasDataV07?.paymasterPostOpGasLimit as Hex,
+            {
+              to: "bigint",
+            },
+          )
+        : undefined,
   };
 };

@@ -27,7 +27,8 @@ export type EstimateUserOperationGasDataV07 = {
   callGasLimit: string;
   verificationGasLimit: string;
   preVerificationGas: string;
-  paymasterVerificationGasLimit: string;
+  paymasterVerificationGasLimit?: string | null | undefined;
+  paymasterPostOpGasLimit?: string | null | undefined;
 };
 
 export type PaymasterAndDataV06 = {
