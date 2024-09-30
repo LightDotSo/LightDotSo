@@ -67,7 +67,15 @@ export const useProxyImplementationAddress = ({
       return;
     }
 
-    // Convert the bytes32 impl address to an address
+    // Don't continue if the impl address slot returns zero
+    if (
+      implementationAddressBytes32 ===
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+      return;
+    }
+
+    // Convert the bytes32 impl address to an address (64 + 2 - 40 = 26)
     return getAddress(`0x${implementationAddressBytes32.slice(26)}`);
   }, [implementationAddressBytes32, isImplementationAddressBytes32Success]);
 
