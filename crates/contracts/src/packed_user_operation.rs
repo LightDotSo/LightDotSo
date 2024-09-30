@@ -84,10 +84,10 @@ impl PackedUserOperation {
             &self.paymaster_data,
         ) {
             (Some(paymaster), Some(verification_gas), Some(post_op_gas), Some(data)) => {
-                let mut pmd = Vec::with_capacity(20 + 32 + 32 + data.len());
+                let mut pmd = Vec::with_capacity(52 + data.len());
                 pmd.extend_from_slice(paymaster.as_slice());
-                pmd.extend_from_slice(&verification_gas.to_be_bytes::<32>());
-                pmd.extend_from_slice(&post_op_gas.to_be_bytes::<32>());
+                pmd.extend_from_slice(&verification_gas.to_be_bytes::<16>());
+                pmd.extend_from_slice(&post_op_gas.to_be_bytes::<16>());
                 pmd.extend_from_slice(data);
                 Bytes::from(pmd)
             }
@@ -143,8 +143,8 @@ mod tests {
         let operation = PackedUserOperation {
             sender: "0x0000000000000000000000000000000000000000".parse().unwrap(),
             nonce: U256::ZERO,
-            factory: Some(Address::ZERO),
-            factory_data: Some(Bytes::default()),
+            factory: None,
+            factory_data: None,
             call_data: Bytes::default(),
             call_gas_limit: U256::ZERO,
             verification_gas_limit: U256::ZERO,
@@ -152,9 +152,9 @@ mod tests {
             max_fee_per_gas: U256::ZERO,
             max_priority_fee_per_gas: U256::ZERO,
             paymaster: None,
-            paymaster_verification_gas_limit: Some(U256::ZERO),
-            paymaster_post_op_gas_limit: Some(U256::ZERO),
-            paymaster_data: Some(Bytes::default()),
+            paymaster_verification_gas_limit: None,
+            paymaster_post_op_gas_limit: None,
+            paymaster_data: None,
             signature: Bytes::default(),
         };
         let entry_point = *ENTRYPOINT_V070_ADDRESS;
