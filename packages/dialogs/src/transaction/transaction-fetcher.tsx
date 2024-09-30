@@ -46,7 +46,7 @@ import {
 } from "@lightdotso/wagmi/generated";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import { type FC, useEffect, useMemo, useState } from "react";
-import { type Address, type Hex, fromHex } from "viem";
+import { type Address, type Hex, fromHex, toHex } from "viem";
 import {
   type UserOperation as ViemUserOperation,
   getUserOperationHash,
@@ -76,7 +76,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
 
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const [packedUserOperationWithHash, setPackedUserOperationWithHash] =
     useState<PackedUserOperation>();
 
@@ -925,6 +924,41 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     debouncedUserOperation,
   ]);
 
+  // Sync `debouncedPackedUserOperation` to the store
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (
+      !debouncedPackedUserOperation?.chainId ||
+      typeof debouncedPackedUserOperation?.nonce === "undefined" ||
+      debouncedPackedUserOperation?.nonce === null
+    ) {
+      return;
+    }
+
+    setPartialUserOperationByChainIdAndNonce(
+      debouncedPackedUserOperation?.chainId,
+      debouncedPackedUserOperation?.nonce,
+      {
+        sender: debouncedPackedUserOperation?.sender,
+        chainId: debouncedPackedUserOperation?.chainId,
+        initCode: `${debouncedPackedUserOperation?.factory}${debouncedPackedUserOperation?.factoryData}`,
+        nonce: debouncedPackedUserOperation?.nonce,
+        callData: `${debouncedPackedUserOperation?.callData}`,
+        maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
+        maxPriorityFeePerGas:
+          debouncedPackedUserOperation?.maxPriorityFeePerGas,
+        callGasLimit: debouncedPackedUserOperation?.callGasLimit,
+        verificationGasLimit:
+          debouncedPackedUserOperation?.verificationGasLimit,
+        preVerificationGas: debouncedPackedUserOperation?.preVerificationGas,
+      },
+    );
+  }, [
+    debouncedPackedUserOperation?.chainId,
+    setUserOperationByChainIdAndNonce,
+    debouncedPackedUserOperation,
+  ]);
+
   // Sync `userOperationWithHash` to the store
   useEffect(() => {
     if (!userOperationWithHash) {
@@ -941,7 +975,38 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     userOperationWithHash,
   ]);
 
-  // Sync `billingOperation` to the store
+  // Sync `packedUserOperationWithHash` to the store
+  useEffect(() => {
+    if (!packedUserOperationWithHash) {
+      return;
+    }
+
+    setUserOperationByChainIdAndNonce(
+      packedUserOperationWithHash?.chainId,
+      packedUserOperationWithHash?.nonce,
+      {
+        hash: packedUserOperationWithHash?.hash,
+        chainId: packedUserOperationWithHash?.chainId,
+        sender: packedUserOperationWithHash?.sender,
+        nonce: packedUserOperationWithHash?.nonce,
+        initCode: `${packedUserOperationWithHash?.factory}${packedUserOperationWithHash?.factoryData}`,
+        callData: `${packedUserOperationWithHash?.callData}`,
+        maxFeePerGas: packedUserOperationWithHash?.maxFeePerGas,
+        maxPriorityFeePerGas: packedUserOperationWithHash?.maxPriorityFeePerGas,
+        callGasLimit: packedUserOperationWithHash?.callGasLimit,
+        verificationGasLimit: packedUserOperationWithHash?.verificationGasLimit,
+        preVerificationGas: packedUserOperationWithHash?.preVerificationGas,
+        paymasterAndData: `${packedUserOperationWithHash?.paymaster}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit)}${packedUserOperationWithHash?.paymasterData}`,
+        signature: packedUserOperationWithHash?.signature,
+      },
+    );
+  }, [
+    packedUserOperationWithHash?.chainId,
+    setUserOperationByChainIdAndNonce,
+    packedUserOperationWithHash,
+  ]);
+
+  // Sync `userOperationWithHash` to the `billingOperation` store
   useEffect(() => {
     if (userOperationWithHash?.hash && paymasterOperation?.billing_operation) {
       setBillingOperationByHash(
@@ -952,6 +1017,23 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [
     paymasterOperation?.billing_operation,
     userOperationWithHash?.hash,
+    setBillingOperationByHash,
+  ]);
+
+  // Sync `packedUserOperationWithHash` to the `billingOperation` store
+  useEffect(() => {
+    if (
+      packedUserOperationWithHash?.hash &&
+      paymasterOperation?.billing_operation
+    ) {
+      setBillingOperationByHash(
+        packedUserOperationWithHash?.hash as Hex,
+        paymasterOperation?.billing_operation,
+      );
+    }
+  }, [
+    paymasterOperation?.billing_operation,
+    packedUserOperationWithHash?.hash,
     setBillingOperationByHash,
   ]);
 
