@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use crate::{
-    constants::EXPIRATION_TIME_KEY,
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::auth::error::AuthError,
@@ -22,6 +21,7 @@ use crate::{
 use axum::Json;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use time::format_description::well_known::Rfc3339;
 use tower_sessions::Session;
 use utoipa::ToSchema;
 
@@ -60,24 +60,26 @@ pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<A
     info!(?session);
 
     // Check if the session is authenticated
-    let authenticated = verify_session(&session).await.is_ok();
+    let authenticated_res = verify_session(&session).await;
+    info!("authenticated_res: {:?}", authenticated_res);
 
     // Update the session expiration
     update_session_expiry(&session).await?;
 
     // Get the session expiration
-    let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY).await {
-        Ok(Some(expiry)) => expiry,
-        Ok(None) | Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get expiration.".to_string(),
-            ))))
-        }
-    };
+    let session_expiry = session.expiry_date();
+
+    // Convert OffsetDateTime to RFC 3339 string
+    let expiration_str = session_expiry.format(&Rfc3339).map_err(|e| {
+        AppError::RouteError(RouteError::AuthError(AuthError::InternalError(format!(
+            "Failed to format expiration time: {}",
+            e
+        ))))
+    })?;
 
     Ok(Json::from(AuthSession {
         id: session.id().unwrap_or_default().to_string(),
-        expiration: session_expiry.to_string(),
-        is_authenticated: authenticated,
+        expiration: expiration_str,
+        is_authenticated: authenticated_res.is_ok(),
     }))
 }

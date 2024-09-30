@@ -15,15 +15,15 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
-    error::RouteError,
+    constants::{NONCE_KEY, USER_ID_KEY},
     result::AppError,
-    routes::auth::error::AuthError,
 };
 use async_trait::async_trait;
 use axum::{extract::Request, http::StatusCode, middleware::Next, response::Response};
 use eyre::{eyre, Result};
-use lightdotso_redis::redis::{Client, Commands};
+use lightdotso_redis::redis::{
+    self, Client, Commands, ExistenceCheck, RedisError, RedisResult, SetExpiry, SetOptions,
+};
 use std::{
     fmt::Debug,
     sync::Arc,
@@ -42,19 +42,26 @@ use tower_sessions_core::{
 // `fred`.
 
 /// An error type for `RedisStore`.
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum RedisStoreError {
-    /// A variant to map to `redis::RedisError` errors.
-    #[error("Redis error: {0}")]
-    Redis(#[from] lightdotso_redis::redis::RedisError),
+    #[error(transparent)]
+    Redis(#[from] RedisError),
 
-    /// A variant to map `serde_json` encode errors.
-    #[error("Serde JSON encode error: {0}")]
-    SerdeEncode(#[from] serde_json::Error),
+    #[error(transparent)]
+    Decode(#[from] rmp_serde::decode::Error),
 
-    /// Add a eyre::Error variant.
-    #[error("Eyre error: {0}")]
-    Eyre(#[from] eyre::Error),
+    #[error(transparent)]
+    Encode(#[from] rmp_serde::encode::Error),
+}
+
+impl From<RedisStoreError> for session_store::Error {
+    fn from(err: RedisStoreError) -> Self {
+        match err {
+            RedisStoreError::Redis(inner) => session_store::Error::Backend(inner.to_string()),
+            RedisStoreError::Decode(inner) => session_store::Error::Decode(inner.to_string()),
+            RedisStoreError::Encode(inner) => session_store::Error::Encode(inner.to_string()),
+        }
+    }
 }
 
 /// A Redis session store.
@@ -65,86 +72,93 @@ pub struct RedisStore {
 
 impl RedisStore {
     /// Create a new Redis store with the provided client.
-    ///
-    /// # Examples
-    ///
-    /// ```rust,no_run
-    /// use tower_sessions::RedisStore;
-    ///
-    /// # tokio_test::block_on(async {
-    /// let client = RedisClient::default();
-    ///
-    /// let _ = client.connect();
-    /// client.wait_for_connect().await.unwrap();
-    ///
-    /// let session_store = RedisStore::new(client);
-    /// })
-    /// ```
     pub fn new(client: Client) -> Self {
         Self { client: Arc::new(client) }
+    }
+
+    /// Save the session with the provided options.
+    ///
+    /// If `nx` is true, the session will only be saved if it does not already exist.
+    /// If `nx` is false, the session will only be saved if it already exists.
+    fn save_with_options(&self, record: &Record, nx: bool) -> RedisResult<bool> {
+        // Get the connection
+        let mut conn = self.client.get_connection()?;
+
+        // Get the current time
+        let now = OffsetDateTime::now_utc();
+        let expire_seconds = (record.expiry_date - now).whole_seconds().max(0) as u64;
+
+        // Serialize the record
+        let data = rmp_serde::to_vec(record).map_err(|e| {
+            RedisError::from((
+                redis::ErrorKind::ParseError,
+                "Failed to serialize record",
+                e.to_string(),
+            ))
+        })?;
+
+        // Set the options
+        let mut opts = SetOptions::default().with_expiration(SetExpiry::EX(expire_seconds));
+        if nx {
+            opts = opts.conditional_set(ExistenceCheck::NX);
+        } else {
+            opts = opts.conditional_set(ExistenceCheck::XX);
+        }
+        conn.set_options(record.id.to_string(), data, opts)
     }
 }
 
 #[async_trait]
 impl SessionStore for RedisStore {
+    /// Create a new session.
     async fn create(&self, record: &mut Record) -> session_store::Result<()> {
-        // Run save
-        self.save(record).await
-    }
-
-    async fn save(&self, record: &Record) -> session_store::Result<()> {
-        // Serialize the session data
-        let session_data =
-            rmp_serde::to_vec(&record).map_err(|e| session_store::Error::Backend(e.to_string()))?;
-
-        // Get the session expiry time (offset from the current time)
-        let current_time =
-            unix_timestamp().map_err(|e| session_store::Error::Backend(e.to_string()))?;
-        // Get the session expiry time (offset from the current time)
-        let expire_seconds =
-            OffsetDateTime::unix_timestamp(record.expiry_date) - current_time as i64;
-
-        // Save the session data
-        let mut conn = self
-            .client
-            .get_connection()
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
-        let _: () = conn
-            .set_ex(record.id.to_string(), session_data, expire_seconds as u64)
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+        // Create the record
+        loop {
+            match self.save_with_options(record, true) {
+                Ok(true) => break,
+                Ok(false) => {
+                    record.id = Id::default();
+                    continue;
+                }
+                Err(e) => return Err(RedisStoreError::Redis(e).into()),
+            }
+        }
         Ok(())
     }
 
-    async fn load(&self, session_id: &Id) -> session_store::Result<Option<Record>> {
-        // Load the session data
-        let mut conn = self
-            .client
-            .get_connection()
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
-        let data: Option<Vec<u8>> = conn
-            .get(session_id.to_string())
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+    /// Save the session.
+    async fn save(&self, record: &Record) -> session_store::Result<()> {
+        // Save the record
+        self.save_with_options(record, false).map_err(RedisStoreError::Redis)?;
+        Ok(())
+    }
 
-        // Deserialize the session data
-        match data {
-            Some(data) => {
-                let session: Record = rmp_serde::from_slice(&data)
-                    .map_err(|e| session_store::Error::Backend(e.to_string()))?;
-                Ok(Some(session))
-            }
-            None => Ok(None),
+    /// Load the session.
+    async fn load(&self, session_id: &Id) -> session_store::Result<Option<Record>> {
+        // Get the connection
+        let mut conn = self.client.get_connection().map_err(RedisStoreError::Redis)?;
+
+        // Get the data
+        let data: Option<Vec<u8>> =
+            conn.get(session_id.to_string()).map_err(RedisStoreError::Redis)?;
+
+        // Parse the data
+        if let Some(data) = data {
+            let record: Record = rmp_serde::from_slice(&data)
+                .map_err(|e| session_store::Error::Decode(e.to_string()))?;
+            Ok(Some(record))
+        } else {
+            Ok(None)
         }
     }
 
+    /// Delete the session.
     async fn delete(&self, session_id: &Id) -> session_store::Result<()> {
-        // Delete the session data
-        let mut conn = self
-            .client
-            .get_connection()
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
-        conn.del(session_id.to_string())
-            .map_err(|e| session_store::Error::Backend(e.to_string()))?;
+        // Get the connection
+        let mut conn = self.client.get_connection().map_err(RedisStoreError::Redis)?;
 
+        // Delete the data
+        conn.del(session_id.to_string()).map_err(RedisStoreError::Redis)?;
         Ok(())
     }
 }
@@ -156,40 +170,31 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
 
 /// Verify the session is valid.
 pub(crate) async fn verify_session(session: &Session) -> Result<(), AppError> {
-    // The frontend must set a session expiry
-    match session.get::<String>(&NONCE_KEY).await {
-        Ok(Some(_)) => {}
-        // Invalid nonce
-        Ok(None) | Err(_) => {
-            return Err(AppError::AuthError("Failed to get nonce.".to_string()));
-        }
-    }
-    let now = match unix_timestamp() {
-        Ok(now) => now,
-        Err(_) => {
-            return Err(AppError::AuthError("Failed to get timestamp.".to_string()));
-        }
-    };
-
-    // Verify the session has not expired
-    match session.get::<u64>(&EXPIRATION_TIME_KEY).await {
-        Err(_) | Ok(None) => {
-            return Err(AppError::AuthError("Failed to get expiration.".to_string()));
-        }
-        Ok(Some(ts)) => {
-            if now > ts {
-                return Err(AppError::AuthError("Session has expired.".to_string()));
-            }
-        }
+    // Check for nonce
+    if session
+        .get::<String>(&NONCE_KEY)
+        .await
+        .map_err(|e| AppError::AuthError(format!("Failed to get nonce: {}", e)))?
+        .is_none()
+    {
+        return Err(AppError::AuthError("Nonce not found in session.".to_string()));
     }
 
-    // Verify that a user id is set
-    match session.get::<String>(&USER_ID_KEY).await {
-        Ok(Some(_)) => {}
-        // Invalid nonce
-        Ok(None) | Err(_) => {
-            return Err(AppError::AuthError("Failed to get user id.".to_string()));
-        }
+    // Check for user ID
+    if session
+        .get::<String>(&USER_ID_KEY)
+        .await
+        .map_err(|e| AppError::AuthError(format!("Failed to get user id: {}", e)))?
+        .is_none()
+    {
+        return Err(AppError::AuthError("User ID not found in session.".to_string()));
+    }
+
+    // Check for expiration
+    let expiry = session.expiry_date();
+    let now = OffsetDateTime::now_utc();
+    if now > expiry {
+        return Err(AppError::AuthError("Session has expired.".to_string()));
     }
 
     Ok(())
@@ -197,32 +202,11 @@ pub(crate) async fn verify_session(session: &Session) -> Result<(), AppError> {
 
 /// Update the session expiry to the current time.
 pub(crate) async fn update_session_expiry(session: &Session) -> Result<(), AppError> {
-    // Make sure we don't inherit a dirty session expiry
-    let ts = match unix_timestamp() {
-        Ok(ts) => ts,
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get unix timestamp.".to_string(),
-            ))));
-        }
-    };
+    // Set the new session expiry to 3 weeks from now
+    let new_expiry = OffsetDateTime::now_utc() + time::Duration::weeks(3);
 
-    // Add 3 weeks to the expiry
-    let ts = ts + 1814400;
-
-    // Insert the new expiration time into the session
-    match session.insert(&EXPIRATION_TIME_KEY, ts).await {
-        Ok(_) => {}
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to set expiration.".to_string(),
-            ))));
-        }
-    }
-
-    // Update the session expiry
-    let expiry = Expiry::AtDateTime(OffsetDateTime::from_unix_timestamp(ts as i64).unwrap());
-    session.set_expiry(Some(expiry));
+    // Set the session expiry
+    session.set_expiry(Some(Expiry::AtDateTime(new_expiry)));
 
     Ok(())
 }

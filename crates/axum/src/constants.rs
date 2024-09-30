@@ -23,10 +23,6 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static ref EXPIRATION_TIME_KEY: &'static str = "expirationTime";
-}
-
-lazy_static! {
     pub static ref USER_ID_KEY: &'static str = "userId";
 }
 

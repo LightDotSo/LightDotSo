@@ -563,3 +563,9 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
         }
     }
 }
+
+impl std::fmt::Debug for RouteError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "RouteError: {:?}", self)
+    }
+}
