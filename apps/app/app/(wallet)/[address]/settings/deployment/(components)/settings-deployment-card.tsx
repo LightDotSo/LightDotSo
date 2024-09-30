@@ -19,7 +19,8 @@ import { TITLES } from "@/const";
 import {
   CONTRACT_ADDRESSES,
   ContractAddress,
-  LATEST_IMPLEMENTATION_ADDRESS,
+  LATEST_WALLET_FACTORY_ADDRESS,
+  LATEST_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
@@ -205,7 +206,14 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   }, [image_hash, salt, wallet]);
 
   const callData = useMemo(() => {
-    if (implementationAddress === LATEST_IMPLEMENTATION_ADDRESS) {
+    if (
+      // If the contract is already the latest implementation
+      implementationAddress === LATEST_WALLET_FACTORY_IMPLEMENTATION_ADDRESS ||
+      // If the contract is not yet deployed, but the factory address is not the latest version
+      (!implementationAddress &&
+        wallet?.factory_address === LATEST_WALLET_FACTORY_ADDRESS)
+    ) {
+      // Return an empty call data for the upgrade
       return "0x";
     }
 
@@ -232,11 +240,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
               type: "function",
             },
           ],
-          args: [LATEST_IMPLEMENTATION_ADDRESS],
+          args: [LATEST_WALLET_FACTORY_IMPLEMENTATION_ADDRESS],
         }),
       ],
     });
-  }, [implementationAddress, address]);
+  }, [implementationAddress, wallet?.factory_address, address]);
 
   const isDisabled = useMemo(() => {
     return isLoading || (deployedOp && callData === "0x") || !isDeployable;
