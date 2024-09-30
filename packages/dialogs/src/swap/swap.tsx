@@ -18,7 +18,7 @@ import type { TokenData } from "@lightdotso/data";
 import { ChainStack } from "@lightdotso/elements/chain-stack";
 import { TokenImage } from "@lightdotso/elements/token-image";
 import {
-  type QuoteParams,
+  type QuoteProps,
   useDebouncedValue,
   useQuote,
   useTokenPrice,
@@ -65,7 +65,7 @@ type SwapFormValues = z.infer<typeof swapFormSchema>;
 // Props
 // -----------------------------------------------------------------------------
 
-export type SwapFetcherProps = QuoteParams;
+export type SwapFetcherProps = QuoteProps;
 
 // -----------------------------------------------------------------------------
 // Component
