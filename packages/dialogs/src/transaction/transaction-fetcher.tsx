@@ -14,14 +14,21 @@
 
 "use client";
 
-import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
-import { useDebouncedValue } from "@lightdotso/hooks";
+import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
+import {
+  useDebouncedValue,
+  useProxyImplementationAddress,
+} from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
-  useQueryPaymasterGasAndPaymasterAndData,
+  useQueryPaymasterGasAndPaymasterAndDataV06,
   useQueryPaymasterOperation,
   useQueryUserOperationEstimateFeesPerGas,
-  useQueryUserOperationEstimateGas,
+  useQueryUserOperationEstimateGasV06,
   useQueryUserOperationNonce,
   useQueryUserOperations,
   useQueryWallet,
@@ -124,6 +131,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const implementationAddress = useProxyImplementationAddress({
+    address: address as Address,
+    chainId: Number(initialUserOperation.chainId),
+  });
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -165,6 +181,19 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isEntryPointV06 = useMemo(() => {
+    return (
+      implementationAddress ===
+        CONTRACT_ADDRESSES[
+          ContractAddress.LIGHT_WALLET_FACTORY_V010_IMPLEMENTATION
+        ] ||
+      implementationAddress ===
+        CONTRACT_ADDRESSES[
+          ContractAddress.LIGHT_WALLET_FACTORY_V020_IMPLEMENTATION
+        ]
+    );
+  }, [implementationAddress]);
 
   /// This is the initial boolean to check if the initial fetch is done
   /// The `entryPointNonce` and `userOperationNonce` are required to compute the `updatedMinimumNonce`
@@ -280,13 +309,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas,
     verificationGasLimit,
     isUserOperationEstimateGasLoading,
-  } = useQueryUserOperationEstimateGas({
-    sender: address as Address,
-    chainId: targetUserOperation?.chainId,
-    nonce: targetUserOperation?.nonce,
-    initCode: targetUserOperation?.initCode,
-    callData: targetUserOperation?.callData,
-  });
+  } = useQueryUserOperationEstimateGasV06(
+    {
+      sender: address as Address,
+      chainId: targetUserOperation?.chainId,
+      nonce: targetUserOperation?.nonce,
+      initCode: targetUserOperation?.initCode,
+      callData: targetUserOperation?.callData,
+    },
+    isEntryPointV06,
+  );
+
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("callGasLimit", callGasLimit);
   // biome-ignore lint/suspicious/noConsole: <explanation>
@@ -381,18 +414,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGas: gasAndPaymasterPreVerificationGas,
     verificationGasLimit: gasAndPaymasterVerificationGasLimit,
     isGasAndPaymasterAndDataLoading,
-  } = useQueryPaymasterGasAndPaymasterAndData({
-    sender: address as Address,
-    chainId: debouncedUserOperation?.chainId,
-    nonce: debouncedUserOperation?.nonce,
-    initCode: debouncedUserOperation?.initCode,
-    callData: debouncedUserOperation?.callData,
-    callGasLimit: debouncedUserOperation?.callGasLimit,
-    preVerificationGas: debouncedUserOperation?.preVerificationGas,
-    verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
-    maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
-    maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
-  });
+  } = useQueryPaymasterGasAndPaymasterAndDataV06(
+    {
+      sender: address as Address,
+      chainId: debouncedUserOperation?.chainId,
+      nonce: debouncedUserOperation?.nonce,
+      initCode: debouncedUserOperation?.initCode,
+      callData: debouncedUserOperation?.callData,
+      callGasLimit: debouncedUserOperation?.callGasLimit,
+      preVerificationGas: debouncedUserOperation?.preVerificationGas,
+      verificationGasLimit: debouncedUserOperation?.verificationGasLimit,
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+    },
+    isEntryPointV06,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -518,7 +554,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             // biome-ignore lint/style/noNonNullAssertion: <explanation>
             findContractAddressByAddress(wallet?.factory_address as Address)!
           ],
-        entryPointVersion: "0.6",
+        entryPointVersion:
+          WALLET_FACTORY_ENTRYPOINT_MAPPING[
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            findContractAddressByAddress(wallet?.factory_address as Address)!
+          ] === CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS]
+            ? "0.6"
+            : "0.7",
       });
 
       // Don't update the user operation if the hash is same as the previous one

@@ -25,7 +25,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryPaymasterGasAndPaymasterAndData = (
+export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
   params: RpcPaymasterGasAndPaymasterAndDataParams,
 ) => {
   // ---------------------------------------------------------------------------

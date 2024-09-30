@@ -25,8 +25,9 @@ import { USER_OPERATION_CONFIG } from "./config";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryUserOperationEstimateGas = (
+export const useQueryUserOperationEstimateGasV06 = (
   params: RpcEstimateUserOperationGasParams,
+  isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -45,6 +46,7 @@ export const useQueryUserOperationEstimateGas = (
   } = useQuery<EstimateUserOperationGasData | null>({
     ...USER_OPERATION_CONFIG,
     retry: 10,
+    enabled: isEnabled,
     queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params?.chainId,
       nonce: params?.nonce,

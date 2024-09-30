@@ -35,7 +35,7 @@ import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationSend = (
+export const useMutationUserOperationSendV07 = (
   params: UserOperationSendParams,
 ) => {
   // ---------------------------------------------------------------------------
