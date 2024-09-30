@@ -14,9 +14,11 @@
 
 "use client";
 
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSendV06,
+  useMutationUserOperationSendV07,
   useQueryConfiguration,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
@@ -25,6 +27,7 @@ import {
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi/generated";
 import { useCallback, useMemo } from "react";
 import type { Address, Hex } from "viem";
+import { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 
 // -----------------------------------------------------------------------------
 // Hook Props
@@ -59,6 +62,15 @@ export const useUserOperationSend = ({
   });
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("User operation", userOperation);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const implementationAddress = useProxyImplementationAddress({
+    address: address as Address,
+    chainId: userOperation?.chain_id ?? 0,
+  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -104,6 +116,13 @@ export const useUserOperationSend = ({
       hash: userOperation?.hash as Hex,
     });
 
+  const { userOperationSendV07, isUserOperationSendV07Pending } =
+    useMutationUserOperationSendV07({
+      address: address as Address,
+      configuration: configuration,
+      hash: userOperation?.hash as Hex,
+    });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -123,16 +142,21 @@ export const useUserOperationSend = ({
       : false;
   }, [userOperation, userOperationSignature, configuration]);
 
+  const isUserOperationSendPending = useMemo(
+    () => isUserOperationSendV06Pending || isUserOperationSendV07Pending,
+    [isUserOperationSendV06Pending, isUserOperationSendV07Pending],
+  );
+
   const isUserOperationSendLoading = useMemo(
     () =>
       isQueueUserOperationPending ||
-      isUserOperationSendV06Pending ||
+      isUserOperationSendPending ||
       isUserOperationLoading ||
       isUserOperationSignatureLoading ||
       isUserOperationReceiptLoading,
     [
       isQueueUserOperationPending,
-      isUserOperationSendV06Pending,
+      isUserOperationSendPending,
       isUserOperationLoading,
       isUserOperationSignatureLoading,
       isUserOperationReceiptLoading,
@@ -219,11 +243,33 @@ export const useUserOperationSend = ({
 
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("Sending user operation", hash);
+
     // Send the user operation if the user operation hasn't been sent yet
-    userOperationSendV06({
-      userOperation: userOperation,
-      userOperationSignature: userOperationSignature as Hex,
-    });
+    if (
+      implementationAddress ===
+        CONTRACT_ADDRESSES[
+          ContractAddress.LIGHT_WALLET_FACTORY_V010_IMPLEMENTATION
+        ] ||
+      implementationAddress ===
+        CONTRACT_ADDRESSES[
+          ContractAddress.LIGHT_WALLET_FACTORY_V020_IMPLEMENTATION
+        ]
+    ) {
+      userOperationSendV06({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
+    } else if (
+      implementationAddress ===
+      CONTRACT_ADDRESSES[
+        ContractAddress.LIGHT_WALLET_FACTORY_V030_IMPLEMENTATION
+      ]
+    ) {
+      userOperationSendV07({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
+    }
   }, [isUserOperationSendReady, userOperationReceipt, userOperationSignature]);
 
   // ---------------------------------------------------------------------------
@@ -235,7 +281,7 @@ export const useUserOperationSend = ({
     isUserOperationSendValid: isUserOperationSendValid,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendPending: isUserOperationSendV06Pending,
+    isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
     isUserOperationSendReady: isUserOperationSendReady,
   };

@@ -2677,6 +2677,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
