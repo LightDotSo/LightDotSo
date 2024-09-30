@@ -36,7 +36,7 @@
     "@lightdotso/contracts": "workspace:*",
     "@wagmi/core": "^2.13.8",
     "connectkit": "^1.8.2",
-    "viem": "^2.21.15",
+    "viem": "^2.21.16",
     "wagmi": "^2.12.16"
   },
   "devDependencies": {
