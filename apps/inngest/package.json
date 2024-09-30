@@ -20,7 +20,6 @@
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3005/api/inngest --port 8288",
     "dev:next": "next dev --port 3005",
-    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },
