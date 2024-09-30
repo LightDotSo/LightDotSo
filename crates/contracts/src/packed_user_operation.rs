@@ -182,17 +182,17 @@ mod tests {
         // entrypoint contract getUserOpHash() function with entrypoint address
         // at 0x0000000071727De22E5E9d8BAf0edAc6f37da032 and chain ID 31337.
 
-        // Hash: 0x91ef802f7a8398c7a15fcdfdeca881955d647b6c1a57febab614e9a40cf54a8b
+        // Hash: 0x6a157b366d1289770e4c5b3b2e929003e263fb245eee9ea8150f252d2db4dd3c
         let operation = PackedUserOperation {
             sender: "0x1306b01bC3e4AD202612D3843387e94737673F53".parse().unwrap(),
             nonce: U256::from(8942),
-            factory: Some("0x6942069420694206942069420694206942069420".parse().unwrap()),
+            factory: Some("0x1306b01bC3e4AD202612D3843387e94737673F53".parse().unwrap()),
             factory_data: Some("0x0000000000000000000000000000000000000000080085".parse().unwrap()),
             call_data: "0x0000000000000000000000000000000000000000080085".parse().unwrap(),
-            call_gas_limit: U256::from(10000),
+            call_gas_limit: U256::from(100000),
             verification_gas_limit: U256::from(100000),
             pre_verification_gas: U256::from(100),
-            max_fee_per_gas: U256::from(99999),
+            max_fee_per_gas: U256::from(9999999),
             max_priority_fee_per_gas: U256::from(9999999),
             paymaster: Some("0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap()),
             paymaster_verification_gas_limit: Some(U256::from(100000)),
@@ -208,17 +208,14 @@ mod tests {
         let chain_id = 31337;
         let hash = operation.op_hash(entry_point, chain_id);
 
-        assert_eq!(
-            format!("{:x}", operation.init_code()),
-            "0x69420694206942069420694206942069420694200000000000000000000000000000000000000000080085"
-        );
+        assert_eq!(format!("{:x}", operation.init_code()), "0x1306b01bc3e4ad202612d3843387e94737673f530000000000000000000000000000000000000000080085");
         assert_eq!(
             format!("{:x}", operation.paymaster_and_data()),
             "0x000000000018d32df916ff115a25fbefc70baf8b000000000000000000000000000186a0000000000000000000000000000186a00000000000000000000000000000000000000000080085"
         );
         assert_eq!(
             format!("0x{:x}", hash),
-            "0x91ef802f7a8398c7a15fcdfdeca881955d647b6c1a57febab614e9a40cf54a8b"
+            "0x6a157b366d1289770e4c5b3b2e929003e263fb245eee9ea8150f252d2db4dd3c"
         );
     }
 }

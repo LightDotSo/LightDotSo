@@ -94,11 +94,11 @@ contract EntrypointGetHashUnitTest is BaseTest {
         address sender = address(0x1306b01bC3e4AD202612D3843387e94737673F53);
         uint256 nonce = 8942;
         bytes memory initCode =
-            hex"69420694206942069420694206942069420694200000000000000000000000000000000000000000080085";
+            hex"1306b01bC3e4AD202612D3843387e94737673F530000000000000000000000000000000000000000080085";
         bytes memory callData = hex"0000000000000000000000000000000000000000080085";
-        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(10000, 100000);
+        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(100000, 100000);
         uint256 preVerificationGas = 100;
-        bytes32 gasFees = ERC4337Utils.packGasFees(99999, 9999999);
+        bytes32 gasFees = ERC4337Utils.packGasFees(9999999, 9999999);
         bytes memory paymasterAndData = ERC4337Utils.packPaymasterAndData(
             address(0x000000000018d32DF916ff115A25fbeFC70bAf8b),
             100000,
@@ -136,6 +136,6 @@ contract EntrypointGetHashUnitTest is BaseTest {
         // solhint-disable-next-line no-console
         console.logBytes32(hash);
 
-        assertEq(hash, bytes32(0x01fbca3fb8147c7e348bc8273b59ed6e04501e265648fe104f206f80e3b848f9));
+        assertEq(hash, bytes32(0x6a157b366d1289770e4c5b3b2e929003e263fb245eee9ea8150f252d2db4dd3c));
     }
 }
