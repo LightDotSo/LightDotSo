@@ -842,7 +842,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     fetchHashAndUpdatePackedOperation();
   }, [
     // Sole dependency is the updated user operation w/ paymaster and data values
-    finalizedUserOperation,
+    finalizedPackedUserOperation,
   ]);
 
   // ---------------------------------------------------------------------------
