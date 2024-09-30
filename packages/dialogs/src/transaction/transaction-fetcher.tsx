@@ -336,7 +336,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      initCode: targetUserOperation?.initCode,
+      factory: targetUserOperation?.initCode?.slice(2).slice(0, 20),
+      factoryData: targetUserOperation?.initCode?.slice(2).slice(20),
       callData: targetUserOperation?.callData,
     },
     isEntryPointV07,
@@ -415,11 +416,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       initCode: targetUserOperation?.initCode,
       nonce: targetUserOperation?.nonce,
       callData: targetUserOperation?.callData,
-      maxFeePerGas: maxFeePerGas,
-      maxPriorityFeePerGas: maxPriorityFeePerGas,
       callGasLimit: callGasLimit,
       preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
     };
   }, [
     // Only gas limits and fees are required to compute the gas limits
@@ -490,11 +491,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       factory: factory,
       factoryData: factoryData,
       callData: targetUserOperation?.callData,
-      maxFeePerGas: maxFeePerGas,
-      maxPriorityFeePerGas: maxPriorityFeePerGas,
       callGasLimit: callGasLimit,
       preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
     };
   }, [
     maxFeePerGas,
@@ -567,11 +568,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: debouncedPackedUserOperation?.chainId,
       nonce: debouncedPackedUserOperation?.nonce,
-      // initCode: debouncedPackedUserOperation?.initCode,
+      factory: debouncedPackedUserOperation?.factory,
+      factoryData: debouncedPackedUserOperation?.factoryData,
       callData: debouncedPackedUserOperation?.callData,
       callGasLimit: debouncedPackedUserOperation?.callGasLimit,
       preVerificationGas: debouncedPackedUserOperation?.preVerificationGas,
       verificationGasLimit: debouncedPackedUserOperation?.verificationGasLimit,
+      maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedPackedUserOperation?.maxPriorityFeePerGas,
     },
     isEntryPointV07,
   );
@@ -612,11 +616,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     return {
       sender: debouncedUserOperation?.sender,
       chainId: debouncedUserOperation?.chainId,
-      initCode: debouncedUserOperation?.initCode,
       nonce: debouncedUserOperation?.nonce,
+      initCode: debouncedUserOperation?.initCode,
       callData: debouncedUserOperation?.callData,
-      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
-      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
       callGasLimit:
         gasAndPaymasterCallGasLimitV06 ?? debouncedUserOperation?.callGasLimit,
       preVerificationGas:
@@ -625,6 +627,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit:
         gasAndPaymasterVerificationGasLimitV06 ??
         debouncedUserOperation?.verificationGasLimit,
+      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
       paymasterAndData: paymasterAndDataV06,
     };
   }, [

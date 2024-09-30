@@ -15,7 +15,7 @@
 import { estimateUserOperationGasV07 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV07 } from "@lightdotso/data";
-import type { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
+import type { RpcEstimateUserOperationGasV07Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationEstimateGasV07 = (
-  params: RpcEstimateUserOperationGasParams,
+  params: RpcEstimateUserOperationGasV07Params,
   isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
@@ -61,8 +61,9 @@ export const useQueryUserOperationEstimateGasV07 = (
         !params?.chainId ||
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
-        !params?.initCode ||
         !params?.sender ||
+        !params?.factory ||
+        !params?.factoryData ||
         !params?.callData
       ) {
         return null;
@@ -74,9 +75,9 @@ export const useQueryUserOperationEstimateGasV07 = (
           {
             sender: params?.sender,
             nonce: toHex(params?.nonce),
-            factory: params?.factory,
-            factoryData: params?.factoryData,
-            callData: params?.callData,
+            factory: toHex(params?.factory),
+            factoryData: toHex(params?.factoryData),
+            callData: toHex(params?.callData),
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },

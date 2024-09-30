@@ -15,7 +15,7 @@
 import { estimateUserOperationGasV06 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV06 } from "@lightdotso/data";
-import type { RpcEstimateUserOperationGasParams } from "@lightdotso/params";
+import type { RpcEstimateUserOperationGasV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationEstimateGasV06 = (
-  params: RpcEstimateUserOperationGasParams,
+  params: RpcEstimateUserOperationGasV06Params,
   isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
