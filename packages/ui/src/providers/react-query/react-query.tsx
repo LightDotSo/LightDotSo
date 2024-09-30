@@ -91,15 +91,13 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
   // Opt-in for non-blocking way to prefetch data, rather than a complex waterfall strategy w/ streaming
   // Ideally, `useQuery` should be coupled with `useSuspenseQuery` to allow for prefetch `use`, but okay for now
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        {/* <ReactQueryStreamedHydration transformer={superjson}>
+    <QueryClientProvider client={queryClient}>
+      {children}
+      {/* <ReactQueryStreamedHydration transformer={superjson}>
         {children}
         </ReactQueryStreamedHydration> */}
-        <ReactQueryWrapper />
-      </QueryClientProvider>
-    </>
+      <ReactQueryWrapper />
+    </QueryClientProvider>
   );
 };
 

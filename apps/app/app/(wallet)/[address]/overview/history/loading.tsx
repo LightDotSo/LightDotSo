@@ -23,14 +23,12 @@ import { transactionColumns } from "@lightdotso/tables/transaction/columns";
 
 export function Loading() {
   return (
-    <>
-      <TransactionTable
-        isLoading
-        data={[]}
-        columns={transactionColumns}
-        pageSize={10}
-      />
-    </>
+    <TransactionTable
+      isLoading
+      data={[]}
+      columns={transactionColumns}
+      pageSize={10}
+    />
   );
 }
 
