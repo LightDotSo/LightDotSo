@@ -240,10 +240,8 @@ pub async fn construct_packed_user_operation(
             .is_some_and(|verification_gas_limit| verification_gas_limit > U256::ZERO) &&
         packed_user_operation
             .call_gas_limit
-            .is_some_and(|call_gas_limit| call_gas_limit > U256::ZERO) &&
-        packed_user_operation.paymaster_verification_gas_limit.is_some_and(
-            |paymaster_verification_gas_limit| paymaster_verification_gas_limit > U256::ZERO,
-        ) {
+            .is_some_and(|call_gas_limit| call_gas_limit > U256::ZERO)
+    {
         warn!("Overriding the gas estimation for the user operation");
         PackedEstimateResult {
             pre_verification_gas: packed_user_operation

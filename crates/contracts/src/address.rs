@@ -14,6 +14,8 @@
 
 #![allow(clippy::unwrap_used)]
 
+use std::collections::HashMap;
+
 use alloy::primitives::Address;
 use lazy_static::lazy_static;
 
@@ -148,6 +150,20 @@ lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
       *LIGHT_WALLET_FACTORY_IMPLEMENTATION_V030_ADDRESS;
+}
+
+// The hashmap from the factory to the implementation
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_MAPPING: HashMap<Address, Address> = {
+        let mut map = HashMap::new();
+
+        map.insert(*LIGHT_WALLET_FACTORY_V010_ADDRESS, *LIGHT_WALLET_FACTORY_IMPLEMENTATION_V010_ADDRESS);
+        map.insert(*LIGHT_WALLET_FACTORY_V020_ADDRESS, *LIGHT_WALLET_FACTORY_IMPLEMENTATION_V020_ADDRESS);
+        map.insert(*LIGHT_WALLET_FACTORY_V030_ADDRESS, *LIGHT_WALLET_FACTORY_IMPLEMENTATION_V030_ADDRESS);
+
+        map
+    };
 }
 
 // The example wallet addresses
