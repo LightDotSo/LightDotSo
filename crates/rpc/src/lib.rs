@@ -37,7 +37,10 @@ use axum::{
     response::IntoResponse,
 };
 use http_body_util::BodyExt;
-use lightdotso_contracts::{address::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
+use lightdotso_contracts::{
+    address::{ENTRYPOINT_V060_ADDRESS, ENTRYPOINT_V070_ADDRESS},
+    types::{PackedUserOperationRequest, UserOperationRequest},
+};
 use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_kafka::{
@@ -496,12 +499,41 @@ pub async fn rpc_proxy_handler(
                     if let Some(resp) = result {
                         return resp;
                     }
-                } else {
-                    warn!("Error while deserializing body_json_result: {:?}", body_json_result);
-                    return Response::builder()
-                        .status(400)
-                        .body(Body::from(body_json_result.unwrap_err().to_string()))
-                        .unwrap();
+                }
+
+                // Deserialize w/ serde_json
+                let body_json_result = serde_json::from_slice::<
+                    JSONRPCRequest<Vec<PackedUserOperationRequest>>,
+                >(&body_bytes.clone());
+
+                if let Ok(body_json) = body_json_result {
+                    // Get the user_operation from the body
+                    let packed_user_operation = body_json.params;
+                    let params = vec![
+                        json!(packed_user_operation[0]),
+                        json!(format!("{:?}", *ENTRYPOINT_V070_ADDRESS)),
+                        json!(chain_id),
+                    ];
+
+                    let req_body = json!({
+                        "jsonrpc": "2.0",
+                        "method": method.as_str(),
+                        "params": params.clone(),
+                        "id": 1
+                    });
+                    // Convert the params to hyper Body
+                    let mut hyper_body = Body::from(req_body.to_string());
+
+                    // Get the result from the client
+                    let result = get_client_result(
+                        PAYMASTER_RPC_URL.to_string(),
+                        client.clone(),
+                        &mut hyper_body,
+                    )
+                    .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
                 }
             }
             &_ => {}

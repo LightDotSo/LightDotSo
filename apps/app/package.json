@@ -79,7 +79,7 @@
     "@upstash/edge-flags": "^0.1.3",
     "@upstash/kafka": "^1.3.5",
     "@upstash/ratelimit": "^2.0.3",
-    "@upstash/redis": "^1.34.0",
+    "@upstash/redis": "^1.34.1",
     "@vercel/toolbar": "^0.1.22",
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",

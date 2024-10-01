@@ -48,11 +48,11 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
     retry: 10,
     enabled: isEnabled,
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data_v07({
+      sender: params?.sender,
       chainId: params?.chainId,
       nonce: params?.nonce,
       factory: params?.factory,
       factoryData: params?.factoryData,
-      sender: params?.sender,
       callData: params?.callData,
       callGasLimit: params?.callGasLimit,
       verificationGasLimit: params?.verificationGasLimit,

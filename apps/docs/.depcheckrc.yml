@@ -6,8 +6,6 @@ ignores:
   - "@types/node"
   - typescript
   - "@babel/core"
-  - nextra
-  - nextra-theme-docs
   - "@types/node"
   - autoprefixer
   - postcss
