@@ -62,9 +62,23 @@ pub async fn get_gas_and_paymaster_and_data(
 pub async fn get_packed_gas_and_paymaster_and_data(
     rpc_url: String,
     entry_point: Address,
-    user_operation: &PackedUserOperationRequest,
+    packed_user_operation: &PackedUserOperationRequest,
 ) -> Result<Response<PackedGasAndPaymasterAndData>> {
-    todo!()
+    let params = vec![json!(packed_user_operation), json!(entry_point)];
+    info!("params: {:?}", params);
+
+    let req_body = Request {
+        jsonrpc: "2.0".to_string(),
+        method: "pm_sponsorUserOperation".to_string(),
+        params: params.clone(),
+        id: 1,
+    };
+
+    let client = reqwest::Client::new();
+    let response = client.post(rpc_url).json(&req_body).send().await?;
+
+    // Handle the response for the JSON-RPC API.
+    handle_response(response).await
 }
 
 /// Estimate the gas for the request w/ the internal gas API.

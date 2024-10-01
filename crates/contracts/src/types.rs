@@ -118,7 +118,7 @@ pub struct PackedGasAndPaymasterAndData {
     /// The pre verification gas.
     #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
-    /// The paymaster and data returned by the paymaster.
+    /// The paymaster address returned by the paymaster.
     #[serde(rename = "paymaster")]
     pub paymaster: Address,
     /// The paymaster verification gas limit.
@@ -166,6 +166,63 @@ impl From<PackedGasAndPaymasterAndData> for GasAndPaymasterAndData {
 // -----------------------------------------------------------------------------
 // Structs
 // -----------------------------------------------------------------------------
+
+/// The alchemy gas and paymaster and data returned by the paymaster.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AlchemyGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The max fee per gas.
+    #[serde(rename = "maxFeePerGas")]
+    pub max_fee_per_gas: U256,
+    /// The max priority fee per gas.
+    #[serde(rename = "maxPriorityFeePerGas")]
+    pub max_priority_fee_per_gas: U256,
+    /// The paymaster and data returned by the paymaster.
+    #[serde(rename = "paymasterAndData")]
+    pub paymaster_and_data: Bytes,
+}
+
+/// The alchemy packed gas and paymaster and data returned by the paymaster.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AlchemyPackedGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The max fee per gas.
+    #[serde(rename = "maxFeePerGas")]
+    pub max_fee_per_gas: U256,
+    /// The max priority fee per gas.
+    #[serde(rename = "maxPriorityFeePerGas")]
+    pub max_priority_fee_per_gas: U256,
+    /// The paymaster address returned by the paymaster.
+    #[serde(rename = "paymaster")]
+    pub paymaster: Address,
+    /// The paymaster verification gas limit.
+    #[serde(rename = "paymasterVerificationGasLimit")]
+    pub paymaster_verification_gas_limit: U256,
+    /// The paymaster post operation gas limit.
+    #[serde(rename = "paymasterPostOpGasLimit")]
+    pub paymaster_post_op_gas_limit: U256,
+    /// The paymaster data.
+    #[serde(rename = "paymasterData")]
+    pub paymaster_data: Bytes,
+}
 
 /// The biconomy gas and paymaster and data returned by the paymaster.
 #[derive(Clone, Debug, Serialize, Deserialize)]

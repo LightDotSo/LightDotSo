@@ -24,11 +24,12 @@ use crate::{
     },
     utils::{get_gas_and_paymaster_and_data, get_packed_gas_and_paymaster_and_data},
 };
+use alchemy::get_packed_alchemy_paymaster_and_data;
 use alloy::primitives::Address;
 use eyre::{eyre, Result};
 use lightdotso_contracts::types::{
     GasAndPaymasterAndData, GasAndPaymasterAndDataVariant, PackedGasAndPaymasterAndData,
-    PackedUserOperationRequest, UserOperationRequest, UserOperationRequestVariant,
+    UserOperationRequestVariant,
 };
 
 use lightdotso_jsonrpsee::error::JsonRpcError;
@@ -145,7 +146,28 @@ pub async fn fetch_gas_and_paymaster_and_data_variant(
                     warn!("Failed to fetch user operation sponsorship from particle network");
                 }
             }
-            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+            UserOperationRequestVariant::Packed(packed_user_operation) => {
+                let sponsorship = get_packed_gas_and_paymaster_and_data(
+                    format!(
+                        "{}?chainId={}&projectUuid={}&projectKey={}",
+                        *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
+                        chain_id,
+                        particle_network_project_id,
+                        particle_network_paymaster_project_key
+                    ),
+                    entry_point,
+                    &packed_user_operation,
+                )
+                .await
+                .map_err(JsonRpcError::from);
+
+                // If the sponsorship is successful, return the result.
+                if let Ok(sponsorship_data) = sponsorship {
+                    return Ok(GasAndPaymasterAndDataVariant::Packed(sponsorship_data.result));
+                } else {
+                    warn!("Failed to fetch user operation sponsorship from particle network");
+                }
+            }
         };
     }
 
@@ -174,13 +196,9 @@ pub async fn fetch_gas_and_paymaster_and_data_variant(
                     if let Ok(sponsorship_data) = sponsorship {
                         let gas_and_paymaster_and_data = GasAndPaymasterAndData {
                             paymaster_and_data: sponsorship_data.result.paymaster_and_data,
-                            call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
-                            verification_gas_limit: user_operation
-                                .verification_gas_limit
-                                .unwrap_or_default(),
-                            pre_verification_gas: user_operation
-                                .pre_verification_gas
-                                .unwrap_or_default(),
+                            call_gas_limit: sponsorship_data.result.call_gas_limit,
+                            verification_gas_limit: sponsorship_data.result.verification_gas_limit,
+                            pre_verification_gas: sponsorship_data.result.pre_verification_gas,
                         };
                         return Ok(GasAndPaymasterAndDataVariant::Default(
                             gas_and_paymaster_and_data,
@@ -191,7 +209,41 @@ pub async fn fetch_gas_and_paymaster_and_data_variant(
                     }
                 }
             }
-            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+            UserOperationRequestVariant::Packed(packed_user_operation) => {
+                // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
+                if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
+                    let sponsorship = get_packed_alchemy_paymaster_and_data(
+                        format!("{}{}", alchemy_rpc_url, alchemy_api_key),
+                        entry_point,
+                        &packed_user_operation,
+                        (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
+                    )
+                    .await
+                    .map_err(JsonRpcError::from);
+
+                    // If the sponsorship is successful, return the result.
+                    if let Ok(sponsorship_data) = sponsorship {
+                        let packed_gas_and_paymaster_and_data = PackedGasAndPaymasterAndData {
+                            call_gas_limit: sponsorship_data.result.call_gas_limit,
+                            verification_gas_limit: sponsorship_data.result.verification_gas_limit,
+                            pre_verification_gas: sponsorship_data.result.pre_verification_gas,
+                            paymaster: sponsorship_data.result.paymaster,
+                            paymaster_verification_gas_limit: sponsorship_data
+                                .result
+                                .paymaster_verification_gas_limit,
+                            paymaster_post_op_gas_limit: sponsorship_data
+                                .result
+                                .paymaster_post_op_gas_limit,
+                            paymaster_data: sponsorship_data.result.paymaster_data,
+                        };
+                        return Ok(GasAndPaymasterAndDataVariant::Packed(
+                            packed_gas_and_paymaster_and_data,
+                        ));
+                    } else {
+                        warn!("Failed to fetch user operation sponsorship from alchemy");
+                    }
+                }
+            }
         };
     }
 
@@ -235,7 +287,9 @@ pub async fn fetch_gas_and_paymaster_and_data_variant(
                     }
                 }
             }
-            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+            UserOperationRequestVariant::Packed(_) => {
+                warn!("Packed user operation is not supported by biconomy");
+            }
         };
     }
 
