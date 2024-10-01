@@ -26,7 +26,10 @@ use crate::{
 };
 use alloy::primitives::Address;
 use eyre::{eyre, Result};
-use lightdotso_contracts::types::{GasAndPaymasterAndData, UserOperationRequest};
+use lightdotso_contracts::types::{
+    GasAndPaymasterAndData, PackedGasAndPaymasterAndData, PackedUserOperationRequest,
+    UserOperationRequest,
+};
 
 use lightdotso_jsonrpsee::error::JsonRpcError;
 use lightdotso_rpc::constants::{ALCHEMY_RPC_URLS, PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
@@ -183,4 +186,13 @@ pub async fn fetch_gas_and_paymaster_and_data(
 
     // If the sponsorship is not successful, return error.
     Err(eyre!("Failed to fetch user operation sponsorship"))
+}
+
+// Retryable sponsorship fetch function.
+pub async fn fetch_packed_gas_and_paymaster_and_data(
+    packed_user_operation: PackedUserOperationRequest,
+    entry_point: Address,
+    chain_id: u64,
+) -> Result<PackedGasAndPaymasterAndData> {
+    todo!()
 }

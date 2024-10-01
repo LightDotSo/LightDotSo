@@ -17,7 +17,7 @@ use alloy::primitives::Address;
 use async_trait::async_trait;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{
-    GasAndPaymasterAndData, PaymasterAndData, UserOperationRequestVariant,
+    GasAndPaymasterAndDataVariant, PaymasterAndData, UserOperationRequestVariant,
 };
 
 #[async_trait]
@@ -37,7 +37,7 @@ impl PaymasterApiServer for PaymasterApi {
         user_operation: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<GasAndPaymasterAndData> {
+    ) -> RpcResult<GasAndPaymasterAndDataVariant> {
         Ok(PaymasterApi::request_gas_and_paymaster_and_data(
             self,
             user_operation,

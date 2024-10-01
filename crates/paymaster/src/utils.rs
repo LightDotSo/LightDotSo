@@ -175,7 +175,7 @@ pub async fn construct_user_operation(
 }
 
 /// Construct the packed user operation.
-pub fn construct_packed_user_operation(
+pub async fn construct_packed_user_operation(
     _chain_id: u64,
     _user_operation: PackedUserOperationRequest,
     _entry_point: Address,

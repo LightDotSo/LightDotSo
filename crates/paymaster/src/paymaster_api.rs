@@ -15,7 +15,7 @@
 use alloy::primitives::Address;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 use lightdotso_contracts::types::{
-    GasAndPaymasterAndData, PaymasterAndData, UserOperationRequestVariant,
+    GasAndPaymasterAndDataVariant, PaymasterAndData, UserOperationRequestVariant,
 };
 
 #[rpc(client, server, namespace = "paymaster")]
@@ -35,5 +35,5 @@ pub trait PaymasterApi {
         user_operation: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<GasAndPaymasterAndData>;
+    ) -> RpcResult<GasAndPaymasterAndDataVariant>;
 }

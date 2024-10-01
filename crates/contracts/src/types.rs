@@ -83,6 +83,7 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaymasterAndData {
+    /// The paymaster and data returned by the paymaster.
     pub paymaster_and_data: Bytes,
 }
 
@@ -90,28 +91,99 @@ pub struct PaymasterAndData {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GasAndPaymasterAndData {
+    /// The call gas limit.
     #[serde(rename = "callGasLimit")]
     pub call_gas_limit: U256,
+    /// The verification gas limit.
     #[serde(rename = "verificationGasLimit")]
     pub verification_gas_limit: U256,
+    /// The pre verification gas.
     #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
+    /// The paymaster and data returned by the paymaster.
     #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
 }
+
+/// The gas and paymaster and data returned by the paymaster for v0.7.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The paymaster and data returned by the paymaster.
+    #[serde(rename = "paymaster")]
+    pub paymaster: Address,
+    /// The paymaster verification gas limit.
+    #[serde(rename = "paymasterVerificationGasLimit")]
+    pub paymaster_verification_gas_limit: U256,
+    /// The paymaster post operation gas limit.
+    #[serde(rename = "paymasterPostOpGasLimit")]
+    pub paymaster_post_op_gas_limit: U256,
+    /// The paymaster data.
+    #[serde(rename = "paymasterData")]
+    pub paymaster_data: Bytes,
+}
+
+/// The gas and paymaster and data variant
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GasAndPaymasterAndDataVariant {
+    Default(GasAndPaymasterAndData),
+    Packed(PackedGasAndPaymasterAndData),
+}
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
+
+impl From<PackedGasAndPaymasterAndData> for GasAndPaymasterAndData {
+    fn from(packed: PackedGasAndPaymasterAndData) -> Self {
+        let mut paymaster_and_data = Vec::with_capacity(20 + 16 + 16 + packed.paymaster_data.len());
+        paymaster_and_data.extend_from_slice(packed.paymaster.as_slice());
+        paymaster_and_data
+            .extend_from_slice(&packed.paymaster_verification_gas_limit.to_be_bytes::<16>());
+        paymaster_and_data
+            .extend_from_slice(&packed.paymaster_post_op_gas_limit.to_be_bytes::<16>());
+        paymaster_and_data.extend_from_slice(&packed.paymaster_data);
+
+        GasAndPaymasterAndData {
+            call_gas_limit: packed.call_gas_limit,
+            verification_gas_limit: packed.verification_gas_limit,
+            pre_verification_gas: packed.pre_verification_gas,
+            paymaster_and_data: Bytes::from(paymaster_and_data),
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
 
 /// The biconomy gas and paymaster and data returned by the paymaster.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BiconomyGasAndPaymasterAndData {
+    /// The call gas limit.
     #[serde(rename = "callGasLimit")]
     pub call_gas_limit: U256,
+    /// The verification gas limit.
     #[serde(rename = "verificationGasLimit")]
     pub verification_gas_limit: U256,
+    /// The pre verification gas.
     #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
+    /// The paymaster and data returned by the paymaster.
     #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
+    /// The mode of the paymaster.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mode: Option<String>,
 }
@@ -299,11 +371,49 @@ impl From<UserOperation> for PackedUserOperation {
     }
 }
 
+impl From<PackedUserOperation> for UserOperation {
+    fn from(packed: PackedUserOperation) -> Self {
+        let paymaster_and_data = if let (
+            Some(paymaster),
+            Some(verification_gas_limit),
+            Some(post_op_gas_limit),
+            Some(data),
+        ) = (
+            packed.paymaster,
+            packed.paymaster_verification_gas_limit,
+            packed.paymaster_post_op_gas_limit,
+            packed.paymaster_data,
+        ) {
+            let mut buffer = Vec::with_capacity(20 + 16 + 16 + data.len());
+            buffer.extend_from_slice(paymaster.as_slice());
+            buffer.extend_from_slice(&verification_gas_limit.to_be_bytes::<16>());
+            buffer.extend_from_slice(&post_op_gas_limit.to_be_bytes::<16>());
+            buffer.extend_from_slice(&data);
+            Bytes::from(buffer)
+        } else {
+            Bytes::default()
+        };
+        Self {
+            sender: packed.sender,
+            nonce: packed.nonce,
+            init_code: packed.factory_data.unwrap_or_default(),
+            call_data: packed.call_data,
+            call_gas_limit: packed.call_gas_limit,
+            verification_gas_limit: packed.verification_gas_limit,
+            pre_verification_gas: packed.pre_verification_gas,
+            max_fee_per_gas: packed.max_fee_per_gas,
+            max_priority_fee_per_gas: packed.max_priority_fee_per_gas,
+            paymaster_and_data,
+            signature: packed.signature,
+        }
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Structs
 // -----------------------------------------------------------------------------
 
-/// User operation required for the request.
+/// User operation required for the request. (v0.6 without paymaster)
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationRequest {
@@ -320,7 +430,7 @@ pub struct UserOperationRequest {
     pub signature: Bytes,
 }
 
-/// Packed user operation required for the request.
+/// Packed user operation required for the request. (v0.7 with paymaster)
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PackedUserOperationRequest {

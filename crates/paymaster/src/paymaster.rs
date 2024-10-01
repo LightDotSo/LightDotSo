@@ -15,13 +15,15 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    billing_operation::create_billing_operation_msg, services::fetch_gas_and_paymaster_and_data,
-    utils::construct_user_operation,
+    billing_operation::create_billing_operation_msg,
+    services::{fetch_gas_and_paymaster_and_data, fetch_packed_gas_and_paymaster_and_data},
+    utils::{construct_packed_user_operation, construct_user_operation},
 };
 use alloy::primitives::Address;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{
-    GasAndPaymasterAndData, PaymasterAndData, UserOperationRequestVariant,
+    GasAndPaymasterAndData, GasAndPaymasterAndDataVariant, PaymasterAndData,
+    UserOperationRequestVariant,
 };
 use lightdotso_jsonrpsee::error::JsonRpcError;
 use lightdotso_tracing::tracing::info;
@@ -46,7 +48,21 @@ impl PaymasterApi {
     ) -> RpcResult<PaymasterAndData> {
         let res =
             self.request_gas_and_paymaster_and_data(user_operation, entry_point, chain_id).await?;
-        Ok(PaymasterAndData { paymaster_and_data: res.paymaster_and_data })
+        match res {
+            GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data) => {
+                Ok(PaymasterAndData {
+                    paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data,
+                })
+            }
+            GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data) => {
+                let gas_and_paymaster_and_data: GasAndPaymasterAndData =
+                    packed_gas_and_paymaster_and_data.into();
+
+                Ok(PaymasterAndData {
+                    paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data,
+                })
+            }
+        }
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
@@ -54,7 +70,7 @@ impl PaymasterApi {
         user_operation: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<GasAndPaymasterAndData> {
+    ) -> RpcResult<GasAndPaymasterAndDataVariant> {
         match user_operation {
             UserOperationRequestVariant::Default(uor) => {
                 // Construct the user operation w/ rpc.
@@ -62,7 +78,7 @@ impl PaymasterApi {
                     .await
                     .map_err(JsonRpcError::from)?;
                 // Log the construct in hex.
-                info!("construct: {:?}", user_operation);
+                info!("user_operation: {:?}", user_operation);
 
                 // Get the paymaster operation sponsor.
                 let gas_and_paymaster_and_data =
@@ -79,10 +95,33 @@ impl PaymasterApi {
                 .await
                 .map_err(JsonRpcError::from)?;
 
-                Ok(gas_and_paymaster_and_data)
+                Ok(GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data))
             }
-            UserOperationRequestVariant::Packed(_puor) => {
-                todo!()
+            UserOperationRequestVariant::Packed(puor) => {
+                // Construct the packed user operation w/ rpc.
+                let packed_user_operation =
+                    construct_packed_user_operation(chain_id, puor.clone(), entry_point)
+                        .await
+                        .map_err(JsonRpcError::from)?;
+                // Log the packed_user_operation in hex.
+                info!("packed_user_operation: {:?}", packed_user_operation);
+
+                // Get the paymaster operation sponsor.
+                let packed_gas_and_paymaster_and_data =
+                    fetch_packed_gas_and_paymaster_and_data(puor, entry_point, chain_id)
+                        .await
+                        .map_err(JsonRpcError::from)?;
+
+                // Write the paymaster operation to the database.
+                create_billing_operation_msg(
+                    chain_id,
+                    packed_user_operation.into(),
+                    packed_gas_and_paymaster_and_data.clone().into(),
+                )
+                .await
+                .map_err(JsonRpcError::from)?;
+
+                Ok(GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data))
             }
         }
     }
