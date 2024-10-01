@@ -240,8 +240,10 @@ pub async fn construct_packed_user_operation(
             .is_some_and(|verification_gas_limit| verification_gas_limit > U256::ZERO) &&
         packed_user_operation
             .call_gas_limit
-            .is_some_and(|call_gas_limit| call_gas_limit > U256::ZERO)
-    {
+            .is_some_and(|call_gas_limit| call_gas_limit > U256::ZERO) &&
+        packed_user_operation.paymaster_verification_gas_limit.is_some_and(
+            |paymaster_verification_gas_limit| paymaster_verification_gas_limit > U256::ZERO,
+        ) {
         warn!("Overriding the gas estimation for the user operation");
         PackedEstimateResult {
             pre_verification_gas: packed_user_operation
@@ -293,14 +295,12 @@ pub async fn construct_packed_user_operation(
                 .max_priority_fee_per_gas
                 .unwrap_or_default(),
             signature: packed_user_operation.clone().signature,
-            paymaster: packed_user_operation.clone().paymaster,
+            paymaster: None,
             paymaster_verification_gas_limit: Some(
-                packed_user_operation.clone().paymaster_verification_gas_limit.unwrap_or_default(),
+                estimated_packed_user_operation_gas.paymaster_verification_gas_limit,
             ),
-            paymaster_post_op_gas_limit: Some(
-                packed_user_operation.clone().paymaster_post_op_gas_limit.unwrap_or_default(),
-            ),
-            paymaster_data: packed_user_operation.clone().paymaster_data,
+            paymaster_post_op_gas_limit: None,
+            paymaster_data: None,
         });
     }
 
@@ -319,13 +319,11 @@ pub async fn construct_packed_user_operation(
         max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
         max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
         signature: packed_user_operation.clone().signature,
-        paymaster: packed_user_operation.clone().paymaster,
+        paymaster: None,
         paymaster_verification_gas_limit: Some(
-            packed_user_operation.clone().paymaster_verification_gas_limit.unwrap_or_default(),
+            estimated_packed_user_operation_gas.paymaster_verification_gas_limit,
         ),
-        paymaster_post_op_gas_limit: Some(
-            packed_user_operation.clone().paymaster_post_op_gas_limit.unwrap_or_default(),
-        ),
-        paymaster_data: packed_user_operation.clone().paymaster_data,
+        paymaster_post_op_gas_limit: None,
+        paymaster_data: None,
     })
 }
