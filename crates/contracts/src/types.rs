@@ -474,16 +474,27 @@ impl From<PackedUserOperation> for UserOperation {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationRequest {
+    /// The sender.
     pub sender: Address,
+    /// The nonce.
     pub nonce: U256,
+    /// The init code.
     pub init_code: Bytes,
+    /// The call data.
     pub call_data: Bytes,
+    /// The call gas limit.
     pub call_gas_limit: Option<U256>,
+    /// The verification gas limit.
     pub verification_gas_limit: Option<U256>,
+    /// The pre verification gas.
     pub pre_verification_gas: Option<U256>,
+    /// The maximum fee per gas.
     pub max_fee_per_gas: Option<U256>,
+    /// The maximum priority fee per gas.
     pub max_priority_fee_per_gas: Option<U256>,
+    /// The paymaster and data.
     pub paymaster_and_data: Option<Bytes>,
+    /// The signature.
     pub signature: Bytes,
 }
 
@@ -491,20 +502,35 @@ pub struct UserOperationRequest {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PackedUserOperationRequest {
+    /// The sender.
     pub sender: Address,
+    /// The nonce.
     pub nonce: U256,
+    /// The factory.
     pub factory: Option<Address>,
+    /// The factory data.
     pub factory_data: Option<Bytes>,
+    /// The call data.
     pub call_data: Bytes,
+    /// The call gas limit.
     pub call_gas_limit: Option<U256>,
+    /// The verification gas limit.
     pub verification_gas_limit: Option<U256>,
+    /// The pre verification gas.
     pub pre_verification_gas: Option<U256>,
+    /// The maximum fee per gas.
     pub max_fee_per_gas: Option<U256>,
+    /// The maximum priority fee per gas.
     pub max_priority_fee_per_gas: Option<U256>,
+    /// The paymaster.
     pub paymaster: Option<Address>,
+    /// The paymaster verification gas limit.
     pub paymaster_verification_gas_limit: Option<U256>,
+    /// The paymaster post operation gas limit.
     pub paymaster_post_op_gas_limit: Option<U256>,
+    /// The paymaster data.
     pub paymaster_data: Option<Bytes>,
+    /// The signature.
     pub signature: Bytes,
 }
 
@@ -512,7 +538,9 @@ pub struct PackedUserOperationRequest {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UserOperationRequestVariant {
+    /// The user operation request.
     Default(UserOperationRequest),
+    /// The packed user operation request.
     Packed(PackedUserOperationRequest),
 }
 
@@ -521,9 +549,26 @@ pub enum UserOperationRequestVariant {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EstimateResult {
+    /// The pre verification gas.
     pub pre_verification_gas: U256,
+    /// The verification gas limit.
     pub verification_gas_limit: U256,
+    /// The call gas limit.
     pub call_gas_limit: U256,
+}
+
+/// The estimate result for the packed user operation.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedEstimateResult {
+    /// The pre verification gas.
+    pub pre_verification_gas: U256,
+    /// The verification gas limit.
+    pub verification_gas_limit: U256,
+    /// The call gas limit.
+    pub call_gas_limit: U256,
+    /// The paymaster verification gas limit.
+    pub paymaster_verification_gas_limit: U256,
 }
 
 // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/primitives/src/user_operation/mod.rs#L423-L441
@@ -533,18 +578,28 @@ pub struct EstimateResult {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationReceipt {
+    /// The user operation hash.
     #[serde(rename = "userOpHash")]
     pub user_operation_hash: B256,
+    /// The sender.
     pub sender: Address,
+    /// The nonce.
     pub nonce: U256,
+    /// The paymaster.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub paymaster: Option<Address>,
+    /// The actual gas cost.
     pub actual_gas_cost: U256,
+    /// The actual gas used.
     pub actual_gas_used: U256,
+    /// The success.
     pub success: bool,
+    /// The reason.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
+    /// The logs.
     pub logs: Vec<Log>,
+    /// The transaction receipt.
     #[serde(rename = "receipt")]
     pub tx_receipt: TransactionReceipt,
 }
