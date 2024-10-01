@@ -38,6 +38,9 @@ jobs:
       matrix:
         app: [app, explorer, home]
         # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+    env:
+      VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
+      NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -74,6 +77,8 @@ jobs:
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
       - name: Vercel Build Production
         if: ${{ github.event_name == 'push' }}
         working-directory: apps/${{ matrix.app }}
@@ -81,6 +86,8 @@ jobs:
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
       - name: Vercel Deploy Preview
         if: ${{ github.event_name == 'pull_request' }}
         working-directory: apps/${{ matrix.app }}
@@ -88,6 +95,8 @@ jobs:
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
       - name: Vercel Deploy Production
         if: ${{ github.event_name == 'push' }}
         working-directory: apps/${{ matrix.app }}
@@ -95,6 +104,8 @@ jobs:
           vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
       - name: Clean Up Env
         if: always()
         working-directory: apps/${{ matrix.app }}
