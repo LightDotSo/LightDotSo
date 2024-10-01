@@ -83,7 +83,6 @@ jobs:
           NEXT_PUBLIC_VERCEL_ENV: production
       - if: github.event_name != 'push'
         name: Vercel Build Preview
-        working-directory: apps/${{ matrix.app }}
         run: |
           vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
@@ -93,7 +92,6 @@ jobs:
           NEXT_PUBLIC_VERCEL_ENV: preview
       - if: github.event_name == 'push'
         name: Vercel Build Production
-        working-directory: apps/${{ matrix.app }}
         run: |
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
@@ -103,7 +101,6 @@ jobs:
           NEXT_PUBLIC_VERCEL_ENV: production
       - if: github.event_name != 'push'
         name: Vercel Deploy Preview
-        working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
@@ -112,7 +109,6 @@ jobs:
           NEXT_PUBLIC_VERCEL_ENV: preview
       - if: github.event_name == 'push'
         name: Vercel Deploy Production
-        working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
