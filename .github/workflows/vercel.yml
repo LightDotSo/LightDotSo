@@ -95,6 +95,11 @@ jobs:
           vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Clean Up Environment Variables
+        if: always()
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          rm -rf .env
   vercel-check:
     needs:
       - vercel-turbo
