@@ -521,9 +521,26 @@ pub enum UserOperationRequestVariant {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EstimateResult {
+    /// The pre verification gas.
     pub pre_verification_gas: U256,
+    /// The verification gas limit.
     pub verification_gas_limit: U256,
+    /// The call gas limit.
     pub call_gas_limit: U256,
+}
+
+/// The estimate result for the packed user operation.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedEstimateResult {
+    /// The pre verification gas.
+    pub pre_verification_gas: U256,
+    /// The verification gas limit.
+    pub verification_gas_limit: U256,
+    /// The call gas limit.
+    pub call_gas_limit: U256,
+    /// The paymaster verification gas limit.
+    pub paymaster_verification_gas_limit: U256,
 }
 
 // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/primitives/src/user_operation/mod.rs#L423-L441
