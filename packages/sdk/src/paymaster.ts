@@ -13,7 +13,13 @@
 // limitations under the License.
 
 import { type Result, err, ok } from "neverthrow";
-import { type Address, type Hex, fromBytes, isAddressEqual } from "viem";
+import {
+  type Address,
+  type Hex,
+  fromBytes,
+  isAddress,
+  isAddressEqual,
+} from "viem";
 import { fromHex } from "viem/utils";
 import { toHexPadded } from "./utils";
 
@@ -76,7 +82,7 @@ export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
   paymasterPostOpGasLimit: bigint | null;
   paymasterData: Hex | null;
 } {
-  if (paymasterAndData === "0x") {
+  if (paymasterAndData === "0x" || paymasterAndData.slice(2).length < 104) {
     return {
       paymaster: null,
       paymasterVerificationGasLimit: null,
@@ -85,16 +91,16 @@ export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
     };
   }
 
-  const paymaster = `0x${paymasterAndData.slice(2).slice(0, 20)}` as Hex;
+  const paymaster = `0x${paymasterAndData.slice(2).slice(0, 40)}` as Hex;
   const paymasterVerificationGasLimit = fromHex(
-    `0x${paymasterAndData.slice(2).slice(20, 28)}`,
+    `0x${paymasterAndData.slice(2).slice(40, 72)}`,
     "bigint",
   );
   const paymasterPostOpGasLimit = fromHex(
-    `0x${paymasterAndData.slice(2).slice(28, 36)}`,
+    `0x${paymasterAndData.slice(2).slice(72, 104)}`,
     "bigint",
   );
-  const paymasterData = `0x${paymasterAndData.slice(2).slice(36)}` as Hex;
+  const paymasterData = `0x${paymasterAndData.slice(2).slice(104)}` as Hex;
 
   return {
     paymaster,
@@ -113,6 +119,7 @@ export function encodePackedPaymasterAndData(
   // Check if all required parameters are provided and valid
   if (
     paymaster === "0x" ||
+    !isAddress(paymaster) ||
     typeof paymasterVerificationGasLimit === "undefined" ||
     typeof paymasterPostOpGasLimit === "undefined" ||
     !paymasterData ||

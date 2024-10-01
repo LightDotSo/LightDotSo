@@ -23,7 +23,16 @@ import {
 // -----------------------------------------------------------------------------
 
 describe("decodeInitCodeToFactoryAndFactoryData Tests", () => {
-  it("should correctly unpack valid inputs", () => {
+  it("should return null for empty init code", () => {
+    const initCode = "0x";
+    const result = decodeInitCodeToFactoryAndFactoryData(initCode);
+    expect(result).toEqual({
+      factory: null,
+      factoryData: null,
+    });
+  });
+
+  it("should correctly  valid inputs", () => {
     const initCode = "0x1234567890123456789012345678901234567890abcdef";
 
     const result = decodeInitCodeToFactoryAndFactoryData(initCode);

@@ -20,18 +20,18 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export function decodeInitCodeToFactoryAndFactoryData(initCode: Hex): {
-  factory: Hex;
-  factoryData: Hex;
+  factory: Hex | null;
+  factoryData: Hex | null;
 } {
   // Check if all required parameters are provided and valid
   if (
     initCode === "0x" ||
-    initCode.length !== 66 ||
+    initCode.length < 44 ||
     initCode.slice(0, 2) !== "0x"
   ) {
     return {
-      factory: "0x",
-      factoryData: "0x",
+      factory: null,
+      factoryData: null,
     };
   }
 

@@ -93,10 +93,14 @@ describe("decodePackedPaymasterAndData", () => {
     const postOpGasLimit = 500000n;
     const paymasterData = "0xabcdef";
 
-    const packedData = `${paymaster.slice(2)}${verificationGasLimit.toString(16).padStart(16, "0")}${postOpGasLimit.toString(16).padStart(16, "0")}${paymasterData.slice(2)}`;
-    const input = `0x${packedData}` as Hex;
+    const packedData = encodePackedPaymasterAndData(
+      paymaster,
+      verificationGasLimit,
+      postOpGasLimit,
+      paymasterData,
+    );
 
-    const result = decodePackedPaymasterAndData(input);
+    const result = decodePackedPaymasterAndData(packedData);
 
     expect(result).toEqual({
       paymaster: paymaster as Hex,
