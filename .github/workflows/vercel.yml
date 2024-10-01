@@ -46,9 +46,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Turbo Build App
-        run: |
-          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
       - name: Install Doppler
         uses: dopplerhq/cli-action@v3
       - name: Doppler Setup 
@@ -70,8 +67,22 @@ jobs:
           doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-      - name: Vercel Build Preview
-        if: ${{ github.event_name == 'pull_request' }}
+      - if: github.event_name != 'push'
+        name: Turbo Build Preview
+        run: |
+          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+        env:
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
+      - if: github.event_name == 'push'
+        name: Turbo Build Production
+        run: |
+          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+        env:
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
+      - if: github.event_name != 'push'
+        name: Vercel Build Preview
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
@@ -79,8 +90,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
-      - name: Vercel Build Production
-        if: ${{ github.event_name == 'push' }}
+      - if: github.event_name == 'push'
+        name: Vercel Build Production
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
@@ -88,8 +99,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: production
           NEXT_PUBLIC_VERCEL_ENV: production
-      - name: Vercel Deploy Preview
-        if: ${{ github.event_name == 'pull_request' }}
+      - if: github.event_name != 'push'
+        name: Vercel Deploy Preview
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
@@ -97,8 +108,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
-      - name: Vercel Deploy Production
-        if: ${{ github.event_name == 'push' }}
+      - if: github.event_name == 'push'
+        name: Vercel Deploy Production
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
@@ -106,8 +117,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: production
           NEXT_PUBLIC_VERCEL_ENV: production
-      - name: Clean Up Env
-        if: always()
+      - if: always()
+        name: Clean Up Env
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
