@@ -102,7 +102,7 @@ jobs:
       - if: github.event_name != 'push'
         name: Vercel Deploy Preview
         run: |
-          vercel deploy --prebuilt --no-wait --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
@@ -110,7 +110,7 @@ jobs:
       - if: github.event_name == 'push'
         name: Vercel Deploy Production
         run: |
-          vercel deploy --prod --prebuilt --no-wait --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --no-wait --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: production
