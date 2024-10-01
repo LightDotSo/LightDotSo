@@ -58,13 +58,13 @@ jobs:
       - name: Download Variables Preview
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=stg --no-file --format=env > .env
+          doppler secrets download --project=${{ matrix.app }} --config=stg --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
       - name: Download Variables Production
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format=env > .env
+          doppler secrets download --project=${{ matrix.app }} --config=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
       - if: github.event_name != 'push'
