@@ -77,10 +77,10 @@ export const decodePaymasterAndData = (
 };
 
 export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
-  paymaster: Hex | null;
-  paymasterVerificationGasLimit: bigint | null;
-  paymasterPostOpGasLimit: bigint | null;
-  paymasterData: Hex | null;
+  paymaster: Hex | null | undefined;
+  paymasterVerificationGasLimit: bigint | null | undefined;
+  paymasterPostOpGasLimit: bigint | null | undefined;
+  paymasterData: Hex | null | undefined;
 } {
   if (paymasterAndData === "0x" || paymasterAndData.slice(2).length < 104) {
     return {
@@ -111,16 +111,19 @@ export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
 }
 
 export function encodePackedPaymasterAndData(
-  paymaster: Hex,
-  paymasterVerificationGasLimit: bigint,
-  paymasterPostOpGasLimit: bigint,
-  paymasterData: Hex,
+  paymaster: Hex | null | undefined,
+  paymasterVerificationGasLimit: bigint | null | undefined,
+  paymasterPostOpGasLimit: bigint | null | undefined,
+  paymasterData: Hex | null | undefined,
 ): Hex {
   // Check if all required parameters are provided and valid
   if (
+    !paymaster ||
     paymaster === "0x" ||
     !isAddress(paymaster) ||
+    !paymasterVerificationGasLimit ||
     typeof paymasterVerificationGasLimit === "undefined" ||
+    !paymasterPostOpGasLimit ||
     typeof paymasterPostOpGasLimit === "undefined" ||
     !paymasterData ||
     paymasterData === "0x"
@@ -129,7 +132,7 @@ export function encodePackedPaymasterAndData(
   }
 
   // Process each component
-  const paymasterHex = paymaster.slice(2);
+  const paymasterHex = paymaster?.slice(2);
   const verificationGasLimitHex = toHexPadded(
     paymasterVerificationGasLimit,
     16,

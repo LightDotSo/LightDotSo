@@ -19,15 +19,17 @@ import { isAddress } from "viem";
 // Utils
 // -----------------------------------------------------------------------------
 
-export function decodeInitCodeToFactoryAndFactoryData(initCode: Hex): {
-  factory: Hex | null;
-  factoryData: Hex | null;
-} {
+export const decodeInitCodeToFactoryAndFactoryData = (
+  initCode: Hex | null | undefined,
+): {
+  factory: Hex | null | undefined;
+  factoryData: Hex | null | undefined;
+} => {
   // Check if all required parameters are provided and valid
   if (
     initCode === "0x" ||
-    initCode.length < 44 ||
-    initCode.slice(0, 2) !== "0x"
+    (initCode && initCode?.length < 44) ||
+    (initCode && initCode?.slice(0, 2) !== "0x")
   ) {
     return {
       factory: null,
@@ -36,22 +38,24 @@ export function decodeInitCodeToFactoryAndFactoryData(initCode: Hex): {
   }
 
   // Process each component
-  const factoryHex = `0x${initCode.slice(2, 42)}` as Hex;
-  const factoryDataHex = `0x${initCode.slice(42)}` as Hex;
+  const factoryHex = `0x${initCode?.slice(2, 42)}` as Hex;
+  const factoryDataHex = `0x${initCode?.slice(42)}` as Hex;
 
   return {
     factory: factoryHex,
     factoryData: factoryDataHex,
   };
-}
+};
 
-export function encodeFactoryAndFactoryDataToInitCode(
-  factory: Hex,
-  factoryData: Hex,
-): Hex {
+export const encodeFactoryAndFactoryDataToInitCode = (
+  factory: Hex | null | undefined,
+  factoryData: Hex | null | undefined,
+): Hex => {
   // Check if all required parameters are provided and valid
   if (
+    !factory ||
     factory === "0x" ||
+    !factoryData ||
     factoryData === "0x" ||
     !isAddress(factory) ||
     factory.length !== 42 ||
@@ -61,5 +65,5 @@ export function encodeFactoryAndFactoryDataToInitCode(
     return "0x";
   }
 
-  return `0x${factory.slice(2)}${factoryData.slice(2)}` as Hex;
-}
+  return `0x${factory?.slice(2)}${factoryData?.slice(2)}` as Hex;
+};
