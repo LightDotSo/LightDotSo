@@ -58,13 +58,13 @@ jobs:
       - name: Download Variables Preview
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=stg --no-file --format env > .env
+          doppler secrets download --project=${{ matrix.app }} --env=stg --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
       - name: Download Variables Production
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format env > .env
+          doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
       - name: Vercel Build Preview
@@ -103,6 +103,7 @@ jobs:
   vercel-check:
     needs:
       - vercel-turbo
+      - vercel-deploy
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 3
