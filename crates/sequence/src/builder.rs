@@ -54,6 +54,10 @@ pub fn rooted_node_builder(members: Vec<SignerNode>) -> Result<SignerNode> {
     Ok(acc)
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use crate::{

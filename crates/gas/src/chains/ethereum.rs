@@ -65,6 +65,10 @@ pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimationParam
     Ok(response.data.into())
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use super::*;

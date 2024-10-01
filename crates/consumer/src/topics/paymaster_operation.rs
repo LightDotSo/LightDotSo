@@ -27,6 +27,10 @@ use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn paymaster_operation_consumer(
     producer: Arc<FutureProducer>,
     msg: &BorrowedMessage<'_>,

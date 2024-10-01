@@ -14,7 +14,7 @@
 
 use clap::Parser;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct RpcArgs {
     /// The infura API key
     #[clap(long, env = "INFURA_API_KEY")]

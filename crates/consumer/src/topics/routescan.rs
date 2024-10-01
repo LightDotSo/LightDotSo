@@ -24,6 +24,10 @@ use lightdotso_utils::is_testnet;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();

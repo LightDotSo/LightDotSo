@@ -43,6 +43,10 @@ pub fn write_wallet_config<P: AsRef<Path>>(wallet_config: &WalletConfig, path: P
     Ok(())
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use crate::types::SignerNode;

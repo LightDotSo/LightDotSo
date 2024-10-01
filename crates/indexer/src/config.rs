@@ -19,7 +19,7 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use std::sync::Arc;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct IndexerArgs {
     /// The chain id of the chain to index.
     #[arg(long, short, default_value_t = 0)]
@@ -86,6 +86,10 @@ impl IndexerArgs {
         Ok(())
     }
 }
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 #[cfg(test)]
 mod tests {

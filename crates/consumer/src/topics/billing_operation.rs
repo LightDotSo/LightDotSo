@@ -18,6 +18,10 @@ use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn billing_operation_consumer(
     billing: &Billing,
     msg: &BorrowedMessage<'_>,

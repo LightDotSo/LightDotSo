@@ -19,7 +19,7 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct BillingArgs {
     /// The flag of whether billing is live.
     #[arg(long, short, default_value_t = true)]

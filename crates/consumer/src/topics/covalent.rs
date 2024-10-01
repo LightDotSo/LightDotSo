@@ -27,6 +27,10 @@ use lightdotso_utils::is_testnet;
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn covalent_consumer(
     producer: Arc<FutureProducer>,
     msg: &BorrowedMessage<'_>,

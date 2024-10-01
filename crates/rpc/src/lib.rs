@@ -39,7 +39,7 @@ use axum::{
 use http_body_util::BodyExt;
 use lightdotso_contracts::{
     address::{ENTRYPOINT_V060_ADDRESS, ENTRYPOINT_V070_ADDRESS},
-    types::{PackedUserOperationRequest, UserOperationRequest},
+    types::UserOperationRequestVariant,
 };
 use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
@@ -467,58 +467,30 @@ pub async fn rpc_proxy_handler(
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
                 // Deserialize w/ serde_json
                 let body_json_result = serde_json::from_slice::<
-                    JSONRPCRequest<Vec<UserOperationRequest>>,
-                >(&body_bytes.clone());
+                    JSONRPCRequest<Vec<UserOperationRequestVariant>>,
+                >(&body_bytes);
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
-                    let user_operation = body_json.params;
-                    let params = vec![
-                        json!(user_operation[0]),
-                        json!(format!("{:?}", *ENTRYPOINT_V060_ADDRESS)),
-                        json!(chain_id),
-                    ];
+                    let user_operation = &body_json.params[0];
+
+                    let (entry_point, user_op_json) = match user_operation {
+                        UserOperationRequestVariant::Default(uor) => {
+                            (*ENTRYPOINT_V060_ADDRESS, json!(uor))
+                        }
+                        UserOperationRequestVariant::Packed(puor) => {
+                            (*ENTRYPOINT_V070_ADDRESS, json!(puor))
+                        }
+                    };
+
+                    let params =
+                        vec![user_op_json, json!(format!("{:?}", entry_point)), json!(chain_id)];
                     info!("params: {:?}", params);
 
                     let req_body = json!({
                         "jsonrpc": "2.0",
                         "method": method.as_str(),
-                        "params": params.clone(),
-                        "id": 1
-                    });
-                    // Convert the params to hyper Body
-                    let mut hyper_body = Body::from(req_body.to_string());
-
-                    // Get the result from the client
-                    let result = get_client_result(
-                        PAYMASTER_RPC_URL.to_string(),
-                        client.clone(),
-                        &mut hyper_body,
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-                }
-
-                // Deserialize w/ serde_json
-                let body_json_result = serde_json::from_slice::<
-                    JSONRPCRequest<Vec<PackedUserOperationRequest>>,
-                >(&body_bytes.clone());
-
-                if let Ok(body_json) = body_json_result {
-                    // Get the user_operation from the body
-                    let packed_user_operation = body_json.params;
-                    let params = vec![
-                        json!(packed_user_operation[0]),
-                        json!(format!("{:?}", *ENTRYPOINT_V070_ADDRESS)),
-                        json!(chain_id),
-                    ];
-
-                    let req_body = json!({
-                        "jsonrpc": "2.0",
-                        "method": method.as_str(),
-                        "params": params.clone(),
+                        "params": params,
                         "id": 1
                     });
                     // Convert the params to hyper Body
@@ -536,6 +508,7 @@ pub async fn rpc_proxy_handler(
                     }
                 }
             }
+
             &_ => {}
         }
     } else {

@@ -89,6 +89,10 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
     Ok(get_create2_address(factory, salt, init_code_hash))
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use crate::address::LIGHT_WALLET_FACTORY_V010_ADDRESS;

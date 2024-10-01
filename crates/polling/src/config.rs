@@ -27,7 +27,7 @@ use lightdotso_graphql::constants::{
 use lightdotso_tracing::tracing::{error, info};
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct PollingArgs {
     /// The flag of whether polling is live.
     #[arg(long, short, default_value_t = true)]

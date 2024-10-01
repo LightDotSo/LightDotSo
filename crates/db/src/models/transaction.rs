@@ -329,7 +329,7 @@ pub async fn get_transaction_with_logs(
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DbTransactionLogs {
     pub transaction: transaction::Data,
     pub logs: Vec<Log>,

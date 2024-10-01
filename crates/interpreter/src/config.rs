@@ -21,7 +21,7 @@ use eyre::Result;
 use lightdotso_simulator::types::SimulationRequest;
 use lightdotso_tracing::tracing::info;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct InterpreterArgs {}
 
 impl InterpreterArgs {

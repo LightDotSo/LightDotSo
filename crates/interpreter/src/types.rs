@@ -21,7 +21,7 @@ use serde::{Deserialize, Serialize};
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationRequest {
     /// Block number of the request
     pub block_number: Option<u64>,
@@ -59,7 +59,7 @@ impl Default for InterpretationRequest {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationResponse {
     /// Chain ID of the interpretation
     pub chain_id: u64,
@@ -97,7 +97,7 @@ impl Default for InterpretationResponse {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationAction {
     /// The action that was interpreted
     pub action_type: InterpretationActionType,
@@ -105,7 +105,7 @@ pub struct InterpretationAction {
     pub address: Option<Address>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct AdapterResponse {
     /// Actions that were interpreted
     pub actions: Vec<InterpretationAction>,
@@ -113,7 +113,7 @@ pub struct AdapterResponse {
     pub asset_changes: Vec<AssetChange>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct AssetChange {
     /// Address of the asset holder
     pub address: Address,
@@ -129,7 +129,7 @@ pub struct AssetChange {
     pub token: AssetToken,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct AssetToken {
     /// Address of the token
     pub address: Address,
@@ -139,7 +139,7 @@ pub struct AssetToken {
     pub token_type: AssetTokenType,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub enum AssetTokenType {
     /// ERC20 token
     Erc20,
@@ -151,7 +151,7 @@ pub enum AssetTokenType {
     Other,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct CallTrace {
     /// The type of the call
     pub call_type: CallKind,

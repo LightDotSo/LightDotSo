@@ -16,13 +16,11 @@
 
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
-    hex,
     primitives::{Address, Bytes, B256, U256},
     rpc::types::{Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
-use std::fmt;
 
 // -----------------------------------------------------------------------------
 // Structs
@@ -85,6 +83,7 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaymasterAndData {
+    /// The paymaster and data returned by the paymaster.
     pub paymaster_and_data: Bytes,
 }
 
@@ -92,28 +91,156 @@ pub struct PaymasterAndData {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GasAndPaymasterAndData {
+    /// The call gas limit.
     #[serde(rename = "callGasLimit")]
     pub call_gas_limit: U256,
+    /// The verification gas limit.
     #[serde(rename = "verificationGasLimit")]
     pub verification_gas_limit: U256,
+    /// The pre verification gas.
     #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
+    /// The paymaster and data returned by the paymaster.
     #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
+}
+
+/// The gas and paymaster and data returned by the paymaster for v0.7.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The paymaster address returned by the paymaster.
+    #[serde(rename = "paymaster")]
+    pub paymaster: Address,
+    /// The paymaster verification gas limit.
+    #[serde(rename = "paymasterVerificationGasLimit")]
+    pub paymaster_verification_gas_limit: U256,
+    /// The paymaster post operation gas limit.
+    #[serde(rename = "paymasterPostOpGasLimit")]
+    pub paymaster_post_op_gas_limit: U256,
+    /// The paymaster data.
+    #[serde(rename = "paymasterData")]
+    pub paymaster_data: Bytes,
+}
+
+/// The gas and paymaster and data variant
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GasAndPaymasterAndDataVariant {
+    Default(GasAndPaymasterAndData),
+    Packed(PackedGasAndPaymasterAndData),
+}
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
+
+impl From<PackedGasAndPaymasterAndData> for GasAndPaymasterAndData {
+    fn from(packed: PackedGasAndPaymasterAndData) -> Self {
+        let mut paymaster_and_data = Vec::with_capacity(20 + 16 + 16 + packed.paymaster_data.len());
+        paymaster_and_data.extend_from_slice(packed.paymaster.as_slice());
+        paymaster_and_data
+            .extend_from_slice(&packed.paymaster_verification_gas_limit.to_be_bytes::<16>());
+        paymaster_and_data
+            .extend_from_slice(&packed.paymaster_post_op_gas_limit.to_be_bytes::<16>());
+        paymaster_and_data.extend_from_slice(&packed.paymaster_data);
+
+        GasAndPaymasterAndData {
+            call_gas_limit: packed.call_gas_limit,
+            verification_gas_limit: packed.verification_gas_limit,
+            pre_verification_gas: packed.pre_verification_gas,
+            paymaster_and_data: Bytes::from(paymaster_and_data),
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
+
+/// The alchemy gas and paymaster and data returned by the paymaster.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AlchemyGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The max fee per gas.
+    #[serde(rename = "maxFeePerGas")]
+    pub max_fee_per_gas: U256,
+    /// The max priority fee per gas.
+    #[serde(rename = "maxPriorityFeePerGas")]
+    pub max_priority_fee_per_gas: U256,
+    /// The paymaster and data returned by the paymaster.
+    #[serde(rename = "paymasterAndData")]
+    pub paymaster_and_data: Bytes,
+}
+
+/// The alchemy packed gas and paymaster and data returned by the paymaster.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AlchemyPackedGasAndPaymasterAndData {
+    /// The call gas limit.
+    #[serde(rename = "callGasLimit")]
+    pub call_gas_limit: U256,
+    /// The verification gas limit.
+    #[serde(rename = "verificationGasLimit")]
+    pub verification_gas_limit: U256,
+    /// The pre verification gas.
+    #[serde(rename = "preVerificationGas")]
+    pub pre_verification_gas: U256,
+    /// The max fee per gas.
+    #[serde(rename = "maxFeePerGas")]
+    pub max_fee_per_gas: U256,
+    /// The max priority fee per gas.
+    #[serde(rename = "maxPriorityFeePerGas")]
+    pub max_priority_fee_per_gas: U256,
+    /// The paymaster address returned by the paymaster.
+    #[serde(rename = "paymaster")]
+    pub paymaster: Address,
+    /// The paymaster verification gas limit.
+    #[serde(rename = "paymasterVerificationGasLimit")]
+    pub paymaster_verification_gas_limit: U256,
+    /// The paymaster post operation gas limit.
+    #[serde(rename = "paymasterPostOpGasLimit")]
+    pub paymaster_post_op_gas_limit: U256,
+    /// The paymaster data.
+    #[serde(rename = "paymasterData")]
+    pub paymaster_data: Bytes,
 }
 
 /// The biconomy gas and paymaster and data returned by the paymaster.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BiconomyGasAndPaymasterAndData {
+    /// The call gas limit.
     #[serde(rename = "callGasLimit")]
     pub call_gas_limit: U256,
+    /// The verification gas limit.
     #[serde(rename = "verificationGasLimit")]
     pub verification_gas_limit: U256,
+    /// The pre verification gas.
     #[serde(rename = "preVerificationGas")]
     pub pre_verification_gas: U256,
+    /// The paymaster and data returned by the paymaster.
     #[serde(rename = "paymasterAndData")]
     pub paymaster_and_data: Bytes,
+    /// The mode of the paymaster.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mode: Option<String>,
 }
@@ -121,7 +248,7 @@ pub struct BiconomyGasAndPaymasterAndData {
 // From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L48-L76
 // License: MIT
 /// [`UserOperation`] in the spec: Entry Point V0.6
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperation {
     /// The address of the smart contract account
@@ -148,6 +275,10 @@ pub struct UserOperation {
     /// Used to validate a UserOperation along with the nonce during verification
     pub signature: Bytes,
 }
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
 impl From<UserOperation> for EntryPointUserOperation {
     fn from(user_operation: UserOperation) -> Self {
@@ -185,10 +316,14 @@ impl From<user_operation::Data> for UserOperation {
     }
 }
 
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
+
 // From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L78C1-L124C2
 // License: MIT
 /// [`PackedUserOperation`] in the spec: Entry Point V0.7
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PackedUserOperation {
     /// The account making the operation.
@@ -233,6 +368,10 @@ pub struct PackedUserOperation {
     /// The signature of the transaction.
     pub signature: Bytes,
 }
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
 impl From<UserOperation> for PackedUserOperation {
     fn from(user_op: UserOperation) -> Self {
@@ -289,7 +428,49 @@ impl From<UserOperation> for PackedUserOperation {
     }
 }
 
-/// User operation required for the request.
+impl From<PackedUserOperation> for UserOperation {
+    fn from(packed: PackedUserOperation) -> Self {
+        let paymaster_and_data = if let (
+            Some(paymaster),
+            Some(verification_gas_limit),
+            Some(post_op_gas_limit),
+            Some(data),
+        ) = (
+            packed.paymaster,
+            packed.paymaster_verification_gas_limit,
+            packed.paymaster_post_op_gas_limit,
+            packed.paymaster_data,
+        ) {
+            let mut buffer = Vec::with_capacity(20 + 16 + 16 + data.len());
+            buffer.extend_from_slice(paymaster.as_slice());
+            buffer.extend_from_slice(&verification_gas_limit.to_be_bytes::<16>());
+            buffer.extend_from_slice(&post_op_gas_limit.to_be_bytes::<16>());
+            buffer.extend_from_slice(&data);
+            Bytes::from(buffer)
+        } else {
+            Bytes::default()
+        };
+        Self {
+            sender: packed.sender,
+            nonce: packed.nonce,
+            init_code: packed.factory_data.unwrap_or_default(),
+            call_data: packed.call_data,
+            call_gas_limit: packed.call_gas_limit,
+            verification_gas_limit: packed.verification_gas_limit,
+            pre_verification_gas: packed.pre_verification_gas,
+            max_fee_per_gas: packed.max_fee_per_gas,
+            max_priority_fee_per_gas: packed.max_priority_fee_per_gas,
+            paymaster_and_data,
+            signature: packed.signature,
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
+
+/// User operation required for the request. (v0.6 without paymaster)
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationRequest {
@@ -306,7 +487,7 @@ pub struct UserOperationRequest {
     pub signature: Bytes,
 }
 
-/// Packed user operation required for the request.
+/// Packed user operation required for the request. (v0.7 with paymaster)
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PackedUserOperationRequest {
@@ -327,20 +508,12 @@ pub struct PackedUserOperationRequest {
     pub signature: Bytes,
 }
 
-/// User operation required for the request.
-#[derive(Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct UserOperationConstruct {
-    pub sender: Address,
-    pub nonce: U256,
-    pub init_code: Bytes,
-    pub call_data: Bytes,
-    pub call_gas_limit: U256,
-    pub verification_gas_limit: U256,
-    pub pre_verification_gas: U256,
-    pub max_fee_per_gas: U256,
-    pub max_priority_fee_per_gas: U256,
-    pub signature: Bytes,
+/// User operation request variant
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum UserOperationRequestVariant {
+    Default(UserOperationRequest),
+    Packed(PackedUserOperationRequest),
 }
 
 /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/types.rs#L27
@@ -351,23 +524,6 @@ pub struct EstimateResult {
     pub pre_verification_gas: U256,
     pub verification_gas_limit: U256,
     pub call_gas_limit: U256,
-}
-
-impl fmt::Debug for UserOperationConstruct {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("UserOperationConstruct")
-            .field("sender", &format!("{:#x}", self.sender))
-            .field("nonce", &format!("{:#x}", self.nonce))
-            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
-            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
-            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
-            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
-            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
-            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
-            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
-            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
-            .finish()
-    }
 }
 
 // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/primitives/src/user_operation/mod.rs#L423-L441
@@ -392,6 +548,10 @@ pub struct UserOperationReceipt {
     #[serde(rename = "receipt")]
     pub tx_receipt: TransactionReceipt,
 }
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 #[cfg(test)]
 mod tests {

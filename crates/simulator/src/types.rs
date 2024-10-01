@@ -38,7 +38,7 @@ sol!(
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SimulationRequest {
     /// Chain ID of the network
     pub chain_id: u64,
@@ -56,7 +56,7 @@ pub struct SimulationRequest {
     pub block_number: Option<u64>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SimulationUserOperationRequest {
     /// Chain ID of the network
     pub chain_id: u64,
@@ -70,7 +70,7 @@ pub struct SimulationUserOperationRequest {
     pub call_data: Option<Bytes>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct SimulationResponse {
     /// Gas used by the transaction
     pub gas_used: u64,

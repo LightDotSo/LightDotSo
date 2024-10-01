@@ -17,7 +17,7 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct NodeArgs {}
 
 impl NodeArgs {

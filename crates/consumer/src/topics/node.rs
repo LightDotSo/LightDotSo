@@ -18,7 +18,7 @@ use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_contracts::{address::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet};
+use lightdotso_contracts::light_wallet::get_light_wallet;
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
 use lightdotso_node::node::Node;
@@ -26,6 +26,10 @@ use lightdotso_prisma::{configuration, PrismaClient};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
+
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
 
 pub async fn node_consumer(
     msg: &BorrowedMessage<'_>,
@@ -44,6 +48,7 @@ pub async fn node_consumer(
 
         // Get the hash from the payload
         let hash = payload.hash;
+        info!("hash: {:?}", hash);
 
         // Get the unique user operation from the db
         let (mut uop, chain_id) = get_user_operation_with_chain_id(db.clone(), hash).await?;
@@ -89,29 +94,24 @@ pub async fn node_consumer(
         // Set the signature
         uop.signature = signature.into();
 
+        // Get the entrypoint
+        let entrypoint = uop.try_valid_op_hash(chain_id, hash)?;
+
         // Simulate the user operation
-        let res_catch = node
-            .simulate_user_operation_with_backon(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop)
-            .await;
+        let res_catch = node.simulate_user_operation_with_backon(chain_id, entrypoint, &uop).await;
 
         // Log the response
         info!("res_catch: {:?}", res_catch);
 
         // Simulate the user operation with the tracer
-        let res_catch = node
-            .simulate_user_operation_with_tracer_with_backon(
-                chain_id,
-                *ENTRYPOINT_V060_ADDRESS,
-                &uop,
-            )
-            .await;
+        let res_catch =
+            node.simulate_user_operation_with_tracer_with_backon(chain_id, entrypoint, &uop).await;
 
         // Log the response
         info!("res_catch: {:?}", res_catch);
 
         // Attempt to submit the user operation to the node
-        let res =
-            node.send_user_operation_with_backon(chain_id, *ENTRYPOINT_V060_ADDRESS, &uop).await?;
+        let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await?;
 
         // Log the response
         info!("res: {:?}", res);

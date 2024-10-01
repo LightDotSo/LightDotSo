@@ -23,6 +23,10 @@ pub fn get_image_hash_salt_from_init_code(init_code: Vec<u8>) -> Result<([u8; 32
     Ok((image_hash, salt))
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use super::*;

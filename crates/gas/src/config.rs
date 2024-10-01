@@ -22,7 +22,7 @@ use std::{
     net::{IpAddr, Ipv6Addr},
 };
 
-#[derive(Debug, Clone, Parser)]
+#[derive(Clone, Debug, Parser)]
 pub struct GasArgs {}
 
 impl GasArgs {

@@ -23,7 +23,7 @@ use std::{
 
 use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 
-#[derive(Debug, Clone, Parser)]
+#[derive(Clone, Debug, Parser)]
 pub struct PaymasterArgs {
     /// The alchemy API key
     #[clap(long, env = "ALCHEMY_API_KEY")]
