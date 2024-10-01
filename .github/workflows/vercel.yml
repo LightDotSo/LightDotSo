@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Turbo Build ${{ matrix.app }}
+      - name: Turbo Build App
         run: |
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
   vercel-check:
