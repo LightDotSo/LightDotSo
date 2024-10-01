@@ -728,6 +728,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ).unwrapOr(null);
     }
   }, [finalizedUserOperation?.paymasterAndData]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("decodedPaymasterAndData", decodedPaymasterAndData);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -781,6 +783,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
         entryPointVersion: "0.6",
       });
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.info("v0.6 userOperation hash", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === userOperationWithHash?.hash) {
@@ -833,6 +837,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
         entryPointVersion: "0.7",
       });
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.info("v0.7 userOperation hash", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === packedUserOperationWithHash?.hash) {
