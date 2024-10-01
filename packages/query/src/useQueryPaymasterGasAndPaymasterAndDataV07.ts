@@ -18,7 +18,7 @@ import type { RpcPaymasterGasAndPaymasterAndDataV07Params } from "@lightdotso/pa
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery } from "@tanstack/react-query";
-import { type Address, type Hex, fromHex, toHex } from "viem";
+import { type Hex, fromHex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
 
 // -----------------------------------------------------------------------------
@@ -118,11 +118,7 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
           to: "bigint",
         })
       : undefined,
-    paymasterV07: gasAndPaymasterAndDataV07?.paymaster
-      ? (fromHex(gasAndPaymasterAndDataV07?.paymaster as Hex, {
-          to: "string",
-        }) as Address)
-      : undefined,
+    paymasterV07: gasAndPaymasterAndDataV07?.paymaster,
     paymasterVerificationGasLimitV07:
       gasAndPaymasterAndDataV07?.paymasterVerificationGasLimit
         ? fromHex(
@@ -138,11 +134,7 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
             to: "bigint",
           })
         : undefined,
-    paymasterDataV07: gasAndPaymasterAndDataV07?.paymasterData
-      ? fromHex(gasAndPaymasterAndDataV07?.paymasterData as Hex, {
-          to: "string",
-        })
-      : undefined,
+    paymasterDataV07: gasAndPaymasterAndDataV07?.paymasterData,
     isGasAndPaymasterAndDataLoadingV07: isGasAndPaymasterAndDataLoadingV07,
     gasAndPaymasterAndDataErrorV07: gasAndPaymasterAndDataErrorV07,
   };
