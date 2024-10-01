@@ -121,7 +121,7 @@ pub struct BiconomyGasAndPaymasterAndData {
 // From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L48-L76
 // License: MIT
 /// [`UserOperation`] in the spec: Entry Point V0.6
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperation {
     /// The address of the smart contract account
@@ -148,6 +148,10 @@ pub struct UserOperation {
     /// Used to validate a UserOperation along with the nonce during verification
     pub signature: Bytes,
 }
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
 impl From<UserOperation> for EntryPointUserOperation {
     fn from(user_operation: UserOperation) -> Self {
@@ -185,10 +189,14 @@ impl From<user_operation::Data> for UserOperation {
     }
 }
 
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
+
 // From: https://github.com/alloy-rs/alloy/blob/599e57751fd986a4b3fb64935e80cc512b87a018/crates/rpc-types-eth/src/erc4337.rs#L78C1-L124C2
 // License: MIT
 /// [`PackedUserOperation`] in the spec: Entry Point V0.7
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PackedUserOperation {
     /// The account making the operation.
@@ -233,6 +241,10 @@ pub struct PackedUserOperation {
     /// The signature of the transaction.
     pub signature: Bytes,
 }
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
 impl From<UserOperation> for PackedUserOperation {
     fn from(user_op: UserOperation) -> Self {
@@ -288,6 +300,10 @@ impl From<UserOperation> for PackedUserOperation {
         }
     }
 }
+
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
 
 /// User operation required for the request.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -353,6 +369,10 @@ pub struct EstimateResult {
     pub call_gas_limit: U256,
 }
 
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
+
 impl fmt::Debug for UserOperationConstruct {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("UserOperationConstruct")
@@ -392,6 +412,10 @@ pub struct UserOperationReceipt {
     #[serde(rename = "receipt")]
     pub tx_receipt: TransactionReceipt,
 }
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 #[cfg(test)]
 mod tests {

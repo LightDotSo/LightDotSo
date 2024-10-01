@@ -52,6 +52,10 @@ pub async fn get_native_token_price(symbol: String) -> Result<f64> {
 }
 
 // Write the tests
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use super::*;

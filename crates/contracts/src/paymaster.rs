@@ -119,6 +119,10 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec
     Ok((verifying_paymaster_address, valid_until, valid_after, signature))
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use super::*;

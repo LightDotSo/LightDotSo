@@ -246,6 +246,10 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
     }
 }
 
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use alloy::primitives::U256;

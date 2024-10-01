@@ -280,7 +280,7 @@ pub async fn get_user_operation_with_logs(
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DbUserOperationLogs {
     pub transaction: Option<transaction::Data>,
     pub user_operation: user_operation::Data,

@@ -37,7 +37,7 @@ use serde::Deserialize;
 // From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L5-L8
 // License: Apache-2.0
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize)]
 pub struct LogInfo {
     pub topics: Vec<String>,
     pub data: String,
@@ -46,7 +46,7 @@ pub struct LogInfo {
 // From: https://github.com/silius-rs/silius/blob/a266eb22b46a86647556c4c8248663b3e25a5235/crates/contracts/src/executor_tracer.rs#L10-L25
 // License: Apache-2.0
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize)]
 pub struct ExecutorTracerResult {
     pub reverts: Vec<String>,
     #[serde(rename = "validationOOG")]

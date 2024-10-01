@@ -17,7 +17,7 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
-#[derive(Debug, Clone, Parser, Default)]
+#[derive(Clone, Debug, Parser, Default)]
 pub struct ConsumerArgs {
     /// The group id of the consumer.
     #[arg(long, short, default_value_t = String::from(""))]
@@ -49,6 +49,10 @@ impl ConsumerArgs {
         Ok(())
     }
 }
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 #[cfg(test)]
 mod tests {

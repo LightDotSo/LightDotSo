@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DbLog {
     pub log: Log,
     pub topics: Vec<B256>,

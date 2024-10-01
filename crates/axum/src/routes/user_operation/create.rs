@@ -972,6 +972,10 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
 }
 
 // Create tests for rundler user operation
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
 #[cfg(test)]
 mod tests {
     use super::*;

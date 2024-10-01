@@ -56,7 +56,6 @@ pub async fn upsert_wallet_with_configuration(
 // Tests
 // -----------------------------------------------------------------------------
 
-// Tests
 #[cfg(test)]
 mod tests {
     use super::*;
