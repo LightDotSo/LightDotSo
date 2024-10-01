@@ -43,6 +43,11 @@ jobs:
       - name: Turbo Build App
         run: |
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+      - name: Install doppler
+        run: |
+          doppler setup --no-interactive
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
   vercel-check:
     needs:
       - vercel-turbo
