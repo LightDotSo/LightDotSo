@@ -13,30 +13,71 @@
 // limitations under the License.
 
 use eyre::Result;
-use lightdotso_contracts::types::{GasAndPaymasterAndData, UserOperation};
+use lightdotso_contracts::types::{
+    GasAndPaymasterAndData, GasAndPaymasterAndDataVariant, UserOperation,
+};
 use lightdotso_kafka::{
     get_producer, topics::paymaster_operation::produce_paymaster_operation_message,
     types::paymaster_operation::PaymasterOperationMessage,
 };
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
 // Create the billing operation message.
 pub async fn create_billing_operation_msg(
     chain_id: u64,
     user_operation: UserOperation,
-    gas_and_paymaster_and_data: GasAndPaymasterAndData,
+    gas_and_paymaster_and_data_variant: GasAndPaymasterAndDataVariant,
 ) -> Result<()> {
     // Get the producer.
     let producer = Arc::new(get_producer()?);
+
+    let call_gas_limit = match gas_and_paymaster_and_data_variant.clone() {
+        GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data) => {
+            gas_and_paymaster_and_data.call_gas_limit
+        }
+        GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data) => {
+            packed_gas_and_paymaster_and_data.call_gas_limit
+        }
+    };
+    let verification_gas_limit = match gas_and_paymaster_and_data_variant.clone() {
+        GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data) => {
+            gas_and_paymaster_and_data.verification_gas_limit
+        }
+        GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data) => {
+            packed_gas_and_paymaster_and_data.verification_gas_limit
+        }
+    };
+    let pre_verification_gas = match gas_and_paymaster_and_data_variant.clone() {
+        GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data) => {
+            gas_and_paymaster_and_data.pre_verification_gas
+        }
+        GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data) => {
+            packed_gas_and_paymaster_and_data.pre_verification_gas
+        }
+    };
+    let paymaster_and_data = match gas_and_paymaster_and_data_variant.clone() {
+        GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data) => {
+            gas_and_paymaster_and_data.paymaster_and_data
+        }
+        GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data) => {
+            let gas_and_paymaster_and_data: GasAndPaymasterAndData =
+                packed_gas_and_paymaster_and_data.into();
+            gas_and_paymaster_and_data.paymaster_and_data
+        }
+    };
 
     // Construct the paymaster operation message.
     let paymaster_operation_message = PaymasterOperationMessage {
         chain_id,
         sender: user_operation.sender,
-        call_gas_limit: gas_and_paymaster_and_data.call_gas_limit,
-        verification_gas_limit: gas_and_paymaster_and_data.verification_gas_limit,
-        pre_verification_gas: gas_and_paymaster_and_data.pre_verification_gas,
-        paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data,
+        call_gas_limit,
+        verification_gas_limit,
+        pre_verification_gas,
+        paymaster_and_data,
     };
 
     // Produce the paymaster operation message.

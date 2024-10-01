@@ -15,8 +15,8 @@
 use alloy::primitives::{Address, Bytes, U256};
 use eyre::Result;
 use lightdotso_contracts::types::{
-    EstimateResult, GasAndPaymasterAndData, PackedUserOperation, PackedUserOperationRequest,
-    UserOperation, UserOperationRequest,
+    EstimateResult, GasAndPaymasterAndData, PackedGasAndPaymasterAndData, PackedUserOperation,
+    PackedUserOperationRequest, UserOperation, UserOperationRequest,
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -56,6 +56,15 @@ pub async fn get_gas_and_paymaster_and_data(
 
     // Handle the response for the JSON-RPC API.
     handle_response(response).await
+}
+
+/// Get the packed gas and paymaster and data from the pm.
+pub async fn get_packed_gas_and_paymaster_and_data(
+    rpc_url: String,
+    entry_point: Address,
+    user_operation: &PackedUserOperationRequest,
+) -> Result<Response<PackedGasAndPaymasterAndData>> {
+    todo!()
 }
 
 /// Estimate the gas for the request w/ the internal gas API.

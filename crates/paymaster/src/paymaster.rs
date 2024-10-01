@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![allow(clippy::unwrap_used)]
-
 use crate::{
     billing_operation::create_billing_operation_msg,
-    services::{fetch_gas_and_paymaster_and_data, fetch_packed_gas_and_paymaster_and_data},
+    services::fetch_gas_and_paymaster_and_data_variant,
     utils::{construct_packed_user_operation, construct_user_operation},
 };
 use alloy::primitives::Address;
@@ -67,11 +65,11 @@ impl PaymasterApi {
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
         &self,
-        user_operation: UserOperationRequestVariant,
+        user_operation_request: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<GasAndPaymasterAndDataVariant> {
-        match user_operation {
+        match user_operation_request.clone() {
             UserOperationRequestVariant::Default(uor) => {
                 // Construct the user operation w/ rpc.
                 let user_operation = construct_user_operation(chain_id, uor.clone(), entry_point)
@@ -81,21 +79,24 @@ impl PaymasterApi {
                 info!("user_operation: {:?}", user_operation);
 
                 // Get the paymaster operation sponsor.
-                let gas_and_paymaster_and_data =
-                    fetch_gas_and_paymaster_and_data(uor, entry_point, chain_id)
-                        .await
-                        .map_err(JsonRpcError::from)?;
+                let gas_and_paymaster_and_data_variant = fetch_gas_and_paymaster_and_data_variant(
+                    user_operation_request.clone(),
+                    entry_point,
+                    chain_id,
+                )
+                .await
+                .map_err(JsonRpcError::from)?;
 
                 // Write the paymaster operation to the database.
                 create_billing_operation_msg(
                     chain_id,
                     user_operation,
-                    gas_and_paymaster_and_data.clone(),
+                    gas_and_paymaster_and_data_variant.clone(),
                 )
                 .await
                 .map_err(JsonRpcError::from)?;
 
-                Ok(GasAndPaymasterAndDataVariant::Default(gas_and_paymaster_and_data))
+                Ok(gas_and_paymaster_and_data_variant)
             }
             UserOperationRequestVariant::Packed(puor) => {
                 // Construct the packed user operation w/ rpc.
@@ -107,21 +108,24 @@ impl PaymasterApi {
                 info!("packed_user_operation: {:?}", packed_user_operation);
 
                 // Get the paymaster operation sponsor.
-                let packed_gas_and_paymaster_and_data =
-                    fetch_packed_gas_and_paymaster_and_data(puor, entry_point, chain_id)
-                        .await
-                        .map_err(JsonRpcError::from)?;
+                let gas_and_paymaster_and_data_variant = fetch_gas_and_paymaster_and_data_variant(
+                    user_operation_request.clone(),
+                    entry_point,
+                    chain_id,
+                )
+                .await
+                .map_err(JsonRpcError::from)?;
 
                 // Write the paymaster operation to the database.
                 create_billing_operation_msg(
                     chain_id,
                     packed_user_operation.into(),
-                    packed_gas_and_paymaster_and_data.clone().into(),
+                    gas_and_paymaster_and_data_variant.clone(),
                 )
                 .await
                 .map_err(JsonRpcError::from)?;
 
-                Ok(GasAndPaymasterAndDataVariant::Packed(packed_gas_and_paymaster_and_data))
+                Ok(gas_and_paymaster_and_data_variant)
             }
         }
     }

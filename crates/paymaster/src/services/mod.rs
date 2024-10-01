@@ -22,13 +22,13 @@ use crate::{
     services::{
         alchemy::get_alchemy_paymaster_and_data, biconomy::get_biconomy_paymaster_and_data,
     },
-    utils::get_gas_and_paymaster_and_data,
+    utils::{get_gas_and_paymaster_and_data, get_packed_gas_and_paymaster_and_data},
 };
 use alloy::primitives::Address;
 use eyre::{eyre, Result};
 use lightdotso_contracts::types::{
-    GasAndPaymasterAndData, PackedGasAndPaymasterAndData, PackedUserOperationRequest,
-    UserOperationRequest,
+    GasAndPaymasterAndData, GasAndPaymasterAndDataVariant, PackedGasAndPaymasterAndData,
+    PackedUserOperationRequest, UserOperationRequest, UserOperationRequestVariant,
 };
 
 use lightdotso_jsonrpsee::error::JsonRpcError;
@@ -45,11 +45,11 @@ pub mod biconomy;
 // -----------------------------------------------------------------------------
 
 // Retryable sponsorship fetch function.
-pub async fn fetch_gas_and_paymaster_and_data(
-    user_operation: UserOperationRequest,
+pub async fn fetch_gas_and_paymaster_and_data_variant(
+    user_operation_variant: UserOperationRequestVariant,
     entry_point: Address,
     chain_id: u64,
-) -> Result<GasAndPaymasterAndData> {
+) -> Result<GasAndPaymasterAndDataVariant> {
     // Get the environment variable, `PIMLICO_API_KEY`.
     let pimlico_api_key =
         std::env::var("PIMLICO_API_KEY").map_err(|_| eyre!("PIMLICO_API_KEY not set"))?;
@@ -61,27 +61,53 @@ pub async fn fetch_gas_and_paymaster_and_data(
             info!("[SPONSORSHIP]: pimlico");
             info!("pimlico policy: {:?}", policy);
 
-            let sponsorship = get_gas_and_paymaster_and_data(
-                format!("{}/{}/rpc?apikey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
-                entry_point,
-                &user_operation,
-                if !is_testnet(chain_id) {
-                    Some(json!({
-                        "sponsorshipPolicyId": policy
-                    }))
-                } else {
-                    None
-                },
-            )
-            .await
-            .map_err(JsonRpcError::from);
+            match user_operation_variant.clone() {
+                UserOperationRequestVariant::Default(user_operation) => {
+                    let sponsorship = get_gas_and_paymaster_and_data(
+                        format!(
+                            "{}/{}/rpc?apikey={}",
+                            *PIMLICO_BASE_URL, chain_id, pimlico_api_key
+                        ),
+                        entry_point,
+                        &user_operation,
+                        if !is_testnet(chain_id) {
+                            Some(json!({
+                                "sponsorshipPolicyId": policy
+                            }))
+                        } else {
+                            None
+                        },
+                    )
+                    .await
+                    .map_err(JsonRpcError::from);
 
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(sponsorship_data.result);
-            } else {
-                warn!("Failed to fetch user operation sponsorship from pimlico");
-            }
+                    // If the sponsorship is successful, return the result.
+                    if let Ok(sponsorship_data) = sponsorship {
+                        return Ok(GasAndPaymasterAndDataVariant::Default(sponsorship_data.result));
+                    } else {
+                        warn!("Failed to fetch user operation sponsorship from pimlico");
+                    }
+                }
+                UserOperationRequestVariant::Packed(packed_user_operation) => {
+                    let sponsorship = get_packed_gas_and_paymaster_and_data(
+                        format!(
+                            "{}/{}/rpc?apikey={}",
+                            *PIMLICO_BASE_URL, chain_id, pimlico_api_key
+                        ),
+                        entry_point,
+                        &packed_user_operation,
+                    )
+                    .await
+                    .map_err(JsonRpcError::from);
+
+                    // If the sponsorship is successful, return the result.
+                    if let Ok(sponsorship_data) = sponsorship {
+                        return Ok(GasAndPaymasterAndDataVariant::Packed(sponsorship_data.result));
+                    } else {
+                        warn!("Failed to fetch user operation sponsorship from pimlico");
+                    }
+                }
+            };
         }
     }
 
@@ -95,27 +121,32 @@ pub async fn fetch_gas_and_paymaster_and_data(
     if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
         info!("[SPONSORSHIP]: particle network");
 
-        let sponsorship = get_gas_and_paymaster_and_data(
-            format!(
-                "{}?chainId={}&projectUuid={}&projectKey={}",
-                *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
-                chain_id,
-                particle_network_project_id,
-                particle_network_paymaster_project_key
-            ),
-            entry_point,
-            &user_operation,
-            None,
-        )
-        .await
-        .map_err(JsonRpcError::from);
+        match user_operation_variant.clone() {
+            UserOperationRequestVariant::Default(user_operation) => {
+                let sponsorship = get_gas_and_paymaster_and_data(
+                    format!(
+                        "{}?chainId={}&projectUuid={}&projectKey={}",
+                        *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
+                        chain_id,
+                        particle_network_project_id,
+                        particle_network_paymaster_project_key
+                    ),
+                    entry_point,
+                    &user_operation,
+                    None,
+                )
+                .await
+                .map_err(JsonRpcError::from);
 
-        // If the sponsorship is successful, return the result.
-        if let Ok(sponsorship_data) = sponsorship {
-            return Ok(sponsorship_data.result);
-        } else {
-            warn!("Failed to fetch user operation sponsorship from particle network");
-        }
+                // If the sponsorship is successful, return the result.
+                if let Ok(sponsorship_data) = sponsorship {
+                    return Ok(GasAndPaymasterAndDataVariant::Default(sponsorship_data.result));
+                } else {
+                    warn!("Failed to fetch user operation sponsorship from particle network");
+                }
+            }
+            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+        };
     }
 
     // Get the environment variable, `ALCHEMY_API_KEY`.
@@ -126,73 +157,88 @@ pub async fn fetch_gas_and_paymaster_and_data(
     if (*ALCHEMY_POLICY_IDS).contains_key(&chain_id) {
         info!("[SPONSORSHIP]: alchemy");
 
-        // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
-        if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
-            let sponsorship = get_alchemy_paymaster_and_data(
-                format!("{}{}", alchemy_rpc_url, alchemy_api_key),
-                entry_point,
-                &user_operation,
-                (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
-            )
-            .await
-            .map_err(JsonRpcError::from);
+        match user_operation_variant.clone() {
+            UserOperationRequestVariant::Default(user_operation) => {
+                // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
+                if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
+                    let sponsorship = get_alchemy_paymaster_and_data(
+                        format!("{}{}", alchemy_rpc_url, alchemy_api_key),
+                        entry_point,
+                        &user_operation,
+                        (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
+                    )
+                    .await
+                    .map_err(JsonRpcError::from);
 
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(GasAndPaymasterAndData {
-                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
-                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
-                    verification_gas_limit: user_operation
-                        .verification_gas_limit
-                        .unwrap_or_default(),
-                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
-                });
-            } else {
-                warn!("Failed to fetch user operation sponsorship from alchemy");
-                // error!("{:?}", sponsorship.unwrap_err());
+                    // If the sponsorship is successful, return the result.
+                    if let Ok(sponsorship_data) = sponsorship {
+                        let gas_and_paymaster_and_data = GasAndPaymasterAndData {
+                            paymaster_and_data: sponsorship_data.result.paymaster_and_data,
+                            call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
+                            verification_gas_limit: user_operation
+                                .verification_gas_limit
+                                .unwrap_or_default(),
+                            pre_verification_gas: user_operation
+                                .pre_verification_gas
+                                .unwrap_or_default(),
+                        };
+                        return Ok(GasAndPaymasterAndDataVariant::Default(
+                            gas_and_paymaster_and_data,
+                        ));
+                    } else {
+                        warn!("Failed to fetch user operation sponsorship from alchemy");
+                        // error!("{:?}", sponsorship.unwrap_err());
+                    }
+                }
             }
-        }
+            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+        };
     }
 
     // Check if the `chain_id` is one of the key of `BICONOMY_POLICY_IDS`.
     if (*BICONOMY_POLICY_IDS).contains_key(&chain_id) {
         info!("[SPONSORSHIP]: biconomy");
 
-        // Get the alchemy rpc url from the `BICONOMY_PAYMASTER_RPC_URLS`.
-        if let Some(biconomy_rpc_url) = (*BICONOMY_PAYMASTER_RPC_URLS).get(&chain_id) {
-            let sponsorship = get_biconomy_paymaster_and_data(
-                format!("{}{}", biconomy_rpc_url, BICONOMY_POLICY_IDS.get(&chain_id).unwrap()),
-                &user_operation,
-            )
-            .await
-            .map_err(JsonRpcError::from);
+        match user_operation_variant.clone() {
+            UserOperationRequestVariant::Default(user_operation) => {
+                // Get the alchemy rpc url from the `BICONOMY_PAYMASTER_RPC_URLS`.
+                if let Some(biconomy_rpc_url) = (*BICONOMY_PAYMASTER_RPC_URLS).get(&chain_id) {
+                    let sponsorship = get_biconomy_paymaster_and_data(
+                        format!(
+                            "{}{}",
+                            biconomy_rpc_url,
+                            BICONOMY_POLICY_IDS.get(&chain_id).unwrap()
+                        ),
+                        &user_operation,
+                    )
+                    .await
+                    .map_err(JsonRpcError::from);
 
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(GasAndPaymasterAndData {
-                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
-                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
-                    verification_gas_limit: user_operation
-                        .verification_gas_limit
-                        .unwrap_or_default(),
-                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
-                });
-            } else {
-                warn!("Failed to fetch user operation sponsorship from alchemy");
-                // error!("{:?}", sponsorship.unwrap_err());
+                    // If the sponsorship is successful, return the result.
+                    if let Ok(sponsorship_data) = sponsorship {
+                        let gas_and_paymaster_and_data = GasAndPaymasterAndData {
+                            paymaster_and_data: sponsorship_data.result.paymaster_and_data,
+                            call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
+                            verification_gas_limit: user_operation
+                                .verification_gas_limit
+                                .unwrap_or_default(),
+                            pre_verification_gas: user_operation
+                                .pre_verification_gas
+                                .unwrap_or_default(),
+                        };
+                        return Ok(GasAndPaymasterAndDataVariant::Default(
+                            gas_and_paymaster_and_data,
+                        ));
+                    } else {
+                        warn!("Failed to fetch user operation sponsorship from alchemy");
+                        // error!("{:?}", sponsorship.unwrap_err());
+                    }
+                }
             }
-        }
+            UserOperationRequestVariant::Packed(packed_user_operation) => {}
+        };
     }
 
     // If the sponsorship is not successful, return error.
     Err(eyre!("Failed to fetch user operation sponsorship"))
-}
-
-// Retryable sponsorship fetch function.
-pub async fn fetch_packed_gas_and_paymaster_and_data(
-    packed_user_operation: PackedUserOperationRequest,
-    entry_point: Address,
-    chain_id: u64,
-) -> Result<PackedGasAndPaymasterAndData> {
-    todo!()
 }
