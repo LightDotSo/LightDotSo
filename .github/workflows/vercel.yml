@@ -44,11 +44,8 @@ jobs:
       - name: Turbo Build App
         run: |
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
-      - name: Install doppler
-        run: |
-          doppler setup --no-interactive
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+      - name: Install Doppler
+        uses: dopplerhq/cli-action@v3
       - name: Doppler Setup Preview
         if: ${{ github.event_name == 'pull_request' }}
         uses: dopplerhq/secrets-fetch-action@v1.2.0
