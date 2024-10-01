@@ -24,7 +24,7 @@ import packageJson from "./package.json" assert { type: "json" };
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
-    // removeConsole: process.env.VERCEL_ENV === "production",
+    removeConsole: process.env.VERCEL_ENV === "production",
   },
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/app@${packageJson.version}`,
