@@ -7,8 +7,7 @@
       "env": [
         "NODE_ENV",
         "NEXT_PUBLIC_APP_VERSION",
-        "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",
-        "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA"
+        "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"
       ],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
