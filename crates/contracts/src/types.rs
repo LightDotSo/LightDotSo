@@ -306,6 +306,27 @@ pub struct UserOperationRequest {
     pub signature: Bytes,
 }
 
+/// Packed user operation required for the request.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PackedUserOperationRequest {
+    pub sender: Address,
+    pub nonce: U256,
+    pub factory: Option<Address>,
+    pub factory_data: Option<Bytes>,
+    pub call_data: Bytes,
+    pub call_gas_limit: Option<U256>,
+    pub verification_gas_limit: Option<U256>,
+    pub pre_verification_gas: Option<U256>,
+    pub max_fee_per_gas: Option<U256>,
+    pub max_priority_fee_per_gas: Option<U256>,
+    pub paymaster: Option<Address>,
+    pub paymaster_verification_gas_limit: Option<U256>,
+    pub paymaster_post_op_gas_limit: Option<U256>,
+    pub paymaster_data: Option<Bytes>,
+    pub signature: Bytes,
+}
+
 /// User operation required for the request.
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

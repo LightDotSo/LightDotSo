@@ -660,5 +660,75 @@
         "isPath": false
       }
     ]
+  },
+  {
+    "_id": "8b16bef8-c760-44ce-a2a8-3085df5ab807",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://rpc.light.so/10",
+    "url": "https://rpc.light.so/10",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2024-09-30T17:47:15.946Z",
+    "modified": "2024-09-30T17:47:51.137Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "accept-language",
+        "value": "en,ja;q=0.9,zh;q=0.8"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "origin",
+        "value": "https://light.so"
+      },
+      {
+        "name": "priority",
+        "value": "u=1, i"
+      },
+      {
+        "name": "referer",
+        "value": "https://light.so/"
+      },
+      {
+        "name": "sec-ch-ua",
+        "value": "Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129"
+      },
+      {
+        "name": "sec-ch-ua-mobile",
+        "value": "?0"
+      },
+      {
+        "name": "sec-ch-ua-platform",
+        "value": "macOS"
+      },
+      {
+        "name": "sec-fetch-dest",
+        "value": "empty"
+      },
+      {
+        "name": "sec-fetch-mode",
+        "value": "cors"
+      },
+      {
+        "name": "sec-fetch-site",
+        "value": "same-site"
+      },
+      {
+        "name": "user-agent",
+        "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"paymaster_requestGasAndPaymasterAndData\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callData\": \"0x\",\n      \"callGasLimit\": \"0x238c\",\n      \"verificationGasLimit\": \"0x3bd8d\",\n      \"preVerificationGas\": \"0x2f14e\",\n      \"maxFeePerGas\": \"0x5b8ef3\",\n      \"maxPriorityFeePerGas\": \"0x118c30\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\"\n    }\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 52\n}",
+      "form": []
+    }
   }
 ]
