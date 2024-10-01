@@ -149,9 +149,12 @@ impl From<PackedGasAndPaymasterAndData> for GasAndPaymasterAndData {
         let mut paymaster_and_data = Vec::with_capacity(20 + 16 + 16 + packed.paymaster_data.len());
         paymaster_and_data.extend_from_slice(packed.paymaster.as_slice());
         paymaster_and_data
-            .extend_from_slice(&packed.paymaster_verification_gas_limit.to_be_bytes::<16>());
+            // Get the last 16 bytes of the verification_gas_limit
+            .extend_from_slice(
+                &packed.paymaster_verification_gas_limit.to_be_bytes::<32>()[16..32],
+            );
         paymaster_and_data
-            .extend_from_slice(&packed.paymaster_post_op_gas_limit.to_be_bytes::<16>());
+            .extend_from_slice(&packed.paymaster_post_op_gas_limit.to_be_bytes::<32>()[16..32]);
         paymaster_and_data.extend_from_slice(&packed.paymaster_data);
 
         GasAndPaymasterAndData {
@@ -430,6 +433,18 @@ impl From<UserOperation> for PackedUserOperation {
 
 impl From<PackedUserOperation> for UserOperation {
     fn from(packed: PackedUserOperation) -> Self {
+        let init_code = if let (Some(factory), factory_data) = (packed.factory, packed.factory_data)
+        {
+            let mut code = Vec::with_capacity(20 + factory_data.as_ref().map_or(0, |d| d.len()));
+            code.extend_from_slice(factory.as_slice());
+            if let Some(data) = factory_data {
+                code.extend_from_slice(&data);
+            }
+            Bytes::from(code)
+        } else {
+            Bytes::default()
+        };
+
         let paymaster_and_data = if let (
             Some(paymaster),
             Some(verification_gas_limit),
@@ -443,8 +458,8 @@ impl From<PackedUserOperation> for UserOperation {
         ) {
             let mut buffer = Vec::with_capacity(20 + 16 + 16 + data.len());
             buffer.extend_from_slice(paymaster.as_slice());
-            buffer.extend_from_slice(&verification_gas_limit.to_be_bytes::<16>());
-            buffer.extend_from_slice(&post_op_gas_limit.to_be_bytes::<16>());
+            buffer.extend_from_slice(&verification_gas_limit.to_be_bytes::<32>()[16..32]);
+            buffer.extend_from_slice(&post_op_gas_limit.to_be_bytes::<32>()[16..32]);
             buffer.extend_from_slice(&data);
             Bytes::from(buffer)
         } else {
@@ -453,7 +468,7 @@ impl From<PackedUserOperation> for UserOperation {
         Self {
             sender: packed.sender,
             nonce: packed.nonce,
-            init_code: packed.factory_data.unwrap_or_default(),
+            init_code,
             call_data: packed.call_data,
             call_gas_limit: packed.call_gas_limit,
             verification_gas_limit: packed.verification_gas_limit,
@@ -631,5 +646,96 @@ mod tests {
         let number = U256::from(1_000_000_000_000_000_000_000_000_u128);
         let result = format!("{}", number);
         assert_eq!(result, "1000000000000000000000000");
+    }
+
+    #[test]
+    fn test_user_operation_packed_conversion() {
+        // Create a UserOperation
+        let user_op = UserOperation {
+            sender: Address::from_slice(&[1u8; 20]),
+            nonce: U256::from(42),
+            init_code: Bytes::from(vec![2u8; 30]),
+            call_data: Bytes::from(vec![3u8; 50]),
+            call_gas_limit: U256::from(100000),
+            verification_gas_limit: U256::from(200000),
+            pre_verification_gas: U256::from(50000),
+            max_fee_per_gas: U256::from(1000000000),
+            max_priority_fee_per_gas: U256::from(100000000),
+            paymaster_and_data: Bytes::from(vec![4u8; 60]),
+            signature: Bytes::from(vec![5u8; 65]),
+        };
+
+        // Convert UserOperation to PackedUserOperation
+        let packed_op: PackedUserOperation = user_op.clone().into();
+
+        // Check the conversion
+        assert_eq!(packed_op.sender, user_op.sender);
+        assert_eq!(packed_op.nonce, user_op.nonce);
+        assert_eq!(packed_op.factory, Some(Address::from_slice(&user_op.init_code[..20])));
+        assert_eq!(packed_op.factory_data, Some(Bytes::copy_from_slice(&user_op.init_code[20..])));
+        assert_eq!(packed_op.call_data, user_op.call_data);
+        assert_eq!(packed_op.call_gas_limit, user_op.call_gas_limit);
+        assert_eq!(packed_op.verification_gas_limit, user_op.verification_gas_limit);
+        assert_eq!(packed_op.pre_verification_gas, user_op.pre_verification_gas);
+        assert_eq!(packed_op.max_fee_per_gas, user_op.max_fee_per_gas);
+        assert_eq!(packed_op.max_priority_fee_per_gas, user_op.max_priority_fee_per_gas);
+
+        // Check paymaster_and_data components
+        assert_eq!(
+            packed_op.paymaster,
+            Some(Address::from_slice(&user_op.paymaster_and_data[..20]))
+        );
+        assert_eq!(
+            packed_op.paymaster_verification_gas_limit,
+            Some(U256::from_be_slice(&user_op.paymaster_and_data[20..36]))
+        );
+        assert_eq!(
+            packed_op.paymaster_post_op_gas_limit,
+            Some(U256::from_be_slice(&user_op.paymaster_and_data[36..52]))
+        );
+        assert_eq!(
+            packed_op.paymaster_data,
+            Some(Bytes::copy_from_slice(&user_op.paymaster_and_data[52..]))
+        );
+
+        assert_eq!(packed_op.signature, user_op.signature);
+
+        // Convert PackedUserOperation back to UserOperation
+        let unpacked_op: UserOperation = packed_op.into();
+
+        // Check the conversion back
+        assert_eq!(unpacked_op.sender, user_op.sender);
+        assert_eq!(unpacked_op.nonce, user_op.nonce);
+        assert_eq!(unpacked_op.init_code, user_op.init_code);
+        assert_eq!(unpacked_op.call_data, user_op.call_data);
+        assert_eq!(unpacked_op.call_gas_limit, user_op.call_gas_limit);
+        assert_eq!(unpacked_op.verification_gas_limit, user_op.verification_gas_limit);
+        assert_eq!(unpacked_op.pre_verification_gas, user_op.pre_verification_gas);
+        assert_eq!(unpacked_op.max_fee_per_gas, user_op.max_fee_per_gas);
+        assert_eq!(unpacked_op.max_priority_fee_per_gas, user_op.max_priority_fee_per_gas);
+        assert_eq!(unpacked_op.paymaster_and_data, user_op.paymaster_and_data);
+        assert_eq!(unpacked_op.signature, user_op.signature);
+    }
+
+    #[test]
+    fn test_packed_to_gas_and_paymaster_and_data_conversion() {
+        // Create a PackedGasAndPaymasterAndData instance
+        let packed = PackedGasAndPaymasterAndData {
+            call_gas_limit: U256::from(100000),
+            verification_gas_limit: U256::from(200000),
+            pre_verification_gas: U256::from(50000),
+            paymaster: Address::ZERO,
+            paymaster_verification_gas_limit: U256::from(300000),
+            paymaster_post_op_gas_limit: U256::from(400000),
+            paymaster_data: Bytes::default(),
+        };
+
+        // Convert PackedGasAndPaymasterAndData to GasAndPaymasterAndData
+        let unpacked: GasAndPaymasterAndData = packed.clone().into();
+
+        // Assertions
+        assert_eq!(unpacked.call_gas_limit, packed.call_gas_limit);
+        assert_eq!(unpacked.verification_gas_limit, packed.verification_gas_limit);
+        assert_eq!(unpacked.pre_verification_gas, packed.pre_verification_gas);
     }
 }

@@ -13,9 +13,8 @@
 // limitations under the License.
 
 use crate::address::{
-    LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
-    LIGHT_WALLET_FACTORY_V010_ADDRESS, LIGHT_WALLET_FACTORY_V020_ADDRESS,
-    LIGHT_WALLET_FACTORY_V030_ADDRESS,
+    LIGHT_WALLET_FACTORY_IMPLEMENTATION_MAPPING, LIGHT_WALLET_FACTORY_V010_ADDRESS,
+    LIGHT_WALLET_FACTORY_V020_ADDRESS, LIGHT_WALLET_FACTORY_V030_ADDRESS,
 };
 use alloy::{
     dyn_abi::DynSolValue,
@@ -49,11 +48,12 @@ fn get_create2_address(from: Address, salt: B256, init_code_hash: B256) -> Addre
 }
 
 pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> {
-    let implementation: Address = *LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS;
+    // Set the implementation address based on the factory version
+    let implementation = LIGHT_WALLET_FACTORY_IMPLEMENTATION_MAPPING
+        .get(&factory)
+        .ok_or(eyre!("Invalid factory address"))?;
 
-    let selector = keccak256("initialize(bytes32)");
-    let (selector_slice, _) = selector.split_at(4);
-
+    // Set the proxy code based on the factory version
     let proxy_code = if factory == *LIGHT_WALLET_FACTORY_V010_ADDRESS ||
         factory == *LIGHT_WALLET_FACTORY_V020_ADDRESS
     {
@@ -64,12 +64,17 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
         return Err(eyre!("Invalid factory address"));
     };
 
+    // Set the initialize function selector
+    let selector = keccak256("initialize(bytes32)");
+    let (selector_slice, _) = selector.split_at(4);
+
+    // Get the init code hash
     let init_code_hash = keccak256(
         DynSolValue::Tuple(vec![
             DynSolValue::Bytes(hex::decode(proxy_code)?),
             DynSolValue::Bytes(
                 DynSolValue::Tuple(vec![
-                    DynSolValue::Address(implementation),
+                    DynSolValue::Address(*implementation),
                     DynSolValue::Bytes(
                         DynSolValue::Tuple(vec![
                             DynSolValue::Bytes(selector_slice.to_vec()),
@@ -84,8 +89,6 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
         .abi_encode_packed(),
     );
 
-    let factory: Address = *LIGHT_WALLET_FACTORY_ADDRESS;
-
     Ok(get_create2_address(factory, salt, init_code_hash))
 }
 
@@ -95,12 +98,13 @@ pub fn get_address(factory: Address, hash: B256, salt: B256) -> Result<Address> 
 
 #[cfg(test)]
 mod tests {
-    use crate::address::LIGHT_WALLET_FACTORY_V010_ADDRESS;
+    use crate::address::LIGHT_WALLET_FACTORY_V020_ADDRESS;
 
     use super::*;
     use alloy::primitives::B256;
     use lightdotso_common::traits::VecU8ToHex;
 
+    // From: https://polygonscan.com/tx/0x3121442796a186c902094dd2201a10ee757d54d9c9eb57a561e5844f142d128e
     #[test]
     fn test_get_address() -> Result<()> {
         let hash: B256 =
@@ -110,7 +114,7 @@ mod tests {
 
         let expected: Address = "0xc0d0a645fba3a5f761042fa1d5002491c0e515ac".parse()?;
 
-        assert_eq!(expected, get_address(*LIGHT_WALLET_FACTORY_V010_ADDRESS, hash, nonce)?);
+        assert_eq!(expected, get_address(*LIGHT_WALLET_FACTORY_V020_ADDRESS, hash, nonce)?);
 
         Ok(())
     }
