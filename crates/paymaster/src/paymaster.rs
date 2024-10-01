@@ -15,177 +15,27 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    billing_operation::create_billing_operation_msg,
-    constants::{
-        ALCHEMY_POLICY_IDS, BICONOMY_PAYMASTER_RPC_URLS, BICONOMY_POLICY_IDS,
-        PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
-    },
+    billing_operation::create_billing_operation_msg, services::fetch_gas_and_paymaster_and_data,
     utils::construct_user_operation,
 };
 use alloy::primitives::Address;
-use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{
-    BiconomyGasAndPaymasterAndData, EstimateResult, GasAndPaymasterAndData, PaymasterAndData,
-    UserOperationRequest, UserOperationRequestVariant,
+    GasAndPaymasterAndData, PaymasterAndData, UserOperationRequestVariant,
 };
-use lightdotso_gas::types::GasEstimation;
-use lightdotso_jsonrpsee::{
-    error::JsonRpcError,
-    handle_response,
-    types::{Request, Response},
-};
-use lightdotso_rpc::constants::{ALCHEMY_RPC_URLS, PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
-use lightdotso_tracing::tracing::{info, warn};
-use lightdotso_utils::is_testnet;
-use serde_json::{json, Value};
+use lightdotso_jsonrpsee::error::JsonRpcError;
+use lightdotso_tracing::tracing::info;
+
+// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
 
 /// The paymaster api implementation.
 pub(crate) struct PaymasterApi {}
 
-// Retryable sponsorship fetch function.
-pub async fn fetch_gas_and_paymaster_and_data(
-    user_operation: UserOperationRequest,
-    entry_point: Address,
-    chain_id: u64,
-) -> Result<GasAndPaymasterAndData> {
-    // Get the environment variable, `PIMLICO_API_KEY`.
-    let pimlico_api_key =
-        std::env::var("PIMLICO_API_KEY").map_err(|_| eyre!("PIMLICO_API_KEY not set"))?;
-
-    // Check if the `chain_id` is one of the key of `PIMLICO_RPC_URLS`.
-    if (*PIMLICO_RPC_URLS).contains_key(&chain_id) {
-        // For each paymaster policy, attempt to fetch the user operation sponsorship.
-        for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
-            info!("[SPONSORSHIP]: pimlico");
-            info!("pimlico policy: {:?}", policy);
-
-            let sponsorship = get_gas_and_paymaster_and_data(
-                format!("{}/{}/rpc?apikey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
-                entry_point,
-                &user_operation,
-                if !is_testnet(chain_id) {
-                    Some(json!({
-                        "sponsorshipPolicyId": policy
-                    }))
-                } else {
-                    None
-                },
-            )
-            .await
-            .map_err(JsonRpcError::from);
-
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(sponsorship_data.result);
-            } else {
-                warn!("Failed to fetch user operation sponsorship from pimlico");
-            }
-        }
-    }
-
-    // Get the environment variable, `PARTICLE_NETWORK_PROJECT_ID`.
-    let particle_network_project_id = std::env::var("PARTICLE_NETWORK_PROJECT_ID")
-        .map_err(|_| eyre!("PARTICLE_NETWORK_PROJECT_ID not set"))?;
-    let particle_network_paymaster_project_key = std::env::var("PARTICLE_NETWORK_PROJECT_KEY")
-        .map_err(|_| eyre!("PARTICLE_NETWORK_PROJECT_KEY not set"))?;
-
-    // Check if the `chain_id` is one of the key of `PARTICLE_RPC_URLS`.
-    if (*PARTICLE_RPC_URLS).contains_key(&chain_id) {
-        info!("[SPONSORSHIP]: particle network");
-
-        let sponsorship = get_gas_and_paymaster_and_data(
-            format!(
-                "{}?chainId={}&projectUuid={}&projectKey={}",
-                *PARTICLE_NETWORK_PAYMASTER_BASE_URL,
-                chain_id,
-                particle_network_project_id,
-                particle_network_paymaster_project_key
-            ),
-            entry_point,
-            &user_operation,
-            None,
-        )
-        .await
-        .map_err(JsonRpcError::from);
-
-        // If the sponsorship is successful, return the result.
-        if let Ok(sponsorship_data) = sponsorship {
-            return Ok(sponsorship_data.result);
-        } else {
-            warn!("Failed to fetch user operation sponsorship from particle network");
-        }
-    }
-
-    // Get the environment variable, `ALCHEMY_API_KEY`.
-    let alchemy_api_key =
-        std::env::var("ALCHEMY_API_KEY").map_err(|_| eyre!("ALCHEMY_API_KEY not set"))?;
-
-    // Check if the `chain_id` is one of the key of `ALCHEMY_POLICY_IDS`.
-    if (*ALCHEMY_POLICY_IDS).contains_key(&chain_id) {
-        info!("[SPONSORSHIP]: alchemy");
-
-        // Get the alchemy rpc url from the `ALCHEMY_RPC_URLS`.
-        if let Some(alchemy_rpc_url) = (*ALCHEMY_RPC_URLS).get(&chain_id) {
-            let sponsorship = get_alchemy_paymaster_and_data(
-                format!("{}{}", alchemy_rpc_url, alchemy_api_key),
-                entry_point,
-                &user_operation,
-                (*ALCHEMY_POLICY_IDS).get(&chain_id).unwrap().to_string(),
-            )
-            .await
-            .map_err(JsonRpcError::from);
-
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(GasAndPaymasterAndData {
-                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
-                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
-                    verification_gas_limit: user_operation
-                        .verification_gas_limit
-                        .unwrap_or_default(),
-                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
-                });
-            } else {
-                warn!("Failed to fetch user operation sponsorship from alchemy");
-                // error!("{:?}", sponsorship.unwrap_err());
-            }
-        }
-    }
-
-    // Check if the `chain_id` is one of the key of `BICONOMY_POLICY_IDS`.
-    if (*BICONOMY_POLICY_IDS).contains_key(&chain_id) {
-        info!("[SPONSORSHIP]: biconomy");
-
-        // Get the alchemy rpc url from the `BICONOMY_PAYMASTER_RPC_URLS`.
-        if let Some(biconomy_rpc_url) = (*BICONOMY_PAYMASTER_RPC_URLS).get(&chain_id) {
-            let sponsorship = get_biconomy_paymaster_and_data(
-                format!("{}{}", biconomy_rpc_url, BICONOMY_POLICY_IDS.get(&chain_id).unwrap()),
-                &user_operation,
-            )
-            .await
-            .map_err(JsonRpcError::from);
-
-            // If the sponsorship is successful, return the result.
-            if let Ok(sponsorship_data) = sponsorship {
-                return Ok(GasAndPaymasterAndData {
-                    paymaster_and_data: sponsorship_data.result.paymaster_and_data,
-                    call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
-                    verification_gas_limit: user_operation
-                        .verification_gas_limit
-                        .unwrap_or_default(),
-                    pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
-                });
-            } else {
-                warn!("Failed to fetch user operation sponsorship from alchemy");
-                // error!("{:?}", sponsorship.unwrap_err());
-            }
-        }
-    }
-
-    // If the sponsorship is not successful, return error.
-    Err(eyre!("Failed to fetch user operation sponsorship"))
-}
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
@@ -236,138 +86,4 @@ impl PaymasterApi {
             }
         }
     }
-}
-
-/// Estimate the gas for the request w/ the internal gas API.
-pub async fn estimate_request_gas_estimation(chain_id: u64) -> Result<Response<GasEstimation>> {
-    let params = vec![chain_id];
-    info!("params: {:?}", params);
-
-    let req_body = Request {
-        jsonrpc: "2.0".to_string(),
-        method: "gas_requestGasEstimation".to_string(),
-        params: params.clone(),
-        id: 1,
-    };
-
-    let client = reqwest::Client::new();
-    let response =
-        client.post("http://lightdotso-gas.internal:3000").json(&req_body).send().await?;
-
-    // Handle the response for the JSON-RPC API.
-    handle_response(response).await
-}
-
-/// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L128
-/// License: MIT
-pub async fn estimate_user_operation_gas(
-    chain_id: u64,
-    entry_point: Address,
-    user_operation: &UserOperationRequest,
-) -> Result<Response<EstimateResult>> {
-    let params = vec![json!(user_operation), json!(entry_point)];
-    info!("params: {:?}", params);
-
-    let req_body = Request {
-        jsonrpc: "2.0".to_string(),
-        method: "eth_estimateUserOperationGas".to_string(),
-        params: params.clone(),
-        id: 1,
-    };
-
-    let client = reqwest::Client::new();
-    let response = client
-        .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
-        .json(&req_body)
-        .send()
-        .await?;
-
-    // Handle the response for the JSON-RPC API.
-    handle_response(response).await
-}
-
-pub async fn get_gas_and_paymaster_and_data(
-    rpc_url: String,
-    entry_point: Address,
-    user_operation: &UserOperationRequest,
-    sponsorship_policy: Option<Value>,
-) -> Result<Response<GasAndPaymasterAndData>> {
-    let params = if let Some(policy) = sponsorship_policy {
-        vec![json!(user_operation), json!(entry_point), policy]
-    } else {
-        vec![json!(user_operation), json!(entry_point)]
-    };
-    info!("params: {:?}", params);
-
-    let req_body = Request {
-        jsonrpc: "2.0".to_string(),
-        method: "pm_sponsorUserOperation".to_string(),
-        params: params.clone(),
-        id: 1,
-    };
-
-    let client = reqwest::Client::new();
-    let response = client.post(rpc_url).json(&req_body).send().await?;
-
-    // Handle the response for the JSON-RPC API.
-    handle_response(response).await
-}
-
-/// Get the paymaster and data from the alchemy.
-pub async fn get_alchemy_paymaster_and_data(
-    rpc_url: String,
-    entry_point: Address,
-    user_operation: &UserOperationRequest,
-    policy_id: String,
-) -> Result<Response<PaymasterAndData>> {
-    let params = vec![
-        json!({"policyId": policy_id, "entryPoint": entry_point, "userOperation": user_operation}),
-    ];
-    info!("params: {:?}", params);
-
-    let req_body = Request {
-        jsonrpc: "2.0".to_string(),
-        method: "alchemy_requestPaymasterAndData".to_string(),
-        params: params.clone(),
-        id: 1,
-    };
-
-    let client = reqwest::Client::new();
-    let response = client.post(rpc_url).json(&req_body).send().await?;
-
-    // Handle the response for the JSON-RPC API.
-    handle_response(response).await
-}
-
-/// Get the paymaster and data from the biconomy.
-pub async fn get_biconomy_paymaster_and_data(
-    rpc_url: String,
-    user_operation: &UserOperationRequest,
-) -> Result<Response<BiconomyGasAndPaymasterAndData>> {
-    let params = vec![json!([user_operation, {
-        "mode": "SPONSORED",
-        "calculateGasLimits": true,
-        "expiryDuration": 300,
-        "sponsorshipInfo": {
-          "webhookData": {},
-          "smartAccountInfo": {
-            "name": "LIGHT",
-            "version": "0.3.0"
-          }
-        }
-    }])];
-    info!("params: {:?}", params);
-
-    let req_body = Request {
-        jsonrpc: "2.0".to_string(),
-        method: "pm_sponsorUserOperation".to_string(),
-        params: params.clone(),
-        id: 1,
-    };
-
-    let client = reqwest::Client::new();
-    let response = client.post(rpc_url).json(&req_body).send().await?;
-
-    // Handle the response for the JSON-RPC API.
-    handle_response(response).await
 }

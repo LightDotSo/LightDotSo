@@ -20,4 +20,5 @@ pub mod constants;
 pub mod paymaster;
 pub mod paymaster_api;
 pub mod server;
+pub mod services;
 pub mod utils;
