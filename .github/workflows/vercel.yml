@@ -7,7 +7,7 @@ on:
   merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 env:
   TURBO_API: ${{ secrets.TURBO_API }}
   TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
@@ -48,7 +48,7 @@ jobs:
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
       - name: Install Doppler
         uses: dopplerhq/cli-action@v3
-      - name: Doppler Setup Production
+      - name: Doppler Setup 
         uses: dopplerhq/secrets-fetch-action@v1.2.0
         id: doppler
         with:
