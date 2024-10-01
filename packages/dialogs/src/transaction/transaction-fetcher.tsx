@@ -715,6 +715,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterVerificationGasLimitV07,
     paymasterDataV07,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("finalizedPackedUserOperation", finalizedPackedUserOperation);
 
   const decodedPaymasterAndData = useMemo(() => {
     if (
@@ -726,6 +728,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ).unwrapOr(null);
     }
   }, [finalizedUserOperation?.paymasterAndData]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("decodedPaymasterAndData", decodedPaymasterAndData);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -779,6 +783,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
         entryPointVersion: "0.6",
       });
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.info("v0.6 getUserOperationHash: ", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === userOperationWithHash?.hash) {
@@ -831,6 +837,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
         entryPointVersion: "0.7",
       });
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.info("v0.7 getUserOperationHash: ", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === packedUserOperationWithHash?.hash) {
@@ -992,10 +1000,20 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     // Remove the 0x prefix from the init_code
-    const initCode = `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`;
+    const initCode =
+      packedUserOperationWithHash?.factory !== "0x" &&
+      packedUserOperationWithHash?.factoryData !== "0x"
+        ? `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`
+        : "0x";
 
     // Remove the 0x prefix from the paymaster and data
-    const paymasterAndData = `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`;
+    const paymasterAndData =
+      packedUserOperationWithHash?.paymaster !== "0x" &&
+      packedUserOperationWithHash?.paymasterVerificationGasLimit &&
+      packedUserOperationWithHash?.paymasterPostOpGasLimit &&
+      packedUserOperationWithHash?.paymasterData !== "0x"
+        ? `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`
+        : "0x";
 
     setUserOperationByChainIdAndNonce(
       packedUserOperationWithHash?.chainId,

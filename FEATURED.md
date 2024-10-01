@@ -24,6 +24,7 @@
 - Chain Abstraction projects on DappList - https://x.com/thedapplist/status/1832014155177767151
 - Zordcrypt - https://x.com/zordcrypt/status/1834227697222037698
 - Chain Abstraction Ecosystem on Coin Sixty Eight - https://x.com/kudodefi/status/1840624198378807589
+- Layers of Chain Abstraction - https://x.com/thedefisaint/status/1841141991477842151?s=46&t=F6ALSs2PHyC99seHh3B1jw
 
 ## Youtube
 
