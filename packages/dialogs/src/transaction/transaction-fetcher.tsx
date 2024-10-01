@@ -73,9 +73,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("userOperationWithHash", userOperationWithHash);
 
   const [packedUserOperationWithHash, setPackedUserOperationWithHash] =
     useState<PackedUserOperation>();
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("packedUserOperationWithHash", packedUserOperationWithHash);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -340,6 +344,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ? callGasLimitV07
         : null;
   }, [isEntryPointV06, isEntryPointV07, callGasLimitV06, callGasLimitV07]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("callGasLimit", callGasLimit);
 
   const preVerificationGas = useMemo(() => {
     return isEntryPointV06
@@ -353,6 +359,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     preVerificationGasV06,
     preVerificationGasV07,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("preVerificationGas", preVerificationGas);
 
   const verificationGasLimit = useMemo(() => {
     return isEntryPointV06
@@ -366,17 +374,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     verificationGasLimitV06,
     verificationGasLimitV07,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("verificationGasLimit", verificationGasLimit);
 
   const paymasterVerificationGasLimit = useMemo(() => {
     return isEntryPointV07 ? paymasterVerificationGasLimitV07 : null;
   }, [isEntryPointV07, paymasterVerificationGasLimitV07]);
-
   // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("callGasLimit", callGasLimit);
-  // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("preVerificationGas", preVerificationGas);
-  // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("verificationGasLimit", verificationGasLimit);
+  console.info("paymasterVerificationGasLimit", paymasterVerificationGasLimit);
 
   // Construct the updated user operation
   // This is the final layer of computation until getting the hash for paymaster and data
@@ -602,11 +607,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     if (
-      !(
-        debouncedUserOperation?.sender &&
-        debouncedUserOperation?.chainId &&
-        debouncedUserOperation?.initCode
-      ) ||
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !debouncedUserOperation?.sender ||
+      !debouncedUserOperation?.chainId ||
       typeof debouncedUserOperation?.nonce === "undefined" ||
       debouncedUserOperation?.nonce === null ||
       !debouncedUserOperation?.callData ||
@@ -661,45 +664,40 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     if (
-      !(
-        debouncedUserOperation?.sender &&
-        debouncedUserOperation?.chainId &&
-        debouncedUserOperation?.initCode
-      ) ||
-      typeof debouncedUserOperation?.nonce === "undefined" ||
-      debouncedUserOperation?.nonce === null ||
-      !debouncedUserOperation?.callData ||
-      !debouncedUserOperation?.callGasLimit ||
-      !debouncedUserOperation?.preVerificationGas ||
-      !debouncedUserOperation?.verificationGasLimit ||
-      !debouncedUserOperation?.maxFeePerGas ||
-      !debouncedUserOperation?.maxPriorityFeePerGas ||
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !debouncedPackedUserOperation?.sender ||
+      !debouncedPackedUserOperation?.chainId ||
+      typeof debouncedPackedUserOperation?.nonce === "undefined" ||
+      debouncedPackedUserOperation?.nonce === null ||
+      !debouncedPackedUserOperation?.callData ||
+      !debouncedPackedUserOperation?.callGasLimit ||
+      !debouncedPackedUserOperation?.preVerificationGas ||
+      !debouncedPackedUserOperation?.verificationGasLimit ||
+      !debouncedPackedUserOperation?.maxFeePerGas ||
+      !debouncedPackedUserOperation?.maxPriorityFeePerGas ||
       !paymasterDataV07
     ) {
       return null;
     }
 
-    // Remove the 0x prefix from the init_code
-    const factory = `0x${debouncedUserOperation?.initCode.slice(2).slice(0, 40)}`;
-    const factoryData = `0x${debouncedUserOperation?.initCode.slice(2).slice(40)}`;
-
     return {
-      sender: debouncedUserOperation?.sender,
-      chainId: debouncedUserOperation?.chainId,
-      nonce: debouncedUserOperation?.nonce,
-      factory: factory,
-      factoryData: factoryData,
-      callData: debouncedUserOperation?.callData,
+      sender: debouncedPackedUserOperation?.sender,
+      chainId: debouncedPackedUserOperation?.chainId,
+      nonce: debouncedPackedUserOperation?.nonce,
+      factory: debouncedPackedUserOperation?.factory,
+      factoryData: debouncedPackedUserOperation?.factoryData,
+      callData: debouncedPackedUserOperation?.callData,
       callGasLimit:
-        gasAndPaymasterCallGasLimitV07 ?? debouncedUserOperation?.callGasLimit,
+        gasAndPaymasterCallGasLimitV07 ??
+        debouncedPackedUserOperation?.callGasLimit,
       preVerificationGas:
         gasAndPaymasterPreVerificationGasV07 ??
-        debouncedUserOperation?.preVerificationGas,
+        debouncedPackedUserOperation?.preVerificationGas,
       verificationGasLimit:
         gasAndPaymasterVerificationGasLimitV07 ??
-        debouncedUserOperation?.verificationGasLimit,
-      maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
-      maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
+        debouncedPackedUserOperation?.verificationGasLimit,
+      maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
+      maxPriorityFeePerGas: debouncedPackedUserOperation?.maxPriorityFeePerGas,
       paymaster: gasAndPaymasterPaymasterV07 ?? "0x",
       paymasterVerificationGasLimit:
         gasAndPaymasterPaymasterVerificationGasLimitV07 ?? 0n,
@@ -713,6 +711,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterCallGasLimitV07,
     gasAndPaymasterPreVerificationGasV07,
     gasAndPaymasterVerificationGasLimitV07,
+    gasAndPaymasterPaymasterV07,
+    gasAndPaymasterPostOpGasLimitV07,
+    gasAndPaymasterPaymasterVerificationGasLimitV07,
+    gasAndPaymasterPaymasterDataV07,
     paymasterDataV07,
   ]);
   // biome-ignore lint/suspicious/noConsole: <explanation>
@@ -953,6 +955,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Remove the 0x prefix from the init_code
     const initCode = `0x${debouncedPackedUserOperation?.factory.slice(2)}${debouncedPackedUserOperation?.factoryData.slice(2)}`;
 
+    // Set the partial user operation to the store
     setPartialUserOperationByChainIdAndNonce(
       debouncedPackedUserOperation?.chainId,
       debouncedPackedUserOperation?.nonce,
@@ -982,6 +985,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     if (!userOperationWithHash) {
       return;
     }
+
+    // Set the user operation to the store
     setUserOperationByChainIdAndNonce(
       userOperationWithHash?.chainId,
       userOperationWithHash?.nonce,
@@ -1015,6 +1020,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ? `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`
         : "0x";
 
+    // Set the packed user operation to the store
     setUserOperationByChainIdAndNonce(
       packedUserOperationWithHash?.chainId,
       packedUserOperationWithHash?.nonce,
