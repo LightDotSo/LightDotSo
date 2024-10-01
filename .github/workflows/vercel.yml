@@ -38,14 +38,14 @@ jobs:
       matrix:
         app: [app, explorer, home]
         # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+    env:
+      VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
+      NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Turbo Build App
-        run: |
-          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
       - name: Install Doppler
         uses: dopplerhq/cli-action@v3
       - name: Doppler Setup 
@@ -58,51 +58,72 @@ jobs:
       - name: Download Variables Preview
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=stg --no-file --format env > .env
+          doppler secrets download --project=${{ matrix.app }} --config=stg --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
       - name: Download Variables Production
         working-directory: apps/${{ matrix.app }}
         run: |
-          doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format env > .env
+          doppler secrets download --project=${{ matrix.app }} --config=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-      - name: Vercel Build Preview
-        if: ${{ github.event_name == 'pull_request' }}
-        working-directory: apps/${{ matrix.app }}
+      - if: github.event_name != 'push'
+        name: Turbo Build Preview
         run: |
+          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+        env:
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
+      - if: github.event_name == 'push'
+        name: Turbo Build Production
+        run: |
+          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+        env:
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
+      - if: github.event_name != 'push'
+        name: Vercel Build Preview
+        run: |
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
-      - name: Vercel Build Production
-        if: ${{ github.event_name == 'push' }}
-        working-directory: apps/${{ matrix.app }}
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
+      - if: github.event_name == 'push'
+        name: Vercel Build Production
         run: |
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
-      - name: Vercel Deploy Preview
-        if: ${{ github.event_name == 'pull_request' }}
-        working-directory: apps/${{ matrix.app }}
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
+      - if: github.event_name != 'push'
+        name: Vercel Deploy Preview
         run: |
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
-      - name: Vercel Deploy Production
-        if: ${{ github.event_name == 'push' }}
-        working-directory: apps/${{ matrix.app }}
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_VERCEL_ENV: preview
+      - if: github.event_name == 'push'
+        name: Vercel Deploy Production
         run: |
-          vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --no-wait --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
-      - name: Clean Up Env
-        if: always()
+          VERCEL_ENV: production
+          NEXT_PUBLIC_VERCEL_ENV: production
+      - if: always()
+        name: Clean Up Env
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
   vercel-check:
     needs:
       - vercel-turbo
+      - vercel-deploy
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 3

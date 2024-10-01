@@ -314,7 +314,7 @@ export default defineConfig({
       items: [
         {
           text: pkg.version,
-          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.VERCEL_GIT_COMMIT_SHA}`,
+          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`,
         },
         {
           text: "Changelog",

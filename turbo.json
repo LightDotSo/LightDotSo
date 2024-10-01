@@ -47,7 +47,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"]
+      "env": ["VERCEL_ENV"]
     },
     "dev": {
       "cache": false,
