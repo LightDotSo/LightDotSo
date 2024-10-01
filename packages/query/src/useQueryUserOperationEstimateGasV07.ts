@@ -55,6 +55,8 @@ export const useQueryUserOperationEstimateGasV07 = (
       factory: params?.factory,
       factoryData: params?.factoryData,
       callData: params?.callData,
+      maxFeePerGas: params?.maxFeePerGas,
+      maxPriorityFeePerGas: params?.maxPriorityFeePerGas,
     }).queryKey,
     queryFn: async () => {
       if (
@@ -78,6 +80,12 @@ export const useQueryUserOperationEstimateGasV07 = (
             factory: params?.factory,
             factoryData: params?.factoryData,
             callData: params?.callData,
+            maxFeePerGas: params?.maxFeePerGas
+              ? toHex(params?.maxFeePerGas)
+              : undefined,
+            maxPriorityFeePerGas: params?.maxPriorityFeePerGas
+              ? toHex(params?.maxPriorityFeePerGas)
+              : undefined,
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },

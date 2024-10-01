@@ -315,6 +315,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       nonce: targetUserOperation?.nonce,
       initCode: targetUserOperation?.initCode,
       callData: targetUserOperation?.callData,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
     },
     isEntryPointV06,
   );
@@ -338,6 +340,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       factory: factory ?? undefined,
       factoryData: factoryData ?? undefined,
       callData: targetUserOperation?.callData,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
     },
     isEntryPointV07,
   );

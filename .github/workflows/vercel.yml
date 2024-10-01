@@ -7,19 +7,21 @@ on:
   merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 env:
   TURBO_API: ${{ secrets.TURBO_API }}
   TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 jobs:
   vercel-turbo:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     strategy:
       matrix:
-        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [app, explorer, home]
+        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     steps:
@@ -34,7 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [app, explorer, home]
+        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -43,6 +46,60 @@ jobs:
       - name: Turbo Build App
         run: |
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+      - name: Install Doppler
+        uses: dopplerhq/cli-action@v3
+      - name: Doppler Setup 
+        uses: dopplerhq/secrets-fetch-action@v1.2.0
+        id: doppler
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+          doppler-project: ${{ matrix.app }}
+          doppler-config: prd
+      - name: Download Variables Preview
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          doppler secrets download --project=${{ matrix.app }} --env=stg --no-file --format env > .env
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+      - name: Download Variables Production
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          doppler secrets download --project=${{ matrix.app }} --env=prd --no-file --format env > .env
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+      - name: Vercel Build Preview
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Vercel Build Production
+        if: ${{ github.event_name == 'push' }}
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Vercel Deploy Preview
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Vercel Deploy Production
+        if: ${{ github.event_name == 'push' }}
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Clean Up Env
+        if: always()
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          rm -rf .env
   vercel-check:
     needs:
       - vercel-turbo

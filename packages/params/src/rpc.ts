@@ -28,8 +28,6 @@ export type RpcEstimateUserOperationGasV06Params = Partial<
     | "callGasLimit"
     | "verificationGasLimit"
     | "preVerificationGas"
-    | "maxFeePerGas"
-    | "maxPriorityFeePerGas"
   >
 >;
 
@@ -41,12 +39,6 @@ export type RpcEstimateUserOperationGasV07Params = Partial<
     | "callGasLimit"
     | "verificationGasLimit"
     | "preVerificationGas"
-    | "maxFeePerGas"
-    | "maxPriorityFeePerGas"
-    | "paymaster"
-    | "paymasterVerificationGasLimit"
-    | "paymasterPostOpGasLimit"
-    | "paymasterData"
   >
 >;
 
