@@ -15,12 +15,20 @@
 #![allow(clippy::expect_used)]
 #![allow(clippy::unwrap_used)]
 
-use alloy::primitives::{Address, Bytes, U256};
+use crate::{
+    billing_operation::create_billing_operation_msg,
+    constants::{
+        ALCHEMY_POLICY_IDS, BICONOMY_PAYMASTER_RPC_URLS, BICONOMY_POLICY_IDS,
+        PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
+    },
+    utils::construct_user_operation,
+};
+use alloy::primitives::Address;
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::types::{
     BiconomyGasAndPaymasterAndData, EstimateResult, GasAndPaymasterAndData, PaymasterAndData,
-    UserOperationConstruct, UserOperationRequest,
+    UserOperationRequest, UserOperationRequestVariant,
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
@@ -28,48 +36,13 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_kafka::{
-    get_producer, topics::paymaster_operation::produce_paymaster_operation_message,
-    types::paymaster_operation::PaymasterOperationMessage,
-};
 use lightdotso_rpc::constants::{ALCHEMY_RPC_URLS, PARTICLE_RPC_URLS, PIMLICO_RPC_URLS};
 use lightdotso_tracing::tracing::{info, warn};
 use lightdotso_utils::is_testnet;
 use serde_json::{json, Value};
-use std::sync::Arc;
-
-use crate::constants::{
-    ALCHEMY_POLICY_IDS, BICONOMY_PAYMASTER_RPC_URLS, BICONOMY_POLICY_IDS,
-    PARTICLE_NETWORK_PAYMASTER_BASE_URL, PIMLICO_BASE_URL, PIMLICO_SPONSORSHIP_POLICIES,
-};
 
 /// The paymaster api implementation.
 pub(crate) struct PaymasterApi {}
-
-// Create the paymaster topic message.
-pub async fn create_billing_operation_msg(
-    chain_id: u64,
-    user_operation: UserOperationRequest,
-    gas_and_paymaster_and_data: GasAndPaymasterAndData,
-) -> Result<()> {
-    // Get the producer.
-    let producer = Arc::new(get_producer()?);
-
-    // Construct the paymaster operation message.
-    let paymaster_operation_message = PaymasterOperationMessage {
-        chain_id,
-        sender: user_operation.sender,
-        call_gas_limit: gas_and_paymaster_and_data.call_gas_limit,
-        verification_gas_limit: gas_and_paymaster_and_data.verification_gas_limit,
-        pre_verification_gas: gas_and_paymaster_and_data.pre_verification_gas,
-        paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data,
-    };
-
-    // Produce the paymaster operation message.
-    produce_paymaster_operation_message(producer, &paymaster_operation_message).await?;
-
-    Ok(())
-}
 
 // Retryable sponsorship fetch function.
 pub async fn fetch_gas_and_paymaster_and_data(
@@ -218,131 +191,52 @@ pub async fn fetch_gas_and_paymaster_and_data(
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
         &self,
-        user_operation: UserOperationRequest,
+        user_operation: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<PaymasterAndData> {
-        // Get the paymaster operation sponsor.
-        let gas_and_paymaster_and_data =
-            fetch_gas_and_paymaster_and_data(user_operation.clone(), entry_point, chain_id)
-                .await
-                .map_err(JsonRpcError::from)?;
-
-        // Write the paymaster operation to the database.
-        create_billing_operation_msg(chain_id, user_operation, gas_and_paymaster_and_data.clone())
-            .await
-            .map_err(JsonRpcError::from)?;
-
-        Ok(PaymasterAndData { paymaster_and_data: gas_and_paymaster_and_data.paymaster_and_data })
+        let res =
+            self.request_gas_and_paymaster_and_data(user_operation, entry_point, chain_id).await?;
+        Ok(PaymasterAndData { paymaster_and_data: res.paymaster_and_data })
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
         &self,
-        user_operation: UserOperationRequest,
+        user_operation: UserOperationRequestVariant,
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<GasAndPaymasterAndData> {
-        // Construct the user operation w/ rpc.
-        let user_operation_construct =
-            construct_user_operation(chain_id, user_operation, entry_point)
-                .await
-                .map_err(JsonRpcError::from)?;
-        // Log the construct in hex.
-        info!("construct: {:?}", user_operation_construct);
+        match user_operation {
+            UserOperationRequestVariant::Default(uor) => {
+                // Construct the user operation w/ rpc.
+                let user_operation = construct_user_operation(chain_id, uor.clone(), entry_point)
+                    .await
+                    .map_err(JsonRpcError::from)?;
+                // Log the construct in hex.
+                info!("construct: {:?}", user_operation);
 
-        let user_operation = UserOperationRequest {
-            call_data: user_operation_construct.call_data.clone(),
-            init_code: user_operation_construct.init_code.clone(),
-            signature: user_operation_construct.signature.clone(),
-            nonce: user_operation_construct.nonce,
-            sender: user_operation_construct.sender,
-            pre_verification_gas: Some(user_operation_construct.pre_verification_gas),
-            verification_gas_limit: Some(user_operation_construct.verification_gas_limit),
-            call_gas_limit: Some(user_operation_construct.call_gas_limit),
-            max_fee_per_gas: Some(user_operation_construct.max_fee_per_gas),
-            max_priority_fee_per_gas: Some(user_operation_construct.max_priority_fee_per_gas),
-            paymaster_and_data: Some(Bytes::default()),
-        };
+                // Get the paymaster operation sponsor.
+                let gas_and_paymaster_and_data =
+                    fetch_gas_and_paymaster_and_data(uor, entry_point, chain_id)
+                        .await
+                        .map_err(JsonRpcError::from)?;
 
-        // Get the paymaster operation sponsor.
-        let gas_and_paymaster_and_data =
-            fetch_gas_and_paymaster_and_data(user_operation.clone(), entry_point, chain_id)
+                // Write the paymaster operation to the database.
+                create_billing_operation_msg(
+                    chain_id,
+                    user_operation,
+                    gas_and_paymaster_and_data.clone(),
+                )
                 .await
                 .map_err(JsonRpcError::from)?;
 
-        // Write the paymaster operation to the database.
-        create_billing_operation_msg(chain_id, user_operation, gas_and_paymaster_and_data.clone())
-            .await
-            .map_err(JsonRpcError::from)?;
-
-        Ok(gas_and_paymaster_and_data)
-    }
-}
-
-/// Construct the user operation w/ rpc.
-pub async fn construct_user_operation(
-    chain_id: u64,
-    user_operation: UserOperationRequest,
-    entry_point: Address,
-) -> Result<UserOperationConstruct> {
-    // If the `preVerificationGas`, `verificationGasLimit`, and `callGasLimit` are set,
-    // override the gas estimation for the user operatioin
-    let estimated_user_operation_gas: EstimateResult = if user_operation
-        .pre_verification_gas
-        .is_some_and(|pre_verification_gas| pre_verification_gas > U256::ZERO) &&
-        user_operation
-            .verification_gas_limit
-            .is_some_and(|verification_gas_limit| verification_gas_limit > U256::ZERO) &&
-        user_operation.call_gas_limit.is_some_and(|call_gas_limit| call_gas_limit > U256::ZERO)
-    {
-        warn!("Overriding the gas estimation for the user operation");
-        EstimateResult {
-            pre_verification_gas: user_operation.pre_verification_gas.unwrap(),
-            verification_gas_limit: user_operation.verification_gas_limit.unwrap(),
-            call_gas_limit: user_operation.call_gas_limit.unwrap(),
+                Ok(gas_and_paymaster_and_data)
+            }
+            UserOperationRequestVariant::Packed(_puor) => {
+                todo!()
+            }
         }
-    } else {
-        // If the `estimate_user_operation_gas` is not set, estimate the gas for the user operation.
-        estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result
-    };
-    info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
-
-    // If the `maxFeePerGas` and `maxPriorityFeePerGas` are set, include them in the user operation.
-    if user_operation.max_fee_per_gas.is_some_and(|max_fee_per_gas| max_fee_per_gas > U256::ZERO) &&
-        user_operation
-            .max_priority_fee_per_gas
-            .is_some_and(|max_priority_fee_per_gas| max_priority_fee_per_gas > U256::ZERO)
-    {
-        warn!("Overriding the gas estimation for the user operation w/ the maxFeePerGas and maxPriorityFeePerGas");
-        return Ok(UserOperationConstruct {
-            call_data: user_operation.call_data,
-            init_code: user_operation.init_code,
-            nonce: user_operation.nonce,
-            sender: user_operation.sender,
-            call_gas_limit: estimated_user_operation_gas.call_gas_limit,
-            verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
-            pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
-            max_fee_per_gas: user_operation.max_fee_per_gas.unwrap(),
-            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.unwrap(),
-            signature: user_operation.signature,
-        });
     }
-
-    // Get the estimated request gas because required gas parameters are not set.
-    let estimated_request_gas = estimate_request_gas_estimation(chain_id).await?.result;
-
-    Ok(UserOperationConstruct {
-        call_data: user_operation.call_data,
-        init_code: user_operation.init_code,
-        nonce: user_operation.nonce,
-        sender: user_operation.sender,
-        call_gas_limit: estimated_user_operation_gas.call_gas_limit,
-        verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
-        pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
-        max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
-        max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
-        signature: user_operation.signature,
-    })
 }
 
 /// Estimate the gas for the request w/ the internal gas API.
@@ -420,6 +314,7 @@ pub async fn get_gas_and_paymaster_and_data(
     handle_response(response).await
 }
 
+/// Get the paymaster and data from the alchemy.
 pub async fn get_alchemy_paymaster_and_data(
     rpc_url: String,
     entry_point: Address,
@@ -445,6 +340,7 @@ pub async fn get_alchemy_paymaster_and_data(
     handle_response(response).await
 }
 
+/// Get the paymaster and data from the biconomy.
 pub async fn get_biconomy_paymaster_and_data(
     rpc_url: String,
     user_operation: &UserOperationRequest,

@@ -16,13 +16,11 @@
 
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
-    hex,
     primitives::{Address, Bytes, B256, U256},
     rpc::types::{Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
-use std::fmt;
 
 // -----------------------------------------------------------------------------
 // Structs
@@ -343,20 +341,12 @@ pub struct PackedUserOperationRequest {
     pub signature: Bytes,
 }
 
-/// User operation required for the request.
-#[derive(Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct UserOperationConstruct {
-    pub sender: Address,
-    pub nonce: U256,
-    pub init_code: Bytes,
-    pub call_data: Bytes,
-    pub call_gas_limit: U256,
-    pub verification_gas_limit: U256,
-    pub pre_verification_gas: U256,
-    pub max_fee_per_gas: U256,
-    pub max_priority_fee_per_gas: U256,
-    pub signature: Bytes,
+/// User operation request variant
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum UserOperationRequestVariant {
+    Default(UserOperationRequest),
+    Packed(PackedUserOperationRequest),
 }
 
 /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/types.rs#L27
@@ -367,27 +357,6 @@ pub struct EstimateResult {
     pub pre_verification_gas: U256,
     pub verification_gas_limit: U256,
     pub call_gas_limit: U256,
-}
-
-// -----------------------------------------------------------------------------
-// Implementations
-// -----------------------------------------------------------------------------
-
-impl fmt::Debug for UserOperationConstruct {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("UserOperationConstruct")
-            .field("sender", &format!("{:#x}", self.sender))
-            .field("nonce", &format!("{:#x}", self.nonce))
-            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
-            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
-            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
-            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
-            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
-            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
-            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
-            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
-            .finish()
-    }
 }
 
 // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/primitives/src/user_operation/mod.rs#L423-L441
