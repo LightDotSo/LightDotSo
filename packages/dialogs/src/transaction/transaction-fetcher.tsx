@@ -34,7 +34,12 @@ import {
   useQueryWallet,
 } from "@lightdotso/query";
 import type { PackedUserOperation, UserOperation } from "@lightdotso/schemas";
-import { decodePaymasterAndData } from "@lightdotso/sdk";
+import {
+  decodeInitCodeToFactoryAndFactoryData,
+  decodePaymasterAndData,
+  encodeFactoryAndFactoryDataToInitCode,
+  encodePackedPaymasterAndData,
+} from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import { findContractAddressByAddress } from "@lightdotso/utils";
@@ -44,7 +49,7 @@ import {
 } from "@lightdotso/wagmi/generated";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
 import { type FC, useEffect, useMemo, useState } from "react";
-import { type Address, type Hex, fromHex, toHex } from "viem";
+import { type Address, type Hex, fromHex } from "viem";
 import {
   type UserOperation as ViemUserOperation,
   getUserOperationHash,
@@ -314,6 +319,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV06,
   );
 
+  const { factory, factoryData } = decodeInitCodeToFactoryAndFactoryData(
+    targetUserOperation?.initCode as Hex,
+  );
+
   // Get the gas estimate for the user operation v07
   const {
     callGasLimitV07,
@@ -326,8 +335,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: `0x${targetUserOperation?.initCode?.slice(2).slice(0, 40)}`,
-      factoryData: `0x${targetUserOperation?.initCode?.slice(2).slice(40)}`,
+      factory: factory ?? undefined,
+      factoryData: factoryData ?? undefined,
       callData: targetUserOperation?.callData,
     },
     isEntryPointV07,
@@ -492,16 +501,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ? (preVerificationGas * BigInt(120)) / BigInt(100)
       : preVerificationGas;
 
-    // Remove the 0x prefix from the init_code
-    const factory = `0x${targetUserOperation?.initCode.slice(2).slice(0, 40)}`;
-    const factoryData = `0x${targetUserOperation?.initCode.slice(2).slice(40)}`;
+    // Decode the init code to factory and factory data
+    const { factory, factoryData } = decodeInitCodeToFactoryAndFactoryData(
+      targetUserOperation?.initCode as Hex,
+    );
 
     return {
       sender: targetUserOperation?.sender,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: factory,
-      factoryData: factoryData,
+      factory: factory ?? "0x",
+      factoryData: factoryData ?? "0x",
       callData: targetUserOperation?.callData,
       callGasLimit: callGasLimit,
       preVerificationGas: updatedPreVerificationGas,
@@ -952,8 +962,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       return;
     }
 
-    // Remove the 0x prefix from the init_code
-    const initCode = `0x${debouncedPackedUserOperation?.factory.slice(2)}${debouncedPackedUserOperation?.factoryData.slice(2)}`;
+    const initCode = encodeFactoryAndFactoryDataToInitCode(
+      debouncedPackedUserOperation?.factory as Hex,
+      debouncedPackedUserOperation?.factoryData as Hex,
+    );
 
     // Set the partial user operation to the store
     setPartialUserOperationByChainIdAndNonce(
@@ -1004,21 +1016,19 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       return;
     }
 
-    // Remove the 0x prefix from the init_code
-    const initCode =
-      packedUserOperationWithHash?.factory !== "0x" &&
-      packedUserOperationWithHash?.factoryData !== "0x"
-        ? `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`
-        : "0x";
+    // Encode the factory and factory data to init code
+    const initCode = encodeFactoryAndFactoryDataToInitCode(
+      packedUserOperationWithHash?.factory as Hex,
+      packedUserOperationWithHash?.factoryData as Hex,
+    );
 
-    // Remove the 0x prefix from the paymaster and data
-    const paymasterAndData =
-      packedUserOperationWithHash?.paymaster !== "0x" &&
-      packedUserOperationWithHash?.paymasterVerificationGasLimit &&
-      packedUserOperationWithHash?.paymasterPostOpGasLimit &&
-      packedUserOperationWithHash?.paymasterData !== "0x"
-        ? `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`
-        : "0x";
+    // Encode the paymaster and data to the packed paymaster and data
+    const paymasterAndData = encodePackedPaymasterAndData(
+      packedUserOperationWithHash?.paymaster as Hex,
+      packedUserOperationWithHash?.paymasterVerificationGasLimit as bigint,
+      packedUserOperationWithHash?.paymasterPostOpGasLimit as bigint,
+      packedUserOperationWithHash?.paymasterData as Hex,
+    );
 
     // Set the packed user operation to the store
     setUserOperationByChainIdAndNonce(

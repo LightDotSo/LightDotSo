@@ -13,7 +13,15 @@
 // limitations under the License.
 
 import { type Result, err, ok } from "neverthrow";
-import { type Address, fromBytes, isAddressEqual } from "viem";
+import {
+  type Address,
+  type Hex,
+  fromBytes,
+  isAddress,
+  isAddressEqual,
+} from "viem";
+import { fromHex } from "viem/utils";
+import { toHexPadded } from "./utils";
 
 // -----------------------------------------------------------------------------
 // Constants
@@ -67,3 +75,68 @@ export const decodePaymasterAndData = (
 
   return ok([verifyingPaymasterAddress, validUntil, validAfter, signature]);
 };
+
+export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
+  paymaster: Hex | null;
+  paymasterVerificationGasLimit: bigint | null;
+  paymasterPostOpGasLimit: bigint | null;
+  paymasterData: Hex | null;
+} {
+  if (paymasterAndData === "0x" || paymasterAndData.slice(2).length < 104) {
+    return {
+      paymaster: null,
+      paymasterVerificationGasLimit: null,
+      paymasterPostOpGasLimit: null,
+      paymasterData: null,
+    };
+  }
+
+  const paymaster = `0x${paymasterAndData.slice(2).slice(0, 40)}` as Hex;
+  const paymasterVerificationGasLimit = fromHex(
+    `0x${paymasterAndData.slice(2).slice(40, 72)}`,
+    "bigint",
+  );
+  const paymasterPostOpGasLimit = fromHex(
+    `0x${paymasterAndData.slice(2).slice(72, 104)}`,
+    "bigint",
+  );
+  const paymasterData = `0x${paymasterAndData.slice(2).slice(104)}` as Hex;
+
+  return {
+    paymaster,
+    paymasterVerificationGasLimit,
+    paymasterPostOpGasLimit,
+    paymasterData,
+  };
+}
+
+export function encodePackedPaymasterAndData(
+  paymaster: Hex,
+  paymasterVerificationGasLimit: bigint,
+  paymasterPostOpGasLimit: bigint,
+  paymasterData: Hex,
+): Hex {
+  // Check if all required parameters are provided and valid
+  if (
+    paymaster === "0x" ||
+    !isAddress(paymaster) ||
+    typeof paymasterVerificationGasLimit === "undefined" ||
+    typeof paymasterPostOpGasLimit === "undefined" ||
+    !paymasterData ||
+    paymasterData === "0x"
+  ) {
+    return "0x";
+  }
+
+  // Process each component
+  const paymasterHex = paymaster.slice(2);
+  const verificationGasLimitHex = toHexPadded(
+    paymasterVerificationGasLimit,
+    16,
+  );
+  const postOpGasLimitHex = toHexPadded(paymasterPostOpGasLimit, 16);
+  const paymasterDataHex = paymasterData.slice(2);
+
+  // Combine all components
+  return `0x${paymasterHex}${verificationGasLimitHex}${postOpGasLimitHex}${paymasterDataHex}`;
+}

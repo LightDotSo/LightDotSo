@@ -3095,6 +3095,9 @@ importers:
       '@lightdotso/query-keys':
         specifier: workspace:*
         version: link:../query-keys
+      '@lightdotso/sdk':
+        specifier: workspace:*
+        version: link:../sdk
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores

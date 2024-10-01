@@ -70,9 +70,10 @@ export const useMutationUserOperationSendV06 = (
 
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      // Get the user operation and user operation signature
       const { userOperation, userOperationSignature } = body;
 
-      // Sned the user operation
+      // Send the user operation
       const res = await sendUserOperationV06(userOperation.chain_id, [
         {
           sender: userOperation.sender,

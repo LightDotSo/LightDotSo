@@ -299,7 +299,6 @@ Shuni
 Signup
 Siwe
 Slippagelimitpercent
-Sned
 Sonner
 Sourceblacklist
 Sourcewhitelist

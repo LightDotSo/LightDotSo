@@ -28,6 +28,7 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
+    "@lightdotso/sdk": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",

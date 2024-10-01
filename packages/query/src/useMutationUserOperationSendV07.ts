@@ -24,9 +24,13 @@ import type {
   UserOperationSendParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
+import {
+  decodeInitCodeToFactoryAndFactoryData,
+  decodePackedPaymasterAndData,
+} from "@lightdotso/sdk";
 import { toast } from "@lightdotso/ui/components/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import { toHex } from "viem";
 import { useQueryUserOperation } from "./useQueryUserOperation";
 import { useQueryUserOperationReceipt } from "./useQueryUserOperationReceipt";
@@ -73,33 +77,40 @@ export const useMutationUserOperationSendV07 = (
       // Get the user operation and user operation signature
       const { userOperation, userOperationSignature } = body;
 
-      // Remove the 0x prefix from the init_code
-      const factory = `0x${userOperation.init_code.slice(2).slice(0, 40)}`;
-      const factoryData = `0x${userOperation.init_code.slice(2).slice(40)}`;
+      // Decode the init code to factory and factory data
+      const { factory, factoryData } = decodeInitCodeToFactoryAndFactoryData(
+        userOperation.init_code as Hex,
+      );
 
-      // Remove the 0x prefix from the paymaster_and_data
-      const paymaster = `0x${userOperation.paymaster_and_data.slice(2).slice(0, 40)}`;
-      const paymasterVerificationGasLimit = `0x${userOperation.paymaster_and_data.slice(2).slice(40, 72)}`;
-      const paymasterPostOpGasLimit = `0x${userOperation.paymaster_and_data.slice(2).slice(72, 104)}`;
-      const paymasterData = `0x${userOperation.paymaster_and_data.slice(2).slice(104)}`;
+      // Get the paymaster and paymaster data
+      const {
+        paymaster,
+        paymasterVerificationGasLimit,
+        paymasterPostOpGasLimit,
+        paymasterData,
+      } = decodePackedPaymasterAndData(userOperation.paymaster_and_data as Hex);
 
-      // Sned the user operation
+      // Send the user operation
       const res = await sendUserOperationV07(userOperation.chain_id, [
         {
           sender: userOperation.sender,
           nonce: toHex(userOperation.nonce),
           callData: userOperation.call_data,
-          factory: factory,
-          factoryData: factoryData,
+          factory: factory ?? "0x",
+          factoryData: factoryData ?? ("0x" as Hex),
           callGasLimit: toHex(userOperation.call_gas_limit),
           verificationGasLimit: toHex(userOperation.verification_gas_limit),
           preVerificationGas: toHex(userOperation.pre_verification_gas),
           maxFeePerGas: toHex(userOperation.max_fee_per_gas),
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
-          paymaster: paymaster,
-          paymasterVerificationGasLimit: paymasterVerificationGasLimit,
-          paymasterPostOpGasLimit: paymasterPostOpGasLimit,
-          paymasterData: paymasterData,
+          paymaster: paymaster ?? "0x",
+          paymasterVerificationGasLimit: paymasterVerificationGasLimit
+            ? toHex(paymasterVerificationGasLimit)
+            : "0x",
+          paymasterPostOpGasLimit: paymasterPostOpGasLimit
+            ? toHex(paymasterPostOpGasLimit)
+            : "0x",
+          paymasterData: paymasterData ?? "0x",
           signature: userOperationSignature,
         },
         CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
