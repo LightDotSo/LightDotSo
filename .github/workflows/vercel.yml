@@ -46,18 +46,9 @@ jobs:
           pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
       - name: Install Doppler
         uses: dopplerhq/cli-action@v3
-      - name: Doppler Setup Preview
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: dopplerhq/secrets-fetch-action@v1.2.0
-        id: doppler-stg
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-          doppler-project: ${{ matrix.app }}
-          doppler-config: stg
       - name: Doppler Setup Production
-        if: ${{ github.event_name == 'push' }}
         uses: dopplerhq/secrets-fetch-action@v1.2.0
-        id: doppler-prd
+        id: doppler
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN }}
           doppler-project: ${{ matrix.app }}
@@ -80,28 +71,28 @@ jobs:
         run: |
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_PROJECT_ID: ${{ steps.doppler-stg.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
       - name: Vercel Build Production
         if: ${{ github.event_name == 'push' }}
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_PROJECT_ID: ${{ steps.doppler-prd.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
       - name: Vercel Deploy Preview
         if: ${{ github.event_name == 'pull_request' }}
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_PROJECT_ID: ${{ steps.doppler-stg.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
       - name: Vercel Deploy Production
         if: ${{ github.event_name == 'push' }}
         working-directory: apps/${{ matrix.app }}
         run: |
           vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_PROJECT_ID: ${{ steps.doppler-prd.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
   vercel-check:
     needs:
       - vercel-turbo
