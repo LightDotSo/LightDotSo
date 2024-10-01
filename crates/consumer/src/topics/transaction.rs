@@ -34,6 +34,10 @@ use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn transaction_consumer(
     producer: Arc<FutureProducer>,
     topic: &str,

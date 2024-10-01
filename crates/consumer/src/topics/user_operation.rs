@@ -20,6 +20,10 @@ use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn user_operation_consumer(
     msg: &BorrowedMessage<'_>,
     poller: &Polling,

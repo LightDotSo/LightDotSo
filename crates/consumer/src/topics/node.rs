@@ -27,6 +27,10 @@ use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn node_consumer(
     msg: &BorrowedMessage<'_>,
     node: &Node,
@@ -91,7 +95,7 @@ pub async fn node_consumer(
         uop.signature = signature.into();
 
         // Get the entrypoint
-        let entrypoint = uop.try_valid_op_hash(chain_id, hash).unwrap();
+        let entrypoint = uop.try_valid_op_hash(chain_id, hash)?;
 
         // Simulate the user operation
         let res_catch = node.simulate_user_operation_with_backon(chain_id, entrypoint, &uop).await;

@@ -27,6 +27,10 @@ use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub async fn interpretation_consumer(
     msg: &BorrowedMessage<'_>,
     db: Arc<PrismaClient>,

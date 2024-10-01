@@ -21,10 +21,18 @@ use rdkafka::{message::BorrowedMessage, Message};
 use serde::Deserialize;
 use std::sync::Arc;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 #[derive(Clone, Debug, Deserialize)]
 struct LatestPortfolioReturnType {
     balance: f64,
 }
+
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
 
 pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
     // Convert the payload to a string

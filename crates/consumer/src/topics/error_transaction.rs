@@ -16,6 +16,10 @@ use eyre::Result;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
+// -----------------------------------------------------------------------------
+// Consumer
+// -----------------------------------------------------------------------------
+
 pub fn error_transaction_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
     // Send webhook if exists
     info!(
