@@ -14,7 +14,16 @@
 
 import { type Hex, fromBytes, fromHex, toHex } from "viem";
 import { describe, expect, it } from "vitest";
-import { decodePaymasterAndData } from "../src/paymaster";
+import {
+  decodePackedPaymasterAndData,
+  decodePaymasterAndData,
+  encodePackedPaymasterAndData,
+  toHexPadded,
+} from "../src";
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 describe("decodePaymasterAndData Tests", () => {
   it("should decode paymaster and data correctly", () => {
@@ -64,5 +73,80 @@ describe("decodePaymasterAndData Tests", () => {
     expect(toHex(signature)).toBe(
       "0xbab40d3c364ad63d5bcf59da8a8c872a2c6f2aad81a4bd8b46812e16271855115b9d6479508ad438ad247884664ef7cb40cbc1898891f08da75509df37e089051c",
     );
+  });
+});
+
+describe("decodePackedPaymasterAndData", () => {
+  it("should return null values for '0x' input", () => {
+    const result = decodePackedPaymasterAndData("0x" as Hex);
+    expect(result).toEqual({
+      paymaster: null,
+      paymasterVerificationGasLimit: null,
+      paymasterPostOpGasLimit: null,
+      paymasterData: null,
+    });
+  });
+
+  it("should correctly decode a valid packed paymaster and data", () => {
+    const paymaster = "0x1234567890123456789012345678901234567890";
+    const verificationGasLimit = 1000000n;
+    const postOpGasLimit = 500000n;
+    const paymasterData = "0xabcdef";
+
+    const packedData = `${paymaster.slice(2)}${verificationGasLimit.toString(16).padStart(16, "0")}${postOpGasLimit.toString(16).padStart(16, "0")}${paymasterData.slice(2)}`;
+    const input = `0x${packedData}` as Hex;
+
+    const result = decodePackedPaymasterAndData(input);
+
+    expect(result).toEqual({
+      paymaster: paymaster as Hex,
+      paymasterVerificationGasLimit: verificationGasLimit,
+      paymasterPostOpGasLimit: postOpGasLimit,
+      paymasterData: paymasterData as Hex,
+    });
+  });
+});
+
+describe("encodePackedPaymasterAndData Tests", () => {
+  it("should correctly pack valid inputs", () => {
+    const paymaster = "0x1234567890123456789012345678901234567890" as Hex;
+    const verificationGasLimit = 1000000n;
+    const postOpGasLimit = 500000n;
+    const paymasterData = "0xabcdef" as Hex;
+
+    const result = encodePackedPaymasterAndData(
+      paymaster,
+      verificationGasLimit,
+      postOpGasLimit,
+      paymasterData,
+    );
+
+    const expected = `0x1234567890123456789012345678901234567890${toHexPadded(verificationGasLimit, 16)}${toHexPadded(postOpGasLimit, 16)}abcdef`;
+    expect(result).toBe(expected);
+  });
+});
+
+describe("full decode/encode packedPaymasterAndData", () => {
+  it("should correctly decode and encode a valid packed paymaster and data", () => {
+    const paymaster = "0x1234567890123456789012345678901234567890" as Hex;
+    const verificationGasLimit = 1000000n;
+    const postOpGasLimit = 500000n;
+    const paymasterData = "0xabcdef" as Hex;
+
+    const packedData = encodePackedPaymasterAndData(
+      paymaster,
+      verificationGasLimit,
+      postOpGasLimit,
+      paymasterData,
+    );
+
+    const decodedData = decodePackedPaymasterAndData(packedData);
+
+    expect(decodedData).toEqual({
+      paymaster: paymaster,
+      paymasterVerificationGasLimit: verificationGasLimit,
+      paymasterPostOpGasLimit: postOpGasLimit,
+      paymasterData: paymasterData,
+    });
   });
 });

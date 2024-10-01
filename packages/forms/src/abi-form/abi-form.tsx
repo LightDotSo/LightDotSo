@@ -282,7 +282,8 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     if (encodedFunctionSelector && encodedAbiParameters) {
-      return encodedFunctionSelector + encodedAbiParameters.slice(2);
+      // Remove the 0x prefix from the encoded function selector and abi parameters
+      return `${encodedFunctionSelector}${encodedAbiParameters.slice(2)}`;
     }
   }, [form.formState.isValid, encodedFunctionSelector, encodedAbiParameters]);
 

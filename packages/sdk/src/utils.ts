@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  isEntryPointV06LightWalletFactory,
-  isEntryPointV07LightWalletFactory,
-  isEntryPointV06LightWalletFactoryImplementation,
-  isEntryPointV07LightWalletFactoryImplementation,
-} from "./contracts";
-export {
-  decodeInitCodeToFactoryAndFactoryData,
-  encodeFactoryAndFactoryDataToInitCode,
-} from "./factory";
-export {
-  decodePaymasterAndData,
-  decodePackedPaymasterAndData,
-  encodePackedPaymasterAndData,
-} from "./paymaster";
-export { generatePartialUserOperations } from "./partial-user-operations";
-export { toHexPadded } from "./utils";
+import type { Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+// Helper function to convert to hex and pad
+export const toHexPadded = (value: bigint, bytesLength: number): Hex => {
+  return value.toString(16).padStart(bytesLength * 2, "0") as Hex;
+};
