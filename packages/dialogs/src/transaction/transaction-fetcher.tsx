@@ -784,7 +784,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         entryPointVersion: "0.6",
       });
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.info("v0.6 userOperation hash", hash);
+      console.info("v0.6 getUserOperationHash: ", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === userOperationWithHash?.hash) {
@@ -838,7 +838,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         entryPointVersion: "0.7",
       });
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.info("v0.7 userOperation hash", hash);
+      console.info("v0.7 getUserOperationHash: ", hash);
 
       // Don't update the user operation if the hash is same as the previous one
       if (hash === packedUserOperationWithHash?.hash) {
