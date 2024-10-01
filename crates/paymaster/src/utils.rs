@@ -1,3 +1,17 @@
+// Copyright 2023-2024 LightDotSo.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 use crate::paymaster::{estimate_request_gas_estimation, estimate_user_operation_gas};
 use alloy::primitives::{Address, Bytes, U256};
 use eyre::Result;
@@ -29,9 +43,9 @@ pub async fn construct_user_operation(
     {
         warn!("Overriding the gas estimation for the user operation");
         EstimateResult {
-            pre_verification_gas: user_operation.pre_verification_gas.unwrap(),
-            verification_gas_limit: user_operation.verification_gas_limit.unwrap(),
-            call_gas_limit: user_operation.call_gas_limit.unwrap(),
+            pre_verification_gas: user_operation.pre_verification_gas.unwrap_or_default(),
+            verification_gas_limit: user_operation.verification_gas_limit.unwrap_or_default(),
+            call_gas_limit: user_operation.call_gas_limit.unwrap_or_default(),
         }
     } else {
         // If the `estimate_user_operation_gas` is not set, estimate the gas for the user operation.
@@ -54,8 +68,8 @@ pub async fn construct_user_operation(
             call_gas_limit: estimated_user_operation_gas.call_gas_limit,
             verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
             pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
-            max_fee_per_gas: user_operation.max_fee_per_gas.unwrap(),
-            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.unwrap(),
+            max_fee_per_gas: user_operation.max_fee_per_gas.unwrap_or_default(),
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.unwrap_or_default(),
             signature: user_operation.signature,
             paymaster_and_data: Bytes::default(),
         });
