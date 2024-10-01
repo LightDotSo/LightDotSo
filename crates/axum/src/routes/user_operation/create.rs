@@ -32,8 +32,8 @@ use axum::{
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
-    address::ENTRYPOINT_V060_ADDRESS, merkle_tree::MerkleTree,
-    paymaster::decode_paymaster_and_data, types::UserOperation as BaseUserOperation,
+    merkle_tree::MerkleTree, paymaster::decode_paymaster_and_data,
+    types::UserOperation as BaseUserOperation,
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -378,7 +378,7 @@ pub(crate) async fn v1_user_operation_create_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
+                        entrypoint.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
@@ -583,9 +583,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let mut leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
         .iter()
         .map(|user_operation| {
-            let base_user_operation = BaseUserOperation::try_from(user_operation.clone()).unwrap();
-            let base_hash = base_user_operation
-                .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64);
+            let base_hash = B256::from_str(&user_operation.hash).unwrap();
             base_hash.0
         })
         .collect();
@@ -805,7 +803,8 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
 
         // Get the rundler hash for the user operation.
         let base_user_operation = BaseUserOperation::try_from(user_operation.clone())?;
-        let base_hash = base_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+        let base_hash = B256::from_str(&user_operation.hash)?;
+        let entrypoint = base_user_operation.try_valid_op_hash(chain_id as u64, base_hash)?;
 
         // Get the merkle proof for the user operation.
         let merkle_proof = merkle_tree
@@ -828,7 +827,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        ENTRYPOINT_V060_ADDRESS.to_checksum(None),
+                        entrypoint.to_checksum(None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
@@ -911,14 +910,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             if owner.weight >= configuration.threshold {
                 // Send all user operations to the node.
                 for user_operation in user_operations.clone().iter() {
+                    let base_hash = B256::from_str(&user_operation.hash)?;
+
                     // Send the user operation to the node.
                     let _ = produce_node_message(
                         state.producer.clone(),
-                        &NodeMessage {
-                            hash: BaseUserOperation::try_from(user_operation.clone())
-                                .unwrap()
-                                .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64),
-                        },
+                        &NodeMessage { hash: base_hash },
                     )
                     .await;
                 }
