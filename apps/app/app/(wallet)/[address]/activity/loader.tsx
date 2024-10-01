@@ -14,6 +14,7 @@
 
 "use client";
 
+import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
 import type { PageProps as OriginalPageProps } from "@/app/(wallet)/[address]/activity/page";
 import dynamic from "next/dynamic";
 import type { Address } from "viem";
@@ -50,5 +51,10 @@ export function Loader({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <ActivityDataTable address={params.address as Address} />;
+  return (
+    <>
+      <ActivityDataTable address={params.address as Address} />
+      <ActivityDataTablePagination />
+    </>
+  );
 }
