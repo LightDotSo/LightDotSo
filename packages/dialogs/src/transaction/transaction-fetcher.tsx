@@ -994,10 +994,20 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     // Remove the 0x prefix from the init_code
-    const initCode = `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`;
+    const initCode =
+      packedUserOperationWithHash?.factory !== "0x" &&
+      packedUserOperationWithHash?.factoryData !== "0x"
+        ? `0x${packedUserOperationWithHash?.factory.slice(2)}${packedUserOperationWithHash?.factoryData.slice(2)}`
+        : "0x";
 
     // Remove the 0x prefix from the paymaster and data
-    const paymasterAndData = `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`;
+    const paymasterAndData =
+      packedUserOperationWithHash?.paymaster !== "0x" &&
+      packedUserOperationWithHash?.paymasterVerificationGasLimit &&
+      packedUserOperationWithHash?.paymasterPostOpGasLimit &&
+      packedUserOperationWithHash?.paymasterData !== "0x"
+        ? `0x${packedUserOperationWithHash?.paymaster.slice(2)}${toHex(packedUserOperationWithHash?.paymasterVerificationGasLimit).slice(2)}${toHex(packedUserOperationWithHash?.paymasterPostOpGasLimit).slice(2)}${packedUserOperationWithHash?.paymasterData.slice(2)}`
+        : "0x";
 
     setUserOperationByChainIdAndNonce(
       packedUserOperationWithHash?.chainId,
