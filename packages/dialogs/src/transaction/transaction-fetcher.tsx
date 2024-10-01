@@ -715,6 +715,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterVerificationGasLimitV07,
     paymasterDataV07,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("finalizedPackedUserOperation", finalizedPackedUserOperation);
 
   const decodedPaymasterAndData = useMemo(() => {
     if (

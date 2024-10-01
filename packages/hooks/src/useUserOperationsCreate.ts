@@ -156,43 +156,6 @@ export const useUserOperationsCreate = ({
     );
   }, [configuration?.owners, userAddress]);
 
-  // const decodedInitCode = useMemo(() => {
-  //   // If the initCode is `0x`, return
-  //   if (
-  //     !userOperation?.callData ||
-  //     !userOperation?.initCode ||
-  //     userOperation?.initCode === "0x"
-  //   ) {
-  //     return;
-  //   }
-
-  //   // Parse the initCode of the userOperation
-  //   return decodeFunctionData({
-  //     abi: lightWalletFactoryAbi,
-  //     data: `0x${userOperation?.initCode.slice(42)}` as Hex,
-  //   }).args;
-  // }, [userOperation?.initCode, userOperation?.callData]);
-
-  // const decodedCallData = useMemo(() => {
-  //   // If the callData is `0x`, return
-  //   if (!userOperation?.callData || userOperation?.callData === "0x") {
-  //     return;
-  //   }
-
-  //   // Parse the callData of tha args depending on the args type
-  //   switch (userOperation?.callData.slice(0, 10)) {
-  //     // If the function selector is `execute` or `executeBatch`
-  //     case "0xb61d27f6":
-  //     case "0x47e1da2a":
-  //       return decodeFunctionData({
-  //         abi: lightWalletAbi,
-  //         data: userOperation?.callData as Hex,
-  //       }).args;
-  //     default:
-  //       return userOperation?.callData;
-  //   }
-  // }, [userOperation?.callData]);
-
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -403,10 +366,6 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateSubmittable: isUserOperationsCreateSubmittable,
     isUserOperationsDisabled: isUserOperationsDisabled,
     isValidUserOperations: isValidUserOperations,
-    // decodedCallData,
-    // decodedInitCode,
-    // paymasterHash,
-    // paymasterNonce,
     resetUserOperationsCreate: resetUserOperationsCreate,
     signUserOperations: signUserOperations,
     subdigest: subdigest,
