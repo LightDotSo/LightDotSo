@@ -3,7 +3,7 @@
 # Awesome work for the ethereum community!
 
 # Specify the base image we're building from.
-FROM rust:1.80 AS builder
+FROM rust:1.81 AS builder
 
 # Specify turborepo related args
 ARG AWS_ACCESS_KEY_ID
