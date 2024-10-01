@@ -14,10 +14,9 @@
 
 #![allow(clippy::unwrap_used)]
 
-use std::collections::HashMap;
-
 use alloy::primitives::Address;
 use lazy_static::lazy_static;
+use std::collections::HashMap;
 
 // -----------------------------------------------------------------------------
 // Constants
