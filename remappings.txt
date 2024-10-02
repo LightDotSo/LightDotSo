@@ -12,7 +12,7 @@ core-modules/=lib/core-modules/src/
 ds-test/=lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 magic-spend/=lib/magic-spend/src/
-module-bases/lib/module-bases/src/
+module-bases/=lib/module-bases/src/
 modulekit/=lib/modulekit/src/
 murky/=lib/murky/src/
 nexus/=lib/nexus/src/
@@ -40,7 +40,7 @@ surl/=lib/surl/src/
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
 @openzeppelin/contracts-upgradeable-v4.9/=lib/openzeppelin-contracts-upgradeable-v4.9/contracts/
 @openzeppelin/contracts-upgradeable-v5.0/=lib/openzeppelin-contracts-upgradeable-v5.0/contracts/
-@rhinestone/core-modules/lib/core-modules/src/
+@rhinestone/core-modules/=lib/core-modules/src/
 @rhinestone/module-bases/=lib/module-bases/src/
 @rhinestone/modulekit/=lib/modulekit/src/
 @safe-global/safe-contracts/=lib/safe-contracts/
