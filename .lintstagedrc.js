@@ -1,5 +1,8 @@
 module.exports = {
-  "*": ["pnpm run license:cmd add", "pnpm run cspell:fix"],
+  "*": [
+    "pnpm run license:cmd add",
+    // "pnpm run cspell:fix"
+  ],
   "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,css,graphql}": [
     "pnpm run biome:cmd",
   ],

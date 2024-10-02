@@ -53,6 +53,7 @@ CLASSPATH
 COMDEX
 CRONOS
 CYGPATTERN
+Cancelation
 Cardano
 Celo
 Chaind
