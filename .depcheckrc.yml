@@ -35,6 +35,7 @@ ignores:
   - rimraf
   - sort-package-json
   - tailwindcss
+  - tsdown
   - tslib
   - tsup
   - vercel

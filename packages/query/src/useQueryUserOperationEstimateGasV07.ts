@@ -28,6 +28,7 @@ import { USER_OPERATION_CONFIG } from "./config";
 
 export const useQueryUserOperationEstimateGasV07 = (
   params: RpcEstimateUserOperationGasV07Params,
+  isPaymasterEnabled: boolean,
   isEnabled: boolean,
 ) => {
   // ---------------------------------------------------------------------------
@@ -80,13 +81,22 @@ export const useQueryUserOperationEstimateGasV07 = (
             factory: params?.factory,
             factoryData: params?.factoryData,
             callData: params?.callData,
-            signature:
-              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
             ...(params?.maxFeePerGas
               ? { maxFeePerGas: toHex(params?.maxFeePerGas) }
               : {}),
             ...(params?.maxPriorityFeePerGas
               ? { maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas) }
+              : {}),
+            signature:
+              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
+            ...(isPaymasterEnabled
+              ? {
+                  paymaster: "0x0000000000000039cd5e8aE05257CE51C473ddd1",
+                  paymasterData:
+                    "0x01000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000c350000000000000000000000000000000000000000000000088ed21153e8f500000cd91f19f0f19ce862d7bec7b7d9b95457145afc6f639c28fd0360f488937bfa41e6eedcd3a46054fd95fcd0e3ef6b0bc0a615c4d975eef55c8a3517257904d5b1c",
+                  paymasterVerificationGasLimit: "0xc350",
+                  paymasterPostOpGasLimit: "0x4e20",
+                }
               : {}),
           },
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],

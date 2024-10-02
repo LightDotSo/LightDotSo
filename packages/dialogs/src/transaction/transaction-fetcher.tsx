@@ -346,6 +346,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
     },
+    true,
     isEntryPointV07,
   );
 
