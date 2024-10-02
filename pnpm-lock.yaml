@@ -162,6 +162,9 @@ importers:
       cspell:
         specifier: ^8.14.4
         version: 8.14.4
+      cspell-cli:
+        specifier: ^8.13.3
+        version: 8.13.3
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -14132,6 +14135,11 @@ packages:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
 
+  cspell-cli@8.13.3:
+    resolution: {integrity: sha512-R3j5EjbYowEfRs0TydeP8dE1PH5C90O3SqCI7H8+RdVH3nGQD4wttZf+R/uUPfpw+G+UkQiR92BymNaOdLNoaA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   cspell-config-lib@8.14.4:
     resolution: {integrity: sha512-cnUeJfniTiebqCaQmIUnbSrPrTH7xzKRQjJDHAEV0WYnOG2MhRXI13OzytdFdhkVBdStmgTzTCJKE7x+kmU2NA==}
     engines: {node: '>=18'}
@@ -27990,7 +27998,7 @@ snapshots:
     dependencies:
       '@ethereumjs/tx': 4.2.0
       '@types/debug': 4.1.12
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       semver: 7.6.3
       superstruct: 1.0.4
     transitivePeerDependencies:
@@ -28265,7 +28273,7 @@ snapshots:
 
   '@nomicfoundation/hardhat-ethers@3.0.6(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(hardhat@2.22.12(bufferutil@4.0.8)(ts-node@10.9.2(@swc/core@1.7.28(@swc/helpers@0.5.13))(@types/node@22.7.4)(typescript@5.6.2))(typescript@5.6.2)(utf-8-validate@5.0.10))':
     dependencies:
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       ethers: 6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hardhat: 2.22.12(bufferutil@4.0.8)(ts-node@10.9.2(@swc/core@1.7.28(@swc/helpers@0.5.13))(@types/node@22.7.4)(typescript@5.6.2))(typescript@5.6.2)(utf-8-validate@5.0.10)
       lodash.isequal: 4.5.0
@@ -28291,7 +28299,7 @@ snapshots:
       '@nomicfoundation/ignition-core': 0.15.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@nomicfoundation/ignition-ui': 0.15.5
       chalk: 4.1.2
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       fs-extra: 10.1.0
       hardhat: 2.22.12(bufferutil@4.0.8)(ts-node@10.9.2(@swc/core@1.7.28(@swc/helpers@0.5.13))(@types/node@22.7.4)(typescript@5.6.2))(typescript@5.6.2)(utf-8-validate@5.0.10)
       prompts: 2.4.2
@@ -28332,7 +28340,7 @@ snapshots:
       '@ethersproject/address': 5.7.0
       cbor: 8.1.0
       chalk: 2.4.2
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       hardhat: 2.22.12(bufferutil@4.0.8)(ts-node@10.9.2(@swc/core@1.7.28(@swc/helpers@0.5.13))(@types/node@22.7.4)(typescript@5.6.2))(typescript@5.6.2)(utf-8-validate@5.0.10)
       lodash.clonedeep: 4.5.0
       semver: 6.3.1
@@ -28346,7 +28354,7 @@ snapshots:
       '@ethersproject/address': 5.6.1
       '@nomicfoundation/solidity-analyzer': 0.1.2
       cbor: 9.0.2
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       ethers: 6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       fs-extra: 10.1.0
       immer: 10.0.2
@@ -37340,6 +37348,10 @@ snapshots:
       node-forge: 0.8.5
 
   crypto-random-string@2.0.0: {}
+
+  cspell-cli@8.13.3:
+    dependencies:
+      cspell: 8.14.4
 
   cspell-config-lib@8.14.4:
     dependencies:
@@ -48566,7 +48578,7 @@ snapshots:
   typechain@8.3.2(typescript@5.6.2):
     dependencies:
       '@types/prettier': 2.7.3
-      debug: 4.3.6(supports-color@5.5.0)
+      debug: 4.3.7
       fs-extra: 7.0.1
       glob: 7.1.7
       js-sha3: 0.8.0

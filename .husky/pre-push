@@ -8,3 +8,6 @@ if [ "$branch" = "main" ]; then
     echo 'Direct push to main is not allowed. Create a pull request instead.'
     exit 1
 fi
+
+pnpm run cspell:lint || pnpm run cspell:fix
+pnpm run project-words:lint || pnpm run project-words:fix
