@@ -795,8 +795,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       }
 
       // Don't update the user operation if the below required fields are empty
+      // `callGasLimit` can potentially be 0n if the user operation is a factory user operation
       if (
-        finalizedUserOperation.callGasLimit === 0n ||
         finalizedUserOperation.verificationGasLimit === 0n ||
         finalizedUserOperation.preVerificationGas === 0n ||
         finalizedUserOperation.maxFeePerGas === 0n ||
@@ -849,8 +849,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       }
 
       // Don't update the user operation if the below required fields are empty
+      // `callGasLimit` can potentially be 0n if the user operation is a factory user operation
       if (
-        finalizedPackedUserOperation.callGasLimit === 0n ||
         finalizedPackedUserOperation.verificationGasLimit === 0n ||
         finalizedPackedUserOperation.preVerificationGas === 0n ||
         finalizedPackedUserOperation.maxFeePerGas === 0n ||
@@ -918,6 +918,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isGasAndPaymasterAndDataLoadingV06,
     isGasAndPaymasterAndDataLoadingV07,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("isTransactionFetcherLoading", isTransactionFetcherLoading);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
