@@ -36,6 +36,12 @@
 	path = lib/magic-spend
 	url = https://github.com/LightDotSo/magic-spend
 	branch = patch
+[submodule "lib/module-bases"]
+	path = lib/module-bases
+	url = https://github.com/rhinestonewtf/module-bases
+[submodule "lib/modulekit"]
+	path = lib/modulekit
+	url = https://github.com/rhinestonewtf/modulekit
 [submodule "lib/murky"]
 	path = lib/murky
 	url = https://github.com/dmfxyz/murky
@@ -109,3 +115,6 @@
 [submodule "wiki"]
 	path = wiki
 	url = https://github.com/LightDotSo/LightDotSo.wiki.git
+[submodule "modulekit"]
+	path = modulekit
+	url = https://github.com/rhinestonewtf/modulekit

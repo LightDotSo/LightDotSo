@@ -66,7 +66,8 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
         params?.nonce === null ||
         !params?.initCode ||
         !params?.callData ||
-        !params?.callGasLimit ||
+        typeof params?.callGasLimit === "undefined" ||
+        params?.callGasLimit === null ||
         !params?.verificationGasLimit ||
         !params?.preVerificationGas ||
         !params?.maxFeePerGas ||
@@ -80,17 +81,17 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
         [
           {
             sender: params?.sender,
-            paymasterAndData: "0x",
             nonce: toHex(params?.nonce),
             initCode: params?.initCode,
             callData: params?.callData,
-            signature:
-              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
             callGasLimit: toHex(params?.callGasLimit),
             verificationGasLimit: toHex(params?.verificationGasLimit),
             preVerificationGas: toHex(params?.preVerificationGas),
             maxFeePerGas: toHex(params?.maxFeePerGas),
             maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas),
+            paymasterAndData: "0x",
+            signature:
+              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },
         ],
         clientType,

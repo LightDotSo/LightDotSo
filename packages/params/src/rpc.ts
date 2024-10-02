@@ -47,7 +47,14 @@ export type RpcPaymasterGasAndPaymasterAndDataV06Params = Partial<
 >;
 
 export type RpcPaymasterGasAndPaymasterAndDataV07Params = Partial<
-  Omit<PackedUserOperation, "hash" | "paymasterAndData" | "signature">
+  Omit<
+    PackedUserOperation,
+    | "hash"
+    | "paymaster"
+    | "paymasterPostOpGasLimit"
+    | "paymasterData"
+    | "signature"
+  >
 >;
 
 export type RpcGasEstimationParams = {

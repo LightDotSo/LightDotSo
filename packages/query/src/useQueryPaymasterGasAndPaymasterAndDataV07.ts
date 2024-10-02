@@ -59,6 +59,7 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
       preVerificationGas: params?.preVerificationGas,
       maxFeePerGas: params?.maxFeePerGas,
       maxPriorityFeePerGas: params?.maxPriorityFeePerGas,
+      paymasterVerificationGasLimit: params?.paymasterVerificationGasLimit,
     }).queryKey,
     queryFn: async () => {
       if (
@@ -66,7 +67,8 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
         !params?.callData ||
-        !params?.callGasLimit ||
+        typeof params?.callGasLimit === "undefined" ||
+        params?.callGasLimit === null ||
         !params?.verificationGasLimit ||
         !params?.preVerificationGas ||
         !params?.maxFeePerGas ||
@@ -89,6 +91,15 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
             preVerificationGas: toHex(params?.preVerificationGas),
             maxFeePerGas: toHex(params?.maxFeePerGas),
             maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas),
+            paymaster: "0x0000000000000039cd5e8aE05257CE51C473ddd1",
+            paymasterData:
+              "0x01000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000c350000000000000000000000000000000000000000000000088ed21153e8f500000cd91f19f0f19ce862d7bec7b7d9b95457145afc6f639c28fd0360f488937bfa41e6eedcd3a46054fd95fcd0e3ef6b0bc0a615c4d975eef55c8a3517257904d5b1c",
+            paymasterPostOpGasLimit: "0x4e20",
+            paymasterVerificationGasLimit:
+              params?.paymasterVerificationGasLimit &&
+              params?.paymasterVerificationGasLimit !== 0n
+                ? toHex(params?.paymasterVerificationGasLimit)
+                : "0xc350",
             signature:
               "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },

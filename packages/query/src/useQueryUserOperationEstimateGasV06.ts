@@ -77,14 +77,14 @@ export const useQueryUserOperationEstimateGasV06 = (
             nonce: toHex(params?.nonce),
             initCode: params?.initCode,
             callData: params?.callData,
-            signature:
-              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
             ...(params?.maxFeePerGas
               ? { maxFeePerGas: toHex(params?.maxFeePerGas) }
               : {}),
             ...(params?.maxPriorityFeePerGas
               ? { maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas) }
               : {}),
+            signature:
+              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
           },
           CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS],
         ],
