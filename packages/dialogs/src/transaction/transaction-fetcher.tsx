@@ -17,7 +17,7 @@
 import {
   CONTRACT_ADDRESSES,
   ContractAddress,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+  LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import { useDebouncedValue } from "@lightdotso/hooks";
 import { useEntryPointVersion } from "@lightdotso/hooks/src/useEntryPointVersion";
@@ -128,7 +128,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const { data: entryPointNonce, isFetched: isEntryPointNonceFetched } =
     useReadEntryPointv060GetNonce({
       address:
-        WALLET_FACTORY_ENTRYPOINT_MAPPING[
+        LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
           // biome-ignore lint/style/noNonNullAssertion: <explanation>
           findContractAddressByAddress(wallet?.factory_address as Address)!
         ],

@@ -22,7 +22,6 @@ import {
   LATEST_WALLET_FACTORY_ADDRESS,
   LATEST_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useProxyImplementationAddress } from "@lightdotso/hooks";
@@ -35,7 +34,6 @@ import {
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui/components/button";
 import {
-  findContractAddressByAddress,
   getEtherscanUrl,
   shortenAddress,
   shortenBytes32,
@@ -196,10 +194,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
 
     // Get the initCode from the initial configuration
     return calculateInitCode(
-      WALLET_FACTORY_ENTRYPOINT_MAPPING[
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        findContractAddressByAddress(wallet.factory_address as Address)!
-      ],
+      wallet.factory_address as Address,
       image_hash,
       salt,
     );
