@@ -7,7 +7,7 @@ on:
   merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
-  cancel-in-progress: false
+  cancel-in-progress: github.event_name != 'push'
 env:
   TURBO_API: ${{ secrets.TURBO_API }}
   TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
@@ -38,6 +38,7 @@ jobs:
       matrix:
         app: [app, explorer, home]
         # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+      fast-fail: github.event_name != 'push'
     env:
       VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
       NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
