@@ -745,10 +745,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterPreVerificationGasV07,
     gasAndPaymasterVerificationGasLimitV07,
     gasAndPaymasterPaymasterV07,
-    gasAndPaymasterPostOpGasLimitV07,
     gasAndPaymasterPaymasterVerificationGasLimitV07,
+    gasAndPaymasterPostOpGasLimitV07,
     gasAndPaymasterPaymasterDataV07,
-    gasAndPaymasterAndDataV07,
   ]);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("finalizedPackedUserOperation", finalizedPackedUserOperation);
