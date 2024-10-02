@@ -266,6 +266,10 @@ const estimateUserOperationGasV07Request = z.array(
       preVerificationGas: HexStringSchema.optional(),
       maxFeePerGas: HexStringSchema.optional(),
       maxPriorityFeePerGas: HexStringSchema.optional(),
+      paymaster: HexStringSchema.optional(),
+      paymasterData: HexStringSchema.optional(),
+      paymasterVerificationGasLimit: HexStringSchema.optional(),
+      paymasterPostOpGasLimit: HexStringSchema.optional(),
       signature: HexStringSchema,
     })
     .or(z.string()),
