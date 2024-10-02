@@ -62,8 +62,9 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
         ops[0].signature = bytes("invalid");
 
         // it should revert on a {InvalidSignature} error
@@ -74,8 +75,9 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // it should transfer the ETH to the recipient
         entryPoint.handleOps(ops, beneficiary);

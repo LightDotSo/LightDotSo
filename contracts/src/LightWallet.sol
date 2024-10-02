@@ -31,11 +31,13 @@
 pragma solidity ^0.8.27;
 
 // Core is heavily based by the work of @0xsequence (especially @Agusx1211)
-// Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
+// Link:
+// https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
 // License: Apache-2.0
 
 // ECDSAValidator is heavily based by the work of @bcnmy's MultichainECDSAValidator
-// Link: https://raw.githubusercontent.com/bcnmy/scw-contracts/8c71c2a6404feb3eef85d1a2707042114b204878/contracts/smart-account/modules/MultichainECDSAValidator.sol
+// Link:
+// https://raw.githubusercontent.com/bcnmy/scw-contracts/8c71c2a6404feb3eef85d1a2707042114b204878/contracts/smart-account/modules/MultichainECDSAValidator.sol
 // License: MIT
 
 // Thank you to both teams for the ever amazing work!j
@@ -51,9 +53,11 @@ import {
 import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {PackedUserOperation} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
-import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
+import {ModuleAuthUpgradable} from
+    "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightWallet
@@ -89,7 +93,13 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @inheritdoc BaseAccount
-    function entryPoint() public view virtual override(BaseAccount, ILightWallet) returns (IEntryPoint) {
+    function entryPoint()
+        public
+        view
+        virtual
+        override(BaseAccount, ILightWallet)
+        returns (IEntryPoint)
+    {
         return _entryPoint;
     }
 
@@ -98,7 +108,8 @@ contract LightWallet is
 
     /// @param anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
-    /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
+    /// The official EntryPoint contract is at
+    /// https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
     constructor(IEntryPoint anEntryPoint) {
         _entryPoint = anEntryPoint;
         _disableInitializers();
@@ -116,11 +127,21 @@ contract LightWallet is
     /// @param dest The array of address of the target contract to call.
     /// @param value The array of amount of Wei (ETH) to send along with the call.
     /// @param func The array of calldata to send to the target contract.
-    /// @dev to reduce gas consumption for trivial case (no value), use a zero-length array to mean zero value
+    /// @dev to reduce gas consumption for trivial case (no value), use a zero-length array to mean
+    /// zero value
     /// @notice Executes a sequence of transactions (called directly by entryPoint)
-    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external {
+    function executeBatch(
+        address[] calldata dest,
+        uint256[] calldata value,
+        bytes[] calldata func
+    )
+        external
+    {
         _requireFromEntryPoint();
-        require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
+        require(
+            dest.length == func.length && (value.length == 0 || value.length == func.length),
+            "wrong array lengths"
+        );
         if (value.length == 0) {
             for (uint256 i = 0; i < dest.length; i++) {
                 _call(dest[i], 0, func[i]);
@@ -133,7 +154,10 @@ contract LightWallet is
     }
 
     /// @inheritdoc ModuleAuth
-    function isValidSignature(bytes32 hash, bytes calldata signatures)
+    function isValidSignature(
+        bytes32 hash,
+        bytes calldata signatures
+    )
         public
         view
         override(ILightWallet, ModuleAuth)
@@ -143,8 +167,10 @@ contract LightWallet is
     }
 
     /// @param imageHash The hash to validate the signature against.
-    /// @notice The _entryPoint member is immutable, to reduce gas consumption. To upgrade EntryPoint,
-    /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
+    /// @notice The _entryPoint member is immutable, to reduce gas consumption. To upgrade
+    /// EntryPoint,
+    /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then
+    /// upgrading
     /// the implementation by calling `upgradeTo()`
     function initialize(bytes32 imageHash) public virtual initializer {
         _initialize(imageHash);
@@ -162,7 +188,10 @@ contract LightWallet is
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
+    function _validateSignature(
+        PackedUserOperation calldata userOp,
+        bytes32 userOpHash
+    )
         internal
         virtual
         override
@@ -171,7 +200,8 @@ contract LightWallet is
         bytes1 signatureType = userOp.signature[0];
 
         // Thank you to @pseudolabel & @fiveoutofnine for the bitwise op suggestion!
-        // Equivalent to signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03
+        // Equivalent to signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 ||
+        // signatureType == 0x03
         if (signatureType & 0x03 == signatureType) {
             (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
             if (!isValid) {
@@ -197,12 +227,14 @@ contract LightWallet is
             // 1st part is the bytes32 merkleTreeRoot
             // 2nd part is the offset of the bytes32[] merkleProof
             // 3rd part is the offset of the bytes merkleSignature
-            // 4th part is the length of the bytes32[] merkleProof, and the contents of the array (32 bytes each)
+            // 4th part is the length of the bytes32[] merkleProof, and the contents of the array
+            // (32 bytes each)
             // 5th part is the length of the bytes merkleSignature
             // 1byte is added to the offset to account for the signatureType
             uint256 offset = 161 + merkleProof.length * 32;
-            (bool isValid,) =
-                _signatureValidation(merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]);
+            (bool isValid,) = _signatureValidation(
+                merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]
+            );
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
@@ -217,9 +249,12 @@ contract LightWallet is
     /// @param target The address of the target contract to call.
     /// @param value The amount of Wei (ETH) to send along with the call.
     /// @param data The data payload to send along with the call.
-    /// @dev This internal function uses the `call` function to make an external call to the target contract
-    /// with the specified value and data. It captures the success status and returned data of the call.
-    /// If the call is not successful, it reverts the transaction and provides the error message from the target contract.
+    /// @dev This internal function uses the `call` function to make an external call to the target
+    /// contract
+    /// with the specified value and data. It captures the success status and returned data of the
+    /// call.
+    /// If the call is not successful, it reverts the transaction and provides the error message
+    /// from the target contract.
     // slither-disable-start low-level-calls
     // slither-disable-next-line arbitrary-send-eth
     function _call(address target, uint256 value, bytes memory data) internal {

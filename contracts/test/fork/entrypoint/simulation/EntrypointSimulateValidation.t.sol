@@ -16,13 +16,17 @@
 
 pragma solidity ^0.8.27;
 
-import {IEntryPoint} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
-import {IStakeManager} from "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
+import {IEntryPoint} from
+    "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IEntryPoint.sol";
+import {IStakeManager} from
+    "@eth-infinitism/account-abstraction-v0.6/contracts/interfaces/IStakeManager.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 using ERC4337Utils for EntryPoint;
 
@@ -61,11 +65,18 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
         // Example UserOperation to create the account
-        PackedUserOperation memory op =
-            entryPoint.signPackUserOp(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
+        PackedUserOperation memory op = entryPoint.signPackUserOp(
+            vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint
+        );
+
+        // Log the UserOperation
+        // solhint-disable-next-line no-console
+        console.logBytes(abi.encode(op));
 
         // IEntryPoint.ReturnInfo memory returnInfo =
         //     IEntryPoint.ReturnInfo(396463, 1002500000000, false, 0, 281474976710655, "");
@@ -75,7 +86,8 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
 
         // vm.expectRevert(
         //     abi.encodeWithSelector(
-        //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
+        //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo,
+        // paymasterInfo
         //     )
         // );
     }

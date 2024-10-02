@@ -44,11 +44,22 @@ interface ILightWallet is IERC1271 {
     function execute(address dest, uint256 value, bytes calldata func) external;
 
     /// @notice Executes a sequence of transactions (called directly by entryPoint).
-    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external;
+    function executeBatch(
+        address[] calldata dest,
+        uint256[] calldata value,
+        bytes[] calldata func
+    )
+        external;
 
     /// @notice Check if a signature is valid based on the owner's address.
     /// Compatible with ERC1271
-    function isValidSignature(bytes32 hash, bytes calldata signatures) external view returns (bytes4);
+    function isValidSignature(
+        bytes32 hash,
+        bytes calldata signatures
+    )
+        external
+        view
+        returns (bytes4);
 
     /// @notice Compatibility with ERC165
     function supportsInterface(bytes4 interfaceId) external pure returns (bool);

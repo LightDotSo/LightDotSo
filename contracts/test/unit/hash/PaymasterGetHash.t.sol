@@ -55,7 +55,8 @@ contract PaymasterGetHashUnitTest is BaseTest {
         console.logBytes32(paymaster_hash);
 
         // Calculate the expected hash using our utility function
-        bytes32 expected_hash = LightPaymasterUtils.getWithdrawRequestHash(address(paymaster), sender, request);
+        bytes32 expected_hash =
+            LightPaymasterUtils.getWithdrawRequestHash(address(paymaster), sender, request);
 
         // Assert that the hashes match
         assertEq(paymaster_hash, expected_hash, "Paymaster hash should match the expected hash");

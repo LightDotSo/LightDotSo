@@ -17,7 +17,8 @@
 pragma solidity ^0.8.27;
 
 // Modified implementation on TimelockControllerUpgradeable.sol from @openzeppelin
-// Link: https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/3fdb6ca9acf1d79ecedcbc97f9b63195fe14fcb7/contracts/governance/TimelockControllerUpgradeable.sol
+// Link:
+// https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/3fdb6ca9acf1d79ecedcbc97f9b63195fe14fcb7/contracts/governance/TimelockControllerUpgradeable.sol
 // License: MIT
 
 import {TimelockControllerUpgradeable} from
@@ -31,7 +32,11 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/U
 /// This is the version 0.1.0 contract for Light Protocol.
 /// @dev The contract is the initial implementation of a timelock controller for Light Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightTimelockController is Initializable, TimelockControllerUpgradeable, UUPSUpgradeable {
+contract LightTimelockController is
+    Initializable,
+    TimelockControllerUpgradeable,
+    UUPSUpgradeable
+{
     // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------

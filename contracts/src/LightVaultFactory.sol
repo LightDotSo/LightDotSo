@@ -75,7 +75,12 @@ contract LightVaultFactory {
     /// @param bootstrapAmount The bootstrap amount for the vault.
     /// @param name The name of the vault token.
     /// @param symbol The symbol of the vault token.
-    function createVault(address underlying, uint256 bootstrapAmount, string memory name, string memory symbol)
+    function createVault(
+        address underlying,
+        uint256 bootstrapAmount,
+        string memory name,
+        string memory symbol
+    )
         public
         returns (LightVault ret)
     {
@@ -93,17 +98,25 @@ contract LightVaultFactory {
                 symbol
             )
         );
-        bytes memory proxyBytecode =
-            abi.encodePacked(type(ERC1967Proxy).creationCode, abi.encode(address(vaultImplementation), initializeData));
+        bytes memory proxyBytecode = abi.encodePacked(
+            type(ERC1967Proxy).creationCode,
+            abi.encode(address(vaultImplementation), initializeData)
+        );
         bytes32 salt = bytes32(uint256(uint160(address(underlying))));
 
         address proxyAddress = Create2.deploy(0, salt, proxyBytecode);
         ret = LightVault(payable(proxyAddress));
     }
 
-    /// @notice Calculate the counterfactual address of the vault as it would be returned by createVault()
+    /// @notice Calculate the counterfactual address of the vault as it would be returned by
+    /// createVault()
     /// @param underlying The underlying token of the vault.
-    function getAddress(IERC20 underlying, uint256 bootstrapAmount, string memory name, string memory symbol)
+    function getAddress(
+        IERC20 underlying,
+        uint256 bootstrapAmount,
+        string memory name,
+        string memory symbol
+    )
         public
         view
         returns (address)
@@ -124,7 +137,8 @@ contract LightVaultFactory {
             bytes32(uint256(uint160(address(underlying)))),
             keccak256(
                 abi.encodePacked(
-                    type(ERC1967Proxy).creationCode, abi.encode(address(vaultImplementation), initializeData)
+                    type(ERC1967Proxy).creationCode,
+                    abi.encode(address(vaultImplementation), initializeData)
                 )
             )
         );

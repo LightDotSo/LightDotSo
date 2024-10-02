@@ -39,7 +39,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
 
     // Prank sender address - kaki.eth
-    address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
+    address internal constant PRANK_SENDER_ADDRESS =
+        address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
 
     // -------------------------------------------------------------------------
     // Modifiers
@@ -47,7 +48,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
 
     modifier onlyForkProfile() {
         try vm.envString("FOUNDRY_PROFILE") returns (string memory currentProfile) {
-            if (keccak256(abi.encodePacked(currentProfile)) == keccak256(abi.encodePacked("fork"))) {
+            if (keccak256(abi.encodePacked(currentProfile)) == keccak256(abi.encodePacked("fork")))
+            {
                 _;
                 return;
             }

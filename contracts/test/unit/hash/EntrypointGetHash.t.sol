@@ -16,7 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {PackedUserOperation} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ENTRYPOINT_V070_ADDRESS} from "@/constants/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
@@ -41,9 +42,10 @@ contract EntrypointGetHashUnitTest is BaseTest {
         console.log(address(entryPoint));
 
         // Assert that the chainid is 31337 (anvil)
-        assert(block.chainid == 31337);
+        assert(block.chainid == 31_337);
 
-        // Assert that the entrypoint is the entrypoint at 0x0000000071727De22E5E9d8BAf0edAc6f37da032
+        // Assert that the entrypoint is the entrypoint at
+        // 0x0000000071727De22E5E9d8BAf0edAc6f37da032
         assertEq(address(entryPoint), address(ENTRYPOINT_V070_ADDRESS));
 
         address sender = address(0);
@@ -86,9 +88,10 @@ contract EntrypointGetHashUnitTest is BaseTest {
         console.log(address(entryPoint));
 
         // Assert that the chainid is 31337 (anvil)
-        assert(block.chainid == 31337);
+        assert(block.chainid == 31_337);
 
-        // Assert that the entrypoint is the entrypoint at 0x0000000071727De22E5E9d8BAf0edAc6f37da032
+        // Assert that the entrypoint is the entrypoint at
+        // 0x0000000071727De22E5E9d8BAf0edAc6f37da032
         assertEq(address(entryPoint), address(ENTRYPOINT_V070_ADDRESS));
 
         address sender = address(0x1306b01bC3e4AD202612D3843387e94737673F53);
@@ -96,13 +99,13 @@ contract EntrypointGetHashUnitTest is BaseTest {
         bytes memory initCode =
             hex"1306b01bC3e4AD202612D3843387e94737673F530000000000000000000000000000000000000000080085";
         bytes memory callData = hex"0000000000000000000000000000000000000000080085";
-        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(100000, 100000);
+        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(100_000, 100_000);
         uint256 preVerificationGas = 100;
-        bytes32 gasFees = ERC4337Utils.packGasFees(9999999, 9999999);
+        bytes32 gasFees = ERC4337Utils.packGasFees(9_999_999, 9_999_999);
         bytes memory paymasterAndData = ERC4337Utils.packPaymasterAndData(
             address(0x000000000018d32DF916ff115A25fbeFC70bAf8b),
-            100000,
-            100000,
+            100_000,
+            100_000,
             hex"0000000000000000000000000000000000000000080085"
         );
         bytes memory signature = hex"da0929f527cded8d0a1eaf2e8861d7f7e2d8160b7b13942f99dd367df4473a";

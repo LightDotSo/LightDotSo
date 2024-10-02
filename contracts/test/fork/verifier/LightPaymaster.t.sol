@@ -16,7 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {PackedUserOperation} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
@@ -73,7 +74,12 @@ contract LightPaymasterForkTest is BaseForkTest {
             signature
         );
 
-        MagicSpend.WithdrawRequest memory request = MagicSpend.WithdrawRequest(bytes(""), address(0), 0, 0, uint48(0));
+        // Log the bytes
+        // solhint-disable-next-line no-console
+        console.logBytes(abi.encode(op));
+
+        MagicSpend.WithdrawRequest memory request =
+            MagicSpend.WithdrawRequest(bytes(""), address(0), 0, 0, uint48(0));
         // Get the hash w/ custom operation
         bytes32 hash = paymaster.getHash(address(account), request);
 

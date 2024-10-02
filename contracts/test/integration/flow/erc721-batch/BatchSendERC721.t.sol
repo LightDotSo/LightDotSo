@@ -69,12 +69,17 @@ contract BatchSendERC721IntegrationTest is BaseIntegrationTest {
         callValues = new uint256[](0);
 
         callDatas = new bytes[](3);
-        callDatas[0] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1);
-        callDatas[1] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(2), 2);
-        callDatas[2] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(3), 3);
+        callDatas[0] =
+            abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1);
+        callDatas[1] =
+            abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(2), 2);
+        callDatas[2] =
+            abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(3), 3);
 
         // Set the operational callData
-        callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
+        callData = abi.encodeWithSelector(
+            LightWallet.executeBatch.selector, callAddresses, callValues, callDatas
+        );
     }
 
     // -------------------------------------------------------------------------
@@ -96,8 +101,9 @@ contract BatchSendERC721IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC721
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC721 to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
         ops[0].signature = bytes("invalid");
 
         // it should revert
@@ -109,8 +115,9 @@ contract BatchSendERC721IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC721
     function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // it should batch transfer the ERC721 to the recipient(s)
         entryPoint.handleOps(ops, beneficiary);

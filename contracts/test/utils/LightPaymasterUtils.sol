@@ -30,14 +30,24 @@ library LightPaymasterUtils {
     /// @param _sender The address of the sender
     /// @param _request The withdrawal request
     /// @return The hash of the withdrawal request
-    function getWithdrawRequestHash(address _paymaster, address _sender, MagicSpend.WithdrawRequest memory _request)
+    function getWithdrawRequestHash(
+        address _paymaster,
+        address _sender,
+        MagicSpend.WithdrawRequest memory _request
+    )
         public
         view
         returns (bytes32)
     {
         return MessageHashUtils.toEthSignedMessageHash(
             abi.encode(
-                _paymaster, _sender, block.chainid, _request.asset, _request.amount, _request.nonce, _request.expiry
+                _paymaster,
+                _sender,
+                block.chainid,
+                _request.asset,
+                _request.amount,
+                _request.nonce,
+                _request.expiry
             )
         );
     }
@@ -55,7 +65,11 @@ library LightPaymasterUtils {
         address _sender,
         MagicSpend.WithdrawRequest memory _request,
         uint256 _signerKey
-    ) internal view returns (bytes memory signature) {
+    )
+        internal
+        view
+        returns (bytes memory signature)
+    {
         bytes32 hash = getWithdrawRequestHash(_paymaster, _sender, _request);
         (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_signerKey, hash);
         signature = abi.encodePacked(r, s, v);
@@ -80,7 +94,11 @@ library LightPaymasterUtils {
         uint256 _nonce,
         uint48 _expiry,
         uint256 _signerKey
-    ) internal view returns (MagicSpend.WithdrawRequest memory request) {
+    )
+        internal
+        view
+        returns (MagicSpend.WithdrawRequest memory request)
+    {
         request = MagicSpend.WithdrawRequest({
             asset: _asset,
             amount: _amount,
@@ -103,7 +121,11 @@ library LightPaymasterUtils {
         address _sender,
         MagicSpend.WithdrawRequest memory _request,
         address _signer
-    ) internal view returns (bool isValid) {
+    )
+        internal
+        view
+        returns (bool isValid)
+    {
         bytes32 hash = getWithdrawRequestHash(_paymaster, _sender, _request);
         return ECDSA.recover(hash, _request.signature) == _signer;
     }

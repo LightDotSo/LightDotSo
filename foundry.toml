@@ -74,6 +74,16 @@
   out = "docs"
   repository = "https://github.com/LightDotSo/LightDotSo"
 
+[fmt]
+  bracket_spacing = false
+  int_types = "long"
+  line_length = 100
+  multiline_func_header = "all"
+  number_underscore = "thousands"
+  quote_style = "double"
+  tab_width = 4
+  wrap_comments = true
+
 [rpc_endpoints]
   anvil = "http://localhost:8545"
   localhost = "http://localhost:8545"

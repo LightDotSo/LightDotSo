@@ -68,7 +68,11 @@ contract StorageUnitTest is BaseTest {
     /// Tests that the account can correctly transfer ETH
     function test_merkle_decoding() public pure {
         // Attempt to decode the signature and proof
-        (bytes32 decodedMerkleRoot, bytes32[] memory decodedMerkleProofs, bytes memory decodedSignature) = abi.decode(
+        (
+            bytes32 decodedMerkleRoot,
+            bytes32[] memory decodedMerkleProofs,
+            bytes memory decodedSignature
+        ) = abi.decode(
             hex"7acd7defebfae0bc5b072d84cd2eb10c3c6fc7e5534720c05367517825886d8c000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000002812eb56f4848ce3e5ef63a2a6a1536c3cb000cbe6847751d927df51378ad9b7efacb48a8314f89b85e1010862fba17249cd0ad43ae0a37895bad2423c5b9290600000000000000000000000000000000000000000000000000000000000000610200010000000000018c062a0db2d01da629617a35cb321ce9acb9c23b7b7b5ff973cddb5a276e760b7310ea55b3190ada9870a85ca4ba205cb22b3583d4f7d5310dcbebc7ab9f6e7f1c0201012af8ddab77a7c90a38cf26f29763365d0028cfef00000000000000000000000000000000000000000000000000000000000000",
             (bytes32, bytes32[], bytes)
         );

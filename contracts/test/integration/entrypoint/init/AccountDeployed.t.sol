@@ -54,15 +54,21 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
     function test_RevertWhen_IfTheHashIsZero() public {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, nonce)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, nonce)
         );
 
         // Example UserOperation to create the account
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(1), "", userKey, initCode, weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(1), "", userKey, initCode, weight, threshold, checkpoint
+        );
 
         // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"
+            )
+        );
         // it should revert
         // it should revert on a {AA13 initCode failed or OOG} error
         entryPoint.handleOps(ops, beneficiary);
@@ -78,7 +84,9 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
         PackedUserOperation[] memory ops = _testSignPackUserOpWithInitCode();
 
         vm.expectRevert(
-            abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed")
+            abi.encodeWithSignature(
+                "FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed"
+            )
         );
         // it should revert on a {AA10 sender already constructed} error
         entryPoint.handleOps(ops, beneficiary);
@@ -98,11 +106,14 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
         // Example UserOperation to create the account
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint
+        );
 
         // vm.expectEmit(true, false, false, false);
         // emit ImageHashUpdated(expectedImageHash);
@@ -133,6 +144,8 @@ contract EntrypointInitAccountDeployedIntegrationTest is BaseIntegrationTest {
 
         // Check that the wallet is not initializable twice
         // it should not be able to initialize twice
-        _noInitializeTwice(address(wallet), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
+        _noInitializeTwice(
+            address(wallet), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0)))
+        );
     }
 }

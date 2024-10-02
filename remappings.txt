@@ -8,6 +8,7 @@ asynchronous-vault/=lib/asynchronous-vault/src/
 asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/
 @asynchronous-vault/=lib/asynchronous-vault/src/
 @asynchronous-vault-patch/=lib/asynchronous-vault-patch/src/
+core-modules/=lib/core-modules/src/
 ds-test/=lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 magic-spend/=lib/magic-spend/src/

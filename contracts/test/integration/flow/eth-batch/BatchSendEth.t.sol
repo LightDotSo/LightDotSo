@@ -64,7 +64,9 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
         callDatas[2] = bytes("");
 
         // Set the operational callData
-        callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
+        callData = abi.encodeWithSelector(
+            LightWallet.executeBatch.selector, callAddresses, callValues, callDatas
+        );
     }
 
     // -------------------------------------------------------------------------
@@ -84,8 +86,9 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
 
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
         ops[0].signature = bytes("invalid");
 
         // it should revert
@@ -97,8 +100,9 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // it should batch transfer the ETH to the recipient
         entryPoint.handleOps(ops, beneficiary);
