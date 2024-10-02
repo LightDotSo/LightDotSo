@@ -74,6 +74,10 @@ contract LightPaymasterForkTest is BaseForkTest {
             signature
         );
 
+        // Log the bytes
+        // solhint-disable-next-line no-consle
+        console.logBytes(abi.encode(op));
+
         MagicSpend.WithdrawRequest memory request =
             MagicSpend.WithdrawRequest(bytes(""), address(0), 0, 0, uint48(0));
         // Get the hash w/ custom operation

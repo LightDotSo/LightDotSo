@@ -25,6 +25,8 @@ import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 using ERC4337Utils for EntryPoint;
 
@@ -71,6 +73,9 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
         PackedUserOperation memory op = entryPoint.signPackUserOp(
             vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint
         );
+
+        // Log the UserOperation
+        console.logBytes(abi.encode(op));
 
         // IEntryPoint.ReturnInfo memory returnInfo =
         //     IEntryPoint.ReturnInfo(396463, 1002500000000, false, 0, 281474976710655, "");

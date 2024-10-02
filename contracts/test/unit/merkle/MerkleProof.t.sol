@@ -27,7 +27,7 @@ contract MerkleProofUnitTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    function test_merkle_verify_empty_fail() public {
+    function test_merkle_verify_empty_fail() public pure {
         bytes32[] memory proof = new bytes32[](1);
         proof[0] = bytes32(0);
         bytes32 root = bytes32(0);
@@ -35,7 +35,7 @@ contract MerkleProofUnitTest is BaseTest {
         assertFalse(MerkleProof.verify(proof, root, leaf));
     }
 
-    function test_simple_merkle() public {
+    function test_simple_merkle() public pure {
         bytes32[] memory proof = new bytes32[](1);
         proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
         bytes32 root = bytes32(0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0);
@@ -43,7 +43,7 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof, root, leaf));
     }
 
-    function test_not_sorted_merkle() public {
+    function test_not_sorted_merkle() public pure {
         bytes32[] memory proof = new bytes32[](1);
         proof[0] = bytes32(0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0);
         bytes32 root = bytes32(0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87);
@@ -51,7 +51,7 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof, root, leaf));
     }
 
-    function test_simple_nested_merkle() public {
+    function test_simple_nested_merkle() public pure {
         bytes32[] memory proof = new bytes32[](2);
 
         proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
@@ -73,7 +73,7 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof2, root, leaf));
     }
 
-    function test_simple_deep_merkle() public {
+    function test_simple_deep_merkle() public pure {
         bytes32[] memory proof = new bytes32[](3);
         proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
         proof[1] = bytes32(0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0);
@@ -113,7 +113,7 @@ contract MerkleProofUnitTest is BaseTest {
         assertTrue(MerkleProof.verify(proof5, root, leaf));
     }
 
-    function test_simple_deep_nested_merkle() public {
+    function test_simple_deep_nested_merkle() public pure {
         bytes32[] memory proof = new bytes32[](5);
         proof[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
         proof[1] = bytes32(0x2e174c10e159ea99b867ce3205125c24a42d128804e4070ed6fcc8cc98166aa0);
