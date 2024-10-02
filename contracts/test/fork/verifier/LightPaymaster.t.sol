@@ -75,7 +75,7 @@ contract LightPaymasterForkTest is BaseForkTest {
         );
 
         // Log the bytes
-        // solhint-disable-next-line no-consle
+        // solhint-disable-next-line no-console
         console.logBytes(abi.encode(op));
 
         MagicSpend.WithdrawRequest memory request =

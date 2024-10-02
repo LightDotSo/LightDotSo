@@ -75,6 +75,7 @@ contract EntrypointSimulateValidationForkTest is BaseForkTest {
         );
 
         // Log the UserOperation
+        // solhint-disable-next-line no-console
         console.logBytes(abi.encode(op));
 
         // IEntryPoint.ReturnInfo memory returnInfo =
