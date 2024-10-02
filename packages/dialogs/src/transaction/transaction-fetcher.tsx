@@ -422,7 +422,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !targetUserOperation?.callData ||
       !maxFeePerGas ||
       !maxPriorityFeePerGas ||
-      !callGasLimit ||
+      typeof callGasLimit === "undefined" ||
+      callGasLimit === null ||
       !preVerificationGas ||
       !verificationGasLimit
     ) {
@@ -471,7 +472,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     | "hash"
     | "signature"
     | "paymaster"
-    | "paymasterVerificationGasLimit"
+    // | "paymasterVerificationGasLimit"
     | "paymasterPostOpGasLimit"
     | "paymasterData"
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -491,7 +492,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !targetUserOperation?.callData ||
       !maxFeePerGas ||
       !maxPriorityFeePerGas ||
-      !callGasLimit ||
+      typeof callGasLimit === "undefined" ||
+      callGasLimit === null ||
       !preVerificationGas ||
       !verificationGasLimit
     ) {
@@ -526,6 +528,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: updatedVerificationGasLimit,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
+      paymasterVerificationGasLimit: paymasterVerificationGasLimit ?? 0n,
     };
   }, [
     maxFeePerGas,
@@ -606,6 +609,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: debouncedPackedUserOperation?.verificationGasLimit,
       maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
       maxPriorityFeePerGas: debouncedPackedUserOperation?.maxPriorityFeePerGas,
+      paymasterVerificationGasLimit:
+        debouncedPackedUserOperation?.paymasterVerificationGasLimit,
     },
     isEntryPointV07,
   );
