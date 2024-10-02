@@ -52,6 +52,8 @@
     "pnpm:upgrade": "pnpm update --latest --recursive \"!solc\"",
     "prepare": "husky",
     "prisma": "make prisma",
+    "project-words:fix": "sort project-words.txt | uniq > temp.txt && mv temp.txt project-words.txt",
+    "project-words:lint": "sort -c project-words.txt || exit 1",
     "sherif:cmd": "sherif -r root-package-dependencies --fix . && echo \"\"",
     "sherif:fix": "sherif -r root-package-dependencies --fix .",
     "sherif:lint": "sherif -r root-package-dependencies .",
