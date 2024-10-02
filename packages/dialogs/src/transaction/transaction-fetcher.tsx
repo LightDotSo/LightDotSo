@@ -583,6 +583,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     },
     isEntryPointV06,
   );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("paymasterAndDataV06", paymasterAndDataV06);
 
   // Get the paymaster and data from the target user operation v07
   const {
@@ -614,6 +616,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     },
     isEntryPointV07,
   );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("paymasterDataV07", paymasterDataV07);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -638,7 +642,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       !debouncedUserOperation?.callData ||
       !debouncedUserOperation?.maxFeePerGas ||
       !debouncedUserOperation?.maxPriorityFeePerGas ||
-      !debouncedUserOperation?.callGasLimit ||
+      typeof debouncedUserOperation?.callGasLimit === "undefined" ||
+      debouncedUserOperation?.callGasLimit === null ||
       !debouncedUserOperation?.preVerificationGas ||
       !debouncedUserOperation?.verificationGasLimit ||
       !paymasterAndDataV06
@@ -693,11 +698,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       typeof debouncedPackedUserOperation?.nonce === "undefined" ||
       debouncedPackedUserOperation?.nonce === null ||
       !debouncedPackedUserOperation?.callData ||
-      !debouncedPackedUserOperation?.callGasLimit ||
+      typeof debouncedUserOperation?.callGasLimit === "undefined" ||
+      debouncedUserOperation?.callGasLimit === null ||
       !debouncedPackedUserOperation?.preVerificationGas ||
       !debouncedPackedUserOperation?.verificationGasLimit ||
       !debouncedPackedUserOperation?.maxFeePerGas ||
       !debouncedPackedUserOperation?.maxPriorityFeePerGas ||
+      typeof debouncedPackedUserOperation?.paymasterVerificationGasLimit ===
+        "undefined" ||
+      debouncedPackedUserOperation?.paymasterVerificationGasLimit === null ||
       !paymasterDataV07
     ) {
       return null;
@@ -771,6 +780,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // biome-ignore lint/style/useNamingConvention: <explanation>
     valid_after: decodedPaymasterAndData ? decodedPaymasterAndData[2] : 0,
   });
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("paymasterOperation", paymasterOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
