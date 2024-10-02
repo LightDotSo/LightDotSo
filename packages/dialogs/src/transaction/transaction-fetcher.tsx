@@ -564,6 +564,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Get the paymaster and data from the target user operation
   const {
     paymasterAndDataV06,
+    gasAndPaymasterAndDataV06,
     callGasLimitV06: gasAndPaymasterCallGasLimitV06,
     preVerificationGasV06: gasAndPaymasterPreVerificationGasV06,
     verificationGasLimitV06: gasAndPaymasterVerificationGasLimitV06,
@@ -584,11 +585,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV06,
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("paymasterAndDataV06", paymasterAndDataV06);
+  console.info("gasAndPaymasterAndDataV06", gasAndPaymasterAndDataV06);
 
   // Get the paymaster and data from the target user operation v07
   const {
-    paymasterDataV07,
+    gasAndPaymasterAndDataV07,
     callGasLimitV07: gasAndPaymasterCallGasLimitV07,
     preVerificationGasV07: gasAndPaymasterPreVerificationGasV07,
     verificationGasLimitV07: gasAndPaymasterVerificationGasLimitV07,
@@ -617,7 +618,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV07,
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("paymasterDataV07", paymasterDataV07);
+  console.info("gasAndPaymasterAndDataV07", gasAndPaymasterAndDataV07);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -707,7 +708,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       typeof debouncedPackedUserOperation?.paymasterVerificationGasLimit ===
         "undefined" ||
       debouncedPackedUserOperation?.paymasterVerificationGasLimit === null ||
-      !paymasterDataV07
+      !gasAndPaymasterAndDataV07
     ) {
       return null;
     }
@@ -747,11 +748,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     gasAndPaymasterPostOpGasLimitV07,
     gasAndPaymasterPaymasterVerificationGasLimitV07,
     gasAndPaymasterPaymasterDataV07,
-    paymasterDataV07,
+    gasAndPaymasterAndDataV07,
   ]);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("finalizedPackedUserOperation", finalizedPackedUserOperation);
 
+  // Decode the paymaster and data
   const decodedPaymasterAndData = useMemo(() => {
     if (
       finalizedUserOperation?.paymasterAndData &&
@@ -769,6 +771,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  // Decode the paymaster operation
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: decodedPaymasterAndData ? decodedPaymasterAndData[0] : undefined,
     // biome-ignore lint/style/useNamingConvention: <explanation>
