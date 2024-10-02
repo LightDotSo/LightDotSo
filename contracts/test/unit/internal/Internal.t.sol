@@ -68,7 +68,9 @@ contract InternalUnitTest is BaseTest {
         vm.prank(address(entryPoint));
         vm.expectRevert(bytes("wrong array lengths"));
         (bool success,) = address(account).call(
-            abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas)
+            abi.encodeWithSelector(
+                LightWallet.executeBatch.selector, callAddresses, callValues, callDatas
+            )
         );
         assertEq(success, true);
     }

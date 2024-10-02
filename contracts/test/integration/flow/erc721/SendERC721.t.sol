@@ -79,8 +79,9 @@ contract SendERC721IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC721
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC721 to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
         ops[0].signature = bytes("invalid");
 
         // it should revert
@@ -92,8 +93,9 @@ contract SendERC721IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC721
     function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // it should transfer the ERC721 to the recipient
         entryPoint.handleOps(ops, beneficiary);

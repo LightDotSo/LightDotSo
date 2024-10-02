@@ -19,7 +19,8 @@ pragma solidity ^0.8.27;
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {IEntryPointSimulations} from
     "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPointSimulations.sol";
-import {IStakeManager} from "@eth-infinitism/account-abstraction/contracts/interfaces/IStakeManager.sol";
+import {IStakeManager} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/IStakeManager.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
@@ -71,21 +72,25 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
         // Example UserOperation to create the account
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint
+        );
         PackedUserOperation memory op = ops[0];
 
-        IEntryPoint.ReturnInfo memory returnInfo = IEntryPoint.ReturnInfo(405989, 1002500000000, 0, 281474976710655, "");
+        IEntryPoint.ReturnInfo memory returnInfo =
+            IEntryPoint.ReturnInfo(405_989, 1_002_500_000_000, 0, 281_474_976_710_655, "");
         IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
         IEntryPoint.AggregatorStakeInfo memory aggregatorInfo =
             IEntryPoint.AggregatorStakeInfo(address(0), IStakeManager.StakeInfo(0, 0));
-        IEntryPointSimulations.ValidationResult memory validationResult =
-            IEntryPointSimulations.ValidationResult(returnInfo, senderInfo, factoryInfo, paymasterInfo, aggregatorInfo);
+        IEntryPointSimulations.ValidationResult memory validationResult = IEntryPointSimulations
+            .ValidationResult(returnInfo, senderInfo, factoryInfo, paymasterInfo, aggregatorInfo);
 
         // solhint-disable-next-line no-console
         console.logBytes(abi.encode(validationResult.returnInfo));
@@ -107,11 +112,14 @@ contract EntrypointSimulationSimulateValidationIntegrationTest is BaseIntegratio
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
 
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint
+        );
         PackedUserOperation memory op = ops[0];
         op.signature = "";
 

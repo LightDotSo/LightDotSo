@@ -17,7 +17,8 @@
 pragma solidity ^0.8.27;
 
 // Core is forked from the work of Amphor Protocol
-// Link: https://github.com/AmphorProtocol/asynchronous-vault/blob/e2f030244f43a651031598bd2051de029628154e/src/AsyncVault.sol
+// Link:
+// https://github.com/AmphorProtocol/asynchronous-vault/blob/e2f030244f43a651031598bd2051de029628154e/src/AsyncVault.sol
 // License: MIT
 
 import {AsyncVault} from "asynchronous-vault-patch/AsyncVault.sol";

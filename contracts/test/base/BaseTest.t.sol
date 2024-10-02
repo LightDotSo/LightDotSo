@@ -33,13 +33,17 @@ import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
 
-// The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol
+// The structure of the base test is influenced by sabilier -
+// https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol
 // License: UNLICENSED
 
 using ERC4337Utils for EntryPoint;
 
 interface ICREATE2Deployer {
-    function deploy(uint256 salt, bytes calldata initializationCode)
+    function deploy(
+        uint256 salt,
+        bytes calldata initializationCode
+    )
         external
         returns (address payable deploymentAddress);
 }
@@ -59,13 +63,16 @@ abstract contract BaseTest is Test {
     // Initialized Event from `LightWallet.sol`
     event LightWalletInitialized(address entrypoint, bytes32 imageHash);
 
-    // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/3e6c86392c97fbc30d3d20a378a6f58beba08eba/contracts/proxy/utils/Initializable.sol#L92
+    // Initialzed Event from `Initializable.sol`
+    // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/3e6c86392c97fbc30d3d20a378a6f58beba08eba/contracts/proxy/utils/Initializable.sol#L92
     event Initialized(uint64 version);
 
-    // ImageHashUpdated Event from `IModuleAuth.sol` https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/interfaces/IModuleAuth.sol#L9
+    // ImageHashUpdated Event from `IModuleAuth.sol`
+    // https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/interfaces/IModuleAuth.sol#L9
     event ImageHashUpdated(bytes32 imageHash);
 
-    // Upgraded Event from `ERC1967Upgrade.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/d00acef4059807535af0bd0dd0ddf619747a044b/contracts/proxy/ERC1967/ERC1967Upgrade.sol#L33
+    // Upgraded Event from `ERC1967Upgrade.sol`
+    // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/d00acef4059807535af0bd0dd0ddf619747a044b/contracts/proxy/ERC1967/ERC1967Upgrade.sol#L33
     event Upgraded(address implementation);
 
     // -------------------------------------------------------------------------
@@ -155,18 +162,35 @@ abstract contract BaseTest is Test {
     // Utility
     // -------------------------------------------------------------------------
 
-    // From: https://github.com/SoulWallet/soulwallet-core/blob/7aac4a0a4d0f1054fd75d1ca09775c873b6bddab/test/dev/deployEntryPoint.sol#L2
+    // From:
+    // https://github.com/SoulWallet/soulwallet-core/blob/7aac4a0a4d0f1054fd75d1ca09775c873b6bddab/test/dev/deployEntryPoint.sol#L2
     // License: GPL-3.0
     /// @dev Deploys a contract using create2
     /// @param _initCode The bytecode of the contract to deploy
     /// @param _salt The salt for the create2 call
-    function deployWithCreate2(bytes memory _initCode, bytes32 _salt) public payable returns (address) {
+    function deployWithCreate2(
+        bytes memory _initCode,
+        bytes32 _salt
+    )
+        public
+        payable
+        returns (address)
+    {
         bytes memory deployCode = abi.encodePacked(_salt, _initCode);
 
         address contractAddress;
         assembly {
             mstore(0x00, 0)
-            let result := call(gas(), CREATE2_DEPLOYER_ADDRESS_RAW, 0, add(deployCode, 0x20), mload(deployCode), 12, 20)
+            let result :=
+                call(
+                    gas(),
+                    CREATE2_DEPLOYER_ADDRESS_RAW,
+                    0,
+                    add(deployCode, 0x20),
+                    mload(deployCode),
+                    12,
+                    20
+                )
             if iszero(result) { revert(0, 0) }
             contractAddress := mload(0)
         }

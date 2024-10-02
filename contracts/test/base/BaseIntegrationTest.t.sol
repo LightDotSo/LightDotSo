@@ -16,7 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {PackedUserOperation} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
@@ -91,7 +92,8 @@ abstract contract BaseIntegrationTest is BaseTest {
         lightPaymasterSigner = address(makeAddr("lightPaymasterSigner"));
 
         // Get the expected image hash
-        expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
+        expectedImageHash =
+            LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
 
         // Create the account using the factory w/ nonce and hash
         account = factory.createAccount(expectedImageHash, nonce);
@@ -104,7 +106,9 @@ abstract contract BaseIntegrationTest is BaseTest {
             payable(
                 new ERC1967Proxy{salt: bytes32(0)}(
                     address(paymasterImplementation),
-                    abi.encodeCall(MagicSpend.initialize, (lightPaymasterOwner, 300, lightPaymasterSigner))
+                    abi.encodeCall(
+                        MagicSpend.initialize, (lightPaymasterOwner, 300, lightPaymasterSigner)
+                    )
                 )
             )
         );
@@ -117,7 +121,8 @@ abstract contract BaseIntegrationTest is BaseTest {
     // Internal
     // -------------------------------------------------------------------------
 
-    /// @dev Upgrade the account to the new implementation and assert that the implementation is correct
+    /// @dev Upgrade the account to the new implementation and assert that the implementation is
+    /// correct
     function _upgradeToUUPS(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
         _upgradeTo(_proxy, address(_newImplementation));
@@ -125,7 +130,8 @@ abstract contract BaseIntegrationTest is BaseTest {
         assertEq(getProxyImplementation(address(_proxy)), address(_newImplementation));
     }
 
-    /// @dev Upgrade the account to the immutable version and assert that the implementation is correct
+    /// @dev Upgrade the account to the immutable version and assert that the implementation is
+    /// correct
     function _upgradeToImmutable(address _proxy) internal {
         // Upgrade the account to the immutable version
         _upgradeTo(_proxy, address(immutableProxy));
@@ -149,7 +155,8 @@ abstract contract BaseIntegrationTest is BaseTest {
     }
 
     /// @dev Check that the account is not initializable twice
-    // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
+    // Why Initialize is required:
+    // https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
     function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
         vm.expectRevert(Initializable.InvalidInitialization.selector);
         // Check that the account is initializable
@@ -165,14 +172,22 @@ abstract contract BaseIntegrationTest is BaseTest {
     }
 
     /// Utility function to run the signPackUserOp function
-    function _testSignPackUserOpWithInitCode() internal view returns (PackedUserOperation[] memory ops) {
+    function _testSignPackUserOpWithInitCode()
+        internal
+        view
+        returns (PackedUserOperation[] memory ops)
+    {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
 
         // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOps(vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint);
+        ops = entryPoint.signPackUserOps(
+            vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint
+        );
     }
 }

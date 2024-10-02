@@ -65,7 +65,13 @@ contract LightTimelockControllerFactory {
     /// @notice Creates a LightTimelockController, and return its address.
     /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
-    function createTimelockController(address wallet, bytes32 salt) public returns (LightTimelockController ret) {
+    function createTimelockController(
+        address wallet,
+        bytes32 salt
+    )
+        public
+        returns (LightTimelockController ret)
+    {
         if (wallet == address(0)) revert WalletAddressZero();
 
         address addr = getAddress(wallet, salt);
@@ -79,14 +85,16 @@ contract LightTimelockControllerFactory {
             payable(
                 address(
                     new ERC1967Proxy{salt: salt}(
-                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
+                        address(timelockImplementation),
+                        abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )
         );
     }
 
-    /// @notice Calculate the counterfactual address of the timelock controller as it would be returned by createTimelockController()
+    /// @notice Calculate the counterfactual address of the timelock controller as it would be
+    /// returned by createTimelockController()
     /// @param wallet The address of the authorized wallet (proposer and executor).
     /// @param salt The salt for the CREATE2 deployment.
     function getAddress(address wallet, bytes32 salt) public view returns (address) {
@@ -96,7 +104,8 @@ contract LightTimelockControllerFactory {
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
                     abi.encode(
-                        address(timelockImplementation), abi.encodeCall(LightTimelockController.initialize, (wallet))
+                        address(timelockImplementation),
+                        abi.encodeCall(LightTimelockController.initialize, (wallet))
                     )
                 )
             )

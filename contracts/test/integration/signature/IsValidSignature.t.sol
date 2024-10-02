@@ -39,14 +39,17 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
         bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        bytes memory signature =
+            LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
         bytes memory sig_6492 = abi.encodePacked(
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce),
+                abi.encodeWithSelector(
+                    LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+                ),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX
@@ -78,7 +81,9 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 1),
+                abi.encodeWithSelector(
+                    LightWalletFactory.createAccount.selector, expectedImageHash, 1
+                ),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX

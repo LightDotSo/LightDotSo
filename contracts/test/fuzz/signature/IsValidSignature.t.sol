@@ -35,7 +35,8 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        bytes memory signature =
+            LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Test the signature w/ EIP-1271
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
@@ -55,15 +56,19 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        bytes memory signature =
+            LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
-        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
+        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address,
+        // bytes, bytes)), magicBytes)
         bytes memory sig_6492 = abi.encodePacked(
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce),
+                abi.encodeWithSelector(
+                    LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+                ),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX

@@ -69,7 +69,11 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
-    function test_WhenTheAddressAlreadyExists() external whenTheEntrypointAddressIsNotZero whenTheHashIsNotZero {
+    function test_WhenTheAddressAlreadyExists()
+        external
+        whenTheEntrypointAddressIsNotZero
+        whenTheHashIsNotZero
+    {
         // Create the account using the factory w/ hash 1, nonce 0
         _testCreateAccountWithNonceZero();
 
@@ -82,7 +86,11 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function test_WhenTheAddressDoesNotExist() external whenTheEntrypointAddressIsNotZero whenTheHashIsNotZero {
+    function test_WhenTheAddressDoesNotExist()
+        external
+        whenTheEntrypointAddressIsNotZero
+        whenTheHashIsNotZero
+    {
         bytes32 hash = bytes32(uint256(3));
 
         vm.expectEmit(true, true, true, true);
@@ -114,6 +122,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         // Check that the account is not initializable twice
         // it should not be able to initialize twice
-        _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
+        _noInitializeTwice(
+            address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0)))
+        );
     }
 }

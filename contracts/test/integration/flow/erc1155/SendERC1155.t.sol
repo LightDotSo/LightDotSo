@@ -56,7 +56,9 @@ contract SendERC1155IntegrationTest is BaseIntegrationTest {
             LightWallet.execute.selector,
             address(multi),
             0,
-            abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
+            abi.encodeWithSelector(
+                IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, ""
+            )
         );
     }
 
@@ -78,8 +80,9 @@ contract SendERC1155IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC1155
     function test_RevertWhen_TheSignatureIsInvalid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ERC1155 to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
         ops[0].signature = bytes("invalid");
 
         // it should revert
@@ -91,8 +94,9 @@ contract SendERC1155IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC1155
     function test_WhenTheSignatureIsValid() external whenTheSenderIsEntrypoint {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // it should transfer the ERC20 to the recipient
         entryPoint.handleOps(ops, beneficiary);

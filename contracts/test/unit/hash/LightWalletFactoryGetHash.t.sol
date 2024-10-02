@@ -59,7 +59,9 @@ contract LightWalletFactoryGetHashUnitTest is BaseTest {
         console.logBytes(abi.encodeCall(LightWallet.initialize, (bytes32(0))));
 
         // solhint-disable-next-line no-console
-        console.logBytes(abi.encode(address(wallet), abi.encodeCall(LightWallet.initialize, (bytes32(0)))));
+        console.logBytes(
+            abi.encode(address(wallet), abi.encodeCall(LightWallet.initialize, (bytes32(0))))
+        );
 
         // solhint-disable-next-line no-console
         console.logBytes(
@@ -75,7 +77,9 @@ contract LightWalletFactoryGetHashUnitTest is BaseTest {
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
-                    abi.encode(address(wallet), abi.encodeCall(LightWallet.initialize, (bytes32(0))))
+                    abi.encode(
+                        address(wallet), abi.encodeCall(LightWallet.initialize, (bytes32(0)))
+                    )
                 )
             )
         );

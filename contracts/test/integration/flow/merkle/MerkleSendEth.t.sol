@@ -62,8 +62,9 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_WhenTheSignatureIsValidWithAMerkleTree() public {
         // Example UserOperation to send 0 ETH to the address one
-        PackedUserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
+        PackedUserOperation[] memory ops = entryPoint.signPackUserOps(
+            vm, address(account), callData, userKey, "", weight, threshold, checkpoint
+        );
 
         // Get the first userOp
         PackedUserOperation memory op = ops[0];
@@ -85,13 +86,17 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         assertTrue(verified);
 
         // Encode the signature and proof
-        bytes memory merkleSignature =
-            entryPoint.signPackMerkleRoot(vm, address(account), root, userKey, weight, threshold, checkpoint);
-        bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, merkleSignature));
+        bytes memory merkleSignature = entryPoint.signPackMerkleRoot(
+            vm, address(account), root, userKey, weight, threshold, checkpoint
+        );
+        bytes memory signatureAndProof =
+            abi.encodePacked(hex"04", abi.encode(root, proof, merkleSignature));
 
         // Attempt to decode the signature and proof
-        (bytes32 merkleTreeRoot, bytes32[] memory merkleProof, bytes memory merkleDecodedSignature) =
-            abi.decode(signatureAndProof.slice(1, signatureAndProof.length - 1), (bytes32, bytes32[], bytes));
+        (bytes32 merkleTreeRoot, bytes32[] memory merkleProof, bytes memory merkleDecodedSignature)
+        = abi.decode(
+            signatureAndProof.slice(1, signatureAndProof.length - 1), (bytes32, bytes32[], bytes)
+        );
 
         // Assert that the merkle tree root is the same
         assertEq(merkleTreeRoot, root);
@@ -123,7 +128,11 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         entryPoint.handleOps(ops, beneficiary);
 
         // Attempt to decode the signature and proof
-        (bytes32 decodedMerkleRoot, bytes32[] memory decodedMerkleProofs, bytes memory decodedSignature) = abi.decode(
+        (
+            bytes32 decodedMerkleRoot,
+            bytes32[] memory decodedMerkleProofs,
+            bytes memory decodedSignature
+        ) = abi.decode(
             hex"9ca174e7f8cbb8170c135f1a5a9a5ad293916907ef44f87b4f960278f0a686b2000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000162b3593f95d92384963531ae52b0cf95d43d0964939e71ad51a76b80483733100000000000000000000000000000000000000000000000000000000000000061020001000000000001158aa56ea34c217ad11df23a1ee6f0fe36e41bbb34f1e403220604b782b19c7e17e63ad5fe3484b7305fd8c8d4bae55329f5b7dbee5c7807b9f88e4463c1339f1b0201017f4c8bd0acc303599a1ae92414b055514ffb6f8100000000000000000000000000000000000000000000000000000000000000",
             (bytes32, bytes32[], bytes)
         );

@@ -33,7 +33,12 @@ library LightWalletUtils {
     /// @param _weight The weight
     /// @param _threshold The threshold
     /// @param _checkpoint The checkpoint
-    function getExpectedImageHash(address _user, uint8 _weight, uint16 _threshold, uint32 _checkpoint)
+    function getExpectedImageHash(
+        address _user,
+        uint8 _weight,
+        uint16 _threshold,
+        uint32 _checkpoint
+    )
         internal
         pure
         returns (bytes32)
@@ -52,16 +57,24 @@ library LightWalletUtils {
     /// @param _account The account address
     /// @param _userKey The user key
     /// @param _isSign Whether to sign with EIP-191 flag
-    function signDigest(Vm _vm, bytes32 _hash, address _account, uint256 _userKey, bool _isSign)
+    function signDigest(
+        Vm _vm,
+        bytes32 _hash,
+        address _account,
+        uint256 _userKey,
+        bool _isSign
+    )
         internal
         view
         returns (bytes memory)
     {
         // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(_account), _hash));
+        bytes32 subdigest =
+            keccak256(abi.encodePacked("\x19\x01", block.chainid, address(_account), _hash));
 
         // The actual hash that was signed w/ EIP-191 flag
-        bytes32 signed_subdigest = _isSign ? MessageHashUtils.toEthSignedMessageHash(subdigest) : subdigest;
+        bytes32 signed_subdigest =
+            _isSign ? MessageHashUtils.toEthSignedMessageHash(subdigest) : subdigest;
 
         // Create the signature w/ the subdigest
         (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_userKey, signed_subdigest);
@@ -77,7 +90,12 @@ library LightWalletUtils {
     /// @param _weight The weight
     /// @param _threshold The threshold
     /// @param _checkpoint The checkpoint
-    function packLegacySignature(bytes memory _sig, uint8 _weight, uint16 _threshold, uint32 _checkpoint)
+    function packLegacySignature(
+        bytes memory _sig,
+        uint8 _weight,
+        uint16 _threshold,
+        uint32 _checkpoint
+    )
         internal
         pure
         returns (bytes memory)
@@ -86,7 +104,8 @@ library LightWalletUtils {
         uint8 legacySignatureFlag = uint8(0);
 
         // Pack the signature w/ flag, weight, threshold, checkpoint
-        bytes memory encoded = abi.encodePacked(_threshold, _checkpoint, legacySignatureFlag, _weight, _sig);
+        bytes memory encoded =
+            abi.encodePacked(_threshold, _checkpoint, legacySignatureFlag, _weight, _sig);
 
         return encoded;
     }

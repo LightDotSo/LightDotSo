@@ -24,7 +24,12 @@ contract LightVerifyingPaymaster is VerifyingPaymaster {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
+    constructor(
+        IEntryPoint entryPoint,
+        address verifyingSigner
+    )
+        VerifyingPaymaster(entryPoint, verifyingSigner)
+    {
         _transferOwnership(tx.origin);
     }
 }

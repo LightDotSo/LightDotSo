@@ -49,7 +49,11 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
         // it should revert
         // it should revert with a {OnlySelfAuth} error
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OnlySelfAuth(address,address)", address(this), address(account)
+            )
+        );
 
         // Attempt to call upgradeToAndCall directly, which should fail
         account.upgradeToAndCall(address(accountV2), bytes(""));
@@ -68,7 +72,9 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes(""))
+                abi.encodeWithSignature(
+                    "upgradeToAndCall(address,bytes)", address(accountV2), bytes("")
+                )
             ),
             userKey,
             "",
@@ -95,7 +101,9 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 LightWallet.execute.selector,
                 address(account),
                 0,
-                abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(immutableProxy), bytes(""))
+                abi.encodeWithSignature(
+                    "upgradeToAndCall(address,bytes)", address(immutableProxy), bytes("")
+                )
             ),
             userKey,
             "",
@@ -111,7 +119,9 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         PackedUserOperation[] memory opsv2 = entryPoint.signPackUserOps(
             vm,
             address(account),
-            abi.encodeWithSignature("upgradeToAndCall(address,bytes)", address(accountV2), bytes("")),
+            abi.encodeWithSignature(
+                "upgradeToAndCall(address,bytes)", address(accountV2), bytes("")
+            ),
             userKey,
             "",
             weight,
@@ -134,7 +144,9 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         // it should revert with a {AccessControlUnauthorizedAccount} error
         vm.expectRevert(
             abi.encodeWithSignature(
-                "AccessControlUnauthorizedAccount(address,bytes32)", address(this), bytes32(uint256(0))
+                "AccessControlUnauthorizedAccount(address,bytes32)",
+                address(this),
+                bytes32(uint256(0))
             )
         );
         // Revert for conventional upgrades w/o signature
@@ -182,7 +194,9 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
         // it should revert
         // it should revert with an {OwnableUnauthorizedAccount} error
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(this)));
+        vm.expectRevert(
+            abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(this))
+        );
         paymaster.upgradeToAndCall(address(paymasterV2), bytes(""));
     }
 
