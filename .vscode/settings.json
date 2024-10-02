@@ -126,6 +126,8 @@
     "ds-test/=lib/ds-test/src/",
     "forge-std/=lib/forge-std/src/",
     "magic-spend/=lib/magic-spend/src/",
+    "module-bases/lib/module-bases/src/",
+    "modulekit/=lib/modulekit/src/",
     "murky/=lib/murky/src/",
     "nexus/=lib/nexus/src/",
     "openzeppelin-contracts/=lib/openzeppelin-contracts/",
