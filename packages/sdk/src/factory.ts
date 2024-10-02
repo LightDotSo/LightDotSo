@@ -22,8 +22,8 @@ import { isAddress } from "viem";
 export const decodeInitCodeToFactoryAndFactoryData = (
   initCode: Hex | null | undefined,
 ): {
-  factory: Hex | null | undefined;
-  factoryData: Hex | null | undefined;
+  factory: Hex;
+  factoryData: Hex;
 } => {
   // Check if all required parameters are provided and valid
   if (
@@ -32,8 +32,8 @@ export const decodeInitCodeToFactoryAndFactoryData = (
     (initCode && initCode?.slice(0, 2) !== "0x")
   ) {
     return {
-      factory: null,
-      factoryData: null,
+      factory: "0x",
+      factoryData: "0x",
     };
   }
 

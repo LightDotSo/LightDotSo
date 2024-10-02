@@ -283,6 +283,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("targetUserOperation", targetUserOperation);
 
+  // Decode the init code to factory and factory data
+  const { factory, factoryData } = useMemo(() => {
+    return decodeInitCodeToFactoryAndFactoryData(
+      targetUserOperation?.initCode as Hex,
+    );
+  }, [targetUserOperation?.initCode]);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -321,10 +328,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV06,
   );
 
-  const { factory, factoryData } = decodeInitCodeToFactoryAndFactoryData(
-    targetUserOperation?.initCode as Hex,
-  );
-
   // Get the gas estimate for the user operation v07
   const {
     callGasLimitV07,
@@ -337,8 +340,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: factory ?? undefined,
-      factoryData: factoryData ?? undefined,
+      factory: factory ?? "0x",
+      factoryData: factoryData ?? "0x",
       callData: targetUserOperation?.callData,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
