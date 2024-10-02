@@ -78,7 +78,7 @@ export const LATEST_CONTRACT_ADDRESSES: {
 };
 
 // @ts-expect-error
-export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
+export const LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING: {
   readonly [key in ContractAddress]: Address;
 } = {
   [ContractAddress.LIGHT_WALLET_FACTORY_V010_ADDRESS]:
@@ -90,7 +90,7 @@ export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
 };
 
 // @ts-expect-error
-export const WALLET_FACTORY_IMPLEMENTATION_MAPPING: {
+export const LIGHT_WALLET_FACTORY_IMPLEMENTATION_MAPPING: {
   readonly [key in ContractAddress]: Address;
 } = {
   [ContractAddress.LIGHT_WALLET_FACTORY_V010_ADDRESS]:
