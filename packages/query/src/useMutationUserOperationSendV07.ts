@@ -97,7 +97,7 @@ export const useMutationUserOperationSendV07 = (
           nonce: toHex(userOperation.nonce),
           callData: userOperation.call_data,
           factory: factory ?? "0x",
-          factoryData: factoryData ?? ("0x" as Hex),
+          factoryData: factoryData ?? "0x",
           callGasLimit: toHex(userOperation.call_gas_limit),
           verificationGasLimit: toHex(userOperation.verification_gas_limit),
           preVerificationGas: toHex(userOperation.pre_verification_gas),
