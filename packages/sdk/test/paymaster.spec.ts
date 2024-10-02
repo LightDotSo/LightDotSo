@@ -80,10 +80,10 @@ describe("decodePackedPaymasterAndData", () => {
   it("should return null values for '0x' input", () => {
     const result = decodePackedPaymasterAndData("0x" as Hex);
     expect(result).toEqual({
-      paymaster: null,
-      paymasterVerificationGasLimit: null,
-      paymasterPostOpGasLimit: null,
-      paymasterData: null,
+      paymaster: "0x",
+      paymasterVerificationGasLimit: 0n,
+      paymasterPostOpGasLimit: 0n,
+      paymasterData: "0x",
     });
   });
 
