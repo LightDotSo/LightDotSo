@@ -17,6 +17,9 @@
 	path = lib/asynchronous-vault-patch
 	url = https://github.com/LightDotSo/asynchronous-vault
 	branch = patch
+[submodule "lib/core-modules"]
+	path = lib/core-modules
+	url = https://github.com/rhinestonewtf/core-modules
 [submodule "lib/ds-test"]
 	path = lib/ds-test
 	url = https://github.com/dapphub/ds-test
