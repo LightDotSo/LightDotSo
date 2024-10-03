@@ -202,7 +202,7 @@ export const useUserOperationsCreate = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Create a single user operation
-    const createUserOp = () => {
+    const createUserOp = (process: boolean) => {
       if (!(owner && signedData && userOperation)) {
         toast.error("Invalid user operation!");
         return;
@@ -223,9 +223,11 @@ export const useUserOperationsCreate = ({
     };
 
     // Create a batch of user operations
-    const createUserOpBatch = () => {
+    const createUserOpBatch = (process: boolean) => {
       if (!(owner && signedData && merkleTree && userOperations)) {
-        toast.error("Invalid user operations!");
+        if (process) {
+          toast.error("Invalid user operations!");
+        }
         return;
       }
 
@@ -263,13 +265,13 @@ export const useUserOperationsCreate = ({
     // If the userOperations length is 1, get the first userOperation
     const userOperation = userOperations[0];
     if (userOperations.length === 1) {
-      createUserOp();
+      createUserOp(true);
       return;
     }
 
     // If the userOperations length is greater than 1
     if (userOperations.length > 1) {
-      createUserOpBatch();
+      createUserOpBatch(true);
       return;
     }
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
