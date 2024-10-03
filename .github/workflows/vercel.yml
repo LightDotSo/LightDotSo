@@ -105,8 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
-        app: [app, explorer, home]
+        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

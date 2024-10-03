@@ -26,15 +26,15 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
-    "@tanstack/react-query": "^5.56.2",
+    "@tanstack/react-query": "^5.59.0",
     "exponential-backoff": "^3.1.1",
-    "next": "15.0.0-canary.172",
+    "next": "15.0.0-canary.177",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.7.4",
-    "@types/react": "^18.3.10",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.6.2"
   },
