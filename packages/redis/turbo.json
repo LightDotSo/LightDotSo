@@ -4,7 +4,6 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "UPSTASH_REDIS_REST_URL", "UPSTASH_REST_API_TOKEN"],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },

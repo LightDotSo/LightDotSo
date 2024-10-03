@@ -4,7 +4,6 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "KAFKA_BROKER", "KAFKA_USERNAME", "KAFKA_PASSWORD"],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },

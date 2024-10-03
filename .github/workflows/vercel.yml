@@ -28,8 +28,7 @@ jobs:
     timeout-minutes: 3
     strategy:
       matrix:
-        app: [app, explorer, home]
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     steps:
@@ -106,8 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [app, explorer, home]
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

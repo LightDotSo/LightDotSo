@@ -4,7 +4,6 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV"],
       "inputs": ["_locales", "images"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/_locales/**",
