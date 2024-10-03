@@ -4,7 +4,6 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "NEXT_PUBLIC_SOKETI_DEFAULT_APP_KEY"],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },

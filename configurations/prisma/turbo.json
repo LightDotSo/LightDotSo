@@ -4,7 +4,6 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["DATABASE_URL", "NODE_ENV"],
       "inputs": ["src/**", "prisma/schema.prisma"],
       "outputs": [
         "dist/**",
