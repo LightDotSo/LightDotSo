@@ -16,6 +16,7 @@
 // biome-ignore lint/style/useImportType: <explanation>
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { ENTRYPOINT_V060_ADDRESS } from "./const";
+import { decodeNonce, decodeNonceKey } from "./nonce";
 
 // -----------------------------------------------------------------------------
 // Class
@@ -158,7 +159,11 @@ export function handleUserOperationFromCalldata(
   } else {
     // v0.7 EntryPoint
     userOperation.sender = matchingUserOp[0].toAddress();
-    userOperation.nonce = matchingUserOp[1].toBigInt();
+
+    // nonceKey is 32 bytes hex string
+    userOperation.nonceKey = decodeNonceKey(matchingUserOp[1].toBigInt());
+    userOperation.nonce = decodeNonce(matchingUserOp[1].toBigInt());
+
     userOperation.initCode = matchingUserOp[2].toBytes();
     userOperation.callData = matchingUserOp[3].toBytes();
 

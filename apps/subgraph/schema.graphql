@@ -86,6 +86,7 @@ type UserOperationRevertReason @entity(immutable: true) {
   index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
+  nonceKey: Bytes! # uint192 (as bytes)
   nonce: BigInt! # uint256 (as uint64)
   revertReason: Bytes! # bytes
   blockNumber: BigInt!

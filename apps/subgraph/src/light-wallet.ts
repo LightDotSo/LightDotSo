@@ -34,6 +34,7 @@ import {
   incrementWalletCount,
 } from "./counter";
 import { handleUserOperationLogs } from "./log";
+import { decodeNonce, decodeNonceKey } from "./nonce";
 import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
 
@@ -129,6 +130,7 @@ export function handleLightWalletUserOperationEventGeneric(
         event.address,
       );
       op.sender = struct.sender;
+      op.nonceKey = struct.nonceKey;
       op.nonce = struct.nonce;
       op.initCode = struct.initCode;
       op.callData = struct.callData;
@@ -232,6 +234,7 @@ export function handleLightWalletUserOperationRevertReasonGeneric(
         event.address,
       );
       op.sender = struct.sender;
+      op.nonceKey = struct.nonceKey;
       op.nonce = struct.nonce;
       op.initCode = struct.initCode;
       op.callData = struct.callData;
@@ -271,7 +274,8 @@ export function handleLightWalletUserOperationRevertReasonGeneric(
     entity.index = getUserOpRevertCount();
     entity.userOpHash = userOpHash;
     entity.sender = sender;
-    entity.nonce = nonce;
+    entity.nonceKey = decodeNonceKey(nonce);
+    entity.nonce = decodeNonce(nonce);
     entity.revertReason = revertReason;
 
     entity.blockNumber = event.block.number;

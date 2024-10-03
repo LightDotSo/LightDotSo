@@ -44,5 +44,7 @@ test("Success for v0.7.0", () => {
 
   assert.assertNotNull(opStruct);
   assert.assertTrue(opStruct.signature.toHexString().length > 2);
+  assert.assertTrue(opStruct.nonceKey.toHexString().length === 50);
+  assert.bigIntEquals(BigInt.fromI32(0), opStruct.nonce);
   log.info("Info!", [opStruct.signature.toHexString()]);
 });

@@ -1088,6 +1088,19 @@ export class UserOperationRevertReason extends Entity {
     this.set("sender", Value.fromBytes(value));
   }
 
+  get nonceKey(): Bytes {
+    let value = this.get("nonceKey");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set nonceKey(value: Bytes) {
+    this.set("nonceKey", Value.fromBytes(value));
+  }
+
   get nonce(): BigInt {
     let value = this.get("nonce");
     if (!value || value.kind == ValueKind.NULL) {
