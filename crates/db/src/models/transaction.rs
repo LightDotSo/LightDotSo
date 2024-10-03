@@ -104,7 +104,7 @@ pub async fn upsert_transaction_with_log_receipt(
             transaction.transaction_index.map(|ti| ti as i32),
         ))
     }
-    if transaction.gas != 0_u128 {
+    if transaction.gas != 0_u64 {
         transaction_params.push(transaction::gas::set(Some(transaction.gas as i64)))
     }
     if transaction.value != U256::ZERO {

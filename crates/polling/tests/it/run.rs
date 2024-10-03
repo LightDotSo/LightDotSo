@@ -19,7 +19,7 @@ use lightdotso_polling::{config::PollingArgs, polling::Polling};
 use lightdotso_tracing::init_test_tracing;
 use std::collections::HashMap;
 
-#[ignore]
+// #[ignore]
 #[tokio::test]
 async fn test_polling_get_user_operation() {
     let _ = dotenv();
@@ -40,7 +40,7 @@ async fn test_polling_get_user_operation() {
     assert!(res.is_ok());
 }
 
-#[ignore]
+// #[ignore]
 #[tokio::test]
 async fn test_polling_get_user_operation_v070() {
     let _ = dotenv();
@@ -53,8 +53,8 @@ async fn test_polling_get_user_operation_v070() {
     let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
 
     let hash: B256 =
-        "0x083647d47403af3d375a7f6c8d2ba8d1781669b277951b359d780bbab3ff9a65".parse().unwrap();
-    let res = polling.get_user_operation(56, hash).await;
+        "0xa01f0c606936b54f7f701eca76c0799a857578c3f8666afeafbff6dc49c55539".parse().unwrap();
+    let res = polling.get_user_operation(42220, hash).await;
 
     println!("{:?}", res);
 

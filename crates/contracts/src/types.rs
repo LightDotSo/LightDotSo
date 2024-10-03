@@ -17,7 +17,7 @@
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
     primitives::{Address, Bytes, B256, U256},
-    rpc::types::{Log, Transaction, TransactionReceipt},
+    rpc::types::{AnyTransactionReceipt, Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
@@ -620,7 +620,7 @@ pub struct UserOperationReceipt {
     pub logs: Vec<Log>,
     /// The transaction receipt.
     #[serde(rename = "receipt")]
-    pub tx_receipt: TransactionReceipt,
+    pub tx_receipt: AnyTransactionReceipt,
 }
 
 // -----------------------------------------------------------------------------

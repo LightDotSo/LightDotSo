@@ -15,7 +15,6 @@
 use crate::types::{ErrorResponse, Response};
 use eyre::{Error, Result};
 use lightdotso_tracing::tracing::{info, warn};
-use serde_json::Value;
 
 pub mod error;
 pub mod rpc;
@@ -50,11 +49,6 @@ where
     // Log the response body
     info!("Response body: {}", body_text);
 
-    // Try to parse the body as JSON for prettier logging
-    if let Ok(parsed_response_body) = serde_json::from_str::<Value>(&body_text) {
-        info!("Response parsed body: {}", serde_json::to_string_pretty(&parsed_response_body)?);
-    }
-
     // Parse the response
     let parsed_response: Result<Response<R>> =
         serde_json::from_str(&body_text).map_err(Error::from);
@@ -64,11 +58,25 @@ where
             info!("Success {:?}", success_response);
             Ok(success_response)
         }
-        Err(_) => {
-            let error_response: ErrorResponse = serde_json::from_str(&body_text)?;
-            let error_message = error_response.error.message.clone();
-            warn!("Error: {:?}", error_response);
-            Err(Error::msg(error_message))
+        Err(error_parse_response) => {
+            // Log the error
+            warn!("Error parsing response: {:?}", error_parse_response);
+
+            // If parsing as a success response fails, try parsing as an error response
+            let error_response: Result<ErrorResponse, _> = serde_json::from_str(&body_text);
+
+            match error_response {
+                Ok(error) => {
+                    let error_message = error.error.message.clone();
+                    warn!("Error: {:?}", error);
+                    Err(Error::msg(error_message))
+                }
+                Err(_) => {
+                    // If both parsing attempts fail, return a generic error
+                    warn!("Failed to parse response as either success or error");
+                    Err(Error::msg("Unexpected response format".to_string()))
+                }
+            }
         }
     }
 }

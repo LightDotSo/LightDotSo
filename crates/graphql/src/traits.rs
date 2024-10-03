@@ -135,7 +135,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                         .into(),
                 ),
                 // Determistic Option Zero
-                gas: 0_u64.into(),
+                gas: 0_u64,
                 signature: None,
                 input: op
                     .user_operation
