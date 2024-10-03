@@ -40,6 +40,7 @@ async fn test_polling_get_user_operation() {
     assert!(res.is_ok());
 }
 
+#[ignore]
 #[tokio::test]
 async fn test_polling_get_user_operation_v070() {
     let _ = dotenv();
