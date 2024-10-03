@@ -670,9 +670,22 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       paymasterAndData: paymasterAndDataV06 ?? "0x",
     };
   }, [
-    // Only paymaster and data is required to compute the gas limits and paymaster
-    // The rest of the values are dependencies of the paymaster and data
-    // As it is the final layer of computation
+    // Entry point version
+    isEntryPointV06,
+    // Debounced values
+    debouncedUserOperation,
+    debouncedUserOperation?.sender,
+    debouncedUserOperation?.chainId,
+    debouncedUserOperation?.nonce,
+    debouncedUserOperation?.initCode,
+    debouncedUserOperation?.callData,
+    debouncedUserOperation?.callGasLimit,
+    debouncedUserOperation?.verificationGasLimit,
+    debouncedUserOperation?.preVerificationGas,
+    debouncedUserOperation?.maxFeePerGas,
+    debouncedUserOperation?.maxPriorityFeePerGas,
+    // Gas and paymaster values
+    gasAndPaymasterAndDataV06,
     gasAndPaymasterCallGasLimitV06,
     gasAndPaymasterPreVerificationGasV06,
     gasAndPaymasterVerificationGasLimitV06,
@@ -733,9 +746,22 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       paymasterData: gasAndPaymasterPaymasterDataV07 ?? undefined,
     };
   }, [
-    // Only paymaster and data is required to compute the gas limits and paymaster
-    // The rest of the values are dependencies of the paymaster and data
-    // As it is the final layer of computation
+    // Entry point version
+    isEntryPointV07,
+    // Debounced values
+    debouncedPackedUserOperation,
+    debouncedUserOperation?.sender,
+    debouncedUserOperation?.chainId,
+    debouncedUserOperation?.nonce,
+    debouncedUserOperation?.initCode,
+    debouncedUserOperation?.callData,
+    debouncedUserOperation?.callGasLimit,
+    debouncedUserOperation?.verificationGasLimit,
+    debouncedUserOperation?.preVerificationGas,
+    debouncedUserOperation?.maxFeePerGas,
+    debouncedUserOperation?.maxPriorityFeePerGas,
+    // Gas and paymaster values
+    gasAndPaymasterPaymasterDataV07,
     gasAndPaymasterCallGasLimitV07,
     gasAndPaymasterPreVerificationGasV07,
     gasAndPaymasterVerificationGasLimitV07,
