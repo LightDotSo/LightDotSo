@@ -200,6 +200,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     );
   }, [image_hash, salt, wallet]);
 
+  const isDeployed = useMemo(() => {
+    return !!deployedOp || !(implementationAddress || imageHash);
+  }, [deployedOp, implementationAddress, imageHash]);
+
   const callData = useMemo(() => {
     if (
       // If the contract is already the latest implementation
@@ -312,7 +316,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       chainId={chain.id}
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      {deployedOp && implementationAddress && (
+      {isDeployed && implementationAddress && (
         <div className="flex items-center gap-2">
           Version: {implementationVersion}
           <span className="text-sm text-text-weak">
@@ -320,7 +324,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
           </span>
         </div>
       )}
-      {deployedOp && imageHash && (
+      {isDeployed && imageHash && (
         <div className="flex items-center gap-2">
           Hash:
           <span className="text-sm text-text-weak">
@@ -329,7 +333,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         </div>
       )}
       <div className="flex flex-row items-center">
-        {deployedOp?.transaction?.hash && (
+        {isDeployed && deployedOp?.transaction?.hash && (
           <div className="flex items-center gap-2">
             Tx:{" "}
             <ExternalLink
@@ -340,7 +344,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
             </ExternalLink>
           </div>
         )}
-        {!deployedOp && (
+        {!isDeployed && (
           <p className="text-sm text-text-weak">
             No deployment found. <br />
           </p>
