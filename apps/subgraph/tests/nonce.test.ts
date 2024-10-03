@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { assert, test } from "matchstick-as/assembly/index";
 import { decodeNonce } from "../src/nonce";
 
@@ -31,4 +31,14 @@ test("decodeNonce: Max u64 value", () => {
   const maxU64 = BigInt.fromString("18446744073709551615");
   const result = decodeNonce(maxU64);
   assert.bigIntEquals(maxU64, result);
+});
+
+test("decodeNonce: Max uint256 value", () => {
+  const bytes = Bytes.fromHexString(
+    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  ) as Bytes;
+  // Convert Bytes to BigInt
+  const largeNumber = BigInt.fromUnsignedBytes(bytes);
+  const result = decodeNonce(largeNumber);
+  assert.bigIntEquals(BigInt.fromString("18446744073709551615"), result);
 });

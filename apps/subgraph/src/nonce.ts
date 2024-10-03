@@ -24,18 +24,19 @@ import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 // -----------------------------------------------------------------------------
 
 export function decodeNonce(originalNonce: BigInt): BigInt {
-  return originalNonce.bitAnd(
-    BigInt.fromI32(2).pow(64).minus(BigInt.fromI32(1)),
-  );
+  // 2^64 - 1 (max value for uint64)
+  const mask = BigInt.fromString("18446744073709551615");
+  return originalNonce.bitAnd(mask);
 }
 
 export function decodeNonceKey(originalNonce: BigInt): Bytes {
+  // Convert to hex and remove '0x' prefix
   let hexString = originalNonce.toHexString().slice(2);
 
-  // Ensure the hexString is 64 characters long (32 bytes)
+  // Pad to 64 characters (32 bytes) to ensure we have enough digits
   hexString = hexString.padStart(64, "0");
 
-  // Take the first 48 characters which represent the uint192
+  // Take the first 48 characters (24 bytes) which represent the upper 192 bits
   const upperBitsHex = hexString.slice(0, 48);
 
   return Bytes.fromHexString(upperBitsHex) as Bytes;
