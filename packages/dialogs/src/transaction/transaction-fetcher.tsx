@@ -210,6 +210,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     isEntryPointV070NonceFetched,
     isUserOperationNonceFetched,
   ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isInitialEntryPointNonceFetched",
+    isInitialEntryPointNonceFetched,
+  );
 
   // Get the entry point nonce
   const entryPointNonce = useMemo(() => {
@@ -237,10 +242,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     const updatedMinimumNonce = isInitialEntryPointNonceFetched
       ? typeof entryPointNonce !== "undefined"
         ? BigInt(entryPointNonce)
-        : undefined
+        : 0n
       : typeof userOperationNonce?.nonce !== "undefined"
         ? BigInt(userOperationNonce?.nonce)
-        : undefined;
+        : 0n;
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
@@ -267,7 +272,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ? updatedMinimumNonce
         : updatedInitCode !== "0x"
           ? BigInt(0)
-          : initialUserOperation.nonce;
+          : (initialUserOperation.nonce ?? 0n);
 
     // Allow the callData to be empty if the init code is provided
     // This is to allow for the creation of a new contract
@@ -282,8 +287,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: initialUserOperation?.sender ?? address,
       chainId: initialUserOperation?.chainId ?? undefined,
       // Init code should be computed automatically
-      initCode: updatedInitCode ?? "0x",
-      nonce: updatedNonce ?? undefined,
+      initCode: updatedInitCode,
+      // Nonce should be computed automatically
+      nonce: updatedNonce,
       callData: updatedCallData ?? undefined,
       callGasLimit: initialUserOperation?.callGasLimit ?? undefined,
       verificationGasLimit:
@@ -530,11 +536,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     }
 
     if (
-      !(
-        targetUserOperation?.sender &&
-        targetUserOperation?.chainId &&
-        targetUserOperation?.initCode
-      ) ||
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !targetUserOperation?.sender ||
+      !targetUserOperation?.chainId ||
+      !targetUserOperation?.initCode ||
       typeof targetUserOperation?.nonce === "undefined" ||
       targetUserOperation?.nonce === null ||
       !targetUserOperation?.callData ||
