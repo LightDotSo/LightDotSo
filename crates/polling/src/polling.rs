@@ -21,7 +21,6 @@ use crate::{
 use alloy::{
     consensus::{Eip658Value, ReceiptEnvelope, ReceiptWithBloom},
     eips::BlockNumberOrTag,
-    network::ReceiptResponse,
     primitives::{Address, Bloom, B256},
     providers::{Provider, RootProvider},
     rpc::types::{Block, Log, Receipt, Transaction, TransactionReceipt},
@@ -398,8 +397,9 @@ impl Polling {
         let tx_receipt: TransactionReceipt<ReceiptEnvelope<Log>> = TransactionReceipt {
             inner: ReceiptEnvelope::Legacy(ReceiptWithBloom {
                 receipt: Receipt {
-                    status: Eip658Value::Eip658(receipt.tx_receipt.clone().status()),
-                    cumulative_gas_used: receipt.tx_receipt.clone().cumulative_gas_used(),
+                    // Default values
+                    status: Eip658Value::Eip658(true),
+                    cumulative_gas_used: 0_u128,
                     logs: receipt.logs.clone(),
                 },
                 logs_bloom: Bloom::default(),

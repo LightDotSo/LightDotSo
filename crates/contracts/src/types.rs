@@ -16,8 +16,9 @@
 
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
+    consensus::ReceiptWithBloom,
     primitives::{Address, Bytes, B256, U256},
-    rpc::types::{AnyTransactionReceipt, Log, Transaction, TransactionReceipt},
+    rpc::types::{serde_helpers::WithOtherFields, Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
@@ -28,6 +29,19 @@ use serde::{Deserialize, Serialize};
 
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/primitives/src/user_operation.rs#L32
 // License: MIT
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ReceiptEnvelope<T = Log> {
+    /// The receipt envelope.
+    #[serde(flatten)]
+    pub inner: ReceiptWithBloom<T>,
+    /// The transaction type.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub r#type: Option<u8>,
+}
+
+/// Alias for a catch-all receipt type.
+pub type AnyTransactionReceipt = WithOtherFields<TransactionReceipt<ReceiptEnvelope<Log>>>;
 
 /// User operation receipt
 #[derive(Clone, Debug)]
