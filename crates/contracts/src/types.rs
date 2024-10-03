@@ -596,6 +596,9 @@ pub struct UserOperationReceipt {
     /// The user operation hash.
     #[serde(rename = "userOpHash")]
     pub user_operation_hash: B256,
+    /// The entry point address.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entry_point: Option<Address>,
     /// The sender.
     pub sender: Address,
     /// The nonce.

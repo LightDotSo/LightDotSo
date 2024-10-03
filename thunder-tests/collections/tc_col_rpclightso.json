@@ -271,11 +271,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "eth_getUserOperationReceipt",
-      "url": "https://rpc.light.so/1",
+      "url": "https://rpc.light.so/56",
       "method": "POST",
       "sortNum": 65000,
       "created": "2023-09-26T02:18:01.733Z",
-      "modified": "2023-11-14T04:20:29.895Z",
+      "modified": "2024-10-03T12:51:17.179Z",
       "headers": [
         {
           "name": "accept",
@@ -286,10 +286,9 @@
           "value": "application/json"
         }
       ],
-      "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationReceipt\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\"\n  ]\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationReceipt\",\n  \"params\": [\n    \"0x083647d47403af3d375a7f6c8d2ba8d1781669b277951b359d780bbab3ff9a65\"\n  ]\n}",
         "form": []
       },
       "tests": [

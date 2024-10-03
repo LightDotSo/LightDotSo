@@ -262,6 +262,9 @@ impl Polling {
         // Handle the response for the JSON-RPC API.
         let res = handle_response(response).await?;
 
+        // Log the response
+        info!("User operation receipt: {:?}", res);
+
         Ok(res)
     }
 
