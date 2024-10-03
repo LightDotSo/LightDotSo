@@ -16,7 +16,7 @@ import { estimateUserOperationGasV07 } from "@lightdotso/client";
 import {
   CONTRACT_ADDRESSES,
   ContractAddress,
-  DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V07,
+  DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V07,
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07,
   LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
@@ -77,7 +77,6 @@ export const useQueryUserOperationEstimateGasV07 = (
   const {
     data: estimateUserOperationGasDataV07,
     isLoading: isEstimateUserOperationGasDataLoadingV07,
-    isError: isEstimateUserOperationGasDataErrorV07,
     error: estimateUserOperationGasDataErrorV07,
   } = useQuery<EstimateUserOperationGasDataV07 | null>({
     ...USER_OPERATION_CONFIG,
@@ -90,8 +89,6 @@ export const useQueryUserOperationEstimateGasV07 = (
       factory: params?.factory,
       factoryData: params?.factoryData,
       callData: params?.callData,
-      maxFeePerGas: params?.maxFeePerGas,
-      maxPriorityFeePerGas: params?.maxPriorityFeePerGas,
     }).queryKey,
     queryFn: async () => {
       if (
@@ -151,16 +148,12 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : isEstimateUserOperationGasDataErrorV07 && estimateGas
-        ? estimateGas
-        : undefined,
+      : estimateGas,
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
         })
-      : isEstimateUserOperationGasDataErrorV07
-        ? DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V07
-        : undefined,
+      : DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V07,
     verificationGasLimitV07:
       estimateUserOperationGasDataV07?.verificationGasLimit
         ? fromHex(
@@ -169,9 +162,7 @@ export const useQueryUserOperationEstimateGasV07 = (
               to: "bigint",
             },
           )
-        : isEstimateUserOperationGasDataErrorV07 && estimateGas
-          ? DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07
-          : undefined,
+        : DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07,
     paymasterVerificationGasLimitV07:
       estimateUserOperationGasDataV07?.paymasterVerificationGasLimit
         ? fromHex(
