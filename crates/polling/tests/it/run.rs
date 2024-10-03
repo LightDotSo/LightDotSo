@@ -54,7 +54,7 @@ async fn test_polling_get_user_operation_v070() {
 
     let hash: B256 =
         "0x083647d47403af3d375a7f6c8d2ba8d1781669b277951b359d780bbab3ff9a65".parse().unwrap();
-    let res = polling.get_user_operation_with_backon(56, hash).await;
+    let res = polling.get_user_operation(56, hash).await;
 
     println!("{:?}", res);
 
