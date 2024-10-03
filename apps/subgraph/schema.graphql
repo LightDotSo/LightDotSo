@@ -220,11 +220,3 @@ type Counter @entity {
   vaultCount: BigInt!
   walletCount: BigInt!
 }
-
-type LightVault @entity {
-  id: Bytes! # address
-  address: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}

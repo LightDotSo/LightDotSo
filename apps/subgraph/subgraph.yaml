@@ -72,7 +72,7 @@ dataSources:
         - name: EntryPoint
           file: ./abis/EntryPointv0.7.0.json
         - name: LightWallet
-          file: ./abis/LightWalletv0.2.0.json
+          file: ./abis/LightWalletv0.3.0.json
         - name: LightWalletFactory
           file: ./abis/LightWalletFactoryv0.2.0.json
       eventHandlers:
