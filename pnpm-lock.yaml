@@ -201,9 +201,6 @@ importers:
       lint-staged:
         specifier: ^15.2.10
         version: 15.2.10
-      nextjs-bundle-analysis:
-        specifier: ^0.5.0
-        version: 0.5.0
       nodemon:
         specifier: ^3.1.7
         version: 3.1.7
@@ -15994,10 +15991,6 @@ packages:
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
 
-  filesize@7.0.0:
-    resolution: {integrity: sha512-Wsstw+O1lZ9gVmOI1thyeQvODsaoId2qw14lCqIzUhoHKXX7T2hVpB7BR6SvgodMBgWccrx/y2eyV8L7tDmY6A==}
-    engines: {node: '>= 0.4.0'}
-
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -19462,10 +19455,6 @@ packages:
       sass:
         optional: true
 
-  nextjs-bundle-analysis@0.5.0:
-    resolution: {integrity: sha512-PyB/DkfdnVzDSiSSm0IAsOWF+Sb6xMSV9+cY3x81ycFpOqSAs0Zs09YrD/gwve+kqJKk8VfYaPDO2NcVtcbXpQ==}
-    hasBin: true
-
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
 
@@ -19772,9 +19761,6 @@ packages:
   number-to-bn@1.7.0:
     resolution: {integrity: sha512-wsJ9gfSz1/s4ZsJN01lyonwuxA1tml6X1yBDnfpMglypcBRFZZkus26EdPSlqS5GJfYddVZa22p3VNb3z5m5Ig==}
     engines: {node: '>=6.5.0', npm: '>=3'}
-
-  number-to-words@1.2.4:
-    resolution: {integrity: sha512-/fYevVkXRcyBiZDg6yzZbm0RuaD6i0qRfn8yr+6D0KgBMOndFPxuW10qCHpzs50nN8qKuv78k8MuotZhcVX6Pw==}
 
   nuqs@1.19.3:
     resolution: {integrity: sha512-PpHjONraQDmuJzVQvZvCBNNOij5X0w2pGd8O22lSpRSqKIB6oEmwH+w2M3kGk/Gwf3R6XyvXBb2DSkUHYfrtrQ==}
@@ -40059,8 +40045,6 @@ snapshots:
     dependencies:
       minimatch: 5.1.6
 
-  filesize@7.0.0: {}
-
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -44789,14 +44773,6 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nextjs-bundle-analysis@0.5.0:
-    dependencies:
-      filesize: 7.0.0
-      gzip-size: 6.0.0
-      inquirer: 8.2.6
-      mkdirp: 1.0.4
-      number-to-words: 1.2.4
-
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
@@ -45074,8 +45050,6 @@ snapshots:
     dependencies:
       bn.js: 4.11.6
       strip-hex-prefix: 1.0.0
-
-  number-to-words@1.2.4: {}
 
   nuqs@1.19.3(next@15.0.0-rc.0(@opentelemetry/api@1.9.0)(@playwright/test@1.47.2)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)):
     dependencies:

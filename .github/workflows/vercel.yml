@@ -45,7 +45,6 @@ jobs:
       fail-fast: true
       matrix:
         app: [app, explorer, home]
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -101,7 +100,7 @@ jobs:
       - name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
-          pnpm nextjs-bundle-analysis report
+          pnpx -p nextjs-bundle-analysis report
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
@@ -115,11 +114,11 @@ jobs:
           workflow: vercel.yml
           branch: ${{ github.event.pull_request.base.ref }}
           path: apps/${{ matrix.app }}/.next/analyze/base/bundle
-     - name: Compare with Base Branch 
+      - name: Compare with Base Branch 
         if: success() && github.event.number
         working-directory: apps/${{ matrix.app }}
         run: |
-          ls -laR .next/analyze/base && pnpm nextjs-bundle-analysis compare
+          ls -laR .next/analyze/base && pnpx -p nextjs-bundle-analysis compare
       - name: Get Comment Body
         id: comment-body
         if: success() && github.event.number
@@ -190,7 +189,7 @@ jobs:
       - name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
-          pnpm nextjs-bundle-analysis report
+          pnpx -p nextjs-bundle-analysis report
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
