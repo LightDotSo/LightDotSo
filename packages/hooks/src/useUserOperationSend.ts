@@ -60,7 +60,7 @@ export const useUserOperationSend = ({
     hash: hash,
   });
   // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.info("User operation", userOperation);
+  console.info("userOperation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -199,13 +199,13 @@ export const useUserOperationSend = ({
       !(isUserOperationSendReady && userOperation && userOperationSignature)
     ) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("User operation is not ready to be sent");
+      console.error("userOperation is not ready to be sent");
       // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Params", address, hash);
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("User operation", userOperation);
+      console.error("userOperation", userOperation);
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("User operation signature", userOperationSignature);
+      console.error("userOperationSignature", userOperationSignature);
       return;
     }
 
@@ -241,7 +241,7 @@ export const useUserOperationSend = ({
     }
 
     // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.info("Sending user operation", hash);
+    console.info("Sending userOperation w/ hash:", hash);
 
     // Send the user operation if the user operation hasn't been sent yet
     if (isEntryPointV06) {
