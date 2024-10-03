@@ -21,11 +21,7 @@ import {
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
-import {
-  useSignMessage,
-  // lightWalletAbi,
-  // lightWalletFactoryAbi,
-} from "@lightdotso/wagmi/wagmi";
+import { useSignMessage } from "@lightdotso/wagmi/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
@@ -115,11 +111,6 @@ export const useUserOperationsCreate = ({
       const leaves = userOperations
         .map((userOperation) => hexToBytes(userOperation.hash as Hex))
         .sort(Buffer.compare);
-
-      // If the number of leaves is not 2, add a leaf w/ 0
-      // if (leaves.length % 2 !== 0) {
-      //   leaves.push(new Uint8Array(32));
-      // }
 
       // Create a merkle tree from the leaves, with sort option enabled
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
@@ -286,7 +277,7 @@ export const useUserOperationsCreate = ({
           userOperation.initCode &&
           userOperation.sender &&
           userOperation.callData &&
-          userOperation.callGasLimit &&
+          typeof userOperation.callGasLimit !== "undefined" &&
           userOperation.verificationGasLimit &&
           userOperation.preVerificationGas &&
           userOperation.maxFeePerGas &&
@@ -296,6 +287,8 @@ export const useUserOperationsCreate = ({
       })
     );
   }, [owner, userOperations]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("isValidUserOperations", isValidUserOperations);
 
   // Check if the current subdigest is equal to the merkle tree root if the userOperations length is greater than 1
   const isUserOperationsMerkleEqual = useMemo(() => {
@@ -308,6 +301,8 @@ export const useUserOperationsCreate = ({
 
     return true;
   }, [address, userOperations.length, merkleTree, subdigest]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
 
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
@@ -318,11 +313,18 @@ export const useUserOperationsCreate = ({
       configuration?.threshold <= owner?.weight
     );
   }, [owner, configuration?.threshold]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isUserOperationsCreateSubmittable",
+    isUserOperationsCreateSubmittable,
+  );
 
   // Check if the userOperation is createable
   const isUserOperationsCreateable = useMemo(() => {
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("isUserOperationsCreateable", isUserOperationsCreateable);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
