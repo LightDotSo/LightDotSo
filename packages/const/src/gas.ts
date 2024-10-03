@@ -18,8 +18,8 @@
 
 // Define an enum for gas speed
 export enum GAS_SPEED_BUMP {
-  Low = 110,
-  Medium = 115,
-  High = 120,
-  Instant = 125,
+  Low = 120,
+  Medium = 150,
+  High = 180,
+  Instant = 210,
 }

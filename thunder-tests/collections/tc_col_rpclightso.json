@@ -464,11 +464,11 @@
             "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
             "containerId": "",
             "name": "pimlico_getUserOperationGasPrice",
-            "url": "https://public.pimlico.io/v2/137/rpc",
+            "url": "https://public.pimlico.io/v2/11155111/rpc",
             "method": "POST",
             "sortNum": 75000,
             "created": "2024-10-03T19:59:06.822Z",
-            "modified": "2024-10-03T20:01:37.396Z",
+            "modified": "2024-10-03T20:07:19.152Z",
             "headers": [
                 {
                     "name": "accept",
