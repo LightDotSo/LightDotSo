@@ -211,7 +211,6 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       buttonTrigger={
         <Button
           variant="ghost"
-          role="combobox"
           aria-expanded={open}
           aria-label="Select a wallet"
           className={cn("mx-2 justify-start", className)}

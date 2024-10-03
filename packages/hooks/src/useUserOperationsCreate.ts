@@ -204,7 +204,9 @@ export const useUserOperationsCreate = ({
     // Create a single user operation
     const createUserOp = (process: boolean) => {
       if (!(owner && signedData && userOperation)) {
-        toast.error("Invalid user operation!");
+        if (process) {
+          toast.error("Invalid user operation!");
+        }
         return;
       }
 

@@ -88,7 +88,6 @@ export const ChainComboDialog: FC = () => {
           className="h-9 space-x-0.5 px-2 py-1"
           size="unsized"
           variant="outline"
-          role="combobox"
         >
           <Globe className="size-4 shrink-0" />
           <div className="-space-x-1.5 flex overflow-hidden">
