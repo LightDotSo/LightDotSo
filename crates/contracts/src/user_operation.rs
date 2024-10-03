@@ -133,6 +133,15 @@ impl UserOperation {
         )
     }
 
+    /// Get the packed user operation hash with the given entrypoint address and chain id.
+    ///
+    /// The hash is used to uniquely identify a user operation in the entry point.
+    /// It does not include the signature field.
+    pub fn packed_op_hash(&self, entrypoint: Address, chain_id: u64) -> B256 {
+        let packed_user_operation: PackedUserOperation = self.clone().into();
+        packed_user_operation.op_hash(entrypoint, chain_id)
+    }
+
     /// Try to obtain the hash w/ operation and determine the entry point contract.
     ///
     /// The hash to encode the user operation differs from the hash in the packed user operation.
@@ -146,11 +155,8 @@ impl UserOperation {
             return Ok(*ENTRYPOINT_V060_ADDRESS);
         }
 
-        // Convert the user operation to a packed user operation
-        let packed_user_operation: PackedUserOperation = self.clone().into();
-
-        // Get the hash of the packed user operation
-        let packed_uop_hash = packed_user_operation.op_hash(*ENTRYPOINT_V070_ADDRESS, chain_id);
+        // Get the hash of the packed user operation with the entrypoint v070 address
+        let packed_uop_hash = self.packed_op_hash(*ENTRYPOINT_V070_ADDRESS, chain_id);
 
         // Check if the hash is the same as the hash in the user operation, return the v0.7
         // entrypoint address
