@@ -251,7 +251,7 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return (
         <TestnetChainLogoWrapper
           className={variantClassName}
-          logo={LineaLogo}
+          logo={ScrollLogo}
           chainId={chainId}
           size={size}
           {...props}

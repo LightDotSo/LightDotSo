@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: EntryPointv0.6.0
-    network: sepolia
+    network: avalanche
     source:
       abi: EntryPoint
       address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-      startBlock: 3257815
+      startBlock: 28865255
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -46,11 +46,11 @@ dataSources:
       file: ./src/entry-point-v0.6.0.ts
   - kind: ethereum
     name: EntryPointv0.7.0
-    network: sepolia
+    network: avalanche
     source:
       abi: EntryPoint
       address: "0x0000000071727de22e5e9d8baf0edac6f37da032"
-      startBlock: 5328753
+      startBlock: 41958878
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -72,7 +72,7 @@ dataSources:
         - name: EntryPoint
           file: ./abis/EntryPointv0.7.0.json
         - name: LightWallet
-          file: ./abis/LightWalletv0.2.0.json
+          file: ./abis/LightWalletv0.3.0.json
         - name: LightWalletFactory
           file: ./abis/LightWalletFactoryv0.2.0.json
       eventHandlers:
