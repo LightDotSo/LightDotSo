@@ -16,7 +16,7 @@ import { estimateUserOperationGasV06 } from "@lightdotso/client";
 import {
   CONTRACT_ADDRESSES,
   ContractAddress,
-  DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V06,
+  DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V06,
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06,
   LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
@@ -76,7 +76,6 @@ export const useQueryUserOperationEstimateGasV06 = (
   const {
     data: estimateUserOperationGasDataV06,
     isLoading: isEstimateUserOperationGasDataLoadingV06,
-    isError: isEstimateUserOperationGasDataErrorV06,
     error: estimateUserOperationGasDataErrorV06,
   } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
@@ -138,16 +137,12 @@ export const useQueryUserOperationEstimateGasV06 = (
       ? fromHex(estimateUserOperationGasDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : isEstimateUserOperationGasDataErrorV06 && estimateGas
-        ? estimateGas
-        : undefined,
+      : estimateGas,
     preVerificationGasV06: estimateUserOperationGasDataV06?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
-      : isEstimateUserOperationGasDataErrorV06
-        ? DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V06
-        : undefined,
+      : DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V06,
     verificationGasLimitV06:
       estimateUserOperationGasDataV06?.verificationGasLimit
         ? fromHex(
@@ -156,8 +151,6 @@ export const useQueryUserOperationEstimateGasV06 = (
               to: "bigint",
             },
           )
-        : isEstimateUserOperationGasDataErrorV06 && estimateGas
-          ? DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06
-          : undefined,
+        : DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06,
   };
 };
