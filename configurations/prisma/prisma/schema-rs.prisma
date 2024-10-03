@@ -5,8 +5,8 @@ generator prisma {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
 }
 
 // -----------------------------------------------------------------------------
@@ -469,9 +469,9 @@ model Configuration {
   // ---------------------------------------------------------------------------
 
   address    String
-  checkpoint BigInt
+  checkpoint BigInt @db.UnsignedBigInt
   imageHash  String
-  threshold  BigInt
+  threshold  BigInt @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // None-to-one
@@ -514,9 +514,9 @@ model ConfigurationOperation {
   // ---------------------------------------------------------------------------
 
   address    String
-  checkpoint BigInt
+  checkpoint BigInt @db.UnsignedBigInt
   imageHash  String
-  threshold  BigInt
+  threshold  BigInt @db.UnsignedBigInt
 
   status ConfigurationOperationStatus @default(PROPOSED)
 
@@ -580,7 +580,7 @@ model ConfigurationOperationOwner {
   // ---------------------------------------------------------------------------
 
   address String
-  weight  BigInt
+  weight  BigInt @db.UnsignedBigInt
   index   Int
 
   // ---------------------------------------------------------------------------
@@ -676,7 +676,7 @@ model Owner {
   // ---------------------------------------------------------------------------
 
   address String
-  weight  BigInt
+  weight  BigInt @db.UnsignedBigInt
   index   Int
 
   // ---------------------------------------------------------------------------
@@ -718,7 +718,7 @@ model Chain {
   // Core
   // ---------------------------------------------------------------------------
 
-  id        BigInt   @id
+  id        BigInt   @id @db.UnsignedBigInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -780,11 +780,11 @@ model Log {
   transactionIndex    Int?
   /// Integer of the log index position in the block. None if it's a pending log.
   /// pub log_index: Option<U256>
-  logIndex            BigInt?
+  logIndex            BigInt?    @db.UnsignedBigInt
   /// Integer of the transactions index position log was created from.
   /// None when it's a pending log.
   /// pub transaction_log_index: Option<U256>
-  transactionLogIndex BigInt?
+  transactionLogIndex BigInt?    @db.UnsignedBigInt
   /// Log Type
   /// pub log_type: Option<String>
   logType             String?
@@ -875,12 +875,12 @@ model Receipt {
   to                String?
   /// Cumulative gas used within the block after this was executed.
   /// pub cumulative_gas_used: U256
-  cumulativeGasUsed BigInt
+  cumulativeGasUsed BigInt  @db.UnsignedBigInt
   /// Gas used by this transaction alone.
   ///
   /// Gas used is `None` if the the client is running in light client mode.
   /// pub gas_used: Option<U256>
-  gas_used          BigInt?
+  gas_used          BigInt? @db.UnsignedBigInt
   /// Contract address created, or `None` if not a deployment.
   /// pub contract_address: Option<Address>
   contractAddress   String?
@@ -901,7 +901,7 @@ model Receipt {
   /// Both fields in 1559-style transactions are *maximums* (max fee + max priority fee), the
   /// amount that's actually paid by users can only be determined post-execution
   /// pub effective_gas_price: Option<U256>
-  effectiveGasPrice BigInt?
+  effectiveGasPrice BigInt? @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // Eth None-to-one
@@ -943,7 +943,7 @@ model Transaction {
   // ---------------------------------------------------------------------------
 
   /// pub chain_id: Option<U256>
-  chainId   BigInt
+  chainId   BigInt  @db.UnsignedBigInt
   trace     Json
   isTestnet Boolean @default(false)
 
@@ -956,7 +956,7 @@ model Transaction {
   hash                 String  @id
   /// The transaction's nonce
   /// pub nonce: U256
-  nonce                BigInt
+  nonce                BigInt  @db.UnsignedBigInt
   /// Block hash. None when pending.
   /// pub block_hash: Option<H256>
   blockHash            String?
@@ -978,11 +978,11 @@ model Transaction {
   value                String?
   /// Gas Price, null for Type 2 transactions
   /// pub gas_price: Option<U256>
-  gas_price            BigInt?
+  gas_price            BigInt? @db.UnsignedBigInt
   /// Gas amount
   /// pub gas: U256
   /// WARNING: Converting this as optional due to the graph limitations
-  gas                  BigInt?
+  gas                  BigInt? @db.UnsignedBigInt
   /// Input data
   /// pub input: Bytes
   /// WARNING: Converting this as optional due to the graph limitations
@@ -1014,12 +1014,12 @@ model Transaction {
   ///
   /// More context [here](https://hackmd.io/@q8X_WM2nTfu6nuvAzqXiTQ/1559-wallets)
   /// pub max_priority_fee_per_gas: Option<U256>
-  maxPriorityFeePerGas BigInt?
+  maxPriorityFeePerGas BigInt? @db.UnsignedBigInt
   /// Represents the maximum amount that a user is willing to pay for their tx (inclusive of
   /// baseFeePerGas and maxPriorityFeePerGas). The difference between maxFeePerGas and
   /// baseFeePerGas + maxPriorityFeePerGas is “refunded” to the user.
   /// pub max_fee_per_gas: Option<U256>
-  maxFeePerGas         BigInt?
+  maxFeePerGas         BigInt? @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // Eth None-to-none
@@ -1083,7 +1083,7 @@ model UserOperation {
   // Fields
   // ---------------------------------------------------------------------------
 
-  chainId    BigInt
+  chainId    BigInt              @db.UnsignedBigInt
   /// The address of the entry point contract
   entryPoint String
   status     UserOperationStatus @default(PROPOSED)
@@ -1101,7 +1101,7 @@ model UserOperation {
   sender               String
   /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
   /// uint256
-  nonce                BigInt
+  nonce                BigInt @db.UnsignedBigInt
   /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
   /// bytes
   initCode             Bytes
@@ -1110,19 +1110,19 @@ model UserOperation {
   callData             Bytes
   /// The amount of gas to allocate the main execution call
   /// uint256
-  callGasLimit         BigInt
+  callGasLimit         BigInt @db.UnsignedBigInt
   /// The amount of gas to allocate for the verification step
   /// uint256
-  verificationGasLimit BigInt
+  verificationGasLimit BigInt @db.UnsignedBigInt
   /// The amount of gas to pay for to compensate the bundler for pre-verification execution, calldata and any gas overhead that can’t be tracked on-chain
   /// uint256
-  preVerificationGas   BigInt
+  preVerificationGas   BigInt @db.UnsignedBigInt
   /// Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)
   /// uint256
-  maxFeePerGas         BigInt
+  maxFeePerGas         BigInt @db.UnsignedBigInt
   /// Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)
   /// uint256
-  maxPriorityFeePerGas BigInt
+  maxPriorityFeePerGas BigInt @db.UnsignedBigInt
   /// Address of paymaster sponsoring the transaction, followed by extra data to send to the paymaster (empty for self-sponsored transaction)
   /// bytes
   paymasterAndData     Bytes
@@ -1478,7 +1478,7 @@ model Paymaster {
   // ---------------------------------------------------------------------------
 
   address String
-  chainId BigInt
+  chainId BigInt @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1524,7 +1524,7 @@ model PaymasterOperation {
   // ---------------------------------------------------------------------------
 
   sender      String
-  senderNonce BigInt
+  senderNonce BigInt   @db.UnsignedBigInt
   validUntil  DateTime
   validAfter  DateTime
 
@@ -1882,7 +1882,7 @@ model Simulation {
   // ---------------------------------------------------------------------------
 
   blockNumber Int
-  gasUsed     BigInt
+  gasUsed     BigInt  @db.UnsignedBigInt
   success     Boolean
   trace       Json
 
@@ -1897,7 +1897,7 @@ model Simulation {
   sender   String
   /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
   /// uint256
-  nonce    BigInt
+  nonce    BigInt @db.UnsignedBigInt
   /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
   /// bytes
   initCode Bytes
@@ -1993,9 +1993,9 @@ model Token {
   symbol   String?
   name     String?
   address  String
-  chainId  BigInt
+  chainId  BigInt    @db.UnsignedBigInt
   decimals Int?
-  tokenId  BigInt?
+  tokenId  BigInt?   @db.UnsignedBigInt
   logoUrl  String?
 
   // ---------------------------------------------------------------------------
@@ -2110,7 +2110,7 @@ model Protocol {
   // ---------------------------------------------------------------------------
 
   address String
-  chainId BigInt
+  chainId BigInt         @db.UnsignedBigInt
   name    String
   status  ProtocolStatus @default(UNKNOWN)
 
@@ -2283,7 +2283,7 @@ model WalletBalance {
   // ilRisk        Boolean?
   // collateralUSD Float?
 
-  chainId   BigInt
+  chainId   BigInt   @db.UnsignedBigInt
   amount    String?
   stable    Boolean?
   isLatest  Boolean  @default(false)
@@ -2763,16 +2763,16 @@ model Metrics {
 
   balanceUSDSum Float
 
-  transactionCount   BigInt
-  userOperationCount BigInt
-  walletCount        BigInt
+  transactionCount   BigInt @db.UnsignedBigInt
+  userOperationCount BigInt @db.UnsignedBigInt
+  walletCount        BigInt @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
 
   chain   Chain?  @relation(fields: [chainId], references: [id])
-  chainId BigInt?
+  chainId BigInt? @db.UnsignedBigInt
 
   // ---------------------------------------------------------------------------
   // Mappings
