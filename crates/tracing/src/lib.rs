@@ -24,7 +24,7 @@ use eyre::Result;
 use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
 // use pyroscope_pprofrs::{pprof_backend, PprofConfig};
-use tracing::{info, Level, Subscriber};
+use tracing::{info, level_filters::LevelFilter, Level, Subscriber};
 // use tracing_loki::url::Url;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
@@ -82,7 +82,9 @@ where
 /// The subscriber will silently fail if it could not be installed.
 pub fn init_test_tracing() {
     let _ = tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
+        .with_env_filter(
+            EnvFilter::builder().with_default_directive(LevelFilter::INFO.into()).from_env_lossy(),
+        )
         .with_writer(std::io::stderr)
         .try_init();
 }
