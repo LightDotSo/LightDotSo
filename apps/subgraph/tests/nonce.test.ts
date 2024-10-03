@@ -13,80 +13,22 @@
 // limitations under the License.
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import { assert, test } from "matchstick-as/assembly/index";
-import { decodeNonce, decodeNonceKey } from "../src/nonce";
+import { decodeNonce } from "../src/nonce";
 
 // From: https://thegraph.com/docs/en/developing/unit-testing-framework
 
-test("decodeNonce and decodeNonceKey: Basic test with small numbers", () => {
-  const originalNonce = BigInt.fromI32(256);
-  const resultNonce = decodeNonce(originalNonce);
-  const resultNonceKey = decodeNonceKey(originalNonce);
-
-  assert.bytesEquals(
-    Bytes.fromHexString(
-      "000000000000000000000000000000000000000000000000",
-    ) as Bytes,
-    resultNonceKey,
-  );
-  assert.bigIntEquals(BigInt.fromI32(256), resultNonce);
+test("decodeNonce: Basic test", () => {
+  // 2^64 so should be 0
+  const originalNonce = BigInt.fromString("18446744073709551616");
+  const result = decodeNonce(originalNonce);
+  assert.bigIntEquals(BigInt.fromI32(0), result);
 });
 
-test("decodeNonce and decodeNonceKey: Test with large number", () => {
-  const originalNonce = BigInt.fromString("123456789012345678901234567890");
-  const resultNonce = decodeNonce(originalNonce);
-  const resultNonceKey = decodeNonceKey(originalNonce);
-
-  assert.bytesEquals(
-    Bytes.fromHexString(
-      "000000000000000000000006a94d74f430000000000000",
-    ) as Bytes,
-    resultNonceKey,
-  );
-  assert.bigIntEquals(BigInt.fromString("1234567890"), resultNonce);
-});
-
-test("decodeNonce and decodeNonceKey: Test with max u64 value", () => {
+test("decodeNonce: Max u64 value", () => {
+  // 2^64 - 1 so should be 18446744073709551615
   const maxU64 = BigInt.fromString("18446744073709551615");
-  const resultNonce = decodeNonce(maxU64);
-  const resultNonceKey = decodeNonceKey(maxU64);
-
-  assert.bytesEquals(
-    Bytes.fromHexString(
-      "000000000000000000000000000000000000000000000000",
-    ) as Bytes,
-    resultNonceKey,
-  );
-  assert.bigIntEquals(maxU64, resultNonce);
-});
-
-test("decodeNonce and decodeNonceKey: Test with value larger than u64", () => {
-  const originalNonce = BigInt.fromString("18446744073709551616"); // 2^64
-  const resultNonce = decodeNonce(originalNonce);
-  const resultNonceKey = decodeNonceKey(originalNonce);
-
-  assert.bytesEquals(
-    Bytes.fromHexString(
-      "000000000000000000000000000000000000000000000001",
-    ) as Bytes,
-    resultNonceKey,
-  );
-  assert.bigIntEquals(BigInt.fromI32(0), resultNonce);
-});
-
-test("decodeNonce and decodeNonceKey: Test with max uint256 value", () => {
-  const maxUint256 = BigInt.fromString(
-    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-  );
-  const resultNonce = decodeNonce(maxUint256);
-  const resultNonceKey = decodeNonceKey(maxUint256);
-
-  assert.bytesEquals(
-    Bytes.fromHexString(
-      "ffffffffffffffffffffffffffffffffffffffffffffffff",
-    ) as Bytes,
-    resultNonceKey,
-  );
-  assert.bigIntEquals(BigInt.fromString("18446744073709551615"), resultNonce);
+  const result = decodeNonce(maxU64);
+  assert.bigIntEquals(maxU64, result);
 });

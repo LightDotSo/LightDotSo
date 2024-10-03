@@ -19,6 +19,10 @@ import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 // From: https://thegraph.com/docs/en/developing/graph-ts/api/#bigint
 // BigInt in assemblyscript is from Ethereum values of type uint32 to uint256
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export function decodeNonce(originalNonce: BigInt): BigInt {
   return originalNonce.bitAnd(
     BigInt.fromI32(2).pow(64).minus(BigInt.fromI32(1)),
@@ -26,8 +30,13 @@ export function decodeNonce(originalNonce: BigInt): BigInt {
 }
 
 export function decodeNonceKey(originalNonce: BigInt): Bytes {
-  const shifted = originalNonce.rightShift(64);
-  const hexString = shifted.toHexString().slice(2);
+  let hexString = originalNonce.toHexString().slice(2);
 
-  return Bytes.fromHexString(hexString) as Bytes;
+  // Ensure the hexString is 64 characters long (32 bytes)
+  hexString = hexString.padStart(64, "0");
+
+  // Take the first 48 characters which represent the uint192
+  const upperBitsHex = hexString.slice(0, 48);
+
+  return Bytes.fromHexString(upperBitsHex) as Bytes;
 }
