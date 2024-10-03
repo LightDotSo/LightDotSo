@@ -69,13 +69,16 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   // ---------------------------------------------------------------------------
 
   // Get the max fee per gas, fallbacks to mainnet
-  const { data: feesPerGas, isLoading: isEstimateFeesPerGasLoading } =
-    useEstimateFeesPerGas({
-      chainId: Number(chainId),
-      query: {
-        ...USER_OPERATION_CONFIG,
-      },
-    });
+  const {
+    data: feesPerGas,
+    error: estimateFeesPerGasError,
+    isLoading: isEstimateFeesPerGasLoading,
+  } = useEstimateFeesPerGas({
+    chainId: Number(chainId),
+    query: {
+      ...USER_OPERATION_CONFIG,
+    },
+  });
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -103,11 +106,8 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
 
   // Get the gas estimate for the user operation
   const {
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     data: estimateGas,
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     error: estimateGasError,
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     isLoading: isEstimateGasLoading,
   } = useEstimateGas({
     chainId: Number(chainId),
@@ -120,36 +120,57 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   });
 
   // Get the max priority fee per gas, fallbacks to mainnet
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-  const { data: estimatedMaxPriorityFeePerGas } =
-    useEstimateMaxPriorityFeePerGas({
-      chainId: Number(chainId),
-    });
+  const {
+    data: estimatedMaxPriorityFeePerGas,
+    error: estimatedMaxPriorityFeePerGasError,
+    isLoading: isEstimatedMaxPriorityFeePerGasLoading,
+  } = useEstimateMaxPriorityFeePerGas({
+    chainId: Number(chainId),
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const isUserOperationEstimateFeesPerGasLoading = useMemo(() => {
-    return isEstimateFeesPerGasLoading;
-  }, [isEstimateFeesPerGasLoading]);
+    return (
+      isEstimateFeesPerGasLoading ||
+      isEstimateGasLoading ||
+      isEstimatedMaxPriorityFeePerGasLoading
+    );
+  }, [
+    isEstimateFeesPerGasLoading,
+    isEstimateGasLoading,
+    isEstimatedMaxPriorityFeePerGasLoading,
+  ]);
+
+  const isUserOperationEstimateFeesPerGasError = useMemo(() => {
+    return (
+      !!estimateFeesPerGasError ||
+      !!estimateGasError ||
+      !!estimatedMaxPriorityFeePerGasError
+    );
+  }, [
+    estimateFeesPerGasError,
+    estimateGasError,
+    estimatedMaxPriorityFeePerGasError,
+  ]);
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const [maxFeePerGas, maxPriorityFeePerGas] = useMemo(() => {
     const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
       ? // Get the `maxFeePerGas` and apply the speed bump
         (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
-      : null;
+      : estimateGas;
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.info("baseMaxFeePerGas", baseMaxFeePerGas);
 
     const baseMaxPriorityFeePerGas = feesPerGas?.maxPriorityFeePerGas
       ? // Get the `maxPriorityFeePerGas` and apply the speed bump
         (feesPerGas?.maxPriorityFeePerGas * BigInt(gasSpeedBumpAmount)) /
         BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
-        baseMaxFeePerGas;
-
-    // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.info("baseMaxFeePerGas", baseMaxFeePerGas);
+        (estimatedMaxPriorityFeePerGas ?? baseMaxFeePerGas);
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
 
@@ -301,6 +322,8 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
   }, [
     chainId,
+    estimateGas,
+    estimatedMaxPriorityFeePerGas,
     feesPerGas?.maxFeePerGas,
     feesPerGas?.maxPriorityFeePerGas,
     gasEstimation,
@@ -315,6 +338,8 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   return {
     isUserOperationEstimateFeesPerGasLoading:
       isUserOperationEstimateFeesPerGasLoading,
+    isUserOperationEstimateFeesPerGasError:
+      isUserOperationEstimateFeesPerGasError,
     maxFeePerGas: maxFeePerGas ?? undefined,
     maxPriorityFeePerGas: maxPriorityFeePerGas ?? undefined,
   };
