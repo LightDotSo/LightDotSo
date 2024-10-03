@@ -15,6 +15,7 @@
 use crate::types::{ErrorResponse, Response};
 use eyre::{Error, Result};
 use lightdotso_tracing::tracing::{info, warn};
+use serde_json::Value;
 
 pub mod error;
 pub mod rpc;
@@ -34,9 +35,29 @@ pub async fn handle_response<R>(response: reqwest::Response) -> Result<Response<
 where
     R: std::fmt::Debug + serde::de::DeserializeOwned,
 {
-    let str_response = response.text().await?;
+    // Log the full response
+    info!("response: {:?}", response);
+
+    // Log the response headers
+    info!("response headers: {:?}", response.headers());
+
+    // Log the response status
+    info!("response status: {:?}", response.status());
+
+    // Get the response body as text
+    let body_text = response.text().await?;
+
+    // Log the response body
+    info!("Response body: {}", body_text);
+
+    // Try to parse the body as JSON for prettier logging
+    if let Ok(parsed_response_body) = serde_json::from_str::<Value>(&body_text) {
+        info!("Response parsed body: {}", serde_json::to_string_pretty(&parsed_response_body)?);
+    }
+
+    // Parse the response
     let parsed_response: Result<Response<R>> =
-        serde_json::from_str(&str_response).map_err(Error::from);
+        serde_json::from_str(&body_text).map_err(Error::from);
 
     match parsed_response {
         Ok(success_response) => {
@@ -44,8 +65,8 @@ where
             Ok(success_response)
         }
         Err(_) => {
-            let error_response: ErrorResponse = serde_json::from_str(&str_response)?;
-            let error_message = error_response.clone().error.message;
+            let error_response: ErrorResponse = serde_json::from_str(&body_text)?;
+            let error_message = error_response.error.message.clone();
             warn!("Error: {:?}", error_response);
             Err(Error::msg(error_message))
         }
