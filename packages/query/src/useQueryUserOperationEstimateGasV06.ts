@@ -13,14 +13,23 @@
 // limitations under the License.
 
 import { estimateUserOperationGasV06 } from "@lightdotso/client";
-import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
+import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
+  DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V06,
+  DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06,
+  LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV06 } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
+import { findContractAddressByAddress } from "@lightdotso/utils";
+import { useEstimateGas } from "@lightdotso/wagmi/wagmi";
 import { useQuery } from "@tanstack/react-query";
-import { type Hex, fromHex, toHex } from "viem";
+import { type Address, type Hex, fromHex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
+import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -40,9 +49,34 @@ export const useQueryUserOperationEstimateGasV06 = (
   // Query
   // ---------------------------------------------------------------------------
 
+  // Gets the wallet
+  const { wallet } = useQueryWallet({
+    address: params?.sender as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  // Get the gas estimate for the user operation
+  const { data: estimateGas } = useEstimateGas({
+    chainId: Number(params?.chainId),
+    account: params?.sender as Address,
+    data: params?.callData as Hex,
+    to: LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      findContractAddressByAddress(wallet?.factory_address as Address)!
+    ],
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const {
     data: estimateUserOperationGasDataV06,
     isLoading: isEstimateUserOperationGasDataLoadingV06,
+    isError: isEstimateUserOperationGasDataErrorV06,
     error: estimateUserOperationGasDataErrorV06,
   } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
@@ -104,12 +138,16 @@ export const useQueryUserOperationEstimateGasV06 = (
       ? fromHex(estimateUserOperationGasDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : undefined,
+      : isEstimateUserOperationGasDataErrorV06 && estimateGas
+        ? estimateGas
+        : undefined,
     preVerificationGasV06: estimateUserOperationGasDataV06?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV06?.preVerificationGas as Hex, {
           to: "bigint",
         })
-      : undefined,
+      : isEstimateUserOperationGasDataErrorV06
+        ? DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_LIMIT_V06
+        : undefined,
     verificationGasLimitV06:
       estimateUserOperationGasDataV06?.verificationGasLimit
         ? fromHex(
@@ -118,6 +156,8 @@ export const useQueryUserOperationEstimateGasV06 = (
               to: "bigint",
             },
           )
-        : undefined,
+        : isEstimateUserOperationGasDataErrorV06 && estimateGas
+          ? DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06
+          : undefined,
   };
 };
