@@ -5,7 +5,7 @@ on:
       url:
         description: "Update GraphQL Schema"
         required: true
-        default: "https://api.thegraph.com/subgraphs/name/lightdotso/mainnet"
+        default: "https://api.studio.thegraph.com/query/1993/lightdotso-sepolia/version/latest"
   schedule:
     - cron: "0 0 * * *"
 concurrency:
@@ -32,7 +32,7 @@ jobs:
         name: Run Introspection Schedule
         uses: obmarg/action-graphql-introspect@main
         with:
-          server-url: "https://api.thegraph.com/subgraphs/name/lightdotso/mainnet"
+          server-url: "https://api.studio.thegraph.com/query/1993/lightdotso-sepolia/version/latest"
           output-file: crates/graphql/schemas/graph.graphql
       - name: Run Fix
         run: |

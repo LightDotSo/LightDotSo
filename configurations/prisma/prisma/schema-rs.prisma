@@ -5,8 +5,8 @@ generator prisma {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 // -----------------------------------------------------------------------------
@@ -1095,13 +1095,15 @@ model UserOperation {
 
   /// The userOperation's hash
   /// pub hash: H256
-  hash                 String @id
+  hash                 String  @id
   /// The account making the operation
   /// address
   sender               String
   /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
-  /// uint256
-  nonce                BigInt @db.UnsignedBigInt
+  /// uint192
+  nonceKey             String?
+  /// uint256 (as uint64)
+  nonce                BigInt  @db.UnsignedBigInt
   /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
   /// bytes
   initCode             Bytes
@@ -1109,20 +1111,20 @@ model UserOperation {
   /// bytes
   callData             Bytes
   /// The amount of gas to allocate the main execution call
-  /// uint256
-  callGasLimit         BigInt @db.UnsignedBigInt
+  /// uint256 (as uint64)
+  callGasLimit         BigInt  @db.UnsignedBigInt
   /// The amount of gas to allocate for the verification step
-  /// uint256
-  verificationGasLimit BigInt @db.UnsignedBigInt
+  /// uint256 (as uint64)
+  verificationGasLimit BigInt  @db.UnsignedBigInt
   /// The amount of gas to pay for to compensate the bundler for pre-verification execution, calldata and any gas overhead that can’t be tracked on-chain
-  /// uint256
-  preVerificationGas   BigInt @db.UnsignedBigInt
+  /// uint256 (as uint64)
+  preVerificationGas   BigInt  @db.UnsignedBigInt
   /// Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)
-  /// uint256
-  maxFeePerGas         BigInt @db.UnsignedBigInt
+  /// uint256 (as uint64)
+  maxFeePerGas         BigInt  @db.UnsignedBigInt
   /// Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)
-  /// uint256
-  maxPriorityFeePerGas BigInt @db.UnsignedBigInt
+  /// uint256 (as uint64)
+  maxPriorityFeePerGas BigInt  @db.UnsignedBigInt
   /// Address of paymaster sponsoring the transaction, followed by extra data to send to the paymaster (empty for self-sponsored transaction)
   /// bytes
   paymasterAndData     Bytes
@@ -1896,8 +1898,10 @@ model Simulation {
   /// address
   sender   String
   /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
-  /// uint256
-  nonce    BigInt @db.UnsignedBigInt
+  /// uint192
+  nonceKey String?
+  /// uint256 (as uint64)
+  nonce    BigInt  @db.UnsignedBigInt
   /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
   /// bytes
   initCode Bytes

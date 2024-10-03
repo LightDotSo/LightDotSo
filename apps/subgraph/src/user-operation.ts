@@ -15,6 +15,8 @@
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 // biome-ignore lint/style/useImportType: <explanation>
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import { ENTRYPOINT_V060_ADDRESS } from "./const";
+import { decodeNonce, decodeNonceKey } from "./nonce";
 
 // -----------------------------------------------------------------------------
 // Class
@@ -22,6 +24,7 @@ import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 class UserOperation {
   sender: Address;
+  nonceKey: Bytes;
   nonce: BigInt;
   initCode: Bytes;
   callData: Bytes;
@@ -36,6 +39,7 @@ class UserOperation {
 
   constructor() {
     this.sender = Address.zero();
+    this.nonceKey = new Bytes(0);
     this.nonce = BigInt.zero();
     this.initCode = new Bytes(0);
     this.callData = new Bytes(0);
@@ -88,11 +92,7 @@ export function handleUserOperationFromCalldata(
 
   // Determine the EntryPoint version and set the appropriate decode format
   let decodeFormat: string;
-  if (
-    entrypoint.equals(
-      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
-    )
-  ) {
+  if (entrypoint.equals(Address.fromString(ENTRYPOINT_V060_ADDRESS))) {
     // v0.6 EntryPoint
     decodeFormat =
       "(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[]";
@@ -143,11 +143,7 @@ export function handleUserOperationFromCalldata(
   }
 
   // Populate the UserOperation struct based on the EntryPoint version
-  if (
-    entrypoint.equals(
-      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
-    )
-  ) {
+  if (entrypoint.equals(Address.fromString(ENTRYPOINT_V060_ADDRESS))) {
     // v0.6 EntryPoint
     userOperation.sender = matchingUserOp[0].toAddress();
     userOperation.nonce = matchingUserOp[1].toBigInt();
@@ -163,7 +159,11 @@ export function handleUserOperationFromCalldata(
   } else {
     // v0.7 EntryPoint
     userOperation.sender = matchingUserOp[0].toAddress();
-    userOperation.nonce = matchingUserOp[1].toBigInt();
+
+    // nonceKey is 32 bytes hex string
+    userOperation.nonceKey = decodeNonceKey(matchingUserOp[1].toBigInt());
+    userOperation.nonce = decodeNonce(matchingUserOp[1].toBigInt());
+
     userOperation.initCode = matchingUserOp[2].toBytes();
     userOperation.callData = matchingUserOp[3].toBytes();
 
@@ -220,11 +220,7 @@ function logUserOperation(
   userOperation: UserOperation,
   entrypoint: Address,
 ): void {
-  if (
-    entrypoint.equals(
-      Address.fromString("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
-    )
-  ) {
+  if (entrypoint.equals(Address.fromString(ENTRYPOINT_V060_ADDRESS))) {
     // v0.6 EntryPoint
     log.info(
       "UserOperation v0.6: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
