@@ -1,7 +1,7 @@
 {
   "transactions": [
     {
-      "hash": "0x9a4393066ed181e3df73a8e73b7debba2662997ff5116caa7b50560188ee3efd",
+      "hash": null,
       "transactionType": "CREATE2",
       "contractName": "LightWalletFactory",
       "contractAddress": "0x000000000048c2e27c97b9978c9b27f6937a40db",
@@ -20,44 +20,11 @@
       "isFixedGasLimit": false
     }
   ],
-  "receipts": [
-    {
-      "status": "0x1",
-      "cumulativeGasUsed": "0x363d61",
-      "logs": [
-        {
-          "address": "0x5d02b6345898b193b66ca89e7a693cc11dc72954",
-          "topics": [
-            "0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2"
-          ],
-          "data": "0x000000000000000000000000000000000000000000000000ffffffffffffffff",
-          "blockHash": "0x828f9be8117415bd9e11d975187970c2c17f0764534eb09535cc9004c4d36403",
-          "blockNumber": "0x49cb542",
-          "transactionHash": "0x9a4393066ed181e3df73a8e73b7debba2662997ff5116caa7b50560188ee3efd",
-          "transactionIndex": "0x1",
-          "logIndex": "0x0",
-          "removed": false
-        }
-      ],
-      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000800000080000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000020000000000000000000000000000000000000000000000000000000000000000000000000",
-      "type": "0x2",
-      "transactionHash": "0x9a4393066ed181e3df73a8e73b7debba2662997ff5116caa7b50560188ee3efd",
-      "transactionIndex": "0x1",
-      "blockHash": "0x828f9be8117415bd9e11d975187970c2c17f0764534eb09535cc9004c4d36403",
-      "blockNumber": "0x49cb542",
-      "gasUsed": "0x363d61",
-      "effectiveGasPrice": "0x989680",
-      "from": "0x35da762a35fcb3160738eecd60fa18438c273d5e",
-      "to": "0x4e59b44847b379578588920ca78fbf26c0b4956c",
-      "contractAddress": null,
-      "gasUsedForL1": "0x40b6c",
-      "l1BlockNumber": "0x13eb793"
-    }
-  ],
+  "receipts": [],
   "libraries": [],
   "pending": [],
   "returns": {},
-  "timestamp": 1727988207,
+  "timestamp": 1727988059,
   "chain": 42170,
   "commit": "12cc20b5c"
 }
