@@ -217,6 +217,5 @@ type Counter @entity {
   userOpCount: BigInt!
   userOpRevertCount: BigInt!
   userOpSuccessCount: BigInt!
-  vaultCount: BigInt!
   walletCount: BigInt!
 }
