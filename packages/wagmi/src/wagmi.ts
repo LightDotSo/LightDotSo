@@ -34,6 +34,7 @@ export {
   useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
+  useGasPrice,
   useReadContract,
   useReadContracts,
   useSendTransaction,

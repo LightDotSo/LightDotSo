@@ -349,9 +349,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     maxPriorityFeePerGas,
     isUserOperationEstimateFeesPerGasLoading,
   } = useQueryUserOperationEstimateFeesPerGas({
-    address: address as Address,
     chainId: Number(targetUserOperation?.chainId),
-    callData: targetUserOperation?.callData as Hex,
   });
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("maxFeePerGas", maxFeePerGas);

@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import { useAuth } from "@lightdotso/stores";
 import { useGasSpeed } from "@lightdotso/stores";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
   useEstimateFeesPerGas,
-  useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
+  useGasPrice,
 } from "@lightdotso/wagmi/wagmi";
 import { useMemo } from "react";
-import { type Address, type Hex, fromHex } from "viem";
+import { type Hex, fromHex } from "viem";
 import {
   avalanche,
   avalancheFuji,
@@ -36,16 +34,13 @@ import {
 } from "viem/chains";
 import { USER_OPERATION_CONFIG } from "./config";
 import { useQueryGasEstimation } from "./useQueryGasEstimation";
-import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type UserOperationFeePerGasProps = {
-  address: Address;
   chainId: number;
-  callData: Hex;
 };
 
 // -----------------------------------------------------------------------------
@@ -53,9 +48,7 @@ type UserOperationFeePerGasProps = {
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationEstimateFeesPerGas = ({
-  address,
   chainId,
-  callData,
 }: UserOperationFeePerGasProps) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -95,28 +88,17 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     chainId: Number(chainId),
   });
 
-  // Gets the wallet
-  const { wallet } = useQueryWallet({
-    address: address as Address,
-  });
-
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
   const {
-    data: estimateGas,
-    error: estimateGasError,
-    isLoading: isEstimateGasLoading,
-  } = useEstimateGas({
+    data: gasPrice,
+    error: gasPriceError,
+    isLoading: isGasPriceLoading,
+  } = useGasPrice({
     chainId: Number(chainId),
-    account: address as Address,
-    data: callData as Hex,
-    to: LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      findContractAddressByAddress(wallet?.factory_address as Address)!
-    ],
   });
 
   // Get the max priority fee per gas, fallbacks to mainnet
@@ -135,25 +117,25 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
   const isUserOperationEstimateFeesPerGasLoading = useMemo(() => {
     return (
       isEstimateFeesPerGasLoading ||
-      isEstimateGasLoading ||
+      isGasPriceLoading ||
       isEstimatedMaxPriorityFeePerGasLoading
     );
   }, [
     isEstimateFeesPerGasLoading,
-    isEstimateGasLoading,
+    isGasPriceLoading,
     isEstimatedMaxPriorityFeePerGasLoading,
   ]);
 
   const isUserOperationEstimateFeesPerGasError = useMemo(() => {
     return (
       !!estimateFeesPerGasError ||
-      !!estimateGasError ||
-      !!estimatedMaxPriorityFeePerGasError
+      !!estimatedMaxPriorityFeePerGasError ||
+      !!gasPriceError
     );
   }, [
     estimateFeesPerGasError,
-    estimateGasError,
     estimatedMaxPriorityFeePerGasError,
+    gasPriceError,
   ]);
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
@@ -161,7 +143,7 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     const baseMaxFeePerGas = feesPerGas?.maxFeePerGas
       ? // Get the `maxFeePerGas` and apply the speed bump
         (feesPerGas?.maxFeePerGas * BigInt(gasSpeedBumpAmount)) / BigInt(100)
-      : estimateGas;
+      : gasPrice;
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("baseMaxFeePerGas", baseMaxFeePerGas);
 
@@ -321,11 +303,14 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     // Return null if no gas estimation is available
     return [baseMaxFeePerGas, baseMaxPriorityFeePerGas];
   }, [
+    // Chain id
     chainId,
-    estimateGas,
+    // Estimated gas values
+    gasPrice,
     estimatedMaxPriorityFeePerGas,
     feesPerGas?.maxFeePerGas,
     feesPerGas?.maxPriorityFeePerGas,
+    // Gas estimation values
     gasEstimation,
     gasSpeed,
     gasSpeedBumpAmount,
