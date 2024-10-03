@@ -39,15 +39,10 @@ use alloy::{
 use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    entrypoint::{
-        get_entrypoint,
-        // EntryPoint::UserOperationEvent, EntryPoint::UserOperationRevertReason,
-    },
+    entrypoint::get_entrypoint,
     provider::get_provider,
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
-    types::UserOperation,
-    // user_operation::parse_user_op_event,
-    // utils::{decode_simulate_handle_ops_revert, get_revert_bytes},
+    types::{PackedUserOperation, UserOperation},
 };
 use lightdotso_jsonrpsee::{
     handle_response,
@@ -213,10 +208,31 @@ impl Node {
         entry_point: Address,
         user_operation: &UserOperation,
     ) -> Result<Response<B256>> {
+        // Send the user operation to the node
         let send_user_operation =
             || async { self.send_user_operation(chain_id, entry_point, user_operation).await };
 
+        // Retry the request 5 times
         let res = send_user_operation.retry(ExponentialBuilder::default().with_max_times(5)).await;
+        info!("res: {:?}", res);
+
+        res
+    }
+
+    pub async fn send_packed_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        packed_user_operation: &PackedUserOperation,
+    ) -> Result<Response<B256>> {
+        // Send the packed user operation to the node
+        let send_packed_user_operation = || async {
+            self.send_packed_user_operation(chain_id, entry_point, packed_user_operation).await
+        };
+
+        // Retry the request 5 times
+        let res =
+            send_packed_user_operation.retry(ExponentialBuilder::default().with_max_times(5)).await;
         info!("res: {:?}", res);
 
         res
@@ -250,7 +266,43 @@ impl Node {
 
         // Send the user operation to the node
         let client = reqwest::Client::new();
+        let response = client
+            .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
+            .json(&req_body)
+            .send()
+            .await?;
 
+        // Handle the response for the JSON-RPC API.
+        let res = handle_response(response).await?;
+
+        Ok(res)
+    }
+
+    pub async fn send_packed_user_operation(
+        &self,
+        chain_id: u64,
+        entry_point: Address,
+        packed_user_operation: &PackedUserOperation,
+    ) -> Result<Response<B256>> {
+        let params = vec![json!(packed_user_operation.clone()), json!(entry_point)];
+        info!("params: {:?}", params);
+
+        let req_body = Request {
+            jsonrpc: "2.0".to_string(),
+            method: "eth_sendUserOperation".to_string(),
+            params: params.clone(),
+            id: 1,
+        };
+
+        // Log the time before sending the user operation to the node
+        info!(
+            "Sending packed user operation {:?} to the node at {}",
+            packed_user_operation.clone(),
+            chrono::Utc::now()
+        );
+
+        // Send the user operation to the node
+        let client = reqwest::Client::new();
         let response = client
             .post(format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id))
             .json(&req_body)

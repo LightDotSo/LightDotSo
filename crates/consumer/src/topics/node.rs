@@ -18,7 +18,9 @@ use alloy::primitives::Address;
 use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_contracts::light_wallet::get_light_wallet;
+use lightdotso_contracts::{
+    address::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet, types::PackedUserOperation,
+};
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
 use lightdotso_node::node::Node;
@@ -97,24 +99,39 @@ pub async fn node_consumer(
         // Get the entrypoint
         let entrypoint = uop.try_valid_op_hash(chain_id, hash)?;
 
-        // Simulate the user operation
-        let res_catch = node.simulate_user_operation_with_backon(chain_id, entrypoint, &uop).await;
+        // If the entrypoint is v0.6
+        if entrypoint == *ENTRYPOINT_V060_ADDRESS {
+            // Simulate the user operation
+            let res_catch =
+                node.simulate_user_operation_with_backon(chain_id, entrypoint, &uop).await;
 
-        // Log the response
-        info!("res_catch: {:?}", res_catch);
+            // Log the response
+            info!("res_catch: {:?}", res_catch);
 
-        // Simulate the user operation with the tracer
-        let res_catch =
-            node.simulate_user_operation_with_tracer_with_backon(chain_id, entrypoint, &uop).await;
+            // Simulate the user operation with the tracer
+            let res_catch = node
+                .simulate_user_operation_with_tracer_with_backon(chain_id, entrypoint, &uop)
+                .await;
 
-        // Log the response
-        info!("res_catch: {:?}", res_catch);
+            // Log the response
+            info!("res_catch: {:?}", res_catch);
 
-        // Attempt to submit the user operation to the node
-        let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await?;
+            // Attempt to submit the user operation to the node
+            let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await?;
 
-        // Log the response
-        info!("res: {:?}", res);
+            // Log the response
+            info!("res: {:?}", res);
+        } else {
+            // Convert the user operation to a packed user operation
+            let puop: PackedUserOperation = uop.into();
+
+            // Attempt to submit the packed user operation to the node
+            let res =
+                node.send_packed_user_operation_with_backon(chain_id, entrypoint, &puop).await?;
+
+            // Log the response
+            info!("res: {:?}", res);
+        }
     }
 
     Ok(())
