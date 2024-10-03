@@ -69,7 +69,7 @@ jobs:
   deploy-subgraph:
      if: >-
        github.event_name == 'workflow_dispatch' && inputs.group == 'graph' ||
-       contains(github.event.release.tag_name, '@lightdotso/subgraph')
+       contains(github.ref, '@lightdotso/subgraph')
     runs-on: ubuntu-latest
     env:
       TURBO_API: ${{ secrets.TURBO_API }}
