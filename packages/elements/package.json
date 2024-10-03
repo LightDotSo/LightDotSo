@@ -18,7 +18,10 @@
     "./*": "./src/*/index.ts"
   },
   "main": "./src/index.ts",
-  "files": ["dist/**", "src/**"],
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsup && tsx scripts/tsup.build.ts ",
     "clean": "rimraf -rf dist",

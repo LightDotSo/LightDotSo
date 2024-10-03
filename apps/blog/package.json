@@ -13,7 +13,9 @@
   "license": "Apache-2.0",
   "author": "LightDotSo",
   "sideEffects": false,
-  "files": ["CHANGELOG.md"],
+  "files": [
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "build": "next build",
