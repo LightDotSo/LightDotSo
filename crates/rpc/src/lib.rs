@@ -508,7 +508,28 @@ pub async fn rpc_proxy_handler(
                     }
                 }
             }
+            "pimlico_getUserOperationGasPrice" => {
+                // Construct the params for the rpc request
+                let requests = vec![(
+                    &*PIMLICO_RPC_URLS,
+                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
+                )];
 
+                for (url, key) in &requests {
+                    let result = try_rpc_with_url(
+                        url,
+                        key.clone(),
+                        &chain_id,
+                        &client,
+                        &mut Body::from(body_bytes.clone()),
+                    )
+                    .await;
+
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
+            }
             &_ => {}
         }
     } else {

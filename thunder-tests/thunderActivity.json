@@ -730,5 +730,75 @@
       "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"paymaster_requestGasAndPaymasterAndData\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callData\": \"0x\",\n      \"callGasLimit\": \"0x238c\",\n      \"verificationGasLimit\": \"0x3bd8d\",\n      \"preVerificationGas\": \"0x2f14e\",\n      \"maxFeePerGas\": \"0x5b8ef3\",\n      \"maxPriorityFeePerGas\": \"0x118c30\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\"\n    }\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 52\n}",
       "form": []
     }
+  },
+  {
+    "_id": "2582fa08-ba2d-4475-905a-350044143c28",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://rpc.light.so/42161",
+    "url": "https://rpc.light.so/42161",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2024-10-03T20:16:14.276Z",
+    "modified": "2024-10-03T20:16:25.651Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "accept-language",
+        "value": "en,ja;q=0.9,zh;q=0.8"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "origin",
+        "value": "https://light.so"
+      },
+      {
+        "name": "priority",
+        "value": "u=1, i"
+      },
+      {
+        "name": "referer",
+        "value": "https://light.so/"
+      },
+      {
+        "name": "sec-ch-ua",
+        "value": "Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129"
+      },
+      {
+        "name": "sec-ch-ua-mobile",
+        "value": "?0"
+      },
+      {
+        "name": "sec-ch-ua-platform",
+        "value": "macOS"
+      },
+      {
+        "name": "sec-fetch-dest",
+        "value": "empty"
+      },
+      {
+        "name": "sec-fetch-mode",
+        "value": "cors"
+      },
+      {
+        "name": "sec-fetch-site",
+        "value": "same-site"
+      },
+      {
+        "name": "user-agent",
+        "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_sendUserOperation\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"callData\": \"0x\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callGasLimit\": \"0x0\",\n      \"verificationGasLimit\": \"0x4dc4c\",\n      \"preVerificationGas\": \"0x4b091\",\n      \"maxFeePerGas\": \"0xd29240\",\n      \"maxPriorityFeePerGas\": \"0xd29240\",\n      \"paymaster\": \"0x0000000000000039cd5e8ae05257ce51c473ddd1\",\n      \"paymasterVerificationGasLimit\": \"0x762a\",\n      \"paymasterPostOpGasLimit\": \"0x1\",\n      \"paymasterData\": \"0x00000066fe8fc000000000000025403490e89c1e0791e131ee58d4086b9d8f5b8eb53ae1d352c0fc93c0c01c5534b5fe7d9771d34f0cd40c42ec54d670a81b54b9502914f3ab4be4fc2d8934be1c\",\n      \"signature\": \"0x010001000000000001015c47b5a12d88b26d4c243d5978708c2287949a2359fef2666068a4d44cfc5509eeb4599a38f1160ea4bf4e628377fe8574a5175c2ac9d5794e0d516558d4921b02\"\n    },\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 76\n}",
+      "form": []
+    }
   }
 ]

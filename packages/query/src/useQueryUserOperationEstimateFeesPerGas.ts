@@ -30,6 +30,7 @@ import {
   celoAlfajores,
   polygon,
   polygonAmoy,
+  polygonMumbai,
   scroll,
   scrollSepolia,
 } from "viem/chains";
@@ -177,7 +178,11 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
         gasEstimationMaxPriorityFeePerGas,
       );
 
-      if (chainId === polygon.id || chainId === polygonAmoy.id) {
+      if (
+        chainId === polygon.id ||
+        chainId === polygonAmoy.id ||
+        chainId === polygonMumbai.id
+      ) {
         const polygonBaseMaxPriorityFeePerGas = BigInt(77500000000);
 
         return [
@@ -251,8 +256,12 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
     }
 
     // For polygon, there's a base max fee per gas
-    if (chainId === polygon.id || chainId === polygonAmoy.id) {
-      const polygonBaseMaxPriorityFeePerGas = BigInt(35);
+    if (
+      chainId === polygon.id ||
+      chainId === polygonAmoy.id ||
+      chainId === polygonMumbai.id
+    ) {
+      const polygonBaseMaxPriorityFeePerGas = BigInt(77500000000);
 
       return [
         // Return the larger of the `baseMaxFeePerGas` and the base fee
