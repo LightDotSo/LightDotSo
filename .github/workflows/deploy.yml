@@ -8,6 +8,8 @@ on:
   #   types:
   #     - labeled
   merge_group:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       group:
@@ -64,8 +66,10 @@ jobs:
         name: Deploy Checkly
         run: |
           pnpm run deploy:checkly --preview
-  deploy-graph:
-    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph'
+  deploy-subgraph:
+     if: >-
+       github.event_name == 'workflow_dispatch' && inputs.group == 'graph' ||
+       contains(github.event.release.tag_name, '@lightdotso/subgraph')
     runs-on: ubuntu-latest
     env:
       TURBO_API: ${{ secrets.TURBO_API }}
@@ -87,6 +91,7 @@ jobs:
           pnpm run deploy:hosted
       - name: Deploy Satsuma
         working-directory: apps/subgraph
+        continue-on-error: true
         run: |
           pnpm run deploy:satsuma
         env:
@@ -96,12 +101,12 @@ jobs:
     needs:
       - deploy-filter
       - deploy-checkly
-      - deploy-graph
+      - deploy-subgraph
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: deploy-checkly,deploy-graph
+          allowed-skips: deploy-checkly,deploy-subgraph
           jobs: ${{ toJSON(needs) }}
