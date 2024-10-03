@@ -19,7 +19,7 @@ use lightdotso_polling::{config::PollingArgs, polling::Polling};
 use lightdotso_tracing::init_test_tracing;
 use std::collections::HashMap;
 
-// #[ignore]
+#[ignore]
 #[tokio::test]
 async fn test_polling_get_user_operation() {
     let _ = dotenv();
