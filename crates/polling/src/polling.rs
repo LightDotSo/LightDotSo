@@ -259,8 +259,14 @@ impl Polling {
 
         let response = client.post(rpc_url).json(&req_body).send().await?;
 
+        // Log the response
+        info!("User operation receipt: {:?}", response);
+
         // Handle the response for the JSON-RPC API.
         let res = handle_response(response).await?;
+
+        // Log the res
+        info!("User operation res: {:?}", res);
 
         Ok(res)
     }

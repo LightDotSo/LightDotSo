@@ -45,7 +45,6 @@ jobs:
       fail-fast: true
       matrix:
         app: [app, explorer, home]
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -98,6 +97,41 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
+      - name: Analyze Bundle
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          pnpx -p nextjs-bundle-analysis report
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-${{ matrix.app }}
+          path: apps/${{ matrix.app }}/.next/analyze/__bundle_analysis.json
+      - name: Download Bundle Stats
+        uses: dawidd6/action-download-artifact@v6
+        if: success() && github.event.number
+        with:
+          name: bundle-${{ matrix.app }}
+          workflow: vercel.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+          path: apps/${{ matrix.app }}/.next/analyze/base/bundle
+      - name: Compare with Base Branch 
+        if: success() && github.event.number
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          ls -laR .next/analyze/base && pnpx -p nextjs-bundle-analysis compare
+      - name: Get Comment Body
+        id: comment-body
+        if: success() && github.event.number
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$(cat apps/${{ matrix.app }}/.next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+      - name: Add Comment to PR
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        if: success() && github.event.number
+        with:
+          header: 'bundle-analysis-${{ matrix.app }}'
+          message: ${{ steps.comment-body.outputs.body }}
   vercel-deploy-prd:
     needs: vercel-turbo
     if: needs.vercel-turbo.outputs.trigger == 'true' && github.event_name == 'push'
@@ -105,8 +139,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
-        app: [app, explorer, home]
+        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -153,6 +186,15 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
+      - name: Analyze Bundle
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          pnpx -p nextjs-bundle-analysis report
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-${{ matrix.app }}
+          path: apps/${{ matrix.app }}/.next/analyze/__bundle_analysis.json
   vercel-check:
     needs:
       - vercel-turbo

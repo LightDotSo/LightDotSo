@@ -42,6 +42,27 @@ async fn test_polling_get_user_operation() {
 
 #[ignore]
 #[tokio::test]
+async fn test_polling_get_user_operation_v070() {
+    let _ = dotenv();
+
+    init_test_tracing();
+
+    let args = PollingArgs::default();
+    let chain_mapping = HashMap::new();
+
+    let polling = Polling::new(&args, HashMap::new(), chain_mapping, false).await.unwrap();
+
+    let hash: B256 =
+        "0x083647d47403af3d375a7f6c8d2ba8d1781669b277951b359d780bbab3ff9a65".parse().unwrap();
+    let res = polling.get_user_operation(56, hash).await;
+
+    println!("{:?}", res);
+
+    assert!(res.is_ok());
+}
+
+#[ignore]
+#[tokio::test]
 async fn test_polling_poll_uop() {
     let _ = dotenv();
 

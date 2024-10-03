@@ -27,7 +27,7 @@
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
     "nuqs": "^1.19.3",
-    "viem": "^2.21.16"
+    "viem": "^2.21.17"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

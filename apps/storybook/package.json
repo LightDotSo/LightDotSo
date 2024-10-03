@@ -39,7 +39,7 @@
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
     "@tremor/react": "^3.18.3",
-    "next": "15.0.0-canary.172",
+    "next": "15.0.0-canary.177",
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "react-is": "19.0.0-rc-e740d4b1-20240919",
@@ -49,7 +49,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.25.7",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/addon-actions": "^8.3.4",
@@ -78,7 +78,7 @@
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "^8.3.4",
     "@types/node": "^22.7.4",
-    "@types/react": "^18.3.10",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
     "@vitejs/plugin-react-swc": "^3.7.1",
