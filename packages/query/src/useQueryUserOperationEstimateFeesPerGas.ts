@@ -178,7 +178,11 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
         gasEstimationMaxPriorityFeePerGas,
       );
 
-      if (chainId === polygon.id || chainId === polygonAmoy.id) {
+      if (
+        chainId === polygon.id ||
+        chainId === polygonAmoy.id ||
+        chainId === polygonMumbai.id
+      ) {
         const polygonBaseMaxPriorityFeePerGas = BigInt(77500000000);
 
         return [
