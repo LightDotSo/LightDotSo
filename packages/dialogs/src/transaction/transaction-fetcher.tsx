@@ -14,11 +14,7 @@
 
 "use client";
 
-import {
-  CONTRACT_ADDRESSES,
-  ContractAddress,
-  LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
 import { useDebouncedValue } from "@lightdotso/hooks";
 import { useEntryPointVersion } from "@lightdotso/hooks/src/useEntryPointVersion";
 import {
@@ -42,9 +38,9 @@ import {
 } from "@lightdotso/sdk";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import {
   useReadEntryPointv060GetNonce,
+  useReadEntryPointv070GetNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi/generated";
 import { useBytecode } from "@lightdotso/wagmi/wagmi";
@@ -115,6 +111,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isEntryPointV06, isEntryPointV07 } = useEntryPointVersion({
+    address: address as Address,
+    chainId: Number(initialUserOperation.chainId),
+  });
+
+  // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
@@ -124,29 +129,28 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     chainId: Number(initialUserOperation.chainId),
   });
 
-  // Get the nonce for the entry point
-  const { data: entryPointNonce, isFetched: isEntryPointNonceFetched } =
+  // Get the nonce for the entry point v0.6
+  const { data: entryPointV060Nonce, isFetched: isEntryPointV060NonceFetched } =
     useReadEntryPointv060GetNonce({
-      address:
-        LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          findContractAddressByAddress(wallet?.factory_address as Address)!
-        ],
+      address: isEntryPointV06
+        ? CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V060_ADDRESS]
+        : undefined,
+      chainId: Number(initialUserOperation.chainId),
+      args: [address as Address, 0n],
+    });
+
+  // Get the nonce for the entry point v0.7
+  const { data: entryPointV070Nonce, isFetched: isEntryPointV070NonceFetched } =
+    useReadEntryPointv070GetNonce({
+      address: isEntryPointV07
+        ? CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS]
+        : undefined,
       chainId: Number(initialUserOperation.chainId),
       args: [address as Address, 0n],
     });
 
   // Get the bytecode for the light wallet
   const { data: walletBytecode } = useBytecode({
-    address: address as Address,
-    chainId: Number(initialUserOperation.chainId),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isEntryPointV06, isEntryPointV07 } = useEntryPointVersion({
     address: address as Address,
     chainId: Number(initialUserOperation.chainId),
   });
@@ -196,28 +200,51 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   /// This is the initial boolean to check if the initial fetch is done
   /// The `entryPointNonce` and `userOperationNonce` are required to compute the `updatedMinimumNonce`
-  const isInitialFetched = useMemo(() => {
-    return isEntryPointNonceFetched && isUserOperationNonceFetched;
-  }, [isEntryPointNonceFetched, isUserOperationNonceFetched]);
+  const isInitialEntryPointNonceFetched = useMemo(() => {
+    return (
+      (isEntryPointV060NonceFetched || isEntryPointV070NonceFetched) &&
+      isUserOperationNonceFetched
+    );
+  }, [
+    isEntryPointV060NonceFetched,
+    isEntryPointV070NonceFetched,
+    isUserOperationNonceFetched,
+  ]);
+
+  // Get the entry point nonce
+  const entryPointNonce = useMemo(() => {
+    return isEntryPointV06
+      ? entryPointV060Nonce
+      : isEntryPointV07
+        ? entryPointV070Nonce
+        : undefined;
+  }, [
+    isEntryPointV06,
+    isEntryPointV07,
+    entryPointV060Nonce,
+    entryPointV070Nonce,
+  ]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("entryPointNonce", entryPointNonce);
 
   // Turns the partial userOperation into an userOperation w/ default values
   // Should not change from the initial user operation
   const targetUserOperation: Partial<
     Omit<UserOperation, "hash" | "paymasterAndData" | "signature">
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   > = useMemo(() => {
     // Get the minimum nonce from the user operation nonce and the partial user operation
-    const updatedMinimumNonce =
-      entryPointNonce !== undefined
+    const updatedMinimumNonce = isInitialEntryPointNonceFetched
+      ? typeof entryPointNonce !== "undefined"
         ? BigInt(entryPointNonce)
-        : userOperationNonce?.nonce !== undefined
-          ? BigInt(userOperationNonce?.nonce)
-          : undefined;
+        : undefined
+      : typeof userOperationNonce?.nonce !== "undefined"
+        ? BigInt(userOperationNonce?.nonce)
+        : undefined;
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
-      ((historyUserOperations && historyUserOperations?.length === 0) ||
+      (historyUserOperations?.length === 0 ||
         typeof walletBytecode === "undefined") &&
       wallet?.factory_address &&
       genesisConfiguration?.image_hash &&
@@ -267,18 +294,34 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         initialUserOperation?.maxPriorityFeePerGas ?? undefined,
     };
   }, [
-    // The wallet is required to compute the init code
-    wallet,
-    // The genesis configuration is static
-    genesisConfiguration,
-    // Should recompute if the bytecode changes
-    walletBytecode,
-    // Should recompute if the executed user operations change, for init code
-    historyUserOperations,
-    // Should recompute if the entry point nonce changes
+    // Address
+    address,
+    // Entry point nonce
     entryPointNonce,
-    // Should recompute if the user operation nonce changes
+    // Initial entry point nonce fetched
+    isInitialEntryPointNonceFetched,
+    // Genesis configuration
+    genesisConfiguration?.image_hash,
+    // History user operations
+    historyUserOperations?.length,
+    // Initial user operation
+    initialUserOperation?.sender,
+    initialUserOperation?.chainId,
+    initialUserOperation?.initCode,
+    initialUserOperation?.nonce,
+    initialUserOperation?.callData,
+    initialUserOperation?.callGasLimit,
+    initialUserOperation?.verificationGasLimit,
+    initialUserOperation?.preVerificationGas,
+    initialUserOperation?.maxFeePerGas,
+    initialUserOperation?.maxPriorityFeePerGas,
+    // User operation nonce
     userOperationNonce?.nonce,
+    // Wallet
+    wallet?.factory_address,
+    wallet?.salt,
+    // Wallet bytecode
+    walletBytecode,
   ]);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("targetUserOperation", targetUserOperation);
@@ -405,18 +448,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const updatedUserOperation: Omit<
     UserOperation,
     "hash" | "signature" | "paymasterAndData"
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (!isEntryPointV06) {
       return null;
     }
 
     if (
-      !(
-        targetUserOperation?.sender &&
-        targetUserOperation?.chainId &&
-        targetUserOperation?.initCode
-      ) ||
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !targetUserOperation?.sender ||
+      !targetUserOperation?.chainId ||
+      !targetUserOperation?.initCode ||
       typeof targetUserOperation?.nonce === "undefined" ||
       targetUserOperation?.nonce === null ||
       !targetUserOperation?.callData ||
@@ -454,9 +495,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxPriorityFeePerGas: maxPriorityFeePerGas,
     };
   }, [
-    // Only gas limits and fees are required to compute the gas limits
-    // The rest of the values are dependencies of the gas limits
-    // As it is the final layer of computation
+    // Entry point version
+    isEntryPointV06,
+    // Current configuration
+    currentConfiguration?.threshold,
+    // Target user operation
+    targetUserOperation?.sender,
+    targetUserOperation?.chainId,
+    targetUserOperation?.initCode,
+    targetUserOperation?.nonce,
+    targetUserOperation?.callData,
+    // Gas values
     maxFeePerGas,
     maxPriorityFeePerGas,
     callGasLimit,
@@ -475,7 +524,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // | "paymasterVerificationGasLimit"
     | "paymasterPostOpGasLimit"
     | "paymasterData"
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (!isEntryPointV07) {
       return null;
@@ -531,6 +579,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       paymasterVerificationGasLimit: paymasterVerificationGasLimit ?? 0n,
     };
   }, [
+    // Entry point version
+    isEntryPointV07,
+    // Current configuration
+    currentConfiguration?.threshold,
+    // Target user operation
+    targetUserOperation?.sender,
+    targetUserOperation?.chainId,
+    targetUserOperation?.initCode,
+    targetUserOperation?.nonce,
+    targetUserOperation?.callData,
+    // Debounced values
     maxFeePerGas,
     maxPriorityFeePerGas,
     callGasLimit,
@@ -628,7 +687,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const finalizedUserOperation: Omit<
     UserOperation,
     "hash" | "signature"
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (!isEntryPointV06) {
       return null;
@@ -685,7 +743,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     debouncedUserOperation?.maxFeePerGas,
     debouncedUserOperation?.maxPriorityFeePerGas,
     // Gas and paymaster values
-    gasAndPaymasterAndDataV06,
     gasAndPaymasterCallGasLimitV06,
     gasAndPaymasterPreVerificationGasV06,
     gasAndPaymasterVerificationGasLimitV06,
@@ -698,7 +755,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const finalizedPackedUserOperation: Omit<
     PackedUserOperation,
     "hash" | "signature"
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   > | null = useMemo(() => {
     if (!isEntryPointV07) {
       return null;
@@ -711,8 +767,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       typeof debouncedPackedUserOperation?.nonce === "undefined" ||
       debouncedPackedUserOperation?.nonce === null ||
       !debouncedPackedUserOperation?.callData ||
-      typeof debouncedUserOperation?.callGasLimit === "undefined" ||
-      debouncedUserOperation?.callGasLimit === null ||
+      typeof debouncedPackedUserOperation?.callGasLimit === "undefined" ||
+      debouncedPackedUserOperation?.callGasLimit === null ||
       !debouncedPackedUserOperation?.preVerificationGas ||
       !debouncedPackedUserOperation?.verificationGasLimit ||
       !debouncedPackedUserOperation?.maxFeePerGas ||
@@ -749,7 +805,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Entry point version
     isEntryPointV07,
     // Debounced values
-    debouncedPackedUserOperation,
     debouncedPackedUserOperation?.sender,
     debouncedPackedUserOperation?.chainId,
     debouncedPackedUserOperation?.nonce,
@@ -762,7 +817,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     debouncedPackedUserOperation?.maxFeePerGas,
     debouncedPackedUserOperation?.maxPriorityFeePerGas,
     // Gas and paymaster values
-    gasAndPaymasterPaymasterDataV07,
     gasAndPaymasterCallGasLimitV07,
     gasAndPaymasterPreVerificationGasV07,
     gasAndPaymasterVerificationGasLimitV07,
@@ -962,7 +1016,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
-      !(isInitialFetched && targetUserOperation?.chainId) ||
+      !(isInitialEntryPointNonceFetched && targetUserOperation?.chainId) ||
       typeof targetUserOperation?.nonce === "undefined" ||
       targetUserOperation?.nonce === null
     ) {
