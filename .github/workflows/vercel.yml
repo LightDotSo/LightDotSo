@@ -100,7 +100,7 @@ jobs:
       - name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
-          pnpx -p nextjs-bundle-analysis report
+          pnpm --package=nextjs-bundle-analysis dlx report
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
@@ -118,7 +118,7 @@ jobs:
         if: success() && github.event.number
         working-directory: apps/${{ matrix.app }}
         run: |
-          ls -laR .next/analyze/base && pnpx -p nextjs-bundle-analysis compare
+          ls -laR .next/analyze/base && pnpm --package=nextjs-bundle-analysis dlx compare
       - name: Get Comment Body
         id: comment-body
         if: success() && github.event.number
@@ -139,7 +139,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [app, explorer, home]
+        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -189,7 +190,7 @@ jobs:
       - name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
-          pnpx -p nextjs-bundle-analysis report
+          pnpm --package=nextjs-bundle-analysis dlx report
       - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
