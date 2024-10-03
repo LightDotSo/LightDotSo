@@ -13,25 +13,18 @@
 // limitations under the License.
 
 import { createBatchUserOperation } from "@lightdotso/client";
-// import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
-// import type { UserOperationData } from "@lightdotso/data";
+import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationCreateBatchBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-// import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui/components/toast";
-import {
-  // useQueryClient,
-  useMutation,
-} from "@tanstack/react-query";
-import {
-  // type Address,
-  toBytes,
-  toHex,
-} from "viem";
+import { isTestnet } from "@lightdotso/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type Address, toBytes, toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -51,7 +44,7 @@ export const useMutationUserOperationCreateBatch = (
   // Query
   // ---------------------------------------------------------------------------
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // ---------------------------------------------------------------------------
   // Query Mutation
@@ -62,13 +55,15 @@ export const useMutationUserOperationCreateBatch = (
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
       const hasInvalidData = body.userOperations.some((userOperation) => {
         return (
-          !(userOperation.chainId && userOperation.hash) ||
+          // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+          !userOperation.hash ||
+          !userOperation.chainId ||
           typeof userOperation.nonce === "undefined" ||
           userOperation.nonce === null ||
           !userOperation.initCode ||
           !userOperation.sender ||
           !userOperation.callData ||
-          !userOperation.callGasLimit ||
+          typeof userOperation.callGasLimit === "undefined" ||
           !userOperation.verificationGasLimit ||
           !userOperation.preVerificationGas ||
           !userOperation.maxFeePerGas ||
@@ -104,15 +99,11 @@ export const useMutationUserOperationCreateBatch = (
             user_operations: body.userOperations.map((userOperation) => {
               return {
                 chain_id: Number(userOperation.chainId),
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                hash: userOperation.hash!,
+                hash: userOperation.hash,
                 nonce: Number(userOperation.nonce),
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                init_code: userOperation.initCode!,
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                sender: userOperation.sender!,
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                call_data: userOperation.callData!,
+                init_code: userOperation.initCode,
+                sender: userOperation.sender,
+                call_data: userOperation.callData,
                 call_gas_limit: Number(userOperation.callGasLimit),
                 verification_gas_limit: Number(
                   userOperation.verificationGasLimit,
@@ -122,8 +113,7 @@ export const useMutationUserOperationCreateBatch = (
                 max_priority_fee_per_gas: Number(
                   userOperation.maxPriorityFeePerGas,
                 ),
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                paymaster_and_data: userOperation.paymasterAndData!,
+                paymaster_and_data: userOperation.paymasterAndData,
               };
             }),
           },
@@ -150,74 +140,75 @@ export const useMutationUserOperationCreateBatch = (
         },
       );
     },
-    // onMutate: async (data: UserOperationCreateBatchBodyParams) => {
-    //   const uopsData = data.userOperations.map(userOperation => ({
-    //     call_data: userOperation.callData
-    //       ? toHex(userOperation.callData)
-    //       : "0x",
-    //     call_gas_limit: userOperation.callGasLimit
-    //       ? toHex(userOperation.callGasLimit)
-    //       : "0x",
-    //     chain_id: userOperation.chainId ? userOperation.chainId : 0,
-    //     hash: userOperation.hash,
-    //     init_code: userOperation.initCode,
-    //     max_fee_per_gas: userOperation.maxFeePerGas
-    //       ? toHex(userOperation.maxFeePerGas)
-    //       : "0x",
-    //     max_priority_fee_per_gas: userOperation.maxPriorityFeePerGas
-    //       ? toHex(userOperation.maxPriorityFeePerGas)
-    //       : "0x",
-    //     nonce: userOperation.nonce ? Number(userOperation.nonce) : 0,
-    //     paymaster_and_data: userOperation.paymasterAndData,
-    //     pre_verification_gas: userOperation.preVerificationGas
-    //       ? toHex(userOperation.preVerificationGas)
-    //       : "0x",
-    //     sender: userOperation.sender,
-    //     signatures: [
-    //       {
-    //         owner_id: data.ownerId,
-    //         signature: toHex(new Uint8Array([...toBytes(data.signedData), 2])),
-    //         signature_type: 1,
-    //         created_at: new Date().toISOString(),
-    //       },
-    //     ],
-    //     status: "PROPOSED",
-    //     verification_gas_limit: userOperation.verificationGasLimit
-    //       ? toHex(userOperation.verificationGasLimit)
-    //       : "0x",
-    //     created_at: new Date().toISOString(),
-    //     updated_at: new Date().toISOString(),
-    //   }));
+    onMutate: async (data: UserOperationCreateBatchBodyParams) => {
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+      const uopsData = data.userOperations.map((userOperation) => ({
+        call_data: userOperation.callData
+          ? toHex(userOperation.callData)
+          : "0x",
+        call_gas_limit: userOperation.callGasLimit
+          ? toHex(userOperation.callGasLimit)
+          : "0x",
+        chain_id: userOperation.chainId ? userOperation.chainId : 0,
+        hash: userOperation.hash,
+        init_code: userOperation.initCode,
+        max_fee_per_gas: userOperation.maxFeePerGas
+          ? toHex(userOperation.maxFeePerGas)
+          : "0x",
+        max_priority_fee_per_gas: userOperation.maxPriorityFeePerGas
+          ? toHex(userOperation.maxPriorityFeePerGas)
+          : "0x",
+        nonce: userOperation.nonce ? Number(userOperation.nonce) : 0,
+        paymaster_and_data: userOperation.paymasterAndData,
+        pre_verification_gas: userOperation.preVerificationGas
+          ? toHex(userOperation.preVerificationGas)
+          : "0x",
+        sender: userOperation.sender,
+        signatures: [
+          {
+            owner_id: data.ownerId,
+            signature: toHex(new Uint8Array([...toBytes(data.signedData), 2])),
+            signature_type: 1,
+            created_at: new Date().toISOString(),
+          },
+        ],
+        status: "PROPOSED",
+        verification_gas_limit: userOperation.verificationGasLimit
+          ? toHex(userOperation.verificationGasLimit)
+          : "0x",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }));
 
-    //   const previousData: UserOperationData[] | undefined =
-    //     queryClient.getQueryData(
-    //       queryKeys.user_operation.list({
-    //         address: params.address as Address,
-    //         status: "queued",
-    //         order: "asc",
-    //         limit: TRANSACTION_ROW_COUNT,
-    //         offset: 0,
-    //         is_testnet: params.is_testnet ?? false,
-    //       }).queryKey,
-    //     );
-    //   queryClient.setQueryData(
-    //     queryKeys.user_operation.list({
-    //       address: params.address as Address,
-    //       status: "queued",
-    //       order: "asc",
-    //       limit: TRANSACTION_ROW_COUNT,
-    //       offset: 0,
-    //       is_testnet: params.is_testnet ?? false,
-    //     }).queryKey,
-    //     (old: UserOperationData[]) => {
-    //       return {
-    //         ...old,
-    //         ...uopsData,
-    //       };
-    //     },
-    //   );
-    //   return { previousData };
-    // },
+      const previousData: UserOperationData[] | undefined =
+        queryClient.getQueryData(
+          queryKeys.user_operation.list({
+            address: data.userOperations[0].sender as Address,
+            status: "queued",
+            order: "asc",
+            limit: TRANSACTION_ROW_COUNT,
+            offset: 0,
+            is_testnet: isTestnet(Number(data.userOperations[0].chainId)),
+          }).queryKey,
+        );
+      queryClient.setQueryData(
+        queryKeys.user_operation.list({
+          address: data.userOperations[0].sender as Address,
+          status: "queued",
+          order: "asc",
+          limit: TRANSACTION_ROW_COUNT,
+          offset: 0,
+          is_testnet: isTestnet(Number(data.userOperations[0].chainId)),
+        }).queryKey,
+        (old: UserOperationData[]) => {
+          return {
+            ...old,
+            ...uopsData,
+          };
+        },
+      );
+      return { previousData };
+    },
     onSuccess: () => {
       // Only reset the internal user operations if the transaction is successful
       // This disables the transaction fetcher from fetching the transactions again

@@ -21,6 +21,7 @@ import {
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
+import { toast } from "@lightdotso/ui";
 import { useSignMessage } from "@lightdotso/wagmi/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -47,12 +48,15 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
+
   const {
     addPendingUserOperationMerkleRoot,
     addPendingUserOperationHash,
     userOperations,
     resetUserOperations,
   } = useUserOperations();
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("userOperations", userOperations);
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -200,28 +204,38 @@ export const useUserOperationsCreate = ({
     // Create a single user operation
     const createUserOp = () => {
       if (!(owner && signedData && userOperation)) {
+        toast.error("Invalid user operation!");
         return;
       }
 
+      // Create a single user operation
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
         userOperation: userOperation,
       });
 
+      // Add the user operation hash to the pending user operations
       addPendingUserOperationHash(userOperation.hash as Hex);
 
+      // Reset the signed data
       setSignedData(undefined);
     };
 
     // Create a batch of user operations
     const createUserOpBatch = () => {
       if (!(owner && signedData && merkleTree && userOperations)) {
+        toast.error("Invalid user operations!");
         return;
       }
 
+      // Get the merkle root of the user operations
       const merkleRoot = `0x${merkleTree.getRoot().toString("hex")}` as Hex;
 
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.info("merkleRoot", merkleRoot);
+
+      // Create a batch of user operations
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
@@ -229,12 +243,15 @@ export const useUserOperationsCreate = ({
         merkleRoot: merkleRoot,
       });
 
+      // Add the merkle root to the pending user operations
       addPendingUserOperationMerkleRoot(merkleRoot);
 
+      // Add the user operation hashes to the pending user operations
       for (const userOperation of userOperations) {
         addPendingUserOperationHash(userOperation.hash as Hex);
       }
 
+      // Reset the signed data
       setSignedData(undefined);
     };
 
@@ -333,13 +350,6 @@ export const useUserOperationsCreate = ({
   // Set the transaction disabled state
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const isUserOperationsDisabled = useMemo(() => {
-    // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.info("isValidUserOperations", isValidUserOperations);
-    // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.info("isUserOperationsCreateable", isUserOperationsCreateable);
-    // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.info("isUserOperationsMerkleEqual", isUserOperationsMerkleEqual);
-
     // A combination of conditions that would disable the transaction
     return (
       // Nor if the user operations are not valid

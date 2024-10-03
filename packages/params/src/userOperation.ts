@@ -66,14 +66,14 @@ export type UserOperationListCountParams = Omit<
 export type UserOperationCreateBodyParams = {
   ownerId: string;
   signedData: Hex;
-  userOperation: Partial<UserOperation>;
+  userOperation: UserOperation;
 };
 
 export type UserOperationCreateBatchBodyParams = {
   merkleRoot: Hex;
   ownerId: string;
   signedData: Hex;
-  userOperations: Partial<UserOperation>[];
+  userOperations: UserOperation[];
 };
 
 export type UserOperationUpdateBodyParams = Partial<UserOperation>;
