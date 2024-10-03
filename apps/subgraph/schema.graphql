@@ -21,7 +21,7 @@ type BeforeExecution @entity(immutable: true) {
 type Deposited @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
-  totalDeposit: BigInt! # uint256
+  totalDeposit: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -38,8 +38,8 @@ type SignatureAggregatorChanged @entity(immutable: true) {
 type StakeLocked @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
-  totalStaked: BigInt! # uint256
-  unstakeDelaySec: BigInt! # uint256
+  totalStaked: BigInt! # uint256 (as uint64)
+  unstakeDelaySec: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -48,7 +48,7 @@ type StakeLocked @entity(immutable: true) {
 type StakeUnlocked @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
-  withdrawTime: BigInt! # uint256
+  withdrawTime: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -58,7 +58,7 @@ type StakeWithdrawn @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
   withdrawAddress: Bytes! # address
-  amount: BigInt! # uint256
+  amount: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -70,10 +70,10 @@ type UserOperationEvent @entity(immutable: true) {
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
   paymaster: Bytes! # address
-  nonce: BigInt! # uint256
+  nonce: BigInt! # uint256 (as uint64)
   success: Boolean! # bool
-  actualGasCost: BigInt! # uint256
-  actualGasUsed: BigInt! # uint256
+  actualGasCost: BigInt! # uint256 (as uint64)
+  actualGasUsed: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -86,7 +86,7 @@ type UserOperationRevertReason @entity(immutable: true) {
   index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
-  nonce: BigInt! # uint256
+  nonce: BigInt! # uint256 (as uint64)
   revertReason: Bytes! # bytes
   blockNumber: BigInt!
   blockTimestamp: BigInt!
@@ -99,7 +99,7 @@ type Withdrawn @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
   withdrawAddress: Bytes! # address
-  amount: BigInt! # uint256
+  amount: BigInt! # uint256 (as uint64)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -164,19 +164,20 @@ type Transaction @entity {
   userOperations: [UserOperation!]! @derivedFrom(field: "transaction")
 }
 
-# Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
+# Function: handleOps((address,uint256 (as uint64),bytes,bytes,uint256 (as uint64),uint256 (as uint64),uint256 (as uint64),uint256 (as uint64),uint256 (as uint64),bytes,bytes)[], address)
 type UserOperation @entity {
   id: Bytes! # bytes32 (userOpHash)
   index: BigInt!
   sender: Bytes # address
-  nonce: BigInt # uint256
+  nonceKey: Bytes # uint192 (as bytes)
+  nonce: BigInt # uint256 (as uint64)
   initCode: Bytes #bytes
   callData: Bytes #bytes
-  callGasLimit: BigInt #uint256
-  verificationGasLimit: BigInt #uint256
-  preVerificationGas: BigInt #uint256
-  maxFeePerGas: BigInt #uint256
-  maxPriorityFeePerGas: BigInt #uint256
+  callGasLimit: BigInt #uint256 (as uint64)
+  verificationGasLimit: BigInt #uint256 (as uint64)
+  preVerificationGas: BigInt #uint256 (as uint64)
+  maxFeePerGas: BigInt #uint256 (as uint64)
+  maxPriorityFeePerGas: BigInt #uint256 (as uint64)
   paymasterAndData: Bytes #bytes
   signature: Bytes #bytes
   blockNumber: BigInt!

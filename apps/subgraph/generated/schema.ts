@@ -1916,6 +1916,23 @@ export class UserOperation extends Entity {
     }
   }
 
+  get nonceKey(): Bytes | null {
+    let value = this.get("nonceKey");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set nonceKey(value: Bytes | null) {
+    if (!value) {
+      this.unset("nonceKey");
+    } else {
+      this.set("nonceKey", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get nonce(): BigInt | null {
     let value = this.get("nonce");
     if (!value || value.kind == ValueKind.NULL) {
