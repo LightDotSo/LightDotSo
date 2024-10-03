@@ -21,6 +21,10 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 28865255
+    },
+    "EntryPointv0.7.0": {
+      "address": "0x0000000071727de22e5e9d8baf0edac6f37da032",
+      "startBlock": 41958878
     }
   },
   "base": {
@@ -51,6 +55,10 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 27202729
+    },
+    "EntryPointv0.7.0": {
+      "address": "0x0000000071727de22e5e9d8baf0edac6f37da032",
+      "startBlock": 36326227
     }
   },
   "celo": {
