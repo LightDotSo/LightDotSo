@@ -68,7 +68,7 @@ jobs:
           pnpm run deploy:checkly --preview
   deploy-subgraph:
      if: >-
-       github.event_name == 'workflow_dispatch' && inputs.group == 'graph' ||
+       (github.event_name == 'workflow_dispatch' && inputs.group == 'graph') ||
        contains(github.ref, '@lightdotso/subgraph')
     runs-on: ubuntu-latest
     env:
