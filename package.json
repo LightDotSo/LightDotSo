@@ -55,7 +55,7 @@
     "project-words:fix": "sort project-words.txt | uniq > temp.txt && mv temp.txt project-words.txt",
     "project-words:lint": "sort -c project-words.txt || exit 1",
     "sherif:cmd": "sherif -r root-package-dependencies --fix . && echo \"\"",
-    "sherif:fix": "sherif -r root-package-dependencies --fix .",
+    "sherif:fix": "sherif -r root-package-dependencies --fix . || exit 0",
     "sherif:lint": "sherif -r root-package-dependencies .",
     "solhint:cmd": "solhint --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix || exit 0",
