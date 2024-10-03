@@ -19,10 +19,11 @@ use crate::{
     constants::{SATSUMA, STUDIO},
 };
 use alloy::{
+    consensus::{Eip658Value, ReceiptEnvelope, ReceiptWithBloom},
     eips::BlockNumberOrTag,
-    primitives::{Address, B256},
+    primitives::{Address, Bloom, B256},
     providers::{Provider, RootProvider},
-    rpc::types::{Block, Log, Transaction, TransactionReceipt},
+    rpc::types::{Block, Log, Receipt, Transaction, TransactionReceipt},
     transports::BoxTransport,
 };
 use autometrics::autometrics;
@@ -259,14 +260,8 @@ impl Polling {
 
         let response = client.post(rpc_url).json(&req_body).send().await?;
 
-        // Log the response
-        info!("User operation receipt: {:?}", response);
-
         // Handle the response for the JSON-RPC API.
         let res = handle_response(response).await?;
-
-        // Log the res
-        info!("User operation res: {:?}", res);
 
         Ok(res)
     }
@@ -399,6 +394,31 @@ impl Polling {
         // Log the operation along with the chain id.
         info!("User Operation found, chain_id: {} receipt: {:?}", chain_id, receipt);
 
+        let tx_receipt: TransactionReceipt<ReceiptEnvelope<Log>> = TransactionReceipt {
+            inner: ReceiptEnvelope::Legacy(ReceiptWithBloom {
+                receipt: Receipt {
+                    // Default values
+                    status: Eip658Value::Eip658(true),
+                    cumulative_gas_used: 0_u128,
+                    logs: receipt.logs.clone(),
+                },
+                logs_bloom: Bloom::default(),
+            }),
+            transaction_hash: receipt.tx_receipt.clone().transaction_hash,
+            transaction_index: receipt.tx_receipt.clone().transaction_index,
+            block_hash: receipt.tx_receipt.clone().block_hash,
+            block_number: receipt.tx_receipt.clone().block_number,
+            gas_used: receipt.tx_receipt.clone().gas_used,
+            effective_gas_price: receipt.tx_receipt.clone().effective_gas_price,
+            blob_gas_used: receipt.tx_receipt.clone().blob_gas_used,
+            blob_gas_price: receipt.tx_receipt.clone().blob_gas_price,
+            from: receipt.tx_receipt.clone().from,
+            to: receipt.tx_receipt.clone().to,
+            contract_address: receipt.tx_receipt.clone().contract_address,
+            state_root: receipt.tx_receipt.clone().state_root,
+            authorization_list: receipt.tx_receipt.clone().authorization_list.clone(),
+        };
+
         // Upsert the transaction with the log receipt in the db.
         info!("db_upsert_transaction_with_transaction_receipt");
         let res = self
@@ -406,7 +426,7 @@ impl Polling {
                 chain_id,
                 receipt.sender,
                 receipt.logs.clone(),
-                receipt.tx_receipt.clone(),
+                tx_receipt,
             )
             .await;
         if res.is_err() {
