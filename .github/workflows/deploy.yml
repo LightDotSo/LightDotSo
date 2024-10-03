@@ -9,7 +9,7 @@ on:
   #     - labeled
   merge_group:
   release:
-    types: [published]
+    types: published
   workflow_dispatch:
     inputs:
       group:
