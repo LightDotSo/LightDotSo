@@ -8,6 +8,9 @@ concurrency:
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 3
     steps:
       - name: Auto Approve
         if: >-
