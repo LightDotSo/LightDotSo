@@ -33,8 +33,9 @@ export {
   DEPRECATED_CHAINS,
 } from "./chains";
 export {
-  CONFIGURATION_MAX_WEIGHT,
-  CONFIGURATION_MAX_THRESHOLD,
+  MAX_CONFIGURATION_WEIGHT,
+  MAX_CONFIGURATION_THRESHOLD,
+  MAX_USER_OPEARTION_QUERY_STATE_LENGTH,
 } from "./configuration";
 export { COOKIES } from "./cookies";
 export { GAS_SPEED_BUMP } from "./gas";

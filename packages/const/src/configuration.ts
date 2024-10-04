@@ -16,5 +16,7 @@
 // Max
 // -----------------------------------------------------------------------------
 
-export const CONFIGURATION_MAX_WEIGHT = 8;
-export const CONFIGURATION_MAX_THRESHOLD = 18;
+export const MAX_CONFIGURATION_WEIGHT = 8;
+export const MAX_CONFIGURATION_THRESHOLD = 18;
+
+export const MAX_USER_OPEARTION_QUERY_STATE_LENGTH = 2_000n;
