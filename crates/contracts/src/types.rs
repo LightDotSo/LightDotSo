@@ -17,7 +17,7 @@
 use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
 use alloy::{
     consensus::ReceiptWithBloom,
-    primitives::{Address, Bytes, B256, U256},
+    primitives::{Address, Bytes, B256, U256, U8},
     rpc::types::{serde_helpers::WithOtherFields, Log, Transaction, TransactionReceipt},
 };
 use lightdotso_prisma::user_operation;
@@ -37,7 +37,7 @@ pub struct ReceiptEnvelope<T = Log> {
     pub inner: ReceiptWithBloom<T>,
     /// The transaction type.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<u8>,
+    pub r#type: Option<U8>,
 }
 
 /// Alias for a catch-all receipt type.
