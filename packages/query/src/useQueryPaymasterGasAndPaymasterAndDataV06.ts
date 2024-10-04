@@ -73,7 +73,8 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
         !params?.verificationGasLimit ||
         !params?.preVerificationGas ||
         !params?.maxFeePerGas ||
-        !params?.maxPriorityFeePerGas
+        typeof params?.maxPriorityFeePerGas === "undefined" ||
+        params?.maxPriorityFeePerGas === null
       ) {
         return null;
       }
