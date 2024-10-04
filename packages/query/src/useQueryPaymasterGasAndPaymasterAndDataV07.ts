@@ -63,7 +63,9 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
     }).queryKey,
     queryFn: async () => {
       if (
-        !(params?.chainId && params?.sender) ||
+        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+        !params?.chainId ||
+        !params?.sender ||
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
         !params?.callData ||
@@ -83,8 +85,8 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
           {
             sender: params?.sender,
             nonce: toHex(params?.nonce),
-            factory: params?.factory,
-            factoryData: params?.factoryData,
+            factory: params?.factory ?? null,
+            factoryData: params?.factoryData ?? null,
             callData: params?.callData,
             callGasLimit: toHex(params?.callGasLimit),
             verificationGasLimit: toHex(params?.verificationGasLimit),
