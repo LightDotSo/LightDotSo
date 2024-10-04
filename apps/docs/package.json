@@ -18,7 +18,8 @@
     "build": "next build",
     "dev": "next dev",
     "generate": "node ./scripts/generate-docs.mjs",
-    "start": "next start"
+    "start": "next start",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@babel/core": "^7.25.7",
