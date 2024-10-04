@@ -741,7 +741,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2024-10-03T20:16:14.276Z",
-    "modified": "2024-10-03T20:16:25.651Z",
+    "modified": "2024-10-03T23:55:39.339Z",
     "headers": [
       {
         "name": "accept",
@@ -798,8 +798,7 @@
     ],
     "body": {
       "type": "json",
-      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_sendUserOperation\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"callData\": \"0x\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callGasLimit\": \"0x0\",\n      \"verificationGasLimit\": \"0x4dc4c\",\n      \"preVerificationGas\": \"0x4b091\",\n      \"maxFeePerGas\": \"0xd29240\",\n      \"maxPriorityFeePerGas\": \"0xd29240\",\n      \"paymaster\": \"0x0000000000000039cd5e8ae05257ce51c473ddd1\",\n      \"paymasterVerificationGasLimit\": \"0x762a\",\n      \"paymasterPostOpGasLimit\": \"0x1\",\n      \"paymasterData\": \"0x00000066fe8fc000000000000025403490e89c1e0791e131ee58d4086b9d8f5b8eb53ae1d352c0fc93c0c01c5534b5fe7d9771d34f0cd40c42ec54d670a81b54b9502914f3ab4be4fc2d8934be1c\",\n      \"signature\": \"0x010001000000000001015c47b5a12d88b26d4c243d5978708c2287949a2359fef2666068a4d44cfc5509eeb4599a38f1160ea4bf4e628377fe8574a5175c2ac9d5794e0d516558d4921b02\"\n    },\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 76\n}",
-      "form": []
+      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F\",\n      \"nonce\": \"0x0\",\n      \"factory\": \"0x\",\n      \"factoryData\": \"0x\",\n      \"callData\": \"0xb61d27f6000000000000000000000000a4719472b1a44d1619b8484948260c7d2206e06f00000000000000000000000000000000000000000000000000000c3684dc1cc000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000\",\n      \"maxFeePerGas\": \"0x1499700\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\",\n      \"paymaster\": \"0x0000000000000039cd5e8aE05257CE51C473ddd1\",\n      \"paymasterData\": \"0x01000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000c350000000000000000000000000000000000000000000000088ed21153e8f500000cd91f19f0f19ce862d7bec7b7d9b95457145afc6f639c28fd0360f488937bfa41e6eedcd3a46054fd95fcd0e3ef6b0bc0a615c4d975eef55c8a3517257904d5b1c\",\n      \"paymasterVerificationGasLimit\": \"0xc350\",\n      \"paymasterPostOpGasLimit\": \"0x4e20\"\n    },\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 15\n}"
     }
   },
   {
@@ -881,7 +880,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2024-10-03T22:22:41.389Z",
-    "modified": "2024-10-03T22:22:43.125Z",
+    "modified": "2024-10-03T23:50:24.658Z",
     "headers": [
       {
         "name": "accept",
@@ -938,8 +937,7 @@
     ],
     "body": {
       "type": "json",
-      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callData\": \"0x\",\n      \"maxFeePerGas\": \"0x9ba1f9a7d\",\n      \"maxPriorityFeePerGas\": \"0x3204a1bc\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\",\n      \"paymaster\": \"0x0000000000000039cd5e8aE05257CE51C473ddd1\",\n      \"paymasterData\": \"0x01000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000c350000000000000000000000000000000000000000000000088ed21153e8f500000cd91f19f0f19ce862d7bec7b7d9b95457145afc6f639c28fd0360f488937bfa41e6eedcd3a46054fd95fcd0e3ef6b0bc0a615c4d975eef55c8a3517257904d5b1c\",\n      \"paymasterVerificationGasLimit\": \"0xc350\",\n      \"paymasterPostOpGasLimit\": \"0x4e20\"\n    },\n    \"0x0000000071727de22e5e9d8baf0edac6f37da032\"\n  ],\n  \"id\": 32\n}",
-      "form": []
+      "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"paymaster_requestGasAndPaymasterAndData\",\n  \"params\": [\n    {\n      \"sender\": \"0xA4719472B1A44D1619b8484948260C7d2206E06F\",\n      \"nonce\": \"0x0\",\n      \"factory\": \"0x000000000048c2e27c97b9978c9b27f6937a40db\",\n      \"factoryData\": \"0x183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e9500000000000000000000000000000000000000000000000000000192422b0ae0\",\n      \"callData\": \"0x\",\n      \"callGasLimit\": \"0x5208\",\n      \"verificationGasLimit\": \"0x186a0\",\n      \"preVerificationGas\": \"0x14370\",\n      \"maxFeePerGas\": \"0x95dcf658a\",\n      \"maxPriorityFeePerGas\": \"0x6391c6a7\",\n      \"paymaster\": \"0x0000000000000039cd5e8aE05257CE51C473ddd1\",\n      \"paymasterData\": \"0x01000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000c350000000000000000000000000000000000000000000000088ed21153e8f500000cd91f19f0f19ce862d7bec7b7d9b95457145afc6f639c28fd0360f488937bfa41e6eedcd3a46054fd95fcd0e3ef6b0bc0a615c4d975eef55c8a3517257904d5b1c\",\n      \"paymasterPostOpGasLimit\": \"0x4e20\",\n      \"paymasterVerificationGasLimit\": \"0xc350\",\n      \"signature\": \"0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01\"\n    }\n  ],\n  \"id\": 12\n}"
     }
   }
 ]
