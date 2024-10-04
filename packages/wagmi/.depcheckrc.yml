@@ -4,3 +4,6 @@ ignores:
   - "@types/node"
   - vitest
   - "@lightdotso/contracts"
+  - "react"
+  - "react-dom"
+  - "@types/react-dom"

@@ -4128,6 +4128,15 @@ importers:
       connectkit:
         specifier: ^1.8.2
         version: 1.8.2(kvvm3ebcvlab3zxoygd4q6ytou)
+      react:
+        specifier: 19.0.0-rc-e740d4b1-20240919
+        version: 19.0.0-rc-e740d4b1-20240919
+      react-dom:
+        specifier: 19.0.0-rc-e740d4b1-20240919
+        version: 19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919)
+      react-is:
+        specifier: 19.0.0-rc-e740d4b1-20240919
+        version: 19.0.0-rc-e740d4b1-20240919
       viem:
         specifier: ^2.21.18
         version: 2.21.18(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
@@ -4141,6 +4150,12 @@ importers:
       '@types/node':
         specifier: ^22.7.4
         version: 22.7.4
+      '@types/react':
+        specifier: ^18.3.11
+        version: 18.3.11
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
