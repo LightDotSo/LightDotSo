@@ -161,7 +161,7 @@ export const useQueryUserOperationEstimateGasV07 = (
   const fallbackEstimatedGas = useMemo(() => {
     const calculatedEstimatedGas = totalEstimatedGas ?? estimatedGas;
     return calculatedEstimatedGas
-      ? calculatedEstimatedGas * BigInt(GAS_LIMIT_MULTIPLIER)
+      ? (calculatedEstimatedGas * BigInt(GAS_LIMIT_MULTIPLIER)) / 100n
       : undefined;
   }, [totalEstimatedGas, estimatedGas]);
 
