@@ -21,14 +21,6 @@ import { decodeCallDataToExecution } from "../src";
 // -----------------------------------------------------------------------------
 
 describe("decodeCallDataToExecution Tests", () => {
-  it("should return empty executions for null callData", () => {
-    const callData = "0x" as Hex;
-    const result = decodeCallDataToExecution(callData);
-    expect(result).toEqual({
-      executions: [],
-    });
-  });
-
   it("should return empty executions for empty callData", () => {
     const callData = "0x";
     const result = decodeCallDataToExecution(callData);
@@ -57,7 +49,7 @@ describe("decodeCallDataToExecution Tests", () => {
         { name: "func", internalType: "bytes", type: "bytes" },
       ],
       [
-        "0x1234567890123456789012345678901234567890",
+        "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
         BigInt(1000000000000000000),
         "0xabcdef",
       ],
@@ -70,7 +62,7 @@ describe("decodeCallDataToExecution Tests", () => {
     expect(result).toEqual({
       executions: [
         {
-          address: "0x1234567890123456789012345678901234567890",
+          address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
           value: BigInt(1000000000000000000),
           callData: "0xabcdef",
         },
@@ -99,8 +91,8 @@ describe("decodeCallDataToExecution Tests", () => {
       ],
       [
         [
-          "0x1234567890123456789012345678901234567890",
-          "0x0987654321098765432109876543210987654321",
+          "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+          "0x35da762a35FCb3160738EeCd60fa18438C273D5E",
         ],
         [BigInt(1000000000000000000), BigInt(2000000000000000000)],
         ["0xabcdef", "0x123456"],
@@ -114,12 +106,12 @@ describe("decodeCallDataToExecution Tests", () => {
     expect(result).toEqual({
       executions: [
         {
-          address: "0x1234567890123456789012345678901234567890",
+          address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
           value: BigInt(1000000000000000000),
           callData: "0xabcdef",
         },
         {
-          address: "0x0987654321098765432109876543210987654321",
+          address: "0x35da762a35FCb3160738EeCd60fa18438C273D5E",
           value: BigInt(2000000000000000000),
           callData: "0x123456",
         },

@@ -30,7 +30,7 @@ export const decodeCallDataToExecution = (
   executions: Execution[];
 } => {
   // Check if all required parameters are provided and valid
-  if (!callData || callData === "0x") {
+  if (callData === "0x") {
     return {
       executions: [],
     };
@@ -60,7 +60,7 @@ export const decodeCallDataToExecution = (
         { name: "value", internalType: "uint256", type: "uint256" },
         { name: "func", internalType: "bytes", type: "bytes" },
       ],
-      callData.slice(10) as Hex,
+      `0x${callData.slice(10)}` as Hex,
     );
 
     return {
@@ -94,7 +94,7 @@ export const decodeCallDataToExecution = (
         { name: "value", internalType: "uint256[]", type: "uint256[]" },
         { name: "func", internalType: "bytes[]", type: "bytes[]" },
       ],
-      callData.slice(10) as Hex,
+      `0x${callData.slice(10)}` as Hex,
     );
 
     return {
