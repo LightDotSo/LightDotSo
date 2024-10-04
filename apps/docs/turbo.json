@@ -10,8 +10,8 @@
         "SENTRY_DSN",
         "VERCEL_ENV"
       ],
-      "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "inputs": ["app/**", "content/**", "src/**", "next.config.mjs"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".source/**"]
     },
     "clean": {
       "cache": false
