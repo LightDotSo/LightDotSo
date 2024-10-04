@@ -15,6 +15,7 @@
 import { ExternalLink } from "@lightdotso/elements/external-link";
 import { useUserOperationsProgress } from "@lightdotso/hooks";
 import { ChainLogo } from "@lightdotso/svg";
+import { Skeleton } from "@lightdotso/ui";
 import {
   Accordion,
   AccordionContent,
@@ -88,6 +89,9 @@ export const TransactionDetails: FC = () => {
 
   return (
     <>
+      {progressUserOperations && progressUserOperations.length === 0 && (
+        <Skeleton className="h-32 w-full" />
+      )}
       {progressUserOperations.map((progressUserOperation, index) => {
         const chain = getChainWithChainId(
           Number(progressUserOperation.chainId),

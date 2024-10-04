@@ -20,7 +20,7 @@
     "dev": "wrangler dev --port 8000"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240925.0",
+    "@cloudflare/workers-types": "^4.20241004.0",
     "@hono-rate-limiter/cloudflare": "^0.2.1",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",

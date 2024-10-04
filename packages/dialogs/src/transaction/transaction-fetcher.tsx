@@ -1080,6 +1080,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !isInitialEntryPointNonceFetched ||
       !debouncedUserOperation?.chainId ||
       typeof debouncedUserOperation?.nonce === "undefined" ||
       debouncedUserOperation?.nonce === null
@@ -1093,6 +1095,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       debouncedUserOperation,
     );
   }, [
+    isInitialEntryPointNonceFetched,
     debouncedUserOperation?.chainId,
     setUserOperationByChainIdAndNonce,
     debouncedUserOperation,
@@ -1102,6 +1105,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (
+      // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+      !isInitialEntryPointNonceFetched ||
       !debouncedPackedUserOperation?.chainId ||
       typeof debouncedPackedUserOperation?.nonce === "undefined" ||
       debouncedPackedUserOperation?.nonce === null
@@ -1134,6 +1139,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       },
     );
   }, [
+    isInitialEntryPointNonceFetched,
     debouncedPackedUserOperation?.chainId,
     setUserOperationByChainIdAndNonce,
     debouncedPackedUserOperation,

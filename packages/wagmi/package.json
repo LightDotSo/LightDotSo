@@ -43,7 +43,7 @@
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "react-is": "19.0.0-rc-e740d4b1-20240919",
     "viem": "^2.21.18",
-    "wagmi": "^2.12.16"
+    "wagmi": "^2.12.17"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
