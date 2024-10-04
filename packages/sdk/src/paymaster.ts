@@ -77,17 +77,17 @@ export const decodePaymasterAndData = (
 };
 
 export function decodePackedPaymasterAndData(paymasterAndData: Hex): {
-  paymaster: Hex;
-  paymasterVerificationGasLimit: bigint;
-  paymasterPostOpGasLimit: bigint;
-  paymasterData: Hex;
+  paymaster: Hex | null;
+  paymasterVerificationGasLimit: bigint | null;
+  paymasterPostOpGasLimit: bigint | null;
+  paymasterData: Hex | null;
 } {
   if (paymasterAndData === "0x" || paymasterAndData.slice(2).length < 104) {
     return {
-      paymaster: "0x",
-      paymasterVerificationGasLimit: 0n,
-      paymasterPostOpGasLimit: 0n,
-      paymasterData: "0x",
+      paymaster: null,
+      paymasterVerificationGasLimit: null,
+      paymasterPostOpGasLimit: null,
+      paymasterData: null,
     };
   }
 

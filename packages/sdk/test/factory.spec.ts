@@ -27,8 +27,8 @@ describe("decodeInitCodeToFactoryAndFactoryData Tests", () => {
     const initCode = "0x";
     const result = decodeInitCodeToFactoryAndFactoryData(initCode);
     expect(result).toEqual({
-      factory: "0x",
-      factoryData: "0x",
+      factory: null,
+      factoryData: null,
     });
   });
 
