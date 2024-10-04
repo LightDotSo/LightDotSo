@@ -579,7 +579,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: updatedVerificationGasLimit,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
-      paymasterVerificationGasLimit: paymasterVerificationGasLimit,
+      paymasterVerificationGasLimit: paymasterVerificationGasLimit ?? null,
     };
   }, [
     // Entry point version

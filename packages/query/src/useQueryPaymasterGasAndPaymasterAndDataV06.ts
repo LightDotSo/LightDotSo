@@ -61,7 +61,9 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
     }).queryKey,
     queryFn: async () => {
       if (
-        !(params?.chainId && params?.sender) ||
+        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+        !params?.chainId ||
+        !params?.sender ||
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
         !params?.initCode ||

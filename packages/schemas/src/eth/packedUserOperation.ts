@@ -18,39 +18,23 @@ import { z } from "zod";
 // Schema
 // -----------------------------------------------------------------------------
 
-// sender: HexStringSchema, nonce;
-// : HexStringSchema,
-//     factory: HexStringSchema,
-//     factoryData: HexStringSchema,
-//     callData: HexStringSchema,
-//     callGasLimit: HexStringSchema.optional(),
-//     verificationGasLimit: HexStringSchema.optional(),
-//     preVerificationGas: HexStringSchema.optional(),
-//     maxFeePerGas: HexStringSchema.optional(),
-//     maxPriorityFeePerGas: HexStringSchema.optional(),
-//     paymaster: HexStringSchema.optional(),
-//     paymasterVerificationGasLimit: HexStringSchema.optional(),
-//     paymasterPostOpGasLimit: HexStringSchema.optional(),
-//     paymasterData: HexStringSchema.optional(),
-//     signature: HexStringSchema,
-
 export const packedUserOperation = z.object({
   chainId: z.bigint(),
   hash: z.string(),
   sender: z.string(),
   nonce: z.bigint(),
-  factory: z.string().optional().nullable(),
-  factoryData: z.string().optional().nullable(),
+  factory: z.string().nullable(),
+  factoryData: z.string().nullable(),
   callData: z.string(),
   callGasLimit: z.bigint(),
   verificationGasLimit: z.bigint(),
   preVerificationGas: z.bigint(),
   maxFeePerGas: z.bigint(),
   maxPriorityFeePerGas: z.bigint(),
-  paymaster: z.string().optional().nullable(),
-  paymasterVerificationGasLimit: z.bigint().optional().nullable(),
-  paymasterPostOpGasLimit: z.bigint().optional().nullable(),
-  paymasterData: z.string().optional().nullable(),
+  paymaster: z.string().nullable(),
+  paymasterVerificationGasLimit: z.bigint().nullable(),
+  paymasterPostOpGasLimit: z.bigint().nullable(),
+  paymasterData: z.string().nullable(),
   signature: z.string(),
 });
 
