@@ -34,16 +34,16 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "framer-motion": "^11.10.0",
+    "framer-motion": "^11.11.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.447.0",
     "next-themes": "^0.3.0",
     "reactflow": "^11.11.4",
-    "viem": "^2.21.17"
+    "viem": "^2.21.18"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.3.4",
+    "@storybook/react": "^8.3.5",
     "@types/lodash": "^4.17.10",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",

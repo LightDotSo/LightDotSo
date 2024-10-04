@@ -23,6 +23,16 @@ import {
 // -----------------------------------------------------------------------------
 
 describe("decodeInitCodeToFactoryAndFactoryData Tests", () => {
+  it("should return null for null init code", () => {
+    // biome-ignore lint/suspicious/noEvolvingTypes: <explanation>
+    const initCode = null;
+    const result = decodeInitCodeToFactoryAndFactoryData(initCode);
+    expect(result).toEqual({
+      factory: null,
+      factoryData: null,
+    });
+  });
+
   it("should return null for empty init code", () => {
     const initCode = "0x";
     const result = decodeInitCodeToFactoryAndFactoryData(initCode);

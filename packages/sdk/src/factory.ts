@@ -27,6 +27,7 @@ export const decodeInitCodeToFactoryAndFactoryData = (
 } => {
   // Check if all required parameters are provided and valid
   if (
+    !initCode ||
     initCode === "0x" ||
     (initCode && initCode?.length < 44) ||
     (initCode && initCode?.slice(0, 2) !== "0x")
@@ -55,10 +56,9 @@ export const encodeFactoryAndFactoryDataToInitCode = (
   if (
     !factory ||
     factory === "0x" ||
+    !isAddress(factory) ||
     !factoryData ||
     factoryData === "0x" ||
-    !isAddress(factory) ||
-    factory.length !== 42 ||
     factory.slice(0, 2) !== "0x" ||
     factoryData.slice(0, 2) !== "0x"
   ) {
