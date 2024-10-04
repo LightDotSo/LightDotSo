@@ -18,18 +18,18 @@ import {
   ContractAddress,
   DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V07,
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07,
-  LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV07 } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasV07Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
+import { decodeCallDataToExecution } from "@lightdotso/sdk";
 import { useAuth } from "@lightdotso/stores";
-import { findContractAddressByAddress } from "@lightdotso/utils";
+import { useEstimateGasExecutions } from "@lightdotso/wagmi/hooks";
 import { useEstimateGas } from "@lightdotso/wagmi/wagmi";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { type Address, type Hex, fromHex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
-import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -47,13 +47,12 @@ export const useQueryUserOperationEstimateGasV07 = (
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // Gets the wallet
-  const { wallet } = useQueryWallet({
-    address: params?.sender as Address,
-  });
+  const { executions } = useMemo(() => {
+    return decodeCallDataToExecution(params?.callData as Hex);
+  }, [params?.callData]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -63,11 +62,15 @@ export const useQueryUserOperationEstimateGasV07 = (
   const { data: estimateGas } = useEstimateGas({
     chainId: Number(params?.chainId),
     account: params?.sender as Address,
-    data: params?.callData as Hex,
-    to: LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      findContractAddressByAddress(wallet?.factory_address as Address)!
-    ],
+    data: executions.length > 0 ? executions[0].callData : undefined,
+    to: executions.length > 0 ? executions[0].address : undefined,
+  });
+
+  // Get the gas estimate for the user operation
+  const { totalEstimatedGas } = useEstimateGasExecutions({
+    executions: executions,
+    chainId: Number(params?.chainId),
+    account: params?.sender as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -98,8 +101,6 @@ export const useQueryUserOperationEstimateGasV07 = (
         typeof params?.nonce === "undefined" ||
         params?.nonce === null ||
         !params?.sender ||
-        !params?.factory ||
-        !params?.factoryData ||
         !params?.callData
       ) {
         return null;
@@ -111,17 +112,25 @@ export const useQueryUserOperationEstimateGasV07 = (
           {
             sender: params?.sender,
             nonce: toHex(params?.nonce),
-            factory: params?.factory,
-            factoryData: params?.factoryData,
             callData: params?.callData,
+            signature:
+              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
+            ...(params?.factory
+              ? {
+                  factory: params?.factory,
+                }
+              : {}),
+            ...(params?.factoryData
+              ? {
+                  factoryData: params?.factoryData,
+                }
+              : {}),
             ...(params?.maxFeePerGas
               ? { maxFeePerGas: toHex(params?.maxFeePerGas) }
               : {}),
             ...(params?.maxPriorityFeePerGas
               ? { maxPriorityFeePerGas: toHex(params?.maxPriorityFeePerGas) }
               : {}),
-            signature:
-              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
             ...(isPaymasterEnabled
               ? {
                   paymaster: "0x0000000000000039cd5e8aE05257CE51C473ddd1",
@@ -150,7 +159,7 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : estimateGas,
+      : (totalEstimatedGas ?? estimateGas),
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",

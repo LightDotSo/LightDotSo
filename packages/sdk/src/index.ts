@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { decodeCallDataToExecution } from "./call-data";
 export {
   isEntryPointV06LightWalletFactory,
   isEntryPointV07LightWalletFactory,

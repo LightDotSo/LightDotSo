@@ -4116,6 +4116,12 @@ importers:
       '@lightdotso/contracts':
         specifier: workspace:*
         version: link:../../contracts
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
+      '@tanstack/react-query':
+        specifier: ^5.59.0
+        version: 5.59.0(react@19.0.0-rc-e740d4b1-20240919)
       '@wagmi/core':
         specifier: ^2.13.8
         version: 2.13.8(@tanstack/query-core@5.59.0)(@types/react@18.3.11)(immer@10.1.1)(react@19.0.0-rc-e740d4b1-20240919)(typescript@5.6.2)(viem@2.21.18(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8))

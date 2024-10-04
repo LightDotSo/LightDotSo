@@ -14,6 +14,7 @@
 
 export { publicClient } from "./client";
 export { projectId, wagmiConfig } from "./config";
+export { useEstimateGasExecutions } from "./hooks";
 export {
   lightWalletAbi,
   lightWalletFactoryAbi,

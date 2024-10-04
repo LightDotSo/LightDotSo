@@ -19,6 +19,7 @@
     "./config": "./src/config.ts",
     "./connectkit": "./src/connectkit.ts",
     "./generated": "./src/generated.ts",
+    "./hooks": "./src/hooks.ts",
     "./wagmi": "./src/wagmi.ts"
   },
   "main": "./src/index.ts",
@@ -34,6 +35,8 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/contracts": "workspace:*",
+    "@lightdotso/types": "workspace:*",
+    "@tanstack/react-query": "^5.59.0",
     "@wagmi/core": "^2.13.8",
     "connectkit": "^1.8.2",
     "viem": "^2.21.18",

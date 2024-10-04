@@ -18,18 +18,18 @@ import {
   ContractAddress,
   DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V06,
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V06,
-  LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV06 } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
+import { decodeCallDataToExecution } from "@lightdotso/sdk";
 import { useAuth } from "@lightdotso/stores";
-import { findContractAddressByAddress } from "@lightdotso/utils";
+import { useEstimateGasExecutions } from "@lightdotso/wagmi/hooks";
 import { useEstimateGas } from "@lightdotso/wagmi/wagmi";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { type Address, type Hex, fromHex, toHex } from "viem";
 import { USER_OPERATION_CONFIG } from "./config";
-import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -46,13 +46,12 @@ export const useQueryUserOperationEstimateGasV06 = (
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // Gets the wallet
-  const { wallet } = useQueryWallet({
-    address: params?.sender as Address,
-  });
+  const { executions } = useMemo(() => {
+    return decodeCallDataToExecution(params?.callData as Hex);
+  }, [params?.callData]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -62,11 +61,15 @@ export const useQueryUserOperationEstimateGasV06 = (
   const { data: estimateGas } = useEstimateGas({
     chainId: Number(params?.chainId),
     account: params?.sender as Address,
-    data: params?.callData as Hex,
-    to: LIGHT_WALLET_FACTORY_ENTRYPOINT_MAPPING[
-      // biome-ignore lint/style/noNonNullAssertion: <explanation>
-      findContractAddressByAddress(wallet?.factory_address as Address)!
-    ],
+    data: executions.length > 0 ? executions[0].callData : undefined,
+    to: executions.length > 0 ? executions[0].address : undefined,
+  });
+
+  // Get the gas estimate for the user operation
+  const { totalEstimatedGas } = useEstimateGasExecutions({
+    executions: executions,
+    chainId: Number(params?.chainId),
+    account: params?.sender as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -137,7 +140,7 @@ export const useQueryUserOperationEstimateGasV06 = (
       ? fromHex(estimateUserOperationGasDataV06?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : estimateGas,
+      : (totalEstimatedGas ?? estimateGas),
     preVerificationGasV06: estimateUserOperationGasDataV06?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV06?.preVerificationGas as Hex, {
           to: "bigint",
