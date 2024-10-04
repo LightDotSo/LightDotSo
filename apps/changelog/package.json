@@ -15,7 +15,7 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "analyze": "ANALYZE=true next build",
+    "analyze": "ANALYZE=true pnpm run next-build",
     "build": "tsc",
     "dev": "next dev --turbo",
     "next-build": "next build",

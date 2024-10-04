@@ -18,8 +18,9 @@
     "build": "tsc",
     "dev": "next dev",
     "generate": "node ./scripts/generate-docs.mjs",
+    "next-build": "next build",
     "start": "next start",
-    "vercel-build": "next build"
+    "vercel-build": "pnpm run next-build"
   },
   "dependencies": {
     "@babel/core": "^7.25.7",
