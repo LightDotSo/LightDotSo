@@ -6,4 +6,5 @@ ignores:
   - "@lightdotso/contracts"
   - "react"
   - "react-dom"
+  - "react-is"
   - "@types/react-dom"

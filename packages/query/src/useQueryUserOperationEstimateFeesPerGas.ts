@@ -152,7 +152,9 @@ export const useQueryUserOperationEstimateFeesPerGas = ({
         (feesPerGas?.maxPriorityFeePerGas * BigInt(gasSpeedBumpAmount)) /
         BigInt(100)
       : // Fallback to maxPriorityFeePerGas if maxFeePerGas is not available
-        (estimatedMaxPriorityFeePerGas ?? baseMaxFeePerGas);
+        estimatedMaxPriorityFeePerGas && estimatedMaxPriorityFeePerGas !== 0n
+        ? estimatedMaxPriorityFeePerGas
+        : baseMaxFeePerGas;
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("baseMaxPriorityFeePerGas", baseMaxPriorityFeePerGas);
 
