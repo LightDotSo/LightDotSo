@@ -23,6 +23,7 @@
     "analyze": "ANALYZE=true pnpm run next-build",
     "build": "tsc",
     "dev": "next dev --turbo",
+    "next-build": "next build",
     "start": "next start",
     "tsc": "tsc --noEmit",
     "vercel-build": "pnpm run next-build"
