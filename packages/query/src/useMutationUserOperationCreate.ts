@@ -55,7 +55,9 @@ export const useMutationUserOperationCreate = (
     mutationKey: queryKeys.user_operation.create._def,
     mutationFn: async (body: UserOperationCreateBodyParams) => {
       if (
-        !(body.userOperation.chainId && body.userOperation.hash) ||
+        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+        !body.userOperation.chainId ||
+        !body.userOperation.hash ||
         typeof body.userOperation.nonce === "undefined" ||
         body.userOperation.nonce === null ||
         !body.userOperation.initCode ||
