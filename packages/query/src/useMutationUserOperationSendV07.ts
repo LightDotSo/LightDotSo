@@ -96,21 +96,21 @@ export const useMutationUserOperationSendV07 = (
           sender: userOperation.sender,
           nonce: toHex(userOperation.nonce),
           callData: userOperation.call_data,
-          factory: factory ?? "0x",
-          factoryData: factoryData ?? "0x",
+          factory: factory ?? null,
+          factoryData: factoryData ?? null,
           callGasLimit: toHex(userOperation.call_gas_limit),
           verificationGasLimit: toHex(userOperation.verification_gas_limit),
           preVerificationGas: toHex(userOperation.pre_verification_gas),
           maxFeePerGas: toHex(userOperation.max_fee_per_gas),
           maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
-          paymaster: paymaster ?? "0x",
+          paymaster: paymaster ?? null,
           paymasterVerificationGasLimit: paymasterVerificationGasLimit
             ? toHex(paymasterVerificationGasLimit)
-            : "0x",
+            : null,
           paymasterPostOpGasLimit: paymasterPostOpGasLimit
             ? toHex(paymasterPostOpGasLimit)
-            : "0x",
-          paymasterData: paymasterData ?? "0x",
+            : null,
+          paymasterData: paymasterData ?? null,
           signature: userOperationSignature,
         },
         CONTRACT_ADDRESSES[ContractAddress.ENTRYPOINT_V070_ADDRESS],
