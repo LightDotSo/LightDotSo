@@ -20,3 +20,4 @@ export {
   useReadEntryPointv060GetNonce,
   useReadLightWalletImageHash,
 } from "./generated";
+export { useEstimateGasExecutions } from "./useEstimateGasExecutions";

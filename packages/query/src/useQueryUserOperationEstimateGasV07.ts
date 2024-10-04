@@ -24,6 +24,7 @@ import type { RpcEstimateUserOperationGasV07Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { decodeCallDataToExecution } from "@lightdotso/sdk";
 import { useAuth } from "@lightdotso/stores";
+import { useEstimateGasExecutions } from "@lightdotso/wagmi";
 import { useEstimateGas } from "@lightdotso/wagmi/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -63,6 +64,13 @@ export const useQueryUserOperationEstimateGasV07 = (
     account: params?.sender as Address,
     data: executions[0].callData,
     to: executions[0].address,
+  });
+
+  // Get the gas estimate for the user operation
+  const { totalEstimatedGas } = useEstimateGasExecutions({
+    executions: executions,
+    chainId: Number(params?.chainId),
+    account: params?.sender as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -151,7 +159,7 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : estimateGas,
+      : (totalEstimatedGas ?? estimateGas),
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
