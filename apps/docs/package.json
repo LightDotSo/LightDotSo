@@ -15,7 +15,7 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "next build",
+    "build": "tsc",
     "dev": "next dev",
     "generate": "node ./scripts/generate-docs.mjs",
     "start": "next start",

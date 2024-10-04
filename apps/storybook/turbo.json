@@ -3,7 +3,13 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "storybook-build": {
       "env": [
         "NODE_ENV",
         "NEXT_PUBLIC_APP_VERSION",
@@ -12,9 +18,8 @@
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true
+    "vercel-build": {
+      "dependsOn": ["storybook-build"]
     }
   }
 }

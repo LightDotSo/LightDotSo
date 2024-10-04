@@ -15,9 +15,11 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "vocs build",
+    "build": "tsc",
     "dev": "vocs dev",
-    "preview": "vocs preview"
+    "preview": "vocs preview",
+    "vercel-build": "pnpm run vocs-build",
+    "vocs-build": "vocs build"
   },
   "dependencies": {
     "@lightdotso/tsconfig": "workspace:*",

@@ -21,10 +21,11 @@
   },
   "scripts": {
     "analyze": "ANALYZE=true next build",
-    "build": "next build",
+    "build": "tsc",
     "dev": "next dev --turbo",
     "start": "next start",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@babel/core": "^7.25.7",
