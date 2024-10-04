@@ -14,10 +14,10 @@
 
 export { publicClient } from "./client";
 export { projectId, wagmiConfig } from "./config";
+export { useEstimateGasExecutions } from "./hooks";
 export {
   lightWalletAbi,
   lightWalletFactoryAbi,
   useReadEntryPointv060GetNonce,
   useReadLightWalletImageHash,
 } from "./generated";
-export { useEstimateGasExecutions } from "./useEstimateGasExecutions";

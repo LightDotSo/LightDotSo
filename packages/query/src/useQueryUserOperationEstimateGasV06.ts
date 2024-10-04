@@ -24,7 +24,7 @@ import type { RpcEstimateUserOperationGasV06Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { decodeCallDataToExecution } from "@lightdotso/sdk";
 import { useAuth } from "@lightdotso/stores";
-import { useEstimateGasExecutions } from "@lightdotso/wagmi";
+import { useEstimateGasExecutions } from "@lightdotso/wagmi/hooks";
 import { useEstimateGas } from "@lightdotso/wagmi/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";

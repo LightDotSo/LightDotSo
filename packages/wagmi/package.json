@@ -19,6 +19,7 @@
     "./config": "./src/config.ts",
     "./connectkit": "./src/connectkit.ts",
     "./generated": "./src/generated.ts",
+    "./hooks": "./src/hooks.ts",
     "./wagmi": "./src/wagmi.ts"
   },
   "main": "./src/index.ts",
