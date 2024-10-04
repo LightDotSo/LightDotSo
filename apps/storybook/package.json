@@ -15,7 +15,7 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm run storybook-build",
     "dev": "NODE_OPTIONS=--max_old_space_size=4096 STORYBOOK_ENV=dev storybook dev -p 6006",
     "prepack": "clean-package",
     "postpack": "clean-package restore",

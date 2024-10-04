@@ -18,6 +18,7 @@ import { dirname, join } from "path";
 // import type { StorybookConfig } from "@storybook/nextjs";
 // import type { StorybookConfig } from "@storybook/react-vite";
 import type { StorybookConfig } from "@storybook/experimental-nextjs-vite";
+import { mergeConfig } from "vite";
 
 function getAbsolutePath(value) {
   return dirname(require.resolve(join(value, "package.json")));
@@ -81,6 +82,13 @@ const config: StorybookConfig = {
     LOCAL_ENV: "dev",
   }),
   staticDirs: ["../public"],
+  viteFinal(config) {
+    return mergeConfig(config, {
+      build: {
+        target: "esnext",
+      },
+    });
+  },
 };
 
 export default config;

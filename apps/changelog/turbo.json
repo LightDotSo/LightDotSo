@@ -3,6 +3,16 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "next-build": {
       "dependsOn": ["^build"],
       "env": [
         "NEXT_PUBLIC_SITE_URL",
@@ -14,12 +24,8 @@
       "inputs": ["app/**", "content/**", "src/**", "next.config.mjs"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
-    "clean": {
-      "cache": false
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
+    "vercel-build": {
+      "dependsOn": ["next-build"]
     }
   }
 }

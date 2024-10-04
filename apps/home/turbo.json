@@ -21,6 +21,9 @@
       ],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.mjs"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "vercel-build": {
+      "dependsOn": ["next-build"]
     }
   }
 }
