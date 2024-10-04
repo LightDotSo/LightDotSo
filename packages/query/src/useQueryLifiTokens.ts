@@ -67,6 +67,10 @@ export const useQueryLifiTokens = () => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     lifiTokens: lifiTokensPage?.tokens
       ? Object.values(lifiTokensPage.tokens).flat()

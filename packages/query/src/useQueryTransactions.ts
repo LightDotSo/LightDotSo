@@ -89,6 +89,10 @@ export const useQueryTransactions = (params: TransactionListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     transactions: transactions,
     isTransactionsLoading: isTransactionsLoading,

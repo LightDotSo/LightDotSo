@@ -79,6 +79,10 @@ export const useQueryWalletNotificationSettings = (
       },
     });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     walletNotificationSettings: walletNotificationSettings,
   };

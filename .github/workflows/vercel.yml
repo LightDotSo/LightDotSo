@@ -71,9 +71,12 @@ jobs:
           doppler secrets download --project=${{ matrix.app }} --config=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-      - name: Turbo Build Preview
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
+        name: Turbo Build Preview
         run: |
-          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+          pnpm turbo run next-build --filter=@lightdotso/${{ matrix.app }}
         env:
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
@@ -180,9 +183,12 @@ jobs:
           doppler secrets download --project=${{ matrix.app }} --config=prd --no-file --format=env > .env
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-      - name: Turbo Build Production
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
+        name: Turbo Build Production
         run: |
-          pnpm turbo run build --filter=@lightdotso/${{ matrix.app }}
+          pnpm turbo run next-build --filter=@lightdotso/${{ matrix.app }}
         env:
           VERCEL_ENV: production
           NEXT_PUBLIC_VERCEL_ENV: production

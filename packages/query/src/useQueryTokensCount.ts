@@ -86,6 +86,10 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     tokensCount: tokensCount,
     isTokensCountLoading: isTokensCountLoading,

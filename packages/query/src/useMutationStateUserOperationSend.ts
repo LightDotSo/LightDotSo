@@ -32,5 +32,9 @@ export const useMutationStateUserOperationSend = () => {
     select: (mutations) => mutations.state.status,
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return userOperationSendStatus;
 };

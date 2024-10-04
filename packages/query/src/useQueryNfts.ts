@@ -85,6 +85,10 @@ export const useQueryNfts = (params: NftListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     nftPage: nftPage,
     isNftsLoading: isNftsLoading,

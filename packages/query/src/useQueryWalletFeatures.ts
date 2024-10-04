@@ -76,6 +76,10 @@ export const useQueryWalletFeatures = (params: WalletFeaturesParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     walletFeatures: walletFeatures,
     refetchWalletFeatures: refetchWalletFeatures,

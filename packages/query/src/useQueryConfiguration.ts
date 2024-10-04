@@ -87,6 +87,10 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     configuration: configuration,
     isConfigurationLoading: isConfigurationLoading,

@@ -77,6 +77,10 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     walletBilling: walletBilling,
     isWalletBillingLoading: isWalletBillingLoading,

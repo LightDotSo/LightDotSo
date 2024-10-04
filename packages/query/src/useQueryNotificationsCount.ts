@@ -83,6 +83,10 @@ export const useQueryNotificationsCount = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     notificationsCount: notificationsCount,
     isNotificationsCountLoading: isNotificationsCountLoading,

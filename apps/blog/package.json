@@ -15,11 +15,12 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "analyze": "ANALYZE=true next build",
-    "build": "next build",
+    "analyze": "ANALYZE=true pnpm run next-build",
+    "build": "tsc",
     "dev": "next dev --turbo",
     "start": "next start",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "vercel-build": "pnpm run next-build"
   },
   "dependencies": {
     "@babel/core": "^7.25.7",

@@ -86,6 +86,10 @@ export const useQueryToken = (params: TokenGetParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     token: token,
     isTokenLoading: isTokenLoading,

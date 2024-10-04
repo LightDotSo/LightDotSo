@@ -86,6 +86,10 @@ export const useQueryActivities = (params: ActivityListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     activities: activities,
     isActivitiesLoading: isActivitiesLoading,

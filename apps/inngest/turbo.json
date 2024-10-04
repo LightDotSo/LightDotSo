@@ -3,7 +3,16 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "next-build": {
       "env": [
         "NEXT_PUBLIC_SENTRY_DSN",
         "NEXT_PUBLIC_VERCEL_ENV",
@@ -16,15 +25,11 @@
         "UPSTASH_REST_API_TOKEN",
         "VERCEL_ENV"
       ],
-      "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
+      "inputs": ["app/**", "pages/**", "src/**", "next.config.mjs"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
-    "clean": {
-      "cache": false
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
+    "vercel-build": {
+      "dependsOn": ["next-build"]
     }
   }
 }

@@ -55,6 +55,10 @@ export const useQueryGasEstimation = (params: { chainId: number }) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     gasEstimation: gasEstimation,
     isGasEstimationLoading: isGasEstimationLoading,

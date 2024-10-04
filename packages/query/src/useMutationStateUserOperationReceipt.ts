@@ -32,5 +32,9 @@ export const useMutationStateUserOperationReceipt = () => {
     select: (mutations) => mutations.state.status,
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return userOperationReceiptStatus;
 };

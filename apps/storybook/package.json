@@ -15,10 +15,12 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "storybook build -o dist || true",
+    "build": "tsc",
     "dev": "NODE_OPTIONS=--max_old_space_size=4096 STORYBOOK_ENV=dev storybook dev -p 6006",
     "prepack": "clean-package",
-    "postpack": "clean-package restore"
+    "postpack": "clean-package restore",
+    "storybook-build": "storybook build -o dist",
+    "vercel-build": "pnpm run storybook-build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

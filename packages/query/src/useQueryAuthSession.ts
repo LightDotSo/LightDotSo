@@ -76,6 +76,10 @@ export const useQueryAuthSession = (params: AuthParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     authSession: authSession,
     refetchAuthSession: refetchAuthSession,

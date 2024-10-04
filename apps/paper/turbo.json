@@ -3,10 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "env": ["VERCEL_ENV"],
-      "inputs": ["pages/**", "vocs.config.tsx"],
-      "outputs": []
+      "dependsOn": ["^build"]
     },
     "clean": {
       "cache": false
@@ -14,6 +11,15 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "vercel-build": {
+      "dependsOn": ["vocs-build"]
+    },
+    "vocs-build": {
+      "dependsOn": ["^build"],
+      "env": ["VERCEL_ENV"],
+      "inputs": ["pages/**", "vocs.config.tsx"],
+      "outputs": []
     }
   }
 }

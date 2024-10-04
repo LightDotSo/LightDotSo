@@ -97,6 +97,10 @@ export const useQueryPaymasterOperation = (
       },
     });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     paymasterOperation: paymasterOperation,
   };

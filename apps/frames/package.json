@@ -15,10 +15,12 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "next build || exit 0",
+    "build": "tsc",
     "dev": "next dev --turbo --port 3008",
+    "next-build": "next build",
     "start": "next start",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "vercel-build": "pnpm run next-build"
   },
   "dependencies": {
     "@babel/core": "^7.25.7",

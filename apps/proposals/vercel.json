@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run vercel-build",
   "git": {
     "autoJobCancelation": true,
     "autoAlias": true,

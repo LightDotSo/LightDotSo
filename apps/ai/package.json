@@ -15,10 +15,12 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "next build",
+    "build": "tsc",
     "dev": "next dev --turbo",
+    "next-build": "next build",
     "start": "next start",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "vercel-build": "pnpm run next-build"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.66",

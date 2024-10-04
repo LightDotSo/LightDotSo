@@ -101,6 +101,10 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperations: userOperations,
     userOperationsError: userOperationsError,

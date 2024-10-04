@@ -58,19 +58,22 @@ export const useQueryUserOperationEstimateGasV06 = (
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  const { data: estimateGas } = useEstimateGas({
-    chainId: Number(params?.chainId),
-    account: params?.sender as Address,
-    data: executions.length > 0 ? executions[0].callData : undefined,
-    to: executions.length > 0 ? executions[0].address : undefined,
-  });
+  const { data: estimateGas, isLoading: isEstimateGasLoading } = useEstimateGas(
+    {
+      chainId: Number(params?.chainId),
+      account: params?.sender as Address,
+      data: executions.length > 0 ? executions[0].callData : undefined,
+      to: executions.length > 0 ? executions[0].address : undefined,
+    },
+  );
 
   // Get the gas estimate for the user operation
-  const { totalEstimatedGas } = useEstimateGasExecutions({
-    executions: executions,
-    chainId: Number(params?.chainId),
-    account: params?.sender as Address,
-  });
+  const { totalEstimatedGas, isLoading: isEstimateGasExecutionsLoading } =
+    useEstimateGasExecutions({
+      executions: executions,
+      chainId: Number(params?.chainId),
+      account: params?.sender as Address,
+    });
 
   // ---------------------------------------------------------------------------
   // Query
@@ -78,7 +81,7 @@ export const useQueryUserOperationEstimateGasV06 = (
 
   const {
     data: estimateUserOperationGasDataV06,
-    isLoading: isEstimateUserOperationGasDataLoadingV06,
+    isLoading: isOriginalEstimateUserOperationGasDataLoadingV06,
     error: estimateUserOperationGasDataErrorV06,
   } = useQuery<EstimateUserOperationGasDataV06 | null>({
     ...USER_OPERATION_CONFIG,
@@ -131,6 +134,26 @@ export const useQueryUserOperationEstimateGasV06 = (
       return res._unsafeUnwrap();
     },
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isEstimateUserOperationGasDataLoadingV06 = useMemo(() => {
+    return (
+      isEstimateGasExecutionsLoading &&
+      isEstimateGasLoading &&
+      isOriginalEstimateUserOperationGasDataLoadingV06
+    );
+  }, [
+    isEstimateGasExecutionsLoading,
+    isEstimateGasLoading,
+    isOriginalEstimateUserOperationGasDataLoadingV06,
+  ]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return {
     isEstimateUserOperationGasDataLoadingV06:

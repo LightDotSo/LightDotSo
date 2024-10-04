@@ -76,6 +76,10 @@ export const useQueryWallet = (params: WalletParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     wallet: wallet,
     isWalletLoading: isWalletLoading,

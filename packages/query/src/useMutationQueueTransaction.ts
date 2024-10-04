@@ -89,6 +89,10 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     queueTransaction: queueTransaction,
     isQueueTransactionPending: isQueueTransactionPending,

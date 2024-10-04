@@ -81,6 +81,10 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     isUserOperationUpdatePending: isUserOperationUpdatePending,
     userOperationUpdate: userOperationUpdate,

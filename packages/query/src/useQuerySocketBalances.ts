@@ -80,6 +80,10 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     socketBalances: socketBalances,
     isSocketBalancesLoading: isSocketBalancesLoading,
