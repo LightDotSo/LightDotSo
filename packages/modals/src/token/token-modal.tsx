@@ -14,7 +14,12 @@
 
 "use client";
 
-import { CHAINS, LIGHT_CHAIN, MAINNET_CHAINS } from "@lightdotso/const";
+import {
+  CHAINS,
+  LIGHT_CHAIN,
+  MAINNET_CHAINS,
+  ZERO_ADDRESS,
+} from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements/token-image";
 import { useContainerDimensions, useDebouncedValue } from "@lightdotso/hooks";
@@ -184,7 +189,7 @@ export const TokenModal: FC = () => {
       id: `${token.chainId}-${token.address}-${token.decimals}`,
       chain_id: token.chainId ?? 0,
       balance_usd: 0,
-      address: token.address ?? "0x",
+      address: token.address ?? ZERO_ADDRESS,
       amount: 0,
       decimals: token.decimals ?? 0,
       name: token.name ?? "",

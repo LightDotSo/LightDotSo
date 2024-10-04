@@ -184,10 +184,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // const isTransactionLoading = useMemo(() => {
-  //   return isMounted && isUserOperationsCreateLoading;
-  // }, [isMounted, isUserOperationsCreateLoading]);
-
   const isTransactionSuccess = useMemo(() => {
     return isMounted && isUserOperationsCreateSuccess;
   }, [isMounted, isUserOperationsCreateSuccess]);
@@ -231,12 +227,16 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
   const initialUserOperations = useMemo(() => {
     return [...userOperationsQueryState, ...partialUserOperations];
   }, [userOperationsQueryState, partialUserOperations]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("initialUserOperations", initialUserOperations);
 
   const totalGasUsd = useMemo(() => {
     return Object.values(billingOperations).reduce((acc, billingOperation) => {
       return acc + billingOperation.balance_usd;
     }, 0);
   }, [billingOperations]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("totalGasUsd", totalGasUsd);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

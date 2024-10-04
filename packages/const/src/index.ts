@@ -21,6 +21,7 @@ export {
   LIGHT_WALLET_FACTORY_IMPLEMENTATION_MAPPING,
   LATEST_WALLET_FACTORY_ADDRESS,
   LATEST_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
+  ZERO_ADDRESS,
 } from "./address";
 export { API_URLS, BASE_API_URLS } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
@@ -33,8 +34,9 @@ export {
   DEPRECATED_CHAINS,
 } from "./chains";
 export {
-  CONFIGURATION_MAX_WEIGHT,
-  CONFIGURATION_MAX_THRESHOLD,
+  MAX_CONFIGURATION_WEIGHT,
+  MAX_CONFIGURATION_THRESHOLD,
+  MAX_USER_OPEARTION_QUERY_STATE_LENGTH,
 } from "./configuration";
 export { COOKIES } from "./cookies";
 export { GAS_SPEED_BUMP } from "./gas";

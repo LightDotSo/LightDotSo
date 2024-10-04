@@ -17,8 +17,8 @@
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CONFIGURATION_MAX_THRESHOLD,
-  CONFIGURATION_MAX_WEIGHT,
+  MAX_CONFIGURATION_THRESHOLD,
+  MAX_CONFIGURATION_WEIGHT,
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements/placeholder-orb";
 import {
@@ -562,7 +562,7 @@ export const ConfigurationForm: FC = () => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="max-h-60">
-                                {[...new Array(CONFIGURATION_MAX_WEIGHT)].map(
+                                {[...new Array(MAX_CONFIGURATION_WEIGHT)].map(
                                   (_, i) => (
                                     <SelectItem
                                       // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -643,7 +643,7 @@ export const ConfigurationForm: FC = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {[...new Array(CONFIGURATION_MAX_THRESHOLD)].map(
+                          {[...new Array(MAX_CONFIGURATION_THRESHOLD)].map(
                             (_, i) => (
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               <SelectItem key={i} value={(i + 1).toString()}>

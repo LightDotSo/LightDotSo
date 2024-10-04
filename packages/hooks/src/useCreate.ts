@@ -14,6 +14,7 @@
 
 "use client";
 
+import { MAX_USER_OPEARTION_QUERY_STATE_LENGTH } from "@lightdotso/const";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useUserOperations } from "@lightdotso/stores";
@@ -62,7 +63,14 @@ export const useCreate = ({ userOperations }: CreateProps) => {
         userOperationsParser.serialize(userOperations);
 
       // If the query state is too large, set the user operations and push without query state params
-      if (userOperationsQueryState.length > 2_000) {
+      if (
+        userOperationsQueryState.length > MAX_USER_OPEARTION_QUERY_STATE_LENGTH
+      ) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.info(
+          `User operations query state is too large: ${userOperationsQueryState.length}`,
+        );
+
         // Set the user operations
         setPartialUserOperations(userOperations);
 
