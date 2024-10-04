@@ -26,7 +26,6 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
-    "@lightdotso/hooks": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/sdk": "workspace:*",
