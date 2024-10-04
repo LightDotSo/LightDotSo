@@ -27,7 +27,7 @@
     "@babel/core": "^7.25.7",
     "@langchain/core": "^0.3.7",
     "@langchain/langgraph": "^0.2.11",
-    "@langchain/langgraph-sdk": "^0.0.14",
+    "@langchain/langgraph-sdk": "^0.0.15",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/roots": "workspace:*",
