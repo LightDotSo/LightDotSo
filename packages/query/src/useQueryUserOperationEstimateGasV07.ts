@@ -59,14 +59,13 @@ export const useQueryUserOperationEstimateGasV07 = (
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  const { data: estimateGas, isLoading: isEstimateGasLoading } = useEstimateGas(
-    {
+  const { data: estimatedGas, isLoading: isEstimateGasLoading } =
+    useEstimateGas({
       chainId: Number(params?.chainId),
       account: params?.sender as Address,
       data: executions.length > 0 ? executions[0].callData : undefined,
       to: executions.length > 0 ? executions[0].address : undefined,
-    },
-  );
+    });
 
   // Get the gas estimate for the user operation
   const { totalEstimatedGas, isLoading: isEstimateGasExecutionsLoading } =
@@ -158,6 +157,10 @@ export const useQueryUserOperationEstimateGasV07 = (
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const calculatedEstimatedGas = useMemo(() => {
+    return totalEstimatedGas ?? estimatedGas;
+  }, [totalEstimatedGas, estimatedGas]);
+
   const isEstimateUserOperationGasDataLoadingV07 = useMemo(() => {
     return (
       isEstimateGasExecutionsLoading &&
@@ -182,7 +185,7 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : (totalEstimatedGas ?? estimateGas),
+      : calculatedEstimatedGas,
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
