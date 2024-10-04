@@ -18,6 +18,7 @@ import {
   ContractAddress,
   DEFAULT_USER_OPERATION_PRE_VERIFICATION_GAS_V07,
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07,
+  GAS_LIMIT_MULTIPLIER,
 } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV07 } from "@lightdotso/data";
 import type { RpcEstimateUserOperationGasV07Params } from "@lightdotso/params";
@@ -157,8 +158,11 @@ export const useQueryUserOperationEstimateGasV07 = (
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const calculatedEstimatedGas = useMemo(() => {
-    return totalEstimatedGas ?? estimatedGas;
+  const fallbackEstimatedGas = useMemo(() => {
+    const calculatedEstimatedGas = totalEstimatedGas ?? estimatedGas;
+    return calculatedEstimatedGas
+      ? calculatedEstimatedGas * BigInt(GAS_LIMIT_MULTIPLIER)
+      : undefined;
   }, [totalEstimatedGas, estimatedGas]);
 
   const isEstimateUserOperationGasDataLoadingV07 = useMemo(() => {
@@ -185,7 +189,7 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : calculatedEstimatedGas,
+      : fallbackEstimatedGas,
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
