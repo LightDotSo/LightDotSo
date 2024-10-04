@@ -20,6 +20,7 @@ import {
   DEFAULT_USER_OPERATION_VERIFICATION_GAS_LIMIT_V07,
 } from "@lightdotso/const";
 import type { EstimateUserOperationGasDataV07 } from "@lightdotso/data";
+import { useDebouncedValue } from "@lightdotso/hooks";
 import type { RpcEstimateUserOperationGasV07Params } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { decodeCallDataToExecution } from "@lightdotso/sdk";
@@ -59,14 +60,13 @@ export const useQueryUserOperationEstimateGasV07 = (
   // ---------------------------------------------------------------------------
 
   // Get the gas estimate for the user operation
-  const { data: estimateGas, isLoading: isEstimateGasLoading } = useEstimateGas(
-    {
+  const { data: estimatedGas, isLoading: isEstimateGasLoading } =
+    useEstimateGas({
       chainId: Number(params?.chainId),
       account: params?.sender as Address,
       data: executions.length > 0 ? executions[0].callData : undefined,
       to: executions.length > 0 ? executions[0].address : undefined,
-    },
-  );
+    });
 
   // Get the gas estimate for the user operation
   const { totalEstimatedGas, isLoading: isEstimateGasExecutionsLoading } =
@@ -155,19 +155,30 @@ export const useQueryUserOperationEstimateGasV07 = (
   });
 
   // ---------------------------------------------------------------------------
+  // Debounce
+  // ---------------------------------------------------------------------------
+
+  const [debouncedEstimatedGas, isDebouncingEstimatedGas] = useDebouncedValue(
+    totalEstimatedGas ?? estimatedGas,
+    300,
+  );
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const isEstimateUserOperationGasDataLoadingV07 = useMemo(() => {
     return (
-      isEstimateGasExecutionsLoading &&
-      isEstimateGasLoading &&
-      isOriginalEstimateUserOperationGasDataLoadingV07
+      (isEstimateGasExecutionsLoading &&
+        isEstimateGasLoading &&
+        isOriginalEstimateUserOperationGasDataLoadingV07) ||
+      isDebouncingEstimatedGas
     );
   }, [
     isEstimateGasExecutionsLoading,
     isEstimateGasLoading,
     isOriginalEstimateUserOperationGasDataLoadingV07,
+    isDebouncingEstimatedGas,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -182,7 +193,7 @@ export const useQueryUserOperationEstimateGasV07 = (
       ? fromHex(estimateUserOperationGasDataV07?.callGasLimit as Hex, {
           to: "bigint",
         })
-      : (totalEstimatedGas ?? estimateGas),
+      : debouncedEstimatedGas,
     preVerificationGasV07: estimateUserOperationGasDataV07?.preVerificationGas
       ? fromHex(estimateUserOperationGasDataV07?.preVerificationGas as Hex, {
           to: "bigint",
