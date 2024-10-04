@@ -24,4 +24,4 @@ export enum GAS_SPEED_BUMP {
   Instant = 210,
 }
 
-export const GAS_LIMIT_MULTIPLIER = 1.2;
+export const GAS_LIMIT_MULTIPLIER = 120;
