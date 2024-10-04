@@ -108,10 +108,9 @@ jobs:
         with:
           name: bundle-${{ matrix.app }}
           path: apps/${{ matrix.app }}/.next/analyze/__bundle_analysis.json
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }}
+      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }} && github.event.number
         name: Download Bundle Stats
         uses: dawidd6/action-download-artifact@v6
-        if: success() && github.event.number
         with:
           name: bundle-${{ matrix.app }}
           workflow: vercel.yml
