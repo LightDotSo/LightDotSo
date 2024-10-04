@@ -89,6 +89,8 @@ export const useQueryUserOperationEstimateGasV07 = (
       factory: params?.factory,
       factoryData: params?.factoryData,
       callData: params?.callData,
+      maxFeePerGas: params?.maxFeePerGas,
+      maxPriorityFeePerGas: params?.maxPriorityFeePerGas,
     }).queryKey,
     queryFn: async () => {
       if (
