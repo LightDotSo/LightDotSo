@@ -68,6 +68,10 @@ export const useMutationNotificationRead = () => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     notificationsRead: notificationsRead,
   };

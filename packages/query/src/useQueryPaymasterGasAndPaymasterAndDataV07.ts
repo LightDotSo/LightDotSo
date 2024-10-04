@@ -115,6 +115,10 @@ export const useQueryPaymasterGasAndPaymasterAndDataV07 = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     gasAndPaymasterAndDataV07: gasAndPaymasterAndDataV07,
     callGasLimitV07: gasAndPaymasterAndDataV07?.callGasLimit

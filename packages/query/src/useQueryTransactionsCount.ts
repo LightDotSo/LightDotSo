@@ -85,6 +85,10 @@ export const useQueryTransactionsCount = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     transactionsCount: transactionsCount,
     isTransactionsCountLoading: isTransactionsCountLoading,

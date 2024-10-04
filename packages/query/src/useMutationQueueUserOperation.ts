@@ -92,6 +92,10 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     queueUserOperation: queueUserOperation,
     isQueueUserOperationPending: isQueueUserOperationPending,

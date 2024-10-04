@@ -88,6 +88,10 @@ export const useQueryConfigurationOperationSimulation = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     configurationOperationSimulation: configurationOperationSimulation,
     refetchConfigurationOperationSimulation:

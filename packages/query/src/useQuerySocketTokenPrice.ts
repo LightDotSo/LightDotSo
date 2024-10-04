@@ -84,6 +84,10 @@ export const useQuerySocketTokenPrice = (params: SocketTokenPriceParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     socketTokenPrice: socketTokenPrice,
     isSocketTokenPriceLoading: isSocketTokenPriceLoading,

@@ -69,6 +69,10 @@ export const useQueryEnsDomains = (params: EnsListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     ensDomains:
       ensPage?.domains && ensPage?.domains.length > 0

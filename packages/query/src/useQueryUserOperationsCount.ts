@@ -91,6 +91,10 @@ export const useQueryUserOperationsCount = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperationsCount: userOperationsCount,
     isUserOperationsCountLoading: isUserOperationsCountLoading,

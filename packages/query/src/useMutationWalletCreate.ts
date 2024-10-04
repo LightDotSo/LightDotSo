@@ -145,6 +145,10 @@ export const useMutationWalletCreate = (params: WalletParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     mutate: mutate,
     isWalletCreateError: isWalletCreateError,

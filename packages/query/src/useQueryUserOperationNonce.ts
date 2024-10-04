@@ -87,6 +87,10 @@ export const useQueryUserOperationNonce = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperationNonce: userOperationNonce,
     isUserOperationNonceLoading: isUserOperationNonceLoading,

@@ -67,6 +67,10 @@ export const useQueryUserOperationReceipt = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperationReceipt: userOperationReceipt,
     userOperationReceiptErrorUpdateCount: userOperationReceiptErrorUpdateCount,

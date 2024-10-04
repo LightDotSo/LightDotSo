@@ -86,6 +86,10 @@ export const useQueryNotifications = (params: NotificationListParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     notifications: notifications,
     isNotificationsLoading: isNotificationsLoading,

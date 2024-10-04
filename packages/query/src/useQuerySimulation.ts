@@ -86,6 +86,10 @@ export const useQuerySimulation = (params: SimulationParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     simulation: simulation,
     isSimulationLoading: isSimulationLoading,

@@ -89,6 +89,10 @@ export const useMutationQueueToken = (params: QueueParams) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     queueToken: queueToken,
     isQueueTokenPending: isQueueTokenPending,

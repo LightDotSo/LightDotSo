@@ -105,6 +105,10 @@ export const useQueryPaymasterGasAndPaymasterAndDataV06 = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     gasAndPaymasterAndDataV06: gasAndPaymasterAndDataV06,
     paymasterAndDataV06: gasAndPaymasterAndDataV06?.paymasterAndData,

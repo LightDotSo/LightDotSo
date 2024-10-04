@@ -140,6 +140,10 @@ export const useMutationWalletSettingsUpdate = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     mutate: mutate,
     isWalletSettingsUpdateSuccess: isWalletSettingsUpdateSuccess,

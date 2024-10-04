@@ -87,6 +87,10 @@ export const useQueryUserOperationMerkle = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperationMerkle: userOperationMerkle,
     isUserOperationMerkleLoading: isUserOperationMerkleLoading,

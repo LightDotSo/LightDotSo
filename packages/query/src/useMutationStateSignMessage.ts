@@ -35,5 +35,9 @@ export const useMutationStateSignMessage = () => {
     select: (mutations) => mutations.state.status,
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return signMessageStatus;
 };

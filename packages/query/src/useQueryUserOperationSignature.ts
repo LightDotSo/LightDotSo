@@ -86,6 +86,10 @@ export const useQueryUserOperationSignature = (
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return {
     userOperationSignature: userOperationSignature,
     isUserOperationSignatureLoading: isUserOperationSignatureLoading,
