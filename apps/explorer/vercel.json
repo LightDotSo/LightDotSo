@@ -1,4 +1,5 @@
 {
+  "buildCommand": "pnpm run build",
   "git": {
     "autoJobCancelation": true,
     "autoAlias": true,
