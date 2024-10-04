@@ -62,8 +62,8 @@ export const useQueryUserOperationEstimateGasV07 = (
   const { data: estimateGas } = useEstimateGas({
     chainId: Number(params?.chainId),
     account: params?.sender as Address,
-    data: executions[0].callData,
-    to: executions[0].address,
+    data: executions.length > 0 ? executions[0].callData : undefined,
+    to: executions.length > 0 ? executions[0].address : undefined,
   });
 
   // Get the gas estimate for the user operation
