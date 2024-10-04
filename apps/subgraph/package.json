@@ -69,7 +69,7 @@
     "deploy:studio:neox-testnet": "graph deploy --studio lightdotso-neox-testnet --network neox-testnet --version-label v${npm_package_version}",
     "deploy:studio:optimism": "graph deploy --studio lightdotso-optimism --network optimism --version-label v${npm_package_version}",
     "deploy:studio:optimism-sepolia": "graph deploy --studio lightdotso-optimism-sepolia --network optimism-sepolia --version-label v${npm_package_version}",
-    "deploy:studio:polygon-amoy": "graph deploy --studio lightdotso-polygon-amoy --network polygon-amoy--version-label v${npm_package_version} --version-label v${npm_package_version}",
+    "deploy:studio:polygon-amoy": "graph deploy --studio lightdotso-polygon-amoy --network polygon-amoy --version-label v${npm_package_version} --version-label v${npm_package_version}",
     "deploy:studio:polygon-zkevm": "graph deploy --studio lightdotso-polygon-zkevm --network polygon-zkevm --version-label v${npm_package_version}",
     "deploy:studio:rootstock": "graph deploy --studio lightdotso-rootstock --network rootstock --version-label v${npm_package_version}",
     "deploy:studio:scroll": "graph deploy --studio lightdotso-scroll --network scroll --version-label v${npm_package_version}",
