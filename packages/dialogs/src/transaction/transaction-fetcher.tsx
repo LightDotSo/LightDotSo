@@ -1076,27 +1076,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Sync `targetUserOperation` to the store
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (
-      !(isInitialEntryPointNonceFetched && targetUserOperation?.chainId) ||
-      typeof targetUserOperation?.nonce === "undefined" ||
-      targetUserOperation?.nonce === null
-    ) {
-      return;
-    }
-    setPartialUserOperationByChainIdAndNonce(
-      targetUserOperation?.chainId,
-      targetUserOperation?.nonce,
-      targetUserOperation,
-    );
-  }, [
-    targetUserOperation?.chainId,
-    setUserOperationByChainIdAndNonce,
-    targetUserOperation,
-  ]);
-
   // Sync `debouncedUserOperation` to the store
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
