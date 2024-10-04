@@ -67,7 +67,8 @@ export const useMutationUserOperationCreateBatch = (
           !userOperation.verificationGasLimit ||
           !userOperation.preVerificationGas ||
           !userOperation.maxFeePerGas ||
-          !userOperation.maxPriorityFeePerGas ||
+          typeof userOperation.maxPriorityFeePerGas === "undefined" ||
+          userOperation.maxPriorityFeePerGas === null ||
           !userOperation.paymasterAndData
         );
       });

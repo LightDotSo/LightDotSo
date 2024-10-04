@@ -67,7 +67,8 @@ export const useMutationUserOperationCreate = (
         !body.userOperation.verificationGasLimit ||
         !body.userOperation.preVerificationGas ||
         !body.userOperation.maxFeePerGas ||
-        !body.userOperation.maxPriorityFeePerGas ||
+        typeof body.userOperation.maxPriorityFeePerGas === "undefined" ||
+        body.userOperation.maxPriorityFeePerGas === null ||
         !body.userOperation.paymasterAndData
       ) {
         return;
