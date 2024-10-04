@@ -97,38 +97,58 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
-      - name: Analyze Bundle
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
           pnpm --package=nextjs-bundle-analysis dlx report
-      - name: Upload Bundle
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
           name: bundle-${{ matrix.app }}
           path: apps/${{ matrix.app }}/.next/analyze/__bundle_analysis.json
-      - name: Download Bundle Stats
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Download Bundle Stats
         uses: dawidd6/action-download-artifact@v6
-        if: success() && github.event.number
         with:
           name: bundle-${{ matrix.app }}
           workflow: vercel.yml
           branch: ${{ github.event.pull_request.base.ref }}
           path: apps/${{ matrix.app }}/.next/analyze/base/bundle
-      - name: Compare with Base Branch 
-        if: success() && github.event.number
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Compare with Base Branch 
         working-directory: apps/${{ matrix.app }}
         run: |
           ls -laR .next/analyze/base && pnpm --package=nextjs-bundle-analysis dlx compare
-      - name: Get Comment Body
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Get Comment Body
         id: comment-body
-        if: success() && github.event.number
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat apps/${{ matrix.app }}/.next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
-      - name: Add Comment to PR
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
+        name: Add Comment to PR
         uses: marocchino/sticky-pull-request-comment@v2.9.0
-        if: success() && github.event.number
         with:
           header: 'bundle-analysis-${{ matrix.app }}'
           message: ${{ steps.comment-body.outputs.body }}
@@ -186,11 +206,17 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
-      - name: Analyze Bundle
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
+        name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
           pnpm --package=nextjs-bundle-analysis dlx report
-      - name: Upload Bundle
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
+        name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
           name: bundle-${{ matrix.app }}
