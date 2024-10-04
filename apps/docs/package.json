@@ -15,8 +15,9 @@
   "sideEffects": false,
   "files": ["CHANGELOG.md"],
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm run fumadocs:mdx && tsc",
     "dev": "next dev",
+    "fumadocs:mdx": "fumadocs-mdx",
     "generate": "node ./scripts/generate-docs.mjs",
     "next-build": "next build",
     "start": "next start",
