@@ -367,6 +367,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   console.info("maxFeePerGas", maxFeePerGas);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("maxPriorityFeePerGas", maxPriorityFeePerGas);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isUserOperationEstimateFeesPerGasLoading",
+    isUserOperationEstimateFeesPerGasLoading,
+  );
 
   // Gets the gas estimate for the user operation
   const {
@@ -385,6 +390,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxPriorityFeePerGas: maxPriorityFeePerGas,
     },
     isEntryPointV06,
+  );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("callGasLimitV06", callGasLimitV06);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("preVerificationGasV06", preVerificationGasV06);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("verificationGasLimitV06", verificationGasLimitV06);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isEstimateUserOperationGasDataLoadingV06",
+    isEstimateUserOperationGasDataLoadingV06,
   );
 
   // Get the gas estimate for the user operation v07
@@ -407,6 +423,22 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     },
     true,
     isEntryPointV07,
+  );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("callGasLimitV07", callGasLimitV07);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("preVerificationGasV07", preVerificationGasV07);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("verificationGasLimitV07", verificationGasLimitV07);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "paymasterVerificationGasLimitV07",
+    paymasterVerificationGasLimitV07,
+  );
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isEstimateUserOperationGasDataLoadingV07",
+    isEstimateUserOperationGasDataLoadingV07,
   );
 
   // ---------------------------------------------------------------------------
@@ -625,11 +657,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("debouncedUserOperation", debouncedUserOperation);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("isDebouncingUserOperation", isDebouncingUserOperation);
 
   const [debouncedPackedUserOperation, isDebouncingPackedUserOperation] =
     useDebouncedValue(updatedPackedUserOperation, 300);
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("debouncedPackedUserOperation", debouncedPackedUserOperation);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isDebouncingPackedUserOperation",
+    isDebouncingPackedUserOperation,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -660,6 +699,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("gasAndPaymasterAndDataV06", gasAndPaymasterAndDataV06);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isGasAndPaymasterAndDataLoadingV06",
+    isGasAndPaymasterAndDataLoadingV06,
+  );
 
   // Get the paymaster and data from the target user operation v07
   const {
@@ -693,6 +737,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("gasAndPaymasterAndDataV07", gasAndPaymasterAndDataV07);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info(
+    "isGasAndPaymasterAndDataLoadingV07",
+    isGasAndPaymasterAndDataLoadingV07,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
