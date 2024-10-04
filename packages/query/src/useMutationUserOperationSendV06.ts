@@ -110,7 +110,7 @@ export const useMutationUserOperationSendV06 = (
         },
       );
     },
-    onMutate: async (data: UserOperationSendBodyParams) => {
+    onMutate: (data: UserOperationSendBodyParams) => {
       const previousData: UserOperationData[] | undefined =
         queryClient.getQueryData(
           queryKeys.user_operation.list({
@@ -142,12 +142,20 @@ export const useMutationUserOperationSendV06 = (
                   return d;
                 })
               : [];
-          return newData;
+          // Encode bigint to hex
+          const encodedData = newData.map((d) => {
+            return {
+              ...d,
+              call_gas_limit: toHex(d.call_gas_limit),
+              verification_gas_limit: toHex(d.verification_gas_limit),
+              pre_verification_gas: toHex(d.pre_verification_gas),
+              max_fee_per_gas: toHex(d.max_fee_per_gas),
+              max_priority_fee_per_gas: toHex(d.max_priority_fee_per_gas),
+            };
+          });
+          return encodedData;
         },
       );
-
-      // Add 3 second delay for buffer
-      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       return { previousData: previousData };
     },

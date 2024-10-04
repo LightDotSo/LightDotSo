@@ -571,15 +571,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: targetUserOperation?.sender,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: factory ?? "0x",
-      factoryData: factoryData ?? "0x",
+      factory: factory,
+      factoryData: factoryData,
       callData: targetUserOperation?.callData,
       callGasLimit: callGasLimit,
       preVerificationGas: updatedPreVerificationGas,
       verificationGasLimit: updatedVerificationGasLimit,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
-      paymasterVerificationGasLimit: paymasterVerificationGasLimit ?? 0n,
+      paymasterVerificationGasLimit: paymasterVerificationGasLimit,
     };
   }, [
     // Entry point version
@@ -784,8 +784,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: debouncedPackedUserOperation?.sender,
       chainId: debouncedPackedUserOperation?.chainId,
       nonce: debouncedPackedUserOperation?.nonce,
-      factory: debouncedPackedUserOperation?.factory ?? undefined,
-      factoryData: debouncedPackedUserOperation?.factoryData ?? undefined,
+      factory: debouncedPackedUserOperation?.factory ?? null,
+      factoryData: debouncedPackedUserOperation?.factoryData ?? null,
       callData: debouncedPackedUserOperation?.callData,
       callGasLimit:
         gasAndPaymasterCallGasLimitV07 ??
@@ -798,11 +798,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         debouncedPackedUserOperation?.verificationGasLimit,
       maxFeePerGas: debouncedPackedUserOperation?.maxFeePerGas,
       maxPriorityFeePerGas: debouncedPackedUserOperation?.maxPriorityFeePerGas,
-      paymaster: gasAndPaymasterPaymasterV07 ?? undefined,
+      paymaster: gasAndPaymasterPaymasterV07 ?? null,
       paymasterVerificationGasLimit:
-        gasAndPaymasterPaymasterVerificationGasLimitV07 ?? undefined,
-      paymasterPostOpGasLimit: gasAndPaymasterPostOpGasLimitV07 ?? undefined,
-      paymasterData: gasAndPaymasterPaymasterDataV07 ?? undefined,
+        gasAndPaymasterPaymasterVerificationGasLimitV07 ?? null,
+      paymasterPostOpGasLimit: gasAndPaymasterPostOpGasLimitV07 ?? null,
+      paymasterData: gasAndPaymasterPaymasterDataV07 ?? null,
     };
   }, [
     // Entry point version
