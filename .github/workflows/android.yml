@@ -28,6 +28,8 @@ jobs:
     needs:
       - android-turbo
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 90
     steps:
       - name: Fetch Head
@@ -52,6 +54,8 @@ jobs:
     needs:
       - android-turbo
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 90
     steps:
       - name: Fetch Head

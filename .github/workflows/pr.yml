@@ -13,6 +13,8 @@ jobs:
   pr-lint:
     name: PR
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 3
     steps:
       - name: Fetch Head
