@@ -97,18 +97,27 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }}
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
         name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
           pnpm --package=nextjs-bundle-analysis dlx report
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }}
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
         name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
           name: bundle-${{ matrix.app }}
           path: apps/${{ matrix.app }}/.next/analyze/__bundle_analysis.json
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }} && github.event.number
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
         name: Download Bundle Stats
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -116,12 +125,18 @@ jobs:
           workflow: vercel.yml
           branch: ${{ github.event.pull_request.base.ref }}
           path: apps/${{ matrix.app }}/.next/analyze/base/bundle
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }} && github.event.number
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
         name: Compare with Base Branch 
         working-directory: apps/${{ matrix.app }}
         run: |
           ls -laR .next/analyze/base && pnpm --package=nextjs-bundle-analysis dlx compare
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }} && github.event.number
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook' &&
+          github.event.number != null
         name: Get Comment Body
         id: comment-body
         run: |
@@ -191,12 +206,16 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: |
           rm -rf .env
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }}
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
         name: Analyze Bundle
         working-directory: apps/${{ matrix.app }}
         run: |
           pnpm --package=nextjs-bundle-analysis dlx report
-      - if: ${{ matrix.app != 'paper' && matrix.app != 'storybook' }}
+      - if: |
+          matrix.app != 'paper' &&
+          matrix.app != 'storybook'
         name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
