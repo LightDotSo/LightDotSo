@@ -246,6 +246,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       : typeof userOperationNonce?.nonce !== "undefined"
         ? BigInt(userOperationNonce?.nonce)
         : 0n;
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.info("updatedMinimumNonce", updatedMinimumNonce);
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
@@ -261,6 +263,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             wallet?.salt as Hex,
           )
         : (initialUserOperation.initCode ?? "0x");
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.info("updatedInitCode", updatedInitCode);
 
     // If the initial user operation nonce is provided, make sure it is same or greater
     // In the case that it is not, update the nonce to the minimum nonce
@@ -273,6 +277,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         : updatedInitCode !== "0x"
           ? BigInt(0)
           : (initialUserOperation.nonce ?? 0n);
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.info("updatedNonce", updatedNonce);
 
     // Allow the callData to be empty if the init code is provided
     // This is to allow for the creation of a new contract
@@ -281,6 +287,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       updatedInitCode !== undefined
         ? "0x"
         : initialUserOperation.callData;
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.info("updatedCallData", updatedCallData);
 
     // Return the user operation
     return {
@@ -338,6 +346,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       targetUserOperation?.initCode as Hex,
     );
   }, [targetUserOperation?.initCode]);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("factory", factory);
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.info("factoryData", factoryData);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -387,8 +399,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       sender: address as Address,
       chainId: targetUserOperation?.chainId,
       nonce: targetUserOperation?.nonce,
-      factory: factory ?? "0x",
-      factoryData: factoryData ?? "0x",
+      factory: factory,
+      factoryData: factoryData,
       callData: targetUserOperation?.callData,
       maxFeePerGas: maxFeePerGas,
       maxPriorityFeePerGas: maxPriorityFeePerGas,

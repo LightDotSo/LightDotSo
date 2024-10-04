@@ -222,7 +222,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                     src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
                     alt={selectedWallet.label}
                   /> */}
-                <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
+                <PlaceholderOrb address={selectedWallet?.address} />
                 {/* <AvatarFallback>SC</AvatarFallback> */}
               </Avatar>
               {selectedWallet?.name}
