@@ -697,7 +697,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       maxFeePerGas: debouncedUserOperation?.maxFeePerGas,
       maxPriorityFeePerGas: debouncedUserOperation?.maxPriorityFeePerGas,
     },
-    isEntryPointV06,
+    isEntryPointV06 && !isDebouncingUserOperation,
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("gasAndPaymasterAndDataV06", gasAndPaymasterAndDataV06);
@@ -735,7 +735,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       paymasterVerificationGasLimit:
         debouncedPackedUserOperation?.paymasterVerificationGasLimit,
     },
-    isEntryPointV07,
+    isEntryPointV07 && !isDebouncingPackedUserOperation,
   );
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.info("gasAndPaymasterAndDataV07", gasAndPaymasterAndDataV07);
