@@ -107,7 +107,7 @@ jobs:
           append: true
           header: 'vercel-preview-url'
           message: |
-            ${{ matrix.app }} Preview: https://${{ steps.vercel-deploy-preview.outputs.url }} 
+            ${{ matrix.app }} Preview: ${{ steps.vercel-deploy-preview.outputs.url }} 
       - if: always()
         name: Cleanup Env Preview
         working-directory: apps/${{ matrix.app }}
