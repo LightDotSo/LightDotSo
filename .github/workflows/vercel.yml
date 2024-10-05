@@ -171,8 +171,8 @@ jobs:
         with:
           vercel_project_id: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           vercel_team_id: ${{ steps.doppler.outputs.VERCEL_TEAM_ID }}
-      - name: Add Comment to PR with Vercel Preview URL
-        if: success()
+      - if: success()
+        name: Add Comment to PR with Vercel Preview URL
         uses: marocchino/sticky-pull-request-comment@v2.9.0
         with:
           append: true
