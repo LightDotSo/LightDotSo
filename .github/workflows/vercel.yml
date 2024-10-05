@@ -95,12 +95,25 @@ jobs:
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
       - name: Vercel Deploy Preview
+        id: vercel-deploy-preview
         run: |
-          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > $GITHUB_OUTPUT 
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
+      - name: Add Comment to PR with Vercel Preview URL
+        id: vercel-preview-url
+        run: |
+          echo "url<<EOF" >> $GITHUB_OUTPUT
+          echo "$(grep -oP 'https://\S+' $GITHUB_OUTPUT)" >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        with:
+          append: true
+          header: 'vercel-preview-url'
+          message: |
+            ${{ matrix.app }} Preview: https://${{ steps.vercel-deploy-preview.outputs.url }} 
       - if: always()
         name: Cleanup Env Preview
         working-directory: apps/${{ matrix.app }}
@@ -162,23 +175,6 @@ jobs:
         with:
           header: 'bundle-analysis-${{ matrix.app }}'
           message: ${{ steps.comment-body.outputs.body }}
-      - name: Vercel Preview URL
-        uses: zentered/vercel-preview-url@v1.1.9
-        continue-on-error: true
-        id: vercel_preview_url
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        with:
-          vercel_project_id: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
-          vercel_team_id: ${{ steps.doppler.outputs.VERCEL_TEAM_ID }}
-      - if: success()
-        name: Add Comment to PR with Vercel Preview URL
-        uses: marocchino/sticky-pull-request-comment@v2.9.0
-        with:
-          append: true
-          header: 'vercel-preview-url'
-          message: |
-            ${{ matrix.app }} Preview: https://${{ steps.vercel_preview_url.outputs.url }} 
   vercel-deploy-production:
     needs: vercel-turbo
     if: needs.vercel-turbo.outputs.trigger == 'true' && github.event_name == 'push'
