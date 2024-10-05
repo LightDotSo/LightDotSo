@@ -102,12 +102,13 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
-      - name: Add Comment to PR with Vercel Preview URL
+      - name: Get Vercel Preview URL
         id: vercel-preview-url
         run: |
           echo "url<<EOF" >> $GITHUB_OUTPUT
           echo "$(grep -oP 'https://\S+' $GITHUB_OUTPUT)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
+      - name: Add Comment to PR with Vercel Preview URL
         uses: marocchino/sticky-pull-request-comment@v2.9.0
         with:
           append: true
