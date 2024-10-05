@@ -4,6 +4,7 @@
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
+# Check if the branch is main
 if [ "$branch" = "main" ]; then
     echo 'Direct push to main is not allowed. Create a pull request instead.'
     exit 1
