@@ -14,7 +14,11 @@
 
 "use client";
 
-import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
+import {
+  CONTRACT_ADDRESSES,
+  ContractAddress,
+  PRE_VERIFICATION_GAS_MULTIPLIER,
+} from "@lightdotso/const";
 import { useDebouncedValue } from "@lightdotso/hooks";
 import { useEntryPointVersion } from "@lightdotso/hooks/src/useEntryPointVersion";
 import {
@@ -524,7 +528,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     // Bump the pre-verification gas limit to handle lesser used chains
     const updatedPreVerificationGas = preVerificationGas
-      ? (preVerificationGas * BigInt(120)) / BigInt(100)
+      ? (preVerificationGas * BigInt(PRE_VERIFICATION_GAS_MULTIPLIER)) /
+        BigInt(100)
       : preVerificationGas;
 
     return {
