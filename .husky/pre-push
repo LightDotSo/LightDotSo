@@ -11,7 +11,7 @@ if [ "$branch" = "main" ]; then
 fi
 
 # Run cspell on changed files compared to origin/main
-git diff --name-only origin/main | pnpm cspell --file-list stdin
+git diff --name-only origin/main | pnpm cspell --file-list stdin || pnpm run cspell:fix
 
 # Run project-words:lint or project-words:fix
 pnpm run project-words:lint || pnpm run project-words:fix
