@@ -23,6 +23,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/extension"
+          run_on_push: true
   extension:
     if: needs.extension-turbo.outputs.trigger == 'true'
     needs:
