@@ -16,6 +16,7 @@
 // License: MIT
 // Thank you to `fuma-nama` for the original implementation and great documentation.
 
+import { remarkMermaid } from "@theguild/remark-mermaid";
 import {
   defineConfig,
   defineDocs,
@@ -42,6 +43,7 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [
       remarkMath,
+      remarkMermaid,
       // [remarkInstall, { persist: { id: "package-manager" } }],
       // [remarkDocGen, { generators: [typescriptGenerator(), fileGenerator()] }],
     ],
