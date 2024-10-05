@@ -37,6 +37,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/${{ matrix.app }}"
+          run_on_push: false
   vercel-deploy-preview:
     needs: vercel-turbo
     if: needs.vercel-turbo.outputs.trigger == 'true' && github.event_name != 'push'
