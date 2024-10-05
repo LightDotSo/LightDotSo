@@ -164,6 +164,7 @@ jobs:
           message: ${{ steps.comment-body.outputs.body }}
       - name: Vercel Preview URL
         uses: zentered/vercel-preview-url@v1.1.9
+        continue-on-error: true
         id: vercel_preview_url
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -171,6 +172,7 @@ jobs:
           vercel_project_id: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           vercel_team_id: ${{ steps.doppler.outputs.VERCEL_TEAM_ID }}
       - name: Add Comment to PR with Vercel Preview URL
+        if: success()
         uses: marocchino/sticky-pull-request-comment@v2.9.0
         with:
           append: true
