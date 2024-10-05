@@ -134,6 +134,7 @@ jobs:
           workflow: vercel.yml
           branch: ${{ github.event.pull_request.base.ref }}
           path: apps/${{ matrix.app }}/.next/analyze/base/bundle
+          search_artifacts: true
       - if: |
           matrix.app != 'paper' &&
           matrix.app != 'storybook' &&

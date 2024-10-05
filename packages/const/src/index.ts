@@ -39,7 +39,11 @@ export {
   MAX_USER_OPEARTION_QUERY_STATE_LENGTH,
 } from "./configuration";
 export { COOKIES } from "./cookies";
-export { GAS_SPEED_BUMP, GAS_LIMIT_MULTIPLIER } from "./gas";
+export {
+  GAS_SPEED_BUMP,
+  GAS_LIMIT_MULTIPLIER,
+  PRE_VERIFICATION_GAS_MULTIPLIER,
+} from "./gas";
 export { GITHUB_LINKS } from "./github_links";
 export { INTERNAL_LINKS } from "./internal_links";
 export { REDIRECT_PREFIXES } from "./redirect_prefixes";
