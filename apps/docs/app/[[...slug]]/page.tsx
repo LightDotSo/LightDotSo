@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { openapi, source } from "@/app/source";
+import { Mermaid } from "@theguild/remark-mermaid/mermaid";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import {
   DocsBody,
@@ -82,7 +83,11 @@ export default async function Page({ params }: PageProps) {
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDX
-          components={{ ...defaultMdxComponents, APIPage: openapi.APIPage }}
+          components={{
+            ...defaultMdxComponents,
+            APIPage: openapi.APIPage,
+            mermaid: Mermaid,
+          }}
         />
         {page.data.index ? (
           <DocsCategory page={page} pages={source.getPages()} />
