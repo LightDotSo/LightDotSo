@@ -9,5 +9,8 @@ if [ "$branch" = "main" ]; then
     exit 1
 fi
 
-pnpm run cspell:lint || pnpm run cspell:fix
+# Run cspell on changed files compared to origin/main
+git diff --name-only origin/main | pnpm cspell --file-list stdin
+
+# Run project-words:lint or project-words:fix
 pnpm run project-words:lint || pnpm run project-words:fix
