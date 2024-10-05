@@ -28,6 +28,7 @@ jobs:
     timeout-minutes: 3
     strategy:
       matrix:
+        app: []
         # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
@@ -45,6 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        app: []
         #  app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     permissions:
       contents: write
@@ -176,6 +178,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        app: []
         # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     permissions:
       contents: write
