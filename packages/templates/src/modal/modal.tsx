@@ -153,7 +153,7 @@ export const Modal: FC<ModalProps> = ({
             )}
           >
             <ModalContext.Provider value={true}>
-              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              <Suspense fallback={<Skeleton className="h-96 w-full" />}>
                 {children}
               </Suspense>
             </ModalContext.Provider>

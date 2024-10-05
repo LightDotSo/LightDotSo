@@ -90,7 +90,7 @@ export const TransactionDetails: FC = () => {
   return (
     <>
       {progressUserOperations && progressUserOperations.length === 0 && (
-        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-64 w-full" />
       )}
       {progressUserOperations.map((progressUserOperation, index) => {
         const chain = getChainWithChainId(
