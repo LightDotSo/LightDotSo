@@ -97,7 +97,7 @@ jobs:
       - name: Vercel Deploy Preview
         id: vercel-deploy-preview
         run: |
-          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep -oP 'https://\S+' | sed 's/^/url=/' >> "$GITHUB_OUTPUT"
+          vercel deploy --no-wait --prebuilt --token=${{ secrets.VERCEL_TOKEN }}  | sed 's/^/url=/' >> "$GITHUB_OUTPUT"
         env:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
