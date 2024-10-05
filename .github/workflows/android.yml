@@ -23,7 +23,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/android"
-          run_on_push: true
+          run_on_push: false
   android-lint:
     if: needs.android-turbo.outputs.trigger == 'true'
     needs:
