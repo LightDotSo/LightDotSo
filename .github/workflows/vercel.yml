@@ -102,7 +102,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
           VERCEL_ENV: preview
           NEXT_PUBLIC_VERCEL_ENV: preview
-        uses: marocchino/sticky-pull-request-comment@v2.9.0
+      - uses: marocchino/sticky-pull-request-comment@v2.9.0
         with:
           append: true
           header: 'vercel-preview-url'
