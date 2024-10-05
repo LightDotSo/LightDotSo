@@ -30,6 +30,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
+          run_on_push: true
   rust-matrix:
     strategy:
       matrix:

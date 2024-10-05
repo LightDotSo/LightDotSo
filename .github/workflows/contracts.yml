@@ -44,6 +44,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/contracts"
+          run_on_push: true
   contracts-build:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:

@@ -28,6 +28,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/prisma"
+          run_on_push: true
   prisma-build:
     runs-on: ubuntu-latest
     if: needs.prisma-turbo.outputs.trigger == 'true'

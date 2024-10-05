@@ -23,6 +23,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/ios"
+          run_on_push: true
   ios-lint:
     if: needs.ios-turbo.outputs.trigger == 'true'
     needs:
