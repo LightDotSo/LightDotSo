@@ -242,10 +242,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     const updatedMinimumNonce = isInitialEntryPointNonceFetched
       ? typeof entryPointNonce !== "undefined"
         ? BigInt(entryPointNonce)
-        : 0n
-      : typeof userOperationNonce?.nonce !== "undefined"
-        ? BigInt(userOperationNonce?.nonce)
-        : 0n;
+        : typeof userOperationNonce?.nonce !== "undefined"
+          ? BigInt(userOperationNonce?.nonce)
+          : 0n
+      : undefined;
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("updatedMinimumNonce", updatedMinimumNonce);
 
@@ -266,17 +266,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("updatedInitCode", updatedInitCode);
 
-    // If the initial user operation nonce is provided, make sure it is same or greater
-    // In the case that it is not, update the nonce to the minimum nonce
-    const updatedNonce =
-      typeof initialUserOperation.nonce === "undefined" ||
-      (initialUserOperation.nonce !== undefined &&
-        updatedMinimumNonce !== undefined &&
-        initialUserOperation.nonce < updatedMinimumNonce)
+    const updatedNonce = isInitialEntryPointNonceFetched
+      ? typeof entryPointNonce !== "undefined" &&
+        typeof updatedMinimumNonce !== "undefined"
         ? updatedMinimumNonce
-        : updatedInitCode !== "0x"
-          ? BigInt(0)
-          : (initialUserOperation.nonce ?? 0n);
+        : typeof userOperationNonce?.nonce !== "undefined"
+          ? BigInt(userOperationNonce?.nonce)
+          : (initialUserOperation.nonce ?? 0n)
+      : undefined;
     // biome-ignore lint/suspicious/noConsole: <explanation>
     console.info("updatedNonce", updatedNonce);
 
