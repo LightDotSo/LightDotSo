@@ -42,9 +42,9 @@ jobs:
     if: needs.vercel-turbo.outputs.trigger == 'true' && github.event_name != 'push'
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        app: [app, explorer, home]
+         app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     permissions:
       contents: write
       id-token: write
@@ -160,6 +160,20 @@ jobs:
         with:
           header: 'bundle-analysis-${{ matrix.app }}'
           message: ${{ steps.comment-body.outputs.body }}
+      - name: Vercel Preview URL
+        uses: zentered/vercel-preview-url@v1.1.9
+        id: vercel_preview_url
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        with:
+          vercel_project_id: ${{ steps.doppler.outputs.VERCEL_PROJECT_ID }}
+      - name: Add Comment to PR with Vercel Preview URL
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        with:
+          append: true
+          header: 'vercel-preview-url'
+          message: |
+            ${{ matrix.app }} Preview: https://${{ steps.vercel_preview_url.outputs.url }} 
   vercel-deploy-prd:
     needs: vercel-turbo
     if: needs.vercel-turbo.outputs.trigger == 'true' && github.event_name == 'push'
