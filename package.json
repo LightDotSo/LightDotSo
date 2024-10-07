@@ -155,6 +155,7 @@
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "react-is": "19.0.0-rc-e740d4b1-20240919",
+    "release-please": "^16.14.1",
     "rimraf": "^6.0.1",
     "sherif": "^1.0.0",
     "solhint": "^5.0.3",
