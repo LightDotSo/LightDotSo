@@ -39,14 +39,11 @@ use opentelemetry_sdk::{
     resource::{EnvResourceDetector, SdkProvidedResourceDetector, TelemetryResourceDetector},
     Resource,
 };
-use opentelemetry_semantic_conventions::resource::{
-    SERVICE_NAME, SERVICE_NAMESPACE, SERVICE_VERSION,
-};
+use opentelemetry_semantic_conventions::resource::{SERVICE_NAME, SERVICE_VERSION};
 use pin_project_lite::pin_project;
 use prometheus::{Encoder, Registry, TextEncoder};
 use std::{
     collections::HashMap,
-    env,
     future::Future,
     pin::Pin,
     sync::Arc,
@@ -255,10 +252,10 @@ impl HttpMetricsLayerBuilder {
     pub fn build(self) -> HttpMetricsLayer {
         let mut resource = vec![];
 
-        let ns = env::var("INSTANCE_NAMESPACE").unwrap_or_default();
-        if !ns.is_empty() {
-            resource.push(SERVICE_NAMESPACE.to_string());
-        }
+        // let ns = env::var("INSTANCE_NAMESPACE").unwrap_or_default();
+        // if !ns.is_empty() {
+        //     resource.push(SERVICE_NAMESPACE.to_string());
+        // }
 
         // let instance_ip = env::var("INSTANCE_IP").unwrap_or_default();
         // if !instance_ip.is_empty() {

@@ -94,7 +94,7 @@
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.2",
-    "viem": "^2.21.18",
+    "viem": "^2.21.19",
     "zod": "^3.23.8"
   },
   "devDependencies": {

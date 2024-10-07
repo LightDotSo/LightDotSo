@@ -1130,6 +1130,7 @@ mapbox
 marko
 marky
 matchall
+maximizable
 mbase
 mdast
 mdurl
@@ -1156,6 +1157,7 @@ miniflare
 minigate
 minimatch
 minimist
+minimizable
 minipass
 minisearch
 minizlib
@@ -1194,8 +1196,10 @@ multicall
 multichain
 multiformats
 multimatch
+multiwebview
 musleabihf
 mwhile
+mydomain
 mysqladmin
 namesapce
 namespacing
@@ -1234,6 +1238,7 @@ npmcli
 npmlog
 npqxcz
 nrindex
+nsapp
 ntjfl
 ntnfhqg
 nullthrows
@@ -1341,6 +1346,7 @@ preloaders
 prettyplease
 prevrandao
 prisma
+programatic
 programatically
 proguard
 prometheus
@@ -1426,6 +1432,7 @@ renamesourcefileattribute
 renamings
 renderable
 renderkid
+reparent
 repr
 represenation
 reqwest
@@ -1682,6 +1689,9 @@ unittested
 unitttested
 universalify
 unixfs
+unlisten
+unmaximize
+unminimize
 unparse
 unparser
 unpipe

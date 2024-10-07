@@ -40,6 +40,7 @@ contract LightDAG {
     struct OperationRoot {
         bytes32 root;
         Operation[] operations;
+        address verifier;
     }
 
     // -------------------------------------------------------------------------

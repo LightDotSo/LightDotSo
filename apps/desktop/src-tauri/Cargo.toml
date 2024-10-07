@@ -1,11 +1,12 @@
 [package]
-  name = "desktop"
-  version = "0.0.0"
-  description = "A Tauri App"
-  authors = ["LightDotSo"]
-  license = "Apache-2.0"
-  repository = "https://github.com/LightDotSo/LightDotSo"
-  edition = "2021"
+  name = "lightdotso-desktop"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
 
   # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
