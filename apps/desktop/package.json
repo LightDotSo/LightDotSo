@@ -21,13 +21,13 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.6.0",
+    "@tauri-apps/api": "^2.0.2",
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919"
   },
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
-    "@tauri-apps/cli": "^2.0.1",
+    "@tauri-apps/cli": "^2.0.2",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",

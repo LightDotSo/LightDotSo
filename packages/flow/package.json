@@ -39,7 +39,7 @@
     "lucide-react": "^0.447.0",
     "next-themes": "^0.3.0",
     "reactflow": "^11.11.4",
-    "viem": "^2.21.18"
+    "viem": "^2.21.19"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

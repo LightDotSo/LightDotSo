@@ -27,7 +27,7 @@
     "@babel/core": "^7.25.7",
     "@langchain/core": "^0.3.7",
     "@langchain/langgraph": "^0.2.11",
-    "@langchain/langgraph-sdk": "^0.0.15",
+    "@langchain/langgraph-sdk": "^0.0.16",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/roots": "workspace:*",
@@ -60,7 +60,7 @@
     "remark-math": "^6.0.0",
     "server-only": "^0.0.1",
     "usehooks-ts": "^3.1.0",
-    "viem": "^2.21.18",
+    "viem": "^2.21.19",
     "zod": "^3.23.8"
   },
   "devDependencies": {

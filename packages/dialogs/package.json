@@ -49,7 +49,7 @@
     "next": "15.0.0-canary.178",
     "permissionless": "^0.2.5",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.18",
+    "viem": "^2.21.19",
     "zod": "^3.23.8"
   },
   "devDependencies": {
