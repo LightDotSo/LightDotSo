@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Run release-please
         id: release
-        uses: google-github-actions/release-please-action@v4
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.BOT_TOKEN }}
       # - name: Git Config
