@@ -6,46 +6,43 @@ description: Diagram of the Light Protocol
 ```mermaid
 graph TD
     User[User] --> |Approves| Permit2[Permit2 Contract]
-    User --> |Proposes & Executes| TimelockController[TimelockController]
+    User --> |Signs Permit| TimelockController[TimelockController]
 
-    TimelockController --> |Schedules/Executes| Permit2
-    Permit2 --> |Manages Permissions| ERC20[ERC20 Token]
+    Permit2 --> |Pulls Tokens| ERC20[ERC20 Token]
 
-    LightProtocolController[Light Protocol Controller] --> |Authorized Executor| TimelockController
-    LightProtocolController --> |Authorizes| Verifier[Verifier]
+    TimelockController --> |Schedules Transfer| Verifier[Verifier]
+    TimelockController --> |Requests Transfer| Permit2
 
-    TimelockController --> |Releases Funds| Verifier
+    LightProtocolController[Light Protocol Controller] --> |Manages| TimelockController
+    LightProtocolController --> |Authorizes| Verifier
+    LightProtocolController --> |Manages| OperationRoot[OperationRoot]
+
     Verifier --> |Forwards Funds| LightVault[LightVault]
 
-    LightVault --> |Holds/Manages| Funds[Funds]
-
-    Verifier --> |Monitors| TimelockController
-
     LightVault --> |Lends to| Solvers[Solvers]
-
-    Verifier --> |Authorizes| Solvers
 
     Solvers --> |Front Funds| DestinationChainFronting[Destination Chain Fronting]
 
     User --> |Receives Funds| DestinationChainFronting
 
-    subgraph "Origin Chain(s)"
-        subgraph "Token Ecosystem"
-            ERC20
-            Funds
-        end
-
-        subgraph "Permission Management"
-            Permit2
-        end
-
-        subgraph "Governance Layer"
-            TimelockController
-        end
-
+    subgraph "Origin Chain"
+        ERC20
+        Permit2
+        TimelockController
+        Verifier
         LightVault
         LightProtocolController
-        Verifier
+    end
+
+    subgraph "Light Layer"
+        OperationRoot --> Operation1[Operation 1]
+        OperationRoot --> Operation2[Operation 2]
+        OperationRoot --> Operation3[Operation 3]
+
+        Operation1 --> |dependency| Operation2
+        Operation2 --> |dependency| Operation3
+
+        OperationRoot --> |verifier| Verifier
     end
 
     subgraph "Destination Chain"
@@ -53,12 +50,5 @@ graph TD
         Solvers
     end
 
-    classDef contract fill:#f9f,stroke:#333,stroke-width:2px;
-    class Permit2,ERC20,TimelockController,LightProtocolController,LightVault,Verifier,DestinationChainFronting,Solvers contract;
-
-    classDef actor fill:#bbf,stroke:#333,stroke-width:2px;
-    class User actor;
-
-    classDef chainBoundary fill:none,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5;
-    class OriginChain,DestinationChain chainBoundary;
+    Operation3 --> |Executes on| DestinationChainFronting
 ```
