@@ -22,7 +22,10 @@ import dynamic from "next/dynamic";
 // -----------------------------------------------------------------------------
 
 export const SwapDialogLoader = dynamic(
-  () => import("@lightdotso/dialogs/swap").then((mod) => mod.SwapDialog),
+  () =>
+    import("@lightdotso/dialogs/swap").then((mod) => ({
+      default: mod.SwapDialog,
+    })),
   {
     ssr: false,
     loading: () => <Skeleton className="h-64 w-96" />,

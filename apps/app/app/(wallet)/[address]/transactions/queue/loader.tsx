@@ -27,7 +27,9 @@ const TransactionsDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table"
-    ).then((mod) => mod.TransactionsDataTable),
+    ).then((mod) => ({
+      default: mod.TransactionsDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

@@ -28,7 +28,9 @@ const SettingsNotificationsSettingsCard = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/settings/notifications/(components)/settings-notifications-settings-card"
-    ).then((mod) => mod.SettingsNotificationsSettingsCard),
+    ).then((mod) => ({
+      default: mod.SettingsNotificationsSettingsCard,
+    })),
   {
     loading: () => <SettingsCardSkeleton />,
     ssr: false,

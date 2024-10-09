@@ -27,7 +27,9 @@ const SettingsNameCard = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/settings/(components)/settings-name-card"
-    ).then((mod) => mod.SettingsNameCard),
+    ).then((mod) => ({
+      default: mod.SettingsNameCard,
+    })),
   {
     ssr: false,
     loading: () => <SettingsCardSkeleton />,

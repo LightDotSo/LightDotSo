@@ -25,7 +25,9 @@ const NotificationsDataTable = dynamic(
   () =>
     import(
       "@/app/(authenticated)/notifications/(components)/notifications-data-table"
-    ).then((mod) => mod.NotificationsDataTable),
+    ).then((mod) => ({
+      default: mod.NotificationsDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

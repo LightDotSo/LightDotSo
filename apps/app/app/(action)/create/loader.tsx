@@ -25,9 +25,9 @@ import type { Address } from "viem";
 
 const TransactionDialog = dynamic(
   () =>
-    import("@lightdotso/dialogs/transaction").then(
-      (mod) => mod.TransactionDialog,
-    ),
+    import("@lightdotso/dialogs/transaction").then((mod) => ({
+      default: mod.TransactionDialog,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

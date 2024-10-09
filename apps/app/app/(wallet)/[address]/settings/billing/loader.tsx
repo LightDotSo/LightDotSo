@@ -27,7 +27,9 @@ const SettingsBillingBalanceCard = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card"
-    ).then((mod) => mod.SettingsBillingBalanceCard),
+    ).then((mod) => ({
+      default: mod.SettingsBillingBalanceCard,
+    })),
   {
     loading: () => <SettingsCardSkeleton />,
     ssr: false,

@@ -26,7 +26,9 @@ import type { Address } from "viem";
 const DepositDialog = dynamic(
   () =>
     import("@/app/(wallet)/[address]/deposit/(components)/deposit-dialog").then(
-      (mod) => mod.DepositDialog,
+      (mod) => ({
+        default: mod.DepositDialog,
+      }),
     ),
   {
     loading: () => <Loading />,

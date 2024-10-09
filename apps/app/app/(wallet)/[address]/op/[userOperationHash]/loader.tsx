@@ -28,7 +28,9 @@ const OpDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-data-table"
-    ).then((mod) => mod.OpDataTable),
+    ).then((mod) => ({
+      default: mod.OpDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

@@ -44,7 +44,10 @@ const OverviewListPortfolioSkeleton = () => <Skeleton className="h-6 w-16" />;
 // -----------------------------------------------------------------------------
 
 const TokensList = dynamic(
-  () => import("@/components/token/tokens-list").then((mod) => mod.TokensList),
+  () =>
+    import("@/components/token/tokens-list").then((mod) => ({
+      default: mod.TokensList,
+    })),
   {
     loading: () => <OverviewListItemSkeleton />,
     ssr: false,
@@ -53,9 +56,9 @@ const TokensList = dynamic(
 
 const TokenPortfolio = dynamic(
   () =>
-    import("@/components/token/token-portfolio").then(
-      (mod) => mod.TokenPortfolio,
-    ),
+    import("@/components/token/token-portfolio").then((mod) => ({
+      default: mod.TokenPortfolio,
+    })),
   {
     loading: () => <OverviewListPortfolioSkeleton />,
     ssr: false,
@@ -63,7 +66,10 @@ const TokenPortfolio = dynamic(
 );
 
 const NftsList = dynamic(
-  () => import("@/components/nft/nfts-list").then((mod) => mod.NftsList),
+  () =>
+    import("@/components/nft/nfts-list").then((mod) => ({
+      default: mod.NftsList,
+    })),
   {
     loading: () => <OverviewListItemSkeleton />,
     ssr: false,
@@ -72,7 +78,9 @@ const NftsList = dynamic(
 
 const NftPortfolio = dynamic(
   () =>
-    import("@/components/nft/nft-portfolio").then((mod) => mod.NftPortfolio),
+    import("@/components/nft/nft-portfolio").then((mod) => ({
+      default: mod.NftPortfolio,
+    })),
   {
     loading: () => <OverviewListPortfolioSkeleton />,
     ssr: false,
@@ -81,9 +89,9 @@ const NftPortfolio = dynamic(
 
 const TransactionsList = dynamic(
   () =>
-    import("@/components/transaction/transactions-list").then(
-      (mod) => mod.TransactionsList,
-    ),
+    import("@/components/transaction/transactions-list").then((mod) => ({
+      default: mod.TransactionsList,
+    })),
   {
     loading: () => <OverviewListItemSkeleton />,
     ssr: false,

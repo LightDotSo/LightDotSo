@@ -28,7 +28,10 @@ const loadFramerFeatures = () =>
 // -----------------------------------------------------------------------------
 
 const LazyMotion = dynamic(
-  () => import("framer-motion").then((res) => res.LazyMotion),
+  () =>
+    import("framer-motion").then((res) => ({
+      default: res.LazyMotion,
+    })),
   {
     ssr: false,
   },
@@ -36,9 +39,9 @@ const LazyMotion = dynamic(
 
 const TooltipProvider = dynamic(
   () =>
-    import("@lightdotso/ui/components/tooltip").then(
-      (res) => res.TooltipProvider,
-    ),
+    import("@lightdotso/ui/components/tooltip").then((res) => ({
+      default: res.TooltipProvider,
+    })),
   {
     ssr: false,
   },

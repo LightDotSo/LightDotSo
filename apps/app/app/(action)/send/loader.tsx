@@ -23,7 +23,10 @@ import dynamic from "next/dynamic";
 
 const SendDialog = dynamic(
   // TODO: Replace with @lightdotso/dialogs/send
-  () => import("@lightdotso/dialogs/swap").then((mod) => mod.SwapDialog),
+  () =>
+    import("@lightdotso/dialogs/swap").then((mod) => ({
+      default: mod.SwapDialog,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

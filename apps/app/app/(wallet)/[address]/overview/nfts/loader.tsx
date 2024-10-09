@@ -27,7 +27,9 @@ const NftsDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table"
-    ).then((mod) => mod.NftsDataTable),
+    ).then((mod) => ({
+      default: mod.NftsDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

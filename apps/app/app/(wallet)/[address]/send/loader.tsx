@@ -26,7 +26,9 @@ import type { Address } from "viem";
 const SendDialog = dynamic(
   () =>
     import("@/app/(wallet)/[address]/send/(components)/send-dialog").then(
-      (mod) => mod.SendDialog,
+      (mod) => ({
+        default: mod.SendDialog,
+      }),
     ),
   {
     loading: () => <Loading />,

@@ -27,7 +27,9 @@ const OverviewList = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/(components)/overview/overview-list"
-    ).then((mod) => mod.OverviewList),
+    ).then((mod) => ({
+      default: mod.OverviewList,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

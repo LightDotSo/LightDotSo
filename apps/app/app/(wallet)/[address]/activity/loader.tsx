@@ -27,7 +27,9 @@ const ActivityDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/activity/(components)/activity-data-table"
-    ).then((mod) => mod.ActivityDataTable),
+    ).then((mod) => ({
+      default: mod.ActivityDataTable,
+    })),
   {
     ssr: false,
   },

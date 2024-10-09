@@ -25,56 +25,80 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 const AddressModal = dynamic(
-  () => import("@lightdotso/modals/address").then((mod) => mod.AddressModal),
+  () =>
+    import("@lightdotso/modals/address").then((mod) => ({
+      default: mod.AddressModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const AuthModal = dynamic(
-  () => import("@lightdotso/modals/auth").then((mod) => mod.AuthModal),
+  () =>
+    import("@lightdotso/modals/auth").then((mod) => ({
+      default: mod.AuthModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const CartModal = dynamic(
-  () => import("@lightdotso/modals/cart").then((mod) => mod.CartModal),
+  () =>
+    import("@lightdotso/modals/cart").then((mod) => ({
+      default: mod.CartModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const ChainModal = dynamic(
-  () => import("@lightdotso/modals/chain").then((mod) => mod.ChainModal),
+  () =>
+    import("@lightdotso/modals/chain").then((mod) => ({
+      default: mod.ChainModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const ConnectModal = dynamic(
-  () => import("@lightdotso/modals/connect").then((mod) => mod.ConnectModal),
+  () =>
+    import("@lightdotso/modals/connect").then((mod) => ({
+      default: mod.ConnectModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const OwnerModal = dynamic(
-  () => import("@lightdotso/modals/owner").then((mod) => mod.OwnerModal),
+  () =>
+    import("@lightdotso/modals/owner").then((mod) => ({
+      default: mod.OwnerModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const NftModal = dynamic(
-  () => import("@lightdotso/modals/nft").then((mod) => mod.NftModal),
+  () =>
+    import("@lightdotso/modals/nft").then((mod) => ({
+      default: mod.NftModal,
+    })),
   {
     ssr: false,
   },
 );
 
 const TokenModal = dynamic(
-  () => import("@lightdotso/modals/token").then((mod) => mod.TokenModal),
+  () =>
+    import("@lightdotso/modals/token").then((mod) => ({
+      default: mod.TokenModal,
+    })),
   {
     ssr: false,
   },
@@ -85,21 +109,30 @@ const TokenModal = dynamic(
 // -----------------------------------------------------------------------------
 
 const AuthState = dynamic(
-  () => import("@lightdotso/states/auth").then((mod) => mod.AuthState),
+  () =>
+    import("@lightdotso/states/auth").then((mod) => ({
+      default: mod.AuthState,
+    })),
   {
     ssr: false,
   },
 );
 
 const FormState = dynamic(
-  () => import("@lightdotso/states/form").then((mod) => mod.FormState),
+  () =>
+    import("@lightdotso/states/form").then((mod) => ({
+      default: mod.FormState,
+    })),
   {
     ssr: false,
   },
 );
 
 const QueueState = dynamic(
-  () => import("@lightdotso/states/queue").then((mod) => mod.QueueState),
+  () =>
+    import("@lightdotso/states/queue").then((mod) => ({
+      default: mod.QueueState,
+    })),
   {
     ssr: false,
   },
@@ -107,9 +140,9 @@ const QueueState = dynamic(
 
 const UserOperationState = dynamic(
   () =>
-    import("@lightdotso/states/user-operation").then(
-      (mod) => mod.UserOperationState,
-    ),
+    import("@lightdotso/states/user-operation").then((mod) => ({
+      default: mod.UserOperationState,
+    })),
   {
     ssr: false,
   },
@@ -121,9 +154,9 @@ const UserOperationState = dynamic(
 
 const ProgressTransaction = dynamic(
   () =>
-    import("@lightdotso/templates/progress-transaction").then(
-      (mod) => mod.ProgressTransaction,
-    ),
+    import("@lightdotso/templates/progress-transaction").then((mod) => ({
+      default: mod.ProgressTransaction,
+    })),
   {
     ssr: false,
   },
@@ -131,9 +164,9 @@ const ProgressTransaction = dynamic(
 
 const ProgressUserOperation = dynamic(
   () =>
-    import("@lightdotso/templates/progress-user-operation").then(
-      (mod) => mod.ProgressUserOperation,
-    ),
+    import("@lightdotso/templates/progress-user-operation").then((mod) => ({
+      default: mod.ProgressUserOperation,
+    })),
   {
     ssr: false,
   },

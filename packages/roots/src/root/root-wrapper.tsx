@@ -25,7 +25,10 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 const Toaster = dynamic(
-  () => import("@lightdotso/ui/components/toast").then((mod) => mod.Toaster),
+  () =>
+    import("@lightdotso/ui/components/toast").then((mod) => ({
+      default: mod.Toaster,
+    })),
   {
     ssr: false,
   },

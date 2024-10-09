@@ -28,7 +28,9 @@ const SettingsDeploymentCard = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card"
-    ).then((mod) => mod.SettingsDeploymentCard),
+    ).then((mod) => ({
+      default: mod.SettingsDeploymentCard,
+    })),
   {
     loading: () => <SettingsCardSkeleton />,
     ssr: false,

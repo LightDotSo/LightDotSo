@@ -47,7 +47,9 @@ const WalletOverviewBannerAddress = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address"
-    ).then((mod) => mod.WalletOverviewBannerAddress),
+    ).then((mod) => ({
+      default: mod.WalletOverviewBannerAddress,
+    })),
   { loading: () => <WalletOverviewBannerAddressSkeleton />, ssr: false },
 );
 
@@ -55,7 +57,9 @@ const WalletOverviewBannerSparkline = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline"
-    ).then((mod) => mod.WalletOverviewBannerSparkline),
+    ).then((mod) => ({
+      default: mod.WalletOverviewBannerSparkline,
+    })),
   { loading: () => <WalletOverviewBannerSparklineSkeleton />, ssr: false },
 );
 
