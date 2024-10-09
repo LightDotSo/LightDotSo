@@ -39,7 +39,7 @@
     "glob": "^11.0.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.451.0",
-    "next": "15.0.0-canary.178",
+    "next": "15.0.0-canary.181",
     "react-blurhash": "^0.3.0",
     "viem": "^2.21.19"
   },

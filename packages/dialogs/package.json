@@ -46,7 +46,7 @@
     "@lightdotso/wagmi": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "lucide-react": "^0.451.0",
-    "next": "15.0.0-canary.178",
+    "next": "15.0.0-canary.181",
     "permissionless": "^0.2.7",
     "react-hook-form": "^7.53.0",
     "viem": "^2.21.19",
