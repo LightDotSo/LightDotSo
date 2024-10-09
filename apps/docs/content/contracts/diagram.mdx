@@ -6,14 +6,16 @@ description: Diagram of the Light Protocol
 ```mermaid
 graph TD
     User[User] --> |Approves| Permit2[Permit2 Contract]
-    User --> |Signs Permit| TimelockController[TimelockController]
+    User --> |Controls| LightTimelockController[LightTimelockController]
+
+    LightWallet[LightWallet] --> |Controls| LightTimelockController
 
     Permit2 --> |Pulls Tokens| ERC20[ERC20 Token]
 
-    TimelockController --> |Schedules Transfer| Verifier[Verifier]
-    TimelockController --> |Requests Transfer| Permit2
+    LightTimelockController --> |Schedules Transfer| Verifier[Verifier]
+    LightTimelockController --> |Requests Transfer| Permit2
 
-    LightProtocolController[Light Protocol Controller] --> |Manages| TimelockController
+    LightProtocolController[Light Protocol Controller] --> |Manages| LightTimelockController
     LightProtocolController --> |Authorizes| Verifier
     LightProtocolController --> |Manages| OperationRoot[OperationRoot]
 
@@ -28,10 +30,11 @@ graph TD
     subgraph "Origin Chain"
         ERC20
         Permit2
-        TimelockController
+        LightTimelockController
         Verifier
         LightVault
         LightProtocolController
+        LightWallet
     end
 
     subgraph "Light Layer"
@@ -51,4 +54,5 @@ graph TD
     end
 
     Operation3 --> |Executes on| DestinationChainFronting
+
 ```
