@@ -115,6 +115,11 @@ enum AccountDeployed_orderBy {
   transactionHash
 }
 
+enum Aggregation_interval {
+  hour
+  day
+}
+
 type BeforeExecution {
   id: Bytes!
   blockNumber: BigInt!
@@ -668,6 +673,7 @@ enum Log_orderBy {
   userOperation__id
   userOperation__index
   userOperation__sender
+  userOperation__nonceKey
   userOperation__nonce
   userOperation__initCode
   userOperation__callData
@@ -2040,6 +2046,11 @@ type Subscription {
   _meta(block: Block_height): _Meta_
 }
 
+"""
+A string representation of microseconds UNIX timestamp (16 digits)
+"""
+scalar Timestamp
+
 type Transaction {
   id: Bytes!
   hash: Bytes
@@ -2190,6 +2201,7 @@ type UserOperation {
   id: Bytes!
   index: BigInt!
   sender: Bytes
+  nonceKey: Bytes
   nonce: BigInt
   initCode: Bytes
   callData: Bytes
@@ -2383,6 +2395,7 @@ enum UserOperationEvent_orderBy {
   userOperation__id
   userOperation__index
   userOperation__sender
+  userOperation__nonceKey
   userOperation__nonce
   userOperation__initCode
   userOperation__callData
@@ -2405,6 +2418,7 @@ type UserOperationRevertReason {
   index: BigInt!
   userOpHash: Bytes!
   sender: Bytes!
+  nonceKey: Bytes!
   nonce: BigInt!
   revertReason: Bytes!
   blockNumber: BigInt!
@@ -2452,6 +2466,16 @@ input UserOperationRevertReason_filter {
   sender_not_in: [Bytes!]
   sender_contains: Bytes
   sender_not_contains: Bytes
+  nonceKey: Bytes
+  nonceKey_not: Bytes
+  nonceKey_gt: Bytes
+  nonceKey_lt: Bytes
+  nonceKey_gte: Bytes
+  nonceKey_lte: Bytes
+  nonceKey_in: [Bytes!]
+  nonceKey_not_in: [Bytes!]
+  nonceKey_contains: Bytes
+  nonceKey_not_contains: Bytes
   nonce: BigInt
   nonce_not: BigInt
   nonce_gt: BigInt
@@ -2530,6 +2554,7 @@ enum UserOperationRevertReason_orderBy {
   index
   userOpHash
   sender
+  nonceKey
   nonce
   revertReason
   blockNumber
@@ -2539,6 +2564,7 @@ enum UserOperationRevertReason_orderBy {
   userOperation__id
   userOperation__index
   userOperation__sender
+  userOperation__nonceKey
   userOperation__nonce
   userOperation__initCode
   userOperation__callData
@@ -2585,6 +2611,16 @@ input UserOperation_filter {
   sender_not_in: [Bytes!]
   sender_contains: Bytes
   sender_not_contains: Bytes
+  nonceKey: Bytes
+  nonceKey_not: Bytes
+  nonceKey_gt: Bytes
+  nonceKey_lt: Bytes
+  nonceKey_gte: Bytes
+  nonceKey_lte: Bytes
+  nonceKey_in: [Bytes!]
+  nonceKey_not_in: [Bytes!]
+  nonceKey_contains: Bytes
+  nonceKey_not_contains: Bytes
   nonce: BigInt
   nonce_not: BigInt
   nonce_gt: BigInt
@@ -2756,6 +2792,7 @@ enum UserOperation_orderBy {
   id
   index
   sender
+  nonceKey
   nonce
   initCode
   callData
@@ -2813,6 +2850,7 @@ enum UserOperation_orderBy {
   userOperationRevertReason__index
   userOperationRevertReason__userOpHash
   userOperationRevertReason__sender
+  userOperationRevertReason__nonceKey
   userOperationRevertReason__nonce
   userOperationRevertReason__revertReason
   userOperationRevertReason__blockNumber
@@ -2926,6 +2964,10 @@ type _Block_ {
   Integer representation of the timestamp stored in blocks for the chain
   """
   timestamp: Int
+  """
+  The hash of the parent block
+  """
+  parentHash: Bytes
 }
 
 """
