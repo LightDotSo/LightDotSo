@@ -26,7 +26,9 @@ const OwnersDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/owners/(components)/owners-data-table"
-    ).then((mod) => mod.OwnersDataTable),
+    ).then((mod) => ({
+      default: mod.OwnersDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

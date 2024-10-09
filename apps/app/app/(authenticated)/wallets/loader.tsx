@@ -25,7 +25,9 @@ const WalletsDataTable = dynamic(
   () =>
     import(
       "@/app/(authenticated)/wallets/(components)/wallets-data-table"
-    ).then((mod) => mod.WalletsDataTable),
+    ).then((mod) => ({
+      default: mod.WalletsDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

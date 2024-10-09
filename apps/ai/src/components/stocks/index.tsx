@@ -41,7 +41,7 @@ export { BotCard, BotMessage, SystemMessage } from "./message";
 
 // @ts-expect-error
 const Stock = dynamic<typeof Stock>(
-  () => import("./stock").then((mod) => mod.Stock),
+  () => import("./stock").then((mod) => ({ default: mod.Stock })),
   {
     ssr: false,
     loading: () => <StockSkeleton />,
@@ -53,7 +53,7 @@ const Stock = dynamic<typeof Stock>(
 // -----------------------------------------------------------------------------
 
 const Purchase = dynamic(
-  () => import("./stock-purchase").then((mod) => mod.Purchase),
+  () => import("./stock-purchase").then((mod) => ({ default: mod.Purchase })),
   {
     ssr: false,
     loading: () => (
@@ -66,19 +66,25 @@ const Purchase = dynamic(
 // Component
 // -----------------------------------------------------------------------------
 
-const Stocks = dynamic(() => import("./stocks").then((mod) => mod.Stocks), {
-  ssr: false,
-  loading: () => <StocksSkeleton />,
-});
+const Stocks = dynamic(
+  () => import("./stocks").then((mod) => ({ default: mod.Stocks })),
+  {
+    ssr: false,
+    loading: () => <StocksSkeleton />,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const Events = dynamic(() => import("./events").then((mod) => mod.Events), {
-  ssr: false,
-  loading: () => <EventsSkeleton />,
-});
+const Events = dynamic(
+  () => import("./events").then((mod) => ({ default: mod.Events })),
+  {
+    ssr: false,
+    loading: () => <EventsSkeleton />,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Export

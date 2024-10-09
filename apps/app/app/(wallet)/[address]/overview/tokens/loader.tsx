@@ -27,7 +27,9 @@ const TokensDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table"
-    ).then((mod) => mod.TokensDataTable),
+    ).then((mod) => ({
+      default: mod.TokensDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,

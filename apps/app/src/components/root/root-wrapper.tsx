@@ -24,9 +24,15 @@ import type { FC } from "react";
 // Dynamic UI
 // -----------------------------------------------------------------------------
 
-const CommandK = dynamic(() => import("@/components/command-k"), {
-  ssr: false,
-});
+const CommandK = dynamic(
+  () =>
+    import("@/components/command-k").then((mod) => ({
+      default: mod.CommandK,
+    })),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Dynamic States
@@ -34,14 +40,19 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
 
 const WalletState = dynamic(
   () =>
-    import("@/components/state/wallet-state").then((mod) => mod.WalletState),
+    import("@/components/state/wallet-state").then((mod) => ({
+      default: mod.WalletState,
+    })),
   {
     ssr: false,
   },
 );
 
 const WssState = dynamic(
-  () => import("@/components/wss/wss-state").then((mod) => mod.WssState),
+  () =>
+    import("@/components/wss/wss-state").then((mod) => ({
+      default: mod.WssState,
+    })),
   {
     ssr: false,
   },

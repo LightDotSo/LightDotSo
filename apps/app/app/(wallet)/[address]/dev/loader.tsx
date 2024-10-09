@@ -26,7 +26,9 @@ import type { Address } from "viem";
 const DevForm = dynamic(
   () =>
     import("@/app/(wallet)/[address]/dev/(components)/dev-form").then(
-      (mod) => mod.DevForm,
+      (mod) => ({
+        default: mod.DevForm,
+      }),
     ),
   {
     loading: () => <Loading />,

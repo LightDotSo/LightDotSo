@@ -26,7 +26,9 @@ import type { Address } from "viem";
 const CreateDialog = dynamic(
   () =>
     import("@/app/(wallet)/[address]/create/(components)/create-dialog").then(
-      (mod) => mod.CreateDialog,
+      (mod) => ({
+        default: mod.CreateDialog,
+      }),
     ),
   {
     loading: () => <Loading />,

@@ -27,7 +27,9 @@ const HistoryDataTable = dynamic(
   () =>
     import(
       "@/app/(wallet)/[address]/overview/history/(components)/history-data-table"
-    ).then((mod) => mod.HistoryDataTable),
+    ).then((mod) => ({
+      default: mod.HistoryDataTable,
+    })),
   {
     loading: () => <Loading />,
     ssr: false,
