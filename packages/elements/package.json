@@ -38,8 +38,8 @@
     "class-variance-authority": "^0.7.0",
     "glob": "^11.0.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.447.0",
-    "next": "15.0.0-canary.178",
+    "lucide-react": "^0.451.0",
+    "next": "15.0.0-canary.181",
     "react-blurhash": "^0.3.0",
     "viem": "^2.21.19"
   },
@@ -47,11 +47,11 @@
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.3.5",
     "@types/lodash": "^4.17.10",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
     "react": "19.0.0-rc-e740d4b1-20240919",

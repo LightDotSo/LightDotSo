@@ -26,12 +26,12 @@
     "@babel/core": "^7.25.7",
     "@coinbase/onchainkit": "^0.13.4",
     "@lightdotso/services": "workspace:*",
-    "@next/bundle-analyzer": "15.0.0-canary.178",
+    "@next/bundle-analyzer": "15.0.0-canary.181",
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.33.1",
     "@vercel/og": "^0.6.2",
     "critters": "^0.0.24",
-    "next": "15.0.0-canary.178",
+    "next": "15.0.0-canary.181",
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "viem": "^2.21.19"
@@ -40,13 +40,13 @@
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "publishConfig": {
     "access": "public"

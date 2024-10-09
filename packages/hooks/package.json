@@ -39,17 +39,17 @@
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "merkletreejs": "^0.4.0",
-    "next": "15.0.0-canary.178",
+    "next": "15.0.0-canary.181",
     "siwe": "^2.3.2",
     "viem": "^2.21.19"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/lodash": "^4.17.10",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
     "react": "19.0.0-rc-e740d4b1-20240919",
