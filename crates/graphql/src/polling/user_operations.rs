@@ -170,6 +170,8 @@ pub enum UserOperationOrderBy {
     Index,
     #[cynic(rename = "sender")]
     Sender,
+    #[cynic(rename = "nonceKey")]
+    NonceKey,
     #[cynic(rename = "nonce")]
     Nonce,
     #[cynic(rename = "initCode")]
@@ -284,6 +286,8 @@ pub enum UserOperationOrderBy {
     UserOperationRevertReasonUserOpHash,
     #[cynic(rename = "userOperationRevertReason__sender")]
     UserOperationRevertReasonSender,
+    #[cynic(rename = "userOperationRevertReason__nonceKey")]
+    UserOperationRevertReasonNonceKey,
     #[cynic(rename = "userOperationRevertReason__nonce")]
     UserOperationRevertReasonNonce,
     #[cynic(rename = "userOperationRevertReason__revertReason")]
