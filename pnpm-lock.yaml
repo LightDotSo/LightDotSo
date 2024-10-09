@@ -3949,8 +3949,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.447.0
-        version: 0.447.0(react@19.0.0-rc-e740d4b1-20240919)
+        specifier: ^0.451.0
+        version: 0.451.0(react@19.0.0-rc-e740d4b1-20240919)
       next:
         specifier: 15.0.0-canary.181
         version: 15.0.0-canary.181(@babel/core@7.25.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)
@@ -18632,11 +18632,6 @@ packages:
 
   lucide-react@0.438.0:
     resolution: {integrity: sha512-uq6yCB+IzVfgIPMK8ibkecXSWTTSOMs9UjUgZigfrDCVqgdwkpIgYg1fSYnf0XXF2AoSyCJZhoZXQwzoai7VGw==}
-    peerDependencies:
-      react: 19.0.0-rc-e740d4b1-20240919
-
-  lucide-react@0.447.0:
-    resolution: {integrity: sha512-SZ//hQmvi+kDKrNepArVkYK7/jfeZ5uFNEnYmd45RKZcbGD78KLnrcNXmgeg6m+xNHFvTG+CblszXCy4n6DN4w==}
     peerDependencies:
       react: 19.0.0-rc-e740d4b1-20240919
 
@@ -43500,10 +43495,6 @@ snapshots:
   lru_map@0.3.3: {}
 
   lucide-react@0.438.0(react@19.0.0-rc-e740d4b1-20240919):
-    dependencies:
-      react: 19.0.0-rc-e740d4b1-20240919
-
-  lucide-react@0.447.0(react@19.0.0-rc-e740d4b1-20240919):
     dependencies:
       react: 19.0.0-rc-e740d4b1-20240919
 
