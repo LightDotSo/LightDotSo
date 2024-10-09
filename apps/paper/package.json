@@ -25,12 +25,12 @@
     "@lightdotso/tsconfig": "workspace:*",
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
-    "typescript": "^5.6.2",
+    "typescript": "^5.6.3",
     "vocs": "^1.0.0-alpha.61",
     "yaml": "^2.5.1"
   },
   "devDependencies": {
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.11"
   }
 }

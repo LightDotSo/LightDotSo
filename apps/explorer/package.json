@@ -51,12 +51,12 @@
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.33.1",
     "@sentry/react": "^8.33.1",
-    "@tanstack/react-query": "^5.59.0",
-    "@tanstack/react-query-devtools": "^5.59.0",
-    "@tanstack/react-query-next-experimental": "^5.59.0",
+    "@tanstack/react-query": "^5.59.8",
+    "@tanstack/react-query-devtools": "^5.59.8",
+    "@tanstack/react-query-next-experimental": "^5.59.8",
     "@tanstack/react-table": "^8.20.5",
     "kysely-postgres-js": "^2.0.0",
-    "lucide-react": "^0.447.0",
+    "lucide-react": "^0.451.0",
     "neverthrow": "^8.0.0",
     "next": "15.0.0-canary.178",
     "postgres": "^3.4.4",
@@ -71,13 +71,13 @@
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "publishConfig": {
     "access": "public"
