@@ -1,5 +1,15 @@
 # @lightdotso/images
 
+## 0.0.11
+
+### Patch Changes
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- Updated dependencies [[`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`157e69b`](https://github.com/LightDotSo/LightDotSo/commit/157e69b0393e33dabf96a4231ddee289e60db9e5), [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`c260f04`](https://github.com/LightDotSo/LightDotSo/commit/c260f0469a87ab14fe7f7b14bc961a0c46c554a3)]:
+  - @lightdotso/client@3.1.16
+  - @lightdotso/const@3.1.14
+
 ## 0.0.10
 
 ### Patch Changes

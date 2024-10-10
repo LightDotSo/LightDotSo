@@ -1,5 +1,39 @@
 # @lightdotso/web
 
+## 3.2.25
+
+### Patch Changes
+
+- [#2413](https://github.com/LightDotSo/LightDotSo/pull/2413) [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light root
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2439](https://github.com/LightDotSo/LightDotSo/pull/2439) [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light pkgs
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2420](https://github.com/LightDotSo/LightDotSo/pull/2420) [`5958a08`](https://github.com/LightDotSo/LightDotSo/commit/5958a081fa9b4126920ed28d3926ebb4b05cce14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add npm lop
+
+- Updated dependencies [[`f6a41e8`](https://github.com/LightDotSo/LightDotSo/commit/f6a41e846f3246e6c93c65ebefc14a52ab24afcd), [`259b82b`](https://github.com/LightDotSo/LightDotSo/commit/259b82bd75478c3a17a67216afec7e73244c0d0b), [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`157e69b`](https://github.com/LightDotSo/LightDotSo/commit/157e69b0393e33dabf96a4231ddee289e60db9e5), [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14), [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`33ef0ce`](https://github.com/LightDotSo/LightDotSo/commit/33ef0ceb7e39dd0ae805f51c11197bf45e8ac7ff), [`c260f04`](https://github.com/LightDotSo/LightDotSo/commit/c260f0469a87ab14fe7f7b14bc961a0c46c554a3), [`99305f3`](https://github.com/LightDotSo/LightDotSo/commit/99305f346ef7864d20fc4fb0ea1d01ff668db879), [`7cbfa60`](https://github.com/LightDotSo/LightDotSo/commit/7cbfa60ca834c6b98004af373ac6f0aa22d4c063), [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5), [`33ef0ce`](https://github.com/LightDotSo/LightDotSo/commit/33ef0ceb7e39dd0ae805f51c11197bf45e8ac7ff)]:
+  - @lightdotso/query@0.1.21
+  - @lightdotso/prisma@3.1.11
+  - @lightdotso/client@3.1.16
+  - @lightdotso/kysely@3.1.11
+  - @lightdotso/query-keys@0.1.15
+  - @lightdotso/validators@0.0.13
+  - @lightdotso/templates@0.0.25
+  - @lightdotso/services@0.0.17
+  - @lightdotso/params@0.1.15
+  - @lightdotso/states@0.0.21
+  - @lightdotso/stores@0.1.18
+  - @lightdotso/tables@0.1.25
+  - @lightdotso/roots@0.0.11
+  - @lightdotso/types@0.0.14
+  - @lightdotso/utils@3.1.16
+  - @lightdotso/data@0.1.14
+  - @lightdotso/nuqs@0.0.16
+  - @lightdotso/ui@3.1.21
+
 ## 3.2.24
 
 ### Patch Changes

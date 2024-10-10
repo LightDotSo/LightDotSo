@@ -1,5 +1,30 @@
 # @lightdotso/contracts
 
+## 4.0.3
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2439](https://github.com/LightDotSo/LightDotSo/pull/2439) [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light pkgs
+
+- [#2410](https://github.com/LightDotSo/LightDotSo/pull/2410) [`a6294d9`](https://github.com/LightDotSo/LightDotSo/commit/a6294d92448de82d92ed22145a5ab1fc9d67766d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add files array
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2412](https://github.com/LightDotSo/LightDotSo/pull/2412) [`bad4e66`](https://github.com/LightDotSo/LightDotSo/commit/bad4e66d97a27339d85cc348bbf94db75cc30c83) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs con
+
+- [#2437](https://github.com/LightDotSo/LightDotSo/pull/2437) [`6530d0f`](https://github.com/LightDotSo/LightDotSo/commit/6530d0f61c6346a5107841212621b871a4ebbd1f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add packed uop
+
+- [#2420](https://github.com/LightDotSo/LightDotSo/pull/2420) [`5958a08`](https://github.com/LightDotSo/LightDotSo/commit/5958a081fa9b4126920ed28d3926ebb4b05cce14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add npm lop
+
+- [#2467](https://github.com/LightDotSo/LightDotSo/pull/2467) [`d01faff`](https://github.com/LightDotSo/LightDotSo/commit/d01faffc3e7dce6e7cb7426740cd32166c7a0b17) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add debug capability
+
+- Updated dependencies [[`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/sequence@0.0.13
+
 ## 4.0.2
 
 ### Patch Changes
