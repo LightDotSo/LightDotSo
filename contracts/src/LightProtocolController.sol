@@ -16,11 +16,9 @@
 
 pragma solidity ^0.8.27;
 
-import {Ownable2StepUpgradeable} from
-    "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
+import {TimelockControllerUpgradeable} from
+    "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {MulticallUpgradeable} from
-    "@openzeppelin/contracts-upgradeable/utils/MulticallUpgradeable.sol";
 
 /// @title LightProtocolController
 /// @author @shunkakinoki
@@ -29,27 +27,43 @@ import {MulticallUpgradeable} from
 /// @dev The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light
 /// Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightProtocolController is
-    UUPSUpgradeable,
-    Ownable2StepUpgradeable,
-    MulticallUpgradeable
-{
+contract LightProtocolController is UUPSUpgradeable, TimelockControllerUpgradeable {
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /// @notice The name for this contract
+    string public constant NAME = "LightProtocolController";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.1.0";
+
+    // -------------------------------------------------------------------------
+    // Constructor + Functions
+    // -------------------------------------------------------------------------
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address initialOwner) public initializer {
-        __Ownable2Step_init();
+    function initialize(
+        uint256 minDelay,
+        address[] memory proposers,
+        address[] memory executors,
+        address admin
+    )
+        public
+        initializer
+    {
         __UUPSUpgradeable_init();
-        __Multicall_init();
-        _transferOwnership(initialOwner);
+        __TimelockController_init(minDelay, proposers, executors, admin);
     }
 
-    // function multicall(bytes[] calldata data) public override returns (bytes[] memory results) {
-    //     return super.multicall(data);
-    // }
+    // -------------------------------------------------------------------------
+    // Upgrades
+    // -------------------------------------------------------------------------
 
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address) internal override onlyOwner {}
+    function _authorizeUpgrade(address) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }
