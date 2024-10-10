@@ -1,5 +1,13 @@
 # @lightdotso/resources
 
+## 3.0.6
+
+### Patch Changes
+
+- [#2415](https://github.com/LightDotSo/LightDotSo/pull/2415) [`259b82b`](https://github.com/LightDotSo/LightDotSo/commit/259b82bd75478c3a17a67216afec7e73244c0d0b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs query
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
 ## 3.0.5
 
 ### Patch Changes

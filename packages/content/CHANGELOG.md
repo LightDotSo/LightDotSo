@@ -1,5 +1,15 @@
 # @lightdotso/content
 
+## 3.1.11
+
+### Patch Changes
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
 ## 3.1.10
 
 ### Patch Changes

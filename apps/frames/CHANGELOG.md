@@ -1,5 +1,18 @@
 # @lightdotso/frames
 
+## 0.0.15
+
+### Patch Changes
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2439](https://github.com/LightDotSo/LightDotSo/pull/2439) [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light pkgs
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- Updated dependencies [[`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/services@0.0.17
+
 ## 0.0.14
 
 ### Patch Changes

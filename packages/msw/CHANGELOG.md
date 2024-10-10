@@ -1,5 +1,17 @@
 # @lightdotso/msw
 
+## 0.0.16
+
+### Patch Changes
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- Updated dependencies [[`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/const@3.1.14
+  - @lightdotso/demo@0.0.17
+
 ## 0.0.15
 
 ### Patch Changes
