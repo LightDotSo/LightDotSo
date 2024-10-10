@@ -4,6 +4,11 @@
   "tasks": {
     "build": {
       "inputs": [
+        "abis/**",
+        "bytecodes/**",
+        "circuits/**",
+        "constants/**",
+        "script/**",
         "src/**",
         "../lib/**",
         "../.gitmodules",
