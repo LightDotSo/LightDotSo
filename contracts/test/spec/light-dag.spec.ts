@@ -23,7 +23,7 @@ test("LightDAG: Correct humanReadableAbi", () => {
       "event OperationRootCalled(bytes32 indexed root, address indexed caller)",
       "function NAME() view returns (string)",
       "function VERSION() view returns (string)",
-      "function callOperationRoot((bytes32 root, (bytes32 hash, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)[] operations) operationRoot)",
+      "function callOperationRoot((bytes32 root, (bytes32 hash, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)[] operations, address verifier) operationRoot)",
     ]
   `);
 });

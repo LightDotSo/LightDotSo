@@ -19,6 +19,8 @@ pragma solidity ^0.8.27;
 import {Ownable2StepUpgradeable} from
     "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {MulticallUpgradeable} from
+    "@openzeppelin/contracts-upgradeable/utils/MulticallUpgradeable.sol";
 
 /// @title LightProtocolController
 /// @author @shunkakinoki
@@ -27,7 +29,27 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/U
 /// @dev The contract is the initial implementation of a Directed Acyclic Graph (DAG) for Light
 /// Protocol.
 /// @dev Further implementations will be added in the future, and may be subject to change.
-contract LightProtocolController is UUPSUpgradeable, Ownable2StepUpgradeable {
+contract LightProtocolController is
+    UUPSUpgradeable,
+    Ownable2StepUpgradeable,
+    MulticallUpgradeable
+{
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(address initialOwner) public initializer {
+        __Ownable2Step_init();
+        __UUPSUpgradeable_init();
+        __Multicall_init();
+        _transferOwnership(initialOwner);
+    }
+
+    // function multicall(bytes[] calldata data) public override returns (bytes[] memory results) {
+    //     return super.multicall(data);
+    // }
+
     /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address) internal override onlyOwner {}
 }
