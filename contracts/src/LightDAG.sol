@@ -16,6 +16,18 @@
 
 pragma solidity ^0.8.27;
 
+interface IMulticall {
+    struct Call {
+        address target;
+        bytes callData;
+    }
+
+    function aggregate(Call[] memory calls)
+        external
+        view
+        returns (uint256 blockNumber, bytes[] memory returnData);
+}
+
 /// @title LightDAG
 /// @author @shunkakinoki
 /// @notice LightDAG is an implementation contract for Light Protocol.
@@ -29,17 +41,17 @@ contract LightDAG {
     // -------------------------------------------------------------------------
 
     /// @notice The operation struct
-    struct Operation {
-        bytes32 hash;
+    struct LightOperation {
+        bytes32 id;
+        uint256 chainId;
         bytes[] conditionData;
         bytes32[] dependencies;
-        bytes32 fallbackOperation;
     }
 
     /// @notice The root of the operation
-    struct OperationRoot {
-        bytes32 root;
-        Operation[] operations;
+    struct LightOperationDAG {
+        bytes32 rootId;
+        LightOperation[] operations;
         address verifier;
     }
 
@@ -67,6 +79,24 @@ contract LightDAG {
     );
 
     // -------------------------------------------------------------------------
+    // Immutable Storage
+    // -------------------------------------------------------------------------
+
+    /// @notice The address of the Multicall contract
+    address public immutable multicallAddress;
+
+    // -------------------------------------------------------------------------
+    // Constructor + Functions
+    // -------------------------------------------------------------------------
+
+    /// @notice Initializes the contract with the Multicall address
+    /// @param _multicallAddress The address of the Multicall contract
+    constructor(address _multicallAddress) {
+        require(_multicallAddress != address(0), "Invalid Multicall address");
+        multicallAddress = _multicallAddress;
+    }
+
+    // -------------------------------------------------------------------------
     // Constant
     // -------------------------------------------------------------------------
 
@@ -80,22 +110,36 @@ contract LightDAG {
     // Constant
     // -------------------------------------------------------------------------
 
-    function callOperationRoot(OperationRoot memory operationRoot) public {
-        // Check if the operation root is valid
-        require(operationRoot.root != bytes32(0), "LightDAG: Operation root is empty");
+    /// @notice Processes a LightOperation and calls the multicall contract
+    /// @param operation The LightOperation to process
+    /// @return success Whether all conditions in the operation were met
+    function processLightOperation(LightOperation memory operation)
+        public
+        view
+        returns (bool success)
+    {
+        require(operation.chainId == block.chainid, "Invalid chain ID");
 
-        // Call the operation root event
-        emit OperationRootCalled(operationRoot.root, msg.sender);
+        IMulticall multicall = IMulticall(multicallAddress);
+        IMulticall.Call[] memory calls = new IMulticall.Call[](operation.conditionData.length);
 
-        // Call the operations
-        for (uint256 i = 0; i < operationRoot.operations.length; i++) {
-            emit OperationCalled(
-                operationRoot.operations[i].hash,
-                msg.sender,
-                operationRoot.operations[i].conditionData,
-                operationRoot.operations[i].dependencies,
-                operationRoot.operations[i].fallbackOperation
-            );
+        for (uint256 i = 0; i < operation.conditionData.length; i++) {
+            (address target, bytes memory data) =
+                abi.decode(operation.conditionData[i], (address, bytes));
+            calls[i] = IMulticall.Call({target: target, callData: data});
         }
+
+        (, bytes[] memory returnData) = multicall.aggregate(calls);
+
+        success = true;
+        for (uint256 i = 0; i < returnData.length; i++) {
+            bool conditionMet = abi.decode(returnData[i], (bool));
+            if (!conditionMet) {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
     }
 }
