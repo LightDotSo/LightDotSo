@@ -29,4 +29,5 @@ export {
   AUTHENTICATED_PATHS,
   INTERCEPTION_PATHS,
   DEMO_PATHS,
+  HOME_PATHS,
 } from "./paths";
