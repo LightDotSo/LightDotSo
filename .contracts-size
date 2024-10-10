@@ -19,9 +19,10 @@
 | LibBytes                       |       86 |     24,490 |
 | LibBytesPointer                |       86 |     24,490 |
 | LibOptim                       |       86 |     24,490 |
-| LightDAG                       |    2,116 |     22,460 |
+| LightDAG                       |    2,183 |     22,393 |
 | LightPaymaster                 |    9,694 |     14,882 |
 | LightPaymasterUtils            |    1,449 |     23,127 |
+| LightProtocolController        |   11,601 |     12,975 |
 | LightTimelockController        |   11,956 |     12,620 |
 | LightTimelockControllerFactory |    2,579 |     21,997 |
 | LightVault                     |   23,365 |      1,211 |

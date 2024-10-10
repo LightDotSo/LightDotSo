@@ -18,6 +18,10 @@
 | _nonceUsed             | mapping(uint256 => mapping(address => bool)) | 2    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 | _signers               | mapping(address => bool)                     | 3    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
+ ➡ LightProtocolController
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ LightTimelockController
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
