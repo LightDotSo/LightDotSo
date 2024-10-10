@@ -28,6 +28,10 @@ interface IMulticall {
         returns (uint256 blockNumber, bytes[] memory returnData);
 }
 
+interface IERC20 {
+    function balanceOf(address account) external view returns (uint256);
+}
+
 /// @title LightDAG
 /// @author @shunkakinoki
 /// @notice LightDAG is an implementation contract for Light Protocol.
@@ -110,6 +114,24 @@ contract LightDAG {
     // Constant
     // -------------------------------------------------------------------------
 
+    /// @notice Checks if the LightOperationRoot is valid
+    /// @param operationRoot The LightOperationRoot to check
+    /// @return success Whether the LightOperationRoot is valid
+    function checkLightOperationRoot(LightOperationDAG memory operationRoot)
+        public
+        view
+        returns (bool success)
+    {
+        // Check if the operation root is valid
+        require(operationRoot.rootId != bytes32(0), "LightDAG: Operation root is empty");
+
+        // Check if the operation root is valid
+        require(operationRoot.verifier != address(0), "LightDAG: Operation root is empty");
+
+        // Check if the operation root is valid
+        require(operationRoot.verifier != address(0), "LightDAG: Operation root is empty");
+    }
+
     /// @notice Processes a LightOperation and calls the multicall contract
     /// @param operation The LightOperation to process
     /// @return success Whether all conditions in the operation were met
@@ -141,5 +163,28 @@ contract LightDAG {
         }
 
         return success;
+    }
+
+    /// @notice Checks if an address has the required balance of a token
+    /// @param account The address to check the balance of
+    /// @param tokenAddress The address of the token (use address(0) for native token)
+    /// @param requiredBalance The minimum balance required
+    /// @return success Whether the account has at least the required balance
+    function checkBalance(
+        address account,
+        address tokenAddress,
+        uint256 requiredBalance
+    )
+        public
+        view
+        returns (bool success)
+    {
+        uint256 balance;
+        if (tokenAddress == address(0)) {
+            balance = account.balance;
+        } else {
+            balance = IERC20(tokenAddress).balanceOf(account);
+        }
+        return balance >= requiredBalance;
     }
 }
