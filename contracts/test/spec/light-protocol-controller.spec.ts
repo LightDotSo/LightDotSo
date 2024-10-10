@@ -22,18 +22,14 @@ test("LightProtocolController: Correct humanReadableAbi", () => {
   ).toMatchInlineSnapshot(`
     [
       "constructor()",
-<<<<<<< HEAD
       "error AccessControlBadConfirmation()",
       "error AccessControlUnauthorizedAccount(address account, bytes32 neededRole)",
-=======
->>>>>>> origin/main
       "error AddressEmptyCode(address target)",
       "error ERC1967InvalidImplementation(address implementation)",
       "error ERC1967NonPayable()",
       "error FailedInnerCall()",
       "error InvalidInitialization()",
       "error NotInitializing()",
-<<<<<<< HEAD
       "error TimelockInsufficientDelay(uint256 delay, uint256 minDelay)",
       "error TimelockInvalidOperationLength(uint256 targets, uint256 payloads, uint256 values)",
       "error TimelockUnauthorizedCaller(address caller)",
@@ -86,26 +82,6 @@ test("LightProtocolController: Correct humanReadableAbi", () => {
       "function updateDelay(uint256 newDelay)",
       "function upgradeToAndCall(address newImplementation, bytes data) payable",
       "receive() external payable",
-=======
-      "error OwnableInvalidOwner(address owner)",
-      "error OwnableUnauthorizedAccount(address account)",
-      "error UUPSUnauthorizedCallContext()",
-      "error UUPSUnsupportedProxiableUUID(bytes32 slot)",
-      "event Initialized(uint64 version)",
-      "event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner)",
-      "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
-      "event Upgraded(address indexed implementation)",
-      "function UPGRADE_INTERFACE_VERSION() view returns (string)",
-      "function acceptOwnership()",
-      "function initialize(address initialOwner)",
-      "function multicall(bytes[] data) returns (bytes[] results)",
-      "function owner() view returns (address)",
-      "function pendingOwner() view returns (address)",
-      "function proxiableUUID() view returns (bytes32)",
-      "function renounceOwnership()",
-      "function transferOwnership(address newOwner)",
-      "function upgradeToAndCall(address newImplementation, bytes data) payable",
->>>>>>> origin/main
     ]
   `);
 });
