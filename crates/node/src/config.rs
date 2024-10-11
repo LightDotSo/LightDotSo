@@ -39,7 +39,7 @@ impl NodeArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let node = Node::new(self).await;
+        let node = Node::new(self).await?;
 
         Ok(node)
     }

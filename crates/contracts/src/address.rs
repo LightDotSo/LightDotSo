@@ -45,16 +45,51 @@ lazy_static! {
       *ENTRYPOINT_V070_ADDRESS;
 }
 
+// The light offchain verifier address (v0.1.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_OFFCHAIN_VERIFIER_V010_ADDRESS: Address =
+    // v0.1.0
+    "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F".parse().unwrap();
+}
+
+// The light offchain verifier address (v0.2.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_OFFCHAIN_VERIFIER_V020_ADDRESS: Address =
+    // v0.2.0
+    "0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17".parse().unwrap();
+}
+
+// The light offchain verifier address (v0.3.0)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_OFFCHAIN_VERIFIER_V030_ADDRESS: Address =
+    // v0.3.0
+    "0x0618fe3a19a4980a0202adbdb5201e74cd9908ff".parse().unwrap();
+}
+
+// The light offchain verifier address (latest)
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_OFFCHAIN_VERIFIER_ADDRESS: Address =
+    *LIGHT_OFFCHAIN_VERIFIER_V030_ADDRESS;
+}
+
+// The light offchain verifiers
+lazy_static! {
+    pub static ref LIGHT_OFFCHAIN_VERIFIER_ADDRESSES: [Address; 3] = [
+        *LIGHT_OFFCHAIN_VERIFIER_V010_ADDRESS,
+        *LIGHT_OFFCHAIN_VERIFIER_V020_ADDRESS,
+        *LIGHT_OFFCHAIN_VERIFIER_V030_ADDRESS,
+    ];
+}
+
 // The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref LIGHT_PAYMASTER_ADDRESSES: [Address; 3] = [
-      // v1 (Fallback)
-      "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap(),
-      // v2
-      "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap(),
-      // v3
-      "0x000000000054230BA02ADD2d96fA4362A8606F97".parse().unwrap(),
+    pub static ref LIGHT_PAYMASTER_ADDRESSES: [Address; 1] = [
+      *LIGHT_PAYMASTER_V010_ADDRESS,
     ];
 }
 

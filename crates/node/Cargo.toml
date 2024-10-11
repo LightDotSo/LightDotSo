@@ -16,6 +16,7 @@
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
+  lightdotso-signer = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }
