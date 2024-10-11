@@ -51,6 +51,6 @@ surl/=lib/surl/src/
 @/bytecode/=contracts/bytecode/
 @/constant/=contracts/constant/
 @/contracts/=contracts/src/
-@/circuit/=contracts/circuits/
+@/circuits/=contracts/circuits/
 @/test/=contracts/test/
 @/script/=contracts/script/
