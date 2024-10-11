@@ -47,28 +47,31 @@ pub struct KmsSigner {
 }
 
 impl KmsSigner {
-    pub async fn connect(
-        chain_id: u64,
-        key_ids: Vec<String>,
-        ttl_millis: u64,
-    ) -> eyre::Result<Self> {
+    pub async fn connect(key_ids: Vec<String>, ttl_millis: u64) -> eyre::Result<Self> {
         let (tx, rx) = oneshot::channel::<String>();
 
         // Create the redis client
         let redis_client: Client = get_redis_client()?;
 
+        // Spawn the lock manager loop
         let kms_guard = SpawnGuard::spawn_with_guard(Self::lock_manager_loop(
             vec![redis_client],
             key_ids,
-            chain_id,
             ttl_millis,
             tx,
         ));
+
+        // Wait for the lock manager loop to lock a key_id
         let key_id = rx.await.context("should lock key_id")?;
+
+        // Create the AWS KMS client
         let config = aws_config::load_defaults(BehaviorVersion::latest()).await;
         let client = aws_sdk_kms::Client::new(&config);
-        let signer =
-            AwsSigner::new(client, key_id, Some(chain_id)).await.context("should create signer")?;
+
+        // Create the AWS signer
+        let signer = AwsSigner::new(client, key_id, None)
+            .await
+            .map_err(|e| eyre!("AWS Signer connection error: {}", e))?;
 
         Ok(Self { signer, _kms_guard: kms_guard })
     }
@@ -76,7 +79,6 @@ impl KmsSigner {
     async fn lock_manager_loop(
         clients: Vec<Client>,
         key_ids: Vec<String>,
-        chain_id: u64,
         ttl_millis: u64,
         locked_tx: oneshot::Sender<String>,
     ) -> Result<()> {
@@ -84,53 +86,39 @@ impl KmsSigner {
 
         let lm = LockManager::new(clients);
 
-        let mut lock = None;
-        let mut kid = None;
-        let lock_context =
-            key_ids.into_iter().map(|id| (format!("{chain_id}:{id}"), id)).collect::<Vec<_>>();
-
-        for (lock_id, key_id) in lock_context.iter() {
-            match lm.lock(lock_id.as_bytes(), ttl_millis as usize).await {
-                Ok(l) => {
-                    lock = Some(l);
-                    kid = Some(key_id.clone());
-                    info!("locked key_id {key_id}");
-                    break;
-                }
-                Err(e) => {
-                    warn!("could not lock key_id {key_id}: {e:?}");
-                    continue;
-                }
-            }
-        }
-        if lock.is_none() {
-            return Err(eyre!("could not lock any key_id"));
-        }
-        if kid.is_none() {
-            return Err(eyre!("could not lock any key_id"));
-        }
-
-        if let Some(kid) = kid {
-            info!("sending locked key_id {kid}");
-            let _ = locked_tx.send(kid);
-        }
-
-        if let Some(lock) = lock {
-            let lg = LockGuard { lock };
-            loop {
-                sleep(Duration::from_millis(ttl_millis / 10)).await;
-                match lm.extend(&lg.lock, ttl_millis as usize).await {
-                    Ok(_) => {
-                        debug!("extended lock");
+        let (lock, kid) = {
+            let mut lock = None;
+            let mut kid = None;
+            for key_id in &key_ids {
+                match lm.lock(key_id.as_bytes(), ttl_millis as usize).await {
+                    Ok(l) => {
+                        info!("Locked key_id {key_id}");
+                        lock = Some(l);
+                        kid = Some(key_id.clone());
+                        break;
                     }
                     Err(e) => {
-                        error!("could not extend lock: {e:?}");
+                        warn!("Could not lock key_id {key_id}: {e:?}");
                     }
                 }
             }
-        }
+            match (lock, kid) {
+                (Some(l), Some(k)) => (l, k),
+                _ => return Err(eyre!("Could not lock any key_id")),
+            }
+        };
 
-        Ok(())
+        info!("Sending locked key_id {kid}");
+        locked_tx.send(kid).map_err(|_| eyre!("Failed to send locked key_id"))?;
+
+        let lg = LockGuard { lock };
+        loop {
+            sleep(Duration::from_millis(ttl_millis / 10)).await;
+            match lm.extend(&lg.lock, ttl_millis as usize).await {
+                Ok(_) => debug!("Extended lock"),
+                Err(e) => error!("Could not extend lock: {e:?}"),
+            }
+        }
     }
 }
 
