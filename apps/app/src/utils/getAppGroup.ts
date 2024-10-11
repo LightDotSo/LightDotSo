@@ -16,6 +16,7 @@ import {
   ACTION_PATHS,
   AUTHENTICATED_PATHS,
   DEMO_PATHS,
+  HOME_PATHS,
   UNAUTHENTICATED_PATHS,
 } from "@/const";
 import type { AppGroup } from "@lightdotso/types";
@@ -42,6 +43,10 @@ export const getAppGroup = (pathname: string): AppGroup => {
 
   if (ACTION_PATHS.some((path) => pathname.startsWith(path))) {
     return "action";
+  }
+
+  if (HOME_PATHS.some((path) => pathname.startsWith(path))) {
+    return "home";
   }
 
   return "wallet";

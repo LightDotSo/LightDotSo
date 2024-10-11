@@ -23,7 +23,7 @@ import {
     LIGHT_PAYMASTER_ADDRESS,
     LIGHT_VAULT_FACTORY_ADDRESS,
     LIGHT_DAG_ADDRESS
-} from "@/constants/address.sol";
+} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";

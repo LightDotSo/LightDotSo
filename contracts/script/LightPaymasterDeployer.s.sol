@@ -23,8 +23,10 @@ import {
     proxyInitCode,
     proxyInitCodeHash,
     proxySalt
-} from "@/bytecodes/LightPaymaster/v0.1.0.b.sol";
-import {LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/address.sol";
+} from "@/bytecode/LightPaymaster/v0.1.0.b.sol";
+import {
+    LIGHT_PAYMASTER_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS
+} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
@@ -61,7 +63,8 @@ contract LightPaymasterDeployer is BaseLightDeployer, Script {
             vm.startBroadcast();
 
             // Deploy the implementation
-            LightPaymaster paymasterImplementation = new LightPaymaster(deployWithCreate2(initCode, salt));
+            LightPaymaster paymasterImplementation =
+                new LightPaymaster(deployWithCreate2(initCode, salt));
 
             // Assert that the paymaster is the expected address
             assert(address(paymasterImplementation) == LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS);

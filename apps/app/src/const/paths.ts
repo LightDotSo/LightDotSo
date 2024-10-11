@@ -41,3 +41,4 @@ export const DEMO_PATHS = [
   "/demo/transactions",
 ];
 export const ACTION_PATHS = ["/swap", "/create", "/deposit", "/send"];
+export const HOME_PATHS = ["/home"];

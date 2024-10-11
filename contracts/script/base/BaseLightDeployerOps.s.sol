@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_PAYMASTER_ADDRESS} from "@/constants/address.sol";
+import {LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_PAYMASTER_ADDRESS} from "@/constant/address.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

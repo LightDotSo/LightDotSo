@@ -101,6 +101,9 @@ export async function middleware(req: NextRequest) {
     case "demo":
       response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
       break;
+    case "home":
+      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "home" as AppGroup);
+      break;
     default:
       response.cookies.delete(COOKIES.APP_GROUP_COOKIE_ID);
   }

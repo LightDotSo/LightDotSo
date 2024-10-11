@@ -4,10 +4,10 @@
   "tasks": {
     "build": {
       "inputs": [
-        "abis/**",
-        "bytecodes/**",
-        "circuits/**",
-        "constants/**",
+        "abi/**",
+        "bytecode/**",
+        "circuit/**",
+        "constant/**",
         "script/**",
         "src/**",
         "../lib/**",

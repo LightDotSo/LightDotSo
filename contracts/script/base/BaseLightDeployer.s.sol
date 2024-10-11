@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {ENTRYPOINT_ADDRESS} from "@/constants/address.sol";
+import {ENTRYPOINT_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {PackedUserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
@@ -49,12 +49,16 @@ abstract contract BaseLightDeployer is BaseTest {
 
     /// @notice Base deployer test for scripts
     /// @dev This contract is used to request gas estimation for a particular chain
-    function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
+    function getGasRequestGasEstimation()
+        internal
+        returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas)
+    {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
         string[] memory headers = new string[](1);
         headers[0] = "Content-Type: application/json";
-        string memory body = '{"id": 1,"jsonrpc":"2.0","method":"gas_requestGasEstimation","params":[]}';
+        string memory body =
+            '{"id": 1,"jsonrpc":"2.0","method":"gas_requestGasEstimation","params":[]}';
 
         // Get the response
         (, bytes memory data) = url.post(headers, body);
@@ -71,7 +75,8 @@ abstract contract BaseLightDeployer is BaseTest {
 
     /// @dev Gets the gas parameters and the paymaster and data
     /// The rpc is responsible for calling `eth_estimateUserOperationGas` for the user operation
-    /// and returning the `preVerificationGas`, `verificationGasLimit` and `callGasLimit` w/ `paymasterAndData`
+    /// and returning the `preVerificationGas`, `verificationGasLimit` and `callGasLimit` w/
+    /// `paymasterAndData`
     function getPaymasterRequestGasAndPaymasterAndData(
         address _sender,
         uint256 _nonce,
@@ -133,9 +138,13 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     /// @dev Gets the estimated gas for a user operation
-    /// @notice Not used in the script, because the `paymaster_requestGasAndPaymasterAndData` is responsible for calling `eth_estimateUserOperationGas`
+    /// @notice Not used in the script, because the `paymaster_requestGasAndPaymasterAndData` is
+    /// responsible for calling `eth_estimateUserOperationGas`
     /// w/ the associated `preVerificationGas`, `verificationGasLimit` and `callGasLimit`
-    function getEthEstimateUserOperationGas(address sender, bytes memory initCode)
+    function getEthEstimateUserOperationGas(
+        address sender,
+        bytes memory initCode
+    )
         internal
         returns (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit)
     {
@@ -241,7 +250,8 @@ abstract contract BaseLightDeployer is BaseTest {
         return string(abi.encodePacked(baseUrl, chainId));
     }
 
-    // From: https://ethereum.stackexchange.com/questions/126899/convert-bytes-to-hexadecimal-string-in-solidity
+    // From:
+    // https://ethereum.stackexchange.com/questions/126899/convert-bytes-to-hexadecimal-string-in-solidity
     // License: GPL-3.0
     /// @dev Converts bytes to hexadecimal string
     function bytesToHexString(bytes memory buffer) public pure returns (string memory) {

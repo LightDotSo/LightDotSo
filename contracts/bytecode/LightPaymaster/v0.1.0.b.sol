@@ -15,9 +15,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {MagicSpend} from "magic-spend/MagicSpend.sol";
-import {proxyByteCode} from "@/bytecodes/ERC1967Proxy/v0.3.0.b.sol";
-import {ENTRYPOINT_V070_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS} from "@/constants/address.sol";
-import {LIGHT_PAYMASTER_MAX_WITHDRAWAL_DENOMINATOR} from "@/constants/config.sol";
+import {proxyByteCode} from "@/bytecode/ERC1967Proxy/v0.3.0.b.sol";
+import {
+    ENTRYPOINT_V070_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS
+} from "@/constant/address.sol";
+import {LIGHT_PAYMASTER_MAX_WITHDRAWAL_DENOMINATOR} from "@/constant/config.sol";
 
 pragma solidity ^0.8.27;
 
@@ -31,8 +33,12 @@ bytes constant proxyInitCode = abi.encodePacked(
     proxyByteCode,
     abi.encode(
         address(LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS),
-        abi.encodeCall(MagicSpend.initialize, (address(0), LIGHT_PAYMASTER_MAX_WITHDRAWAL_DENOMINATOR, address(0)))
+        abi.encodeCall(
+            MagicSpend.initialize,
+            (address(0), LIGHT_PAYMASTER_MAX_WITHDRAWAL_DENOMINATOR, address(0))
+        )
     )
 );
-bytes32 constant proxyInitCodeHash = 0x0000000000000000000000000000000000000000000000000000000000000000;
+bytes32 constant proxyInitCodeHash =
+    0x0000000000000000000000000000000000000000000000000000000000000000;
 bytes32 constant proxySalt = 0x0000000000000000000000000000000000000000000000000000000000000000;
