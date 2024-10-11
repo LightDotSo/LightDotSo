@@ -70,6 +70,10 @@ impl Node {
 
         // Check if the address matches one of the offchain verifier address
         let address = signer.address();
+
+        // Log the address
+        info!("node signer address: {:?}", address);
+
         // Return an error if the address is not one of the offchain verifier addresses
         if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&address) {
             return Err(eyre!("Address is not one of the offchain verifier addresses"));
