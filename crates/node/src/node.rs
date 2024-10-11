@@ -28,7 +28,7 @@
 
 use crate::config::NodeArgs;
 use alloy::{
-    consensus::{SignableTransaction, TxLegacy},
+    consensus::{SignableTransaction, TxEip1559, TxLegacy},
     eips::{BlockId, BlockNumberOrTag},
     network::{TransactionBuilder, TxSigner},
     primitives::{Address, Bytes, B256},
@@ -327,23 +327,23 @@ impl Node {
             .map_err(|e| eyre!("Failed to build typed tx: {:?}", e))?;
 
         // Get the legacy transaction
-        let mut tx_legacy: TxLegacy =
-            tx.legacy().ok_or_else(|| eyre!("Failed to get legacy tx"))?.clone();
+        let mut tx_eip1559: TxEip1559 =
+            tx.eip1559().ok_or_else(|| eyre!("Failed to get eip1559 tx"))?.clone();
 
         // Sign the transaction
-        let sig = signer.sign_transaction(&mut tx_legacy).await?;
+        let sig = signer.sign_transaction(&mut tx_eip1559).await?;
 
         // Initialize empty mut bytes
         let mut encoded_tx = vec![];
 
         // Encode the transaction
-        tx_legacy.encode_with_signature_fields(&sig, &mut encoded_tx);
+        tx_eip1559.encode_with_signature_fields(&sig, &mut encoded_tx);
 
         // Send the transaction
         let _ = provider.send_raw_transaction(&encoded_tx).await?;
 
         // Get the signed transaction
-        let signed_tx = tx_legacy.into_signed(sig);
+        let signed_tx = tx_eip1559.into_signed(sig);
 
         // Get the transaction hash
         let tx_hash = signed_tx.hash();
