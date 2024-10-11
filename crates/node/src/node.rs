@@ -28,19 +28,16 @@
 
 use crate::config::NodeArgs;
 use alloy::{
-    consensus::{SignableTransaction, TxEip1559, TxLegacy},
+    consensus::{SignableTransaction, TxLegacy},
     eips::{BlockId, BlockNumberOrTag},
-    network::{EthereumWallet, NetworkWallet, TransactionBuilder, TxSigner},
-    primitives::{address, Address, Bytes, TxKind, B256, U256},
-    providers::{ext::DebugApi, Provider, ProviderBuilder},
-    rpc::types::{
-        trace::geth::{
-            GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
-            GethDebugTracingOptions, GethDefaultTracingOptions,
-        },
-        TransactionRequest,
+    network::{TransactionBuilder, TxSigner},
+    primitives::{Address, Bytes, B256},
+    providers::{ext::DebugApi, Provider},
+    rpc::types::trace::geth::{
+        GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
+        GethDebugTracingOptions, GethDefaultTracingOptions,
     },
-    signers::{aws::AwsSigner, local::PrivateKeySigner},
+    signers::aws::AwsSigner,
 };
 use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
@@ -321,9 +318,12 @@ impl Node {
         let tx_request = call.into_transaction_request().with_chain_id(chain_id);
 
         // Build the transaction
-        let tx = tx_request.build_typed_tx().unwrap();
+        let tx = tx_request
+            .build_consensus_tx()
+            .map_err(|e| eyre!("Failed to build typed tx: {:?}", e))?;
 
-        let mut tx_legacy: TxLegacy = tx.legacy().unwrap().clone();
+        let mut tx_legacy: TxLegacy =
+            tx.legacy().ok_or_else(|| eyre!("Failed to get legacy tx"))?.clone();
 
         // Sign the transaction
         let sig = signer.sign_transaction(&mut tx_legacy).await?;

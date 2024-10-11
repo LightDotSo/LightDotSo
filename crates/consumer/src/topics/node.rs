@@ -19,8 +19,7 @@ use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_contracts::{
-    address::ENTRYPOINT_V060_ADDRESS, entrypoint_v060::get_entrypoint_v060,
-    light_wallet::get_light_wallet, types::PackedUserOperation,
+    address::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet, types::PackedUserOperation,
 };
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
