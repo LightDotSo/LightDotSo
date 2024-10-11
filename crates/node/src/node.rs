@@ -60,8 +60,8 @@ use serde_json::json;
 
 #[derive(Clone)]
 pub struct Node {
-    signer: AwsSigner,
-    signer_address: Address,
+    signer: Option<AwsSigner>,
+    signer_address: Option<Address>,
 }
 
 impl Node {
@@ -83,15 +83,11 @@ impl Node {
         }
 
         // Create the node
-        Ok(Self { signer, signer_address })
+        Ok(Self { signer: Some(signer), signer_address: Some(signer_address) })
     }
 
     pub async fn run(&self) {
         info!("Node run, starting");
-    }
-
-    pub fn get_signer_address(&self) -> Address {
-        self.signer_address
     }
 
     pub async fn simulate_user_operation_with_backon(
@@ -350,7 +346,10 @@ impl Node {
         let entry_point = get_entrypoint_v060(chain_id, *ENTRYPOINT_V060_ADDRESS).await?;
 
         // Get signer
-        let signer = self.signer.clone();
+        let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
+
+        // Get signer address
+        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
@@ -360,7 +359,7 @@ impl Node {
 
         // Set the transaction request
         let tx_request = entry_point
-            .handleOps(vec![user_operation.clone().into()], self.signer_address)
+            .handleOps(vec![user_operation.clone().into()], signer_address)
             .into_transaction_request();
 
         // Set the transaction
@@ -424,7 +423,10 @@ impl Node {
         let entry_point = get_entrypoint_v070(chain_id, *ENTRYPOINT_V070_ADDRESS).await?;
 
         // Get signer
-        let signer = self.signer.clone();
+        let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
+
+        // Get signer address
+        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
@@ -434,7 +436,7 @@ impl Node {
 
         // Set the transaction request
         let tx_request = entry_point
-            .handleOps(vec![packed_user_operation.clone().into()], self.signer_address)
+            .handleOps(vec![packed_user_operation.clone().into()], signer_address)
             .into_transaction_request();
 
         // Set the transaction
