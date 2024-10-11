@@ -311,7 +311,7 @@ impl Node {
         let (provider, _) = get_provider(chain_id).await?;
 
         // Get signer
-        let signer = self.signer.as_ref().unwrap();
+        let signer = self.signer.as_ref().ok_or_else(|| eyre!("Signer not found"))?;
 
         // Send the user operation to the node
         let call = entry_point.handleOps(vec![user_operation.clone().into()], Address::ZERO);
