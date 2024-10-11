@@ -162,18 +162,18 @@ contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the cont
 
 .PHONY: contracts-abi
 contracts-abi: ## Generate the contract ABIs
-	forge inspect LightDAG abi > contracts/abis/LightDAG/LightDAG.json
-	forge inspect LightPaymaster abi > contracts/abis/LightPaymaster/LightPaymaster.json
-	forge inspect LightTimelockController abi > contracts/abis/LightTimelockController/LightTimelockController.json
-	forge inspect LightTimelockControllerFactory abi > contracts/abis/LightTimelockControllerFactory/LightTimelockControllerFactory.json
-	forge inspect LightVault abi > contracts/abis/LightVault/LightVault.json
-	forge inspect LightVaultFactory abi > contracts/abis/LightVaultFactory/LightVaultFactory.json
-	forge inspect LightWallet abi > contracts/abis/LightWallet/LightWallet.json
-	forge inspect LightWalletFactory abi > contracts/abis/LightWalletFactory/LightWalletFactory.json
+	forge inspect LightDAG abi > contracts/abi/LightDAG/LightDAG.json
+	forge inspect LightPaymaster abi > contracts/abi/LightPaymaster/LightPaymaster.json
+	forge inspect LightTimelockController abi > contracts/abi/LightTimelockController/LightTimelockController.json
+	forge inspect LightTimelockControllerFactory abi > contracts/abi/LightTimelockControllerFactory/LightTimelockControllerFactory.json
+	forge inspect LightVault abi > contracts/abi/LightVault/LightVault.json
+	forge inspect LightVaultFactory abi > contracts/abi/LightVaultFactory/LightVaultFactory.json
+	forge inspect LightWallet abi > contracts/abi/LightWallet/LightWallet.json
+	forge inspect LightWalletFactory abi > contracts/abi/LightWalletFactory/LightWalletFactory.json
 
 .PHONY: contracts-abi-deps
 contracts-abi-deps: ## Generate the contract ABIs (dependencies)
-	forge inspect ERC1967Proxy abi > contracts/abis/ERC1967Proxy/ERC1967Proxy.json
+	forge inspect ERC1967Proxy abi > contracts/abi/ERC1967Proxy/ERC1967Proxy.json
 
 .PHONY: contracts-abi-all
 contracts-abi-all: contracts-abi contracts-abi-deps ## Generate the contract ABIs (all)

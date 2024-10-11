@@ -16,8 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightDAG/v0.1.0.b.sol";
-import {LIGHT_DAG_ADDRESS} from "@/constants/address.sol";
+import {initCode, initCodeHash, salt} from "@/bytecode/LightDAG/v0.1.0.b.sol";
+import {LIGHT_DAG_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

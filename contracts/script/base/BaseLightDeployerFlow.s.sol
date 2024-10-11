@@ -16,13 +16,14 @@
 
 pragma solidity ^0.8.27;
 
-import {PackedUserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {PackedUserOperation} from
+    "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 import {
     ENTRYPOINT_ADDRESS,
     LIGHT_WALLET_FACTORY_ADDRESS,
     LIGHT_PAYMASTER_ADDRESS,
     SIMPLE_ACCOUNT_FACTORY_ADDRESS
-} from "@/constants/address.sol";
+} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
@@ -88,7 +89,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory initCode,
         bytes memory callData,
         bool isLightWallet
-    ) internal returns (PackedUserOperation memory op) {
+    )
+        internal
+        returns (PackedUserOperation memory op)
+    {
         // Get the paymaster request gas and paymaster and data
         (
             uint256 preVerificationGas,
@@ -97,9 +101,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             bytes memory paymasterAndData,
             uint128 maxFeePerGas,
             uint128 maxPriorityFeePerGas
-        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData, isLightWallet);
+        ) = getPaymasterRequestGasAndPaymasterAndData(
+            expectedAddress, nonce, initCode, callData, isLightWallet
+        );
 
-        bytes32 accountGasLimits = ERC4337Utils.packAccountGasLimits(verificationGasLimit, callGasLimit);
+        bytes32 accountGasLimits =
+            ERC4337Utils.packAccountGasLimits(verificationGasLimit, callGasLimit);
         bytes32 gasFees = ERC4337Utils.packGasFees(maxPriorityFeePerGas, maxFeePerGas);
 
         // Get the gas estimation
@@ -154,11 +161,13 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         address expectedAddress = simpleAccountFactory.getAddress(deployer, nonce);
 
         // Sent ETH to the account w/ the expected address
-        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1),
+        // 1, bytes(""));
         bytes memory callData = "";
 
         // UserOperation to create the account
-        PackedUserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
+        PackedUserOperation memory op =
+            constructUserOperation(expectedAddress, 0, initCode, callData, false);
 
         // -------------------------------------------------------------------------
 
@@ -195,7 +204,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
 
         // Get the expected image hash
-        expectedImageHash = LightWalletUtils.getExpectedImageHash(deployer, weight, threshold, checkpoint);
+        expectedImageHash =
+            LightWalletUtils.getExpectedImageHash(deployer, weight, threshold, checkpoint);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -206,22 +216,27 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
             LIGHT_WALLET_FACTORY_ADDRESS,
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(
+                LightWalletFactory.createAccount.selector, expectedImageHash, nonce
+            )
         );
 
         // solhint-disable-next-line no-console
         console.logBytes(initCode);
 
         // Sent ETH to the account w/ the expected address
-        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1),
+        // 1, bytes(""));
         bytes memory callData = "";
 
         // UserOperation to create the account
-        PackedUserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, true);
+        PackedUserOperation memory op =
+            constructUserOperation(expectedAddress, 0, initCode, callData, true);
 
         // Sign the UserOperation
-        bytes memory sig =
-            LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey, false);
+        bytes memory sig = LightWalletUtils.signDigest(
+            vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey, false
+        );
 
         // Construct the UserOperation
         op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);

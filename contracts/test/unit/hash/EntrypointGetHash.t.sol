@@ -18,7 +18,7 @@ pragma solidity ^0.8.27;
 
 import {PackedUserOperation} from
     "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
-import {ENTRYPOINT_V070_ADDRESS} from "@/constants/address.sol";
+import {ENTRYPOINT_V070_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";

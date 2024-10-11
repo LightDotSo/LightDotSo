@@ -16,8 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {byteCode, salt} from "@/bytecodes/Entrypoint/v0.7.0.b.sol";
-import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constants/address.sol";
+import {byteCode, salt} from "@/bytecode/Entrypoint/v0.7.0.b.sol";
+import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";

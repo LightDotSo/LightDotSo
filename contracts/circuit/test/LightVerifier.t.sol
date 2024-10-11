@@ -15,13 +15,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Tests are inspired by noir-starter
-// Link: https://github.com/noir-lang/noir-starter/blob/dff860c69eb235df64bfbdfe86fdc03cbc8f97cb/with-foundry/test/Starter.t.sol
+// Link:
+// https://github.com/noir-lang/noir-starter/blob/dff860c69eb235df64bfbdfe86fdc03cbc8f97cb/with-foundry/test/Starter.t.sol
 // License: MIT
 
 pragma solidity ^0.8.27;
 
-import {UltraVerifier} from "@/circuits/contract/plonk_vk.sol";
-import {LightVerifier} from "@/circuits/contract/LightVerifier.sol";
+import {UltraVerifier} from "@/circuit/contract/plonk_vk.sol";
+import {LightVerifier} from "@/circuit/contract/LightVerifier.sol";
 import {Test} from "forge-std/Test.sol";
 
 /// @notice Unit tests for `LightVerifier`, organized by functions.

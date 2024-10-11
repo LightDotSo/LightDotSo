@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {ENTRYPOINT_V060_ADDRESS, OFFCHAIN_VERIFIER_ADDRESS} from "@/constants/address.sol";
+import {ENTRYPOINT_V060_ADDRESS, OFFCHAIN_VERIFIER_ADDRESS} from "@/constant/address.sol";
 
 pragma solidity ^0.8.27;
 

@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {ENTRYPOINT_V060_ADDRESS} from "@/constants/address.sol";
+import {ENTRYPOINT_V060_ADDRESS} from "@/constant/address.sol";
 
 // bytes memory byteCode = type(LightWalletFactory).creationCode;
 bytes constant byteCode =

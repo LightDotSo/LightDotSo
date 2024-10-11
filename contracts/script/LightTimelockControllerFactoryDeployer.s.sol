@@ -16,8 +16,10 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightTimelockControllerFactory/v0.1.0.b.sol";
-import {LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS} from "@/constants/address.sol";
+import {
+    initCode, initCodeHash, salt
+} from "@/bytecode/LightTimelockControllerFactory/v0.1.0.b.sol";
+import {LIGHT_TIMELOCK_CONTROLLER_FACTORY_ADDRESS} from "@/constant/address.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {LightTimelockControllerFactory} from "@/contracts/LightTimelockControllerFactory.sol";
 // solhint-disable-next-line no-console

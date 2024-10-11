@@ -16,8 +16,8 @@
 
 pragma solidity ^0.8.27;
 
-import {initCode, initCodeHash, salt} from "@/bytecodes/LightVaultFactory/v0.1.0.b.sol";
-import {LIGHT_VAULT_FACTORY_ADDRESS} from "@/constants/address.sol";
+import {initCode, initCodeHash, salt} from "@/bytecode/LightVaultFactory/v0.1.0.b.sol";
+import {LIGHT_VAULT_FACTORY_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightVaultFactory} from "@/contracts/LightVaultFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";

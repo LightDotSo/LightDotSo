@@ -159,7 +159,7 @@
     "@uniswap/v3-core/=lib/v3-core",
     "@uniswap/v3-periphery/=lib/v3-periphery/",
     "@zerodevapp/contracts/=lib/kernel/src/",
-    "@/bytecodes/=contracts/bytecodes/",
+    "@/bytecode/=contracts/bytecodes/",
     "@/constants/=contracts/constants/",
     "@/contracts/=contracts/src/",
     "@/circuits/=contracts/circuits/",

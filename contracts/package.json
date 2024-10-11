@@ -14,15 +14,15 @@
   "author": "LightDotSo",
   "sideEffects": false,
   "exports": {
-    "abi/*": "./abis/*.json",
-    "bytecode/*": "./bytecodes/*.json",
+    "abi/*": "./abi/*.json",
+    "bytecode/*": "./bytecode/*.json",
     "src/*": "./src/*.sol"
   },
   "files": [
-    "abis/**",
-    "bytecodes/**",
-    "circuits/**",
-    "constants/**",
+    "abi/**",
+    "bytecode/**",
+    "circuit/**",
+    "constant/**",
     "src/**",
     "test/**"
   ],
