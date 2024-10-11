@@ -26,8 +26,8 @@ bytes constant byteCode =
 bytes constant initCode = byteCode;
 bytes32 constant initCodeHash = 0x69383c5cf7aff56ec5d891b93bf0f1221e08f34e08b406de8633b864db4dfb67;
 bytes32 constant salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
-address[] constant proposers = new address[](0);
-address[] constant executors = new address[](0);
+address[] constant proposers = [address(0x0000000000000000000000000000000000000000)];
+address[] constant executors = [address(0x0000000000000000000000000000000000000000)];
 bytes constant proxyInitCode = abi.encodePacked(
     proxyByteCode,
     abi.encode(
