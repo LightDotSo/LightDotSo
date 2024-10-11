@@ -326,6 +326,7 @@ impl Node {
             .build_consensus_tx()
             .map_err(|e| eyre!("Failed to build typed tx: {:?}", e))?;
 
+        // Get the legacy transaction
         let mut tx_legacy: TxLegacy =
             tx.legacy().ok_or_else(|| eyre!("Failed to get legacy tx"))?.clone();
 
@@ -385,5 +386,13 @@ impl Node {
         let res = handle_response(response).await?;
 
         Ok(res)
+    }
+
+    pub async fn raw_send_packed_user_operation(
+        &self,
+        _chain_id: u64,
+        _packed_user_operation: &PackedUserOperation,
+    ) -> Result<B256> {
+        Ok(B256::ZERO)
     }
 }

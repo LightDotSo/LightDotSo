@@ -135,7 +135,16 @@ pub async fn node_consumer(
 
             // Attempt to submit the packed user operation to the node
             let res =
-                node.send_packed_user_operation_with_backon(chain_id, entrypoint, &puop).await?;
+                node.send_packed_user_operation_with_backon(chain_id, entrypoint, &puop).await;
+
+            // If the response is an error
+            if res.is_err() {
+                // Send the packed user operation raw
+                let res = node.raw_send_packed_user_operation(chain_id, &puop).await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
 
             // Log the response
             info!("res: {:?}", res);
