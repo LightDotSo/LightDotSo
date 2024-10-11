@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{entrypoint::EntryPoint::UserOperation, provider::get_provider};
+use crate::{entrypoint_v060::EntryPointV060::UserOperation, provider::get_provider};
 use alloy::{primitives::Address, providers::RootProvider, sol, transports::BoxTransport};
 use eyre::Result;
-use EntryPoint::EntryPointInstance;
+use EntryPointV060::EntryPointV060Instance;
 
 // -----------------------------------------------------------------------------
 // Contract
@@ -23,19 +23,19 @@ use EntryPoint::EntryPointInstance;
 
 sol!(
     #[sol(rpc)]
-    EntryPoint,
-    "abi/EntryPoint.json"
+    EntryPointV060,
+    "abi/EntryPointv0.6.json"
 );
 
-pub async fn get_entrypoint(
+pub async fn get_entrypoint_v060(
     chain_id: u64,
     entry_point_address: Address,
-) -> Result<EntryPointInstance<BoxTransport, RootProvider<BoxTransport>>> {
+) -> Result<EntryPointV060Instance<BoxTransport, RootProvider<BoxTransport>>> {
     // Get the provider.
     let (provider, _) = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = EntryPoint::new(entry_point_address, provider);
+    let contract = EntryPointV060::new(entry_point_address, provider);
 
     // Return the contract.
     Ok(contract)

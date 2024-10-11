@@ -15,7 +15,7 @@
 pub mod address;
 pub mod create2;
 pub mod dag;
-pub mod entrypoint;
+pub mod entrypoint_v060;
 pub mod entrypoint_v070;
 pub mod erc1271;
 pub mod light_wallet;

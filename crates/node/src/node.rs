@@ -42,7 +42,7 @@ use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
     address::LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
-    entrypoint::get_entrypoint,
+    entrypoint_v060::get_entrypoint_v060,
     provider::get_provider,
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::{PackedUserOperation, UserOperation},
@@ -111,7 +111,7 @@ impl Node {
         entry_point: Address,
         user_operation: &UserOperation,
     ) -> Result<()> {
-        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+        let entrypoint = get_entrypoint_v060(chain_id, entry_point).await?;
 
         // Simulate the user operation w/ `eth_call`
         let res = entrypoint
@@ -164,7 +164,7 @@ impl Node {
         user_operation: &UserOperation,
     ) -> Result<bool> {
         // Get the entrypoint
-        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+        let entrypoint = get_entrypoint_v060(chain_id, entry_point).await?;
 
         // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/contracts/src/entry_point.rs#L139-L175
         // License: Apache-2.0

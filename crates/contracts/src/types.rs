@@ -14,7 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::entrypoint::EntryPoint::UserOperation as EntryPointUserOperation;
+use crate::{
+    entrypoint_v060::EntryPointV060::UserOperation as EntryPointV060UserOperation,
+    entrypoint_v070::EntryPointV070::PackedUserOperation as EntryPointV070PackedUserOperation,
+};
 use alloy::{
     consensus::ReceiptWithBloom,
     primitives::{Address, Bytes, B256, U256, U8},
@@ -297,7 +300,7 @@ pub struct UserOperation {
 // Implementations
 // -----------------------------------------------------------------------------
 
-impl From<UserOperation> for EntryPointUserOperation {
+impl From<UserOperation> for EntryPointV060UserOperation {
     fn from(user_operation: UserOperation) -> Self {
         Self {
             sender: user_operation.sender,
@@ -491,6 +494,22 @@ impl From<PackedUserOperation> for UserOperation {
             max_priority_fee_per_gas: packed.max_priority_fee_per_gas,
             paymaster_and_data,
             signature: packed.signature,
+        }
+    }
+}
+
+impl From<PackedUserOperation> for EntryPointV070PackedUserOperation {
+    fn from(packed: PackedUserOperation) -> Self {
+        Self {
+            sender: packed.clone().sender,
+            nonce: packed.clone().nonce,
+            initCode: packed.clone().init_code(),
+            callData: packed.clone().call_data,
+            accountGasLimits: packed.clone().account_gas_limits().into(),
+            preVerificationGas: packed.clone().pre_verification_gas,
+            gasFees: packed.clone().gas_fees().into(),
+            paymasterAndData: packed.clone().paymaster_and_data(),
+            signature: packed.clone().signature,
         }
     }
 }
