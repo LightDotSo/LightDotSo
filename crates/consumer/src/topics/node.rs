@@ -25,7 +25,7 @@ use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
 use lightdotso_node::node::Node;
 use lightdotso_prisma::{configuration, PrismaClient};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
@@ -123,8 +123,10 @@ pub async fn node_consumer(
             info!("res: {:?}", res);
 
             if res.is_err() {
+                warn!("Failed to send user operation to the node, trying raw...");
+
                 // Send the user operation raw
-                let res = node.raw_send_user_operation(chain_id, &uop).await;
+                let res = node.send_raw_user_operation_with_backon(chain_id, &uop).await;
 
                 // Log the response
                 info!("res: {:?}", res);
@@ -139,8 +141,10 @@ pub async fn node_consumer(
 
             // If the response is an error
             if res.is_err() {
+                warn!("Failed to send packed user operation to the node, trying raw...");
+
                 // Send the packed user operation raw
-                let res = node.raw_send_packed_user_operation(chain_id, &puop).await;
+                let res = node.send_raw_packed_user_operation_with_backon(chain_id, &puop).await;
 
                 // Log the response
                 info!("res: {:?}", res);

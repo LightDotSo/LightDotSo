@@ -13,10 +13,18 @@
 // limitations under the License.
 
 use alloy::{
-    providers::{Provider, ProviderBuilder, RootProvider},
-    transports::BoxTransport,
+    network::{Ethereum, EthereumWallet},
+    providers::{
+        fillers::{
+            BlobGasFiller, ChainIdFiller, FillProvider, GasFiller, JoinFill, NonceFiller,
+            WalletFiller,
+        },
+        Identity, Provider, ProviderBuilder, RootProvider,
+    },
+    transports::{http::Http, BoxTransport},
 };
 use eyre::{eyre, Result};
+use reqwest::Client;
 
 // -----------------------------------------------------------------------------
 // Provider
@@ -71,4 +79,28 @@ pub async fn get_provider(chain_id: u64) -> Result<(RootProvider<BoxTransport>, 
 
     // If all attempts fail, return error message
     Err(eyre!("Could not connect to any RPC URL"))
+}
+
+pub async fn get_provider_with_wallet(
+    chain_id: u64,
+    wallet: EthereumWallet,
+) -> Result<(
+    FillProvider<
+        JoinFill<
+            JoinFill<
+                Identity,
+                JoinFill<GasFiller, JoinFill<BlobGasFiller, JoinFill<NonceFiller, ChainIdFiller>>>,
+            >,
+            WalletFiller<EthereumWallet>,
+        >,
+        RootProvider<Http<Client>>,
+        Http<Client>,
+        Ethereum,
+    >,
+    String,
+)> {
+    let (_, rpc_url) = get_provider(chain_id).await?;
+    let provider =
+        ProviderBuilder::new().with_recommended_fillers().wallet(wallet).on_http(rpc_url.parse()?);
+    Ok((provider, rpc_url))
 }
