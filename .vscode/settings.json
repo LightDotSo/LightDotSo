@@ -162,7 +162,7 @@
     "@/bytecode/=contracts/bytecodes/",
     "@/constant/=contracts/constant/",
     "@/contracts/=contracts/src/",
-    "@/circuit/=contracts/circuit/",
+    "@/circuits/=contracts/circuits/",
     "@/test/=contracts/test/",
     "@/script/=contracts/script/"
   ]

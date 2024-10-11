@@ -21,8 +21,8 @@
 
 pragma solidity ^0.8.27;
 
-import {UltraVerifier} from "@/circuit/contract/plonk_vk.sol";
-import {LightVerifier} from "@/circuit/contract/LightVerifier.sol";
+import {UltraVerifier} from "@/circuits/contract/plonk_vk.sol";
+import {LightVerifier} from "@/circuits/contract/LightVerifier.sol";
 import {Test} from "forge-std/Test.sol";
 
 /// @notice Unit tests for `LightVerifier`, organized by functions.
