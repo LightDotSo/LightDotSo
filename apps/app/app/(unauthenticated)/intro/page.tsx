@@ -12,30 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Header } from "@/components/header";
-import { Cta } from "./(sections)/cta";
-import { Ecosystem } from "./(sections)/ecosystem";
-import { Features } from "./(sections)/features";
-import { Hero } from "./(sections)/hero";
-import { Introduction } from "./(sections)/introduction";
-import { Swap } from "./(sections)/swap";
-import { Unified } from "./(sections)/unified";
+import OriginalPage from "@/app/(unauthenticated)/page";
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default function Page() {
-  return (
-    <div>
-      <Header />
-      <Hero />
-      <Swap />
-      <Introduction />
-      <Unified />
-      <Features />
-      <Ecosystem />
-      <Cta />
-    </div>
-  );
-}
+export default OriginalPage;
