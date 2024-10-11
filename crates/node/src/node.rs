@@ -366,8 +366,14 @@ impl Node {
         // Set the transaction
         let tx = tx_request.with_chain_id(chain_id);
 
+        // Send the transaction
         let builder = provider.send_transaction(tx).await?;
         let node_hash = *builder.tx_hash();
+
+        // Wait for the transaction to be included and get the receipt.
+        let receipt = builder.get_receipt().await?;
+
+        info!("receipt: {:?}", receipt);
 
         Ok(node_hash)
     }
@@ -434,8 +440,14 @@ impl Node {
         // Set the transaction
         let tx = tx_request.with_chain_id(chain_id);
 
+        // Send the transaction
         let builder = provider.send_transaction(tx).await?;
         let node_hash = *builder.tx_hash();
+
+        // Wait for the transaction to be included and get the receipt.
+        let receipt = builder.get_receipt().await?;
+
+        info!("receipt: {:?}", receipt);
 
         Ok(node_hash)
     }
