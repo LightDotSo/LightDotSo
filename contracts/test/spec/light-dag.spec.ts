@@ -19,11 +19,14 @@ import { expect, test } from "vitest";
 test("LightDAG: Correct humanReadableAbi", () => {
   expect(Object.values(LightDAG.humanReadableAbi)).toMatchInlineSnapshot(`
     [
+      "constructor(address _multicallAddress)",
       "event OperationCalled(bytes32 indexed operation, address indexed caller, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)",
       "event OperationRootCalled(bytes32 indexed root, address indexed caller)",
       "function NAME() view returns (string)",
       "function VERSION() view returns (string)",
-      "function callOperationRoot((bytes32 root, (bytes32 hash, bytes[] conditionData, bytes32[] dependencies, bytes32 fallbackOperation)[] operations, address verifier) operationRoot)",
+      "function checkBalance(address account, address tokenAddress, uint256 requiredBalance) view returns (bool success)",
+      "function multicallAddress() view returns (address)",
+      "function processLightOperation((bytes32 id, uint256 chainId, bytes[] conditionData, bytes32[] dependencies) operation) view returns (bool success)",
     ]
   `);
 });

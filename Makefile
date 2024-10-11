@@ -164,6 +164,7 @@ contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the cont
 contracts-abi: ## Generate the contract ABIs
 	forge inspect LightDAG abi > contracts/abi/LightDAG/LightDAG.json
 	forge inspect LightPaymaster abi > contracts/abi/LightPaymaster/LightPaymaster.json
+	forge inspect LightProtocolController abi > contracts/abi/LightProtocolController/LightProtocolController.json
 	forge inspect LightTimelockController abi > contracts/abi/LightTimelockController/LightTimelockController.json
 	forge inspect LightTimelockControllerFactory abi > contracts/abi/LightTimelockControllerFactory/LightTimelockControllerFactory.json
 	forge inspect LightVault abi > contracts/abi/LightVault/LightVault.json
@@ -182,6 +183,7 @@ contracts-abi-all: contracts-abi contracts-abi-deps ## Generate the contract ABI
 contracts-build: ## Build the contracts
 	./contracts/build.sh LightDAG.sol
 	./contracts/build.sh LightPaymaster.sol
+	./contracts/build.sh LightProtocolController.sol
 	./contracts/build.sh LightTimelockController.sol
 	./contracts/build.sh LightTimelockControllerFactory.sol
 	./contracts/build.sh LightVault.sol
