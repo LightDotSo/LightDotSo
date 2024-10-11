@@ -19,7 +19,8 @@ use eyre::Result;
 use lightdotso_client::get_user_operation_signature;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_contracts::{
-    address::ENTRYPOINT_V060_ADDRESS, light_wallet::get_light_wallet, types::PackedUserOperation,
+    address::ENTRYPOINT_V060_ADDRESS, entrypoint_v060::get_entrypoint_v060,
+    light_wallet::get_light_wallet, types::PackedUserOperation,
 };
 use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
@@ -117,10 +118,18 @@ pub async fn node_consumer(
             info!("res_catch: {:?}", res_catch);
 
             // Attempt to submit the user operation to the node
-            let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await?;
+            let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await;
 
             // Log the response
             info!("res: {:?}", res);
+
+            if res.is_err() {
+                // Send the user operation raw
+                let res = node.raw_send_user_operation(chain_id, &uop).await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
         } else {
             // Convert the user operation to a packed user operation
             let puop: PackedUserOperation = uop.into();

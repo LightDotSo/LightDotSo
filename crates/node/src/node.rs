@@ -28,20 +28,24 @@
 
 use crate::config::NodeArgs;
 use alloy::{
+    consensus::{SignableTransaction, TxEip1559, TxLegacy},
     eips::{BlockId, BlockNumberOrTag},
-    network::TxSigner,
-    primitives::{Address, Bytes, B256},
-    providers::ext::DebugApi,
-    rpc::types::trace::geth::{
-        GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
-        GethDebugTracingOptions, GethDefaultTracingOptions,
+    network::{EthereumWallet, NetworkWallet, TransactionBuilder, TxSigner},
+    primitives::{address, Address, Bytes, TxKind, B256, U256},
+    providers::{ext::DebugApi, Provider, ProviderBuilder},
+    rpc::types::{
+        trace::geth::{
+            GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
+            GethDebugTracingOptions, GethDefaultTracingOptions,
+        },
+        TransactionRequest,
     },
-    signers::aws::AwsSigner,
+    signers::{aws::AwsSigner, local::PrivateKeySigner},
 };
 use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    address::LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
+    address::{ENTRYPOINT_V060_ADDRESS, LIGHT_OFFCHAIN_VERIFIER_ADDRESSES},
     entrypoint_v060::get_entrypoint_v060,
     provider::get_provider,
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
@@ -296,6 +300,50 @@ impl Node {
         let res = handle_response(response).await?;
 
         Ok(res)
+    }
+
+    pub async fn raw_send_user_operation(
+        &self,
+        chain_id: u64,
+        user_operation: &UserOperation,
+    ) -> Result<B256> {
+        // Get the entrypoint
+        let entry_point = get_entrypoint_v060(chain_id, *ENTRYPOINT_V060_ADDRESS).await?;
+
+        // Get provider
+        let (provider, _) = get_provider(chain_id).await?;
+
+        // Get signer
+        let signer = self.signer.as_ref().unwrap();
+
+        // Send the user operation to the node
+        let call = entry_point.handleOps(vec![user_operation.clone().into()], Address::ZERO);
+        let tx_request = call.into_transaction_request().with_chain_id(chain_id);
+
+        // Build the transaction
+        let tx = tx_request.build_typed_tx().unwrap();
+
+        let mut tx_legacy: TxLegacy = tx.legacy().unwrap().clone();
+
+        // Sign the transaction
+        let sig = signer.sign_transaction(&mut tx_legacy).await?;
+
+        // Initialize empty mut bytes
+        let mut encoded_tx = vec![];
+
+        // Encode the transaction
+        tx_legacy.encode_with_signature_fields(&sig, &mut encoded_tx);
+
+        // Send the transaction
+        let _ = provider.send_raw_transaction(&encoded_tx).await?;
+
+        // Get the signed transaction
+        let signed_tx = tx_legacy.into_signed(sig);
+
+        // Get the transaction hash
+        let tx_hash = signed_tx.hash();
+
+        Ok(*tx_hash)
     }
 
     pub async fn send_packed_user_operation(
