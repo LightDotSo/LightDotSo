@@ -25,7 +25,7 @@ use lightdotso_db::models::user_operation::get_user_operation_with_chain_id;
 use lightdotso_kafka::types::node::NodeMessage;
 use lightdotso_node::node::Node;
 use lightdotso_prisma::{configuration, PrismaClient};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
@@ -117,17 +117,38 @@ pub async fn node_consumer(
             info!("res_catch: {:?}", res_catch);
 
             // Attempt to submit the user operation to the node
-            let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await?;
+            let res = node.send_user_operation_with_backon(chain_id, entrypoint, &uop).await;
 
             // Log the response
             info!("res: {:?}", res);
+
+            if res.is_err() {
+                warn!("Failed to send user operation to the node, trying raw...");
+
+                // Send the user operation raw
+                let res = node.send_raw_user_operation_with_backon(chain_id, &uop).await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
         } else {
             // Convert the user operation to a packed user operation
             let puop: PackedUserOperation = uop.into();
 
             // Attempt to submit the packed user operation to the node
             let res =
-                node.send_packed_user_operation_with_backon(chain_id, entrypoint, &puop).await?;
+                node.send_packed_user_operation_with_backon(chain_id, entrypoint, &puop).await;
+
+            // If the response is an error
+            if res.is_err() {
+                warn!("Failed to send packed user operation to the node, trying raw...");
+
+                // Send the packed user operation raw
+                let res = node.send_raw_packed_user_operation_with_backon(chain_id, &puop).await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
 
             // Log the response
             info!("res: {:?}", res);

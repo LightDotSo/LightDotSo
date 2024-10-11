@@ -29,9 +29,9 @@
 use crate::config::NodeArgs;
 use alloy::{
     eips::{BlockId, BlockNumberOrTag},
-    network::TxSigner,
+    network::{EthereumWallet, TransactionBuilder, TxSigner},
     primitives::{Address, Bytes, B256},
-    providers::ext::DebugApi,
+    providers::{ext::DebugApi, Provider},
     rpc::types::trace::geth::{
         GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
         GethDebugTracingOptions, GethDefaultTracingOptions,
@@ -41,9 +41,12 @@ use alloy::{
 use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
-    address::LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
-    entrypoint::get_entrypoint,
-    provider::get_provider,
+    address::{
+        ENTRYPOINT_V060_ADDRESS, ENTRYPOINT_V070_ADDRESS, LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
+    },
+    entrypoint_v060::get_entrypoint_v060,
+    entrypoint_v070::get_entrypoint_v070,
+    provider::{get_provider, get_provider_with_wallet},
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::{PackedUserOperation, UserOperation},
 };
@@ -57,7 +60,8 @@ use serde_json::json;
 
 #[derive(Clone)]
 pub struct Node {
-    signer: Option<AwsSigner>,
+    signer: AwsSigner,
+    signer_address: Address,
 }
 
 impl Node {
@@ -68,22 +72,26 @@ impl Node {
         let signer = connect_to_kms().await?;
 
         // Check if the address matches one of the offchain verifier address
-        let address = signer.address();
+        let signer_address = signer.address();
+
+        // Log the address
+        info!("node signer address: {:?}", signer_address);
+
         // Return an error if the address is not one of the offchain verifier addresses
-        if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&address) {
+        if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&signer_address) {
             return Err(eyre!("Address is not one of the offchain verifier addresses"));
         }
 
         // Create the node
-        Ok(Self { signer: Some(signer) })
+        Ok(Self { signer, signer_address })
     }
 
     pub async fn run(&self) {
         info!("Node run, starting");
     }
 
-    pub fn get_signer_address(&self) -> Option<Address> {
-        self.signer.as_ref().map(|s| s.address())
+    pub fn get_signer_address(&self) -> Address {
+        self.signer_address
     }
 
     pub async fn simulate_user_operation_with_backon(
@@ -111,7 +119,7 @@ impl Node {
         entry_point: Address,
         user_operation: &UserOperation,
     ) -> Result<()> {
-        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+        let entrypoint = get_entrypoint_v060(chain_id, entry_point).await?;
 
         // Simulate the user operation w/ `eth_call`
         let res = entrypoint
@@ -164,7 +172,7 @@ impl Node {
         user_operation: &UserOperation,
     ) -> Result<bool> {
         // Get the entrypoint
-        let entrypoint = get_entrypoint(chain_id, entry_point).await?;
+        let entrypoint = get_entrypoint_v060(chain_id, entry_point).await?;
 
         // From: https://github.com/silius-rs/silius/blob/f695b54cbbabf6b3f22f7af8918a2d6d83ca8960/crates/contracts/src/entry_point.rs#L139-L175
         // License: Apache-2.0
@@ -239,6 +247,23 @@ impl Node {
         res
     }
 
+    pub async fn send_raw_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        user_operation: &UserOperation,
+    ) -> Result<B256> {
+        // Send the raw user operation to the node
+        let send_raw_user_operation =
+            || async { self.raw_send_user_operation(chain_id, user_operation).await };
+
+        // Retry the request 5 times
+        let res =
+            send_raw_user_operation.retry(ExponentialBuilder::default().with_max_times(5)).await;
+        info!("res: {:?}", res);
+
+        res
+    }
+
     pub async fn send_packed_user_operation_with_backon(
         &self,
         chain_id: u64,
@@ -253,6 +278,24 @@ impl Node {
         // Retry the request 5 times
         let res =
             send_packed_user_operation.retry(ExponentialBuilder::default().with_max_times(5)).await;
+        info!("res: {:?}", res);
+
+        res
+    }
+
+    pub async fn send_raw_packed_user_operation_with_backon(
+        &self,
+        chain_id: u64,
+        packed_user_operation: &PackedUserOperation,
+    ) -> Result<B256> {
+        // Send the raw packed user operation to the node
+        let send_raw_packed_user_operation =
+            || async { self.raw_send_packed_user_operation(chain_id, packed_user_operation).await };
+
+        // Retry the request 5 times
+        let res = send_raw_packed_user_operation
+            .retry(ExponentialBuilder::default().with_max_times(5))
+            .await;
         info!("res: {:?}", res);
 
         res
@@ -298,6 +341,43 @@ impl Node {
         Ok(res)
     }
 
+    pub async fn raw_send_user_operation(
+        &self,
+        chain_id: u64,
+        user_operation: &UserOperation,
+    ) -> Result<B256> {
+        // Get the entrypoint
+        let entry_point = get_entrypoint_v060(chain_id, *ENTRYPOINT_V060_ADDRESS).await?;
+
+        // Get signer
+        let signer = self.signer.clone();
+
+        // Get the wallet
+        let wallet = EthereumWallet::from(signer);
+
+        // Get the provider with the wallet
+        let (provider, _) = get_provider_with_wallet(chain_id, wallet).await?;
+
+        // Set the transaction request
+        let tx_request = entry_point
+            .handleOps(vec![user_operation.clone().into()], self.signer_address)
+            .into_transaction_request();
+
+        // Set the transaction
+        let tx = tx_request.with_chain_id(chain_id);
+
+        // Send the transaction
+        let builder = provider.send_transaction(tx).await?;
+        let node_hash = *builder.tx_hash();
+
+        // Wait for the transaction to be included and get the receipt.
+        let receipt = builder.get_receipt().await?;
+
+        info!("receipt: {:?}", receipt);
+
+        Ok(node_hash)
+    }
+
     pub async fn send_packed_user_operation(
         &self,
         chain_id: u64,
@@ -333,5 +413,42 @@ impl Node {
         let res = handle_response(response).await?;
 
         Ok(res)
+    }
+
+    pub async fn raw_send_packed_user_operation(
+        &self,
+        chain_id: u64,
+        packed_user_operation: &PackedUserOperation,
+    ) -> Result<B256> {
+        // Get the entrypoint
+        let entry_point = get_entrypoint_v070(chain_id, *ENTRYPOINT_V070_ADDRESS).await?;
+
+        // Get signer
+        let signer = self.signer.clone();
+
+        // Get the wallet
+        let wallet = EthereumWallet::from(signer);
+
+        // Get the provider with the wallet
+        let (provider, _) = get_provider_with_wallet(chain_id, wallet).await?;
+
+        // Set the transaction request
+        let tx_request = entry_point
+            .handleOps(vec![packed_user_operation.clone().into()], self.signer_address)
+            .into_transaction_request();
+
+        // Set the transaction
+        let tx = tx_request.with_chain_id(chain_id);
+
+        // Send the transaction
+        let builder = provider.send_transaction(tx).await?;
+        let node_hash = *builder.tx_hash();
+
+        // Wait for the transaction to be included and get the receipt.
+        let receipt = builder.get_receipt().await?;
+
+        info!("receipt: {:?}", receipt);
+
+        Ok(node_hash)
     }
 }

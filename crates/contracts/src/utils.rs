@@ -26,7 +26,7 @@
 #![allow(clippy::expect_used)]
 #![allow(unused_doc_comments)]
 
-use crate::entrypoint::EntryPoint::{ExecutionResult, FailedOp};
+use crate::entrypoint_v060::EntryPointV060::{ExecutionResult, FailedOp};
 use alloy::{
     primitives::Bytes,
     providers::Provider,
