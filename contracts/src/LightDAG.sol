@@ -114,24 +114,6 @@ contract LightDAG {
     // Constant
     // -------------------------------------------------------------------------
 
-    /// @notice Checks if the LightOperationRoot is valid
-    /// @param operationRoot The LightOperationRoot to check
-    /// @return success Whether the LightOperationRoot is valid
-    function checkLightOperationRoot(LightOperationDAG memory operationRoot)
-        public
-        view
-        returns (bool success)
-    {
-        // Check if the operation root is valid
-        require(operationRoot.rootId != bytes32(0), "LightDAG: Operation root is empty");
-
-        // Check if the operation root is valid
-        require(operationRoot.verifier != address(0), "LightDAG: Operation root is empty");
-
-        // Check if the operation root is valid
-        require(operationRoot.verifier != address(0), "LightDAG: Operation root is empty");
-    }
-
     /// @notice Processes a LightOperation and calls the multicall contract
     /// @param operation The LightOperation to process
     /// @return success Whether all conditions in the operation were met
