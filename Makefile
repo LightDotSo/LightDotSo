@@ -175,6 +175,7 @@ contracts-abi: ## Generate the contract ABIs
 .PHONY: contracts-abi-deps
 contracts-abi-deps: ## Generate the contract ABIs (dependencies)
 	forge inspect ERC1967Proxy abi > contracts/abi/ERC1967Proxy/ERC1967Proxy.json
+	forge inspect EntryPointv070 abi > contracts/abi/EntryPoint/EntryPoint.json
 
 .PHONY: contracts-abi-all
 contracts-abi-all: contracts-abi contracts-abi-deps ## Generate the contract ABIs (all)

@@ -72,7 +72,8 @@ export function useTabs() {
     if (
       appGroup === "action" ||
       appGroup === "authenticated" ||
-      appGroup === "unauthenticated"
+      appGroup === "unauthenticated" ||
+      appGroup === "home"
     ) {
       return false;
     }
