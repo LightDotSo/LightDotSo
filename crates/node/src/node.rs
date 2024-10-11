@@ -349,8 +349,7 @@ impl Node {
         let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
 
         // Get signer address
-        let signer_address =
-            self.signer_address.clone().ok_or(eyre!("Signer address not found"))?;
+        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
@@ -427,8 +426,7 @@ impl Node {
         let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
 
         // Get signer address
-        let signer_address =
-            self.signer_address.clone().ok_or(eyre!("Signer address not found"))?;
+        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
