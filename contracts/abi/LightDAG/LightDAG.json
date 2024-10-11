@@ -1,5 +1,16 @@
 [
   {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_multicallAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
     "type": "function",
     "name": "NAME",
     "inputs": [],
@@ -27,50 +38,86 @@
   },
   {
     "type": "function",
-    "name": "callOperationRoot",
+    "name": "checkBalance",
     "inputs": [
       {
-        "name": "operationRoot",
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "requiredBalance",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "multicallAddress",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "processLightOperation",
+    "inputs": [
+      {
+        "name": "operation",
         "type": "tuple",
-        "internalType": "struct LightDAG.OperationRoot",
+        "internalType": "struct LightDAG.LightOperation",
         "components": [
           {
-            "name": "root",
+            "name": "id",
             "type": "bytes32",
             "internalType": "bytes32"
           },
           {
-            "name": "operations",
-            "type": "tuple[]",
-            "internalType": "struct LightDAG.Operation[]",
-            "components": [
-              {
-                "name": "hash",
-                "type": "bytes32",
-                "internalType": "bytes32"
-              },
-              {
-                "name": "conditionData",
-                "type": "bytes[]",
-                "internalType": "bytes[]"
-              },
-              {
-                "name": "dependencies",
-                "type": "bytes32[]",
-                "internalType": "bytes32[]"
-              },
-              {
-                "name": "fallbackOperation",
-                "type": "bytes32",
-                "internalType": "bytes32"
-              }
-            ]
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "conditionData",
+            "type": "bytes[]",
+            "internalType": "bytes[]"
+          },
+          {
+            "name": "dependencies",
+            "type": "bytes32[]",
+            "internalType": "bytes32[]"
           }
         ]
       }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "event",
