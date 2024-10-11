@@ -29,16 +29,19 @@
 use crate::config::NodeArgs;
 use alloy::{
     eips::{BlockId, BlockNumberOrTag},
+    network::TxSigner,
     primitives::{Address, Bytes, B256},
     providers::ext::DebugApi,
     rpc::types::trace::geth::{
         GethDebugTracerConfig, GethDebugTracerType, GethDebugTracingCallOptions,
         GethDebugTracingOptions, GethDefaultTracingOptions,
     },
+    signers::aws::AwsSigner,
 };
 use backon::{ExponentialBuilder, Retryable};
 use eyre::{eyre, ContextCompat, Result};
 use lightdotso_contracts::{
+    address::LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
     entrypoint::get_entrypoint,
     provider::get_provider,
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
@@ -48,22 +51,39 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::info;
 use serde_json::json;
 
 #[derive(Clone)]
-pub struct Node {}
+pub struct Node {
+    signer: Option<AwsSigner>,
+}
 
 impl Node {
-    pub async fn new(_args: &NodeArgs) -> Self {
+    pub async fn new(_args: &NodeArgs) -> Result<Self> {
         info!("Node new, starting");
 
+        // Connect to KMS
+        let signer = connect_to_kms().await?;
+
+        // Check if the address matches one of the offchain verifier address
+        let address = signer.address();
+        // Return an error if the address is not one of the offchain verifier addresses
+        if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&address) {
+            return Err(eyre!("Address is not one of the offchain verifier addresses"));
+        }
+
         // Create the node
-        Self {}
+        Ok(Self { signer: Some(signer) })
     }
 
     pub async fn run(&self) {
         info!("Node run, starting");
+    }
+
+    pub fn get_signer_address(&self) -> Option<Address> {
+        self.signer.as_ref().map(|s| s.address())
     }
 
     pub async fn simulate_user_operation_with_backon(

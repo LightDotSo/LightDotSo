@@ -7150,6 +7150,7 @@ dependencies = [
  "eyre",
  "lightdotso-contracts",
  "lightdotso-jsonrpsee",
+ "lightdotso-signer",
  "lightdotso-tracing",
  "reqwest 0.12.8",
  "serde",

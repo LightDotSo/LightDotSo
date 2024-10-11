@@ -75,7 +75,7 @@ export const Header: FC = () => {
           </div>
           <NavLocation tabs={HOME_TABS} isTabsVisibleDesktop={false}>
             <Button asChild>
-              <a href={INTERNAL_LINKS.App}>Launch App</a>
+              <a href={INTERNAL_LINKS.Intro}>Launch App</a>
             </Button>
           </NavLocation>
         </div>
