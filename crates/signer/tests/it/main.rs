@@ -27,10 +27,14 @@
 use alloy::signers::Signer;
 use dotenvy::dotenv;
 use lightdotso_signer::connect::connect_to_kms;
+use lightdotso_tracing::init_test_tracing;
 
-#[ignore]
+// #[ignore]
 #[tokio::test]
 async fn test_kms_connect() {
+    // Init the testing tracing
+    init_test_tracing();
+
     // Load the environment variables.
     let _ = dotenv();
 

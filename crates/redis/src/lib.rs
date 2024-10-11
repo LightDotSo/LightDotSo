@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use eyre::Result;
+use eyre::{Result, WrapErr};
 
 pub use redis;
 
@@ -25,9 +25,10 @@ pub mod rate_limit;
 /// Get a redis client from the environment variables
 pub fn get_redis_client() -> Result<redis::Client> {
     // Get the environment variables
-    let host = std::env::var("UPSTASH_REDIS_HOST")?;
-    let password = std::env::var("UPSTASH_REDIS_PASSWORD")?;
-    let port = std::env::var("UPSTASH_REDIS_PORT")?;
+    let host = std::env::var("UPSTASH_REDIS_HOST").wrap_err("UPSTASH_REDIS_HOST not found")?;
+    let password =
+        std::env::var("UPSTASH_REDIS_PASSWORD").wrap_err("UPSTASH_REDIS_PASSWORD not found")?;
+    let port = std::env::var("UPSTASH_REDIS_PORT").wrap_err("UPSTASH_REDIS_PORT not found")?;
 
     // If host is localhost, connect to redis without password
     if host == "localhost" {
