@@ -69,21 +69,26 @@ impl Node {
         info!("Node new, starting");
 
         // Connect to KMS
-        let signer = connect_to_kms().await?;
+        let signer = connect_to_kms().await;
 
-        // Check if the address matches one of the offchain verifier address
-        let signer_address = signer.address();
+        if let Ok(signer) = signer {
+            // Check if the address matches one of the offchain verifier address
+            let signer_address = signer.address();
 
-        // Log the address
-        info!("node signer address: {:?}", signer_address);
+            // Log the address
+            info!("node signer address: {:?}", signer_address);
 
-        // Return an error if the address is not one of the offchain verifier addresses
-        if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&signer_address) {
-            return Err(eyre!("Address is not one of the offchain verifier addresses"));
+            // Return an error if the address is not one of the offchain verifier addresses
+            if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&signer_address) {
+                return Err(eyre!("Address is not one of the offchain verifier addresses"));
+            }
+
+            // Create the node
+            Ok(Self { signer: Some(signer), signer_address: Some(signer_address) })
+        } else {
+            // Just return a node with no signer
+            Ok(Self { signer: None, signer_address: None })
         }
-
-        // Create the node
-        Ok(Self { signer: Some(signer), signer_address: Some(signer_address) })
     }
 
     pub async fn run(&self) {
