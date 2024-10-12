@@ -59,40 +59,35 @@ use lightdotso_tracing::tracing::info;
 use serde_json::json;
 
 #[derive(Clone)]
-pub struct Node {
-    signer: Option<AwsSigner>,
-    signer_address: Option<Address>,
-}
+pub struct Node {}
 
 impl Node {
     pub async fn new(_args: &NodeArgs) -> Result<Self> {
         info!("Node new, starting");
 
-        // Connect to KMS
-        let signer = connect_to_kms().await;
-
-        if let Ok(signer) = signer {
-            // Check if the address matches one of the offchain verifier address
-            let signer_address = signer.address();
-
-            // Log the address
-            info!("node signer address: {:?}", signer_address);
-
-            // Return an error if the address is not one of the offchain verifier addresses
-            if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&signer_address) {
-                return Err(eyre!("Address is not one of the offchain verifier addresses"));
-            }
-
-            // Create the node
-            Ok(Self { signer: Some(signer), signer_address: Some(signer_address) })
-        } else {
-            // Just return a node with no signer
-            Ok(Self { signer: None, signer_address: None })
-        }
+        Ok(Self {})
     }
 
     pub async fn run(&self) {
         info!("Node run, starting");
+    }
+
+    pub async fn get_signer(&self) -> Result<AwsSigner> {
+        // Connect to KMS
+        let signer = connect_to_kms().await?;
+
+        // Check if the address matches one of the offchain verifier address
+        let signer_address = signer.address();
+
+        // Log the address
+        info!("node signer address: {:?}", signer_address);
+
+        // Return an error if the address is not one of the offchain verifier addresses
+        if !LIGHT_OFFCHAIN_VERIFIER_ADDRESSES.contains(&signer_address) {
+            return Err(eyre!("Address is not one of the offchain verifier addresses"));
+        }
+
+        Ok(signer)
     }
 
     pub async fn simulate_user_operation_with_backon(
@@ -351,10 +346,10 @@ impl Node {
         let entry_point = get_entrypoint_v060(chain_id, *ENTRYPOINT_V060_ADDRESS).await?;
 
         // Get signer
-        let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
+        let signer = self.get_signer().await?;
 
         // Get signer address
-        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
+        let signer_address = signer.address();
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
@@ -428,10 +423,10 @@ impl Node {
         let entry_point = get_entrypoint_v070(chain_id, *ENTRYPOINT_V070_ADDRESS).await?;
 
         // Get signer
-        let signer = self.signer.clone().ok_or(eyre!("Signer not found"))?;
+        let signer = self.get_signer().await?;
 
         // Get signer address
-        let signer_address = self.signer_address.ok_or(eyre!("Signer address not found"))?;
+        let signer_address = signer.address();
 
         // Get the wallet
         let wallet = EthereumWallet::from(signer);
