@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "chai": "^5.1.1",
-    "envio": "^2.4.3",
-    "ethers": "^6.13.3"
+    "envio": "^2.4.4",
+    "ethers": "^6.13.4"
   },
   "devDependencies": {
     "@types/chai": "^5.0.0",
