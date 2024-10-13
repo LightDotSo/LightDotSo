@@ -45,16 +45,16 @@
     "@storybook/react": "^8.3.5",
     "@tanstack/react-table": "^8.20.5",
     "@tremor/react": "^3.18.3",
-    "lucide-react": "^0.451.0",
+    "lucide-react": "^0.452.0",
     "next": "15.0.0-canary.177",
-    "recharts": "2.13.0-alpha.4",
-    "viem": "^2.21.19"
+    "recharts": "2.13.0",
+    "viem": "^2.21.23"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"
   },
   "peerDependencies": {

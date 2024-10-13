@@ -55,6 +55,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({ children }) => {
     const client = new QueryClient({
       defaultOptions: {
         queries: {
+          experimental_prefetchInRender: true,
           gcTime: Number.POSITIVE_INFINITY,
           queryKeyHashFn: hashFn,
         },

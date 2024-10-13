@@ -45,11 +45,11 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.451.0",
+    "lucide-react": "^0.452.0",
     "next": "15.0.0-canary.177",
     "permissionless": "^0.2.7",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.19",
+    "viem": "^2.21.23",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -57,7 +57,7 @@
     "@storybook/react": "^8.3.5",
     "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
