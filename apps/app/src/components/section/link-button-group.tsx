@@ -14,6 +14,7 @@
 
 "use client";
 
+import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonGroup } from "@lightdotso/ui/components/button-group";
 import {
@@ -36,11 +37,7 @@ import { type Address, isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 interface TransactionsButtonLayoutProps extends HTMLAttributes<HTMLElement> {
-  items: {
-    id: string;
-    href: string;
-    title: string;
-  }[];
+  tabs: Tab[];
   children?: ReactNode;
 }
 
@@ -50,7 +47,7 @@ interface TransactionsButtonLayoutProps extends HTMLAttributes<HTMLElement> {
 
 export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   children,
-  items,
+  tabs,
 }) => {
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -76,17 +73,17 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // part of the path
 
   // Get the last part of the href of all the items
-  const itemHrefs = items.map((item) => item.href.split("/").pop());
+  const tabHrefs = tabs.map((tab) => tab.href.split("/").pop());
 
   // If all the item hrefs are the same, get the same last part of the path
-  const itemSegment = itemHrefs.every((val, _i, arr) => val === arr[0])
-    ? itemHrefs[0]
+  const tabSegment = tabHrefs.every((val, _i, arr) => val === arr[0])
+    ? tabHrefs[0]
     : null;
 
   // If itemSegment is not null, and the current path ends with the itemSegment,
   // get the second last part of the path
   const id =
-    itemSegment && pathname.endsWith(itemSegment)
+    tabSegment && pathname.endsWith(tabSegment)
       ? pathname.split("/").slice(-2, -1)[0]
       : pathname.split("/").pop();
 
@@ -119,8 +116,8 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   useEffect(() => {
     // Prefetch all the pages
     // biome-ignore lint/complexity/noForEach: <explanation>
-    items.forEach((item) => {
-      router.prefetch(`${address ? `/${address}` : ""}${item.href}`);
+    tabs.forEach((tab) => {
+      router.prefetch(`${address ? `/${address}` : ""}${tab.href}`);
     });
   }, []);
 
@@ -144,19 +141,17 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           <DrawerContent>
             <DrawerBody>
               <div>
-                {items.map((item) => (
+                {tabs.map((tab) => (
                   <Button
                     variant="link"
-                    key={item.id}
+                    key={tab.id}
                     size="lg"
                     onClick={() => {
-                      router.push(
-                        `${address ? `/${address}` : ""}${item.href}`,
-                      );
+                      router.push(`${address ? `/${address}` : ""}${tab.href}`);
                     }}
                     className="block"
                   >
-                    {item.title}
+                    {tab.title}
                   </Button>
                 ))}
               </div>
@@ -169,22 +164,22 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           variant="unstyled"
           className="hidden space-x-1 rounded-md border border-border bg-background-strong p-0.5 sm:block"
         >
-          {items.map((item) => (
+          {tabs.map((tab) => (
             <Button
-              key={item.id}
+              key={tab.id}
               asChild
               variant="ghost"
               className={cn(
                 "text-sm text-text-weak data-[variant=ghost]:text-text-weak",
                 // If the item is the selected, add bg-selected
-                item.id === id
+                tab.id === id
                   ? "bg-background-body font-semibold hover:bg-background-strong data-[variant=ghost]:text-text"
                   : "font-medium text-text-weak hover:text-text-weaker",
               )}
               size="sm"
             >
-              <Link href={`${address ? `/${address}` : ""}${item.href}`}>
-                {item.title}
+              <Link href={`${address ? `/${address}` : ""}${tab.href}`}>
+                {tab.title}
               </Link>
             </Button>
           ))}

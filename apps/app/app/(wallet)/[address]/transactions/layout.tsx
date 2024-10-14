@@ -15,6 +15,7 @@
 import { OverviewInvokeButton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-invoke-button";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
+import type { Tab } from "@lightdotso/types";
 import { BannerSection } from "@lightdotso/ui/sections";
 import {
   BaseLayerWrapper,
@@ -29,7 +30,7 @@ import type { Address } from "viem";
 // Constants
 // -----------------------------------------------------------------------------
 
-const transactionsNavItems = [
+const transactionsNavTabs: Tab[] = [
   {
     title: "All",
     href: "/transactions",
@@ -88,7 +89,7 @@ export default async function TransactionsLayout({
         description={TITLES.Transactions.description}
       >
         <MiddleLayerWrapper>
-          <LinkButtonGroup items={transactionsNavItems}>
+          <LinkButtonGroup tabs={transactionsNavTabs}>
             {nav}
             <OverviewInvokeButton address={(await params).address as Address} />
           </LinkButtonGroup>

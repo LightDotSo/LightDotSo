@@ -14,6 +14,7 @@
 
 import { NavSidebar } from "@/components/nav/nav-sidebar";
 import { TITLES } from "@/const";
+import type { Tab } from "@lightdotso/types";
 import { BannerSection } from "@lightdotso/ui/sections";
 import { HStackFull } from "@lightdotso/ui/stacks";
 import { BaseLayerWrapper, SettingsPageWrapper } from "@lightdotso/ui/wrappers";
@@ -24,18 +25,21 @@ import type { ReactNode } from "react";
 // Constants
 // -----------------------------------------------------------------------------
 
-const navSidebarItems = [
+const navSidebarTabs: Tab[] = [
   {
     title: "Profile",
     href: "/settings",
+    id: "profile",
   },
   {
     title: "Appearance",
     href: "/settings/appearance",
+    id: "appearance",
   },
   {
     title: "Notifications",
     href: "/settings/notifications",
+    id: "notifications",
   },
 ];
 
@@ -69,7 +73,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     >
       <HStackFull>
         <BaseLayerWrapper size="sm">
-          <SettingsPageWrapper nav={<NavSidebar items={navSidebarItems} />}>
+          <SettingsPageWrapper nav={<NavSidebar tabs={navSidebarTabs} />}>
             {children}
           </SettingsPageWrapper>
         </BaseLayerWrapper>

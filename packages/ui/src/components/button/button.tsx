@@ -76,7 +76,7 @@ const buttonVariants = cva(
           ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
-          ["data-[variant=ghost]:active:ring-border-primary-weak"],
+          ["data-[variant=ghost]:active:ring-border-info-weak"],
           // Link
           ["data-[variant=link]:text-text"],
           // Loading

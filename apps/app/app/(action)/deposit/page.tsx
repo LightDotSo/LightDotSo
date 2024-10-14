@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ACTION_NAV_ITEMS } from "@/app/(action)/(const)/nav-items";
+import { ACTION_NAV_TABS } from "@/app/(action)/(const)/nav-tabs";
 import { BaseLayout } from "@/app/(action)/(layouts)/base-layout";
 import { IntroLayout } from "@/app/(action)/(layouts)/intro-layout";
 import { Loader } from "@/app/(action)/deposit/loader";
@@ -51,7 +51,7 @@ export default async function Page({ searchParams }: PageProps) {
   if ((await searchParams).intro) {
     return (
       <IntroLayout>
-        <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+        <LinkButtonGroup tabs={ACTION_NAV_TABS} />
         <Loader />
       </IntroLayout>
     );
@@ -59,7 +59,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <BaseLayout>
-      <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+      <LinkButtonGroup tabs={ACTION_NAV_TABS} />
       <Loader />
     </BaseLayout>
   );

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ACTION_NAV_ITEMS } from "@/app/(wallet)/[address]/(const)/nav-items";
+import { ACTION_NAV_TABS } from "@/app/(wallet)/[address]/(const)/nav-tabs";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
 import { BannerSection } from "@lightdotso/ui/sections";
@@ -59,7 +59,7 @@ export default function DepositsLayout({ children }: DepositLayoutProps) {
         size="xxs"
       >
         <MiddleLayerWrapper size="xxs">
-          <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+          <LinkButtonGroup tabs={ACTION_NAV_TABS} />
         </MiddleLayerWrapper>
       </BannerSection>
       <BaseLayerWrapper size="xxs">

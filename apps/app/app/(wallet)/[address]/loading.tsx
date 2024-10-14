@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { WalletOverviewBannerSkeleton } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
-import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { OVERVIEW_NAV_TABS } from "@/app/(wallet)/[address]/overview/(const)/nav-tabs";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
 import { InvokeButtonSkeleton } from "@lightdotso/elements/invoke-button";
@@ -49,7 +49,7 @@ export function Loading() {
         <WalletOverviewBannerSkeleton />
       </LargeLayerWrapper>
       <MiddleLayerWrapper>
-        <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+        <LinkButtonGroup tabs={OVERVIEW_NAV_TABS}>
           <InvokeButtonSkeleton />
         </LinkButtonGroup>
       </MiddleLayerWrapper>

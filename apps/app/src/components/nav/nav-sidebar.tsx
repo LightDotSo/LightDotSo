@@ -14,6 +14,9 @@
 
 "use client";
 
+import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import { MobileAppDrawer } from "@lightdotso/templates/mobile-app-drawer";
+import type { Tab } from "@lightdotso/types";
 import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
@@ -25,10 +28,7 @@ import type { FC, HTMLAttributes } from "react";
 // -----------------------------------------------------------------------------
 
 interface NavSidebarProps extends HTMLAttributes<HTMLElement> {
-  items: {
-    href: string;
-    title: string;
-  }[];
+  tabs: Tab[];
   baseRef?: boolean;
 }
 
@@ -39,7 +39,7 @@ interface NavSidebarProps extends HTMLAttributes<HTMLElement> {
 export const NavSidebar: FC<NavSidebarProps> = ({
   className,
   baseRef,
-  items,
+  tabs,
   ...props
 }) => {
   // ---------------------------------------------------------------------------
@@ -60,8 +60,23 @@ export const NavSidebar: FC<NavSidebarProps> = ({
   const baseHref = baseRef ? pathname.split("/")[1] : undefined;
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!isMounted) {
+    return null;
+  }
+
+  if (!isDesktop) {
+    return <MobileAppDrawer tabs={tabs} />;
+  }
 
   return (
     <nav
@@ -71,21 +86,22 @@ export const NavSidebar: FC<NavSidebarProps> = ({
       )}
       {...props}
     >
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          href={baseHref ? `/${baseHref}${item.href}` : item.href}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            pathname === (baseHref ? `/${baseHref}${item.href}` : item.href)
-              ? "bg-background-stronger hover:bg-background-stronger"
-              : "text-text-weak hover:bg-transparent hover:underline",
-            "justify-start",
-          )}
-        >
-          {item.title}
-        </Link>
-      ))}
+      {tabs.length > 0 &&
+        tabs.map((item) => (
+          <Link
+            key={item.href}
+            href={baseHref ? `/${baseHref}${item.href}` : item.href}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              pathname === (baseHref ? `/${baseHref}${item.href}` : item.href)
+                ? "bg-background-stronger hover:bg-background-stronger"
+                : "text-text-weak hover:bg-transparent hover:underline",
+              "justify-start",
+            )}
+          >
+            {item.title}
+          </Link>
+        ))}
     </nav>
   );
 };

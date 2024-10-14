@@ -126,7 +126,7 @@ export const NavTabs: FC<NavTabsProps> = ({
       className="-mt-1.5 relative z-0 mb-1.5 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
       onPointerLeave={(_e) => setHoveredTabIndex(null)}
     >
-      {tabs.map((item, i) => {
+      {tabs.map((tab, i) => {
         const isActive = hoveredTabIndex === i || selectedTabIndex === i;
 
         return (
@@ -135,7 +135,7 @@ export const NavTabs: FC<NavTabsProps> = ({
             key={i}
             passHref
             legacyBehavior
-            href={`${baseSlug}${item.href}`}
+            href={`${baseSlug}${tab.href}`}
           >
             <motion.a
               // @ts-ignore
@@ -156,15 +156,15 @@ export const NavTabs: FC<NavTabsProps> = ({
                 setSelectedTabIndex(i);
               }}
             >
-              {<item.icon className="mr-2 size-4" />}
-              {item.label}
-              {item?.number && item?.number !== 0 && (
+              {tab.icon && <tab.icon className="mr-2 size-4" />}
+              {tab.title}
+              {tab?.number && tab?.number !== 0 && (
                 <Badge
                   type="number"
                   variant="outline"
                   className="ml-2 rounded-full border-0 bg-background-strong font-sm text-text-weak"
                 >
-                  {item?.number}
+                  {tab?.number}
                 </Badge>
               )}
             </motion.a>

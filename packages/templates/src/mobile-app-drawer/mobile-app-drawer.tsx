@@ -81,8 +81,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       <span className="flex">
-                        <tab.icon className="mr-2 size-4" />
-                        {tab.label}
+                        {tab.icon && <tab.icon className="mr-2 size-4" />}
+                        {tab.title}
                       </span>
                       <ArrowUpRight className="size-4 text-text-weak" />
                     </a>
@@ -97,8 +97,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
               >
                 <Button asChild className="w-full justify-start" variant="link">
                   <Link href={`${baseSlug}${tab.href}`}>
-                    <tab.icon className="mr-2 size-4" />
-                    {tab.label}
+                    {tab.icon && <tab.icon className="mr-2 size-4" />}
+                    {tab.title}
                     {tab?.number && tab?.number > 0 && (
                       <Badge
                         type="number"

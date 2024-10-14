@@ -25,7 +25,7 @@ import type { RefAttributes } from "react";
 
 export const EXPLORER_TABS: Tab[] = [
   {
-    label: "Home",
+    title: "Home",
     id: "user-operations",
     href: "/",
     icon: (
@@ -35,7 +35,7 @@ export const EXPLORER_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Transactions",
+    title: "Transactions",
     id: "transactions",
     href: "/transactions",
     icon: (

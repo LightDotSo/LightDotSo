@@ -14,7 +14,7 @@
 
 import { OverviewInvokeButton } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-invoke-button";
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
-import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { OVERVIEW_NAV_TABS } from "@/app/(wallet)/[address]/overview/(const)/nav-tabs";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
 import {
@@ -71,7 +71,7 @@ export default async function OverviewLayout({
         />
       </LargeLayerWrapper>
       <MiddleLayerWrapper>
-        <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+        <LinkButtonGroup tabs={OVERVIEW_NAV_TABS}>
           {nav}
           <OverviewInvokeButton address={(await params).address as Address} />
         </LinkButtonGroup>
