@@ -28,6 +28,8 @@ import {
 } from "@lightdotso/ui/components/drawer";
 import { AlignRight, ArrowUpRight, XIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -56,16 +58,39 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
   const baseSlug = useBaseSlug();
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       {triggerChildren ? (
-        <DrawerTrigger asChild>{triggerChildren}</DrawerTrigger>
+        <DrawerTrigger asChild onClick={() => setIsOpen(true)}>
+          {triggerChildren}
+        </DrawerTrigger>
       ) : (
         <div className="ml-auto">
-          <DrawerTrigger>
+          <DrawerTrigger onClick={() => setIsOpen(true)}>
             <ButtonIcon variant="outline" size="sm">
               <AlignRight className="size-4" />
             </ButtonIcon>
