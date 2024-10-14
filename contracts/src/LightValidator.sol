@@ -82,27 +82,40 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
     // -------------------------------------------------------------------------
 
     function onInstall(bytes calldata) external override {
-        // cache the account address
+        // Cache the account address
         address account = msg.sender;
 
+        // Decode the image hash
+        (bytes32 imageHash) = abi.decode(data, (bytes32));
+
+        // Update the image hash
+        _updateImageHash(account, imageHash);
+
+        // Emit the event
         emit ModuleInitialized(account);
     }
 
     function onUninstall(bytes calldata) external override {
-        // cache the account address
+        // Cache the account address
         address account = msg.sender;
 
+        // Reset the image hash
+        imageHashes[account] = bytes32(0);
+
+        // Emit the event
         emit ModuleUninitialized(account);
     }
 
     function isInitialized(address account) public view returns (bool) {
+        // Return the result
         return imageHashes[account] != bytes32(0);
     }
 
     function updateImageHash(bytes32 imageHash) external {
-        // cache the account address
+        // Cache the account address
         address account = msg.sender;
 
+        // Update the image hash
         _updateImageHash(account, imageHash);
     }
 
@@ -115,10 +128,10 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
         override
         returns (ValidationData)
     {
-        // validate the signature with the config
+        // Validate the signature with the config
         bool isValid = _validateSignatureWithConfig(userOp.sender, userOpHash, userOp.signature);
 
-        // return the result
+        // Return the result
         if (isValid) {
             return VALIDATION_SUCCESS;
         }
@@ -135,10 +148,10 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
         override
         returns (bytes4)
     {
-        // validate the signature with the config
+        // Validate the signature with the config
         bool isValid = _validateSignatureWithConfig(msg.sender, hash, data);
 
-        // return the result
+        // Return the result
         if (isValid) {
             return EIP1271_SUCCESS;
         }
