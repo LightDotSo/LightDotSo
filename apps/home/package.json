@@ -50,7 +50,7 @@
     "react": "19.0.0-rc-e740d4b1-20240919",
     "react-dom": "19.0.0-rc-e740d4b1-20240919",
     "react-icons": "^5.3.0",
-    "viem": "^2.21.23"
+    "viem": "^2.21.24"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",

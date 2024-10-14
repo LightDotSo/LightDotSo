@@ -48,7 +48,7 @@
     "lucide-react": "^0.452.0",
     "next": "15.0.0-canary.177",
     "recharts": "2.13.0",
-    "viem": "^2.21.23"
+    "viem": "^2.21.24"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

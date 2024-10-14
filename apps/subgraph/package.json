@@ -88,7 +88,7 @@
     "@goldskycom/cli": "^9.7.1",
     "@graphprotocol/graph-cli": "^0.86.0",
     "@graphprotocol/graph-ts": "^0.35.1",
-    "yaml": "^2.5.1"
+    "yaml": "^2.6.0"
   },
   "devDependencies": {
     "@lightdotso/contracts": "workspace:*",
