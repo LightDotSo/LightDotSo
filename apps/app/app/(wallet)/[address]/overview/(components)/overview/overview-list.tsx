@@ -28,7 +28,7 @@ import {
 } from "@lightdotso/tables/transaction";
 import { Skeleton } from "@lightdotso/ui/components/skeleton";
 import dynamic from "next/dynamic";
-import type { FC } from "react";
+import type { FC, JSX } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -129,7 +129,6 @@ export const OverviewList: FC<OverviewListProps> = ({
   // Component Mapping
   // ---------------------------------------------------------------------------
 
-  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToComponent = (itemId: string): JSX.Element => {
     if (isLoading || !address) {
       switch (itemId) {
@@ -180,7 +179,6 @@ export const OverviewList: FC<OverviewListProps> = ({
     }
   };
 
-  // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   const itemToNav = (itemId: string): JSX.Element => {
     if (isLoading || !address) {
       return <OverviewListPortfolioSkeleton />;
