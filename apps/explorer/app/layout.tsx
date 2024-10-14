@@ -31,6 +31,20 @@ export const metadata: Metadata = {
     default: "Light Explorer",
   },
   description: "Light Explorer - Use Ethereum as One.",
+  icons: [
+    {
+      rel: "icon",
+      type: "image/x-icon",
+      url: "/favicon.ico",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      url: "https://assets.light.so/favicon-dark.png",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
   metadataBase: new URL("https://light.so"),
   openGraph: {
     title: "Light Explorer",
