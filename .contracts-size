@@ -1,7 +1,7 @@
-| Contract                       | Size (B) | Margin (B) |
+ Contract                       | Size (B) | Margin (B) |
 |--------------------------------|----------|------------|
 | Address                        |       86 |     24,490 |
-| AsyncVault                     |   23,223 |      1,353 |
+| AsyncVault                     |   22,932 |      1,644 |
 | BytesLib                       |       86 |     24,490 |
 | Create2                        |       86 |     24,490 |
 | ECDSA                          |       86 |     24,490 |
@@ -25,7 +25,7 @@
 | LightProtocolController        |   11,601 |     12,975 |
 | LightTimelockController        |   11,956 |     12,620 |
 | LightTimelockControllerFactory |    2,579 |     21,997 |
-| LightVault                     |   23,365 |      1,211 |
+| LightVault                     |   23,074 |      1,502 |
 | LightVaultFactory              |    3,522 |     21,054 |
 | LightVerifyingPaymaster        |    5,221 |     19,355 |
 | LightWallet                    |   12,277 |     12,299 |
