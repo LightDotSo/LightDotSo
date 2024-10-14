@@ -44,8 +44,8 @@ use lightdotso_contracts::{
     address::{
         ENTRYPOINT_V060_ADDRESS, ENTRYPOINT_V070_ADDRESS, LIGHT_OFFCHAIN_VERIFIER_ADDRESSES,
     },
-    entrypoint_v060::get_entrypoint_v060,
-    entrypoint_v070::get_entrypoint_v070,
+    entrypoint_v060::{get_entrypoint_v060, EntryPointV060},
+    entrypoint_v070::{get_entrypoint_v070, EntryPointV070},
     provider::{get_provider, get_provider_with_wallet},
     tracer::{ExecutorTracerResult, EXECUTOR_TRACER},
     types::{PackedUserOperation, UserOperation},
@@ -366,7 +366,40 @@ impl Node {
         let tx = tx_request.with_chain_id(chain_id);
 
         // Send the transaction
-        let builder = provider.send_transaction(tx).await?;
+        let builder = match provider.send_transaction(tx).await {
+            Ok(b) => b,
+            Err(e) => {
+                // Try to decode the error
+                if let Some(err_payload) = e.as_error_resp() {
+                    info!("err_payload: {:?}", err_payload);
+                    match err_payload
+                        .as_decoded_error::<EntryPointV060::EntryPointV060Errors>(false)
+                    {
+                        Some(decoded_error) => match decoded_error {
+                            EntryPointV060::EntryPointV060Errors::FailedOp(value) => {
+                                return Err(eyre!("FailedOp: {:?}", value.reason));
+                            }
+                            EntryPointV060::EntryPointV060Errors::SignatureValidationFailed(
+                                value,
+                            ) => {
+                                return Err(eyre!(
+                                    "SignatureValidationFailed: {:?}",
+                                    value.aggregator
+                                ));
+                            }
+                            _ => {
+                                return Err(eyre!("Unrecognized custom error: {:?}", err_payload));
+                            }
+                        },
+                        None => {
+                            return Err(eyre!("Unrecognized custom error: {:?}", err_payload));
+                        }
+                    }
+                } else {
+                    return Err(e.into());
+                }
+            }
+        };
         let node_hash = *builder.tx_hash();
 
         // Wait for the transaction to be included and get the receipt.
@@ -443,7 +476,51 @@ impl Node {
         let tx = tx_request.with_chain_id(chain_id);
 
         // Send the transaction
-        let builder = provider.send_transaction(tx).await?;
+        let builder = match provider.send_transaction(tx).await {
+            Ok(b) => b,
+            Err(e) => {
+                // Try to decode the error
+                if let Some(err_payload) = e.as_error_resp() {
+                    info!("err_payload: {:?}", err_payload);
+                    match err_payload
+                        .as_decoded_error::<EntryPointV070::EntryPointV070Errors>(false)
+                    {
+                        Some(decoded_error) => match decoded_error {
+                            EntryPointV070::EntryPointV070Errors::FailedOp(value) => {
+                                return Err(eyre!(
+                                    "FailedOp: {:?} {:?}",
+                                    value.opIndex,
+                                    value.reason
+                                ));
+                            }
+                            EntryPointV070::EntryPointV070Errors::FailedOpWithRevert(value) => {
+                                return Err(eyre!(
+                                    "FailedOpWithRevert: {:?} {:?} {:?}",
+                                    value.opIndex,
+                                    value.reason,
+                                    value.inner
+                                ));
+                            }
+                            EntryPointV070::EntryPointV070Errors::PostOpReverted(value) => {
+                                return Err(eyre!("PostOpReverted: {:?}", value.returnData));
+                            }
+                            _ => {
+                                return Err(eyre!("Unrecognized custom error: {:?}", err_payload));
+                            }
+                        },
+                        None => {
+                            // If it's not a recognized custom error, log the payload and return a
+                            // generic error
+                            info!("Unrecognized custom error: {:?}", err_payload);
+                            return Err(eyre!("Unrecognized custom error"));
+                        }
+                    }
+                } else {
+                    // If it's not a custom error, return the original error
+                    return Err(e.into());
+                }
+            }
+        };
         let node_hash = *builder.tx_hash();
 
         // Wait for the transaction to be included and get the receipt.
