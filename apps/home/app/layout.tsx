@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     {
       rel: "icon",
       type: "image/png",
-      url: "/favicon-dark.png",
+      url: "https://assets.light.so/favicon-dark.png",
       media: "(prefers-color-scheme: dark)",
     },
   ],
