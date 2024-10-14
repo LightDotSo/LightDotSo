@@ -16,13 +16,12 @@
 // Constants
 // ---------------------------------------------------------------------------
 
-export const UNAUTHENTICATED_PATHS = ["/activity", "/owners", "/transactions"];
+export const UNAUTHENTICATED_PATHS = ["/", "/intro"];
 export const INTERCEPTION_PATHS = ["/notifications"];
 export const AUTHENTICATED_PATHS = [
   "/new",
   "/new/configuration",
   "/new/confirm",
-  "/notifications",
   "/wallet",
   "/settings",
   "/settings",
