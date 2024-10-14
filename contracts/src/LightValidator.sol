@@ -178,10 +178,7 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
         // signatureType == 0x03
         if (signatureType & 0x03 == signatureType) {
             (bool isValid,) = _signatureValidation(account, hash, signature);
-            if (!isValid) {
-                return false;
-            }
-            return true;
+            return isValid;
         }
 
         // If the signature type is 0x04, it is a merkle proof signature
@@ -209,10 +206,7 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
             (bool isValid,) = _signatureValidation(
                 account, merkleTreeRoot, signature[offset:offset + merkleSignature.length]
             );
-            if (!isValid) {
-                return false;
-            }
-            return true;
+            return isValid;
         }
 
         // Return an error if the signature type is not recognized
