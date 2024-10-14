@@ -22,9 +22,26 @@ import type { ReactNode } from "react";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light",
+  title: {
+    template: "%s | Light",
+    default: "Light",
+  },
   description:
     "Light is an EVM chain abstraction protocol unifying all chains as one.",
+  icons: [
+    {
+      rel: "icon",
+      type: "image/x-icon",
+      url: "/favicon.ico",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      url: "/favicon-dark.png",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
   metadataBase: new URL("https://light.so"),
   openGraph: {
     title: "Light",
