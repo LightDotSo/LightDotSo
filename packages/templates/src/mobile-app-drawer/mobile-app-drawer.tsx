@@ -36,6 +36,7 @@ import type { FC, ReactNode } from "react";
 
 export interface MobileAppDrawerProps {
   children?: ReactNode;
+  triggerChildren?: ReactNode;
   tabs: Tab[];
 }
 
@@ -46,6 +47,7 @@ export interface MobileAppDrawerProps {
 export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
   tabs,
   children,
+  triggerChildren,
 }) => {
   // ---------------------------------------------------------------------------
   // Hooks
@@ -59,13 +61,17 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
 
   return (
     <Drawer>
-      <div className="ml-auto">
-        <DrawerTrigger>
-          <ButtonIcon variant="outline" size="sm">
-            <AlignRight className="size-4" />
-          </ButtonIcon>
-        </DrawerTrigger>
-      </div>
+      {triggerChildren ? (
+        <DrawerTrigger asChild>{triggerChildren}</DrawerTrigger>
+      ) : (
+        <div className="ml-auto">
+          <DrawerTrigger>
+            <ButtonIcon variant="outline" size="sm">
+              <AlignRight className="size-4" />
+            </ButtonIcon>
+          </DrawerTrigger>
+        </div>
+      )}
       <DrawerContent>
         <DrawerHeader>{children}</DrawerHeader>
         <DrawerBody>

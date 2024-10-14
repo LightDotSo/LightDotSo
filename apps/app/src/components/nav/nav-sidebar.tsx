@@ -17,8 +17,10 @@
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { MobileAppDrawer } from "@lightdotso/templates/mobile-app-drawer";
 import type { Tab } from "@lightdotso/types";
+import { Button } from "@lightdotso/ui/components/button";
 import { buttonVariants } from "@lightdotso/ui/components/button";
 import { cn } from "@lightdotso/utils";
+import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC, HTMLAttributes } from "react";
@@ -59,6 +61,11 @@ export const NavSidebar: FC<NavSidebarProps> = ({
 
   const baseHref = baseRef ? pathname.split("/")[1] : undefined;
 
+  // Get the matching tab
+  const matchingTab = tabs.find(
+    (tab) => tab.href === pathname || pathname.endsWith(tab.href),
+  );
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -75,7 +82,20 @@ export const NavSidebar: FC<NavSidebarProps> = ({
   }
 
   if (!isDesktop) {
-    return <MobileAppDrawer tabs={tabs} />;
+    return (
+      <MobileAppDrawer
+        tabs={tabs}
+        triggerChildren={
+          <Button
+            className="flex w-full justify-between bg-background-body"
+            variant="outline"
+          >
+            <span>{matchingTab ? matchingTab.title : "Menu"}</span>
+            <ChevronDownIcon className="h-4 w-4" />
+          </Button>
+        }
+      />
+    );
   }
 
   return (

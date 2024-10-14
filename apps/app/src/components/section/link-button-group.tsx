@@ -14,15 +14,10 @@
 
 "use client";
 
+import { MobileAppDrawer } from "@lightdotso/templates/mobile-app-drawer";
 import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui/components/button";
 import { ButtonGroup } from "@lightdotso/ui/components/button-group";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerTrigger,
-} from "@lightdotso/ui/components/drawer";
 import { ToolbarSectionWrapper } from "@lightdotso/ui/wrappers";
 import { cn } from "@lightdotso/utils";
 import { ChevronDownIcon } from "lucide-react";
@@ -128,8 +123,9 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   return (
     <>
       <div className="sm:hidden">
-        <Drawer shouldScaleBackground>
-          <DrawerTrigger asChild>
+        <MobileAppDrawer
+          tabs={tabs}
+          triggerChildren={
             <Button
               className="flex w-full justify-between bg-background-body"
               variant="outline"
@@ -137,27 +133,8 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
               <span>{id ? id.charAt(0).toUpperCase() + id.slice(1) : ""}</span>
               <ChevronDownIcon className="h-4 w-4" />
             </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerBody>
-              <div>
-                {tabs.map((tab) => (
-                  <Button
-                    variant="link"
-                    key={tab.id}
-                    size="lg"
-                    onClick={() => {
-                      router.push(`${address ? `/${address}` : ""}${tab.href}`);
-                    }}
-                    className="block"
-                  >
-                    {tab.title}
-                  </Button>
-                ))}
-              </div>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
+          }
+        />
       </div>
       <ToolbarSectionWrapper>
         <ButtonGroup

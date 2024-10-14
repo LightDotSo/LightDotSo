@@ -16,7 +16,11 @@
 // Constants
 // ---------------------------------------------------------------------------
 
-export const UNAUTHENTICATED_PATHS = ["/", "/intro"];
+export const UNAUTHENTICATED_PATHS = [
+  // Root path is intentionally filtered out
+  // "/",
+  "/intro",
+];
 export const INTERCEPTION_PATHS = ["/notifications"];
 export const AUTHENTICATED_PATHS = [
   "/new",
