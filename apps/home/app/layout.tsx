@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      type: "image/x-icon",
-      url: "/favicon.ico",
+      type: "image/png",
+      url: "https://assets.light.so/favicon.png",
       media: "(prefers-color-scheme: light)",
     },
     {
