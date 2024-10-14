@@ -83,13 +83,13 @@
     "lucide-react": "^0.452.0",
     "next": "15.0.0-canary.190",
     "next-themes": "^0.3.0",
-    "react": "19.0.0-rc-e740d4b1-20240919",
+    "react": "19.0.0-rc-cd22717c-20241013",
     "react-blurhash": "^0.3.0",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.0.0-rc-e740d4b1-20240919",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
-    "react-is": "19.0.0-rc-e740d4b1-20240919",
+    "react-is": "19.0.0-rc-cd22717c-20241013",
     "react-resizable-panels": "^2.1.4",
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
@@ -121,9 +121,9 @@
     "vite": "^5.4.8"
   },
   "peerDependencies": {
-    "react": "19.0.0-rc-e740d4b1-20240919",
-    "react-dom": "19.0.0-rc-e740d4b1-20240919",
-    "react-is": "19.0.0-rc-e740d4b1-20240919"
+    "react": "19.0.0-rc-cd22717c-20241013",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
+    "react-is": "19.0.0-rc-cd22717c-20241013"
   },
   "publishConfig": {
     "access": "public"
