@@ -33,7 +33,7 @@ import type { RefAttributes } from "react";
 
 export const DEFAULT_TABS: Tab[] = [
   {
-    label: "Overview",
+    title: "Overview",
     id: "overview",
     href: "/overview",
     icon: (
@@ -42,7 +42,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <DashboardIcon {...props} />,
   },
   {
-    label: "Transactions",
+    title: "Transactions",
     id: "transactions",
     href: "/transactions",
     icon: (
@@ -51,7 +51,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <WidthIcon {...props} />,
   },
   {
-    label: "Owners",
+    title: "Owners",
     id: "owners",
     href: "/owners",
     icon: (
@@ -60,7 +60,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <PersonIcon {...props} />,
   },
   {
-    label: "Actions",
+    title: "Actions",
     id: "actions",
     href: "/swap/new",
     icon: (
@@ -69,7 +69,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <PlayCircleIcon {...props} />,
   },
   {
-    label: "Activity",
+    title: "Activity",
     id: "activity",
     href: "/activity",
     icon: (
@@ -78,7 +78,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <ActivityLogIcon {...props} />,
   },
   {
-    label: "Settings",
+    title: "Settings",
     id: "settings",
     href: "/settings",
     icon: (
@@ -87,7 +87,7 @@ export const DEFAULT_TABS: Tab[] = [
     ) => <MixerVerticalIcon {...props} />,
   },
   {
-    label: "Support",
+    title: "Support",
     id: "support",
     href: "/support",
     icon: (
@@ -99,7 +99,7 @@ export const DEFAULT_TABS: Tab[] = [
 
 export const HOME_TABS: Tab[] = [
   {
-    label: "New",
+    title: "New",
     id: "new",
     href: "/new",
     icon: (

@@ -74,7 +74,7 @@ export const NavLocation: FC<NavLocationProps> = ({
                 className="font-medium text-sm"
                 size="sm"
               >
-                <Link href={tab.href}>{tab.label}</Link>
+                <Link href={tab.href}>{tab.title}</Link>
               </Button>
             ) : (
               <ButtonIcon
@@ -109,6 +109,6 @@ export const NavLocation: FC<NavLocationProps> = ({
 
 const NavLocationContent = ({ tab }: { tab: Tab }) => {
   return (
-    <>{tab.icon ? <tab.icon className="size-4 sm:size-5" /> : tab.label}</>
+    <>{tab.icon ? <tab.icon className="size-4 sm:size-5" /> : tab.title}</>
   );
 };

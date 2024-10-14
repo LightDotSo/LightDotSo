@@ -33,7 +33,7 @@ import { FaTelegram } from "react-icons/fa";
 
 export const HOME_TABS: Tab[] = [
   {
-    label: "Blog",
+    title: "Blog",
     id: "blog",
     description: "Read our latest blog posts.",
     href: INTERNAL_LINKS.Blog,
@@ -44,7 +44,7 @@ export const HOME_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Changelog",
+    title: "Changelog",
     id: "changelog",
     description: "View our changelog.",
     href: INTERNAL_LINKS.Changelog,
@@ -55,7 +55,7 @@ export const HOME_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Discord",
+    title: "Discord",
     id: "discord",
     description: "Join our Discord server.",
     href: SOCIAL_LINKS.Discord,
@@ -66,7 +66,7 @@ export const HOME_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Github",
+    title: "Github",
     id: "github",
     description: "View our Github repository.",
     href: SOCIAL_LINKS.Github,
@@ -77,7 +77,7 @@ export const HOME_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Telegram",
+    title: "Telegram",
     id: "telegram",
     description: "Join our Telegram group.",
     href: SOCIAL_LINKS.Telegram,
@@ -88,7 +88,7 @@ export const HOME_TABS: Tab[] = [
     isTextOnly: true,
   },
   {
-    label: "Twitter",
+    title: "Twitter",
     id: "twitter",
     description: "Follow us on Twitter.",
     href: SOCIAL_LINKS.Twitter,

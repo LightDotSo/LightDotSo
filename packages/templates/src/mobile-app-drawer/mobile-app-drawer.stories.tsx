@@ -26,7 +26,7 @@ import { MobileAppDrawer } from "./mobile-app-drawer";
 
 const tabs: Tab[] = [
   {
-    label: "Explorer",
+    title: "Explorer",
     id: "user-operations",
     href: "/",
     icon: (
@@ -35,7 +35,7 @@ const tabs: Tab[] = [
     ) => <DashboardIcon {...props} />,
   },
   {
-    label: "Transactions",
+    title: "Transactions",
     id: "transactions",
     href: "/transactions",
     number: 4,
@@ -45,7 +45,7 @@ const tabs: Tab[] = [
     ) => <WidthIcon {...props} />,
   },
   {
-    label: "External",
+    title: "External",
     id: "external",
     href: "https://light.so",
     icon: (

@@ -18,7 +18,7 @@ import { OverviewSubCategory } from "@/const";
 // Constants
 // -----------------------------------------------------------------------------
 
-export const OVERVIEW_NAV_ITEMS = [
+export const OVERVIEW_NAV_TABS = [
   {
     title: "All",
     href: "/overview",

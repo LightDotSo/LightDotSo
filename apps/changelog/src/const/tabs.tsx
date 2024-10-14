@@ -30,7 +30,7 @@ import type { RefAttributes } from "react";
 
 export const CHANGELOG_TABS: Tab[] = [
   {
-    label: "Discord",
+    title: "Discord",
     id: "discord",
     href: SOCIAL_LINKS.Discord,
     icon: (
@@ -39,7 +39,7 @@ export const CHANGELOG_TABS: Tab[] = [
     ) => <DiscordLogoIcon {...props} />,
   },
   {
-    label: "Github",
+    title: "Github",
     id: "github",
     href: SOCIAL_LINKS.Github,
     icon: (
@@ -48,7 +48,7 @@ export const CHANGELOG_TABS: Tab[] = [
     ) => <GitHubLogoIcon {...props} />,
   },
   {
-    label: "X",
+    title: "X",
     id: "x",
     href: SOCIAL_LINKS.Twitter,
     icon: (

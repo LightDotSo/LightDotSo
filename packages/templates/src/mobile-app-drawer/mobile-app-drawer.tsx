@@ -36,6 +36,7 @@ import type { FC, ReactNode } from "react";
 
 export interface MobileAppDrawerProps {
   children?: ReactNode;
+  triggerChildren?: ReactNode;
   tabs: Tab[];
 }
 
@@ -46,6 +47,7 @@ export interface MobileAppDrawerProps {
 export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
   tabs,
   children,
+  triggerChildren,
 }) => {
   // ---------------------------------------------------------------------------
   // Hooks
@@ -59,13 +61,17 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
 
   return (
     <Drawer>
-      <div className="ml-auto">
-        <DrawerTrigger>
-          <ButtonIcon variant="outline" size="sm">
-            <AlignRight className="size-4" />
-          </ButtonIcon>
-        </DrawerTrigger>
-      </div>
+      {triggerChildren ? (
+        <DrawerTrigger asChild>{triggerChildren}</DrawerTrigger>
+      ) : (
+        <div className="ml-auto">
+          <DrawerTrigger>
+            <ButtonIcon variant="outline" size="sm">
+              <AlignRight className="size-4" />
+            </ButtonIcon>
+          </DrawerTrigger>
+        </div>
+      )}
       <DrawerContent>
         <DrawerHeader>{children}</DrawerHeader>
         <DrawerBody>
@@ -81,8 +87,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       <span className="flex">
-                        <tab.icon className="mr-2 size-4" />
-                        {tab.label}
+                        {tab.icon && <tab.icon className="mr-2 size-4" />}
+                        {tab.title}
                       </span>
                       <ArrowUpRight className="size-4 text-text-weak" />
                     </a>
@@ -97,8 +103,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
               >
                 <Button asChild className="w-full justify-start" variant="link">
                   <Link href={`${baseSlug}${tab.href}`}>
-                    <tab.icon className="mr-2 size-4" />
-                    {tab.label}
+                    {tab.icon && <tab.icon className="mr-2 size-4" />}
+                    {tab.title}
                     {tab?.number && tab?.number > 0 && (
                       <Badge
                         type="number"

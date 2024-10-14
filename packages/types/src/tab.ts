@@ -19,11 +19,11 @@
 import type { ReactNode } from "react";
 
 export type Tab = {
-  label: string;
   id: string;
   href: string;
+  title?: string;
   description?: string;
   number?: number;
-  icon: (_props: { className?: string }) => ReactNode;
+  icon?: (_props: { className?: string }) => ReactNode;
   isTextOnly?: boolean;
 };

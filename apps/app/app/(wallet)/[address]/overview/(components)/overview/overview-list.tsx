@@ -15,7 +15,7 @@
 "use client";
 
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
-import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { OVERVIEW_NAV_TABS } from "@/app/(wallet)/[address]/overview/(const)/nav-tabs";
 import { OverviewSubCategory, TITLES } from "@/const";
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
 import { NftTable } from "@lightdotso/tables/nft";
@@ -204,7 +204,7 @@ export const OverviewList: FC<OverviewListProps> = ({
         <OverviewCard
           key={item}
           href={`/${isDemo ? "demo" : address}${
-            OVERVIEW_NAV_ITEMS.find((nav) => nav.category === item)?.href ?? ""
+            OVERVIEW_NAV_TABS.find((nav) => nav.category === item)?.href ?? ""
           }`}
           title={TITLES.Overview.subcategories[item]?.title}
           nav={itemToNav(item)}

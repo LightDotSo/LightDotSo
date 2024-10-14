@@ -138,9 +138,9 @@ export const Menu: FC<GridProps> = ({ className }) => {
               {HOME_TABS.map((tab) => (
                 <ListItem
                   key={tab.id}
-                  title={tab.label}
+                  title={tab.title}
                   href={tab.href}
-                  icon={<tab.icon className="h-5 w-5" />}
+                  icon={tab.icon ? <tab.icon className="h-5 w-5" /> : undefined}
                 >
                   {tab.description}
                 </ListItem>

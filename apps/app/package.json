@@ -16,10 +16,12 @@
   "files": ["CHANGELOG.md"],
   "scripts": {
     "analyze": "cross-env ANALYZE=true pnpm run next-build || exit 0",
+    "api:local": "cd ../.. && pnpm run cargo:watch:api",
     "build": "tsc",
-    "dev": "next dev --turbo --port 3001",
+    "dev": "concurrently \"pnpm run api:local\" \"pnpm run next-dev\"",
     "msw:init": "msw init public",
     "next-build": "next build",
+    "next-dev": "next dev --turbo --port 3001",
     "start": "next start",
     "tsc": "tsc --noEmit",
     "vercel-build": "pnpm run next-build"
