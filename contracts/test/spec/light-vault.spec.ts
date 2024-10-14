@@ -98,7 +98,6 @@ test("LightVault: Correct humanReadableAbi", () => {
       "function convertToShares(uint256 assets) view returns (uint256)",
       "function convertToShares(uint256 assets, uint256 _epochId) view returns (uint256)",
       "function decimals() view returns (uint8)",
-      "function decreaseDepositRequest(uint256 assets)",
       "function decreaseRedeemRequest(uint256 shares)",
       "function deposit(uint256 assets, address receiver) returns (uint256)",
       "function depositWithPermit(uint256 assets, address receiver, (uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) permitParams) returns (uint256)",
