@@ -14,35 +14,23 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
+// Interface for IERC1271
+// From: https://eips.ethereum.org/EIPS/eip-1271
+// License: CC-BY-SA-4.0
+
 pragma solidity ^0.8.27;
 
-// Coinbase's magic-spend library is used to handle the flexible payment paymaster functionality for
-// 4337 compatible wallets.
-// Link:
-// https://github.com/coinbase/magic-spend/blob/122a58ddb8c6a99dd54585357e877ae8d0cbc9a7/src/MagicSpend.sol
-// License: MIT
-
-import {MagicSpend} from "magic-spend-patch/MagicSpend.sol";
-
-/// @title LightPaymaster
-/// @author @shunkakinoki
-/// @notice LightPaymaster is a paymaster for Light Protocol.
-/// @dev This contract is used to handle the flexible payment paymaster functionality for 4337
-/// compatible wallets.
-contract LightPaymaster is MagicSpend {
+interface ILightValidator {
     // -------------------------------------------------------------------------
-    // Constant
+    // Errors
     // -------------------------------------------------------------------------
 
-    /// @notice The name for this contract
-    string public constant NAME = "LightPaymaster";
-
-    /// @notice The version for this contract
-    string public constant VERSION = "0.1.0";
+    error InvalidMerkleProof(bytes32 root, bytes32 leaf);
 
     // -------------------------------------------------------------------------
-    // Constructor
+    // Events
     // -------------------------------------------------------------------------
 
-    constructor(address entryPoint) MagicSpend(entryPoint) {}
+    event ModuleInitialized(address indexed account);
+    event ModuleUninitialized(address indexed account);
 }

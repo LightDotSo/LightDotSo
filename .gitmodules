@@ -23,6 +23,9 @@
 [submodule "lib/ds-test"]
 	path = lib/ds-test
 	url = https://github.com/dapphub/ds-test
+[submodule "lib/erc7579-implementation"]
+	path = lib/erc7579-implementation
+	url = https://github.com/erc7579/erc7579-implementation
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
@@ -34,6 +37,10 @@
 	url = https://github.com/zerodevapp/kernel
 [submodule "lib/magic-spend"]
 	path = lib/magic-spend
+	url = https://github.com/LightDotSo/magic-spend
+	branch = bump
+[submodule "lib/magic-spend-patch"]
+	path = lib/magic-spend-patch
 	url = https://github.com/LightDotSo/magic-spend
 	branch = patch
 [submodule "lib/module-bases"]
@@ -81,6 +88,9 @@
 [submodule "lib/seaport"]
 	path = lib/seaport
 	url = https://github.com/ProjectOpenSea/seaport
+[submodule "lib/sentinellist"]
+	path = lib/sentinellist
+	url = https://github.com/rhinestonewtf/sentinellist
 [submodule "lib/singleton-paymaster"]
 	path = lib/singleton-paymaster
 	url = https://github.com/pimlicolabs/singleton-paymaster
@@ -107,6 +117,10 @@
 	url = https://github.com/Uniswap/v3-periphery
 [submodule "lib/wallet-contracts"]
 	path = lib/wallet-contracts
+	url = https://github.com/LightDotSo/wallet-contracts
+	branch = bump
+[submodule "lib/wallet-contracts-patch"]
+	path = lib/wallet-contracts-patch
 	url = https://github.com/LightDotSo/wallet-contracts
 	branch = patch
 [submodule "lib/wallet-contracts-v3"]

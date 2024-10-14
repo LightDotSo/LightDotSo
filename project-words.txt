@@ -1488,6 +1488,7 @@ secp
 secutity
 selfsigned
 sema
+sentinellist
 sepz
 serde
 serwist

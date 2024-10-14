@@ -8,14 +8,14 @@ module.exports = {
   ],
   "*.mdx": ["pnpm run textlint:cmd"],
   "*.rs": [
-    "sh -c 'pnpm run clippy:cmd && echo \"\"'",
-    "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
+    () => "sh -c 'pnpm run clippy:cmd",
+    () => "sh -c 'pnpm run cargo:fmt:cmd",
   ],
   "*.{py,ipynb}": ["make ruff-fmt", "make ruff-lint"],
   "*.sol": [
     "forge fmt",
     "make contracts-bulloak",
-    "make contracts-snapshot && echo ''",
+    () => "make contracts-snapshot",
     "pnpm run solhint:cmd",
   ],
   "*.toml": ["pnpm run taplo:cmd"],

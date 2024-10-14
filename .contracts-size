@@ -1,7 +1,9 @@
 | Contract                       | Size (B) | Margin (B) |
 |--------------------------------|----------|------------|
+| AccountBase                    |      134 |     24,442 |
 | Address                        |       86 |     24,490 |
 | AsyncVault                     |   22,932 |      1,644 |
+| Bootstrap                      |    6,377 |     18,199 |
 | BytesLib                       |       86 |     24,490 |
 | Create2                        |       86 |     24,490 |
 | ECDSA                          |       86 |     24,490 |
@@ -14,10 +16,13 @@
 | EntryPointv070                 |   16,293 |      8,283 |
 | Enum                           |       86 |     24,490 |
 | Exec                           |       86 |     24,490 |
+| ExecutionHelper                |       63 |     24,513 |
+| ExecutionLib                   |       86 |     24,490 |
 | ISignatureValidatorConstants   |       63 |     24,513 |
 | ImmutableProxy                 |    2,342 |     22,234 |
 | LibBytes                       |       86 |     24,490 |
 | LibBytesPointer                |       86 |     24,490 |
+| LibClone                       |       86 |     24,490 |
 | LibOptim                       |       86 |     24,490 |
 | LightDAG                       |    2,964 |     21,612 |
 | LightPaymaster                 |    9,694 |     14,882 |
@@ -25,12 +30,15 @@
 | LightProtocolController        |   11,601 |     12,975 |
 | LightTimelockController        |   11,956 |     12,620 |
 | LightTimelockControllerFactory |    2,579 |     21,997 |
+| LightValidator                 |    8,051 |     16,525 |
 | LightVault                     |   23,074 |      1,502 |
 | LightVaultFactory              |    3,522 |     21,054 |
 | LightVerifyingPaymaster        |    5,221 |     19,355 |
 | LightWallet                    |   12,277 |     12,299 |
 | LightWalletFactory             |    2,428 |     22,148 |
 | LightWalletUtils               |       86 |     24,490 |
+| MSAAdvanced                    |   16,877 |      7,699 |
+| MSAFactory                     |    1,279 |     23,297 |
 | MagicSpend                     |    9,526 |     15,050 |
 | Math                           |       86 |     24,490 |
 | Merkle                         |    2,526 |     22,050 |
@@ -39,6 +47,7 @@
 | MockERC1155                    |    7,156 |     17,420 |
 | MockERC20                      |    3,562 |     21,014 |
 | MockERC721                     |    5,679 |     18,897 |
+| ModeLib                        |       86 |     24,490 |
 | ModuleSelfAuth                 |       63 |     24,513 |
 | ModuleStorage                  |       86 |     24,490 |
 | NonceManager                   |      657 |     23,919 |
@@ -48,6 +57,7 @@
 | SafeProxyFactory               |    2,457 |     22,119 |
 | SafeTransferLib                |       86 |     24,490 |
 | SenderCreator                  |      563 |     24,013 |
+| SentinelListLib                |       86 |     24,490 |
 | SequenceBaseSig                |       86 |     24,490 |
 | SequenceDynamicSig             |       86 |     24,490 |
 | SequenceNoChainIdSig           |       86 |     24,490 |
