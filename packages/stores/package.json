@@ -32,7 +32,7 @@
     "@types/lodash": "^4.17.10",
     "lodash": "^4.17.21",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.23",
+    "viem": "^2.21.24",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
@@ -44,9 +44,9 @@
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "react": "19.0.0-rc-e740d4b1-20240919",
-    "react-dom": "19.0.0-rc-e740d4b1-20240919",
-    "react-is": "19.0.0-rc-e740d4b1-20240919"
+    "react": "19.0.0-rc-cd22717c-20241013",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
+    "react-is": "19.0.0-rc-cd22717c-20241013"
   },
   "publishConfig": {
     "access": "public"

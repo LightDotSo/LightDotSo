@@ -34,7 +34,7 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.59.13",
-    "viem": "^2.21.23"
+    "viem": "^2.21.24"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
@@ -44,9 +44,9 @@
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "react": "19.0.0-rc-e740d4b1-20240919",
-    "react-dom": "19.0.0-rc-e740d4b1-20240919",
-    "react-is": "19.0.0-rc-e740d4b1-20240919"
+    "react": "19.0.0-rc-cd22717c-20241013",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
+    "react-is": "19.0.0-rc-cd22717c-20241013"
   },
   "publishConfig": {
     "access": "public"

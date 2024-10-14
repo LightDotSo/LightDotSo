@@ -19,6 +19,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { motion, useSpring, useTransform } from "framer-motion";
 import type { HTMLMotionProps, MotionValue } from "framer-motion";
 import { forwardRef, useEffect, useState } from "react";
+import type { JSX } from "react";
 
 // -----------------------------------------------------------------------------
 // Styles
