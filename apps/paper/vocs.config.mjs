@@ -28,7 +28,10 @@ export default defineConfig({
       "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
     text: "Suggest changes to this page.",
   },
-  iconUrl: "/light-icon-light.svg",
+  iconUrl: {
+    light: "https://assets.light.so/favicon.png",
+    dark: "https://assets.light.so/favicon-dark.png",
+  },
   logoUrl: {
     light: "/light-logo-light.svg",
     dark: "/light-logo-dark.svg",
