@@ -37,7 +37,8 @@
 	url = https://github.com/zerodevapp/kernel
 [submodule "lib/magic-spend"]
 	path = lib/magic-spend
-	url = https://github.com/coinbase/magic-spend
+	url = https://github.com/LightDotSo/magic-spend
+	branch = bump
 [submodule "lib/magic-spend-patch"]
 	path = lib/magic-spend-patch
 	url = https://github.com/LightDotSo/magic-spend

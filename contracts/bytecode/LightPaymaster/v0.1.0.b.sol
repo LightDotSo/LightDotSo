@@ -14,7 +14,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {MagicSpend} from "magic-spend/MagicSpend.sol";
+import {MagicSpend} from "magic-spend-patch/MagicSpend.sol";
 import {proxyByteCode} from "@/bytecode/ERC1967Proxy/v0.3.0.b.sol";
 import {
     ENTRYPOINT_V070_ADDRESS, LIGHT_PAYMASTER_IMPLEMENTATION_ADDRESS

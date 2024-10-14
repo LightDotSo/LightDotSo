@@ -18,7 +18,7 @@ pragma solidity ^0.8.27;
 
 import {PackedUserOperation} from
     "@eth-infinitism/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
-import {MagicSpend} from "magic-spend/MagicSpend.sol";
+import {MagicSpend} from "magic-spend-patch/MagicSpend.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, PackedUserOperation} from "@/contracts/LightWallet.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";

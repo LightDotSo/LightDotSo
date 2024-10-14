@@ -21,7 +21,7 @@ import {PackedUserOperation} from
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import {MagicSpend} from "magic-spend/MagicSpend.sol";
+import {MagicSpend} from "magic-spend-patch/MagicSpend.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
