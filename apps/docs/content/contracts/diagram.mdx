@@ -56,3 +56,9 @@ graph TD
     Operation3 --> |Executes on| DestinationChainFronting
 
 ```
+
+## Constraints
+
+- For the funds to be fronted, the user must have approved the `LightTimelockController` to pull their tokens to the `Verifier` contract or address.
+- If using the deposited funds in the `LightVault` for funds fronting, the fronted funds will have additional constraints (e.g. can only be transferred w/ the right permissions or policy)
+- The chain agnostic operations (can be verified using `LightDAG` contract) must adhere to the protocol specs for orchestration.
