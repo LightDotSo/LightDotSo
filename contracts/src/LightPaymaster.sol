@@ -22,7 +22,7 @@ pragma solidity ^0.8.27;
 // https://github.com/coinbase/magic-spend/blob/122a58ddb8c6a99dd54585357e877ae8d0cbc9a7/src/MagicSpend.sol
 // License: MIT
 
-import {MagicSpend} from "magic-spend/MagicSpend.sol";
+import {MagicSpend} from "magic-spend-patch/MagicSpend.sol";
 
 /// @title LightPaymaster
 /// @author @shunkakinoki

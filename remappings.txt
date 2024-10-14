@@ -14,6 +14,7 @@ erc7579/=lib/erc7579-implementation/src/
 erc7579-implementation/=lib/erc7579-implementation/src/
 forge-std/=lib/forge-std/src/
 magic-spend/=lib/magic-spend/src/
+magic-spend-patch/=lib/magic-spend-patch/src/
 module-bases/=lib/module-bases/src/
 modulekit/=lib/modulekit/src/
 murky/=lib/murky/src/
