@@ -81,7 +81,7 @@ contract LightValidator is ILightValidator, ERC7579ValidatorBase, ModuleAuthUpgr
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
-    function onInstall(bytes calldata) external override {
+    function onInstall(bytes calldata data) external override {
         // Cache the account address
         address account = msg.sender;
 

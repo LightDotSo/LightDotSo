@@ -167,6 +167,7 @@ contracts-abi: ## Generate the contract ABIs
 	forge inspect LightProtocolController abi > contracts/abi/LightProtocolController/LightProtocolController.json
 	forge inspect LightTimelockController abi > contracts/abi/LightTimelockController/LightTimelockController.json
 	forge inspect LightTimelockControllerFactory abi > contracts/abi/LightTimelockControllerFactory/LightTimelockControllerFactory.json
+	forge inspect LightValidator abi > contracts/abi/LightValidator/LightValidator.json
 	forge inspect LightVault abi > contracts/abi/LightVault/LightVault.json
 	forge inspect LightVaultFactory abi > contracts/abi/LightVaultFactory/LightVaultFactory.json
 	forge inspect LightWallet abi > contracts/abi/LightWallet/LightWallet.json
@@ -187,6 +188,7 @@ contracts-build: ## Build the contracts
 	./contracts/build.sh LightProtocolController.sol
 	./contracts/build.sh LightTimelockController.sol
 	./contracts/build.sh LightTimelockControllerFactory.sol
+	./contracts/build.sh LightValidator.sol
 	./contracts/build.sh LightVault.sol
 	./contracts/build.sh LightVaultFactory.sol
 	./contracts/build.sh LightWallet.sol
