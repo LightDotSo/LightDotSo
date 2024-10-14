@@ -28,7 +28,7 @@
     "@lightdotso/params": "workspace:*",
     "@tanstack/react-query": "^5.59.13",
     "exponential-backoff": "^3.1.1",
-    "next": "15.0.0-canary.177",
+    "next": "15.0.0-canary.190",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
