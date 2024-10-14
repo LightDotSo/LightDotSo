@@ -59,7 +59,11 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
     <SparkAreaChart
       // @ts-expect-error
       showAnimation
-      data={[...token_price.prices].reverse()}
+      data={
+        Array.isArray(token_price.prices)
+          ? [...token_price.prices].reverse()
+          : []
+      }
       categories={["price"]}
       index="date"
       colors={[

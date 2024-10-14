@@ -85,7 +85,11 @@ export const WalletOverviewBannerSparkline: FC<
         <SparkAreaChart
           // @ts-expect-error
           showAnimation
-          data={[...portfolio.balances].reverse()}
+          data={
+            Array.isArray(portfolio.balances)
+              ? [...portfolio.balances].reverse()
+              : []
+          }
           categories={["balance"]}
           index="date"
           colors={[
