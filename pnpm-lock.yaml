@@ -37,7 +37,7 @@ importers:
         version: 2.13.0(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       solc:
         specifier: 0.8.27
-        version: 0.8.27
+        version: 0.8.27(debug@4.3.7)
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.3
@@ -356,7 +356,7 @@ importers:
         version: 11.11.8(@emotion/is-prop-valid@1.3.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       geist:
         specifier: ^1.3.1
-        version: 1.3.1(next@15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
+        version: 1.3.1(next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
       lucide-react:
         specifier: ^0.452.0
         version: 0.452.0(react@19.0.0-rc-cd22717c-20241013)
@@ -3186,7 +3186,7 @@ importers:
     dependencies:
       '@upstash/edge-flags':
         specifier: ^0.1.3
-        version: 0.1.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013))
+        version: 0.1.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))
       '@upstash/ratelimit':
         specifier: ^2.0.3
         version: 2.0.3
@@ -3244,12 +3244,15 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@next/third-parties':
+        specifier: 15.0.0-canary.190
+        version: 15.0.0-canary.190(next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       framer-motion:
         specifier: ^11.11.8
         version: 11.11.8(@emotion/is-prop-valid@1.3.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       geist:
         specifier: ^1.3.1
-        version: 1.3.1(next@15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
+        version: 1.3.1(next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
       next:
         specifier: 15.0.0-canary.190
         version: 15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
@@ -7770,6 +7773,12 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@next/third-parties@15.0.0-canary.190':
+    resolution: {integrity: sha512-Hz3zn82QmotOzCQhh1xv1TN8w26tJtEumVe4Tar1+WPlbZ0YHOMjYY+dZvJ8ypyjvhcqEMdkXZkGNbthl6Urzg==}
+    peerDependencies:
+      next: 15.0.0-canary.190
+      react: 19.0.0-rc-cd22717c-20241013
 
   '@noble/curves@1.2.0':
     resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
@@ -23101,6 +23110,9 @@ packages:
   thenify@3.3.1:
     resolution: {integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==}
 
+  third-party-capital@1.0.20:
+    resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
+
   thread-stream@0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
 
@@ -27594,7 +27606,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.5
       resolve: 1.22.8
-      solc: 0.8.27
+      solc: 0.8.27(debug@4.3.7)
       solidity-ast: 0.4.56
       unplugin: 1.12.1
     transitivePeerDependencies:
@@ -27614,7 +27626,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.5
       resolve: 1.22.8
-      solc: 0.8.27
+      solc: 0.8.27(debug@4.3.7)
       solidity-ast: 0.4.56
       unplugin: 1.12.1
     transitivePeerDependencies:
@@ -27630,7 +27642,7 @@ snapshots:
       '@types/node': 20.14.14
       bundle-require: 4.2.1(esbuild@0.19.2)
       jsonc-parser: 3.3.1
-      solc: 0.8.27
+      solc: 0.8.27(debug@4.3.7)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -27644,7 +27656,7 @@ snapshots:
       '@types/node': 20.14.14
       bundle-require: 4.2.1(esbuild@0.24.0)
       jsonc-parser: 3.3.1
-      solc: 0.8.27
+      solc: 0.8.27(debug@4.3.7)
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -27662,7 +27674,7 @@ snapshots:
       '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.27)(typescript@5.6.3)(utf-8-validate@5.0.10)(viem@2.21.24(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       esbuild: 0.19.2
       glob: 10.4.5
-      solc: 0.8.27
+      solc: 0.8.27(debug@4.3.7)
       solidity-ast: 0.4.56
       typescript: 5.6.3
       zod: 3.23.8
@@ -28921,6 +28933,12 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@15.0.0-rc.0':
     optional: true
+
+  '@next/third-parties@15.0.0-canary.190(next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)':
+    dependencies:
+      next: 15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
+      react: 19.0.0-rc-cd22717c-20241013
+      third-party-capital: 1.0.20
 
   '@noble/curves@1.2.0':
     dependencies:
@@ -35357,13 +35375,13 @@ snapshots:
       - react-dom
       - sass
 
-  '@upstash/edge-flags@0.1.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013))':
+  '@upstash/edge-flags@0.1.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))':
     dependencies:
       '@upstash/redis': 1.34.3
       react: 19.0.0-rc-cd22717c-20241013
       zod: 3.23.8
     optionalDependencies:
-      next: 15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
+      next: 15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-cd22717c-20241013)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -36695,7 +36713,7 @@ snapshots:
       arweave: 1.11.4
       arweave-stream-tx: 1.2.2(arweave@1.11.4)
       avsc: https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       base64url: 3.0.1
       bs58: 4.0.1
       ethers: 5.7.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -36767,7 +36785,7 @@ snapshots:
     dependencies:
       ardrive-core-js: 2.0.6(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       bn.js: 5.2.1
       commander: 8.3.0
       ipfs-only-hash: 4.0.0(encoding@0.1.13)
@@ -36786,7 +36804,7 @@ snapshots:
       '@alexsasharegan/simple-cache': 3.3.3
       arbundles: 0.6.23(@solana/web3.js@1.95.2(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       arweave: 1.11.4
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       axios-retry: 3.9.1
       base64-js: 1.5.1
       bignumber.js: 9.1.2
@@ -37057,6 +37075,12 @@ snapshots:
       '@babel/runtime': 7.25.6
       is-retry-allowed: 2.2.0
 
+  axios@0.21.4:
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.7)
+    transitivePeerDependencies:
+      - debug
+
   axios@0.21.4(debug@4.3.4):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
@@ -37065,14 +37089,14 @@ snapshots:
 
   axios@0.27.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.7)
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
 
   axios@1.7.4:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.7)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -41125,7 +41149,7 @@ snapshots:
       strip-ansi: 6.0.1
       wide-align: 1.1.5
 
-  geist@1.3.1(next@15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)):
+  geist@1.3.1(next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)):
     dependencies:
       next: 15.0.0-canary.190(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
 
@@ -41977,7 +42001,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.6(debug@4.3.4)
+      follow-redirects: 1.15.6(debug@4.3.7)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -45388,7 +45412,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013):
+  next@15.0.0-canary.190(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-cd22717c-20241013):
     dependencies:
       '@next/env': 15.0.0-canary.190
       '@swc/counter': 0.1.3
@@ -45397,7 +45421,7 @@ snapshots:
       caniuse-lite: 1.0.30001666
       postcss: 8.4.31
       react: 19.0.0-rc-cd22717c-20241013
-      react-dom: 19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013)
+      react-dom: 19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919)
       styled-jsx: 5.1.6(@babel/core@7.25.8)(react@19.0.0-rc-cd22717c-20241013)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.0.0-canary.190
@@ -47161,12 +47185,6 @@ snapshots:
       react: 19.0.0-rc-cd22717c-20241013
       scheduler: 0.25.0-rc-cd22717c-20241013
 
-  react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-cd22717c-20241013):
-    dependencies:
-      react: 19.0.0-rc-cd22717c-20241013
-      scheduler: 0.25.0-rc-e740d4b1-20240919
-    optional: true
-
   react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919):
     dependencies:
       react: 19.0.0-rc-e740d4b1-20240919
@@ -48705,18 +48723,6 @@ snapshots:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
 
-  solc@0.8.27:
-    dependencies:
-      command-exists: 1.2.9
-      commander: 8.3.0
-      follow-redirects: 1.15.6(debug@4.3.4)
-      js-sha3: 0.8.0
-      memorystream: 0.3.1
-      semver: 5.7.2
-      tmp: 0.0.33
-    transitivePeerDependencies:
-      - debug
-
   solc@0.8.27(debug@4.3.7):
     dependencies:
       command-exists: 1.2.9
@@ -49547,6 +49553,8 @@ snapshots:
   thenify@3.3.1:
     dependencies:
       any-promise: 1.3.0
+
+  third-party-capital@1.0.20: {}
 
   thread-stream@0.15.2:
     dependencies:
