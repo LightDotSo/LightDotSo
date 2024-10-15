@@ -16,6 +16,10 @@
 
 use eyre::Result;
 use lightdotso_prisma::PrismaClient;
+use lightdotso_sqlx::{
+    sqlx::{postgres::PgPoolOptions, Error as SqlxError},
+    PostgresPool,
+};
 use prisma_client_rust::NewClientError;
 
 /// Create a new Prisma client.
@@ -25,12 +29,13 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     client
 }
 
-/// Create a new Prisma client w/ `POSTGRES_URL` environment variable.
-pub async fn create_postgres_client() -> Result<PrismaClient, NewClientError> {
-    let client: Result<PrismaClient, NewClientError> =
-        PrismaClient::_builder().with_url(std::env::var("POSTGRES_URL").unwrap()).build().await;
+/// Create a new sqlx client w/ `POSTGRES_URL` environment variable.
+pub async fn create_postgres_client() -> Result<PostgresPool, SqlxError> {
+    let database_url = std::env::var("POSTGRES_URL").unwrap();
 
-    client
+    let pool = PgPoolOptions::new().max_connections(5).connect(&database_url).await?;
+
+    Ok(pool)
 }
 
 /// Create a new Prisma client for testing.

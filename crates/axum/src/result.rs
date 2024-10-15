@@ -20,6 +20,7 @@ use axum::{
 };
 use hyper::StatusCode;
 use lightdotso_redis::redis::RedisError;
+use lightdotso_sqlx::sqlx::Error as SqlxError;
 use prisma_client_rust::{
     chrono::ParseError,
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
@@ -42,18 +43,22 @@ pub(crate) type AppJsonResult<T> = AppResult<Json<T>>;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
 pub(crate) enum AppError {
+    // Library errors
     EyreError(eyre::Error),
     PrismaError(QueryError),
     RedisError(RedisError),
     SerdeJsonError(serde_json::Error),
     FromHexError(FromHexError),
     RustHexError(RustHexError),
+    SqlxError(SqlxError),
+    // Route errors
     RouteError(RouteError),
     AuthError(String),
+    // Internal errors
     BadRequest,
+    Conflict,
     NotFound,
     InternalError,
-    Conflict,
 }
 
 // -----------------------------------------------------------------------------
@@ -112,6 +117,12 @@ impl From<RouteError> for AppError {
     }
 }
 
+impl From<SqlxError> for AppError {
+    fn from(error: SqlxError) -> Self {
+        AppError::SqlxError(error)
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Implementations
 // -----------------------------------------------------------------------------
@@ -120,7 +131,7 @@ impl From<RouteError> for AppError {
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let status = match self {
-            AppError::RouteError(err) => err.error_status_code_and_msg(),
+            // Library errors
             AppError::EyreError(err) => (StatusCode::BAD_REQUEST, err.to_string()),
             AppError::PrismaError(err) if err.is_prisma_error::<UniqueKeyViolation>() => {
                 (StatusCode::BAD_REQUEST, "Prisma Error: Unique key violation".to_string())
@@ -138,13 +149,19 @@ impl IntoResponse for AppError {
             AppError::RustHexError(err) => {
                 (StatusCode::BAD_REQUEST, format!("Bad Rust Hex: {}", err))
             }
-            AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
+            AppError::SqlxError(err) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, format!("Sqlx Error: {}", err))
+            }
+            // Route errors
             AppError::AuthError(msg) => (StatusCode::UNAUTHORIZED, msg),
+            AppError::RouteError(err) => err.error_status_code_and_msg(),
+            // Internal errors
             AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),
-            AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
+            AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
             AppError::InternalError => {
                 (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".to_string())
             }
+            AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
         };
 
         status.into_response()
@@ -154,18 +171,22 @@ impl IntoResponse for AppError {
 impl std::fmt::Debug for AppError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            // Library errors
             AppError::EyreError(err) => write!(f, "EyreError: {:?}", err),
             AppError::PrismaError(err) => write!(f, "PrismaError: {:?}", err),
             AppError::RedisError(err) => write!(f, "RedisError: {:?}", err),
             AppError::SerdeJsonError(err) => write!(f, "SerdeJsonError: {:?}", err),
             AppError::FromHexError(err) => write!(f, "FromHexError: {:?}", err),
             AppError::RustHexError(err) => write!(f, "RustHexError: {:?}", err),
-            AppError::RouteError(err) => write!(f, "RouteError: {:?}", err),
+            AppError::SqlxError(err) => write!(f, "SqlxError: {:?}", err),
+            // Route errors
             AppError::AuthError(msg) => write!(f, "AuthError: {}", msg),
+            AppError::RouteError(err) => write!(f, "RouteError: {:?}", err),
+            // Internal errors
             AppError::BadRequest => write!(f, "BadRequest"),
-            AppError::NotFound => write!(f, "NotFound"),
-            AppError::InternalError => write!(f, "InternalError"),
             AppError::Conflict => write!(f, "Conflict"),
+            AppError::InternalError => write!(f, "InternalError"),
+            AppError::NotFound => write!(f, "NotFound"),
         }
     }
 }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use crate::routes::token::types::Token;
+use lightdotso_db::models::token_price::TokenPriceAggregate;
 use lightdotso_prisma::token_price;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -61,6 +62,13 @@ impl From<token_price::Data> for TokenPrice {
             token: token_price.token.map(|token| Token::from(*token)),
             ..Default::default()
         }
+    }
+}
+
+/// Implement From<TokenPriceAggregate> for TokenPriceDate.
+impl From<TokenPriceAggregate> for TokenPriceDate {
+    fn from(token_price: TokenPriceAggregate) -> Self {
+        Self { price: token_price.price, date: token_price.date.to_string() }
     }
 }
 

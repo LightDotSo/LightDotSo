@@ -18,6 +18,7 @@
   lightdotso-graphql = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-sqlx = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }
