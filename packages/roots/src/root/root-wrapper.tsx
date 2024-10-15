@@ -19,6 +19,7 @@
 
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -56,6 +57,7 @@ export const RootWrapper: FC = () => {
       <PostHogPageView />
       <GoogleAnalytics gaId="G-NT6BW06LQC" />
       <GoogleTagManager gtmId="GTM-NF8G7B37" />
+      <Script async src="https://data.light.so/p.js" />
       {/* UI */}
       <Toaster />
     </>
