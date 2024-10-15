@@ -1333,7 +1333,7 @@ model Billing {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
   status     BillingStatus
 
   // ---------------------------------------------------------------------------
@@ -1422,7 +1422,7 @@ model BillingOperation {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
   status     BillingOperationStatus
 
   // ---------------------------------------------------------------------------
@@ -2083,7 +2083,7 @@ model TokenPrice {
   // Fields
   // ---------------------------------------------------------------------------
 
-  price Float
+  price Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-one
@@ -2206,9 +2206,9 @@ model TokenProtocol {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
-  debtUSD    Float
-  rewardUSD  Float
+  balanceUSD Decimal
+  debtUSD    Decimal
+  rewardUSD  Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -2294,18 +2294,18 @@ model WalletBalance {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
 
   // The below fields are from: https://github.com/llamafolio/llamafolio-api
   // Inspired by License: GPL-3.0
 
-  // rewardUSD  Float?
-  // debtUSD    Float?
-  // apy           Float?
-  // apyBase       Float?
-  // apyMean30d    Float?
+  // rewardUSD  Decimal?
+  // debtUSD    Decimal?
+  // apy           Decimal?
+  // apyBase       Decimal?
+  // apyMean30d    Decimal?
   // ilRisk        Boolean?
-  // collateralUSD Float?
+  // collateralUSD Decimal?
 
   chainId   BigInt   @db.UnsignedBigInt
   amount    String?
@@ -2789,7 +2789,7 @@ model Metrics {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSDSum Float
+  balanceUSDSum Decimal
 
   transactionCount   BigInt @db.UnsignedBigInt
   userOperationCount BigInt @db.UnsignedBigInt
