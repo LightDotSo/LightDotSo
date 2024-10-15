@@ -328,6 +328,7 @@ Thorchain
 Timelike
 Timelne
 Timelock
+Timestamptz
 Tokena
 Tokenaddress
 Tokenizable
