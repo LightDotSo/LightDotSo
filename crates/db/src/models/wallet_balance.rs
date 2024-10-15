@@ -18,7 +18,7 @@ use eyre::Result;
 use lightdotso_sqlx::{
     sqlx::{
         postgres::{self},
-        query_as, Error as SqlxError, FromRow, Row,
+        query_as, Error as SqlxError, FromRow, QueryBuilder, Row,
     },
     PostgresPool,
 };
@@ -58,6 +58,58 @@ impl<'r> FromRow<'r, postgres::PgRow> for WalletBalance {
 // -----------------------------------------------------------------------------
 // Get
 // -----------------------------------------------------------------------------
+
+#[autometrics]
+pub async fn get_wallet_balances(
+    pool: &PostgresPool,
+    wallet_address: &str,
+    chain_ids: Option<&str>,
+    is_spam: Option<bool>,
+    is_testnet: Option<bool>,
+) -> Result<Vec<WalletBalance>, SqlxError> {
+    let mut query_builder = QueryBuilder::new(
+        "SELECT timestamp, balance_usd, chain_id, amount, is_spam, is_testnet, wallet_address, token_id
+         FROM WalletBalance
+         WHERE wallet_address = "
+    );
+
+    query_builder.push_bind(wallet_address);
+    query_builder.push(" AND is_latest = true");
+    query_builder.push(" AND amount != '0'");
+
+    if let Some(spam) = is_spam {
+        query_builder.push(" AND is_spam = ");
+        query_builder.push_bind(spam);
+    } else {
+        query_builder.push(" AND is_spam = false");
+    }
+
+    match is_testnet {
+        Some(false) | None => {
+            query_builder.push(" AND is_testnet = false");
+        }
+        _ => {}
+    }
+
+    if let Some(chain_id_str) = chain_ids {
+        let chain_id_vec: Vec<i64> =
+            chain_id_str.split(',').filter_map(|id| id.parse().ok()).collect();
+
+        if !chain_id_vec.is_empty() {
+            query_builder.push(" AND chain_id IN (");
+            let mut separated = query_builder.separated(", ");
+            for chain_id in chain_id_vec {
+                separated.push_bind(chain_id);
+            }
+            separated.push_unseparated(")");
+        }
+    } else {
+        query_builder.push(" AND chain_id != 0");
+    }
+
+    let query = query_builder.build_query_as::<WalletBalance>();
+    query.fetch_all(pool).await
+}
 
 #[autometrics]
 pub async fn get_latest_wallet_balance_for_token(
