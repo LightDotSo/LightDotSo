@@ -17,6 +17,7 @@
 // From: https://github.com/vercel/next.js/issues/49454
 // Wrap `next/dynamic` in `use client` to avoid Next.js server-side rendering
 
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 
@@ -53,6 +54,8 @@ export const RootWrapper: FC = () => {
     <>
       {/* Script */}
       <PostHogPageView />
+      <GoogleAnalytics gaId="G-NT6BW06LQC" />
+      <GoogleTagManager gtmId="GTM-NF8G7B37" />
       {/* UI */}
       <Toaster />
     </>
