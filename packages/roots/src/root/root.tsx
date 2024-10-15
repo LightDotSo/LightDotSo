@@ -17,7 +17,6 @@ import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { ThemeProvider } from "@lightdotso/ui/providers/theme";
 // import { GeistSans } from "geist/font/sans";
 // import { Inter } from "next/font/google";
-import Script from "next/script";
 import type { FC, ReactNode } from "react";
 import { RootDevWrapper } from "./root-dev-wrapper";
 import { RootProviderWrapper } from "./root-provider-wrapper";
@@ -60,7 +59,6 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-dvh bg-background-body">
         <InnerRoot>{children}</InnerRoot>
       </body>
-      <Script async src="https://data.light.so/p.js" />
     </html>
   );
 };
