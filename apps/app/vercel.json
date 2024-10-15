@@ -3,7 +3,7 @@
   "git": {
     "autoJobCancelation": true,
     "autoAlias": true,
-    "deploymentEnabled": true
+    "deploymentEnabled": false
   },
   "ignoreCommand": "git log -1 --pretty=oneline --abbrev-commit | grep -w \"\\[skip deploy\\]\" || npx turbo-ignore --fallback=HEAD^"
 }

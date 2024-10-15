@@ -24,12 +24,12 @@ import type { ReactNode } from "react";
 
 if (
   typeof window !== "undefined" &&
-  process.env.NEXT_PUBLIC_POSTHOG_KEY &&
-  process.env.NEXT_PUBLIC_POSTHOG_HOST &&
+  typeof process.env.NEXT_PUBLIC_POSTHOG_KEY === "string" &&
+  typeof process.env.NEXT_PUBLIC_POSTHOG_HOST === "string" &&
   process.env.VERCEL_ENV === "production"
 ) {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: "/ingest",
+    api_host: "https://light.so/ingest",
     ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     person_profiles: "identified_only",
     capture_pageview: true,
