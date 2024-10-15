@@ -14,66 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Function to process schema file
-process_schema() {
-    input_file=$1
-    output_file=$2
-    generator_config=$3
-    is_postgres=$4
 
-    # Copy the input file to the output file
-    cp -f "$input_file" "$output_file"
+# Copying prisma/schema.prisma to prisma/schema-rs.prisma
+cp -f prisma/schema.prisma prisma/schema-rs.prisma
 
-    # Remove the first 4 lines from the output file
-    tail -n +5 "$output_file" > "${output_file}.tmp" && mv "${output_file}.tmp" "$output_file"
+# Removing the first 9 lines from prisma/schema-rs.prisma
+tail -n +5 prisma/schema-rs.prisma > prisma/schema-rs-updated.prisma && mv prisma/schema-rs-updated.prisma prisma/schema-rs.prisma
 
-    # Add generator configuration to the top of the output file
-    echo -e "${generator_config}\n$(cat "$output_file")" > "$output_file"
+# Adding generator configuration to the top of prisma/schema-rs.prisma
+echo -e "generator prisma {\n  provider        = \"cargo prisma\"\n  output          = \"../../../crates/prisma/src/lib.rs\"\n  previewFeatures = [\"fullTextSearch\"]\n}\n$(cat prisma/schema-rs.prisma)" > prisma/schema-rs.prisma
 
-    # Remove the zod-prisma and kysely generator configurations
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        sed -i "" -e '/^generator zod {/,/^}/d' "$output_file"
-        sed -i "" -e '/^generator kysely {/,/^}/d' "$output_file"
-        # Remove extra newlines before datasource db
-        sed -i "" -e '/^$/N;/^\n$/D' "$output_file"
-        # Remove relationMode = "prisma" line
-        sed -i "" '/relationMode = "prisma"/d' "$output_file"
-    else
-        sed -i -e '/^generator zod {/,/^}/d' "$output_file"
-        sed -i -e '/^generator kysely {/,/^}/d' "$output_file"
-        # Remove extra newlines before datasource db
-        sed -i -e '/^$/N;/^\n$/D' "$output_file"
-        # Remove relationMode = "prisma" line
-        sed -i '/relationMode = "prisma"/d' "$output_file"
-    fi
-
-    if [ "$is_postgres" = true ] ; then
-        # Update the datasource for PostgreSQL
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i "" 's/provider *= *"mysql"/provider = "postgresql"/' "$output_file"
-            sed -i "" 's/url *= *env("DATABASE_URL")/url      = env("POSTGRES_URL")/' "$output_file"
-            sed -i "" -E 's/BigInt(\??)([ \t]+@db\.UnsignedBigInt|[ \t]+@id)?/Decimal\1\2/g' "$output_file"
-            sed -i "" -E 's/@db\.(UnsignedBigInt|UnsignedDecimal)//g' "$output_file"
-        else
-            sed -i 's/provider *= *"mysql"/provider = "postgresql"/' "$output_file"
-            sed -i 's/url *= *env("DATABASE_URL")/url      = env("POSTGRES_URL")/' "$output_file"
-            sed -i -E 's/BigInt(\??)([ \t]+@db\.UnsignedBigInt|[ \t]+@id)?/Decimal\1\2/g' "$output_file"
-            sed -i -E 's/@db\.(UnsignedBigInt|UnsignedDecimal)//g' "$output_file"
-        fi
-    fi
-}
-
-# Process schema-rs.prisma
-rs_generator_config="generator prisma {
-  provider        = \"cargo prisma\"
-  output          = \"../../../crates/prisma/src/lib.rs\"
-  previewFeatures = [\"fullTextSearch\"]
-}"
-process_schema "prisma/schema.prisma" "prisma/schema-rs.prisma" "$rs_generator_config" false
-
-# Process schema-postgres.prisma
-postgres_generator_config="generator client {
-  provider        = \"prisma-client-js\"
-  previewFeatures = [\"fullTextSearch\"]
-}"
-process_schema "prisma/schema.prisma" "prisma/schema-postgres.prisma" "$postgres_generator_config" true
+# Remove the zod-prisma generator configuration from prisma/schema-rs.prisma
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i "" -e '7,25d' prisma/schema-rs.prisma
+    sed -i "" -e '10d' prisma/schema-rs.prisma
+else
+    sed -i -e '7,25d' prisma/schema-rs.prisma
+    sed -i -e '10d' prisma/schema-rs.prisma
+fi
