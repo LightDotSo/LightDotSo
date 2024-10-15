@@ -22,7 +22,8 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_db::models::wallet_balance::get_latest_wallet_balance_for_token;
+use lightdotso_prisma::token;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -101,21 +102,25 @@ pub(crate) async fn v1_token_get_handler(
 
     // If the wallet is provided, get the balance of the token.
     if let Some(wallet_address) = parsed_wallet_address {
-        let balance = state
-            .client
-            .wallet_balance()
-            .find_first(vec![
-                wallet_balance::token_id::equals(Some(token.id.clone())),
-                wallet_balance::wallet_address::equals(wallet_address),
-                wallet_balance::is_latest::equals(true),
-            ])
-            .with(wallet_balance::token::fetch().with(token::group::fetch()))
-            .exec()
-            .await?;
+        let balance = get_latest_wallet_balance_for_token(
+            &state.pool,
+            token.id.clone(),
+            wallet_address.parse()?,
+        )
+        .await?;
 
         // If the balance is found, update the token with the balance.
         if let Some(balance) = balance {
-            let token: Token = balance.into();
+            // First, convert the token to a WalletBalance.
+            let mut token: Token = token.into();
+
+            // Then, fill in the missing fields.
+            token.balance_usd = balance.balance_usd;
+            token.amount = balance.amount;
+            token.is_spam = balance.is_spam;
+            token.is_testnet = balance.is_testnet;
+
+            // Return the token.
             return Ok(Json::from(token));
         }
     }

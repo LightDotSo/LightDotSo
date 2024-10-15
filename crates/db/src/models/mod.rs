@@ -21,3 +21,4 @@ pub mod token_price;
 pub mod transaction;
 pub mod user_operation;
 pub mod wallet;
+pub mod wallet_balance;

@@ -7,10 +7,7 @@ module.exports = {
     "pnpm run biome:cmd",
   ],
   "*.mdx": ["pnpm run textlint:cmd"],
-  "*.rs": [
-    () => "sh -c 'pnpm run clippy:cmd",
-    () => "sh -c 'pnpm run cargo:fmt:cmd",
-  ],
+  "*.rs": [() => "pnpm run clippy:cmd", () => "pnpm run cargo:fmt:cmd"],
   "*.{py,ipynb}": ["make ruff-fmt", "make ruff-lint"],
   "*.sol": [
     "forge fmt",

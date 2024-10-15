@@ -130,10 +130,10 @@ model WalletBalance {
   // ---------------------------------------------------------------------------
 
   // token   Token?  @relation(fields: [tokenId], references: [id])
-  tokenId String?
+  tokenId String
 
   // tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
-  tokenProtocolId String?
+  tokenProtocolId String
 
   // ---------------------------------------------------------------------------
   // Many-to-many
