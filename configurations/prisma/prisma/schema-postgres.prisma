@@ -130,9 +130,15 @@ model WalletBalance {
   // ---------------------------------------------------------------------------
 
   // token   Token?  @relation(fields: [tokenId], references: [id])
+  // tokenId String?
   tokenId String
 
+  // tokenGroup   TokenGroup? @relation(fields: [tokenGroupId], references: [id])
+  // tokenGroupId String?
+  tokenGroupId String
+
   // tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  // tokenProtocolId String?
   tokenProtocolId String
 
   // ---------------------------------------------------------------------------
@@ -151,5 +157,6 @@ model WalletBalance {
   @@index([chainId])
   @@index([walletAddress])
   @@index([tokenId])
+  @@index([tokenGroupId])
   @@index([tokenProtocolId])
 }

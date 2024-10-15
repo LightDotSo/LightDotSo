@@ -2067,7 +2067,8 @@ model TokenGroup {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  tokens Token[]
+  tokens         Token[]
+  walletBalances WalletBalance[]
 }
 
 model TokenPrice {
@@ -2328,6 +2329,9 @@ model WalletBalance {
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
+  tokenGroup   TokenGroup? @relation(fields: [tokenGroupId], references: [id])
+  tokenGroupId String?
+
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
 
@@ -2347,6 +2351,7 @@ model WalletBalance {
   @@index([chainId])
   @@index([walletAddress])
   @@index([tokenId])
+  @@index([tokenGroupId])
   @@index([tokenProtocolId])
 }
 
