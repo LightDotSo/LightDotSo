@@ -18,11 +18,81 @@ use eyre::Result;
 use lightdotso_sqlx::{
     sqlx::{
         postgres::{self},
-        query_as, Error as SqlxError, FromRow, QueryBuilder, Row,
+        query, query_as, Error as SqlxError, FromRow, QueryBuilder, Row,
     },
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+#[derive(Debug)]
+pub struct WalletBalanceInput {
+    pub quote: f64,
+    pub chain_id: i64,
+    pub wallet_address: String,
+    pub amount: Option<String>,
+    pub stable: Option<bool>,
+    pub token_id: String,
+    pub is_spam: bool,
+    pub is_testnet: bool,
+}
+
+// -----------------------------------------------------------------------------
+// Create
+// -----------------------------------------------------------------------------
+
+#[autometrics]
+pub async fn create_wallet_balances(
+    pool: &PostgresPool,
+    wallet_address: String,
+    chain_id: i64,
+    balances: Vec<WalletBalanceInput>,
+) -> Result<i64> {
+    let mut tx = pool.begin().await?;
+
+    // Set all existing balances for this wallet and chain to not latest
+    query(
+        "UPDATE wallet_balance
+         SET is_latest = false
+         WHERE wallet_address = $1 AND chain_id = $2",
+    )
+    .bind(&wallet_address)
+    .bind(chain_id)
+    .execute(&mut tx)
+    .await?;
+
+    // Insert new balances
+    let mut inserted = 0;
+    for balance in balances {
+        let amount = balance.amount.unwrap_or_else(|| "0".to_string());
+        let result = query(
+            "INSERT INTO wallet_balance 
+             (timestamp, balance_usd, chain_id, amount, stable, is_spam, is_latest, is_testnet, wallet_address, token_id)
+             VALUES 
+             (CURRENT_TIMESTAMP, $1, $2, $3, $4, $5, true, $6, $7, $8)"
+        )
+        .bind(balance.quote)
+        .bind(balance.chain_id)
+        .bind(&amount)
+        .bind(balance.stable)
+        .bind(balance.is_spam)
+        .bind(balance.is_testnet)
+        .bind(&balance.wallet_address)
+        .bind(&balance.token_id)
+        .execute(&mut tx)
+        .await?;
+
+        inserted += result.rows_affected();
+    }
+
+    // Commit the transaction
+    tx.commit().await?;
+
+    Ok(inserted as i64)
+}
 
 // -----------------------------------------------------------------------------
 // Types
