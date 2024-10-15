@@ -45,10 +45,10 @@
     "@storybook/react": "^8.3.5",
     "@tanstack/react-table": "^8.20.5",
     "@tremor/react": "^3.18.3",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.453.0",
     "next": "15.0.0-canary.190",
     "recharts": "2.13.0",
-    "viem": "^2.21.24"
+    "viem": "^2.21.26"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
