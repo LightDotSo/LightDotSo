@@ -25,11 +25,11 @@ use lightdotso_sqlx::{
 use prisma_client_rust::chrono::{DateTime, Utc};
 
 // -----------------------------------------------------------------------------
-// Types
+// Params
 // -----------------------------------------------------------------------------
 
 #[derive(Debug)]
-pub struct WalletBalanceInput {
+pub struct CreateWalletBalanceParams {
     pub quote: f64,
     pub chain_id: i64,
     pub wallet_address: String,
@@ -49,7 +49,7 @@ pub async fn create_wallet_balances(
     pool: &PostgresPool,
     wallet_address: String,
     chain_id: i64,
-    balances: Vec<WalletBalanceInput>,
+    params: Vec<CreateWalletBalanceParams>,
 ) -> Result<i64> {
     let mut tx = pool.begin().await?;
 
@@ -66,7 +66,7 @@ pub async fn create_wallet_balances(
 
     // Insert new balances
     let mut inserted = 0;
-    for balance in balances {
+    for balance in params {
         let amount = balance.amount.unwrap_or_else(|| "0".to_string());
         let result = query(
             "INSERT INTO wallet_balance 
