@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Auth operation error
+/// Auth error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum AuthError {
     // Auth query error.

@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// InterpretationAction error
+/// Interpretation action error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum InterpretationActionError {
-    /// InterpretationAction query error.
+    /// Interpretation action query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// InterpretationAction not found by id.
+    /// Interpretation action not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

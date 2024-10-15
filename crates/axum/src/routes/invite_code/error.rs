@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// InviteCode error
+/// Invite code error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum InviteCodeError {
-    /// InviteCode query error.
+    /// Invite code query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// InviteCode not found by id.
+    /// Invite code not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
     /// Not Authorized.

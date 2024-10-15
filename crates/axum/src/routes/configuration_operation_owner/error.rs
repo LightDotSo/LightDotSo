@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Configuration owner operation error
+/// Configuration operation owner error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationOperationOwnerError {
     /// Owner query error.

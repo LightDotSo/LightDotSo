@@ -19,16 +19,16 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// ProtocolGroup error
+/// Protocol group error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ProtocolGroupError {
-    /// ProtocolGroup query error.
+    /// Protocol group query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// ProtocolGroup not found by id.
+    /// Protocol group not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
-    /// ProtocolGroup unauthorized.
+    /// Protocol group unauthorized.
     #[schema(example = "Unauthorized")]
     Unauthorized(String),
 }

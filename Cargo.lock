@@ -6890,8 +6890,6 @@ dependencies = [
  "tower-sessions-core",
  "tower_governor",
  "utoipa",
- "utoipa-rapidoc",
- "utoipa-redoc",
  "utoipa-swagger-ui",
 ]
 
@@ -15155,30 +15153,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "utoipa-rapidoc"
-version = "5.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f5e784e313457e79d65c378bdfc2f74275f0db91a72252be7d34360ec2afbe1"
-dependencies = [
- "axum",
- "serde",
- "serde_json",
- "utoipa",
-]
-
-[[package]]
-name = "utoipa-redoc"
-version = "5.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9218304bba9a0ea5e92085b0a427ccce5fd56eaaf6436d245b7578e6a95787e1"
-dependencies = [
- "axum",
- "serde",
- "serde_json",
- "utoipa",
-]
-
-[[package]]
 name = "utoipa-swagger-ui"
 version = "8.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -15190,7 +15164,6 @@ dependencies = [
  "rust-embed",
  "serde",
  "serde_json",
- "url",
  "utoipa",
  "zip",
 ]

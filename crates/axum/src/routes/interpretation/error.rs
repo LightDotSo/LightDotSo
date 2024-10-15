@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Interpretation operation error
+/// Interpretation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum InterpretationError {
     /// Interpretation query error.

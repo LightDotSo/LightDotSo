@@ -19,16 +19,16 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// TokenGroup error
+/// Token group error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum TokenGroupError {
-    /// TokenGroup query error.
+    /// Token group query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// TokenGroup not found by id.
+    /// Token group not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
-    /// TokenGroup unauthorized.
+    /// Token group unauthorized.
     #[schema(example = "Unauthorized")]
     Unauthorized(String),
 }

@@ -66,6 +66,6 @@
   tower-sessions-core = { workspace = true }
   tower_governor = { workspace = true }
   utoipa = { version = "5.0.0", features = ["axum_extras"] }
-  utoipa-rapidoc = { version = "5.0.0", features = ["axum"] }
-  utoipa-redoc = { version = "5.0.0", features = ["axum"] }
-  utoipa-swagger-ui = { version = "8.0.0", features = ["axum"] }
+  utoipa-swagger-ui = { version = "8.0.0", features = [
+    "axum",
+  ], default-features = false }

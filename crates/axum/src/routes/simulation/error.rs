@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Simulation operation error
+/// Simulation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum SimulationError {
     /// Simulation query error.

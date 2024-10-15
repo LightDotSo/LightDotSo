@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// PaymasterOperation error
+/// Paymaster operation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum PaymasterOperationError {
-    /// PaymasterOperation query error.
+    /// Paymaster operation query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// PaymasterOperation not found by id.
+    /// Paymaster operation not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

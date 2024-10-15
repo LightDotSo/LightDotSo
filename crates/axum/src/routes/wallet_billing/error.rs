@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// WalletBilling operation error
+/// Wallet billing error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum WalletBillingError {
     // WalletBilling query error.

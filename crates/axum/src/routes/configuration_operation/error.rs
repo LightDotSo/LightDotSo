@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// ConfigurationOperation error
+/// Configuration operation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationOperationError {
-    /// ConfigurationOperation query error.
+    /// Configuration operation query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// ConfigurationOperation not found by id.
+    /// Configuration operation not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }
