@@ -34,12 +34,12 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
-    "framer-motion": "^11.11.8",
+    "framer-motion": "^11.11.9",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.453.0",
     "next-themes": "^0.3.0",
     "reactflow": "^11.11.4",
-    "viem": "^2.21.24"
+    "viem": "^2.21.26"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

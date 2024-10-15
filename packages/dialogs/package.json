@@ -45,11 +45,11 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.453.0",
     "next": "15.0.0-canary.190",
-    "permissionless": "^0.2.7",
+    "permissionless": "^0.2.9",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.24",
+    "viem": "^2.21.26",
     "zod": "^3.23.8"
   },
   "devDependencies": {

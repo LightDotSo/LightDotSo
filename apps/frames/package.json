@@ -34,7 +34,7 @@
     "next": "15.0.0-canary.190",
     "react": "19.0.0-rc-cd22717c-20241013",
     "react-dom": "19.0.0-rc-cd22717c-20241013",
-    "viem": "^2.21.24"
+    "viem": "^2.21.26"
   },
   "devDependencies": {
     "@lightdotso/styles": "workspace:*",
@@ -45,7 +45,7 @@
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.13",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   },
   "publishConfig": {

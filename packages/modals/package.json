@@ -44,9 +44,9 @@
     "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^8.3.5",
     "@tanstack/react-virtual": "^3.10.8",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.453.0",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.24",
+    "viem": "^2.21.26",
     "zod": "^3.23.8"
   },
   "devDependencies": {
