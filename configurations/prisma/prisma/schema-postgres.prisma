@@ -1,0 +1,155 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model TokenPrice {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  // id        String   @id @default(cuid())
+  // timestamp DateTime @default(now())
+  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  price Float
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  // token   Token  @relation(fields: [tokenId], references: [id])
+  tokenId String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  // billingOperations BillingOperation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([tokenId])
+}
+
+model TokenProtocol {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  // id        String   @id @default(cuid())
+  // timestamp DateTime @default(now())
+  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+  debtUSD    Float
+  rewardUSD  Float
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  // protocol   Protocol @relation(fields: [protocolId], references: [id])
+  protocolId String
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  // assetChanges   AssetChange[]
+  // strategies     TokenProtocolStrategy[]
+  // walletBalances WalletBalance[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([protocolId])
+}
+
+model WalletBalance {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  // id        String   @id @default(cuid())
+  // timestamp DateTime @default(now())
+  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+
+  // The below fields are from: https://github.com/llamafolio/llamafolio-api
+  // Inspired by License: GPL-3.0
+
+  // rewardUSD  Float?
+  // debtUSD    Float?
+  // apy           Float?
+  // apyBase       Float?
+  // apyMean30d    Float?
+  // ilRisk        Boolean?
+  // collateralUSD Float?
+
+  chainId   Decimal  @db.Decimal(20, 0)
+  amount    String?
+  stable    Boolean?
+  isLatest  Boolean  @default(false)
+  isSpam    Boolean  @default(false)
+  isTestnet Boolean  @default(false)
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  // chain         Chain  @relation(fields: [chainId], references: [id])
+  // wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  // token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  // tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  // billingBalances BillingBalance[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Query
+  @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
+  // Relations
+  @@index([chainId])
+  @@index([walletAddress])
+  @@index([tokenId])
+  @@index([tokenProtocolId])
+}

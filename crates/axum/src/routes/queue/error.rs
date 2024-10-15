@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Queue operation error
+/// Queue error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum QueueError {
     /// Queue query error.

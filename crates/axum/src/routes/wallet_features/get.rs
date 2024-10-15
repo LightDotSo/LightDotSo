@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::WalletFeatures;
+#[allow(unused_imports)]
+use super::{error::WalletFeaturesError, types::WalletFeatures};
 use crate::{result::AppJsonResult, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;

@@ -14,7 +14,8 @@
 
 #![allow(clippy::unwrap_used)]
 #![allow(clippy::unnecessary_fallible_conversions)]
-
+#[allow(unused_imports)]
+use super::error::UserOperationError;
 use crate::{
     result::{AppError, AppJsonResult},
     routes::{owner::types::Owner, signature::types::Signature},

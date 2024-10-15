@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Token;
-use crate::{result::AppJsonResult, routes::token::types::TokenGroup, state::AppState};
+#[allow(unused_imports)]
+use super::{
+    error::TokenError,
+    types::{Token, TokenGroup},
+};
+use crate::{result::AppJsonResult, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{

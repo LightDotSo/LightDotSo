@@ -13,7 +13,7 @@
   dotenvy = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
-  metrics = "0.23.0"
+  metrics = "0.24.0"
   opentelemetry = { workspace = true }
   opentelemetry-prometheus = { workspace = true }
   opentelemetry_sdk = { workspace = true }

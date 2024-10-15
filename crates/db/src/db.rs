@@ -25,6 +25,14 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     client
 }
 
+/// Create a new Prisma client w/ `POSTGRES_URL` environment variable.
+pub async fn create_postgres_client() -> Result<PrismaClient, NewClientError> {
+    let client: Result<PrismaClient, NewClientError> =
+        PrismaClient::_builder().with_url(std::env::var("POSTGRES_URL").unwrap()).build().await;
+
+    client
+}
+
 /// Create a new Prisma client for testing.
 /// Reads the `DATABASE_TEST_URL` environment variable.
 /// Fallbacks to `DATABASE_URL` if `DATABASE_TEST_URL` is not set.

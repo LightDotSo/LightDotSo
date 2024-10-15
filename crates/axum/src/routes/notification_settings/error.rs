@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// NotificationSettings error
+/// Notification settings error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum NotificationSettingsError {
-    /// NotificationSettings query error.
+    /// Notification settings query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// NotificationSettings not found by id.
+    /// Notification settings not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

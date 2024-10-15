@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// AssetChange error
+/// Asset change error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum AssetChangeError {
-    /// AssetChange query error.
+    /// Asset change query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// AssetChange not found by id.
+    /// Asset change not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

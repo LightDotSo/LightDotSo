@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// UserOperationMerkle error
+/// User operation merkle error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserOperationMerkleError {
     /// UserOperationMerkle query error.

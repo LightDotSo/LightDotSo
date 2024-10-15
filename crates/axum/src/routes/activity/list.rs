@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Activity;
+#[allow(unused_imports)]
+use super::{error::ActivityError, types::Activity};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},

@@ -22,6 +22,7 @@
     "db:migrate:deploy": "dotenv prisma migrate deploy",
     "db:migrate:deploy:dev": "dotenv -e .env.development prisma migrate deploy",
     "db:migrate:dev": "dotenv prisma migrate dev --create-only",
+    "db:neon:push": "prisma db push --schema=./prisma/schema-postgres.prisma",
     "db:push": "prisma db push",
     "dev:prisma": "pnpm run db:migrate:deploy:dev && pnpm run studio:dev",
     "generate": "pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",

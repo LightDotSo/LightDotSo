@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[allow(unused_imports)]
+use super::error::UserOperationError;
 use crate::{result::AppJsonResult, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;

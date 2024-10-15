@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::SupportRequest;
+#[allow(unused_imports)]
+use super::{error::SupportRequestError, types::SupportRequest};
 use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;

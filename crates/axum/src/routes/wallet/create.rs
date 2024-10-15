@@ -13,12 +13,13 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-
+#[allow(unused_imports)]
+use super::{error::WalletError, types::Wallet};
 use crate::{
     admin::token_is_valid,
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
-    routes::{auth::error::AuthError, wallet::types::Wallet},
+    routes::auth::error::AuthError,
     state::AppState,
 };
 use alloy::primitives::{Address, B256};

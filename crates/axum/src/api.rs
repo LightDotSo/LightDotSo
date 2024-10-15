@@ -75,8 +75,6 @@ use utoipa::{
     },
     OpenApi,
 };
-use utoipa_rapidoc::RapiDoc;
-use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(OpenApi)]
@@ -341,7 +339,6 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_list_count_handler,
-        wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_update_handler,
         wallet_billing::v1_wallet_billing_get_handler,
         wallet_billing::v1_wallet_billing_update_handler,
@@ -592,10 +589,6 @@ pub async fn start_api_server() -> Result<()> {
         .merge(api.clone())
         .merge(metrics.routes())
         .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
-        .merge(Redoc::with_url("/v1/redoc", open_api.clone()))
-        // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
-        // via SwaggerUi instead we only make rapidoc to point to the existing doc.
-        .merge(RapiDoc::new("/v1/api-docs/openapi.json").path("/rapidoc"))
         .nest("/v1", api.clone())
         .layer(
             // Set up error handling, rate limiting, and CORS

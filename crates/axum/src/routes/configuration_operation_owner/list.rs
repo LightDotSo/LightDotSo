@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationOperationOwner;
+#[allow(unused_imports)]
+use super::{error::ConfigurationOperationOwnerError, types::ConfigurationOperationOwner};
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{

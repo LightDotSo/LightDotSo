@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// BillingOperation error
+/// Billing operation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum BillingOperationError {
-    /// BillingOperation query error.
+    /// Billing operation query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// BillingOperation not found by id.
+    /// Billing operation not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

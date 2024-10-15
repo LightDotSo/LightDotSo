@@ -14,11 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::ConfigurationOperationSignature;
+use super::{error::ConfigurationOperationSignatureError, types::ConfigurationOperationSignature};
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
     state::AppState,
 };
 use alloy::primitives::Address;
@@ -96,10 +95,10 @@ pub struct ConfigurationOperationSignatureSignatureCreateParams {
         ),
         request_body = ConfigurationOperationSignatureCreateRequestParams,
         responses(
-            (status = 200, description = "Signature created successfully", body = Signature),
-            (status = 400, description = "Invalid configuration", body = SignatureError),
-            (status = 409, description = "Signature already exists", body = SignatureError),
-            (status = 500, description = "Signature internal error", body = SignatureError),
+            (status = 200, description = "Signature created successfully", body = ConfigurationOperationSignature),
+            (status = 400, description = "Invalid configuration", body = ConfigurationOperationSignatureError),
+            (status = 409, description = "Signature already exists", body = ConfigurationOperationSignatureError),
+            (status = 500, description = "Signature internal error", body = ConfigurationOperationSignatureError),
         )
     )]
 #[autometrics]

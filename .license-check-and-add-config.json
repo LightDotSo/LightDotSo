@@ -16,6 +16,7 @@
     "**/prisma/src/lib.rs",
     "**/requirements.txt",
     "**/schema.graphql",
+    "**/schema-postgres.prisma",
     "**/schema-rs.prisma",
     "**/schema.prisma",
     "**/.gitkeep",

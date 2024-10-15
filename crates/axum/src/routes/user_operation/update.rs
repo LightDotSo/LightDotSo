@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    result::AppJsonResult, routes::user_operation::types::UserOperationSuccess, state::AppState,
-};
+#[allow(unused_imports)]
+use super::{error::UserOperationError, types::UserOperationSuccess};
+use crate::{result::AppJsonResult, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{

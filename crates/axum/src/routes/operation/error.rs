@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Operation operation error
+/// Operation error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum OperationError {
     /// Operation query error.

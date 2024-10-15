@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{result::AppJsonResult, routes::user_operation::types::UserOperation, state::AppState};
+#[allow(unused_imports)]
+use super::{error::UserOperationError, types::UserOperation};
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},

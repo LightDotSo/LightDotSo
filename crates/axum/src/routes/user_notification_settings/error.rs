@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// UserNotificationSettings operation error
+/// User notification settings error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserNotificationSettingsError {
     // UserNotificationSettings query error.

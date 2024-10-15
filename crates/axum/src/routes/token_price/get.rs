@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::{TokenPrice, TokenPriceDate};
+#[allow(unused_imports)]
+use super::{
+    error::TokenPriceError,
+    types::{TokenPrice, TokenPriceDate},
+};
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -79,8 +83,8 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Token returned successfully", body = TokenPrice),
-            (status = 404, description = "Token not found", body = TokenError),
+            (status = 200, description = "Token price returned successfully", body = TokenPrice),
+            (status = 404, description = "Token price not found", body = TokenPriceError),
         )
     )]
 #[autometrics]

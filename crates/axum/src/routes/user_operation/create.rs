@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-
-use super::types::UserOperation;
+#[allow(unused_imports)]
+use super::{error::UserOperationError, types::UserOperation};
 use crate::{
     result::{AppError, AppJsonResult},
     routes::signature::create::SignatureCreateParams,

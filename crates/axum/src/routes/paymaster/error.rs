@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Paymaster operation error
+/// Paymaster error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum PaymasterError {
     /// Paymaster query error.

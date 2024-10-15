@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Support_request operation error
+/// Support request error
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub(crate) enum SupportRequestError {
-    /// Support_request query error.
+    /// Support request query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// Support_request not found by id.
+    /// Support request not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }
