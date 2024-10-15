@@ -40,6 +40,7 @@
     "crates/sequence",
     "crates/signer",
     "crates/simulator",
+    "crates/sqlx",
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
@@ -146,6 +147,7 @@
     lightdotso-routescan = { path = "./crates/routescan" }
     lightdotso-rpc = { path = "./crates/rpc" }
     lightdotso-sequence = { path = "./crates/sequence" }
+    lightdotso-sqlx = { path = "./crates/sqlx" }
     lightdotso-signer = { path = "./crates/signer" }
     lightdotso-simulator = { path = "./crates/simulator" }
     lightdotso-tauri = { path = "./crates/tauri" }
@@ -197,6 +199,7 @@
     serde_json = "1.0.113"
     serde_yaml = "0.9"
     spki = "0.7.2"
+    sqlx = { version = "0.6", default-features = false, features = [ "runtime-tokio-rustls", "macros", "postgres", "chrono"] }
     strum = "0.26"
     strum_macros = "0.26"
     syn = "2.0"
