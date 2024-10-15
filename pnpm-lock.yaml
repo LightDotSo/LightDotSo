@@ -1615,8 +1615,6 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
 
-  apps/llm: {}
-
   apps/open: {}
 
   apps/paper:
@@ -2141,7 +2139,7 @@ importers:
         version: link:../packages/sequence
       '@openzeppelin/merkle-tree':
         specifier: github:OpenZeppelin/merkle-tree#master
-        version: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71
+        version: git+https://git@github.com:OpenZeppelin/merkle-tree.git#31c37cf3f37a6e8022cfa661a290d9879bb31b71
       merkletreejs:
         specifier: ^0.4.0
         version: 0.4.0
@@ -8344,8 +8342,8 @@ packages:
   '@openzeppelin/contracts@5.0.2':
     resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
 
-  '@openzeppelin/merkle-tree@https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71':
-    resolution: {tarball: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71}
+  '@openzeppelin/merkle-tree@git+https://git@github.com:OpenZeppelin/merkle-tree.git#31c37cf3f37a6e8022cfa661a290d9879bb31b71':
+    resolution: {commit: 31c37cf3f37a6e8022cfa661a290d9879bb31b71, repo: git@github.com:OpenZeppelin/merkle-tree.git, type: git}
     version: 1.0.7
 
   '@oxc-parser/binding-darwin-arm64@0.30.5':
@@ -13410,8 +13408,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  avsc@https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef:
-    resolution: {tarball: https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef}
+  avsc@git+https://git@github.com:Irys-xyz/avsc.git#a730cc8018b79e114b6a3381bbb57760a24c6cef:
+    resolution: {commit: a730cc8018b79e114b6a3381bbb57760a24c6cef, repo: git@github.com:Irys-xyz/avsc.git, type: git}
     version: 5.4.7
     engines: {node: '>=0.11'}
 
@@ -15366,6 +15364,7 @@ packages:
 
   eciesjs@0.3.19:
     resolution: {integrity: sha512-b+PkRDZ3ym7HEcnbxc22CMVCpgsnr8+gGgST3U5PtgeX1luvINgfXW7efOyUtmn/jFtA/lg5ywBi/Uazf4oeaA==}
+    deprecated: Please upgrade to v0.4+
 
   edge-runtime@2.5.9:
     resolution: {integrity: sha512-pk+k0oK0PVXdlT4oRp4lwh+unuKB7Ng4iZ2HB+EZ7QCEQizX360Rp/F4aRpgpRgdP2ufB35N+1KppHmYjqIGSg==}
@@ -15826,6 +15825,7 @@ packages:
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -17208,8 +17208,8 @@ packages:
     resolution: {integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==}
     engines: {node: '>= 14'}
 
-  human-crypto-keys@https://codeload.github.com/ardriveapp/js-human-crypto-keys/tar.gz/dcfde03a4d45fb390dc480950f6bf034a16b4cc9:
-    resolution: {tarball: https://codeload.github.com/ardriveapp/js-human-crypto-keys/tar.gz/dcfde03a4d45fb390dc480950f6bf034a16b4cc9}
+  human-crypto-keys@git+https://git@github.com:ardriveapp/js-human-crypto-keys.git#dcfde03a4d45fb390dc480950f6bf034a16b4cc9:
+    resolution: {commit: dcfde03a4d45fb390dc480950f6bf034a16b4cc9, repo: git@github.com:ardriveapp/js-human-crypto-keys.git, type: git}
     version: 0.1.4
 
   human-id@1.0.2:
@@ -29810,7 +29810,7 @@ snapshots:
 
   '@openzeppelin/contracts@5.0.2': {}
 
-  '@openzeppelin/merkle-tree@https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/31c37cf3f37a6e8022cfa661a290d9879bb31b71':
+  '@openzeppelin/merkle-tree@git+https://git@github.com:OpenZeppelin/merkle-tree.git#31c37cf3f37a6e8022cfa661a290d9879bb31b71':
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/bytes': 5.7.0
@@ -36746,7 +36746,7 @@ snapshots:
       algosdk: 1.24.1(encoding@0.1.13)
       arweave: 1.11.4
       arweave-stream-tx: 1.2.2(arweave@1.11.4)
-      avsc: https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef
+      avsc: git+https://git@github.com:Irys-xyz/avsc.git#a730cc8018b79e114b6a3381bbb57760a24c6cef
       axios: 0.21.4
       base64url: 3.0.1
       bs58: 4.0.1
@@ -36844,7 +36844,7 @@ snapshots:
       bignumber.js: 9.1.2
       bn.js: 5.2.1
       futoin-hkdf: 1.5.3
-      human-crypto-keys: https://codeload.github.com/ardriveapp/js-human-crypto-keys/tar.gz/dcfde03a4d45fb390dc480950f6bf034a16b4cc9
+      human-crypto-keys: git+https://git@github.com:ardriveapp/js-human-crypto-keys.git#dcfde03a4d45fb390dc480950f6bf034a16b4cc9
       jwk-to-pem: 2.0.5
       lodash: 4.17.21
       mime-types: 2.1.35
@@ -37097,7 +37097,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  avsc@https://codeload.github.com/Irys-xyz/avsc/tar.gz/a730cc8018b79e114b6a3381bbb57760a24c6cef: {}
+  avsc@git+https://git@github.com:Irys-xyz/avsc.git#a730cc8018b79e114b6a3381bbb57760a24c6cef: {}
 
   avvio@8.4.0:
     dependencies:
@@ -42088,7 +42088,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  human-crypto-keys@https://codeload.github.com/ardriveapp/js-human-crypto-keys/tar.gz/dcfde03a4d45fb390dc480950f6bf034a16b4cc9:
+  human-crypto-keys@git+https://git@github.com:ardriveapp/js-human-crypto-keys.git#dcfde03a4d45fb390dc480950f6bf034a16b4cc9:
     dependencies:
       bip39: 3.0.2
       crypto-key-composer: 0.1.3
