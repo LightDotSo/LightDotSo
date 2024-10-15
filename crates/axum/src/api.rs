@@ -53,7 +53,7 @@ use hyper::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue, Method,
 };
-use lightdotso_db::db::create_client;
+use lightdotso_db::db::{create_client, create_postgres_client};
 use lightdotso_hyper::get_hyper_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
@@ -412,10 +412,16 @@ pub async fn start_api_server() -> Result<()> {
     // Create a shared client
     let hyper = get_hyper_client()?;
     let db = Arc::new(create_client().await?);
+    let pool = Arc::new(create_postgres_client().await?);
     let producer = Arc::new(get_producer()?);
     let redis = get_redis_client()?;
-    let state =
-        AppState { hyper: Arc::new(hyper), client: db, producer, redis: Arc::new(redis.clone()) };
+    let state = AppState {
+        hyper: Arc::new(hyper),
+        client: db,
+        producer,
+        pool,
+        redis: Arc::new(redis.clone()),
+    };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85

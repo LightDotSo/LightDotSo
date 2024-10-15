@@ -12,5 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use sqlx::{Pool, Postgres};
+
 // Re-export sqlx crates
 pub use sqlx;
+
+pub type PostgresPool = Pool<Postgres>;

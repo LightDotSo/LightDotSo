@@ -16,6 +16,7 @@ use lightdotso_hyper::HyperClient;
 use lightdotso_kafka::rdkafka::producer::FutureProducer;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::redis::Client;
+use lightdotso_sqlx::PostgresPool;
 use std::sync::Arc;
 
 #[derive(Clone)]
@@ -23,5 +24,6 @@ pub struct AppState {
     pub hyper: Arc<HyperClient>,
     pub client: Arc<PrismaClient>,
     pub producer: Arc<FutureProducer>,
+    pub pool: Arc<PostgresPool>,
     pub redis: Arc<Client>,
 }
