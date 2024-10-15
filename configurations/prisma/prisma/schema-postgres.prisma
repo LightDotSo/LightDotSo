@@ -110,7 +110,7 @@ model WalletBalance {
   // ilRisk        Boolean?
   // collateralUSD Float?
 
-  chainId   Decimal
+  chainId   Decimal  @db.Decimal(20, 0)
   amount    String?
   stable    Boolean?
   isLatest  Boolean  @default(false)
