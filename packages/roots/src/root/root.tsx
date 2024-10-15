@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { PostHogProvider } from "@lightdotso/ui/providers/posthog";
 import { ReactQueryProvider } from "@lightdotso/ui/providers/react-query";
 import { ThemeProvider } from "@lightdotso/ui/providers/theme";
 // import { GeistSans } from "geist/font/sans";
@@ -80,11 +81,13 @@ export const InnerRoot: FC<InnerRootProps> = ({ children }) => {
   return (
     <ThemeProvider attribute="class">
       <ReactQueryProvider>
-        <RootProviderWrapper>
-          {children}
-          <RootWrapper />
-          <RootDevWrapper />
-        </RootProviderWrapper>
+        <PostHogProvider>
+          <RootProviderWrapper>
+            {children}
+            <RootWrapper />
+            <RootDevWrapper />
+          </RootProviderWrapper>
+        </PostHogProvider>
       </ReactQueryProvider>
     </ThemeProvider>
   );

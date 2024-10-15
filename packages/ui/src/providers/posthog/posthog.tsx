@@ -14,47 +14,39 @@
 
 "use client";
 
-// From: https://github.com/vercel/next.js/issues/49454
-// Wrap `next/dynamic` in `use client` to avoid Next.js server-side rendering
-
-import dynamic from "next/dynamic";
-import type { FC } from "react";
+import posthog from "posthog-js";
+import { PostHogProvider as PostHogReactProvider } from "posthog-js/react";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Dynamic UI
+// Init
 // -----------------------------------------------------------------------------
 
-const PostHogPageView = dynamic(
-  () =>
-    import("@lightdotso/ui/providers/posthog").then(
-      (mod) => mod.PostHogPageView,
-    ),
-  {
-    ssr: false,
-  },
-);
-
-const Toaster = dynamic(
-  () =>
-    import("@lightdotso/ui/components/toast").then((mod) => ({
-      default: mod.Toaster,
-    })),
-  {
-    ssr: false,
-  },
-);
+if (
+  typeof window !== "undefined" &&
+  process.env.NEXT_PUBLIC_POSTHOG_KEY &&
+  process.env.NEXT_PUBLIC_POSTHOG_HOST &&
+  process.env.VERCEL_ENV === "production"
+) {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+    api_host: "/ingest",
+    ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    person_profiles: "identified_only",
+    capture_pageview: true,
+    capture_pageleave: true,
+  });
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootWrapper: FC = () => {
+export function PostHogProvider({ children }: { children: ReactNode }) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <>
-      {/* Script */}
-      <PostHogPageView />
-      {/* UI */}
-      <Toaster />
-    </>
+    <PostHogReactProvider client={posthog}>{children}</PostHogReactProvider>
   );
-};
+}

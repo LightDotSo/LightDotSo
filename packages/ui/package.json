@@ -83,6 +83,7 @@
     "lucide-react": "^0.452.0",
     "next": "15.0.0-canary.190",
     "next-themes": "^0.3.0",
+    "posthog-js": "^1.169.0",
     "react": "19.0.0-rc-cd22717c-20241013",
     "react-blurhash": "^0.3.0",
     "react-day-picker": "^8.10.1",
