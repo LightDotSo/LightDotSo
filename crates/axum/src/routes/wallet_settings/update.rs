@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-
+#[allow(unused_imports)]
 use super::{
     error::WalletSettingsError,
     types::{WalletSettings, WalletSettingsOptional},

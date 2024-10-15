@@ -13002,7 +13002,7 @@ dependencies = [
  "tempfile",
  "thiserror",
  "url",
- "zip",
+ "zip 2.2.0",
 ]
 
 [[package]]
@@ -15130,9 +15130,9 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 
 [[package]]
 name = "utoipa"
-version = "5.0.0"
+version = "4.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e2b34fc58a72021914a5745832024b2baa638fe771df5a35f3d1b69266bd92c"
+checksum = "c5afb1a60e207dca502682537fefcfd9921e71d0b83e9576060f09abc6efab23"
 dependencies = [
  "indexmap 2.6.0",
  "serde",
@@ -15142,10 +15142,11 @@ dependencies = [
 
 [[package]]
 name = "utoipa-gen"
-version = "5.0.0"
+version = "4.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "866f11b33be38a747542f435578a164674b8922d958cc065d7f19319c19d4784"
+checksum = "20c24e8ab68ff9ee746aad22d39b5535601e6416d1b0feeabf78be986a5c4392"
 dependencies = [
+ "proc-macro-error",
  "proc-macro2",
  "quote",
  "regex",
@@ -15154,18 +15155,19 @@ dependencies = [
 
 [[package]]
 name = "utoipa-swagger-ui"
-version = "8.0.0"
+version = "7.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0800ca865caaff4484adca065a77927a801bd9c48879f0451ec08846eb6a12b"
+checksum = "943e0ff606c6d57d410fd5663a4d7c074ab2c5f14ab903b9514565e59fa1189e"
 dependencies = [
  "axum",
  "mime_guess",
  "regex",
+ "reqwest 0.12.8",
  "rust-embed",
  "serde",
  "serde_json",
  "utoipa",
- "zip",
+ "zip 1.1.4",
 ]
 
 [[package]]
@@ -16218,6 +16220,22 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.79",
+]
+
+[[package]]
+name = "zip"
+version = "1.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9cc23c04387f4da0374be4533ad1208cbb091d5c11d070dfef13676ad6497164"
+dependencies = [
+ "arbitrary",
+ "crc32fast",
+ "crossbeam-utils",
+ "displaydoc",
+ "flate2",
+ "indexmap 2.6.0",
+ "num_enum 0.7.3",
+ "thiserror",
 ]
 
 [[package]]

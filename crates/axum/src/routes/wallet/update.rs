@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-
+#[allow(unused_imports)]
 use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
