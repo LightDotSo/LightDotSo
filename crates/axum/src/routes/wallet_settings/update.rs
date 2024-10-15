@@ -14,7 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletSettings, WalletSettingsOptional};
+use super::{
+    error::WalletSettingsError,
+    types::{WalletSettings, WalletSettingsOptional},
+};
 use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
 use alloy::primitives::Address;
 use autometrics::autometrics;

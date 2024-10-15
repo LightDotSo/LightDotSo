@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Feedback;
+use super::{error::FeedbackError, types::Feedback};
 use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use autometrics::autometrics;
 use axum::{extract::State, Json};

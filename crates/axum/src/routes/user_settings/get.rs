@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::UserSettings;
+use super::{error::UserSettingsError, types::UserSettings};
 use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{

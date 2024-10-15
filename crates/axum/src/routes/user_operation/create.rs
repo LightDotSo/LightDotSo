@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::UserOperation;
+use super::{error::UserOperationError, types::UserOperation};
 use crate::{
     result::{AppError, AppJsonResult},
     routes::signature::create::SignatureCreateParams,

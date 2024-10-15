@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::AuthSuccess;
+use super::{error::AuthError, types::AuthSuccess};
 use crate::{cookies::CookieUtility, result::AppJsonResult};
 use axum::Json;
 use lightdotso_tracing::tracing::info;

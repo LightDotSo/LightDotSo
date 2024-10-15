@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Wallet;
+use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_user,
     result::{AppJsonResult, AppResult},

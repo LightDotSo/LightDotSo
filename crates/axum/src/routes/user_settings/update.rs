@@ -14,7 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{UserSettings, UserSettingsOptional};
+use super::{
+    error::UserSettingsError,
+    types::{UserSettings, UserSettingsOptional},
+};
 use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{

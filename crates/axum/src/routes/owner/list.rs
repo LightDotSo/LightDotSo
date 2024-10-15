@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Owner;
+use super::{error::OwnerError, types::Owner};
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{

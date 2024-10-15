@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::OperationError, types::Operation};
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -29,8 +30,6 @@ use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
-
-use super::types::Operation;
 
 // -----------------------------------------------------------------------------
 // Query

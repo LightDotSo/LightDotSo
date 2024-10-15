@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::Wallet;
+use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
     state::AppState,

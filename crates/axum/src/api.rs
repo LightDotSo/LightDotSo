@@ -341,7 +341,6 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_list_count_handler,
-        wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_update_handler,
         wallet_billing::v1_wallet_billing_get_handler,
         wallet_billing::v1_wallet_billing_update_handler,

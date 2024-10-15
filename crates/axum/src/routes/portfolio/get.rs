@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::{Portfolio, PortfolioBalanceDate};
+use super::{
+    error::PortfolioError,
+    types::{Portfolio, PortfolioBalanceDate},
+};
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
