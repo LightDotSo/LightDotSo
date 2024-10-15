@@ -25,9 +25,7 @@ import type { ReactNode } from "react";
 if (typeof window !== "undefined") {
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: "https://light.so/ingest",
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     person_profiles: "identified_only",
     capture_pageview: true,
     capture_pageleave: true,
