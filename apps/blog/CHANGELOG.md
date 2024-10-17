@@ -1,5 +1,32 @@
 # @lightdotso/blog
 
+## 0.0.20
+
+### Patch Changes
+
+- [#2413](https://github.com/LightDotSo/LightDotSo/pull/2413) [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light root
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2545](https://github.com/LightDotSo/LightDotSo/pull/2545) [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu versions
+
+- [#2544](https://github.com/LightDotSo/LightDotSo/pull/2544) [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app lib
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2414](https://github.com/LightDotSo/LightDotSo/pull/2414) [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add biome lint
+
+- [#2420](https://github.com/LightDotSo/LightDotSo/pull/2420) [`5958a08`](https://github.com/LightDotSo/LightDotSo/commit/5958a081fa9b4126920ed28d3926ebb4b05cce14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add npm lop
+
+- Updated dependencies [[`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14), [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d), [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5)]:
+  - @lightdotso/templates@0.0.25
+  - @lightdotso/elements@0.0.25
+  - @lightdotso/const@3.1.14
+  - @lightdotso/roots@0.0.11
+  - @lightdotso/types@0.0.14
+  - @lightdotso/utils@3.1.16
+  - @lightdotso/ui@3.1.21
+
 ## 0.0.19
 
 ### Patch Changes

@@ -1,5 +1,30 @@
 # @lightdotso/crates
 
+## 3.1.13
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
+- [#2481](https://github.com/LightDotSo/LightDotSo/pull/2481) [`0795fa3`](https://github.com/LightDotSo/LightDotSo/commit/0795fa38d4943775878f8d557f45a8da739a5ee8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add jsonrpsee send
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2446](https://github.com/LightDotSo/LightDotSo/pull/2446) [`7cbfa60`](https://github.com/LightDotSo/LightDotSo/commit/7cbfa60ca834c6b98004af373ac6f0aa22d4c063) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update
+
+- [#2447](https://github.com/LightDotSo/LightDotSo/pull/2447) [`6d98b01`](https://github.com/LightDotSo/LightDotSo/commit/6d98b01c015bf8237374fc5cba8ebcf16bf352b8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add crates bin
+
+- [#2437](https://github.com/LightDotSo/LightDotSo/pull/2437) [`6530d0f`](https://github.com/LightDotSo/LightDotSo/commit/6530d0f61c6346a5107841212621b871a4ebbd1f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add packed uop
+
+- [#2538](https://github.com/LightDotSo/LightDotSo/pull/2538) [`500e131`](https://github.com/LightDotSo/LightDotSo/commit/500e131e94beff1ce862c20fb9aec8bb4588621e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add v0.7 entrypoint
+
+- [#2482](https://github.com/LightDotSo/LightDotSo/pull/2482) [`a45c282`](https://github.com/LightDotSo/LightDotSo/commit/a45c2823d8d18858d490531c8d1731b51e88f083) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add polling hash
+
+- [#2556](https://github.com/LightDotSo/LightDotSo/pull/2556) [`075bf86`](https://github.com/LightDotSo/LightDotSo/commit/075bf863e40ceaa29d42af2bf1addf0f98bd14be) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update prisma crates
+
+- Updated dependencies [[`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`075bf86`](https://github.com/LightDotSo/LightDotSo/commit/075bf863e40ceaa29d42af2bf1addf0f98bd14be)]:
+  - @lightdotso/prisma@3.1.11
+
 ## 3.1.12
 
 ### Patch Changes
