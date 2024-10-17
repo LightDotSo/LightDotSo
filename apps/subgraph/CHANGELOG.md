@@ -1,5 +1,21 @@
 # @lightdotso/subgraph
 
+## 3.2.0
+
+### Minor Changes
+
+- [#2497](https://github.com/LightDotSo/LightDotSo/pull/2497) [`afbc5d0`](https://github.com/LightDotSo/LightDotSo/commit/afbc5d0e5f2e3aed372cee81a43bde8859d54c09) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add entrypoint v0.7
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
+- [#2545](https://github.com/LightDotSo/LightDotSo/pull/2545) [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu versions
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2414](https://github.com/LightDotSo/LightDotSo/pull/2414) [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add biome lint
+
 ## 3.1.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @lightdotso/tsconfig
 
+## 3.1.8
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
 ## 3.1.7
 
 ### Patch Changes
