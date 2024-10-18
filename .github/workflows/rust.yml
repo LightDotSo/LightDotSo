@@ -133,10 +133,6 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma --concurrency ${{ matrix.concurrency }}
-      # - if: matrix.workspace
-      #   name: Make Rundler
-      #   run: |
-      #     make rundler
       # - name: Rust Build
       #   run: |
       #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
