@@ -12,5 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod config;
-pub mod discord;
+use crate::discord::Discord;
+use clap::Parser;
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
+
+#[derive(Clone, Debug, Parser, Default)]
+pub struct DiscordArgs {
+    /// The discord token to connect to.
+    #[clap(long, env = "DISCORD_TOKEN")]
+    pub token: String,
+}
+
+impl DiscordArgs {
+    pub async fn create(&self) -> Result<Discord> {
+        // Add info
+        info!("DiscordArgs run, starting...");
+
+        // Print the config
+        info!("Config: {:?}", self);
+
+        let discord = Discord::new(self).await;
+
+        Ok(discord)
+    }
+}
