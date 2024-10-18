@@ -1,5 +1,15 @@
 # @lightdotso/redis
 
+## 0.0.10
+
+### Patch Changes
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2446](https://github.com/LightDotSo/LightDotSo/pull/2446) [`7cbfa60`](https://github.com/LightDotSo/LightDotSo/commit/7cbfa60ca834c6b98004af373ac6f0aa22d4c063) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update
+
 ## 0.0.9
 
 ### Patch Changes
