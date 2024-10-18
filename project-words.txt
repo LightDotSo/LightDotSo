@@ -1409,6 +1409,7 @@ readdir
 readdirp
 readlink
 realpath
+rebalance
 receipient
 rechoir
 redb

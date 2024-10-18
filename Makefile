@@ -255,6 +255,17 @@ autometrics: ## Run autometrics
 docker: ## Build the docker image.
 	docker build -t lightdotso .
 
+.PHONY: docker-compose
+docker-compose: docker-compose-up ## Run the docker-compose.
+
+.PHONY: docker-compose-up
+docker-compose-up: ## Run the docker-compose.
+	docker-compose up -d
+
+.PHONY: docker-compose-down
+docker-compose-down: ## Run the docker-compose.
+	docker-compose down
+
 .PHONY: docker-upgrade
 docker-upgrade: ## Upgrade dependencies in the docker image.
 	./scripts/dockerfile_version_update.sh
