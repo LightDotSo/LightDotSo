@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod channel;
-pub mod config;
-pub mod discord;
+use lazy_static::lazy_static;
+
+// The notification channel id
+lazy_static! {
+    pub static ref NOTIFICATION_CHANNEL_ID: u64 = 1142914964219252836;
+}

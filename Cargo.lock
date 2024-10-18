@@ -7163,7 +7163,9 @@ name = "lightdotso-discord"
 version = "0.1.0"
 dependencies = [
  "clap 4.5.20",
+ "dotenvy",
  "eyre",
+ "lazy_static",
  "lightdotso-tracing",
  "serenity",
  "tokio",

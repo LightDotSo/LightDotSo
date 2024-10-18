@@ -10,7 +10,7 @@
 
 [dependencies]
   backon = { workspace = true }
-  clap = { workspace = true, features = ["derive", "env"] }
+  clap = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-discord = { workspace = true }

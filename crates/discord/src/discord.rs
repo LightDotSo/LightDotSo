@@ -12,43 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::config::DiscordArgs;
+use crate::{channel::NOTIFICATION_CHANNEL_ID, config::DiscordArgs};
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
-use serenity::{
-    all::{ChannelId, CreateEmbed, CreateMessage},
-    prelude::*,
-};
+use serenity::all::{ChannelId, CreateEmbed, CreateMessage, Http};
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Discord {
     pub token: String,
+    pub http: Arc<Http>,
 }
 
 impl Discord {
     pub async fn new(args: &DiscordArgs) -> Self {
         info!("Discord new, starting");
 
+        // Create the discord client
+        let http = Http::new(&args.token);
+
         // Create the discord
-        Self { token: args.token.clone() }
+        Self { token: args.token.clone(), http: Arc::new(http) }
     }
 
-    pub async fn notify(
-        &self,
-        ctx: &Context,
-        channel_id: ChannelId,
-        embed: CreateEmbed,
-    ) -> Result<()> {
+    pub async fn notify(&self, channel_id: ChannelId, embed: CreateEmbed) -> Result<()> {
         let message = CreateMessage::new().embed(embed);
-        channel_id.send_message(&ctx.http, message).await?;
+        channel_id.send_message(&self.http, message).await?;
 
         Ok(())
     }
 
     pub async fn notify_create_wallet(
         &self,
-        ctx: &Context,
-        channel_id: ChannelId,
         address: &str,
         chain_id: &str,
         transaction_hash: &str,
@@ -61,7 +56,7 @@ impl Discord {
             ))
             .color(0x00ff00);
 
-        self.notify(ctx, channel_id, embed).await?;
+        self.notify(ChannelId::from(*NOTIFICATION_CHANNEL_ID), embed).await?;
 
         Ok(())
     }

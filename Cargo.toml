@@ -87,7 +87,7 @@
       "clock",
       "std",
     ] }
-    clap = "4.3.12"
+    clap = { version = "4.3.12", features = ["derive", "env"] }
     dotenvy = "0.15"
     enumset = "1.1.2"
     eyre = "0.6.8"
