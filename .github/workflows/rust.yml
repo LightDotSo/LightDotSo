@@ -42,7 +42,6 @@ jobs:
             check: false
             test: true
             workspace: true
-            concurrency: 4
           - name: Clippy
             os: macos-latest
             target: x86_64-unknown-linux-gnu
@@ -50,7 +49,6 @@ jobs:
             check: true
             test: false
             workspace: false
-            concurrency: 4
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -58,7 +56,6 @@ jobs:
             check: false
             test: true
             workspace: false
-            concurrency: 10
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -66,7 +63,6 @@ jobs:
             check: false
             test: true
             workspace: false
-            concurrency: 4
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -114,28 +110,24 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - if: matrix.workspace || matrix.check
-        name: Node Build
+      - if: matrix.workspace
+        name: Set up Docker
+        uses: douglascamata/setup-docker-macos-action@main
+        continue-on-error: true
+      - if: matrix.workspace
+        name: Docker Compose Up
+        continue-on-error: true
         run: |
-          pnpm turbo run build --concurrency ${{ matrix.concurrency }}
-      # - if: matrix.workspace
-      #   name: Set up Docker
-      #   uses: douglascamata/setup-docker-macos-action@main
-      #   continue-on-error: true
-      # - if: matrix.workspace
-      #   name: Docker Compose Up
-      #   continue-on-error: true
-      #   run: |
-      #     docker-compose up -d --build
+          docker-compose up -d --build
       - name: Make Install
         run: |
           make install
       - name: Make Prisma
         run: |
-          pnpm turbo run prisma --concurrency ${{ matrix.concurrency }}
-      # - name: Rust Build
-      #   run: |
-      #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
+          pnpm turbo run prisma
+      - name: Rust Build
+        run: |
+          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Rust Format Check
         run: |
