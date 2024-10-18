@@ -487,6 +487,7 @@ benefeting
 benoit
 bhztbcdy
 biconomy
+bigdecimal
 bigints
 bignumber
 bilkent

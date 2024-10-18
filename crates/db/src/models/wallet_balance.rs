@@ -190,7 +190,9 @@ pub async fn get_latest_wallet_balance_for_token(
         SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId"
         FROM "WalletBalance"
         WHERE "tokenId" = $1
-        ORDER BY "timestamp" DESC
+          AND "walletAddress" = $2
+          AND "isLatest" = true
+        ORDER BY timestamp DESC
         LIMIT 1
     "#;
 
