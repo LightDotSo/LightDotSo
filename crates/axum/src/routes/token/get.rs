@@ -108,16 +108,16 @@ pub(crate) async fn v1_token_get_handler(
             wallet_address.parse()?,
         )
         .await?;
+        info!("Balance: {:?}", balance);
 
         // If the balance is found, update the token with the balance.
         if let Some(balance) = balance {
             // First, convert the token to a WalletBalance.
             let mut token: Token = token.into();
-            info!("Token: {:?}", token);
 
             // Then, fill in the missing fields.
             token.balance_usd = balance.balance_usd;
-            token.amount = balance.amount;
+            // token.amount = balance.amount.unwrap_or("0".to_string());
             token.is_spam = balance.is_spam;
             token.is_testnet = balance.is_testnet;
 

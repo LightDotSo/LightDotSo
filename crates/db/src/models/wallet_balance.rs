@@ -16,13 +16,11 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use eyre::Result;
 use lightdotso_sqlx::{
-    sqlx::{
-        postgres::{self},
-        query, query_as, Error as SqlxError, FromRow, QueryBuilder, Row,
-    },
+    sqlx::{query, query_as, types::BigDecimal, Error as SqlxError, FromRow, QueryBuilder},
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Params
@@ -98,31 +96,32 @@ pub async fn create_wallet_balances(
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, FromRow)]
 pub struct WalletBalance {
+    #[serde(rename = "timestamp")]
+    #[sqlx(rename = "timestamp")]
     pub timestamp: DateTime<Utc>,
+    #[serde(rename = "balanceUSD")]
+    #[sqlx(rename = "balanceUSD")]
     pub balance_usd: f64,
-    pub chain_id: i64,
-    pub amount: i64,
+    #[serde(rename = "chainId")]
+    #[sqlx(rename = "chainId")]
+    pub chain_id: BigDecimal,
+    #[serde(rename = "amount")]
+    #[sqlx(rename = "amount")]
+    pub amount: Option<String>,
+    #[serde(rename = "isSpam")]
+    #[sqlx(rename = "isSpam")]
     pub is_spam: bool,
+    #[serde(rename = "isTestnet")]
+    #[sqlx(rename = "isTestnet")]
     pub is_testnet: bool,
+    #[serde(rename = "walletAddress")]
+    #[sqlx(rename = "walletAddress")]
     pub wallet_address: String,
+    #[serde(rename = "tokenId")]
+    #[sqlx(rename = "tokenId")]
     pub token_id: String,
-}
-
-impl<'r> FromRow<'r, postgres::PgRow> for WalletBalance {
-    fn from_row(row: &'r postgres::PgRow) -> Result<Self, SqlxError> {
-        Ok(WalletBalance {
-            timestamp: row.try_get("timestamp")?,
-            balance_usd: row.try_get("balance_usd")?,
-            chain_id: row.try_get("chain_id")?,
-            amount: row.try_get("amount")?,
-            is_spam: row.try_get("is_spam")?,
-            is_testnet: row.try_get("is_testnet")?,
-            wallet_address: row.try_get("wallet_address")?,
-            token_id: row.try_get("token_id")?,
-        })
-    }
 }
 
 // -----------------------------------------------------------------------------
@@ -191,8 +190,6 @@ pub async fn get_latest_wallet_balance_for_token(
         SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId"
         FROM "WalletBalance"
         WHERE "tokenId" = $1
-          AND "walletAddress" = $2
-          AND "isLatest" = true
         ORDER BY "timestamp" DESC
         LIMIT 1
     "#;

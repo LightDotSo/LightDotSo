@@ -204,6 +204,7 @@
       "macros",
       "postgres",
       "chrono",
+      "bigdecimal",
     ] }
     strum = "0.26"
     strum_macros = "0.26"

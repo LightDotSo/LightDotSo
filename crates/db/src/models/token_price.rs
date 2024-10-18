@@ -16,13 +16,11 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use eyre::Result;
 use lightdotso_sqlx::{
-    sqlx::{
-        postgres::{self},
-        query, query_as, Error as SqlxError, FromRow, QueryBuilder, Row,
-    },
+    sqlx::{query, query_as, Error as SqlxError, FromRow, QueryBuilder},
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Params
@@ -75,16 +73,14 @@ pub async fn create_token_prices(
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, FromRow)]
 pub struct TokenPriceAggregate {
+    #[serde(rename = "price")]
+    #[sqlx(rename = "price")]
     pub price: f64,
+    #[serde(rename = "date")]
+    #[sqlx(rename = "date")]
     pub date: DateTime<Utc>,
-}
-
-impl<'r> FromRow<'r, postgres::PgRow> for TokenPriceAggregate {
-    fn from_row(row: &'r postgres::PgRow) -> Result<Self, SqlxError> {
-        Ok(TokenPriceAggregate { price: row.try_get("price")?, date: row.try_get("date")? })
-    }
 }
 
 // -----------------------------------------------------------------------------

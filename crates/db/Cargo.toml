@@ -23,8 +23,9 @@
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }
   revm = { workspace = true }
-  serde = { workspace = true }
+  serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
+  sqlx = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
 
 [dev-dependencies]
