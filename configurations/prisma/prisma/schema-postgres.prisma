@@ -111,7 +111,7 @@ model WalletBalance {
   // collateralUSD Decimal?
 
   chainId   Decimal  @db.Decimal(20, 0)
-  amount    String?
+  amount    Decimal?
   stable    Boolean?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)

@@ -2289,7 +2289,7 @@ model WalletBalance {
   // collateralUSD Decimal?
 
   chainId   BigInt   @db.UnsignedBigInt
-  amount    String?
+  amount    Decimal?
   stable    Boolean?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
