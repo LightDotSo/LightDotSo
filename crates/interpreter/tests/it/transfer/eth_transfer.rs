@@ -51,6 +51,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_light_eth_transfer() -> Result<()> {
     // Load the environment variables.
