@@ -12,8 +12,8 @@
         "../gradlew.bat",
         "../Makefile",
         "../settings.gradle",
-        "./build.gradle",
-        "./proguard-rules.pro",
+        "build.gradle",
+        "proguard-rules.pro",
         "src/**"
       ],
       "outputs": []

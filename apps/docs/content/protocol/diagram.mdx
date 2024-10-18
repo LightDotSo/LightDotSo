@@ -67,13 +67,19 @@ graph TD
 
 ## Roles
 
+### LPs
+
+- Anyone can deposit and withdraw to the vault in exchange for shares to open up liquidity on a new chain permissionlessly
+- Shares can be deposited to a protocol operator for yield generaton across chains, and fees will be paid out to the individual LPs (fees will not necessarily accrue to the individual shares)
+- Yield generated from the protocol fees can be rebalanced
+
 ### Solver (Filler)
 
 - Must have _sufficient_ escrowed funds for the right to solve the operation (authorized by the verifier for rights to escrow)
 - Trusts each verifier to transfer funds to the solver for repayment, and fees are received through the vault's funds, which are authorized by the verifier (operator)
 - Rebalancing is not needed
 
-### Vault (LP)
+### Vault (Shares)
 
 - ERC4626 (ERC7540 Vaults) that can escrow funds to a permitted verifier
 - Anyone can asynchronously deposit and withdraw to the vault in exchange for shares

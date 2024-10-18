@@ -76,7 +76,7 @@ jobs:
           xcode-version: "15.3"
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm turbo run build --concurrency 4
       - name: Make iOS
         continue-on-error: true
         run: |

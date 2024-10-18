@@ -42,6 +42,7 @@ jobs:
             check: false
             test: true
             workspace: true
+            concurrency: 4
           - name: Clippy
             os: macos-latest
             target: x86_64-unknown-linux-gnu
@@ -49,6 +50,7 @@ jobs:
             check: true
             test: false
             workspace: false
+            concurrency: 4
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -56,6 +58,7 @@ jobs:
             check: false
             test: true
             workspace: false
+            concurrency: 10
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -63,6 +66,7 @@ jobs:
             check: false
             test: true
             workspace: false
+            concurrency: 4
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -113,7 +117,7 @@ jobs:
       - if: matrix.workspace || matrix.check
         name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm turbo run build --concurrency ${{ matrix.concurrency }}
       # - if: matrix.workspace
       #   name: Set up Docker
       #   uses: douglascamata/setup-docker-macos-action@main
@@ -128,7 +132,7 @@ jobs:
           make install
       - name: Make Prisma
         run: |
-          pnpm turbo run prisma
+          pnpm turbo run prisma --concurrency ${{ matrix.concurrency }}
       # - if: matrix.workspace
       #   name: Make Rundler
       #   run: |
