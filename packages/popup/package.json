@@ -39,7 +39,7 @@
     "react-is": "19.0.0-rc-cd22717c-20241013"
   },
   "devDependencies": {
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.20",

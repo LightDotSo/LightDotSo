@@ -93,7 +93,7 @@
   "devDependencies": {
     "@lightdotso/contracts": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.6.3",
