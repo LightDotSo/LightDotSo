@@ -191,6 +191,7 @@ Mjwi
 Msjt
 Multicaller
 Multichain
+NEXTEST
 NHRO
 NODEREAL
 NODRPC
