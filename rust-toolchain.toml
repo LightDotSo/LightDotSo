@@ -11,8 +11,8 @@
     "x86_64-apple-darwin",
     "x86_64-apple-ios",
     "x86_64-linux-android",
-    "x86_64-unknown-linux-gnu",
     "x86_64-linux-gnu-gcc",
+    "x86_64-unknown-linux-gnu",
   ]
   profile = "default"
   components = ["clippy", "rustfmt", "rust-src"]
