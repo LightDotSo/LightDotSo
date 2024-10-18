@@ -53,9 +53,9 @@ pub async fn create_wallet_balances(
 
     // Set all existing balances for this wallet and chain to not latest
     query(
-        "UPDATE wallet_balance
-         SET is_latest = false
-         WHERE wallet_address = $1 AND chain_id = $2",
+        r#"UPDATE "WalletBalance"
+           SET "isLatest" = false
+           WHERE "walletAddress" = $1 AND "chainId" = $2"#,
     )
     .bind(&wallet_address)
     .bind(chain_id)
@@ -67,10 +67,10 @@ pub async fn create_wallet_balances(
     for balance in params {
         let amount = balance.amount.unwrap_or_else(|| "0".to_string());
         let result = query(
-            "INSERT INTO wallet_balance 
-             (timestamp, balance_usd, chain_id, amount, stable, is_spam, is_latest, is_testnet, wallet_address, token_id)
+            r#"INSERT INTO "WalletBalance" 
+             ("timestamp", "balanceUSD", "chainId", "amount", "stable", "isSpam", "isLatest", "isTestnet", "walletAddress", "tokenId")
              VALUES 
-             (CURRENT_TIMESTAMP, $1, $2, $3, $4, $5, true, $6, $7, $8)"
+             (CURRENT_TIMESTAMP, $1, $2, $3, $4, $5, true, $6, $7, $8)"#,
         )
         .bind(balance.quote)
         .bind(balance.chain_id)
@@ -137,25 +137,25 @@ pub async fn get_wallet_balances(
     is_testnet: Option<bool>,
 ) -> Result<Vec<WalletBalance>, SqlxError> {
     let mut query_builder = QueryBuilder::new(
-        "SELECT timestamp, balance_usd, chain_id, amount, is_spam, is_testnet, wallet_address, token_id
-         FROM WalletBalance
-         WHERE wallet_address = "
+        r#"SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId"
+           FROM "WalletBalance"
+           WHERE "walletAddress" = "#,
     );
 
     query_builder.push_bind(wallet_address);
-    query_builder.push(" AND is_latest = true");
-    query_builder.push(" AND amount != '0'");
+    query_builder.push(r#" AND "isLatest" = true"#);
+    query_builder.push(r#" AND "amount" != '0'"#);
 
     if let Some(spam) = is_spam {
-        query_builder.push(" AND is_spam = ");
+        query_builder.push(r#" AND "isSpam" = "#);
         query_builder.push_bind(spam);
     } else {
-        query_builder.push(" AND is_spam = false");
+        query_builder.push(r#" AND "isSpam" = false"#);
     }
 
     match is_testnet {
         Some(false) | None => {
-            query_builder.push(" AND is_testnet = false");
+            query_builder.push(r#" AND "isTestnet" = false"#);
         }
         _ => {}
     }
@@ -165,7 +165,7 @@ pub async fn get_wallet_balances(
             chain_id_str.split(',').filter_map(|id| id.parse().ok()).collect();
 
         if !chain_id_vec.is_empty() {
-            query_builder.push(" AND chain_id IN (");
+            query_builder.push(r#" AND "chainId" IN ("#);
             let mut separated = query_builder.separated(", ");
             for chain_id in chain_id_vec {
                 separated.push_bind(chain_id);
@@ -173,7 +173,7 @@ pub async fn get_wallet_balances(
             separated.push_unseparated(")");
         }
     } else {
-        query_builder.push(" AND chain_id != 0");
+        query_builder.push(r#" AND "chainId" != 0"#);
     }
 
     let query = query_builder.build_query_as::<WalletBalance>();

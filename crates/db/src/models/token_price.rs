@@ -39,7 +39,7 @@ pub struct TokenPriceInputParams {
 /// Create a new token price
 #[autometrics]
 pub async fn create_token_price(pool: &PostgresPool, params: TokenPriceInputParams) -> Result<()> {
-    query("INSERT INTO token_prices (chain_id, token_address, price) VALUES ($1, $2, $3)")
+    query(r#"INSERT INTO "TokenPrice" ("chainId", "tokenAddress", "price") VALUES ($1, $2, $3)"#)
         .bind(params.chain_id)
         .bind(params.token_address.to_checksum(None))
         .bind(params.price)
@@ -55,8 +55,9 @@ pub async fn create_token_prices(
     pool: &PostgresPool,
     params: Vec<TokenPriceInputParams>,
 ) -> Result<()> {
-    let mut query_builder =
-        QueryBuilder::new("INSERT INTO token_prices (chain_id, token_address, price) VALUES ");
+    let mut query_builder = QueryBuilder::new(
+        r#"INSERT INTO "TokenPrice" ("chainId", "tokenAddress", "price") VALUES "#,
+    );
 
     for price in params {
         query_builder.push_bind(price.chain_id);
@@ -95,12 +96,12 @@ pub async fn get_token_prices(
     limit: i32,
 ) -> Result<Vec<TokenPriceAggregate>, SqlxError> {
     let query = format!(
-        "SELECT AVG(price) as price, time_bucket('{}', timestamp) as date
-         FROM TokenPrice
-         WHERE tokenId = $1
-         GROUP BY time_bucket('{}', timestamp)
-         ORDER BY date DESC
-         LIMIT $2",
+        r#"SELECT AVG(price) as price, time_bucket('{}', timestamp) as date
+           FROM "TokenPrice"
+           WHERE "tokenId" = $1
+           GROUP BY time_bucket('{}', timestamp)
+           ORDER BY date DESC
+           LIMIT $2"#,
         interval, interval
     );
 
