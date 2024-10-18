@@ -71,6 +71,7 @@ const nextConfig = {
   },
   rewrites: async () => {
     return [
+      // Internal apps
       {
         source: "/blog",
         destination: "https://blog.light.so/blog",
@@ -111,8 +112,22 @@ const nextConfig = {
         source: "/proposals/:path*",
         destination: "https://proposals.light.so/proposals/:path*",
       },
+      // Data ingestion
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+      {
+        source: "/ingest/decide",
+        destination: "https://us.i.posthog.com/decide",
+      },
     ];
   },
+  skipTrailingSlashRedirect: true,
 };
 
 // -----------------------------------------------------------------------------

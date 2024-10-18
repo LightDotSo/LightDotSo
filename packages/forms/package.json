@@ -44,15 +44,15 @@
     "@types/lodash": "^4.17.10",
     "abitype": "^1.0.6",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.452.0",
+    "lucide-react": "^0.453.0",
     "react-hook-form": "^7.53.0",
-    "viem": "^2.21.24",
+    "viem": "^2.21.29",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.3.5",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"

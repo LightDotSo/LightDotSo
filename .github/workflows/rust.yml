@@ -110,32 +110,24 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - if: matrix.workspace || matrix.check
-        name: Node Build
+      - if: matrix.workspace
+        name: Set up Docker
+        uses: douglascamata/setup-docker-macos-action@main
+        continue-on-error: true
+      - if: matrix.workspace
+        name: Docker Compose Up
+        continue-on-error: true
         run: |
-          pnpm turbo run build
-      # - if: matrix.workspace
-      #   name: Set up Docker
-      #   uses: douglascamata/setup-docker-macos-action@main
-      #   continue-on-error: true
-      # - if: matrix.workspace
-      #   name: Docker Compose Up
-      #   continue-on-error: true
-      #   run: |
-      #     docker-compose up -d --build
+          docker-compose up -d --build
       - name: Make Install
         run: |
           make install
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      # - if: matrix.workspace
-      #   name: Make Rundler
-      #   run: |
-      #     make rundler
-      # - name: Rust Build
-      #   run: |
-      #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
+      - name: Rust Build
+        run: |
+          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Rust Format Check
         run: |

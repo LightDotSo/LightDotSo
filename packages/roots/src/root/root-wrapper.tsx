@@ -17,12 +17,24 @@
 // From: https://github.com/vercel/next.js/issues/49454
 // Wrap `next/dynamic` in `use client` to avoid Next.js server-side rendering
 
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Dynamic UI
 // -----------------------------------------------------------------------------
+
+const PostHogPageView = dynamic(
+  () =>
+    import("@lightdotso/ui/providers/posthog").then(
+      (mod) => mod.PostHogPageView,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 const Toaster = dynamic(
   () =>
@@ -41,6 +53,11 @@ const Toaster = dynamic(
 export const RootWrapper: FC = () => {
   return (
     <>
+      {/* Script */}
+      <PostHogPageView />
+      <GoogleAnalytics gaId="G-NT6BW06LQC" />
+      <GoogleTagManager gtmId="GTM-NF8G7B37" />
+      <Script async src="https://data.light.so/p.js" />
       {/* UI */}
       <Toaster />
     </>

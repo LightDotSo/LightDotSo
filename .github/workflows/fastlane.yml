@@ -58,6 +58,9 @@ jobs:
           echo $PLAY_STORE_JSON_KEY > play_store_key.json
         env:
           PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+      - name: Node Build Android
+        run: |
+          pnpm turbo run build --filter=@lightdotso/android
       - name: Android Build
         if: github.event_name == 'push'
         continue-on-error: true
@@ -102,11 +105,9 @@ jobs:
         continue-on-error: true
         run: |
           make ios
-      - name: Node Build
+      - name: Node Build iOS
         run: |
-          pnpm turbo run build
-        # env:
-        #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
+          pnpm turbo run build --filter=@lightdotso/ios
       - name: iOS Build
         if: github.event_name == 'push'
         # TODO: Fix iOS certificate issue

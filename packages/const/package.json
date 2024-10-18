@@ -26,12 +26,12 @@
     "@lightdotso/schemas": "workspace:*",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
-    "tailwind-merge": "^2.5.3",
-    "viem": "^2.21.24"
+    "tailwind-merge": "^2.5.4",
+    "viem": "^2.21.29"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "typescript": "^5.6.3"
   },
   "publishConfig": {
