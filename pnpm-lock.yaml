@@ -2158,6 +2158,9 @@ importers:
 
   crates:
     dependencies:
+      '@lightdotso/desktop':
+        specifier: workspace:*
+        version: link:../apps/desktop
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../configurations/prisma

@@ -117,9 +117,9 @@ jobs:
         continue-on-error: true
         run: |
           docker-compose up -d --build
-      - name: Turbo Build Desktop
+      - name: Turbo Build Crates
         run: |
-          pnpm turbo run build --filter=@lightdotso/desktop
+          pnpm turbo run build --filter=@lightdotso/crates
       - name: Make Install
         run: |
           make install
