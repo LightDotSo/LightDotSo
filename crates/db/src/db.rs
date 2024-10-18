@@ -24,17 +24,37 @@ use prisma_client_rust::NewClientError;
 
 /// Create a new Prisma client.
 pub async fn create_client() -> Result<PrismaClient, NewClientError> {
+    // If the `NEXTEST` environment variable is set, use the test database.
+    // Otherwise, use the `DATABASE_URL` environment variable.
+    if std::env::var("NEXTEST").is_ok() {
+        return PrismaClient::_builder()
+            .with_url("mysql://dev:dev@localhost:3306/lightdotso".to_owned())
+            .build()
+            .await;
+    }
+
+    // Create a new Prisma client.
+    // Default to the `DATABASE_URL` environment variable.
     let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
 
+    // Return the client.
     client
 }
 
 /// Create a new sqlx client w/ `POSTGRES_URL` environment variable.
 pub async fn create_postgres_client() -> Result<PostgresPool, SqlxError> {
-    let database_url = std::env::var("POSTGRES_URL").unwrap();
+    // If the `NEXTEST` environment variable is set, use the test database.
+    // Otherwise, use the `POSTGRES_URL` environment variable.
+    let database_url = if std::env::var("NEXTEST").is_ok() {
+        "postgres://testuser:testpassword@localhost:5432/testdb"
+    } else {
+        &std::env::var("POSTGRES_URL").unwrap()
+    };
 
-    let pool = PgPoolOptions::new().max_connections(5).connect(&database_url).await?;
+    // Create a new sqlx client.
+    let pool = PgPoolOptions::new().max_connections(5).connect(database_url).await?;
 
+    // Return the client.
     Ok(pool)
 }
 
