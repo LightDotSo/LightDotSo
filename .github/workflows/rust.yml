@@ -117,6 +117,9 @@ jobs:
         continue-on-error: true
         run: |
           docker-compose up -d --build
+      - name: Turbo Build Desktop
+        run: |
+          pnpm turbo run build --filter=@lightdotso/desktop
       - name: Make Install
         run: |
           make install

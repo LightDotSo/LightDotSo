@@ -74,7 +74,7 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: "15.3"
-      - name: Node Build
+      - name: Node Build iOS
         run: |
           pnpm turbo run build --filter=@lightdotso/ios
       - name: Make iOS
