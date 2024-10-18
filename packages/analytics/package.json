@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "@next/third-parties": "15.0.0-canary.190",
-    "posthog-js": "^1.169.0"
+    "posthog-js": "^1.174.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "typescript": "^5.6.3"
   },
   "publishConfig": {
