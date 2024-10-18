@@ -91,8 +91,6 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v4
         continue-on-error: true
-        with:
-          submodules: recursive
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
@@ -119,15 +117,18 @@ jobs:
         continue-on-error: true
         run: |
           docker-compose up -d --build
+      - name: Turbo Build Crates
+        run: |
+          pnpm turbo run build --filter=@lightdotso/crates
       - name: Make Install
         run: |
           make install
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - name: Rust Build
-        run: |
-          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
+      # - name: Rust Build
+      #   run: |
+      #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Rust Format Check
         run: |

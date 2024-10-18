@@ -191,6 +191,7 @@ Mjwi
 Msjt
 Multicaller
 Multichain
+NEXTEST
 NHRO
 NODEREAL
 NODRPC
@@ -486,6 +487,7 @@ benefeting
 benoit
 bhztbcdy
 biconomy
+bigdecimal
 bigints
 bignumber
 bilkent
@@ -1413,6 +1415,7 @@ readdir
 readdirp
 readlink
 realpath
+rebalance
 receipient
 rechoir
 redb
@@ -1612,7 +1615,10 @@ teloxide
 templatesettings
 temprary
 tempy
+testdb
+testpassword
 testrpc
+testuser
 textlint
 theguild
 thenify
@@ -1710,6 +1716,7 @@ unpipe
 unplugin
 unsanitized
 unscopables
+unseparated
 unsized
 unstake
 unstorage

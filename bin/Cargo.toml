@@ -14,7 +14,7 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
-  clap = { workspace = true, features = ["env"] }
+  clap = { workspace = true }
   dotenvy = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }

@@ -13,35 +13,29 @@
 // limitations under the License.
 
 use crate::config::NotifierArgs;
-
+use clap::Parser;
+use eyre::Result;
 // use backon::{ExponentialBuilder, Retryable};
-use lightdotso_discord::notify_create_wallet;
+use lightdotso_discord::{config::DiscordArgs, discord::Discord};
 use lightdotso_tracing::tracing::info;
 
 #[derive(Clone)]
 pub struct Notifier {
-    webhook: Option<String>,
+    pub discord: Discord,
 }
 
 impl Notifier {
-    pub async fn new(args: &NotifierArgs) -> Self {
+    pub async fn new(_args: &NotifierArgs) -> Result<Self> {
         info!("Notifier new, starting");
 
+        // Create the discord
+        let discord = DiscordArgs::parse().create().await?;
+
         // Create the notifier
-        Self { webhook: args.webhook.clone() }
+        Ok(Self { discord })
     }
 
     pub async fn run(&self) {
         info!("Notifier run, starting");
-
-        if let Some(webhook) = &self.webhook {
-            let _ = notify_create_wallet(
-                webhook,
-                "&to_checksum(address, None)",
-                "&self.chain_id.to_string()",
-                "&tx_hash.to_string()",
-            )
-            .await;
-        }
     }
 }

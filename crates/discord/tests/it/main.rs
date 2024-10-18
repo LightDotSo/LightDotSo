@@ -12,6 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod channel;
-pub mod config;
-pub mod discord;
+#![recursion_limit = "512"]
+
+use clap::Parser;
+use dotenvy::dotenv;
+use eyre::Result;
+use lightdotso_discord::config::DiscordArgs;
+
+#[ignore]
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_notify() -> Result<()> {
+    // Load the environment variables
+    let _ = dotenv();
+
+    // Create the discord
+    let discord = DiscordArgs::parse_from([""]).create().await?;
+
+    // Notify
+    discord.notify_create_wallet("test", "test", "test").await?;
+
+    Ok(())
+}

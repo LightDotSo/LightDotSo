@@ -21,6 +21,7 @@ use lightdotso_prisma::{token, wallet_balance, PrismaClient};
 use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
+use prisma_client_rust::{and, not};
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
@@ -110,7 +111,19 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         // Find the tokens
         let tokens = db
             .token()
-            .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
+            .find_many(vec![and![
+                token::chain_id::equals(payload.chain_id as i64),
+                not![token::address::not_in_vec(
+                    new_items
+                        .iter()
+                        .filter_map(|item| item
+                            .token_address
+                            .clone()
+                            .and_then(|addr| addr.parse::<Address>().ok())
+                            .map(|addr| addr.to_checksum(None)))
+                        .collect()
+                )]
+            ]])
             .exec()
             .await?;
         info!("tokens: {:?}", tokens);

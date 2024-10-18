@@ -1,15 +1,17 @@
 [toolchain]
   channel = "1.80"
   targets = [
+    "aarch64-apple-darwin",
+    "aarch64-apple-ios-sim",
+    "aarch64-apple-ios",
     "aarch64-linux-android",
     "armv7-linux-androideabi",
     "i686-linux-android",
-    "x86_64-linux-android",
-    "aarch64-apple-ios",
-    "x86_64-apple-ios",
-    "aarch64-apple-ios-sim",
-    "aarch64-apple-darwin",
+    "wasm32-unknown-unknown",
     "x86_64-apple-darwin",
+    "x86_64-apple-ios",
+    "x86_64-linux-android",
+    "x86_64-unknown-linux-gnu",
   ]
   profile = "default"
   components = ["clippy", "rustfmt", "rust-src"]
