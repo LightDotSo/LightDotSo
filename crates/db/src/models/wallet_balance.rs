@@ -188,12 +188,12 @@ pub async fn get_latest_wallet_balance_for_token(
     wallet_address: Address,
 ) -> Result<Option<WalletBalance>, SqlxError> {
     let query = r#"
-        SELECT timestamp, balance_usd, chain_id, amount, is_spam, is_testnet, wallet_address, token_id
-        FROM WalletBalance
-        WHERE token_id = $1
-          AND wallet_address = $2
-          AND is_latest = true
-        ORDER BY timestamp DESC
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId"
+        FROM "WalletBalance"
+        WHERE "tokenId" = $1
+          AND "walletAddress" = $2
+          AND "isLatest" = true
+        ORDER BY "timestamp" DESC
         LIMIT 1
     "#;
 

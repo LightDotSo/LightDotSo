@@ -113,6 +113,7 @@ pub(crate) async fn v1_token_get_handler(
         if let Some(balance) = balance {
             // First, convert the token to a WalletBalance.
             let mut token: Token = token.into();
+            info!("Token: {:?}", token);
 
             // Then, fill in the missing fields.
             token.balance_usd = balance.balance_usd;
