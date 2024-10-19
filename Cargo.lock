@@ -15240,8 +15240,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "utoipa"
 version = "5.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8861811f7213bb866cd02319acb69a15b0ef8ca46874e805bd92d488c779036a"
+source = "git+https://github.com/shunkakinoki/utoipa?rev=3651130e5bf67dc141d81c15e995d191406a4ece#3651130e5bf67dc141d81c15e995d191406a4ece"
 dependencies = [
  "indexmap 2.6.0",
  "serde",
@@ -15252,8 +15251,7 @@ dependencies = [
 [[package]]
 name = "utoipa-axum"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "437ecfd6bbcdadb45dab6a63462ec9034fd9d3a926f471298f03aea749028419"
+source = "git+https://github.com/shunkakinoki/utoipa?rev=3651130e5bf67dc141d81c15e995d191406a4ece#3651130e5bf67dc141d81c15e995d191406a4ece"
 dependencies = [
  "axum",
  "paste",
@@ -15265,8 +15263,7 @@ dependencies = [
 [[package]]
 name = "utoipa-gen"
 version = "5.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5fadf94f07d67df4b15e6490dd9a9d59d7374849413e7f137eafe52fdcbd0db5"
+source = "git+https://github.com/shunkakinoki/utoipa?rev=3651130e5bf67dc141d81c15e995d191406a4ece#3651130e5bf67dc141d81c15e995d191406a4ece"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -15277,8 +15274,7 @@ dependencies = [
 [[package]]
 name = "utoipa-swagger-ui"
 version = "8.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85a551be0331bd01a1d39f2654409ca61cb955f02dfef0fc0f7aced8b2abbc88"
+source = "git+https://github.com/shunkakinoki/utoipa?rev=3651130e5bf67dc141d81c15e995d191406a4ece#3651130e5bf67dc141d81c15e995d191406a4ece"
 dependencies = [
  "axum",
  "mime_guess",

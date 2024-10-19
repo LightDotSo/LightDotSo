@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::UserOperationError, types::UserOperationSuccess};
 use crate::result::AppJsonResult;
 use alloy::primitives::Address;

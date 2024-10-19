@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::FeedbackError, types::Feedback};
 use crate::{result::AppJsonResult, sessions::get_user_id};
 use autometrics::autometrics;

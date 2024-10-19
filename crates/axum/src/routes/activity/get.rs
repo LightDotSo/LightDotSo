@@ -52,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Activity returned successfully", body = Activity),
             (status = 404, description = "Activity not found", body = ActivityError),
-        )
+        ),
+        tag = "activity"
     )]
 #[autometrics]
 pub(crate) async fn v1_activity_get_handler(
