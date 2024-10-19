@@ -7054,10 +7054,12 @@ name = "lightdotso-consumer"
 version = "0.1.0"
 dependencies = [
  "alloy",
+ "async-trait",
  "backon",
  "chrono",
  "clap 4.5.20",
  "eyre",
+ "lazy_static",
  "lightdotso-billing",
  "lightdotso-client",
  "lightdotso-common",
@@ -7083,6 +7085,7 @@ dependencies = [
  "rdkafka",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]

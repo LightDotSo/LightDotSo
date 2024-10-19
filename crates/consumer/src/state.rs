@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use lightdotso_billing::billing::Billing;
 use lightdotso_hyper::HyperClient;
+use lightdotso_indexer::indexer::Indexer;
 use lightdotso_kafka::rdkafka::producer::FutureProducer;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::redis::Client;
@@ -21,10 +23,12 @@ use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct ConsumerState {
-    pub hyper: Arc<HyperClient>,
+    pub billing: Arc<Billing>,
     pub client: Arc<PrismaClient>,
-    pub producer: Arc<FutureProducer>,
+    pub hyper: Arc<HyperClient>,
+    pub indexer: Arc<Indexer>,
     pub pool: Arc<PostgresPool>,
+    pub producer: Arc<FutureProducer>,
     pub redis: Arc<Client>,
 }
 

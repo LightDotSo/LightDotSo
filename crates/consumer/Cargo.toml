@@ -10,10 +10,12 @@
 
 [dependencies]
   alloy = { workspace = true }
+  async-trait = { workspace = true }
   backon = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true }
   eyre = { workspace = true }
+  lazy_static = { workspace = true }
   lightdotso-billing = { workspace = true }
   lightdotso-client = { workspace = true }
   lightdotso-common = { workspace = true }
@@ -39,3 +41,4 @@
   rdkafka = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
+  tokio = { workspace = true }

@@ -113,6 +113,12 @@ jobs:
         uses: douglascamata/setup-docker-macos-action@main
         continue-on-error: true
       - if: matrix.workspace
+        name: Docker Remove Storage
+        run: |
+          docker system df
+          docker system prune -a --volumes -f
+          docker system df
+      - if: matrix.workspace
         name: Docker Compose Up
         run: |
           make docker-compose

@@ -19,13 +19,13 @@ use crate::{
     config::ConsumerArgs,
     state::ConsumerState,
     topics::{
-        activity::activity_consumer, billing_operation::billing_operation_consumer,
-        covalent::covalent_consumer, error_transaction::error_transaction_consumer,
-        interpretation::interpretation_consumer, node::node_consumer,
-        notification::notification_consumer, paymaster_operation::paymaster_operation_consumer,
-        portfolio::portfolio_consumer, routescan::routescan_consumer,
-        transaction::transaction_consumer, unknown::unknown_consumer,
-        user_operation::user_operation_consumer,
+        activity::activity_consumer, covalent::covalent_consumer,
+        error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
+        node::node_consumer, notification::notification_consumer,
+        paymaster_operation::paymaster_operation_consumer, portfolio::portfolio_consumer,
+        routescan::routescan_consumer, transaction::transaction_consumer,
+        unknown::unknown_consumer, user_operation::user_operation_consumer, TopicConsumer,
+        TOPIC_CONSUMERS,
     },
 };
 use clap::Parser;
@@ -37,8 +37,8 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE,
-        NOTIFICATION, PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
+        ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE, NOTIFICATION,
+        PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
         RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
@@ -52,14 +52,15 @@ use rdkafka::{
     producer::FutureProducer,
     Message,
 };
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
 #[derive(Clone)]
 pub struct Consumer {
     consumer: Arc<StreamConsumer>,
     producer: Arc<FutureProducer>,
-    state: ConsumerState,
+    pub state: ConsumerState,
     topics: Vec<String>,
+    pub topic_consumers: HashMap<String, Arc<dyn TopicConsumer + Send + Sync>>,
 }
 
 impl Consumer {
@@ -85,21 +86,37 @@ impl Consumer {
         // Construct the producer
         let producer = Arc::new(get_producer().unwrap());
 
+        // Parse the billing command line arguments
+        let billing_args = BillingArgs::parse();
+        let billing = Arc::new(billing_args.create().await?);
+
+        // Parse the indexer command line arguments
+        let indexer_args = IndexerArgs::parse();
+        let indexer = Arc::new(indexer_args.create().await);
+
         // Create a shared state
-        let hyper = get_hyper_client()?;
+        let hyper = Arc::new(get_hyper_client()?);
         let db = Arc::new(create_client().await?);
         let pool = Arc::new(create_postgres_client().await?);
-        let redis = get_redis_client()?;
+        let redis = Arc::new(get_redis_client()?);
         let state = ConsumerState {
-            hyper: Arc::new(hyper),
+            hyper,
+            billing,
             client: db,
             producer: producer.clone(),
             pool,
-            redis: Arc::new(redis.clone()),
+            redis,
+            indexer,
         };
 
         // Create the consumer
-        Ok(Self { consumer, producer, state, topics: args.topics.clone() })
+        Ok(Self {
+            consumer,
+            producer,
+            state,
+            topics: args.topics.clone(),
+            topic_consumers: TOPIC_CONSUMERS.clone(),
+        })
     }
 
     pub async fn run(&self) -> Result<()> {
@@ -121,7 +138,7 @@ impl Consumer {
         let notifier_args = NotifierArgs::parse();
 
         // Create the billing
-        let billing = billing_args.create().await?;
+        let _billing = billing_args.create().await?;
 
         // Create the poller
         let poller = polling_args.create().await?;
@@ -177,15 +194,15 @@ impl Consumer {
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
-                        topic if topic == BILLING_OPERATION.to_string() => {
-                            let res = billing_operation_consumer(&billing, &m).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Billing operation consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
+                        // topic if topic == BILLING_OPERATION.to_string() => {
+                        //     let res = billing_operation_consumer(&billing, &m).await;
+                        //     // If the consumer failed
+                        //     if let Err(e) = res {
+                        //         // Log the error
+                        //         warn!("Billing operation consumer failed with error: {:?}", e);
+                        //     }
+                        //     let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        // }
                         topic if topic == COVALENT.to_string() => {
                             let res =
                                 covalent_consumer(self.producer.clone(), &m, db.clone()).await;

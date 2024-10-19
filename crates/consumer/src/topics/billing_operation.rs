@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::{state::ConsumerState, topics::TopicConsumer};
+use async_trait::async_trait;
 use eyre::Result;
-use lightdotso_billing::billing::Billing;
 use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
@@ -22,23 +23,25 @@ use rdkafka::{message::BorrowedMessage, Message};
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn billing_operation_consumer(
-    billing: &Billing,
-    msg: &BorrowedMessage<'_>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct BillingOperationConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `BillingOperationMessage`
-        let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
-        info!("payload: {:?}", payload);
+#[async_trait]
+impl TopicConsumer for BillingOperationConsumer {
+    async fn consume(&self, state: &ConsumerState, msg: &BorrowedMessage<'_>) -> Result<()> {
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
 
-        // Run the billing operation
-        billing.run_pending(&payload).await?;
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `BillingOperationMessage`
+            let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
+            info!("payload: {:?}", payload);
+
+            // Run the billing operation
+            state.billing.run_pending(&payload).await?;
+        }
+
+        Ok(())
     }
-
-    Ok(())
 }
