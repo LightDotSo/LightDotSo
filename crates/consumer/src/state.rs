@@ -16,6 +16,9 @@ use lightdotso_billing::billing::Billing;
 use lightdotso_hyper::HyperClient;
 use lightdotso_indexer::indexer::Indexer;
 use lightdotso_kafka::rdkafka::producer::FutureProducer;
+use lightdotso_node::node::Node;
+use lightdotso_notifier::notifier::Notifier;
+use lightdotso_polling::polling::Polling;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::redis::Client;
 use lightdotso_sqlx::PostgresPool;
@@ -23,13 +26,19 @@ use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct ConsumerState {
-    pub billing: Arc<Billing>,
-    pub client: Arc<PrismaClient>,
+    // Client services
     pub hyper: Arc<HyperClient>,
-    pub indexer: Arc<Indexer>,
     pub pool: Arc<PostgresPool>,
     pub producer: Arc<FutureProducer>,
     pub redis: Arc<Client>,
+
+    // Internal services
+    pub billing: Arc<Billing>,
+    pub client: Arc<PrismaClient>,
+    pub indexer: Arc<Indexer>,
+    pub notifier: Arc<Notifier>,
+    pub polling: Arc<Polling>,
+    pub node: Arc<Node>,
 }
 
 pub type SharedConsumerState = Arc<ConsumerState>;

@@ -95,6 +95,21 @@ impl Consumer {
             IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
         let indexer = Arc::new(indexer_args.create().await);
 
+        // Parse the polling command line arguments
+        let polling_args =
+            PollingArgs::try_parse().unwrap_or_else(|_| PollingArgs::parse_from(["".to_string()]));
+        let polling = Arc::new(polling_args.create().await?);
+
+        // Parse the node command line arguments
+        let node_args =
+            NodeArgs::try_parse().unwrap_or_else(|_| NodeArgs::parse_from(["".to_string()]));
+        let node = Arc::new(node_args.create().await?);
+
+        // Parse the notifer command line arguments
+        let notifier_args = NotifierArgs::try_parse()
+            .unwrap_or_else(|_| NotifierArgs::parse_from(["".to_string()]));
+        let notifier = Arc::new(notifier_args.create().await?);
+
         // Create a shared state
         let hyper = Arc::new(get_hyper_client()?);
         let db = Arc::new(create_client().await?);
@@ -108,6 +123,9 @@ impl Consumer {
             pool,
             redis,
             indexer,
+            notifier,
+            polling,
+            node,
         };
 
         // Create the consumer

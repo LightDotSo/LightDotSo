@@ -117,6 +117,7 @@ jobs:
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
+          large-packages: false
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
