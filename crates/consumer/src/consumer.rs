@@ -66,13 +66,13 @@ impl Consumer {
         let state = create_client_state().await?;
 
         // Create a consumer state
-        let consumer_state = create_consumer_state().await?;
+        let consumer_state = create_consumer_state().await.ok();
 
         // Create the consumer
         Ok(Self {
             consumer,
             state,
-            consumer_state: Some(consumer_state),
+            consumer_state,
             topics: args.topics.clone(),
             topic_consumers: TOPIC_CONSUMERS.clone(),
         })
