@@ -16,14 +16,21 @@ use crate::{
     state::ConsumerState,
     topics::{
         activity::ActivityConsumer, billing_operation::BillingOperationConsumer,
-        error_transaction::ErrorTransactionConsumer,
+        error_transaction::ErrorTransactionConsumer, interpretation::InterpretationConsumer,
+        node::NodeConsumer, notification::NotificationConsumer,
+        paymaster_operation::PaymasterOperationConsumer, portfolio::PortfolioConsumer,
+        routescan::RoutescanConsumer, transaction::TransactionConsumer,
+        user_operation::UserOperationConsumer,
     },
 };
 use async_trait::async_trait;
 use covalent::CovalentConsumer;
 use eyre::Result;
 use lazy_static::lazy_static;
-use lightdotso_kafka::namespace::{ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION};
+use lightdotso_kafka::namespace::{
+    ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE, NOTIFICATION,
+    PAYMASTER_OPERATION, PORTFOLIO, ROUTESCAN, TRANSACTION, USER_OPERATION,
+};
 use lightdotso_state::ClientState;
 use rdkafka::message::BorrowedMessage;
 use std::{collections::HashMap, sync::Arc};
@@ -61,6 +68,35 @@ lazy_static! {
         m.insert(
             ERROR_TRANSACTION.to_string(),
             Arc::new(ErrorTransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            INTERPRETATION.to_string(),
+            Arc::new(InterpretationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            PAYMASTER_OPERATION.to_string(),
+            Arc::new(PaymasterOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(NODE.to_string(), Arc::new(NodeConsumer) as Arc<dyn TopicConsumer + Send + Sync>);
+        m.insert(
+            NOTIFICATION.to_string(),
+            Arc::new(NotificationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            PORTFOLIO.to_string(),
+            Arc::new(PortfolioConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            ROUTESCAN.to_string(),
+            Arc::new(RoutescanConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            TRANSACTION.to_string(),
+            Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            USER_OPERATION.to_string(),
+            Arc::new(UserOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
 
         m
