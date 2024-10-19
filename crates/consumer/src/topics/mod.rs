@@ -12,11 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{state::ConsumerState, topics::billing_operation::BillingOperationConsumer};
+use crate::{
+    state::ConsumerState,
+    topics::{
+        billing_operation::BillingOperationConsumer, error_transaction::ErrorTransactionConsumer,
+    },
+};
 use async_trait::async_trait;
 use eyre::Result;
 use lazy_static::lazy_static;
-use lightdotso_kafka::namespace::BILLING_OPERATION;
+use lightdotso_kafka::namespace::{BILLING_OPERATION, ERROR_TRANSACTION};
 use rdkafka::message::BorrowedMessage;
 use std::{collections::HashMap, sync::Arc};
 
@@ -37,9 +42,14 @@ pub mod user_operation;
 lazy_static! {
     pub static ref TOPIC_CONSUMERS: HashMap<String, Arc<dyn TopicConsumer + Send + Sync>> = {
         let mut m = HashMap::new();
+
         m.insert(
             BILLING_OPERATION.to_string(),
             Arc::new(BillingOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            ERROR_TRANSACTION.to_string(),
+            Arc::new(ErrorTransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
 
         m

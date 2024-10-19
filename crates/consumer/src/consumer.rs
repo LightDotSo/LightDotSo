@@ -20,12 +20,11 @@ use crate::{
     state::ConsumerState,
     topics::{
         activity::activity_consumer, covalent::covalent_consumer,
-        error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
-        node::node_consumer, notification::notification_consumer,
-        paymaster_operation::paymaster_operation_consumer, portfolio::portfolio_consumer,
-        routescan::routescan_consumer, transaction::transaction_consumer,
-        unknown::unknown_consumer, user_operation::user_operation_consumer, TopicConsumer,
-        TOPIC_CONSUMERS,
+        interpretation::interpretation_consumer, node::node_consumer,
+        notification::notification_consumer, paymaster_operation::paymaster_operation_consumer,
+        portfolio::portfolio_consumer, routescan::routescan_consumer,
+        transaction::transaction_consumer, unknown::unknown_consumer,
+        user_operation::user_operation_consumer, TopicConsumer, TOPIC_CONSUMERS,
     },
 };
 use clap::Parser;
@@ -37,9 +36,9 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE, NOTIFICATION,
-        PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
-        RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
+        ACTIVITY, COVALENT, INTERPRETATION, NODE, NOTIFICATION, PAYMASTER_OPERATION, PORTFOLIO,
+        RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
+        ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
 use lightdotso_node::config::NodeArgs;
@@ -169,7 +168,7 @@ impl Consumer {
                     let topic = m.topic().to_string();
                     let state = self.state.clone();
 
-                    if let Some(consumer) = TOPIC_CONSUMERS.get(&topic) {
+                    if let Some(consumer) = self.topic_consumers.get(&topic) {
                         if let Err(e) = consumer.consume(&state, &m).await {
                             warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
@@ -283,10 +282,10 @@ impl Consumer {
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
-                        topic if topic == ERROR_TRANSACTION.to_string() => {
-                            let _ = error_transaction_consumer(&m);
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
+                        // topic if topic == ERROR_TRANSACTION.to_string() => {
+                        //     let _ = error_transaction_consumer(&m);
+                        //     let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        // }
                         topic if topic == USER_OPERATION.to_string() => {
                             let res = user_operation_consumer(&m, &poller, db.clone()).await;
                             // If the consumer failed
