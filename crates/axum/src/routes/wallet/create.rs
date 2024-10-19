@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-#[allow(unused_imports)]
 use super::{error::WalletError, types::Wallet};
 use crate::{
     admin::token_is_valid,
