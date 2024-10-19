@@ -12,33 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use lightdotso_billing::billing::Billing;
-use lightdotso_hyper::HyperClient;
-use lightdotso_indexer::indexer::Indexer;
-use lightdotso_kafka::rdkafka::producer::FutureProducer;
-use lightdotso_node::node::Node;
-use lightdotso_notifier::notifier::Notifier;
-use lightdotso_polling::polling::Polling;
-use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::redis::Client;
-use lightdotso_sqlx::PostgresPool;
+use clap::Parser;
+use eyre::Result;
+use lightdotso_billing::{billing::Billing, config::BillingArgs};
+use lightdotso_indexer::{config::IndexerArgs, indexer::Indexer};
+use lightdotso_node::{config::NodeArgs, node::Node};
+use lightdotso_notifier::{config::NotifierArgs, notifier::Notifier};
+use lightdotso_polling::{config::PollingArgs, polling::Polling};
 use std::sync::Arc;
+
+/// -----------------------------------------------------------------------------
+// Structs
+// -----------------------------------------------------------------------------
 
 #[derive(Clone)]
 pub struct ConsumerState {
-    // Client services
-    pub hyper: Arc<HyperClient>,
-    pub pool: Arc<PostgresPool>,
-    pub producer: Arc<FutureProducer>,
-    pub redis: Arc<Client>,
-
     // Internal services
     pub billing: Arc<Billing>,
-    pub client: Arc<PrismaClient>,
     pub indexer: Arc<Indexer>,
     pub notifier: Arc<Notifier>,
     pub polling: Arc<Polling>,
     pub node: Arc<Node>,
 }
 
-pub type SharedConsumerState = Arc<ConsumerState>;
+/// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+pub async fn create_consumer_state() -> Result<ConsumerState> {
+    // Parse the billing command line arguments
+    let billing_args =
+        BillingArgs::try_parse().unwrap_or_else(|_| BillingArgs::parse_from(["".to_string()]));
+    let billing = Arc::new(billing_args.create().await?);
+
+    // Parse the indexer command line arguments
+    let indexer_args =
+        IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
+    let indexer = Arc::new(indexer_args.create().await);
+
+    // Parse the polling command line arguments
+    let polling_args =
+        PollingArgs::try_parse().unwrap_or_else(|_| PollingArgs::parse_from(["".to_string()]));
+    let polling = Arc::new(polling_args.create().await?);
+
+    // Parse the node command line arguments
+    let node_args =
+        NodeArgs::try_parse().unwrap_or_else(|_| NodeArgs::parse_from(["".to_string()]));
+    let node = Arc::new(node_args.create().await?);
+
+    // Parse the notifer command line arguments
+    let notifier_args =
+        NotifierArgs::try_parse().unwrap_or_else(|_| NotifierArgs::parse_from(["".to_string()]));
+    let notifier = Arc::new(notifier_args.create().await?);
+
+    Ok(ConsumerState { billing, indexer, notifier, polling, node })
+}

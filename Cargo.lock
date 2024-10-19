@@ -7080,6 +7080,7 @@ dependencies = [
  "lightdotso-redis",
  "lightdotso-routescan",
  "lightdotso-sqlx",
+ "lightdotso-state",
  "lightdotso-tracing",
  "lightdotso-utils",
  "opentelemetry 0.26.0",

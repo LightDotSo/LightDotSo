@@ -16,6 +16,7 @@ use crate::{state::ConsumerState, topics::TopicConsumer};
 use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
@@ -27,7 +28,12 @@ pub struct BillingOperationConsumer;
 
 #[async_trait]
 impl TopicConsumer for BillingOperationConsumer {
-    async fn consume(&self, state: &ConsumerState, msg: &BorrowedMessage<'_>) -> Result<()> {
+    async fn consume(
+        &self,
+        _state: &ClientState,
+        consumer_state: &ConsumerState,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
         // Convert the payload to a string
         let payload_opt = msg.payload_view::<str>();
         info!("payload_opt: {:?}", payload_opt);
@@ -39,7 +45,7 @@ impl TopicConsumer for BillingOperationConsumer {
             info!("payload: {:?}", payload);
 
             // Run the billing operation
-            state.billing.run_pending(&payload).await?;
+            consumer_state.billing.run_pending(&payload).await?;
         }
 
         Ok(())

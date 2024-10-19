@@ -15,6 +15,7 @@
 use crate::{state::ConsumerState, topics::TopicConsumer};
 use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
@@ -26,7 +27,12 @@ pub struct UnknownConsumer;
 
 #[async_trait]
 impl TopicConsumer for UnknownConsumer {
-    async fn consume(&self, _state: &ConsumerState, msg: &BorrowedMessage<'_>) -> Result<()> {
+    async fn consume(
+        &self,
+        _state: &ClientState,
+        _consumer_state: &ConsumerState,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
         // Send webhook if exists
         info!(
             "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",

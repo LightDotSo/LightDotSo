@@ -22,6 +22,7 @@ use async_trait::async_trait;
 use eyre::Result;
 use lazy_static::lazy_static;
 use lightdotso_kafka::namespace::{BILLING_OPERATION, ERROR_TRANSACTION};
+use lightdotso_state::ClientState;
 use rdkafka::message::BorrowedMessage;
 use std::{collections::HashMap, sync::Arc};
 
@@ -58,5 +59,10 @@ lazy_static! {
 
 #[async_trait]
 pub trait TopicConsumer: Send + Sync {
-    async fn consume(&self, state: &ConsumerState, msg: &BorrowedMessage<'_>) -> Result<()>;
+    async fn consume(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()>;
 }

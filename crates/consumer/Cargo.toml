@@ -34,6 +34,7 @@
   lightdotso-redis = { workspace = true }
   lightdotso-routescan = { workspace = true }
   lightdotso-sqlx = { workspace = true }
+  lightdotso-state = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   opentelemetry = { workspace = true }
