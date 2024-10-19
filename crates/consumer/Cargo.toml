@@ -45,3 +45,4 @@
 
 [dev-dependencies]
   dotenvy = { workspace = true }
+  rustls = { workspace = true }

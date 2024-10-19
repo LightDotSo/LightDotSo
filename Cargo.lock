@@ -7084,6 +7084,7 @@ dependencies = [
  "opentelemetry 0.26.0",
  "prisma-client-rust",
  "rdkafka",
+ "rustls 0.23.14",
  "serde",
  "serde_json",
  "tokio",

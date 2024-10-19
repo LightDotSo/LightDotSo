@@ -19,7 +19,6 @@ use rdkafka::{
     consumer::stream_consumer::StreamConsumer,
     producer::{FutureProducer, FutureRecord},
 };
-use rustls::crypto::{ring, CryptoProvider};
 use std::sync::Arc;
 
 pub use rdkafka;

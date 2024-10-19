@@ -29,7 +29,10 @@ impl Notifier {
         info!("Notifier new, starting");
 
         // Create the discord
-        let discord = DiscordArgs::parse().create().await?;
+        let discord = DiscordArgs::try_parse()
+            .unwrap_or_else(|_| DiscordArgs::parse_from(["".to_string()]))
+            .create()
+            .await?;
 
         // Create the notifier
         Ok(Self { discord })

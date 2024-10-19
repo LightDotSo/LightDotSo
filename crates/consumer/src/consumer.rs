@@ -125,19 +125,24 @@ impl Consumer {
         info!("Consumer run, starting");
 
         // Parse the billing command line arguments
-        let billing_args = BillingArgs::parse();
+        let billing_args =
+            BillingArgs::try_parse().unwrap_or_else(|_| BillingArgs::parse_from(["".to_string()]));
 
         // Parse the command line arguments
-        let args = IndexerArgs::parse();
+        let args =
+            IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
 
         // Parse the polling command line arguments
-        let polling_args = PollingArgs::parse();
+        let polling_args =
+            PollingArgs::try_parse().unwrap_or_else(|_| PollingArgs::parse_from(["".to_string()]));
 
         // Parse the node command line arguments
-        let node_args = NodeArgs::parse();
+        let node_args =
+            NodeArgs::try_parse().unwrap_or_else(|_| NodeArgs::parse_from(["".to_string()]));
 
         // Parse the notifer command line arguments
-        let notifier_args = NotifierArgs::parse();
+        let notifier_args = NotifierArgs::try_parse()
+            .unwrap_or_else(|_| NotifierArgs::parse_from(["".to_string()]));
 
         // Create the billing
         let _billing = billing_args.create().await?;

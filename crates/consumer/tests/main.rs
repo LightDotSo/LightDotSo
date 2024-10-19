@@ -19,12 +19,16 @@ use eyre::Result;
 use lightdotso_consumer::{config::ConsumerArgs, consumer::Consumer};
 use lightdotso_kafka::get_producer;
 use rdkafka::producer::FutureRecord;
+use rustls::crypto::{ring, CryptoProvider};
 use std::{sync::Arc, time::Duration};
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_consumer_test() -> Result<()> {
     // Load the environment variables.
     let _ = dotenv();
+
+    // Install the default crypto provider
+    let _ = CryptoProvider::install_default(ring::default_provider());
 
     // Construct the consumer
     let consumer_args = ConsumerArgs {
