@@ -62,7 +62,7 @@ pub trait TopicConsumer: Send + Sync {
     async fn consume(
         &self,
         state: &ClientState,
-        consumer_state: &ConsumerState,
+        consumer_state: Option<&ConsumerState>,
         msg: &BorrowedMessage<'_>,
     ) -> Result<()>;
 }

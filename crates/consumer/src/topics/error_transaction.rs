@@ -30,7 +30,7 @@ impl TopicConsumer for ErrorTransactionConsumer {
     async fn consume(
         &self,
         _state: &ClientState,
-        _consumer_state: &ConsumerState,
+        _consumer_state: Option<&ConsumerState>,
         msg: &BorrowedMessage<'_>,
     ) -> Result<()> {
         // Send webhook if exists

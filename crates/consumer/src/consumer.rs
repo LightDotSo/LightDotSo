@@ -32,9 +32,12 @@ use std::{collections::HashMap, sync::Arc};
 
 #[derive(Clone)]
 pub struct Consumer {
+    // Kafka consumer
     consumer: Arc<StreamConsumer>,
-    consumer_state: ConsumerState,
+    // State
     state: ClientState,
+    consumer_state: Option<ConsumerState>,
+    // Topics
     topics: Vec<String>,
     topic_consumers: HashMap<String, Arc<dyn TopicConsumer + Send + Sync>>,
 }
@@ -69,7 +72,7 @@ impl Consumer {
         Ok(Self {
             consumer,
             state,
-            consumer_state,
+            consumer_state: Some(consumer_state),
             topics: args.topics.clone(),
             topic_consumers: TOPIC_CONSUMERS.clone(),
         })
@@ -92,12 +95,16 @@ impl Consumer {
                     let state = self.state.clone();
 
                     if let Some(consumer) = self.topic_consumers.get(&topic) {
-                        if let Err(e) = consumer.consume(&state, &self.consumer_state, &m).await {
+                        if let Err(e) =
+                            consumer.consume(&state, self.consumer_state.as_ref(), &m).await
+                        {
                             warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
                     } else {
                         let consumer = UnknownConsumer;
-                        if let Err(e) = consumer.consume(&state, &self.consumer_state, &m).await {
+                        if let Err(e) =
+                            consumer.consume(&state, self.consumer_state.as_ref(), &m).await
+                        {
                             warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
                     }

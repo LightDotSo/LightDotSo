@@ -31,7 +31,7 @@ impl TopicConsumer for BillingOperationConsumer {
     async fn consume(
         &self,
         _state: &ClientState,
-        consumer_state: &ConsumerState,
+        consumer_state: Option<&ConsumerState>,
         msg: &BorrowedMessage<'_>,
     ) -> Result<()> {
         // Convert the payload to a string
@@ -45,7 +45,9 @@ impl TopicConsumer for BillingOperationConsumer {
             info!("payload: {:?}", payload);
 
             // Run the billing operation
-            consumer_state.billing.run_pending(&payload).await?;
+            if let Some(consumer_state) = consumer_state {
+                consumer_state.billing.run_pending(&payload).await?;
+            }
         }
 
         Ok(())
