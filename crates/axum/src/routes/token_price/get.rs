@@ -17,10 +17,7 @@ use super::{
     error::TokenPriceError,
     types::{TokenPrice, TokenPriceDate},
 };
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::result::{AppError, AppJsonResult};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -29,6 +26,7 @@ use axum::{
 };
 use lightdotso_db::models::token_price::{get_token_prices, TokenPriceAggregate};
 use lightdotso_prisma::token;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
 use serde::Deserialize;
@@ -92,7 +90,7 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
 #[autometrics]
 pub(crate) async fn v1_token_price_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<TokenPrice> {
     // -------------------------------------------------------------------------
     // Parse

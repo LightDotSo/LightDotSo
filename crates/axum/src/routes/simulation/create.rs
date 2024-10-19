@@ -16,7 +16,6 @@ use crate::{
     error::RouteError,
     result::AppJsonResult,
     routes::simulation::{error::SimulationError, types::Simulation},
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
@@ -34,6 +33,7 @@ use lightdotso_prisma::{
     ActivityOperation,
 };
 use lightdotso_simulator::types::{SimulationRequest, SimulationUserOperationRequest};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::or;
 // use lightdotso_tracing::tracing::info;
@@ -96,7 +96,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationUserOperationRequest {
     )]
 #[autometrics]
 pub(crate) async fn v1_simulation_create_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<SimulationCreateRequestParams>,
 ) -> AppJsonResult<Simulation> {
     // -------------------------------------------------------------------------

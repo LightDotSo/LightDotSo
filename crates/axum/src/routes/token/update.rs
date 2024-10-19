@@ -18,7 +18,6 @@ use crate::{
     result::AppJsonResult,
     routes::token::{error::TokenError, types::Token},
     sessions::get_user_id,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +25,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::token;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -82,7 +82,7 @@ pub struct TokenUpdateRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_token_update_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<TokenUpdateRequestParams>,

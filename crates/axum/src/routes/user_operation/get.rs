@@ -15,7 +15,6 @@
 use super::types::UserOperation;
 use crate::{
     error::RouteError, result::AppJsonResult, routes::user_operation::error::UserOperationError,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +25,7 @@ use lightdotso_prisma::{
     asset_change, billing_operation, interpretation, paymaster_operation, signature, token_price,
     user_operation,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -62,7 +62,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperation> {
     // -------------------------------------------------------------------------
     // Parse

@@ -15,7 +15,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::{error::ConfigurationOperationError, types::ConfigurationOperation};
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use crate::{error::RouteError, result::AppJsonResult};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -31,6 +31,7 @@ use lightdotso_prisma::{
     configuration_operation_signature, owner, ActivityEntity, ActivityOperation,
     ConfigurationOperationStatus,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -69,7 +70,7 @@ pub struct PutQuery {
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------
     // Parse

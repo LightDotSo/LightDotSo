@@ -19,12 +19,12 @@ use crate::{
     result::{AppError, AppJsonResult},
     routes::auth::{error::AuthError, nonce::AuthNonce},
     sessions::update_session_expiry,
-    state::AppState,
 };
 use alloy::{primitives::Address, signers::Signature};
 use axum::{extract::State, Json};
 use eyre::eyre;
 use lightdotso_prisma::user;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use siwe::{Message, VerificationOpts};
@@ -65,7 +65,7 @@ pub struct AuthVerifyCreateRequestParams {
         )
     )]
 pub(crate) async fn v1_auth_verify_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     cookies: Cookies,
     session: Session,
     Json(msg): Json<AuthVerifyCreateRequestParams>,

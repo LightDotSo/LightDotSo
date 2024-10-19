@@ -18,7 +18,6 @@ use crate::{
     result::AppJsonResult,
     routes::chain::{error::ChainError, types::Chain},
     sessions::get_user_id,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +25,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::chain;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -76,7 +76,7 @@ pub struct ChainUpdateRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_chain_update_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<ChainUpdateRequestParams>,

@@ -19,7 +19,6 @@ use super::error::UserOperationError;
 use crate::{
     result::{AppError, AppJsonResult},
     routes::{owner::types::Owner, signature::types::Signature},
-    state::AppState,
 };
 use alloy::hex;
 use autometrics::autometrics;
@@ -42,6 +41,7 @@ use lightdotso_sequence::{
     },
     utils::parse_hex_to_bytes32,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
@@ -82,7 +82,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_signature_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<String> {
     // -------------------------------------------------------------------------
     // Parse

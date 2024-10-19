@@ -21,9 +21,9 @@ pub(crate) mod transaction;
 pub(crate) mod types;
 pub(crate) mod user_operation;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use interpretation::{
     __path_v1_queue_interpretation_handler, v1_queue_interpretation_handler,
@@ -41,7 +41,7 @@ pub(crate) use user_operation::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/queue/interpretation", post(v1_queue_interpretation_handler))
         .route("/queue/portfolio", post(v1_queue_portfolio_handler))

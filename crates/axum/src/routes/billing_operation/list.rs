@@ -17,7 +17,6 @@ use super::{error::BillingOperationError, types::BillingOperation};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
-    state::AppState,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -33,6 +32,7 @@ use lightdotso_prisma::{
     billing_operation::{self, WhereParam},
     paymaster_operation,
 };
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -90,7 +90,7 @@ pub(crate) struct BillingOperationListCount {
 #[autometrics]
 pub(crate) async fn v1_billing_operation_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<BillingOperation>> {
@@ -157,7 +157,7 @@ pub(crate) async fn v1_billing_operation_list_handler(
 #[autometrics]
 pub(crate) async fn v1_billing_operation_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<BillingOperationListCount> {
@@ -203,7 +203,7 @@ pub(crate) async fn v1_billing_operation_list_count_handler(
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
     query: &ListQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<()> {

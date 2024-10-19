@@ -14,13 +14,14 @@
 
 #[allow(unused_imports)]
 use super::{error::SignatureError, types::Signature};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::signature;
+use lightdotso_state::ClientState;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -62,7 +63,7 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_signature_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Signature>> {
     // -------------------------------------------------------------------------
     // Parse

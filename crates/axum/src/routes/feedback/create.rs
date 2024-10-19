@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::FeedbackError, types::Feedback};
-use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use lightdotso_db::models::activity::CustomParams;
@@ -22,6 +22,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{feedback, ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -56,7 +57,7 @@ pub struct FeedbackCreateRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_feedback_create_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<FeedbackCreateRequestParams>,
 ) -> AppJsonResult<Feedback> {

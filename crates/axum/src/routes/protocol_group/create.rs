@@ -15,7 +15,7 @@
 use super::types::ProtocolGroup;
 use crate::{
     constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::protocol_group::error::ProtocolGroupError, sessions::get_user_id, state::AppState,
+    routes::protocol_group::error::ProtocolGroupError, sessions::get_user_id,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{protocol, protocol_group};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use tower_sessions_core::Session;
@@ -63,7 +64,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_protocol_group_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
 ) -> AppJsonResult<ProtocolGroup> {
     // -------------------------------------------------------------------------

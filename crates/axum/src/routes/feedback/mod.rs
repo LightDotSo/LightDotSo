@@ -16,9 +16,9 @@ pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod types;
 
-pub use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use create::{__path_v1_feedback_create_handler, v1_feedback_create_handler};
 
@@ -27,6 +27,6 @@ pub(crate) use create::{__path_v1_feedback_create_handler, v1_feedback_create_ha
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new().route("/feedback/create", post(v1_feedback_create_handler))
 }

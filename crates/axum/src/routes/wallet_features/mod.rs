@@ -17,12 +17,12 @@ pub(crate) mod get;
 pub(crate) mod types;
 pub(crate) mod update;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
     routing::{get, put},
     Router,
 };
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{__path_v1_wallet_features_get_handler, v1_wallet_features_get_handler};
 pub(crate) use update::{
@@ -34,7 +34,7 @@ pub(crate) use update::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/wallet/features/get", get(v1_wallet_features_get_handler))
         .route("/wallet/features/update", put(v1_wallet_features_update_handler))

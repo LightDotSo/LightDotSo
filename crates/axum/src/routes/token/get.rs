@@ -13,9 +13,7 @@
 // limitations under the License.
 
 use super::types::Token;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::token::error::TokenError, state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, routes::token::error::TokenError};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -24,6 +22,7 @@ use axum::{
 };
 use lightdotso_db::models::wallet_balance::get_latest_wallet_balance_for_token;
 use lightdotso_prisma::token;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -65,7 +64,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_token_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Token> {
     // -------------------------------------------------------------------------
     // Parse

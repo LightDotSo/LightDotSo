@@ -13,16 +13,14 @@
 // limitations under the License.
 
 use super::types::Activity;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::activity::error::ActivityError,
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, routes::activity::error::ActivityError};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::activity;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -59,7 +57,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_activity_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Activity> {
     // -------------------------------------------------------------------------
     // Parse

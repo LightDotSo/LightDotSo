@@ -14,13 +14,14 @@
 
 #[allow(unused_imports)]
 use super::{error::UserOperationMerkleError, types::UserOperationMerkle};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::user_operation_merkle;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -57,7 +58,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationMerkle> {
     // -------------------------------------------------------------------------
     // Parse

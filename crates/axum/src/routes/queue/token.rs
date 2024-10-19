@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::QueueError, types::QueueSuccess};
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use crate::{error::RouteError, result::AppJsonResult};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -27,6 +27,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::wallet;
 use lightdotso_redis::query::token::token_rate_limit;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -63,7 +64,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_queue_token_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<QueueSuccess> {
     // -------------------------------------------------------------------------
     // Parse

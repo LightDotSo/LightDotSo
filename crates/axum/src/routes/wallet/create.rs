@@ -20,7 +20,6 @@ use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
     routes::auth::error::AuthError,
-    state::AppState,
 };
 use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
@@ -45,6 +44,7 @@ use lightdotso_sequence::{
     config::WalletConfig,
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info, trace};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -123,7 +123,7 @@ pub(crate) struct WalletCreateOwnerParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
     Json(params): Json<WalletCreateRequestParams>,
 ) -> AppJsonResult<Wallet> {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use crate::{error::RouteError, result::AppJsonResult};
 use alloy::primitives::B256;
 use autometrics::autometrics;
 use axum::{
@@ -25,6 +25,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::user_operation;
 use lightdotso_redis::query::user_operation::user_operation_rate_limit;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -63,7 +64,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_queue_user_operation_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<QueueSuccess> {
     // -------------------------------------------------------------------------
     // Parse

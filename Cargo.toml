@@ -41,6 +41,7 @@
     "crates/signer",
     "crates/simulator",
     "crates/sqlx",
+    "crates/state",
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
@@ -150,6 +151,7 @@
     lightdotso-sqlx = { path = "./crates/sqlx" }
     lightdotso-signer = { path = "./crates/signer" }
     lightdotso-simulator = { path = "./crates/simulator" }
+    lightdotso-state = { path = "./crates/state" }
     lightdotso-tauri = { path = "./crates/tauri" }
     lightdotso-telegram = { path = "./crates/telegram" }
     lightdotso-tracing = { path = "./crates/tracing" }

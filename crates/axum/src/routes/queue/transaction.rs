@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use crate::{error::RouteError, result::AppJsonResult};
 use alloy::{eips::BlockNumberOrTag, primitives::B256, providers::Provider};
 use autometrics::autometrics;
 use axum::{
@@ -24,6 +24,7 @@ use axum::{
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_kafka::topics::transaction::produce_transaction_message;
 use lightdotso_redis::query::transaction::transaction_rate_limit;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -64,7 +65,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_queue_transaction_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<QueueSuccess> {
     // -------------------------------------------------------------------------
     // Parse

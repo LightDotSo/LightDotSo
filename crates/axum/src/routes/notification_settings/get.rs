@@ -15,7 +15,7 @@
 use super::types::NotificationSettings;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::notification_settings::error::NotificationSettingsError, state::AppState,
+    routes::notification_settings::error::NotificationSettingsError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::notification_settings;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -59,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_notification_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<NotificationSettings> {
     // -------------------------------------------------------------------------
     // Parse

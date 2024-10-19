@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::WalletSettingsError, types::WalletSettings};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -22,6 +22,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{wallet, wallet_settings};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -59,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<WalletSettings> {
     // -------------------------------------------------------------------------
     // Parse

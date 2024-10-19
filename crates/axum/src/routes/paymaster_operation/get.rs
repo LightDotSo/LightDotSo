@@ -15,7 +15,7 @@
 use super::types::PaymasterOperation;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::paymaster_operation::error::PaymasterOperationError, state::AppState,
+    routes::paymaster_operation::error::PaymasterOperationError,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -24,6 +24,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{billing_operation, paymaster, paymaster_operation, token_price};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::DateTime;
 use serde::Deserialize;
@@ -68,7 +69,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_paymaster_operation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<PaymasterOperation> {
     // -------------------------------------------------------------------------
     // Parse

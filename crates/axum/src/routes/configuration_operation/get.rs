@@ -15,7 +15,7 @@
 use super::types::ConfigurationOperation;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::configuration_operation::error::ConfigurationOperationError, state::AppState,
+    routes::configuration_operation::error::ConfigurationOperationError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::configuration_operation;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -59,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------
     // Parse

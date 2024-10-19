@@ -14,13 +14,14 @@
 
 #[allow(unused_imports)]
 use super::{error::NotificationSettingsError, types::NotificationSettings};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::notification_settings::{self, WhereParam};
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -73,7 +74,7 @@ pub(crate) struct NotificationSettingsListCount {
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<NotificationSettings>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -129,7 +130,7 @@ pub(crate) async fn v1_notification_settings_list_handler(
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<NotificationSettingsListCount> {
     // -------------------------------------------------------------------------
     // Parse

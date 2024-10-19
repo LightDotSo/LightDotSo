@@ -41,6 +41,7 @@
   lightdotso-sequence = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-sqlx = { workspace = true }
+  lightdotso-state = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }

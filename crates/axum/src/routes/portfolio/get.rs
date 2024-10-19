@@ -17,16 +17,14 @@ use super::{
     error::PortfolioError,
     types::{Portfolio, PortfolioBalanceDate},
 };
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::result::{AppError, AppJsonResult};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{raw, PrismaValue};
 use serde::Deserialize;
@@ -86,7 +84,7 @@ impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
 #[autometrics]
 pub(crate) async fn v1_portfolio_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Portfolio> {
     // -------------------------------------------------------------------------
     // Parse

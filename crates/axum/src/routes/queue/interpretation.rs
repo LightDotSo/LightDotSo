@@ -15,7 +15,6 @@
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    state::AppState,
 };
 use alloy::primitives::B256;
 use autometrics::autometrics;
@@ -28,6 +27,7 @@ use lightdotso_kafka::{
     types::interpretation::InterpretationMessage,
 };
 use lightdotso_prisma::{transaction, user_operation, UserOperationStatus};
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -68,7 +68,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_queue_interpretation_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<QueueSuccess> {
     // -------------------------------------------------------------------------
     // Parse

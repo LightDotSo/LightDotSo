@@ -24,7 +24,6 @@ use crate::{
         },
         configuration_operation_signature::error::ConfigurationOperationSignatureError,
     },
-    state::AppState,
 };
 use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
@@ -49,6 +48,7 @@ use lightdotso_sequence::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_image_bytes32, render_subdigest},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -129,7 +129,7 @@ pub struct ConfigurationOperationSignatureCreateParams {
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<ConfigurationOperationCreateRequestParams>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------

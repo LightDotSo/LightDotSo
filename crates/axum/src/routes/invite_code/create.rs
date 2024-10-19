@@ -19,7 +19,6 @@ use crate::{
     result::AppJsonResult,
     routes::invite_code::{error::InviteCodeError, types::GenerateInviteCode},
     sessions::get_user_id,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
@@ -28,6 +27,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
 
@@ -48,7 +48,7 @@ use tower_sessions_core::Session;
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_create_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCode> {
     // -------------------------------------------------------------------------

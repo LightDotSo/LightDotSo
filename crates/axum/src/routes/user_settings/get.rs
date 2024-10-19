@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::UserSettingsError, types::UserSettings};
-use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_user, result::AppJsonResult};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -25,6 +25,7 @@ use axum_extra::{
     TypedHeader,
 };
 use lightdotso_prisma::{user, user_settings};
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use tower_sessions_core::Session;
 use utoipa::IntoParams;
@@ -62,7 +63,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<UserSettings> {

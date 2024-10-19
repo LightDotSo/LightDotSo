@@ -15,7 +15,7 @@
 use super::types::UserOperationMerkle;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::user_operation_merkle::error::UserOperationMerkleError, state::AppState,
+    routes::user_operation_merkle::error::UserOperationMerkleError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +26,7 @@ use lightdotso_prisma::{
     asset_change, billing_operation, interpretation, paymaster_operation, signature, token_price,
     user_operation, user_operation_merkle,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -62,7 +63,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationMerkle> {
     // -------------------------------------------------------------------------
     // Parse

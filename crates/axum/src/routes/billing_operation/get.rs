@@ -15,7 +15,7 @@
 use super::types::BillingOperation;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::billing_operation::error::BillingOperationError, state::AppState,
+    routes::billing_operation::error::BillingOperationError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::billing_operation;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -59,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_billing_operation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<BillingOperation> {
     // -------------------------------------------------------------------------
     // Parse

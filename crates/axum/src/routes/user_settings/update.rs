@@ -18,7 +18,7 @@ use super::{
     error::UserSettingsError,
     types::{UserSettings, UserSettingsOptional},
 };
-use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_user, result::AppJsonResult};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -33,6 +33,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{user, user_settings, ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -85,7 +86,7 @@ pub struct UserSettingsUpdateRequestParams {
 #[autometrics]
 pub(crate) async fn v1_user_settings_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
     Json(params): Json<UserSettingsUpdateRequestParams>,

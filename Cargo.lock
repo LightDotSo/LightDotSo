@@ -6928,6 +6928,7 @@ dependencies = [
  "lightdotso-sequence",
  "lightdotso-simulator",
  "lightdotso-sqlx",
+ "lightdotso-state",
  "lightdotso-tracing",
  "lightdotso-utils",
  "prisma-client-rust",
@@ -7590,6 +7591,19 @@ name = "lightdotso-sqlx"
 version = "0.1.0"
 dependencies = [
  "sqlx",
+]
+
+[[package]]
+name = "lightdotso-state"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "lightdotso-db",
+ "lightdotso-hyper",
+ "lightdotso-kafka",
+ "lightdotso-prisma",
+ "lightdotso-redis",
+ "lightdotso-sqlx",
 ]
 
 [[package]]

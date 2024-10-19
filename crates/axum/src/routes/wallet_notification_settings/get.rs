@@ -18,7 +18,6 @@ use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
     routes::wallet_notification_settings::error::WalletNotificationSettingsError,
-    state::AppState,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -32,6 +31,7 @@ use axum_extra::{
 };
 use lightdotso_notifier::types::{WALLET_NOTIFICATION_DEFAULT_ENABLED, WALLET_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, wallet, wallet_notification_settings};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use std::collections::HashSet;
@@ -73,7 +73,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_wallet_notification_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<WalletNotificationSettings> {
@@ -283,7 +283,7 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
     query: &GetQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<String> {

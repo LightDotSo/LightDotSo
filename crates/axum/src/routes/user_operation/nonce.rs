@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::error::UserOperationError;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -22,6 +22,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{user_operation, UserOperationStatus};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
@@ -74,7 +75,7 @@ pub(crate) struct UserOperationNonce {
 #[autometrics]
 pub(crate) async fn v1_user_operation_nonce_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationNonce> {
     // -------------------------------------------------------------------------
     // Parse

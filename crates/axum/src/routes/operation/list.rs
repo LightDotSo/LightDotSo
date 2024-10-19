@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::OperationError, types::Operation};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -27,6 +27,7 @@ use lightdotso_prisma::{
     user_operation::{self, WhereParam as UserOperationWhereParam},
     ConfigurationOperationStatus, UserOperationStatus,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
@@ -114,7 +115,7 @@ pub(crate) struct OperationListCount {
 #[autometrics]
 pub(crate) async fn v1_operation_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Operation>> {
     let Query(query) = list_query;
 
@@ -227,7 +228,7 @@ pub(crate) async fn v1_operation_list_handler(
 #[autometrics]
 pub(crate) async fn v1_operation_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<OperationListCount> {
     // -------------------------------------------------------------------------
     // Parse

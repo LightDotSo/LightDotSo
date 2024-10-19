@@ -16,9 +16,9 @@ pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{__path_v1_token_price_get_handler, v1_token_price_get_handler};
 
@@ -27,6 +27,6 @@ pub(crate) use get::{__path_v1_token_price_get_handler, v1_token_price_get_handl
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new().route("/token_price/get", get(v1_token_price_get_handler))
 }

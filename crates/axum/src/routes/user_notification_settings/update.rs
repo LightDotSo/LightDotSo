@@ -20,7 +20,6 @@ use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::user_notification_settings::error::UserNotificationSettingsError,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -39,6 +38,7 @@ use lightdotso_notifier::types::USER_NOTIFICATION_DEFAULT_ENABLED;
 use lightdotso_prisma::{
     notification_settings, user, user_notification_settings, ActivityEntity, ActivityOperation,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -91,7 +91,7 @@ pub struct UserNotificationSettingsUpdateRequestParams {
 #[autometrics]
 pub(crate) async fn v1_user_notification_settings_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
     Json(params): Json<UserNotificationSettingsUpdateRequestParams>,

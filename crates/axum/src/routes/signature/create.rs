@@ -17,7 +17,6 @@ use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::signature::error::SignatureError,
-    state::AppState,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -34,6 +33,7 @@ use lightdotso_prisma::{
     owner, user_operation, ActivityEntity, ActivityOperation, SignatureProcedure,
 };
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -108,7 +108,7 @@ pub struct SignatureCreateParams {
 #[autometrics]
 pub(crate) async fn v1_signature_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<SignatureCreateRequestParams>,
 ) -> AppJsonResult<Signature> {
     // -------------------------------------------------------------------------

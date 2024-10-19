@@ -20,7 +20,6 @@ use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::wallet_notification_settings::error::WalletNotificationSettingsError,
-    state::AppState,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -37,6 +36,7 @@ use lightdotso_prisma::{
     notification_settings, user, wallet, wallet_notification_settings, ActivityEntity,
     ActivityOperation,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -91,7 +91,7 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_notification_settings_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<WalletNotificationSettingsUpdateRequestParams>,
 ) -> AppJsonResult<WalletNotificationSettings> {

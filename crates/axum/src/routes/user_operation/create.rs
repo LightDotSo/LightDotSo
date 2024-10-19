@@ -18,7 +18,6 @@ use super::{error::UserOperationError, types::UserOperation};
 use crate::{
     result::{AppError, AppJsonResult},
     routes::signature::create::SignatureCreateParams,
-    state::AppState,
 };
 use alloy::{
     hex::{self, ToHexExt},
@@ -45,6 +44,7 @@ use lightdotso_prisma::{
     user_operation_merkle, wallet, ActivityEntity, ActivityOperation, SignatureProcedure,
 };
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use lightdotso_utils::is_testnet;
 use prisma_client_rust::{chrono::DateTime, Direction};
@@ -156,7 +156,7 @@ impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<UserOperationCreateRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // -------------------------------------------------------------------------
@@ -507,7 +507,7 @@ pub(crate) async fn v1_user_operation_create_handler(
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_batch_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<UserOperationCreateBatchRequestParams>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // -------------------------------------------------------------------------

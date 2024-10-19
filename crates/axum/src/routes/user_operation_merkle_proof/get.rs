@@ -15,7 +15,7 @@
 use super::types::UserOperationMerkleProof;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::user_operation_merkle_proof::error::UserOperationMerkleProofError, state::AppState,
+    routes::user_operation_merkle_proof::error::UserOperationMerkleProofError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::user_operation_merkle_proof;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -59,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_proof_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationMerkleProof> {
     // -------------------------------------------------------------------------
     // Parse

@@ -17,9 +17,9 @@ pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{__path_v1_asset_change_get_handler, v1_asset_change_get_handler};
 pub(crate) use list::{__path_v1_asset_change_list_handler, v1_asset_change_list_handler};
@@ -29,7 +29,7 @@ pub(crate) use list::{__path_v1_asset_change_list_handler, v1_asset_change_list_
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/asset_change/get", get(v1_asset_change_get_handler))
         .route("/asset_change/list", get(v1_asset_change_list_handler))

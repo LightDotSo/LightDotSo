@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::InviteCodeError, types::InviteCode};
-use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_user, result::AppJsonResult};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -25,6 +25,7 @@ use axum_extra::{
     TypedHeader,
 };
 use lightdotso_prisma::invite_code::{self, WhereParam};
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -78,7 +79,7 @@ pub(crate) struct InviteCodeListCount {
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<InviteCode>> {
@@ -148,7 +149,7 @@ pub(crate) async fn v1_invite_code_list_handler(
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<InviteCodeListCount> {

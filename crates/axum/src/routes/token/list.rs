@@ -17,7 +17,7 @@ use super::{
     error::TokenError,
     types::{Token, TokenGroup},
 };
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -29,6 +29,7 @@ use lightdotso_prisma::{
     token, token_group,
     wallet_balance::{self, Data, WhereParam},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -93,7 +94,7 @@ pub(crate) struct TokenListCount {
 #[autometrics]
 pub(crate) async fn v1_token_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Token>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -330,7 +331,7 @@ pub(crate) async fn v1_token_list_handler(
 #[autometrics]
 pub(crate) async fn v1_token_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<TokenListCount> {
     // -------------------------------------------------------------------------
     // Parse

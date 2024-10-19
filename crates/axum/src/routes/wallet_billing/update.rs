@@ -17,7 +17,7 @@
 use super::types::{WalletBilling, WalletBillingOptional};
 use crate::{
     constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::wallet_billing::error::WalletBillingError, sessions::get_user_id, state::AppState,
+    routes::wallet_billing::error::WalletBillingError, sessions::get_user_id,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -26,6 +26,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::wallet_billing;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -78,7 +79,7 @@ pub struct WalletBillingUpdateRequestParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_billing_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     // Json(params): Json<WalletBillingUpdateRequestParams>,
 ) -> AppJsonResult<WalletBilling> {

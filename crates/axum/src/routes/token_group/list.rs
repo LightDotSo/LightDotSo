@@ -14,13 +14,14 @@
 
 #[allow(unused_imports)]
 use super::{error::TokenGroupError, types::TokenGroup};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::token_group;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -59,7 +60,7 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_token_group_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<TokenGroup>> {
     // -------------------------------------------------------------------------
     // Parse

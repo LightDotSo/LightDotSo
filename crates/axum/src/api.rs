@@ -44,7 +44,6 @@ use crate::{
         wallet_features, wallet_notification_settings, wallet_settings,
     },
     sessions::{self, authenticated},
-    state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
@@ -53,11 +52,8 @@ use hyper::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue, Method,
 };
-use lightdotso_db::db::{create_client, create_postgres_client};
-use lightdotso_hyper::get_hyper_client;
-use lightdotso_kafka::get_producer;
 use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
-use lightdotso_redis::get_redis_client;
+use lightdotso_state::create_client_state;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tokio::net::TcpListener;
@@ -410,18 +406,7 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
-    let hyper = get_hyper_client()?;
-    let db = Arc::new(create_client().await?);
-    let pool = Arc::new(create_postgres_client().await?);
-    let producer = Arc::new(get_producer()?);
-    let redis = get_redis_client()?;
-    let state = AppState {
-        hyper: Arc::new(hyper),
-        client: db,
-        producer,
-        pool,
-        redis: Arc::new(redis.clone()),
-    };
+    let state = create_client_state().await?;
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -538,7 +523,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet_settings::router());
 
     // Create the session store
-    let session_store = sessions::RedisStore::new(redis);
+    let session_store = sessions::RedisStore::new(state.redis.clone().as_ref().clone());
     let mut session_manager_layer =
         SessionManagerLayer::new(session_store.clone()).with_name(*SESSION_COOKIE_ID);
 

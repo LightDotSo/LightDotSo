@@ -15,7 +15,6 @@
 use super::types::Transaction;
 use crate::{
     error::RouteError, result::AppJsonResult, routes::transaction::error::TransactionError,
-    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -23,6 +22,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{asset_change, interpretation, transaction};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -60,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_transaction_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Transaction> {
     // -------------------------------------------------------------------------
     // Parse

@@ -14,7 +14,7 @@
 
 #[allow(unused_imports)]
 use super::{error::SimulationError, types::Simulation};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -24,6 +24,7 @@ use lightdotso_prisma::{
     asset_change, interpretation,
     simulation::{self, WhereParam},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -77,7 +78,7 @@ pub(crate) struct SimulationListCount {
 #[autometrics]
 pub(crate) async fn v1_simulation_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Simulation>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -141,7 +142,7 @@ pub(crate) async fn v1_simulation_list_handler(
 #[autometrics]
 pub(crate) async fn v1_simulation_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<SimulationListCount> {
     // -------------------------------------------------------------------------
     // Parse

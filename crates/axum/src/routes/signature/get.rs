@@ -13,16 +13,14 @@
 // limitations under the License.
 
 use super::types::Signature;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::signature::error::SignatureError,
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, routes::signature::error::SignatureError};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::signature;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -62,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_signature_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Signature> {
     // -------------------------------------------------------------------------
     // Parse

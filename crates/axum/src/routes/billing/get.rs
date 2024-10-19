@@ -13,15 +13,14 @@
 // limitations under the License.
 
 use super::types::Billing;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::billing::error::BillingError, state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, routes::billing::error::BillingError};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::billing;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -58,7 +57,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_billing_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Billing> {
     // -------------------------------------------------------------------------
     // Parse
