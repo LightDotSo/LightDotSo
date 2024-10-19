@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::{state::ConsumerState, topics::TopicConsumer};
+use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
@@ -20,21 +22,26 @@ use rdkafka::{message::BorrowedMessage, Message};
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub fn unknown_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
-    // Send webhook if exists
-    info!(
-        "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-        msg.key(),
-        msg.payload_view::<str>(),
-        msg.topic(),
-        msg.partition(),
-        msg.offset(),
-        msg.timestamp()
-    );
+pub struct UnknownConsumer;
 
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+#[async_trait]
+impl TopicConsumer for UnknownConsumer {
+    async fn consume(&self, _state: &ConsumerState, msg: &BorrowedMessage<'_>) -> Result<()> {
+        // Send webhook if exists
+        info!(
+            "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+            msg.key(),
+            msg.payload_view::<str>(),
+            msg.topic(),
+            msg.partition(),
+            msg.offset(),
+            msg.timestamp()
+        );
 
-    Ok(())
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        Ok(())
+    }
 }

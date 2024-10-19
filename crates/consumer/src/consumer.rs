@@ -23,7 +23,7 @@ use crate::{
         interpretation::interpretation_consumer, node::node_consumer,
         notification::notification_consumer, paymaster_operation::paymaster_operation_consumer,
         portfolio::portfolio_consumer, routescan::routescan_consumer,
-        transaction::transaction_consumer, unknown::unknown_consumer,
+        transaction::transaction_consumer, unknown::UnknownConsumer,
         user_operation::user_operation_consumer, TopicConsumer, TOPIC_CONSUMERS,
     },
 };
@@ -48,7 +48,6 @@ use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
-    message::BorrowedMessage,
     producer::FutureProducer,
     Message,
 };
@@ -180,7 +179,10 @@ impl Consumer {
                             warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
                     } else {
-                        self.handle_unknown(&m)?;
+                        let consumer = UnknownConsumer;
+                        if let Err(e) = consumer.consume(&state, &m).await {
+                            warn!("Error processing message for topic {}: {:?}", topic, e);
+                        }
                     }
 
                     self.consumer.commit_message(&m, CommitMode::Async)?;
@@ -303,17 +305,11 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         _ => {
-                            let _ = unknown_consumer(&m);
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                     }
                 }
             };
         }
-    }
-
-    fn handle_unknown(&self, message: &BorrowedMessage<'_>) -> Result<()> {
-        unknown_consumer(message)?;
-        Ok(())
     }
 }
