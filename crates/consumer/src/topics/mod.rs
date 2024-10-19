@@ -20,9 +20,10 @@ use crate::{
     },
 };
 use async_trait::async_trait;
+use covalent::CovalentConsumer;
 use eyre::Result;
 use lazy_static::lazy_static;
-use lightdotso_kafka::namespace::{ACTIVITY, BILLING_OPERATION, ERROR_TRANSACTION};
+use lightdotso_kafka::namespace::{ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION};
 use lightdotso_state::ClientState;
 use rdkafka::message::BorrowedMessage;
 use std::{collections::HashMap, sync::Arc};
@@ -52,6 +53,10 @@ lazy_static! {
         m.insert(
             BILLING_OPERATION.to_string(),
             Arc::new(BillingOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            COVALENT.to_string(),
+            Arc::new(CovalentConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
         m.insert(
             ERROR_TRANSACTION.to_string(),
