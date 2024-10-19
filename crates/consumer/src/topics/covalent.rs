@@ -205,9 +205,9 @@ pub async fn covalent_consumer(
                                             item.balance
                                                 .as_ref()
                                                 .map(|balance| {
-                                                    balance.parse::<i64>().unwrap_or(0).to_string()
+                                                    balance.parse::<f64>().unwrap_or(0.0)
                                                 })
-                                                .unwrap_or(0.to_string()),
+                                                .unwrap_or(0.0),
                                         )),
                                         wallet_balance::stable::set(Some(
                                             item.balance_type

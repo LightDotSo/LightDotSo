@@ -373,7 +373,7 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
         wallet_balance::wallet_address::equals(checksum_address),
         wallet_balance::is_latest::equals(true),
         wallet_balance::is_spam::equals(query.is_spam.unwrap_or(false)),
-        wallet_balance::amount::not(Some(0.to_string())),
+        wallet_balance::amount::not(Some(0.0)),
     ];
 
     // If is_testnet is not set or true, only return the tokens that are not testnet tokens.

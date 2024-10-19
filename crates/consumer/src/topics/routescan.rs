@@ -201,9 +201,9 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                             item.token_quantity
                                                 .as_ref()
                                                 .map(|balance| {
-                                                    balance.parse::<i64>().unwrap_or(0).to_string()
+                                                    balance.parse::<f64>().unwrap_or(0.0)
                                                 })
-                                                .unwrap_or(0.to_string()),
+                                                .unwrap_or(0.0),
                                         )),
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
                                         // wallet_balance::is_spam::set(item.is_spam),
