@@ -20,3 +20,7 @@
   rustls = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }
+  tokio = { workspace = true }

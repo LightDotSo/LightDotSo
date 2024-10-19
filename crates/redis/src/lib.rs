@@ -24,6 +24,14 @@ pub mod rate_limit;
 // From: https://github.com/upstash/redis-examples/blob/27558e2192f7f0cd5b22e1869a433bbe96bad64d/using_redis-rs/src/main.rs
 /// Get a redis client from the environment variables
 pub fn get_redis_client() -> Result<redis::Client> {
+    // If the `NEXTEST` environment variable is set, use the test redis instance.
+    if std::env::var("NEXTEST").is_ok() {
+        // Set the connection link to match the Redis service in docker-compose
+        let connection_link = "redis://localhost:6379".to_string();
+
+        return Ok(redis::Client::open(connection_link)?);
+    }
+
     // Get the environment variables
     let host = std::env::var("UPSTASH_REDIS_HOST").wrap_err("UPSTASH_REDIS_HOST not found")?;
     let password =

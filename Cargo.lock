@@ -7306,6 +7306,7 @@ name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
  "alloy",
+ "dotenvy",
  "eyre",
  "lazy_static",
  "lightdotso-contracts",
@@ -7316,6 +7317,7 @@ dependencies = [
  "rustls 0.23.14",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]
@@ -7478,6 +7480,7 @@ dependencies = [
 name = "lightdotso-redis"
 version = "0.1.0"
 dependencies = [
+ "dotenvy",
  "eyre",
  "futures",
  "lazy_static",
