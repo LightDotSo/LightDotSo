@@ -49,6 +49,7 @@ use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
+    message::BorrowedMessage,
     producer::FutureProducer,
     Message,
 };
@@ -165,6 +166,19 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
+                    let topic = m.topic().to_string();
+                    let state = self.state.clone();
+
+                    if let Some(consumer) = TOPIC_CONSUMERS.get(&topic) {
+                        if let Err(e) = consumer.consume(&state, &m).await {
+                            warn!("Error processing message for topic {}: {:?}", topic, e);
+                        }
+                    } else {
+                        self.handle_unknown(&m)?;
+                    }
+
+                    self.consumer.commit_message(&m, CommitMode::Async)?;
+
                     match m.topic() {
                         // If the topic is the transaction topic
                         topic
@@ -290,5 +304,10 @@ impl Consumer {
                 }
             };
         }
+    }
+
+    fn handle_unknown(&self, message: &BorrowedMessage<'_>) -> Result<()> {
+        unknown_consumer(message)?;
+        Ok(())
     }
 }
