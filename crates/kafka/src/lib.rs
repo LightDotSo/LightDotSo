@@ -19,6 +19,7 @@ use rdkafka::{
     consumer::stream_consumer::StreamConsumer,
     producer::{FutureProducer, FutureRecord},
 };
+use rustls::crypto::{ring, CryptoProvider};
 use std::sync::Arc;
 
 pub use rdkafka;
@@ -39,7 +40,8 @@ pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error:
             .set("bootstrap.servers", "localhost:29092")
             .set("group.id", group)
             .set("auto.offset.reset", "earliest")
-            .set("enable.auto.commit", "false");
+            .set("enable.auto.commit", "false")
+            .set("security.protocol", "PLAINTEXT");
 
         return Ok(config.clone());
     }

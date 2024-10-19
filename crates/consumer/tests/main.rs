@@ -14,7 +14,6 @@
 
 #![recursion_limit = "512"]
 
-use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_consumer::{config::ConsumerArgs, consumer::Consumer};
@@ -27,12 +26,12 @@ async fn test_integration_consumer_test() -> Result<()> {
     // Load the environment variables.
     let _ = dotenv();
 
-    // Set some env vars
-    std::env::set_var("KAFKA_GROUP", "test");
-    std::env::set_var("KAFKA_TOPICS", "test");
-
     // Construct the consumer
-    let consumer_args = ConsumerArgs::parse_from([""]);
+    let consumer_args = ConsumerArgs {
+        group: "test".to_string(),
+        topics: vec!["test".to_string()],
+        cpu_multiplier: 1,
+    };
 
     // Create the consumer
     let consumer = Consumer::new(&consumer_args).await?;

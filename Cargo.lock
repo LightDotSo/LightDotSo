@@ -7312,6 +7312,7 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-tracing",
  "rdkafka",
+ "rustls 0.23.14",
  "serde",
  "serde_json",
 ]

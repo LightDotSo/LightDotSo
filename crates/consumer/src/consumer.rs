@@ -87,11 +87,13 @@ impl Consumer {
         let producer = Arc::new(get_producer().unwrap());
 
         // Parse the billing command line arguments
-        let billing_args = BillingArgs::parse();
+        let billing_args =
+            BillingArgs::try_parse().unwrap_or_else(|_| BillingArgs::parse_from(["".to_string()]));
         let billing = Arc::new(billing_args.create().await?);
 
         // Parse the indexer command line arguments
-        let indexer_args = IndexerArgs::parse();
+        let indexer_args =
+            IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
         let indexer = Arc::new(indexer_args.create().await);
 
         // Create a shared state
