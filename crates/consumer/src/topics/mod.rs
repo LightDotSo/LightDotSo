@@ -29,7 +29,8 @@ use eyre::Result;
 use lazy_static::lazy_static;
 use lightdotso_kafka::namespace::{
     ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE, NOTIFICATION,
-    PAYMASTER_OPERATION, PORTFOLIO, ROUTESCAN, TRANSACTION, USER_OPERATION,
+    PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1,
+    RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
 };
 use lightdotso_state::ClientState;
 use rdkafka::message::BorrowedMessage;
@@ -73,14 +74,14 @@ lazy_static! {
             INTERPRETATION.to_string(),
             Arc::new(InterpretationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
-        m.insert(
-            PAYMASTER_OPERATION.to_string(),
-            Arc::new(PaymasterOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
-        );
         m.insert(NODE.to_string(), Arc::new(NodeConsumer) as Arc<dyn TopicConsumer + Send + Sync>);
         m.insert(
             NOTIFICATION.to_string(),
             Arc::new(NotificationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            PAYMASTER_OPERATION.to_string(),
+            Arc::new(PaymasterOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
         m.insert(
             PORTFOLIO.to_string(),
@@ -92,6 +93,22 @@ lazy_static! {
         );
         m.insert(
             TRANSACTION.to_string(),
+            Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            RETRY_TRANSACTION.to_string(),
+            Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            RETRY_TRANSACTION_0.to_string(),
+            Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            RETRY_TRANSACTION_1.to_string(),
+            Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
+        m.insert(
+            RETRY_TRANSACTION_2.to_string(),
             Arc::new(TransactionConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
         );
         m.insert(
