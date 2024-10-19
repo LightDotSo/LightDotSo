@@ -27,3 +27,5 @@ pub struct ConsumerState {
     pub pool: Arc<PostgresPool>,
     pub redis: Arc<Client>,
 }
+
+pub type SharedConsumerState = Arc<ConsumerState>;

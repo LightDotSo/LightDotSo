@@ -17,6 +17,7 @@
 
 use crate::{
     config::ConsumerArgs,
+    state::ConsumerState,
     topics::{
         activity::activity_consumer, billing_operation::billing_operation_consumer,
         covalent::covalent_consumer, error_transaction::error_transaction_consumer,
@@ -30,7 +31,8 @@ use crate::{
 use clap::Parser;
 use eyre::Result;
 use lightdotso_billing::config::BillingArgs;
-use lightdotso_db::db::create_client;
+use lightdotso_db::db::{create_client, create_postgres_client};
+use lightdotso_hyper::get_hyper_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
@@ -43,6 +45,7 @@ use lightdotso_kafka::{
 use lightdotso_node::config::NodeArgs;
 use lightdotso_notifier::config::NotifierArgs;
 use lightdotso_polling::config::PollingArgs;
+use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
@@ -55,11 +58,12 @@ use std::sync::Arc;
 pub struct Consumer {
     consumer: Arc<StreamConsumer>,
     producer: Arc<FutureProducer>,
+    state: ConsumerState,
     topics: Vec<String>,
 }
 
 impl Consumer {
-    pub async fn new(args: &ConsumerArgs) -> Self {
+    pub async fn new(args: &ConsumerArgs) -> Result<Self> {
         info!("Consumer new, starting");
 
         // If the group is empty, read it from the environment var `FLY_APP_NAME`
@@ -81,8 +85,21 @@ impl Consumer {
         // Construct the producer
         let producer = Arc::new(get_producer().unwrap());
 
+        // Create a shared state
+        let hyper = get_hyper_client()?;
+        let db = Arc::new(create_client().await?);
+        let pool = Arc::new(create_postgres_client().await?);
+        let redis = get_redis_client()?;
+        let state = ConsumerState {
+            hyper: Arc::new(hyper),
+            client: db,
+            producer: producer.clone(),
+            pool,
+            redis: Arc::new(redis.clone()),
+        };
+
         // Create the consumer
-        Self { consumer, producer, topics: args.topics.clone() }
+        Ok(Self { consumer, producer, state, topics: args.topics.clone() })
     }
 
     pub async fn run(&self) -> Result<()> {

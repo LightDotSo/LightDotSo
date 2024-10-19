@@ -42,7 +42,7 @@ impl ConsumerArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let consumer = Consumer::new(self).await;
+        let consumer = Consumer::new(self).await?;
 
         consumer.run().await?;
 
