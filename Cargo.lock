@@ -7058,6 +7058,7 @@ dependencies = [
  "backon",
  "chrono",
  "clap 4.5.20",
+ "dotenvy",
  "eyre",
  "lazy_static",
  "lightdotso-billing",

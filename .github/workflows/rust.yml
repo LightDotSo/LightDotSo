@@ -112,12 +112,11 @@ jobs:
         name: Set up Docker
         uses: douglascamata/setup-docker-macos-action@main
         continue-on-error: true
-      - if: matrix.workspace
-        name: Docker Remove Storage
-        run: |
-          docker system df
-          docker system prune -a --volumes -f
-          docker system df
+      - if: matrix.workspace && matrix.os == 'ubuntu-latest'
+        name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
