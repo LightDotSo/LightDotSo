@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![recursion_limit = "512"]
+use lightdotso_hyper::HyperClient;
+use lightdotso_kafka::rdkafka::producer::FutureProducer;
+use lightdotso_prisma::PrismaClient;
+use lightdotso_redis::redis::Client;
+use lightdotso_sqlx::PostgresPool;
+use std::sync::Arc;
 
-pub mod config;
-pub mod consumer;
-pub mod state;
-pub mod topics;
+#[derive(Clone)]
+pub struct ConsumerState {
+    pub hyper: Arc<HyperClient>,
+    pub client: Arc<PrismaClient>,
+    pub producer: Arc<FutureProducer>,
+    pub pool: Arc<PostgresPool>,
+    pub redis: Arc<Client>,
+}

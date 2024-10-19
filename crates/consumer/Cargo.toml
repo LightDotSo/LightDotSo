@@ -20,6 +20,7 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-covalent = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-hyper = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-kafka = { workspace = true }
@@ -28,7 +29,9 @@
   lightdotso-opentelemetry = { workspace = true }
   lightdotso-polling = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-redis = { workspace = true }
   lightdotso-routescan = { workspace = true }
+  lightdotso-sqlx = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   opentelemetry = { workspace = true }

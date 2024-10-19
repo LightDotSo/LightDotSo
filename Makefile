@@ -12,6 +12,7 @@ SHARED_LIB_NAME = $(NAME).so
 ARCHS_IOS = x86_64-apple-ios aarch64-apple-ios-sim
 ARCHS_IOS_ARM = aarch64-apple-ios
 ARCHS_MAC = x86_64-apple-darwin aarch64-apple-darwin
+DOCKER_COMPOSE := $(shell which docker-compose >/dev/null 2>&1 && echo "docker-compose" || echo "docker compose")
 SOLC_VERSION = 0.8.18
 
 CRATES_DIR = "crates/core"
@@ -255,30 +256,26 @@ autometrics: ## Run autometrics
 docker: ## Build the docker image.
 	docker build -t lightdotso .
 
-.PHONY: docker-compose
-docker-compose: docker-compose-up ## Run the docker-compose.
-
-.PHONY: docker-compose-up
-docker-compose-up: ## Run the docker-compose.
-	docker-compose up -d
-
-.PHONY: docker-compose-down
-docker-compose-down: ## Run the docker-compose.
-	docker-compose down
-
 .PHONY: docker-upgrade
 docker-upgrade: ## Upgrade dependencies in the docker image.
 	./scripts/dockerfile_version_update.sh
 
 ##@ Docker-compose
 
+.PHONY: docker-compose
+docker-compose: docker-compose-up ## Run the docker-compose.
+
 .PHONY: docker-compose-up
 docker-compose-up: ## Run the docker-compose.
-	docker-compose up
+	$(DOCKER_COMPOSE) up -d
+
+.PHONY: docker-compose-down
+docker-compose-down: ## Run the docker-compose.
+	$(DOCKER_COMPOSE) down
 
 .PHONY: docker-compose-restart
 docker-compose-restart: ## Restart the docker-compose.
-	docker-compose down --volumes && docker-compose up
+	$(DOCKER_COMPOSE) down --volumes && $(DOCKER_COMPOSE) up
 
 ##@ Prisma
 
