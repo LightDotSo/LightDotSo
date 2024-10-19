@@ -15,13 +15,14 @@
 use crate::{
     state::ConsumerState,
     topics::{
-        billing_operation::BillingOperationConsumer, error_transaction::ErrorTransactionConsumer,
+        activity::ActivityConsumer, billing_operation::BillingOperationConsumer,
+        error_transaction::ErrorTransactionConsumer,
     },
 };
 use async_trait::async_trait;
 use eyre::Result;
 use lazy_static::lazy_static;
-use lightdotso_kafka::namespace::{BILLING_OPERATION, ERROR_TRANSACTION};
+use lightdotso_kafka::namespace::{ACTIVITY, BILLING_OPERATION, ERROR_TRANSACTION};
 use lightdotso_state::ClientState;
 use rdkafka::message::BorrowedMessage;
 use std::{collections::HashMap, sync::Arc};
@@ -44,6 +45,10 @@ lazy_static! {
     pub static ref TOPIC_CONSUMERS: HashMap<String, Arc<dyn TopicConsumer + Send + Sync>> = {
         let mut m = HashMap::new();
 
+        m.insert(
+            ACTIVITY.to_string(),
+            Arc::new(ActivityConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
+        );
         m.insert(
             BILLING_OPERATION.to_string(),
             Arc::new(BillingOperationConsumer) as Arc<dyn TopicConsumer + Send + Sync>,
