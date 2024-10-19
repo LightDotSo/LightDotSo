@@ -30,6 +30,7 @@ pub(crate) struct Portfolio {
     /// The percentage change of the balance in the last 24 hours.
     pub balance_change_24h_percentage: f64,
     /// The historical balances of the portfolio.
+    #[schema(no_recursion)]
     pub balances: Vec<PortfolioBalanceDate>,
 }
 

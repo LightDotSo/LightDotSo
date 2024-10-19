@@ -33,6 +33,7 @@ pub(crate) struct TokenPrice {
     /// The percentage change of the token price in the last 24 hours.
     pub price_change_24h_percentage: f64,
     /// The historical prices of the token price.
+    #[schema(no_recursion)]
     pub prices: Vec<TokenPriceDate>,
     /// The token.
     pub token: Option<Token>,

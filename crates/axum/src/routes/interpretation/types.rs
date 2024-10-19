@@ -30,8 +30,10 @@ pub(crate) struct Interpretation {
     /// The id of the interpretation to read for.
     id: String,
     /// The array of actions of the interpretation.
+    #[schema(no_recursion)]
     actions: Vec<InterpretationAction>,
     /// The array of asset changes of the interpretation.
+    #[schema(no_recursion)]
     asset_changes: Vec<AssetChange>,
 }
 

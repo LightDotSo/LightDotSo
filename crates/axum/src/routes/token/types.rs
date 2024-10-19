@@ -62,6 +62,7 @@ pub(crate) struct TokenGroup {
     /// The id of the token group.
     pub id: String,
     /// The tokens of the token group.
+    #[schema(no_recursion)]
     pub tokens: Vec<Token>,
 }
 

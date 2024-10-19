@@ -28,6 +28,7 @@ pub(crate) struct TokenGroup {
     /// The id of the token group.
     id: String,
     /// The array of tokens in the token group.
+    #[schema(no_recursion)]
     tokens: Vec<Token>,
     /// The address of the token (may differ between chains but okay for now)
     pub address: String,

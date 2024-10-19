@@ -30,6 +30,7 @@ pub(crate) struct WalletNotificationSettings {
     /// The id of wallet notification settings.
     pub id: String,
     /// The notification settings of wallet notification settings.
+    #[schema(no_recursion)]
     pub settings: Vec<NotificationSettings>,
 }
 
