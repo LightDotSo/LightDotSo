@@ -115,7 +115,7 @@ jobs:
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
-          docker-compose up -d --build
+          make docker-compose
       - name: Turbo Build Crates
         run: |
           pnpm turbo run build --filter=@lightdotso/crates
