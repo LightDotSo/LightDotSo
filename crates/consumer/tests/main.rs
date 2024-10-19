@@ -18,6 +18,7 @@ use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_consumer::{config::ConsumerArgs, consumer::Consumer};
 use lightdotso_kafka::get_producer;
+use lightdotso_tracing::init_test_tracing;
 use rdkafka::producer::FutureRecord;
 use rustls::crypto::{ring, CryptoProvider};
 use std::{sync::Arc, time::Duration};
@@ -26,6 +27,9 @@ use std::{sync::Arc, time::Duration};
 async fn test_integration_consumer_test() -> Result<()> {
     // Load the environment variables.
     let _ = dotenv();
+
+    // Init test tracing
+    init_test_tracing();
 
     // Install the default crypto provider
     let _ = CryptoProvider::install_default(ring::default_provider());
@@ -49,13 +53,13 @@ async fn test_integration_consumer_test() -> Result<()> {
     // Produce a test message
     let test_message = "test message";
     let produce_future = producer.send(
-        FutureRecord::to("test-topic").payload(test_message).key("test-key"),
+        FutureRecord::to("test").payload(test_message).key("test-key"),
         Duration::from_secs(0),
     );
     let _ = produce_future.await.unwrap();
 
     // Wait for a short time to allow the consumer to process the message
-    tokio::time::sleep(Duration::from_secs(3)).await;
+    tokio::time::sleep(Duration::from_secs(12)).await;
 
     Ok(())
 }
