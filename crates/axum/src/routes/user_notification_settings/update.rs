@@ -14,7 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::{error::UserNotificationSettingsError, types::{UserNotificationSettings, UserNotificationSettingsOptional}};
+use super::{
+    error::UserNotificationSettingsError,
+    types::{UserNotificationSettings, UserNotificationSettingsOptional},
+};
 use crate::{
     authentication::authenticate_user,
     error::RouteError,

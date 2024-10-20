@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::tags::CHECK_TAG;
 use autometrics::autometrics;
 use axum::response::IntoResponse;
-use crate::tags::CHECK_TAG;
 
 // -----------------------------------------------------------------------------
 // Handler
