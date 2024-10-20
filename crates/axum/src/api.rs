@@ -583,7 +583,7 @@ pub async fn start_api_server() -> Result<()> {
         .build();
 
     let (_router, open_api) = OpenApiRouter::with_openapi(open_api_spec)
-        .nest("/v1", open_api_router.clone())
+        .nest("", open_api_router.clone())
         .split_for_parts();
 
     // Create the app for the server
