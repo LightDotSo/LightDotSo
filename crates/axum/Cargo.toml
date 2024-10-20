@@ -25,6 +25,7 @@
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }
+  lightdotso-consumer = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-hyper = { workspace = true }

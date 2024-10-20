@@ -14,8 +14,6 @@
 
 #![allow(clippy::unwrap_used)]
 
-use std::sync::Arc;
-
 use super::TopicConsumer;
 use crate::state::ConsumerState;
 use alloy::rpc::types::Block;
@@ -36,6 +34,7 @@ use lightdotso_opentelemetry::consumer::ConsumerMetrics;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{message::BorrowedMessage, Message};
+use std::sync::Arc;
 
 // -----------------------------------------------------------------------------
 // Consumer

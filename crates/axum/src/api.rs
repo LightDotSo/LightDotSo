@@ -36,9 +36,9 @@ use crate::{
     routes::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
         configuration_operation, configuration_operation_owner, configuration_operation_signature,
-        feedback, health, interpretation, interpretation_action, invite_code, notification,
-        notification_settings, operation, owner, paymaster, paymaster_operation, portfolio,
-        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        consumer, feedback, health, interpretation, interpretation_action, invite_code,
+        notification, notification_settings, operation, owner, paymaster, paymaster_operation,
+        portfolio, protocol, protocol_group, queue, signature, simulation, support_request, token,
         token_group, token_price, transaction, user, user_notification_settings, user_operation,
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
@@ -47,7 +47,7 @@ use crate::{
     tags::{
         ACTIVITY_TAG, ASSET_CHANGE_TAG, AUTH_TAG, BILLING_OPERATION_TAG, BILLING_TAG, CHAIN_TAG,
         CHECK_TAG, CONFIGURATION_OPERATION_OWNER_TAG, CONFIGURATION_OPERATION_SIGNATURE_TAG,
-        CONFIGURATION_OPERATION_TAG, CONFIGURATION_TAG, FEEDBACK_TAG, HEALTH_TAG,
+        CONFIGURATION_OPERATION_TAG, CONFIGURATION_TAG, CONSUMER_TAG, FEEDBACK_TAG, HEALTH_TAG,
         INTERPRETATION_ACTION_TAG, INTERPRETATION_TAG, INVITE_CODE_TAG, NOTIFICATION_SETTINGS_TAG,
         NOTIFICATION_TAG, OPERATION_TAG, OWNER_TAG, PAYMASTER_OPERATION_TAG, PAYMASTER_TAG,
         PORTFOLIO_TAG, PROTOCOL_GROUP_TAG, PROTOCOL_TAG, QUEUE_TAG, SIGNATURE_TAG, SIMULATION_TAG,
@@ -123,6 +123,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(configuration_operation_signature::create::ConfigurationOperationSignatureCreateRequestParams),
         schemas(configuration_operation_signature::error::ConfigurationOperationSignatureError),
         schemas(configuration_operation_signature::types::ConfigurationOperationSignature),
+        schemas(consumer::error::ConsumerError),
+        schemas(consumer::types::ConsumerSuccess),
         schemas(feedback::create::FeedbackCreateRequestParams),
         schemas(feedback::error::FeedbackError),
         schemas(feedback::types::Feedback),
@@ -241,6 +243,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = CONFIGURATION_OPERATION_TAG.to_string(), description = "Configuration Operation API"),
         (name = CONFIGURATION_OPERATION_OWNER_TAG.to_string(), description = "Configuration Operation Owner API"),
         (name = CONFIGURATION_OPERATION_SIGNATURE_TAG.to_string(), description = "Configuration Operation Signature API"),
+        (name = CONSUMER_TAG.to_string(), description = "Consumer API"),
         (name = CHECK_TAG.to_string(), description = "Check API"),
         (name = FEEDBACK_TAG.to_string(), description = "Feedback API"),
         (name = HEALTH_TAG.to_string(), description = "Health API"),
@@ -374,6 +377,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(configuration_operation::router())
         .merge(configuration_operation_owner::router())
         .merge(configuration_operation_signature::router())
+        .merge(consumer::router())
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
@@ -455,6 +459,7 @@ pub async fn start_api_server() -> Result<()> {
         .routes(routes!(
             configuration_operation_signature::v1_configuration_operation_signature_list_handler
         ))
+        .routes(routes!(consumer::v1_consumer_routescan_handler))
         .routes(routes!(feedback::v1_feedback_create_handler))
         .routes(routes!(interpretation::v1_interpretation_get_handler))
         .routes(routes!(interpretation::v1_interpretation_list_handler))

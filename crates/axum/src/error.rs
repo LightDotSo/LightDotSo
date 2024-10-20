@@ -19,7 +19,8 @@ use crate::routes::{
     configuration_operation::error::ConfigurationOperationError,
     configuration_operation_owner::error::ConfigurationOperationOwnerError,
     configuration_operation_signature::error::ConfigurationOperationSignatureError,
-    feedback::error::FeedbackError, interpretation::error::InterpretationError,
+    consumer::error::ConsumerError, feedback::error::FeedbackError,
+    interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError,
     notification_settings::error::NotificationSettingsError, operation::error::OperationError,
@@ -54,6 +55,7 @@ pub(crate) enum RouteError {
     ConfigurationOperationError(ConfigurationOperationError),
     ConfigurationOperationOwnerError(ConfigurationOperationOwnerError),
     ConfigurationOperationSignatureError(ConfigurationOperationSignatureError),
+    ConsumerError(ConsumerError),
     FeedbackError(FeedbackError),
     InterpretationError(InterpretationError),
     InterpretationActionError(InterpretationActionError),
@@ -191,6 +193,21 @@ impl RouteErrorStatusCodeAndMsg for ConfigurationOperationSignatureError {
             }
             ConfigurationOperationSignatureError::NotFound(msg) => {
                 (StatusCode::NOT_FOUND, msg.to_string())
+            }
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for ConsumerError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ConsumerError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            ConsumerError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            ConsumerError::RateLimitExceeded(msg) => {
+                (StatusCode::TOO_MANY_REQUESTS, msg.to_string())
+            }
+            ConsumerError::ProviderError(msg) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, msg.to_string())
             }
         }
     }
@@ -528,6 +545,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::ConfigurationOperationSignatureError(err) => {
                 err.error_status_code_and_msg()
             }
+            RouteError::ConsumerError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationActionError(err) => err.error_status_code_and_msg(),
@@ -583,6 +601,7 @@ impl std::fmt::Debug for RouteError {
             RouteError::ConfigurationOperationSignatureError(err) => {
                 write!(f, "ConfigurationOperationSignatureError: {:?}", err)
             }
+            RouteError::ConsumerError(err) => write!(f, "ConsumerError: {:?}", err),
             RouteError::FeedbackError(err) => write!(f, "FeedbackError: {:?}", err),
             RouteError::InterpretationError(err) => write!(f, "InterpretationError: {:?}", err),
             RouteError::InterpretationActionError(err) => {

@@ -71,6 +71,11 @@ lazy_static! {
     pub static ref CHECK_TAG: String = "check".to_string();
 }
 
+// The consumer namesapce
+lazy_static! {
+    pub static ref CONSUMER_TAG: String = "consumer".to_string();
+}
+
 // The feedback namesapce
 lazy_static! {
     pub static ref FEEDBACK_TAG: String = "feedback".to_string();
