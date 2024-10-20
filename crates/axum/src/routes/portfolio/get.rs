@@ -16,7 +16,10 @@ use super::{
     error::PortfolioError,
     types::{Portfolio, PortfolioBalanceDate},
 };
-use crate::result::{AppError, AppJsonResult};
+use crate::{
+    result::{AppError, AppJsonResult},
+    tags::PORTFOLIO_TAG,
+};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -78,7 +81,8 @@ impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
         responses(
             (status = 200, description = "Portfolio returned successfully", body = Portfolio),
             (status = 404, description = "Portfolio not found", body = PortfolioError),
-        )
+        ),
+        tag = PORTFOLIO_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_portfolio_get_handler(

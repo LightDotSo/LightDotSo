@@ -16,7 +16,7 @@ use super::{
     error::TokenError,
     types::{Token, TokenGroup},
 };
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::TOKEN_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -88,7 +88,8 @@ pub(crate) struct TokenListCount {
         responses(
             (status = 200, description = "Tokens returned successfully", body = [Token]),
             (status = 500, description = "Token bad request", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_list_handler(
@@ -325,7 +326,8 @@ pub(crate) async fn v1_token_list_handler(
         responses(
             (status = 200, description = "Tokens returned successfully", body = TokenListCount),
             (status = 500, description = "Token bad request", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_list_count_handler(

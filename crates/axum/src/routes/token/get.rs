@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Token;
-use crate::{error::RouteError, result::AppJsonResult, routes::token::error::TokenError};
+use super::{error::TokenError, types::Token};
+use crate::{error::RouteError, result::AppJsonResult, tags::TOKEN_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -59,7 +59,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Token returned successfully", body = Token),
             (status = 404, description = "Token not found", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_get_handler(

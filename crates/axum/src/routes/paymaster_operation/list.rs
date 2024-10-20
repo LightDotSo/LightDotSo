@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::PaymasterOperationError, types::PaymasterOperation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::PAYMASTER_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -54,7 +54,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Paymaster operations returned successfully", body = [PaymasterOperation]),
             (status = 500, description = "Paymaster operation bad request", body = PaymasterOperationError),
-        )
+        ),
+        tag = PAYMASTER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_paymaster_operation_list_handler(

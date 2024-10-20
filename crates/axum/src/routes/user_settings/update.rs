@@ -13,11 +13,12 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
+
 use super::{
     error::UserSettingsError,
     types::{UserSettings, UserSettingsOptional},
 };
-use crate::{authentication::authenticate_user, result::AppJsonResult};
+use crate::{authentication::authenticate_user, result::AppJsonResult, tags::USER_SETTINGS_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -80,7 +81,8 @@ pub struct UserSettingsUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = UserSettingsError),
             (status = 409, description = "User settings already exists", body = UserSettingsError),
             (status = 500, description = "User settings internal error", body = UserSettingsError),
-        )
+        ),
+        tag = USER_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_settings_update_handler(

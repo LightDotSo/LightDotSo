@@ -16,6 +16,7 @@ use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_user,
     result::{AppJsonResult, AppResult},
+    tags::WALLET_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -81,7 +82,8 @@ pub(crate) struct WalletListCount {
         responses(
             (status = 200, description = "Wallets returned successfully", body = [Wallet]),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_handler(
@@ -152,7 +154,8 @@ pub(crate) async fn v1_wallet_list_handler(
         responses(
             (status = 200, description = "Wallets returned successfully", body = WalletListCount),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_count_handler(

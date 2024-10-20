@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::InterpretationError, types::Interpretation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::INTERPRETATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +55,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Interpretations returned successfully", body = [Interpretation]),
             (status = 500, description = "Interpretations bad request", body = InterpretationError),
-        )
+        ),
+        tag = INTERPRETATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_list_handler(

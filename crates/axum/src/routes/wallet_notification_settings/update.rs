@@ -14,12 +14,15 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletNotificationSettings, WalletNotificationSettingsOptional};
+use super::{
+    error::WalletNotificationSettingsError,
+    types::{WalletNotificationSettings, WalletNotificationSettingsOptional},
+};
 use crate::{
     authentication::authenticate_wallet_user,
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::wallet_notification_settings::error::WalletNotificationSettingsError,
+    tags::WALLET_NOTIFICATION_SETTINGS_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -86,7 +89,8 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = WalletNotificationSettingsError),
             (status = 409, description = "Wallet notification settings already exists", body = WalletNotificationSettingsError),
             (status = 500, description = "Wallet notification settings internal error", body = WalletNotificationSettingsError),
-        )
+        ),
+        tag = WALLET_NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_notification_settings_update_handler(

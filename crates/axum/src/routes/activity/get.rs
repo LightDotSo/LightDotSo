@@ -13,7 +13,10 @@
 // limitations under the License.
 
 use super::types::Activity;
-use crate::{error::RouteError, result::AppJsonResult, routes::activity::error::ActivityError};
+use crate::{
+    error::RouteError, result::AppJsonResult, routes::activity::error::ActivityError,
+    tags::ACTIVITY_TAG,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +56,7 @@ pub struct GetQuery {
             (status = 200, description = "Activity returned successfully", body = Activity),
             (status = 404, description = "Activity not found", body = ActivityError),
         ),
-        tag = "activity"
+        tag = ACTIVITY_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_activity_get_handler(

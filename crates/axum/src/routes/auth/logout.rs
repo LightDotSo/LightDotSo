@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::AuthError, types::AuthSuccess};
-use crate::{cookies::CookieUtility, result::AppJsonResult};
+use crate::{cookies::CookieUtility, result::AppJsonResult, tags::AUTH_TAG};
 use axum::Json;
 use lightdotso_tracing::tracing::info;
 use tower_cookies::Cookies;
@@ -32,7 +32,8 @@ use tower_sessions::Session;
         responses(
             (status = 200, description = "Auth logout returned successfully", body = AuthSuccess),
             (status = 404, description = "Auth logout not succeeded", body = AuthError),
-        )
+        ),
+        tag = AUTH_TAG.as_str()
     )]
 pub(crate) async fn v1_auth_logout_handler(
     cookies: Cookies,

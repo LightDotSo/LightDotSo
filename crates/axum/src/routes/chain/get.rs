@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Chain;
-use crate::{error::RouteError, result::AppJsonResult, routes::chain::error::ChainError};
+use super::{error::ChainError, types::Chain};
+use crate::{error::RouteError, result::AppJsonResult, tags::CHAIN_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Chain returned successfully", body = Chain),
             (status = 404, description = "Chain not found", body = ChainError),
-        )
+        ),
+        tag = CHAIN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_chain_get_handler(

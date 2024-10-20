@@ -14,6 +14,7 @@
 
 use autometrics::autometrics;
 use axum::response::IntoResponse;
+use crate::tags::CHECK_TAG;
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -27,7 +28,8 @@ use axum::response::IntoResponse;
         path = "/check",
         responses(
             (status = 200, description = "Check returned successfully"),
-        )
+        ),
+        tag = CHECK_TAG.as_str()
     )]
 #[autometrics]
 pub async fn handler() -> impl IntoResponse {

@@ -13,11 +13,14 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
+
 use super::{
     error::WalletSettingsError,
     types::{WalletSettings, WalletSettingsOptional},
 };
-use crate::{authentication::authenticate_wallet_user, result::AppJsonResult};
+use crate::{
+    authentication::authenticate_wallet_user, result::AppJsonResult, tags::WALLET_SETTINGS_TAG,
+};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -77,7 +80,8 @@ pub struct WalletSettingsUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = WalletSettingsError),
             (status = 409, description = "Wallet settings already exists", body = WalletSettingsError),
             (status = 500, description = "Wallet settings internal error", body = WalletSettingsError),
-        )
+        ),
+        tag = WALLET_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_update_handler(

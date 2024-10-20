@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::InviteCode;
+use super::{
+    error::InviteCodeError,
+    types::{GenerateInviteCode, InviteCode},
+};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::invite_code::{error::InviteCodeError, types::GenerateInviteCode},
-    sessions::get_user_id,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::INVITE_CODE_TAG,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
@@ -44,7 +44,8 @@ use tower_sessions_core::Session;
         responses(
             (status = 200, description = "Invite code created successfully", body = InviteCode),
             (status = 500, description = "Invite code internal error", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_create_handler(

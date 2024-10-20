@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::BillingError, types::Billing};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::BILLING_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Billings returned successfully", body = [Billing]),
             (status = 500, description = "Billing bad request", body = BillingError),
-        )
+        ),
+        tag = BILLING_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_list_handler(

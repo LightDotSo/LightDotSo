@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::SignatureError, types::Signature};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::SIGNATURE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -57,7 +57,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Signatures returned successfully", body = [Signature]),
             (status = 500, description = "Signature bad request", body = SignatureError),
-        )
+        ),
+        tag = SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_signature_list_handler(

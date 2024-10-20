@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::OperationError, types::Operation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -109,7 +109,8 @@ pub(crate) struct OperationListCount {
     responses(
         (status = 200, description = "Operations returned successfully", body = [Operation]),
         (status = 500, description = "Operation bad request", body = OperationError),
-    )
+    ),
+    tag = OPERATION_TAG.as_str()
 )]
 #[autometrics]
 pub(crate) async fn v1_operation_list_handler(

@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::BillingError, types::Billing};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::billing::{error::BillingError, types::Billing},
-    sessions::get_user_id,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::BILLING_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -81,7 +79,8 @@ pub enum BillingQueryStatus {
         responses(
             (status = 200, description = "Billing updated successfully", body = Billing),
             (status = 500, description = "Billing internal error", body = BillingError),
-        )
+        ),
+        tag = BILLING_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_update_handler(

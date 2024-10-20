@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ConfigurationOperationError, types::ConfigurationOperation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::CONFIGURATION_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -74,7 +74,8 @@ pub(crate) struct ConfigurationOperationListCount {
         responses(
             (status = 200, description = "Configuration operations returned successfully", body = [ConfigurationOperation]),
             (status = 500, description = "Configuration operation bad request", body = ConfigurationOperationError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_list_handler(
@@ -130,7 +131,8 @@ pub(crate) async fn v1_configuration_operation_list_handler(
         responses(
             (status = 200, description = "Configuration operations returned successfully", body = ConfigurationOperationListCount),
             (status = 500, description = "Configuration operations bad request", body = ConfigurationOperationError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_list_count_handler(

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::InviteCodeError, types::InviteCode};
-use crate::{authentication::authenticate_user, result::AppJsonResult};
+use crate::{authentication::authenticate_user, result::AppJsonResult, tags::INVITE_CODE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -73,7 +73,8 @@ pub(crate) struct InviteCodeListCount {
         responses(
             (status = 200, description = "Invite codes returned successfully", body = [InviteCode]),
             (status = 500, description = "Invite code bad request", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_handler(
@@ -143,7 +144,8 @@ pub(crate) async fn v1_invite_code_list_handler(
         responses(
             (status = 200, description = "Invite codes returned successfully", body = InviteCodeListCount),
             (status = 500, description = "Invite code bad request", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_count_handler(

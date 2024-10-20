@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::User;
-use crate::{error::RouteError, result::AppJsonResult, routes::user::error::UserError};
+use super::{error::UserError, types::User};
+use crate::{error::RouteError, result::AppJsonResult, tags::USER_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -56,7 +56,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User returned successfully", body = User),
             (status = 404, description = "User not found", body = UserError),
-        )
+        ),
+        tag = USER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_get_handler(

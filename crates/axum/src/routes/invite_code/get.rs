@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::InviteCode;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::invite_code::error::InviteCodeError,
-};
+use super::{error::InviteCodeError, types::InviteCode};
+use crate::{error::RouteError, result::AppJsonResult, tags::INVITE_CODE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -54,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Invite code returned successfully", body = InviteCode),
             (status = 404, description = "Invite code not found", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_get_handler(

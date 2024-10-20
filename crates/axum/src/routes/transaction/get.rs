@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Transaction;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::transaction::error::TransactionError,
-};
+use super::{error::TransactionError, types::Transaction};
+use crate::{error::RouteError, result::AppJsonResult, tags::TRANSACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +53,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Transaction returned successfully", body = Transaction),
             (status = 404, description = "Transaction not found", body = TransactionError),
-        )
+        ),
+        tag = TRANSACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_get_handler(

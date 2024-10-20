@@ -14,7 +14,8 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::{error::RouteError, result::AppJsonResult};
+use super::{error::QueueError, types::QueueSuccess};
+use crate::{error::RouteError, result::AppJsonResult, tags::QUEUE_TAG};
 use alloy::{eips::BlockNumberOrTag, primitives::B256, providers::Provider};
 use autometrics::autometrics;
 use axum::{
@@ -27,8 +28,6 @@ use lightdotso_redis::query::transaction::transaction_rate_limit;
 use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
-
-use super::{error::QueueError, types::QueueSuccess};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -60,7 +59,8 @@ pub struct PostQuery {
         responses(
             (status = 200, description = "Queue created successfully", body = QueueSuccess),
             (status = 500, description = "Queue internal error", body = QueueError),
-        )
+        ),
+        tag = QUEUE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_queue_transaction_handler(

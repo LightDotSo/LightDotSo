@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::OwnerError, types::Owner};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Owners returned successfully", body = [Owner]),
             (status = 500, description = "Owner bad request", body = OwnerError),
-        )
+        ),
+        tag = OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_owner_list_handler(

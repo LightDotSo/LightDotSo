@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::SimulationError, types::Simulation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::SIMULATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -72,7 +72,8 @@ pub(crate) struct SimulationListCount {
         responses(
             (status = 200, description = "Simulations returned successfully", body = [Simulation]),
             (status = 500, description = "Simulation bad request", body = SimulationError),
-        )
+        ),
+        tag = SIMULATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_simulation_list_handler(
@@ -136,7 +137,8 @@ pub(crate) async fn v1_simulation_list_handler(
         responses(
             (status = 200, description = "Simulations returned successfully", body = SimulationListCount),
             (status = 500, description = "Simulation bad request", body = SimulationError),
-        )
+        ),
+        tag = SIMULATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_simulation_list_count_handler(

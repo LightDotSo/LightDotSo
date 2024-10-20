@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::UserOperation;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::user_operation::error::UserOperationError,
-};
+use super::{error::UserOperationError, types::UserOperation};
+use crate::{error::RouteError, result::AppJsonResult, tags::USER_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -57,7 +55,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User operation returned successfully", body = UserOperation),
             (status = 404, description = "User operation not found", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_get_handler(

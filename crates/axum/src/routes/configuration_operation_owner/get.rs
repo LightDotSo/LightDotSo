@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationOperationOwner;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::configuration_operation_owner::error::ConfigurationOperationOwnerError,
-};
+use super::{error::ConfigurationOperationOwnerError, types::ConfigurationOperationOwner};
+use crate::{error::RouteError, result::AppJsonResult, tags::CONFIGURATION_OPERATION_OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Configuration operation owner returned successfully", body = ConfigurationOperationOwner),
             (status = 404, description = "Configuration operation owner found", body = ConfigurationOperationOwnerError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_owner_get_handler(

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ProtocolError, types::Protocol};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::PROTOCOL_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocols returned successfully", body = [Protocol]),
             (status = 500, description = "Protocol bad request", body = ProtocolError),
-        )
+        ),
+        tag = PROTOCOL_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_protocol_list_handler(

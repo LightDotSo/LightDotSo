@@ -15,7 +15,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::{error::ConfigurationOperationError, types::ConfigurationOperation};
-use crate::{error::RouteError, result::AppJsonResult};
+use crate::{error::RouteError, result::AppJsonResult, tags::CONFIGURATION_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -65,7 +65,8 @@ pub struct PutQuery {
             (status = 200, description = "Configuration operation updated successfully", body = ConfigurationOperation),
             (status = 400, description = "Invalid configuration", body = ConfigurationOperationError),
             (status = 500, description = "Configuration operation internal error", body = ConfigurationOperationError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_update_handler(

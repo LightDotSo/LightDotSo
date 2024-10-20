@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationOperation;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::configuration_operation::error::ConfigurationOperationError,
-};
+use super::{error::ConfigurationOperationError, types::ConfigurationOperation};
+use crate::{error::RouteError, result::AppJsonResult, tags::CONFIGURATION_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Configuration operation returned successfully", body = ConfigurationOperation),
             (status = 404, description = "Configuration operation not found", body = ConfigurationOperationError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_get_handler(

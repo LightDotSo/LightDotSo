@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::TransactionError, types::Transaction};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::TRANSACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -76,7 +76,8 @@ pub(crate) struct TransactionListCount {
         responses(
             (status = 200, description = "Transactions returned successfully", body = [Transaction]),
             (status = 500, description = "Transaction bad request", body = TransactionError),
-        )
+        ),
+        tag = TRANSACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_handler(
@@ -153,7 +154,8 @@ pub(crate) async fn v1_transaction_list_handler(
         responses(
             (status = 200, description = "Transactions returned successfully", body = TransactionListCount),
             (status = 500, description = "Transaction bad request", body = TransactionError),
-        )
+        ),
+        tag = TRANSACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_count_handler(

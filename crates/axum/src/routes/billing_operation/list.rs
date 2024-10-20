@@ -16,6 +16,7 @@ use super::{error::BillingOperationError, types::BillingOperation};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
+    tags::BILLING_OPERATION_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -84,7 +85,8 @@ pub(crate) struct BillingOperationListCount {
         responses(
             (status = 200, description = "Billing operations returned successfully", body = [BillingOperation]),
             (status = 500, description = "Billing operation bad request", body = BillingOperationError),
-        )
+        ),
+        tag = BILLING_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_operation_list_handler(
@@ -151,7 +153,8 @@ pub(crate) async fn v1_billing_operation_list_handler(
         responses(
             (status = 200, description = "Billing operations returned successfully", body = BillingOperationListCount),
             (status = 500, description = "Billing operation bad request", body = BillingOperationError),
-        )
+        ),
+        tag = BILLING_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_operation_list_count_handler(

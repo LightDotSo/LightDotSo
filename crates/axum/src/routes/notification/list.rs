@@ -17,6 +17,7 @@ use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
     sessions::get_user_id,
+    tags::NOTIFICATION_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -84,7 +85,8 @@ pub(crate) struct NotificationListCount {
         responses(
             (status = 200, description = "Notifications returned successfully", body = [Notification]),
             (status = 500, description = "Notification bad request", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_list_handler(
@@ -155,7 +157,8 @@ pub(crate) async fn v1_notification_list_handler(
         responses(
             (status = 200, description = "Notifications returned successfully", body = NotificationListCount),
             (status = 500, description = "Notification bad request", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_list_count_handler(

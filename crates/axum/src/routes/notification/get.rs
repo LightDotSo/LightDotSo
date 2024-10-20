@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Notification;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::notification::error::NotificationError,
-};
+use super::{error::NotificationError, types::Notification};
+use crate::{error::RouteError, result::AppJsonResult, tags::NOTIFICATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +53,8 @@ pub(crate) struct GetQuery {
         responses(
             (status = 200, description = "Notification returned successfully", body = Notification),
             (status = 404, description = "Notification not found", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_get_handler(

@@ -13,12 +13,14 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
+
 use super::{error::WalletError, types::Wallet};
 use crate::{
     admin::token_is_valid,
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
     routes::auth::error::AuthError,
+    tags::WALLET_TAG,
 };
 use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
@@ -117,7 +119,8 @@ pub(crate) struct WalletCreateOwnerParams {
             (status = 400, description = "Invalid configuration", body = WalletError),
             (status = 409, description = "Wallet already exists", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_create_handler(

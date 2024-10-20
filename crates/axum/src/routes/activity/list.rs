@@ -16,6 +16,7 @@ use super::{error::ActivityError, types::Activity};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
+    tags::ACTIVITY_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -83,7 +84,8 @@ pub(crate) struct ActivityListCount {
         responses(
             (status = 200, description = "Activities returned successfully", body = [Activity]),
             (status = 500, description = "Activity bad request", body = ActivityError),
-        )
+        ),
+        tag = ACTIVITY_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_activity_list_handler(

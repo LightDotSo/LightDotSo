@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::BillingOperation;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::billing_operation::error::BillingOperationError,
-};
+use super::{error::BillingOperationError, types::BillingOperation};
+use crate::{error::RouteError, result::AppJsonResult, tags::BILLING_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Billing operation returned successfully", body = BillingOperation),
             (status = 404, description = "Billing operation not found", body = BillingOperationError),
-        )
+        ),
+        tag = BILLING_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_operation_get_handler(

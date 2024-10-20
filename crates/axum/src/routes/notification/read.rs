@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::error::NotificationError;
-use crate::{result::AppJsonResult, sessions::get_user_id};
+use crate::{result::AppJsonResult, sessions::get_user_id, tags::NOTIFICATION_TAG};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use lightdotso_db::models::activity::CustomParams;
@@ -60,7 +60,8 @@ pub(crate) struct NotificationReadParams {
         responses(
             (status = 200, description = "Notification created successfully", body = i64),
             (status = 500, description = "Notification internal error", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_read_handler(

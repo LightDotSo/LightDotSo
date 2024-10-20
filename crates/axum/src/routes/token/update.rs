@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::TokenError, types::Token};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::token::{error::TokenError, types::Token},
-    sessions::get_user_id,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::TOKEN_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -78,7 +76,8 @@ pub struct TokenUpdateRequestParams {
         responses(
             (status = 200, description = "Token updated successfully", body = Token),
             (status = 500, description = "Token internal error", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_update_handler(

@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::InterpretationAction;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::interpretation_action::error::InterpretationActionError,
-};
+use super::{error::InterpretationActionError, types::InterpretationAction};
+use crate::{error::RouteError, result::AppJsonResult, tags::INTERPRETATION_ACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Interpretation action returned successfully", body = InterpretationAction),
             (status = 404, description = "Interpretation action not found", body = InterpretationActionError),
-        )
+        ),
+        tag = INTERPRETATION_ACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_action_get_handler(

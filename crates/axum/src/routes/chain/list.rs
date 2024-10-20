@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ChainError, types::Chain};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::CHAIN_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocol groups returned successfully", body = [Chain]),
             (status = 500, description = "Protocol group bad request", body = ChainError),
-        )
+        ),
+        tag = CHAIN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_chain_list_handler(

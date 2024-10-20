@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::TokenGroup;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::token_group::error::TokenGroupError,
-};
+use super::{error::TokenGroupError, types::TokenGroup};
+use crate::{error::RouteError, result::AppJsonResult, tags::TOKEN_GROUP_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -54,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Tokena group returned successfully", body = TokenGroup),
             (status = 404, description = "Tokena group not found", body = TokenGroupError),
-        )
+        ),
+        tag = TOKEN_GROUP_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_group_get_handler(

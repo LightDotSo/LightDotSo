@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ProtocolGroupError, types::ProtocolGroup};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::PROTOCOL_GROUP_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocol groups returned successfully", body = [ProtocolGroup]),
             (status = 500, description = "Protocol group bad request", body = ProtocolGroupError),
-        )
+        ),
+        tag = PROTOCOL_GROUP_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_protocol_group_list_handler(

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::WalletFeaturesError, types::WalletFeatures};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::WALLET_FEATURES_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -54,7 +54,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet features returned  successfully", body = WalletFeatures),
             (status = 404, description = "Wallet features not found ", body = WalletFeaturesError),
-        )
+        ),
+        tag = WALLET_FEATURES_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_features_get_handler(

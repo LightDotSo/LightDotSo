@@ -16,7 +16,10 @@ use super::{
     error::TokenPriceError,
     types::{TokenPrice, TokenPriceDate},
 };
-use crate::result::{AppError, AppJsonResult};
+use crate::{
+    result::{AppError, AppJsonResult},
+    tags::TOKEN_PRICE_TAG,
+};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -84,7 +87,8 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
         responses(
             (status = 200, description = "Token price returned successfully", body = TokenPrice),
             (status = 404, description = "Token price not found", body = TokenPriceError),
-        )
+        ),
+        tag = TOKEN_PRICE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_price_get_handler(

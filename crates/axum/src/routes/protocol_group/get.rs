@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ProtocolGroup;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::protocol_group::error::ProtocolGroupError,
-};
+use super::{error::ProtocolGroupError, types::ProtocolGroup};
+use crate::{error::RouteError, result::AppJsonResult, tags::PROTOCOL_GROUP_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -54,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Protocol group returned successfully", body = ProtocolGroup),
             (status = 404, description = "Protocol group not found", body = ProtocolGroupError),
-        )
+        ),
+        tag = PROTOCOL_GROUP_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_protocol_group_get_handler(

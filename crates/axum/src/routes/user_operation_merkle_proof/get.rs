@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::UserOperationMerkleProof;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::user_operation_merkle_proof::error::UserOperationMerkleProofError,
-};
+use super::{error::UserOperationMerkleProofError, types::UserOperationMerkleProof};
+use crate::{error::RouteError, result::AppJsonResult, tags::USER_OPERATION_MERKLE_PROOF_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +52,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User operation merkle proof returned successfully", body = UserOperationMerkleProof),
             (status = 404, description = "User operation merkle proof not found", body = UserOperationMerkleProofError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_PROOF_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_proof_get_handler(

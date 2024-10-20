@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::UserOperationMerkleError, types::UserOperationMerkle};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::USER_OPERATION_MERKLE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -52,7 +52,8 @@ pub struct PostQuery {
         responses(
             (status = 200, description = "User operation merkle created successfully", body = UserOperationMerkle),
             (status = 500, description = "User operation merkle internal error", body = UserOperationMerkleError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_create_handler(

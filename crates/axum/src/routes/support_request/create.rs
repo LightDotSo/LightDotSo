@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::SupportRequestError, types::SupportRequest};
-use crate::{result::AppJsonResult, sessions::get_user_id};
+use crate::{result::AppJsonResult, sessions::get_user_id, tags::SUPPORT_REQUEST_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -67,7 +67,8 @@ pub struct SupportRequestCreateRequestParams {
         responses(
             (status = 200, description = "SupportRequest created successfully", body = SupportRequest),
             (status = 500, description = "SupportRequest internal error", body = SupportRequestError),
-        )
+        ),
+        tag = SUPPORT_REQUEST_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_support_request_create_handler(

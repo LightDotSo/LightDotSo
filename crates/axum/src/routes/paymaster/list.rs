@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::PaymasterError, types::Paymaster};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::PAYMASTER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Paymasters returned successfully", body = [Paymaster]),
             (status = 500, description = "Paymaster bad request", body = PaymasterError),
-        )
+        ),
+        tag = PAYMASTER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_paymaster_list_handler(

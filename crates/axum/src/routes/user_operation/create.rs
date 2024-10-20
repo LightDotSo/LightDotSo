@@ -13,10 +13,12 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
+
 use super::{error::UserOperationError, types::UserOperation};
 use crate::{
     result::{AppError, AppJsonResult},
     routes::signature::create::SignatureCreateParams,
+    tags::USER_OPERATION_TAG,
 };
 use alloy::{
     hex::{self, ToHexExt},
@@ -150,7 +152,8 @@ impl TryFrom<UserOperationCreateParams> for BaseUserOperation {
             (status = 400, description = "Invalid configuration", body = UserOperationError),
             (status = 409, description = "User operation already exists", body = UserOperationError),
             (status = 500, description = "User operation internal error", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_handler(
@@ -501,7 +504,8 @@ pub(crate) async fn v1_user_operation_create_handler(
             (status = 400, description = "Invalid configuration", body = UserOperationError),
             (status = 409, description = "User operation already exists", body = UserOperationError),
             (status = 500, description = "User operation internal error", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_batch_handler(

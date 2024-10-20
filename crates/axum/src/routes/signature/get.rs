@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Signature;
-use crate::{error::RouteError, result::AppJsonResult, routes::signature::error::SignatureError};
+use super::{error::SignatureError, types::Signature};
+use crate::{error::RouteError, result::AppJsonResult, tags::SIGNATURE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -55,7 +55,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Signature returned successfully", body = Signature),
             (status = 404, description = "Signature not found", body = SignatureError),
-        )
+        ),
+        tag = SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_signature_get_handler(

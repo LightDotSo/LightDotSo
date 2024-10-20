@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::UserOperationMerkleProofError, types::UserOperationMerkleProof};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::USER_OPERATION_MERKLE_PROOF_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "User operation merkle proofs returned successfully", body = [UserOperationMerkleProof]),
             (status = 500, description = "User operation merkle proofs bad request", body = UserOperationMerkleProofError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_PROOF_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_proof_list_handler(

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::AssetChangeError, types::AssetChange};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::ASSET_CHANGE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -54,7 +54,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Asset changes returned successfully", body = [AssetChange]),
             (status = 500, description = "Asset change bad request", body = AssetChangeError),
-        )
+        ),
+        tag = ASSET_CHANGE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_asset_change_list_handler(

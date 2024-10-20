@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Signature;
+use super::{error::SignatureError, types::Signature};
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::signature::error::SignatureError,
+    tags::SIGNATURE_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -103,7 +103,8 @@ pub struct SignatureCreateParams {
             (status = 400, description = "Invalid configuration", body = SignatureError),
             (status = 409, description = "Signature already exists", body = SignatureError),
             (status = 500, description = "Signature internal error", body = SignatureError),
-        )
+        ),
+        tag = SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_signature_create_handler(

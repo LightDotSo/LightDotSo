@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::error::UserOperationError;
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::USER_OPERATION_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -69,7 +69,8 @@ pub(crate) struct UserOperationNonce {
         responses(
             (status = 200, description = " User operation nonce returned successfully", body = UserOperationNonce),
             (status = 404, description = " User operation nonce not found", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_nonce_handler(

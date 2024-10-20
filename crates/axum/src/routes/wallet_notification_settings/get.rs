@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::WalletNotificationSettings;
+use super::{error::WalletNotificationSettingsError, types::WalletNotificationSettings};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
-    routes::wallet_notification_settings::error::WalletNotificationSettingsError,
+    tags::WALLET_NOTIFICATION_SETTINGS_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -68,7 +68,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet settings returned successfully", body = WalletNotificationSettings),
             (status = 404, description = "Wallet settings not found", body = WalletNotificationSettingsError),
-        )
+        ),
+        tag = WALLET_NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_notification_settings_get_handler(

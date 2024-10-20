@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::UserOperationError, types::UserOperation};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::USER_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -105,7 +105,8 @@ pub(crate) struct UserOperationListCount {
         responses(
             (status = 200, description = "User operations returned successfully", body = [UserOperation]),
             (status = 500, description = "User operation bad request", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_handler(
@@ -192,7 +193,8 @@ pub(crate) async fn v1_user_operation_list_handler(
         responses(
             (status = 200, description = "User operation count returned successfully", body = UserOperationListCount),
             (status = 500, description = "User operation count bad request", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_count_handler(

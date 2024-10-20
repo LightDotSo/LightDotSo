@@ -14,10 +14,12 @@
 
 #![allow(clippy::unwrap_used)]
 #![allow(clippy::unnecessary_fallible_conversions)]
+
 use super::error::UserOperationError;
 use crate::{
     result::{AppError, AppJsonResult},
     routes::{owner::types::Owner, signature::types::Signature},
+    tags::USER_OPERATION_TAG,
 };
 use alloy::hex;
 use autometrics::autometrics;
@@ -76,7 +78,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User operation signature returned successfully", body = String),
             (status = 404, description = "User operation not found", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_signature_handler(

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::TokenGroup;
+use super::{error::TokenGroupError, types::TokenGroup};
 use crate::{
-    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::token_group::error::TokenGroupError, sessions::get_user_id,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::TOKEN_GROUP_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -59,7 +59,8 @@ pub struct PostQuery {
         responses(
             (status = 200, description = "Token group created successfully", body = TokenGroup),
             (status = 500, description = "Token group internal error", body = TokenGroupError),
-        )
+        ),
+        tag = TOKEN_GROUP_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_group_create_handler(

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::WalletSettingsError, types::WalletSettings};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::WALLET_SETTINGS_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -54,7 +54,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet settings returned successfully", body = WalletSettings),
             (status = 404, description = "Wallet settings not found", body = WalletSettingsError),
-        )
+        ),
+        tag = WALLET_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_get_handler(

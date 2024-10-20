@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::InterpretationActionError, types::InterpretationAction};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::INTERPRETATION_ACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -71,7 +71,8 @@ pub(crate) struct InterpretationActionListCount {
         responses(
             (status = 200, description = "Interpretation actions returned successfully", body = [InterpretationAction]),
             (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
-        )
+        ),
+        tag = INTERPRETATION_ACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_action_list_handler(
@@ -129,7 +130,8 @@ pub(crate) async fn v1_interpretation_action_list_handler(
         responses(
             (status = 200, description = "Interpretation actions returned successfully", body = InterpretationActionListCount),
             (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
-        )
+        ),
+        tag = INTERPRETATION_ACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_action_list_count_handler(

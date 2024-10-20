@@ -13,9 +13,11 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
+
 use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
+    tags::WALLET_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -75,7 +77,8 @@ pub struct WalletUpdateRequestParams {
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_update_handler(

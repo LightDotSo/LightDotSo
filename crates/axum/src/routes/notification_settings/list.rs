@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::NotificationSettingsError, types::NotificationSettings};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::NOTIFICATION_SETTINGS_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -68,7 +68,8 @@ pub(crate) struct NotificationSettingsListCount {
         responses(
             (status = 200, description = "Notification settings returned successfully", body = [NotificationSettings]),
             (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
-        )
+        ),
+        tag = NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_handler(
@@ -124,7 +125,8 @@ pub(crate) async fn v1_notification_settings_list_handler(
         responses(
             (status = 200, description = "Notification settings returned successfully", body = NotificationSettingsListCount),
             (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
-        )
+        ),
+        tag = NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_count_handler(

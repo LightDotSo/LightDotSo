@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ConfigurationOperationOwnerError, types::ConfigurationOperationOwner};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::CONFIGURATION_OPERATION_OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -53,7 +53,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Configuration operation owners returned successfully", body = [ConfigurationOperationOwner]),
             (status = 500, description = "Configuration operation owners bad request", body = ConfigurationOperationOwnerError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_owner_list_handler(

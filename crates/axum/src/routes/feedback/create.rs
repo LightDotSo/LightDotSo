@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::FeedbackError, types::Feedback};
-use crate::{result::AppJsonResult, sessions::get_user_id};
+use crate::{result::AppJsonResult, sessions::get_user_id, tags::FEEDBACK_TAG};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use lightdotso_db::models::activity::CustomParams;
@@ -52,7 +52,8 @@ pub struct FeedbackCreateRequestParams {
         responses(
             (status = 200, description = "Feedback created successfully", body = Feedback),
             (status = 500, description = "Feedback internal error", body = FeedbackError),
-        )
+        ),
+        tag = FEEDBACK_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_feedback_create_handler(

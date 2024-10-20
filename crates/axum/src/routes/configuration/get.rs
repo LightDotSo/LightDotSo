@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Configuration;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::configuration::error::ConfigurationError,
-};
+use super::{error::ConfigurationError, types::Configuration};
+use crate::{error::RouteError, result::AppJsonResult, tags::CONFIGURATION_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -61,7 +59,8 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Configuration returned successfully", body = Configuration),
             (status = 404, description = "Configuration not found", body = ConfigurationError),
-        )
+        ),
+        tag = CONFIGURATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_get_handler(
