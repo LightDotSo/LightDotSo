@@ -599,7 +599,7 @@ pub async fn start_api_server() -> Result<()> {
         .route("/", get("api.light.so"))
         .merge(api.clone())
         .merge(metrics.routes())
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
         .nest("/v1", api.clone())
         .layer(
             // Set up error handling, rate limiting, and CORS
