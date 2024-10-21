@@ -226,8 +226,6 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option None
                 blob_gas_price: None,
                 // Determistic Option None
-                state_root: None,
-                // Determistic Option None
                 authorization_list: None,
                 // Determistic Default
                 inner: ReceiptEnvelope::Eip1559(ReceiptWithBloom::default()),
