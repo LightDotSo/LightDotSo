@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+pub(crate) mod covalent;
 pub(crate) mod error;
+pub(crate) mod portfolio;
 pub(crate) mod routescan;
 pub(crate) mod types;
 
@@ -20,6 +22,8 @@ use autometrics::autometrics;
 use axum::{routing::post, Router};
 use lightdotso_state::ClientState;
 
+pub(crate) use covalent::{__path_v1_consumer_covalent_handler, v1_consumer_covalent_handler};
+pub(crate) use portfolio::{__path_v1_consumer_portfolio_handler, v1_consumer_portfolio_handler};
 pub(crate) use routescan::{__path_v1_consumer_routescan_handler, v1_consumer_routescan_handler};
 
 // -----------------------------------------------------------------------------
@@ -28,5 +32,8 @@ pub(crate) use routescan::{__path_v1_consumer_routescan_handler, v1_consumer_rou
 
 #[autometrics]
 pub(crate) fn router() -> Router<ClientState> {
-    Router::new().route("/consumer/routescan", post(v1_consumer_routescan_handler))
+    Router::new()
+        .route("/consumer/covalent", post(v1_consumer_covalent_handler))
+        .route("/consumer/portfolio", post(v1_consumer_portfolio_handler))
+        .route("/consumer/routescan", post(v1_consumer_routescan_handler))
 }

@@ -38,6 +38,10 @@ use std::sync::Arc;
 
 pub struct NodeConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for NodeConsumer {
     async fn consume(
@@ -59,100 +63,119 @@ impl TopicConsumer for NodeConsumer {
             let payload: NodeMessage = serde_json::from_slice(payload.as_bytes())?;
             info!("payload: {:?}", payload);
 
-            // Get the hash from the payload
-            let hash = payload.hash;
-            info!("hash: {:?}", hash);
-
-            // Get the unique user operation from the db
-            let (mut uop, chain_id) =
-                get_user_operation_with_chain_id(state.client.clone(), hash).await?;
-
-            // Get the configuration id
-            let configuration_id =
-                get_configuration_id(state.client.clone(), chain_id, uop.sender).await?;
-
-            // Get the user operation signature
-            let signature = get_user_operation_signature(hash, configuration_id).await?;
-
-            // Set the signature
-            uop.signature = signature.into();
-
-            // Get the entrypoint
-            let entrypoint = uop.try_valid_op_hash(chain_id, hash)?;
-
-            // If the entrypoint is v0.6
-            if entrypoint == *ENTRYPOINT_V060_ADDRESS {
-                // Simulate the user operation
-                let res_catch = consumer_state
-                    .node
-                    .simulate_user_operation_with_backon(chain_id, entrypoint, &uop)
-                    .await;
-
-                // Log the response
-                info!("res_catch: {:?}", res_catch);
-
-                // Simulate the user operation with the tracer
-                let res_catch = consumer_state
-                    .node
-                    .simulate_user_operation_with_tracer_with_backon(chain_id, entrypoint, &uop)
-                    .await;
-
-                // Log the response
-                info!("res_catch: {:?}", res_catch);
-
-                // Attempt to submit the user operation to the node
-                let res = consumer_state
-                    .node
-                    .send_user_operation_with_backon(chain_id, entrypoint, &uop)
-                    .await;
-
-                // Log the response
-                info!("res: {:?}", res);
-
-                if res.is_err() {
-                    warn!("Failed to send user operation to the node, trying raw...");
-
-                    // Send the user operation raw
-                    let res = consumer_state
-                        .node
-                        .send_raw_user_operation_with_backon(chain_id, &uop)
-                        .await;
-
-                    // Log the response
-                    info!("res: {:?}", res);
-                }
-            } else {
-                // Convert the user operation to a packed user operation
-                let puop: PackedUserOperation = uop.into();
-
-                // Attempt to submit the packed user operation to the node
-                let res = consumer_state
-                    .node
-                    .send_packed_user_operation_with_backon(chain_id, entrypoint, &puop)
-                    .await;
-
-                // If the response is an error
-                if res.is_err() {
-                    warn!("Failed to send packed user operation to the node, trying raw...");
-
-                    // Send the packed user operation raw
-                    let res = consumer_state
-                        .node
-                        .send_raw_packed_user_operation_with_backon(chain_id, &puop)
-                        .await;
-
-                    // Log the response
-                    info!("res: {:?}", res);
-                }
-
-                // Log the response
-                info!("res: {:?}", res);
-            }
+            // Consume the message
+            self.consume_with_message(state, consumer_state, payload).await?;
         }
 
         Ok(())
     }
 }
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl NodeConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: NodeMessage,
+    ) -> Result<()> {
+        // Get the hash from the payload
+        let hash = payload.hash;
+        info!("hash: {:?}", hash);
+
+        // Get the unique user operation from the db
+        let (mut uop, chain_id) =
+            get_user_operation_with_chain_id(state.client.clone(), hash).await?;
+
+        // Get the configuration id
+        let configuration_id =
+            get_configuration_id(state.client.clone(), chain_id, uop.sender).await?;
+
+        // Get the user operation signature
+        let signature = get_user_operation_signature(hash, configuration_id).await?;
+
+        // Set the signature
+        uop.signature = signature.into();
+
+        // Get the entrypoint
+        let entrypoint = uop.try_valid_op_hash(chain_id, hash)?;
+
+        // If the entrypoint is v0.6
+        if entrypoint == *ENTRYPOINT_V060_ADDRESS {
+            // Simulate the user operation
+            let res_catch = consumer_state
+                .node
+                .simulate_user_operation_with_backon(chain_id, entrypoint, &uop)
+                .await;
+
+            // Log the response
+            info!("res_catch: {:?}", res_catch);
+
+            // Simulate the user operation with the tracer
+            let res_catch = consumer_state
+                .node
+                .simulate_user_operation_with_tracer_with_backon(chain_id, entrypoint, &uop)
+                .await;
+
+            // Log the response
+            info!("res_catch: {:?}", res_catch);
+
+            // Attempt to submit the user operation to the node
+            let res = consumer_state
+                .node
+                .send_user_operation_with_backon(chain_id, entrypoint, &uop)
+                .await;
+
+            // Log the response
+            info!("res: {:?}", res);
+
+            if res.is_err() {
+                warn!("Failed to send user operation to the node, trying raw...");
+
+                // Send the user operation raw
+                let res =
+                    consumer_state.node.send_raw_user_operation_with_backon(chain_id, &uop).await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
+        } else {
+            // Convert the user operation to a packed user operation
+            let puop: PackedUserOperation = uop.into();
+
+            // Attempt to submit the packed user operation to the node
+            let res = consumer_state
+                .node
+                .send_packed_user_operation_with_backon(chain_id, entrypoint, &puop)
+                .await;
+
+            // If the response is an error
+            if res.is_err() {
+                warn!("Failed to send packed user operation to the node, trying raw...");
+
+                // Send the packed user operation raw
+                let res = consumer_state
+                    .node
+                    .send_raw_packed_user_operation_with_backon(chain_id, &puop)
+                    .await;
+
+                // Log the response
+                info!("res: {:?}", res);
+            }
+
+            // Log the response
+            info!("res: {:?}", res);
+        }
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 // Inner function to get the configuration id
 async fn get_configuration_id(

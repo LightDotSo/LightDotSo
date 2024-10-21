@@ -25,6 +25,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct UnknownConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for UnknownConsumer {
     async fn consume(

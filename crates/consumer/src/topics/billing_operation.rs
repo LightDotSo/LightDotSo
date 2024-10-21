@@ -14,7 +14,7 @@
 
 use crate::{state::ConsumerState, topics::TopicConsumer};
 use async_trait::async_trait;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
@@ -30,10 +30,13 @@ pub struct BillingOperationConsumer;
 impl TopicConsumer for BillingOperationConsumer {
     async fn consume(
         &self,
-        _state: &ClientState,
+        state: &ClientState,
         consumer_state: Option<&ConsumerState>,
         msg: &BorrowedMessage<'_>,
     ) -> Result<()> {
+        // Since we use consumer_state, we need to unwrap it
+        let consumer_state = consumer_state.ok_or_else(|| eyre!("Consumer state is None"))?;
+
         // Convert the payload to a string
         let payload_opt = msg.payload_view::<str>();
         info!("payload_opt: {:?}", payload_opt);
@@ -44,11 +47,23 @@ impl TopicConsumer for BillingOperationConsumer {
             let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
             info!("payload: {:?}", payload);
 
-            // Run the billing operation
-            if let Some(consumer_state) = consumer_state {
-                consumer_state.billing.run_pending(&payload).await?;
-            }
+            // Consume the payload
+            self.consume_with_message(state, consumer_state, payload).await?;
         }
+
+        Ok(())
+    }
+}
+
+impl BillingOperationConsumer {
+    pub async fn consume_with_message(
+        &self,
+        _state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: BillingOperationMessage,
+    ) -> Result<()> {
+        // Run the billing operation
+        consumer_state.billing.run_pending(&payload).await?;
 
         Ok(())
     }

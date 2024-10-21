@@ -36,6 +36,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct CovalentConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for CovalentConsumer {
     async fn consume(
@@ -53,15 +57,34 @@ impl TopicConsumer for CovalentConsumer {
             // Parse the payload into a JSON object, `CovalentMessage`
             let payload: CovalentMessage = serde_json::from_slice(payload.as_bytes())?;
 
-            // If the chain is 0, produce a portfolio message
-            if payload.chain_id == 0 {
-                produce_portfolio_message(
-                    state.producer.clone(),
-                    &PortfolioMessage { address: payload.address },
-                )
-                .await?;
-                return Ok(());
-            }
+            // Log the payload
+            info!("payload: {:?}", payload);
+
+            // Consume the payload
+            self.consume_with_message(state, payload).await?;
+        }
+
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl CovalentConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: CovalentMessage,
+    ) -> Result<()> {
+        // If the chain is 0, produce a portfolio message
+        if payload.chain_id == 0 {
+            produce_portfolio_message(
+                state.producer.clone(),
+                &PortfolioMessage { address: payload.address },
+            )
+            .await?;
 
             // Log the payload
             let mut balances = get_token_balances(
@@ -239,7 +262,7 @@ impl TopicConsumer for CovalentConsumer {
                                             wallet_balance::is_spam::set(item.is_spam),
                                             wallet_balance::is_latest::set(true),
                                             wallet_balance::is_testnet::set(is_testnet(
-                                                payload.chain_id as u64,
+                                                payload.chain_id,
                                             )),
                                         ],
                                     )

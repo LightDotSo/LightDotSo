@@ -42,6 +42,10 @@ use std::sync::Arc;
 
 pub struct TransactionConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for TransactionConsumer {
     async fn consume(

@@ -35,6 +35,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct PaymasterOperationConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for PaymasterOperationConsumer {
     async fn consume(
@@ -53,43 +57,58 @@ impl TopicConsumer for PaymasterOperationConsumer {
             let payload: PaymasterOperationMessage = serde_json::from_slice(payload.as_bytes())?;
             info!("payload: {:?}", payload);
 
-            // Get the paymasterAndData.
-            if let Ok((verifying_paymaster_address, valid_until, valid_after, _signature)) =
-                decode_paymaster_and_data(payload.paymaster_and_data.to_vec())
-            {
-                // Get the paymaster contract.
-                let paymaster_contract =
-                    get_paymaster(payload.chain_id, verifying_paymaster_address).await?;
+            // Consume the message
+            self.consume_with_message(state, payload).await?;
+        }
+        Ok(())
+    }
+}
 
-                // Call the paymaster contract to get the nonce.
-                let paymaster_nonce =
-                    paymaster_contract.senderNonce(payload.sender).call().await?._0;
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
-                // Finally, create the paymaster operation.
-                let (_, paymaster_operation) = create_paymaster_operation(
-                    state.client.clone(),
-                    payload.chain_id as i64,
-                    verifying_paymaster_address,
-                    payload.sender,
-                    paymaster_nonce.to_u64()? as i64,
-                    valid_until as i64,
-                    valid_after as i64,
-                )
-                .await?;
+impl PaymasterOperationConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: PaymasterOperationMessage,
+    ) -> Result<()> {
+        // Get the paymasterAndData.
+        if let Ok((verifying_paymaster_address, valid_until, valid_after, _signature)) =
+            decode_paymaster_and_data(payload.paymaster_and_data.to_vec())
+        {
+            // Get the paymaster contract.
+            let paymaster_contract =
+                get_paymaster(payload.chain_id, verifying_paymaster_address).await?;
 
-                produce_billing_operation_message(
-                    state.producer.clone(),
-                    &BillingOperationMessage {
-                        sender: payload.sender,
-                        chain_id: payload.chain_id,
-                        paymaster_operation_id: paymaster_operation.id,
-                        pre_verification_gas: payload.pre_verification_gas.to_u64()?,
-                        verification_gas_limit: payload.verification_gas_limit.to_u64()?,
-                        call_gas_limit: payload.call_gas_limit.to_u64()?,
-                    },
-                )
-                .await?;
-            }
+            // Call the paymaster contract to get the nonce.
+            let paymaster_nonce = paymaster_contract.senderNonce(payload.sender).call().await?._0;
+
+            // Finally, create the paymaster operation.
+            let (_, paymaster_operation) = create_paymaster_operation(
+                state.client.clone(),
+                payload.chain_id as i64,
+                verifying_paymaster_address,
+                payload.sender,
+                paymaster_nonce.to_u64()? as i64,
+                valid_until as i64,
+                valid_after as i64,
+            )
+            .await?;
+
+            produce_billing_operation_message(
+                state.producer.clone(),
+                &BillingOperationMessage {
+                    sender: payload.sender,
+                    chain_id: payload.chain_id,
+                    paymaster_operation_id: paymaster_operation.id,
+                    pre_verification_gas: payload.pre_verification_gas.to_u64()?,
+                    verification_gas_limit: payload.verification_gas_limit.to_u64()?,
+                    call_gas_limit: payload.call_gas_limit.to_u64()?,
+                },
+            )
+            .await?;
         }
 
         Ok(())

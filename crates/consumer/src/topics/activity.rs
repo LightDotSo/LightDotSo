@@ -72,6 +72,10 @@ impl FromStrExt for ActivityOperation {
 
 pub struct ActivityConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for ActivityConsumer {
     async fn consume(
@@ -109,80 +113,95 @@ impl TopicConsumer for ActivityConsumer {
             if let Some(Ok(payload)) = payload_opt {
                 // Try to deserialize the payload as json
                 let payload: ActivityMessage = serde_json::from_slice(payload.as_bytes())?;
+                info!("payload: {:?}", payload);
 
-                // Create activity with user and wallet
-                let act = create_activity_with_user_and_wallet(
-                    state.client.clone(),
-                    entity,
-                    payload.operation,
-                    payload.log.clone(),
-                    payload.params,
-                )
-                .await?;
-                info!("act: {:?}", act.clone());
+                // Consume the payload
+                self.consume_with_message(state, entity, payload).await?;
+            }
+        }
 
-                let res =
-                    match_notification_with_activity(&entity, &payload.operation, &payload.log);
+        Ok(())
+    }
+}
 
-                if let Some(res) = res {
-                    info!("res: {:?}", res);
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
-                    match res {
-                        Operation::UserOnly(_) => {
-                            // let notification = NotificationMessage {
-                            //     user_id: act.user_id,
-                            //     activity_id: act.id,
-                            //     entity: entity.to_string(),
-                            //     operation: payload.operation.to_string(),
-                            //     log: payload.log,
-                            // };
+impl ActivityConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        entity: ActivityEntity,
+        payload: ActivityMessage,
+    ) -> Result<()> {
+        // Create activity with user and wallet
+        let act = create_activity_with_user_and_wallet(
+            state.client.clone(),
+            entity,
+            payload.operation,
+            payload.log.clone(),
+            payload.params,
+        )
+        .await?;
+        info!("act: {:?}", act.clone());
 
-                            // produce_notification_message(producer, &notification).await?;
-                        }
-                        Operation::WalletOnly(opt) => {
-                            let key_id = opt.to_string();
-                            info!("key_id: {:?}", key_id);
+        let res = match_notification_with_activity(&entity, &payload.operation, &payload.log);
 
-                            if let Some(wallet_address) = &act.wallet_address {
-                                // Get the owners of the wallet
-                                let config = state
-                                    .client
-                                    .clone()
-                                    .configuration()
-                                    .find_first(vec![configuration::address::equals(
-                                        wallet_address.to_string(),
-                                    )])
-                                    .order_by(configuration::checkpoint::order(Direction::Desc))
-                                    .with(
-                                        configuration::owners::fetch(vec![])
-                                            .with(owner::user::fetch()),
+        if let Some(res) = res {
+            info!("res: {:?}", res);
+
+            match res {
+                Operation::UserOnly(_) => {
+                    // let notification = NotificationMessage {
+                    //     user_id: act.user_id,
+                    //     activity_id: act.id,
+                    //     entity: entity.to_string(),
+                    //     operation: payload.operation.to_string(),
+                    //     log: payload.log,
+                    // };
+
+                    // produce_notification_message(producer, &notification).await?;
+                }
+                Operation::WalletOnly(opt) => {
+                    let key_id = opt.to_string();
+                    info!("key_id: {:?}", key_id);
+
+                    if let Some(wallet_address) = &act.wallet_address {
+                        // Get the owners of the wallet
+                        let config = state
+                            .client
+                            .clone()
+                            .configuration()
+                            .find_first(vec![configuration::address::equals(
+                                wallet_address.to_string(),
+                            )])
+                            .order_by(configuration::checkpoint::order(Direction::Desc))
+                            .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+                            .exec()
+                            .await?;
+                        info!("config: {:?}", config.clone());
+
+                        if let Some(configuration) = config {
+                            // Get the configuration of the wallet
+                            if let Some(owners) = configuration.owners {
+                                // For each owner of the wallet
+                                for owner in owners {
+                                    // Construct the notification
+                                    let notification = NotificationMessage {
+                                        key: key_id.clone(),
+                                        activity_id: act.id.clone(),
+                                        user_id: owner.user_id,
+                                        wallet_address: Some(wallet_address.to_string()),
+                                    };
+                                    info!("notification: {:?}", notification.clone());
+
+                                    // Send the notification
+                                    produce_notification_message(
+                                        state.producer.clone(),
+                                        &notification,
                                     )
-                                    .exec()
                                     .await?;
-                                info!("config: {:?}", config.clone());
-
-                                if let Some(configuration) = config {
-                                    // Get the configuration of the wallet
-                                    if let Some(owners) = configuration.owners {
-                                        // For each owner of the wallet
-                                        for owner in owners {
-                                            // Construct the notification
-                                            let notification = NotificationMessage {
-                                                key: key_id.clone(),
-                                                activity_id: act.id.clone(),
-                                                user_id: owner.user_id,
-                                                wallet_address: Some(wallet_address.to_string()),
-                                            };
-                                            info!("notification: {:?}", notification.clone());
-
-                                            // Send the notification
-                                            produce_notification_message(
-                                                state.producer.clone(),
-                                                &notification,
-                                            )
-                                            .await?;
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -190,7 +209,6 @@ impl TopicConsumer for ActivityConsumer {
                 }
             }
         }
-
         Ok(())
     }
 }

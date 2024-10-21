@@ -49,24 +49,38 @@ impl TopicConsumer for UserOperationConsumer {
             let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
             info!("payload: {:?}", payload);
 
-            // If the `is_pending_update` field is true, then update the user operation state in the
-            // db
-            info!("is_pending_update: {:?}", payload.is_pending_update);
-            if payload.is_pending_update {
-                let _ = state
-                    .client
-                    .user_operation()
-                    .update(
-                        user_operation::hash::equals(format!("{:?}", payload.hash)),
-                        vec![user_operation::status::set(UserOperationStatus::Pending)],
-                    )
-                    .exec()
-                    .await?;
-            }
-
-            // Run the user operation poller
-            consumer_state.polling.run_uop(payload.chain_id, payload.hash).await?;
+            // Consume the message
+            self.consume_with_message(state, consumer_state, payload).await?;
         }
+
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl UserOperationConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: UserOperationMessage,
+    ) -> Result<()> {
+        // Update the user operation status to pending
+        let _ = state
+            .client
+            .user_operation()
+            .update(
+                user_operation::hash::equals(format!("{:?}", payload.hash)),
+                vec![user_operation::status::set(UserOperationStatus::Pending)],
+            )
+            .exec()
+            .await?;
+
+        // Run the user operation poller
+        consumer_state.polling.run_uop(payload.chain_id, payload.hash).await?;
 
         Ok(())
     }

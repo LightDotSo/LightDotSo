@@ -34,6 +34,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct RoutescanConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for RoutescanConsumer {
     async fn consume(
@@ -58,6 +62,10 @@ impl TopicConsumer for RoutescanConsumer {
         Ok(())
     }
 }
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
 impl RoutescanConsumer {
     pub async fn consume_with_message(
@@ -156,6 +164,18 @@ impl RoutescanConsumer {
             .await?;
         info!("tokens: {:?}", tokens);
 
+        // Check that all `tokens` are in `new_items`
+        for token in tokens.clone() {
+            // Find the item
+            let item = new_items
+                .iter()
+                .find(|item| item.token_address.as_ref().unwrap() == &token.address);
+            // If the item is not found, return an error
+            if item.is_none() {
+                return Err(eyre!("Item not found for token: {:?}", token));
+            }
+        }
+
         // Create token data for each token
         let token_data_results = new_items
             .iter()
@@ -214,8 +234,7 @@ impl RoutescanConsumer {
                                 let token = tokens
                                     .iter()
                                     .find(|token| {
-                                        token.address.clone().to_lowercase() ==
-                                            item.token_address.clone().unwrap()
+                                        token.address.clone() == item.token_address.clone().unwrap()
                                     })
                                     .unwrap();
 

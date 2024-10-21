@@ -16,10 +16,12 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_billing::{billing::Billing, config::BillingArgs};
 use lightdotso_indexer::{config::IndexerArgs, indexer::Indexer};
+use lightdotso_interpreter::{config::InterpreterArgs, interpreter::Interpreter};
 use lightdotso_node::{config::NodeArgs, node::Node};
 use lightdotso_notifier::{config::NotifierArgs, notifier::Notifier};
 use lightdotso_polling::{config::PollingArgs, polling::Polling};
 use std::sync::Arc;
+use tokio::sync::Mutex;
 
 /// -----------------------------------------------------------------------------
 // Structs
@@ -30,6 +32,7 @@ pub struct ConsumerState {
     // Internal services
     pub billing: Arc<Billing>,
     pub indexer: Arc<Indexer>,
+    pub interpreter: Arc<Mutex<Interpreter<'static>>>,
     pub notifier: Arc<Notifier>,
     pub polling: Arc<Polling>,
     pub node: Arc<Node>,
@@ -50,6 +53,11 @@ pub async fn create_consumer_state() -> Result<ConsumerState> {
         IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
     let indexer = Arc::new(indexer_args.create().await);
 
+    // Parse the interpreter command line arguments
+    let interpreter_args = InterpreterArgs::try_parse()
+        .unwrap_or_else(|_| InterpreterArgs::parse_from(["".to_string()]));
+    let interpreter = Arc::new(Mutex::new(interpreter_args.create().await));
+
     // Parse the polling command line arguments
     let polling_args =
         PollingArgs::try_parse().unwrap_or_else(|_| PollingArgs::parse_from(["".to_string()]));
@@ -65,5 +73,5 @@ pub async fn create_consumer_state() -> Result<ConsumerState> {
         NotifierArgs::try_parse().unwrap_or_else(|_| NotifierArgs::parse_from(["".to_string()]));
     let notifier = Arc::new(notifier_args.create().await?);
 
-    Ok(ConsumerState { billing, indexer, notifier, polling, node })
+    Ok(ConsumerState { billing, indexer, interpreter, notifier, polling, node })
 }

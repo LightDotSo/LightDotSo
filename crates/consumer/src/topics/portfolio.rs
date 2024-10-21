@@ -39,6 +39,10 @@ struct LatestPortfolioReturnType {
 
 pub struct PortfolioConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for PortfolioConsumer {
     async fn consume(
@@ -56,60 +60,78 @@ impl TopicConsumer for PortfolioConsumer {
             // Parse the payload into a JSON object, `PortfolioMessage`
             let payload: PortfolioMessage = serde_json::from_slice(payload.as_bytes())?;
 
-            // Get the latest portfolio.
-            let latest_portfolio: Vec<LatestPortfolioReturnType> = state
-                .client
-                ._query_raw(raw!(
-                    "SELECT SUM(balanceUSD) as balance
+            // Log the payload
+            info!("payload: {:?}", payload);
+
+            // Consume the message
+            self.consume_with_message(state, payload).await?;
+        }
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl PortfolioConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: PortfolioMessage,
+    ) -> Result<()> {
+        let latest_portfolio: Vec<LatestPortfolioReturnType> = state
+            .client
+            ._query_raw(raw!(
+                "SELECT SUM(balanceUSD) as balance
                     FROM WalletBalance
                     WHERE walletAddress = {}
                         AND isLatest = TRUE
                         AND isTestnet = FALSE
                         AND NOT (chainId = 0)
                 ",
-                    PrismaValue::String(payload.address.to_checksum(None))
-                ))
-                .exec()
-                .await?;
+                PrismaValue::String(payload.address.to_checksum(None))
+            ))
+            .exec()
+            .await?;
 
-            // If the length is more than 0, parse the balance.
-            if !latest_portfolio.is_empty() {
-                let latest_portfolio_balance = latest_portfolio[0].balance;
-                info!("latest_portfolio: {:?}", latest_portfolio_balance);
+        // If the length is more than 0, parse the balance.
+        if !latest_portfolio.is_empty() {
+            let latest_portfolio_balance = latest_portfolio[0].balance;
+            info!("latest_portfolio: {:?}", latest_portfolio_balance);
 
-                let _: Result<()> = state
-                    .client
-                    ._transaction()
-                    .run(|client| async move {
-                        client
-                            .wallet_balance()
-                            .update_many(
-                                vec![
-                                    wallet_balance::wallet_address::equals(
-                                        payload.address.to_checksum(None),
-                                    ),
-                                    wallet_balance::chain_id::equals(0),
-                                ],
-                                vec![wallet_balance::is_latest::set(false)],
-                            )
-                            .exec()
-                            .await?;
+            let _: Result<()> = state
+                .client
+                ._transaction()
+                .run(|client| async move {
+                    client
+                        .wallet_balance()
+                        .update_many(
+                            vec![
+                                wallet_balance::wallet_address::equals(
+                                    payload.address.to_checksum(None),
+                                ),
+                                wallet_balance::chain_id::equals(0),
+                            ],
+                            vec![wallet_balance::is_latest::set(false)],
+                        )
+                        .exec()
+                        .await?;
 
-                        client
-                            .wallet_balance()
-                            .create(
-                                latest_portfolio_balance,
-                                chain::id::equals(0),
-                                wallet::address::equals(payload.address.to_checksum(None)),
-                                vec![wallet_balance::is_latest::set(true)],
-                            )
-                            .exec()
-                            .await?;
+                    client
+                        .wallet_balance()
+                        .create(
+                            latest_portfolio_balance,
+                            chain::id::equals(0),
+                            wallet::address::equals(payload.address.to_checksum(None)),
+                            vec![wallet_balance::is_latest::set(true)],
+                        )
+                        .exec()
+                        .await?;
 
-                        Ok(())
-                    })
-                    .await;
-            }
+                    Ok(())
+                })
+                .await;
         }
 
         Ok(())

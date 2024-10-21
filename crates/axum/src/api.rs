@@ -459,6 +459,8 @@ pub async fn start_api_server() -> Result<()> {
         .routes(routes!(
             configuration_operation_signature::v1_configuration_operation_signature_list_handler
         ))
+        .routes(routes!(consumer::v1_consumer_covalent_handler))
+        .routes(routes!(consumer::v1_consumer_portfolio_handler))
         .routes(routes!(consumer::v1_consumer_routescan_handler))
         .routes(routes!(feedback::v1_feedback_create_handler))
         .routes(routes!(interpretation::v1_interpretation_get_handler))

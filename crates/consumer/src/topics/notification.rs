@@ -29,6 +29,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct NotificationConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for NotificationConsumer {
     async fn consume(
@@ -61,39 +65,55 @@ impl TopicConsumer for NotificationConsumer {
             let payload: NotificationMessage = serde_json::from_slice(payload.as_bytes())?;
             info!("payload: {:?}", payload);
 
-            // Get the activity from the database
-            let activity = state
-                .client
-                .clone()
-                .activity()
-                .find_unique(activity::id::equals(payload.clone().activity_id))
-                .exec()
-                .await?;
+            // Consume the message
+            self.consume_with_message(state, consumer_state, payload).await?;
+        }
 
-            // If the activity exists
-            if let Some(entity) = activity {
-                // Match the notification with the activity
-                let res = match_notification_with_activity(
-                    &entity.entity,
-                    &entity.operation,
-                    &entity.log,
-                );
+        Ok(())
+    }
+}
 
-                // Check if the notification should be sent or not
-                if let Some(res) = res {
-                    info!("res: {:?}", res);
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
-                    match res {
-                        Operation::UserOnly(_) => {}
-                        Operation::WalletOnly(opt) => {
-                            let key_id = opt.to_string();
-                            info!("key_id: {:?}", key_id);
+impl NotificationConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: NotificationMessage,
+    ) -> Result<()> {
+        // Get the activity from the database
+        let activity = state
+            .client
+            .clone()
+            .activity()
+            .find_unique(activity::id::equals(payload.clone().activity_id))
+            .exec()
+            .await?;
 
-                            // If the user_id and wallet_address are present
-                            if let Some(user_id) = payload.clone().user_id {
-                                if let Some(wallet_address) = payload.clone().wallet_address {
-                                    // Get the wallet setting from the database
-                                    let wallet_notification_settings = state
+        // If the activity exists
+        if let Some(entity) = activity {
+            // Match the notification with the activity
+            let res =
+                match_notification_with_activity(&entity.entity, &entity.operation, &entity.log);
+
+            // Check if the notification should be sent or not
+            if let Some(res) = res {
+                info!("res: {:?}", res);
+
+                match res {
+                    Operation::UserOnly(_) => {}
+                    Operation::WalletOnly(opt) => {
+                        let key_id = opt.to_string();
+                        info!("key_id: {:?}", key_id);
+
+                        // If the user_id and wallet_address are present
+                        if let Some(user_id) = payload.clone().user_id {
+                            if let Some(wallet_address) = payload.clone().wallet_address {
+                                // Get the wallet setting from the database
+                                let wallet_notification_settings = state
                                     .client
                                     .clone()
                                     .wallet_notification_settings()
@@ -111,34 +131,33 @@ impl TopicConsumer for NotificationConsumer {
                                     .exec()
                                     .await?;
 
-                                    // If the wallet setting exists
-                                    if let Some(wallet_notification_settings) =
-                                        wallet_notification_settings
+                                // If the wallet setting exists
+                                if let Some(wallet_notification_settings) =
+                                    wallet_notification_settings
+                                {
+                                    // Match the key_id w/ the keys in the wallet setting
+                                    if let Some(notification_settings) =
+                                        wallet_notification_settings.notification_settings
                                     {
-                                        // Match the key_id w/ the keys in the wallet setting
-                                        if let Some(notification_settings) =
-                                            wallet_notification_settings.notification_settings
-                                        {
-                                            if notification_settings.into_iter().any(|data| {
-                                                data.key.contains(&key_id) && data.is_enabled
-                                            }) {
-                                                // Create the notification
-                                                state
-                                                    .client
-                                                    .clone()
-                                                    .notification()
-                                                    .create(vec![
-                                                        notification::activity_id::set(Some(
-                                                            payload.clone().activity_id.clone(),
-                                                        )),
-                                                        notification::user_id::set(Some(user_id)),
-                                                        notification::wallet_address::set(Some(
-                                                            wallet_address.clone(),
-                                                        )),
-                                                    ])
-                                                    .exec()
-                                                    .await?;
-                                            }
+                                        if notification_settings.into_iter().any(|data| {
+                                            data.key.contains(&key_id) && data.is_enabled
+                                        }) {
+                                            // Create the notification
+                                            state
+                                                .client
+                                                .clone()
+                                                .notification()
+                                                .create(vec![
+                                                    notification::activity_id::set(Some(
+                                                        payload.clone().activity_id.clone(),
+                                                    )),
+                                                    notification::user_id::set(Some(user_id)),
+                                                    notification::wallet_address::set(Some(
+                                                        wallet_address.clone(),
+                                                    )),
+                                                ])
+                                                .exec()
+                                                .await?;
                                         }
                                     }
                                 }
@@ -146,9 +165,9 @@ impl TopicConsumer for NotificationConsumer {
                         }
                     }
                 }
-
-                consumer_state.notifier.run().await;
             }
+
+            consumer_state.notifier.run().await;
         }
 
         Ok(())
