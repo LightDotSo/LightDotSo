@@ -13,10 +13,11 @@
 // limitations under the License.
 
 use eyre::Result;
-use lightdotso_db::db::{create_client, create_postgres_client};
+use lightdotso_db::db::{create_client, create_postgres_client, create_postgres_pool};
 use lightdotso_hyper::{get_hyper_client, HyperClient};
 use lightdotso_kafka::{get_producer, rdkafka::producer::FutureProducer};
 use lightdotso_prisma::PrismaClient;
+use lightdotso_prisma_postgres::PrismaClient as PrismaPostgresClient;
 use lightdotso_redis::{get_redis_client, redis::Client};
 use lightdotso_sqlx::PostgresPool;
 use std::sync::Arc;

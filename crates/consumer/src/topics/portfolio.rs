@@ -17,7 +17,7 @@ use crate::state::ConsumerState;
 use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
-use lightdotso_prisma::{chain, wallet, wallet_balance};
+use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{raw, PrismaValue};
@@ -81,7 +81,7 @@ impl PortfolioConsumer {
         payload: PortfolioMessage,
     ) -> Result<()> {
         let latest_portfolio: Vec<LatestPortfolioReturnType> = state
-            .prisma_client
+            .postgres_client
             ._query_raw(raw!(
                 "SELECT SUM(balanceUSD) as balance
                     FROM WalletBalance
@@ -101,7 +101,7 @@ impl PortfolioConsumer {
             info!("latest_portfolio: {:?}", latest_portfolio_balance);
 
             let _: Result<()> = state
-                .prisma_client
+                .postgres_client
                 ._transaction()
                 .run(|client| async move {
                     client
@@ -111,7 +111,7 @@ impl PortfolioConsumer {
                                 wallet_balance::wallet_address::equals(
                                     payload.address.to_checksum(None),
                                 ),
-                                wallet_balance::chain_id::equals(0),
+                                wallet_balance::chain_id::equals(0.0),
                             ],
                             vec![wallet_balance::is_latest::set(false)],
                         )
@@ -122,8 +122,8 @@ impl PortfolioConsumer {
                         .wallet_balance()
                         .create(
                             latest_portfolio_balance,
-                            chain::id::equals(0),
-                            wallet::address::equals(payload.address.to_checksum(None)),
+                            0.0,
+                            payload.address.to_checksum(None),
                             vec![wallet_balance::is_latest::set(true)],
                         )
                         .exec()

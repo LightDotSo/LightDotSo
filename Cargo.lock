@@ -7465,6 +7465,8 @@ dependencies = [
  "lightdotso-opentelemetry",
  "lightdotso-polling",
  "lightdotso-prisma",
+ "lightdotso-prisma-mysql",
+ "lightdotso-prisma-postgres",
  "lightdotso-redis",
  "lightdotso-routescan",
  "lightdotso-sqlx",

@@ -24,7 +24,8 @@ use lightdotso_kafka::{
     topics::portfolio::produce_portfolio_message,
     types::{covalent::CovalentMessage, portfolio::PortfolioMessage},
 };
-use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_prisma::token;
+use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
@@ -122,7 +123,7 @@ impl CovalentConsumer {
 
             // Create the tokens
             let res = state
-                .prisma_client
+                .client
                 .token()
                 .create_many(
                     balances
@@ -158,7 +159,7 @@ impl CovalentConsumer {
 
             // Find the tokens
             let tokens = state
-                .prisma_client
+                .client
                 .token()
                 .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
                 .exec()
@@ -197,10 +198,10 @@ impl CovalentConsumer {
             let token_data = token_data?;
 
             // Create a token price for each token
-            state.prisma_client.token_price().create_many(token_data).exec().await?;
+            state.postgres_client.token_price().create_many(token_data).exec().await?;
 
             let res: Result<i64> = state
-                .prisma_client
+                .postgres_client
                 ._transaction()
                 .run(|client| async move {
                     client
@@ -210,7 +211,7 @@ impl CovalentConsumer {
                                 wallet_balance::wallet_address::equals(
                                     payload.address.to_checksum(None),
                                 ),
-                                wallet_balance::chain_id::equals(payload.chain_id as i64),
+                                wallet_balance::chain_id::equals(payload.chain_id as f64),
                             ],
                             vec![wallet_balance::is_latest::set(false)],
                         )
@@ -237,7 +238,7 @@ impl CovalentConsumer {
 
                                     (
                                         item.quote.unwrap_or(0.0),
-                                        payload.chain_id as i64,
+                                        payload.chain_id as f64,
                                         payload.address.to_checksum(None),
                                         vec![
                                             wallet_balance::amount::set(Some(
@@ -253,14 +254,14 @@ impl CovalentConsumer {
                                             )),
                                             wallet_balance::is_latest::set(true),
                                             wallet_balance::is_spam::set(item.is_spam),
-                                            wallet_balance::is_stable::set(Some(
+                                            wallet_balance::is_stable::set(
                                                 item.balance_type
                                                     .as_ref()
                                                     .map(|balance_type| {
                                                         balance_type == "stablecoin"
                                                     })
                                                     .unwrap_or(false),
-                                            )),
+                                            ),
                                             wallet_balance::is_testnet::set(is_testnet(
                                                 payload.chain_id,
                                             )),

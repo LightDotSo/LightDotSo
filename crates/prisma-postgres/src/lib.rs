@@ -14,6 +14,8 @@
 
 #![recursion_limit = "512"]
 
+#[allow(clippy::all)]
+#[allow(clippy::unwrap_used)]
 pub use postgres::*;
 
 mod postgres;

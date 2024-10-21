@@ -6,8 +6,8 @@ add_allow_attributes() {
     local temp_file="temp.rs"
 
     # Create a temporary file with the desired lines at the top
-    echo "#[allow(clippy::unwrap_used)]" > "$temp_file"
-    echo "#[allow(clippy::all)]" >> "$temp_file"
+    echo "#![allow(clippy::unwrap_used)]" > "$temp_file"
+    echo "#![allow(clippy::all)]" >> "$temp_file"
     cat "$file_path" >> "$temp_file"
 
     # Overwrite the original file with the temporary file

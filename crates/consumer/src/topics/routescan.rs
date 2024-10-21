@@ -20,7 +20,8 @@ use alloy::primitives::Address;
 use async_trait::async_trait;
 use eyre::{eyre, Result};
 use lightdotso_kafka::types::routescan::RoutescanMessage;
-use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_prisma::token;
+use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
@@ -117,7 +118,7 @@ impl RoutescanConsumer {
 
         // Create the tokens
         let res = state
-            .prisma_client
+            .client
             .token()
             .create_many(
                 new_items
@@ -145,7 +146,7 @@ impl RoutescanConsumer {
 
         // Find the tokens
         let tokens = state
-            .prisma_client
+            .client
             .token()
             .find_many(vec![and![
                 token::chain_id::equals(payload.chain_id as i64),
@@ -204,10 +205,10 @@ impl RoutescanConsumer {
         let token_data = token_data?;
 
         // Create a token price for each token
-        state.prisma_client.token_price().create_many(token_data).exec().await?;
+        state.postgres_client.token_price().create_many(token_data).exec().await?;
 
         let _: Result<()> = state
-            .prisma_client
+            .postgres_client
             ._transaction()
             .run(|client| async move {
                 client
@@ -217,7 +218,7 @@ impl RoutescanConsumer {
                             wallet_balance::wallet_address::equals(
                                 payload.address.to_checksum(None),
                             ),
-                            wallet_balance::chain_id::equals(payload.chain_id as i64),
+                            wallet_balance::chain_id::equals(payload.chain_id as f64),
                         ],
                         vec![wallet_balance::is_latest::set(false)],
                     )
@@ -242,7 +243,7 @@ impl RoutescanConsumer {
                                     // Temporary fix for quote rate
                                     // item.quote.unwrap_or(0.0),
                                     0.0_f64,
-                                    payload.chain_id as i64,
+                                    payload.chain_id as f64,
                                     payload.address.to_checksum(None),
                                     vec![
                                         wallet_balance::amount::set(Some(

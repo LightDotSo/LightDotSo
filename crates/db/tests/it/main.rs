@@ -16,7 +16,9 @@
 
 use dotenvy::dotenv;
 use eyre::Result;
-use lightdotso_db::db::{create_client, create_postgres_client, create_test_client};
+use lightdotso_db::db::{
+    create_client, create_postgres_client, create_postgres_pool, create_test_client,
+};
 use lightdotso_sqlx::sqlx::query;
 use prisma_client_rust::Raw;
 use serde_json::Value;
@@ -44,7 +46,8 @@ async fn test_integration_create_postgres_client() -> Result<()> {
     let client = create_postgres_client().await?;
 
     // Run a simple query
-    let result = query("SELECT 1").execute(&client).await?;
+    let result: Vec<Value> =
+        client._query_raw(Raw::new("SELECT 1 AS value", vec![])).exec().await?;
     println!("{:?}", result);
 
     Ok(())
@@ -54,6 +57,10 @@ async fn test_integration_create_postgres_client() -> Result<()> {
 async fn test_integration_create_postgres_pool() -> Result<()> {
     // Create a new postgres test client
     let pool = create_postgres_pool().await?;
+
+    // Run a simple query
+    let result = query("SELECT 1").execute(&pool).await?;
+    println!("{:?}", result);
 
     Ok(())
 }
