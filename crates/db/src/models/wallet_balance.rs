@@ -16,81 +16,11 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use eyre::Result;
 use lightdotso_sqlx::{
-    sqlx::{query, query_as, types::BigDecimal, Error as SqlxError, FromRow, QueryBuilder},
+    sqlx::{query_as, types::BigDecimal, Error as SqlxError, FromRow, QueryBuilder},
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
-
-#[derive(Debug)]
-pub struct CreateWalletBalanceParams {
-    pub quote: f64,
-    pub chain_id: i64,
-    pub wallet_address: String,
-    pub amount: Option<String>,
-    pub stable: Option<bool>,
-    pub token_id: String,
-    pub is_spam: bool,
-    pub is_testnet: bool,
-}
-
-// -----------------------------------------------------------------------------
-// Create
-// -----------------------------------------------------------------------------
-
-#[autometrics]
-pub async fn create_wallet_balances(
-    pool: &PostgresPool,
-    wallet_address: String,
-    chain_id: i64,
-    params: Vec<CreateWalletBalanceParams>,
-) -> Result<i64> {
-    let mut tx = pool.begin().await?;
-
-    // Set all existing balances for this wallet and chain to not latest
-    query(
-        r#"UPDATE "WalletBalance"
-           SET "isLatest" = false
-           WHERE "walletAddress" = $1 AND "chainId" = $2"#,
-    )
-    .bind(&wallet_address)
-    .bind(chain_id)
-    .execute(&mut tx)
-    .await?;
-
-    // Insert new balances
-    let mut inserted = 0;
-    for balance in params {
-        let amount = balance.amount.unwrap_or_else(|| "0".to_string());
-        let result = query(
-            r#"INSERT INTO "WalletBalance" 
-             ("timestamp", "balanceUSD", "chainId", "amount", "stable", "isSpam", "isLatest", "isTestnet", "walletAddress", "tokenId")
-             VALUES 
-             (CURRENT_TIMESTAMP, $1, $2, $3, $4, $5, true, $6, $7, $8)"#,
-        )
-        .bind(balance.quote)
-        .bind(balance.chain_id)
-        .bind(&amount)
-        .bind(balance.stable)
-        .bind(balance.is_spam)
-        .bind(balance.is_testnet)
-        .bind(&balance.wallet_address)
-        .bind(&balance.token_id)
-        .execute(&mut tx)
-        .await?;
-
-        inserted += result.rows_affected();
-    }
-
-    // Commit the transaction
-    tx.commit().await?;
-
-    Ok(inserted as i64)
-}
 
 // -----------------------------------------------------------------------------
 // Types

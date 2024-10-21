@@ -248,7 +248,12 @@ impl CovalentConsumer {
                                                     })
                                                     .unwrap_or(0.0),
                                             )),
-                                            wallet_balance::stable::set(Some(
+                                            wallet_balance::token_id::set(Some(
+                                                token.id.to_string(),
+                                            )),
+                                            wallet_balance::is_latest::set(true),
+                                            wallet_balance::is_spam::set(item.is_spam),
+                                            wallet_balance::is_stable::set(Some(
                                                 item.balance_type
                                                     .as_ref()
                                                     .map(|balance_type| {
@@ -256,11 +261,6 @@ impl CovalentConsumer {
                                                     })
                                                     .unwrap_or(false),
                                             )),
-                                            wallet_balance::token_id::set(Some(
-                                                token.id.to_string(),
-                                            )),
-                                            wallet_balance::is_spam::set(item.is_spam),
-                                            wallet_balance::is_latest::set(true),
                                             wallet_balance::is_testnet::set(is_testnet(
                                                 payload.chain_id,
                                             )),

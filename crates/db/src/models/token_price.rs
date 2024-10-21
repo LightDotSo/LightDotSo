@@ -12,63 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use alloy::primitives::Address;
 use autometrics::autometrics;
 use eyre::Result;
 use lightdotso_sqlx::{
-    sqlx::{query, query_as, Error as SqlxError, FromRow, QueryBuilder},
+    sqlx::{query_as, Error as SqlxError, FromRow},
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
-
-pub struct TokenPriceInputParams {
-    pub chain_id: i64,
-    pub token_address: Address,
-    pub price: f64,
-}
-
-// -----------------------------------------------------------------------------
-// Create
-// -----------------------------------------------------------------------------
-
-/// Create a new token price
-#[autometrics]
-pub async fn create_token_price(pool: &PostgresPool, params: TokenPriceInputParams) -> Result<()> {
-    query(r#"INSERT INTO "TokenPrice" ("chainId", "tokenAddress", "price") VALUES ($1, $2, $3)"#)
-        .bind(params.chain_id)
-        .bind(params.token_address.to_checksum(None))
-        .bind(params.price)
-        .execute(pool)
-        .await?;
-
-    Ok(())
-}
-
-/// Create many token prices
-#[autometrics]
-pub async fn create_token_prices(
-    pool: &PostgresPool,
-    params: Vec<TokenPriceInputParams>,
-) -> Result<()> {
-    let mut query_builder = QueryBuilder::new(
-        r#"INSERT INTO "TokenPrice" ("chainId", "tokenAddress", "price") VALUES "#,
-    );
-
-    for price in params {
-        query_builder.push_bind(price.chain_id);
-        query_builder.push_bind(price.token_address.to_checksum(None));
-        query_builder.push_bind(price.price);
-    }
-
-    query_builder.build().execute(pool).await?;
-
-    Ok(())
-}
 
 // -----------------------------------------------------------------------------
 // Types

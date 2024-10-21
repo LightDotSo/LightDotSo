@@ -2309,9 +2309,9 @@ model WalletBalance {
 
   chainId   BigInt   @db.UnsignedBigInt
   amount    Decimal?
-  stable    Boolean?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
+  isStable  Boolean? @default(false)
   isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------

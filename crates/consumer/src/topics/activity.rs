@@ -39,13 +39,29 @@ pub trait FromStrExt: Sized {
 impl FromStrExt for ActivityEntity {
     fn from_str_ext(s: &str) -> Result<Self> {
         match s {
+            // Core + Relations None-to-many
             "USER" => Ok(Self::User),
             "WALLET" => Ok(Self::Wallet),
+            "TIMELOCK" => Ok(Self::Timelock),
+            // Mutable + Relations None-to-many
+            "BILLING" => Ok(Self::Billing),
+            "BILLING_OPERATION" => Ok(Self::BillingOperation),
+            "CONFIGURATION_OPERATION" => Ok(Self::ConfigurationOperation),
             "INVITE_CODE" => Ok(Self::InviteCode),
             "SUPPORT_REQUEST" => Ok(Self::SupportRequest),
+            "TIMELOCK_OPERATION" => Ok(Self::TimelockOperation),
+            "USER_SETTINGS" => Ok(Self::UserSettings),
+            "USER_NOTIFICATION_SETTINGS" => Ok(Self::UserNotificationSettings),
+            "WALLET_BILLING" => Ok(Self::WalletBilling),
+            // "WALLET_FEATURES" => Ok(Self::WalletFeatures),
+            "WALLET_NOTIFICATION_SETTINGS" => Ok(Self::WalletNotificationSettings),
             "WALLET_SETTINGS" => Ok(Self::WalletSettings),
+            // Immutable Relations None-to-none
+            "CONFIGURATION_OPERATION_SIGNATURE" => Ok(Self::ConfigurationOperationSignature),
             "FEEDBACK" => Ok(Self::Feedback),
             "NOTIFICATION" => Ok(Self::Notification),
+            "PAYMASTER" => Ok(Self::Paymaster),
+            "PAYMASTER_OPERATION" => Ok(Self::PaymasterOperation),
             "SIGNATURE" => Ok(Self::Signature),
             "SIMULATION" => Ok(Self::Simulation),
             "TRANSACTION" => Ok(Self::Transaction),
