@@ -1665,6 +1665,7 @@ treeverse
 trimend
 trimstart
 trivago
+trunc
 trustlessly
 tsbuckets
 tsconfck

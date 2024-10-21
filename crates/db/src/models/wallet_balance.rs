@@ -16,7 +16,7 @@ use alloy::primitives::Address;
 use autometrics::autometrics;
 use eyre::Result;
 use lightdotso_sqlx::{
-    sqlx::{query_as, types::BigDecimal, Error as SqlxError, FromRow, QueryBuilder},
+    sqlx::{query_as, types::BigDecimal, Error as SqlxError, FromRow},
     PostgresPool,
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
@@ -65,48 +65,62 @@ pub async fn get_wallet_balances(
     chain_ids: Option<&str>,
     is_spam: Option<bool>,
     is_testnet: Option<bool>,
+    interval: &str,
+    limit: i32,
 ) -> Result<Vec<WalletBalance>, SqlxError> {
-    let mut query_builder = QueryBuilder::new(
-        r#"SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId"
+    let mut conditions = Vec::new();
+    let mut param_count = 2;
+
+    conditions.push("\"walletAddress\" = $2".to_string());
+
+    let chain_id_vec: Vec<i64> = chain_ids
+        .map(|chain_id_str| chain_id_str.split(',').filter_map(|id| id.parse().ok()).collect())
+        .unwrap_or_default();
+
+    if !chain_id_vec.is_empty() {
+        param_count += 1;
+        conditions.push(format!("\"chainId\" = ANY(${})", param_count));
+    } else {
+        conditions.push("\"chainId\" = 0".to_string());
+    }
+
+    if is_spam == Some(false) || is_spam.is_none() {
+        conditions.push("\"isSpam\" = false".to_string());
+    }
+
+    if is_testnet == Some(false) || is_testnet.is_none() {
+        conditions.push("\"isTestnet\" = false".to_string());
+    }
+
+    let where_clause = conditions.join(" AND ");
+
+    let limit_clause = if limit > 0 { format!("LIMIT {}", limit) } else { String::new() };
+
+    let query_string = format!(
+        r#"SELECT 
+            date_trunc($1, "timestamp") as "timestamp",
+            AVG("balanceUSD") as "balanceUSD",
+            "chainId",
+            SUM("amount") as "amount",
+            bool_or("isSpam") as "isSpam",
+            bool_or("isTestnet") as "isTestnet",
+            "walletAddress",
+            STRING_AGG(DISTINCT "tokenId", ',') as "tokenId"
            FROM "WalletBalance"
-           WHERE "walletAddress" = "#,
+           WHERE {where_clause}
+           GROUP BY date_trunc($1, "timestamp"), "chainId", "walletAddress"
+           ORDER BY date_trunc($1, "timestamp") DESC
+           {limit_clause}
+        "#
     );
 
-    query_builder.push_bind(wallet_address);
-    query_builder.push(r#" AND "isLatest" = true"#);
-    query_builder.push(r#" AND "amount" != '0'"#);
+    let mut query =
+        sqlx::query_as::<_, WalletBalance>(&query_string).bind(interval).bind(wallet_address);
 
-    if let Some(spam) = is_spam {
-        query_builder.push(r#" AND "isSpam" = "#);
-        query_builder.push_bind(spam);
-    } else {
-        query_builder.push(r#" AND "isSpam" = false"#);
+    if !chain_id_vec.is_empty() {
+        query = query.bind(&chain_id_vec);
     }
 
-    match is_testnet {
-        Some(false) | None => {
-            query_builder.push(r#" AND "isTestnet" = false"#);
-        }
-        _ => {}
-    }
-
-    if let Some(chain_id_str) = chain_ids {
-        let chain_id_vec: Vec<i64> =
-            chain_id_str.split(',').filter_map(|id| id.parse().ok()).collect();
-
-        if !chain_id_vec.is_empty() {
-            query_builder.push(r#" AND "chainId" IN ("#);
-            let mut separated = query_builder.separated(", ");
-            for chain_id in chain_id_vec {
-                separated.push_bind(chain_id);
-            }
-            separated.push_unseparated(")");
-        }
-    } else {
-        query_builder.push(r#" AND "chainId" != 0"#);
-    }
-
-    let query = query_builder.build_query_as::<WalletBalance>();
     query.fetch_all(pool).await
 }
 

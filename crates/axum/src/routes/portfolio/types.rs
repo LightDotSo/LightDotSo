@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use lightdotso_db::models::wallet_balance::WalletBalance;
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -42,4 +44,18 @@ pub(crate) struct PortfolioBalanceDate {
     pub balance: f64,
     /// The date of the balance.
     pub date: String,
+}
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<WalletBalance> for PortfolioBalanceDate.
+impl From<WalletBalance> for PortfolioBalanceDate {
+    fn from(wallet_balance: WalletBalance) -> Self {
+        Self {
+            balance: wallet_balance.balance_usd.to_f64().unwrap_or(0.0),
+            date: wallet_balance.timestamp.to_string(),
+        }
+    }
 }
