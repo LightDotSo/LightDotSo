@@ -210,7 +210,7 @@ pub async fn get_latest_wallet_balance_for_token(
     wallet_address: Address,
 ) -> Result<Option<WalletBalance>, SqlxError> {
     let query = r#"
-        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam","isTestnet", "walletAddress", "tokenGroupId"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam","isTestnet", "walletAddress", "tokenId", "tokenGroupId"
         FROM "WalletBalance"
         WHERE "tokenId" = $1
           AND "walletAddress" = $2
@@ -233,7 +233,7 @@ pub async fn get_latest_wallet_balances_for_token_group(
     wallet_address: Address,
 ) -> Result<Vec<WalletBalance>, SqlxError> {
     let query = r#"
-        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenGroupId"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId", "tokenGroupId"
         FROM "WalletBalance"
         WHERE "tokenGroupId" = $1
           AND "walletAddress" = $2
@@ -244,6 +244,27 @@ pub async fn get_latest_wallet_balances_for_token_group(
 
     query_as::<_, WalletBalance>(query)
         .bind(token_group_id)
+        .bind(wallet_address.to_checksum(None))
+        .fetch_all(pool)
+        .await
+}
+
+#[autometrics]
+pub async fn get_latest_wallet_balances_for_token_groups(
+    pool: &PostgresPool,
+    token_group_ids: Vec<String>,
+    wallet_address: Address,
+) -> Result<Vec<WalletBalance>, SqlxError> {
+    let query = r#"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenId", "tokenGroupId"
+        FROM "WalletBalance"
+        WHERE "tokenGroupId" = ANY($1)
+          AND "walletAddress" = $2
+          AND "isLatest" = true
+    "#;
+
+    query_as::<_, WalletBalance>(query)
+        .bind(&token_group_ids)
         .bind(wallet_address.to_checksum(None))
         .fetch_all(pool)
         .await

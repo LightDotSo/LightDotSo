@@ -22,13 +22,14 @@ use axum::{
 };
 use itertools::Itertools;
 use lightdotso_db::models::wallet_balance::{
-    get_latest_wallet_balances_for_token_group, get_wallet_balances, get_wallet_balances_count,
+    get_latest_wallet_balances_for_token_groups, get_wallet_balances, get_wallet_balances_count,
     WalletBalance,
 };
 use lightdotso_prisma::{token, token_group};
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -161,22 +162,30 @@ pub(crate) async fn v1_token_list_handler(
     info!("tokens: {:?}", tokens);
 
     // Get all the token group ids.
-    let token_group_ids = tokens
+    let token_group_ids: Vec<String> = tokens
         .iter()
         .filter_map(|token| token.group.as_ref().map(|group| group.id.clone()))
-        .collect::<Vec<String>>();
+        .collect::<HashSet<String>>()
+        .into_iter()
+        .collect();
+    info!("token_group_ids: {:?}", token_group_ids);
 
     // Get all the latest wallet balances for the token groups.
-    let mut token_group_wallet_balances: Vec<WalletBalance> = vec![];
-    for token_group_id in token_group_ids {
-        let token_group_wallet_balance = get_latest_wallet_balances_for_token_group(
+    let token_group_wallet_balances: Vec<WalletBalance> =
+        get_latest_wallet_balances_for_token_groups(
             &state.pool,
-            token_group_id,
+            token_group_ids,
             parsed_query_address,
         )
         .await?;
-        token_group_wallet_balances.extend(token_group_wallet_balance);
-    }
+
+    // Convert the token group wallet balances to tokens.
+    let token_group_wallet_balance_tokens = token_group_wallet_balances
+        .clone()
+        .into_iter()
+        .map(|balance| balance.into())
+        .collect::<Vec<Token>>();
+    info!("token_group_wallet_balance_tokens: {:?}", token_group_wallet_balance_tokens);
 
     // -------------------------------------------------------------------------
     // Return
@@ -207,14 +216,15 @@ pub(crate) async fn v1_token_list_handler(
                 token.amount = 0_u128;
                 token.balance_usd = 0.0;
 
-                // Merge the nested tokens with the existing wallet_balance_tokens
+                // Merge the nested tokens with the existing token_group_wallet_balance_tokens
                 group.tokens = group
                     .clone()
                     .tokens
                     .into_iter()
                     .map(|mut nested_token| {
-                        if let Some(wallet_balance_token) =
-                            wallet_balance_tokens.iter().find(|t| t.id == nested_token.id)
+                        if let Some(wallet_balance_token) = token_group_wallet_balance_tokens
+                            .iter()
+                            .find(|t| t.id == nested_token.id)
                         {
                             // Update the nested token with wallet balance information
                             nested_token.amount = wallet_balance_token.amount;
