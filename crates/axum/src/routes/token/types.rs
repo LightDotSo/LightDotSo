@@ -89,7 +89,13 @@ impl From<token::Data> for Token {
             logo_url: token.logo_url,
             token_type: Some(token.r#type.to_string()),
             group: token.group.and_then(|group| {
-                group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
+                group.map(|group_data| TokenGroup {
+                    id: group_data.id,
+                    tokens: group_data
+                        .tokens
+                        .map(|tokens| tokens.into_iter().map(Token::from).collect())
+                        .unwrap_or_default(),
+                })
             }),
             is_spam: false,
             is_stable: false,

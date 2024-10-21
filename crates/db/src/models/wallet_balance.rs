@@ -72,6 +72,7 @@ pub async fn get_wallet_balances(
     chain_ids: Option<&str>,
     is_spam: Option<bool>,
     is_testnet: Option<bool>,
+    is_group_only: Option<bool>,
     interval: &str,
     limit: i32,
     skip: i32,
@@ -99,6 +100,10 @@ pub async fn get_wallet_balances(
 
     if is_testnet == Some(false) || is_testnet.is_none() {
         conditions.push("\"isTestnet\" = false".to_string());
+    }
+
+    if is_group_only == Some(true) {
+        conditions.push("\"tokenGroupId\" IS NOT NULL".to_string());
     }
 
     let where_clause = conditions.join(" AND ");
@@ -144,6 +149,7 @@ pub async fn get_wallet_balances_count(
     chain_ids: Option<&str>,
     is_spam: Option<bool>,
     is_testnet: Option<bool>,
+    is_group_only: Option<bool>,
     interval: &str,
 ) -> Result<i64, SqlxError> {
     let mut conditions = Vec::new();
@@ -169,6 +175,10 @@ pub async fn get_wallet_balances_count(
 
     if is_testnet == Some(false) || is_testnet.is_none() {
         conditions.push("\"isTestnet\" = false".to_string());
+    }
+
+    if is_group_only == Some(true) {
+        conditions.push("\"tokenGroupId\" IS NOT NULL".to_string());
     }
 
     let where_clause = conditions.join(" AND ");
@@ -212,5 +222,28 @@ pub async fn get_latest_wallet_balance_for_token(
         .bind(token_id)
         .bind(wallet_address.to_checksum(None))
         .fetch_optional(pool)
+        .await
+}
+
+#[autometrics]
+pub async fn get_latest_wallet_balances_for_token_group(
+    pool: &PostgresPool,
+    token_group_id: String,
+    wallet_address: Address,
+) -> Result<Vec<WalletBalance>, SqlxError> {
+    let query = r#"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isStable", "isTestnet", "walletAddress", "tokenGroupId"
+        FROM "WalletBalance"
+        WHERE "tokenGroupId" = $1
+          AND "walletAddress" = $2
+          AND "isLatest" = true
+        ORDER BY timestamp DESC
+        LIMIT 1
+    "#;
+
+    query_as::<_, WalletBalance>(query)
+        .bind(token_group_id)
+        .bind(wallet_address.to_checksum(None))
+        .fetch_all(pool)
         .await
 }
