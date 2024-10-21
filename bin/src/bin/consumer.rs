@@ -35,7 +35,8 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = ConsumerArgs::parse();
+    let args =
+        ConsumerArgs::try_parse().unwrap_or_else(|_| ConsumerArgs::parse_from(["".to_string()]));
 
     // Spawn tasks in the custom runtime and store join handles
     let mut handles = Vec::new();

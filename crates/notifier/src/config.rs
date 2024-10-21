@@ -18,11 +18,7 @@ use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
 #[derive(Clone, Debug, Parser, Default)]
-pub struct NotifierArgs {
-    /// The webhook endpoint to connect to.
-    #[clap(long, env = "DISCORD_WEBHOOK")]
-    pub webhook: Option<String>,
-}
+pub struct NotifierArgs {}
 
 impl NotifierArgs {
     pub async fn create(&self) -> Result<Notifier> {
@@ -32,7 +28,7 @@ impl NotifierArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let notifier = Notifier::new(self).await;
+        let notifier = Notifier::new(self).await?;
 
         Ok(notifier)
     }

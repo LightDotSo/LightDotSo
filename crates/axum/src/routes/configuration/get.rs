@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Configuration;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::configuration::error::ConfigurationError,
-    state::AppState,
-};
+use super::{error::ConfigurationError, types::Configuration};
+use crate::{error::RouteError, result::AppJsonResult, tags::CONFIGURATION_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -24,6 +21,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{configuration, owner};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
@@ -61,12 +59,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Configuration returned successfully", body = Configuration),
             (status = 404, description = "Configuration not found", body = ConfigurationError),
-        )
+        ),
+        tag = CONFIGURATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Configuration> {
     // -------------------------------------------------------------------------
     // Parse

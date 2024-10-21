@@ -36,15 +36,26 @@ use crate::{
     routes::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
         configuration_operation, configuration_operation_owner, configuration_operation_signature,
-        feedback, health, interpretation, interpretation_action, invite_code, notification,
-        notification_settings, operation, owner, paymaster, paymaster_operation, portfolio,
-        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        consumer, feedback, health, interpretation, interpretation_action, invite_code,
+        notification, notification_settings, operation, owner, paymaster, paymaster_operation,
+        portfolio, protocol, protocol_group, queue, signature, simulation, support_request, token,
         token_group, token_price, transaction, user, user_notification_settings, user_operation,
         user_operation_merkle, user_operation_merkle_proof, user_settings, wallet, wallet_billing,
         wallet_features, wallet_notification_settings, wallet_settings,
     },
     sessions::{self, authenticated},
-    state::AppState,
+    tags::{
+        ACTIVITY_TAG, ASSET_CHANGE_TAG, AUTH_TAG, BILLING_OPERATION_TAG, BILLING_TAG, CHAIN_TAG,
+        CHECK_TAG, CONFIGURATION_OPERATION_OWNER_TAG, CONFIGURATION_OPERATION_SIGNATURE_TAG,
+        CONFIGURATION_OPERATION_TAG, CONFIGURATION_TAG, CONSUMER_TAG, FEEDBACK_TAG, HEALTH_TAG,
+        INTERPRETATION_ACTION_TAG, INTERPRETATION_TAG, INVITE_CODE_TAG, NOTIFICATION_SETTINGS_TAG,
+        NOTIFICATION_TAG, OPERATION_TAG, OWNER_TAG, PAYMASTER_OPERATION_TAG, PAYMASTER_TAG,
+        PORTFOLIO_TAG, PROTOCOL_GROUP_TAG, PROTOCOL_TAG, QUEUE_TAG, SIGNATURE_TAG, SIMULATION_TAG,
+        SUPPORT_REQUEST_TAG, TOKEN_GROUP_TAG, TOKEN_PRICE_TAG, TOKEN_TAG, TRANSACTION_TAG,
+        USER_NOTIFICATION_SETTINGS_TAG, USER_OPERATION_MERKLE_PROOF_TAG, USER_OPERATION_MERKLE_TAG,
+        USER_OPERATION_TAG, USER_SETTINGS_TAG, USER_TAG, WALLET_BILLING_TAG, WALLET_FEATURES_TAG,
+        WALLET_NOTIFICATION_SETTINGS_TAG, WALLET_SETTINGS_TAG, WALLET_TAG,
+    },
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
@@ -53,11 +64,8 @@ use hyper::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue, Method,
 };
-use lightdotso_db::db::create_client;
-use lightdotso_hyper::get_hyper_client;
-use lightdotso_kafka::get_producer;
 use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
-use lightdotso_redis::get_redis_client;
+use lightdotso_state::{create_client_state, ClientState};
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tokio::net::TcpListener;
@@ -68,13 +76,8 @@ use tower_governor::{
 };
 use tower_http::cors::{AllowOrigin, CorsLayer};
 use tower_sessions::SessionManagerLayer;
-use utoipa::{
-    openapi::{
-        security::{ApiKey, ApiKeyValue, SecurityScheme},
-        Components,
-    },
-    OpenApi,
-};
+use utoipa::OpenApi;
+use utoipa_axum::{router::OpenApiRouter, routes};
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(OpenApi)]
@@ -120,6 +123,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(configuration_operation_signature::create::ConfigurationOperationSignatureCreateRequestParams),
         schemas(configuration_operation_signature::error::ConfigurationOperationSignatureError),
         schemas(configuration_operation_signature::types::ConfigurationOperationSignature),
+        schemas(consumer::error::ConsumerError),
+        schemas(consumer::types::ConsumerSuccess),
         schemas(feedback::create::FeedbackCreateRequestParams),
         schemas(feedback::error::FeedbackError),
         schemas(feedback::types::Feedback),
@@ -227,173 +232,52 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::types::WalletSettingsOptional),
         schemas(wallet_settings::update::WalletSettingsUpdateRequestParams),
     ),
-    paths(
-        activity::v1_activity_get_handler,
-        activity::v1_activity_list_handler,
-        activity::v1_activity_list_count_handler,
-        asset_change::v1_asset_change_get_handler,
-        asset_change::v1_asset_change_list_handler,
-        auth::v1_auth_nonce_handler,
-        auth::v1_auth_session_handler,
-        auth::v1_auth_logout_handler,
-        auth::v1_auth_verify_handler,
-        billing::v1_billing_get_handler,
-        billing::v1_billing_list_handler,
-        billing::v1_billing_update_handler,
-        billing_operation::v1_billing_operation_get_handler,
-        billing_operation::v1_billing_operation_list_handler,
-        billing_operation::v1_billing_operation_list_count_handler,
-        check::handler,
-        health::handler,
-        chain::v1_chain_create_handler,
-        chain::v1_chain_get_handler,
-        chain::v1_chain_list_handler,
-        chain::v1_chain_update_handler,
-        configuration::v1_configuration_get_handler,
-        configuration::v1_configuration_list_handler,
-        configuration_operation::v1_configuration_operation_create_handler,
-        configuration_operation::v1_configuration_operation_get_handler,
-        configuration_operation::v1_configuration_operation_list_handler,
-        configuration_operation::v1_configuration_operation_list_count_handler,
-        configuration_operation::v1_configuration_operation_update_handler,
-        configuration_operation_owner::v1_configuration_operation_owner_get_handler,
-        configuration_operation_owner::v1_configuration_operation_owner_list_handler,
-        configuration_operation_signature::v1_configuration_operation_signature_create_handler,
-        configuration_operation_signature::v1_configuration_operation_signature_get_handler,
-        configuration_operation_signature::v1_configuration_operation_signature_list_handler,
-        feedback::v1_feedback_create_handler,
-        interpretation::v1_interpretation_get_handler,
-        interpretation::v1_interpretation_list_handler,
-        interpretation_action::v1_interpretation_action_get_handler,
-        interpretation_action::v1_interpretation_action_list_handler,
-        interpretation_action::v1_interpretation_action_list_count_handler,
-        invite_code::v1_invite_code_create_handler,
-        invite_code::v1_invite_code_get_handler,
-        invite_code::v1_invite_code_list_handler,
-        invite_code::v1_invite_code_list_count_handler,
-        notification::v1_notification_get_handler,
-        notification::v1_notification_list_handler,
-        notification::v1_notification_list_count_handler,
-        notification::v1_notification_read_handler,
-        notification_settings::v1_notification_settings_get_handler,
-        notification_settings::v1_notification_settings_list_handler,
-        notification_settings::v1_notification_settings_list_count_handler,
-        operation::v1_operation_list_handler,
-        operation::v1_operation_list_count_handler,
-        owner::v1_owner_get_handler,
-        owner::v1_owner_list_handler,
-        paymaster::v1_paymaster_get_handler,
-        paymaster::v1_paymaster_list_handler,
-        paymaster_operation::v1_paymaster_operation_get_handler,
-        paymaster_operation::v1_paymaster_operation_list_handler,
-        portfolio::v1_portfolio_get_handler,
-        protocol::v1_protocol_get_handler,
-        protocol::v1_protocol_list_handler,
-        protocol_group::v1_protocol_group_create_handler,
-        protocol_group::v1_protocol_group_get_handler,
-        protocol_group::v1_protocol_group_list_handler,
-        queue::v1_queue_interpretation_handler,
-        queue::v1_queue_portfolio_handler,
-        queue::v1_queue_node_handler,
-        queue::v1_queue_token_handler,
-        queue::v1_queue_transaction_handler,
-        queue::v1_queue_user_operation_handler,
-        signature::v1_signature_create_handler,
-        signature::v1_signature_get_handler,
-        signature::v1_signature_list_handler,
-        simulation::v1_simulation_create_handler,
-        simulation::v1_simulation_get_handler,
-        simulation::v1_simulation_list_handler,
-        simulation::v1_simulation_list_count_handler,
-        support_request::v1_support_request_create_handler,
-        token::v1_token_get_handler,
-        token::v1_token_list_handler,
-        token::v1_token_list_count_handler,
-        token::v1_token_update_handler,
-        token_group::v1_token_group_create_handler,
-        token_group::v1_token_group_get_handler,
-        token_group::v1_token_group_list_handler,
-        token_price::v1_token_price_get_handler,
-        transaction::v1_transaction_get_handler,
-        transaction::v1_transaction_list_handler,
-        transaction::v1_transaction_list_count_handler,
-        user::v1_user_get_handler,
-        user_notification_settings::v1_user_notification_settings_get_handler,
-        user_notification_settings::v1_user_notification_settings_update_handler,
-        user_operation::v1_user_operation_create_handler,
-        user_operation::v1_user_operation_create_batch_handler,
-        user_operation::v1_user_operation_get_handler,
-        user_operation::v1_user_operation_nonce_handler,
-        user_operation::v1_user_operation_list_handler,
-        user_operation::v1_user_operation_list_count_handler,
-        user_operation::v1_user_operation_signature_handler,
-        user_operation::v1_user_operation_update_handler,
-        user_operation_merkle::v1_user_operation_merkle_create_handler,
-        user_operation_merkle::v1_user_operation_merkle_get_handler,
-        user_operation_merkle::v1_user_operation_merkle_list_handler,
-        user_operation_merkle_proof::v1_user_operation_merkle_proof_get_handler,
-        user_operation_merkle_proof::v1_user_operation_merkle_proof_list_handler,
-        user_settings::v1_user_settings_get_handler,
-        user_settings::v1_user_settings_update_handler,
-        wallet::v1_wallet_create_handler,
-        wallet::v1_wallet_get_handler,
-        wallet::v1_wallet_list_handler,
-        wallet::v1_wallet_list_count_handler,
-        wallet::v1_wallet_update_handler,
-        wallet_billing::v1_wallet_billing_get_handler,
-        wallet_billing::v1_wallet_billing_update_handler,
-        wallet_features::v1_wallet_features_get_handler,
-        wallet_features::v1_wallet_features_update_handler,
-        wallet_notification_settings::v1_wallet_notification_settings_get_handler,
-        wallet_notification_settings::v1_wallet_notification_settings_update_handler,
-        wallet_settings::v1_wallet_settings_get_handler,
-        wallet_settings::v1_wallet_settings_update_handler,
-    ),
     tags(
-        (name = "activity", description = "Activity API"),
-        (name = "asset_change", description = "Asset Change API"),
-        (name = "auth", description = "Auth API"),
-        (name = "billing", description = "Billing API"),
-        (name = "billing_operation", description = "Billing Operation API"),
-        (name = "chain", description = "Chain API"),
-        (name = "configuration", description = "Configuration API"),
-        (name = "configuration_operation", description = "Configuration Operation API"),
-        (name = "configuration_operation_owner", description = "Configuration Operation Owner API"),
-        (name = "configuration_operation_signature", description = "Configuration Operation Signature API"),
-        (name = "check", description = "Check API"),
-        (name = "feedback", description = "Feedback API"),
-        (name = "interpretation", description = "Interpretation API"),
-        (name = "interpretation_action", description = "Interpretation Action API"),
-        (name = "invite_code", description = "Invite Code API"),
-        (name = "health", description = "Health API"),
-        (name = "notification", description = "Notification API"),
-        (name = "notification_settings", description = "Notification Settings API"),
-        (name = "operation", description = "Operation API"),
-        (name = "owner", description = "Owner API"),
-        (name = "paymaster", description = "Paymaster API"),
-        (name = "paymaster_operation", description = "Paymaster Operation API"),
-        (name = "portfolio", description = "Portfolio API"),
-        (name = "protocol", description = "Protocol API"),
-        (name = "protocol_group", description = "Protocol Group API"),
-        (name = "queue", description = "Queue API"),
-        (name = "signature", description = "Signature API"),
-        (name = "simulation", description = "Simulation API"),
-        (name = "support_request", description = "Support Request API"),
-        (name = "token", description = "Token API"),
-        (name = "token_group", description = "Token Group API"),
-        (name = "token_price", description = "Token Price API"),
-        (name = "transaction", description = "Transaction API"),
-        (name = "user", description = "User API"),
-        (name = "user_notification_settings", description = "User Notification Settings API"),
-        (name = "user_operation", description = "User Operation API"),
-        (name = "user_operation_merkle", description = "User Operation Merkle API"),
-        (name = "user_operation_merkle_proof", description = "User Operation Merkle Proof API"),
-        (name = "user_settings", description = "User Settings API"),
-        (name = "wallet", description = "Wallet API"),
-        (name = "wallet_billing", description = "Wallet Billing API"),
-        (name = "wallet_features", description = "Wallet Features API"),
-        (name = "wallet_notification_settings", description = "Wallet Notification Settings API"),
-        (name = "wallet_settings", description = "Wallet Settings API"),
+        (name = ACTIVITY_TAG.to_string(), description = "Activity API"),
+        (name = ASSET_CHANGE_TAG.to_string(), description = "Asset Change API"),
+        (name = AUTH_TAG.to_string(), description = "Auth API"),
+        (name = BILLING_TAG.to_string(), description = "Billing API"),
+        (name = BILLING_OPERATION_TAG.to_string(), description = "Billing Operation API"),
+        (name = CHAIN_TAG.to_string(), description = "Chain API"),
+        (name = CONFIGURATION_TAG.to_string(), description = "Configuration API"),
+        (name = CONFIGURATION_OPERATION_TAG.to_string(), description = "Configuration Operation API"),
+        (name = CONFIGURATION_OPERATION_OWNER_TAG.to_string(), description = "Configuration Operation Owner API"),
+        (name = CONFIGURATION_OPERATION_SIGNATURE_TAG.to_string(), description = "Configuration Operation Signature API"),
+        (name = CONSUMER_TAG.to_string(), description = "Consumer API"),
+        (name = CHECK_TAG.to_string(), description = "Check API"),
+        (name = FEEDBACK_TAG.to_string(), description = "Feedback API"),
+        (name = HEALTH_TAG.to_string(), description = "Health API"),
+        (name = INTERPRETATION_TAG.to_string(), description = "Interpretation API"),
+        (name = INTERPRETATION_ACTION_TAG.to_string(), description = "Interpretation Action API"),
+        (name = INVITE_CODE_TAG.to_string(), description = "Invite Code API"),
+        (name = NOTIFICATION_TAG.to_string(), description = "Notification API"),
+        (name = NOTIFICATION_SETTINGS_TAG.to_string(), description = "Notification Settings API"),
+        (name = OPERATION_TAG.to_string(), description = "Operation API"),
+        (name = OWNER_TAG.to_string(), description = "Owner API"),
+        (name = PAYMASTER_TAG.to_string(), description = "Paymaster API"),
+        (name = PAYMASTER_OPERATION_TAG.to_string(), description = "Paymaster Operation API"),
+        (name = PORTFOLIO_TAG.to_string(), description = "Portfolio API"),
+        (name = PROTOCOL_TAG.to_string(), description = "Protocol API"),
+        (name = PROTOCOL_GROUP_TAG.to_string(), description = "Protocol Group API"),
+        (name = QUEUE_TAG.to_string(), description = "Queue API"),
+        (name = SIGNATURE_TAG.to_string(), description = "Signature API"),
+        (name = SIMULATION_TAG.to_string(), description = "Simulation API"),
+        (name = SUPPORT_REQUEST_TAG.to_string(), description = "Support Request API"),
+        (name = TOKEN_TAG.to_string(), description = "Token API"),
+        (name = TOKEN_GROUP_TAG.to_string(), description = "Token Group API"),
+        (name = TOKEN_PRICE_TAG.to_string(), description = "Token Price API"),
+        (name = TRANSACTION_TAG.to_string(), description = "Transaction API"),
+        (name = USER_TAG.to_string(), description = "User API"),
+        (name = USER_NOTIFICATION_SETTINGS_TAG.to_string(), description = "User Notification Settings API"),
+        (name = USER_OPERATION_TAG.to_string(), description = "User Operation API"),
+        (name = USER_OPERATION_MERKLE_TAG.to_string(), description = "User Operation Merkle API"),
+        (name = USER_OPERATION_MERKLE_PROOF_TAG.to_string(), description = "User Operation Merkle Proof API"),
+        (name = USER_SETTINGS_TAG.to_string(), description = "User Settings API"),
+        (name = WALLET_TAG.to_string(), description = "Wallet API"),
+        (name = WALLET_BILLING_TAG.to_string(), description = "Wallet Billing API"),
+        (name = WALLET_FEATURES_TAG.to_string(), description = "Wallet Features API"),
+        (name = WALLET_NOTIFICATION_SETTINGS_TAG.to_string(), description = "Wallet Notification Settings API"),
+        (name = WALLET_SETTINGS_TAG.to_string(), description = "Wallet Settings API"),
     )
 )]
 #[openapi(
@@ -410,12 +294,7 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
-    let hyper = get_hyper_client()?;
-    let db = Arc::new(create_client().await?);
-    let producer = Arc::new(get_producer()?);
-    let redis = get_redis_client()?;
-    let state =
-        AppState { hyper: Arc::new(hyper), client: db, producer, redis: Arc::new(redis.clone()) };
+    let state = create_client_state().await?;
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -483,6 +362,9 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Create the api doc
+    let open_api_spec = ApiDoc::openapi();
+
     // Create the API
     let api = Router::new()
         .merge(activity::router())
@@ -495,6 +377,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(configuration_operation::router())
         .merge(configuration_operation_owner::router())
         .merge(configuration_operation_signature::router())
+        .merge(consumer::router())
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
@@ -531,8 +414,147 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet_notification_settings::router())
         .merge(wallet_settings::router());
 
+    // Create the open api router
+    let open_api_router: OpenApiRouter<ClientState> = OpenApiRouter::new()
+        .routes(routes!(activity::v1_activity_get_handler))
+        .routes(routes!(activity::v1_activity_list_handler))
+        .routes(routes!(activity::v1_activity_list_count_handler))
+        .routes(routes!(asset_change::v1_asset_change_get_handler))
+        .routes(routes!(asset_change::v1_asset_change_list_handler))
+        .routes(routes!(auth::v1_auth_nonce_handler))
+        .routes(routes!(auth::v1_auth_session_handler))
+        .routes(routes!(auth::v1_auth_logout_handler))
+        .routes(routes!(auth::v1_auth_verify_handler))
+        .routes(routes!(billing::v1_billing_get_handler))
+        .routes(routes!(billing::v1_billing_list_handler))
+        .routes(routes!(billing::v1_billing_update_handler))
+        .routes(routes!(billing_operation::v1_billing_operation_get_handler))
+        .routes(routes!(billing_operation::v1_billing_operation_list_handler))
+        .routes(routes!(billing_operation::v1_billing_operation_list_count_handler))
+        .routes(routes!(check::handler))
+        .routes(routes!(health::handler))
+        .routes(routes!(chain::v1_chain_create_handler))
+        .routes(routes!(chain::v1_chain_get_handler))
+        .routes(routes!(chain::v1_chain_list_handler))
+        .routes(routes!(chain::v1_chain_update_handler))
+        .routes(routes!(configuration::v1_configuration_get_handler))
+        .routes(routes!(configuration::v1_configuration_list_handler))
+        .routes(routes!(configuration_operation::v1_configuration_operation_create_handler))
+        .routes(routes!(configuration_operation::v1_configuration_operation_get_handler))
+        .routes(routes!(configuration_operation::v1_configuration_operation_list_handler))
+        .routes(routes!(configuration_operation::v1_configuration_operation_list_count_handler))
+        .routes(routes!(configuration_operation::v1_configuration_operation_update_handler))
+        .routes(routes!(
+            configuration_operation_owner::v1_configuration_operation_owner_get_handler
+        ))
+        .routes(routes!(
+            configuration_operation_owner::v1_configuration_operation_owner_list_handler
+        ))
+        .routes(routes!(
+            configuration_operation_signature::v1_configuration_operation_signature_create_handler
+        ))
+        .routes(routes!(
+            configuration_operation_signature::v1_configuration_operation_signature_get_handler
+        ))
+        .routes(routes!(
+            configuration_operation_signature::v1_configuration_operation_signature_list_handler
+        ))
+        .routes(routes!(consumer::v1_consumer_covalent_handler))
+        .routes(routes!(consumer::v1_consumer_portfolio_handler))
+        .routes(routes!(consumer::v1_consumer_routescan_handler))
+        .routes(routes!(feedback::v1_feedback_create_handler))
+        .routes(routes!(interpretation::v1_interpretation_get_handler))
+        .routes(routes!(interpretation::v1_interpretation_list_handler))
+        .routes(routes!(interpretation_action::v1_interpretation_action_get_handler))
+        .routes(routes!(interpretation_action::v1_interpretation_action_list_handler))
+        .routes(routes!(interpretation_action::v1_interpretation_action_list_count_handler))
+        .routes(routes!(invite_code::v1_invite_code_create_handler))
+        .routes(routes!(invite_code::v1_invite_code_get_handler))
+        .routes(routes!(invite_code::v1_invite_code_list_handler))
+        .routes(routes!(invite_code::v1_invite_code_list_count_handler))
+        .routes(routes!(notification::v1_notification_get_handler))
+        .routes(routes!(notification::v1_notification_list_handler))
+        .routes(routes!(notification::v1_notification_list_count_handler))
+        .routes(routes!(notification::v1_notification_read_handler))
+        .routes(routes!(notification_settings::v1_notification_settings_get_handler))
+        .routes(routes!(notification_settings::v1_notification_settings_list_handler))
+        .routes(routes!(notification_settings::v1_notification_settings_list_count_handler))
+        .routes(routes!(operation::v1_operation_list_handler))
+        .routes(routes!(operation::v1_operation_list_count_handler))
+        .routes(routes!(owner::v1_owner_get_handler))
+        .routes(routes!(owner::v1_owner_list_handler))
+        .routes(routes!(paymaster::v1_paymaster_get_handler))
+        .routes(routes!(paymaster::v1_paymaster_list_handler))
+        .routes(routes!(paymaster_operation::v1_paymaster_operation_get_handler))
+        .routes(routes!(paymaster_operation::v1_paymaster_operation_list_handler))
+        .routes(routes!(portfolio::v1_portfolio_get_handler))
+        .routes(routes!(protocol::v1_protocol_get_handler))
+        .routes(routes!(protocol::v1_protocol_list_handler))
+        .routes(routes!(protocol_group::v1_protocol_group_create_handler))
+        .routes(routes!(protocol_group::v1_protocol_group_get_handler))
+        .routes(routes!(protocol_group::v1_protocol_group_list_handler))
+        .routes(routes!(queue::v1_queue_interpretation_handler))
+        .routes(routes!(queue::v1_queue_portfolio_handler))
+        .routes(routes!(queue::v1_queue_node_handler))
+        .routes(routes!(queue::v1_queue_token_handler))
+        .routes(routes!(queue::v1_queue_transaction_handler))
+        .routes(routes!(queue::v1_queue_user_operation_handler))
+        .routes(routes!(signature::v1_signature_create_handler))
+        .routes(routes!(signature::v1_signature_get_handler))
+        .routes(routes!(signature::v1_signature_list_handler))
+        .routes(routes!(simulation::v1_simulation_create_handler))
+        .routes(routes!(simulation::v1_simulation_get_handler))
+        .routes(routes!(simulation::v1_simulation_list_handler))
+        .routes(routes!(simulation::v1_simulation_list_count_handler))
+        .routes(routes!(support_request::v1_support_request_create_handler))
+        .routes(routes!(token::v1_token_get_handler))
+        .routes(routes!(token::v1_token_list_handler))
+        .routes(routes!(token::v1_token_list_count_handler))
+        .routes(routes!(token::v1_token_update_handler))
+        .routes(routes!(token_group::v1_token_group_create_handler))
+        .routes(routes!(token_group::v1_token_group_get_handler))
+        .routes(routes!(token_group::v1_token_group_list_handler))
+        .routes(routes!(token_price::v1_token_price_get_handler))
+        .routes(routes!(transaction::v1_transaction_get_handler))
+        .routes(routes!(transaction::v1_transaction_list_handler))
+        .routes(routes!(transaction::v1_transaction_list_count_handler))
+        .routes(routes!(user::v1_user_get_handler))
+        .routes(routes!(user_notification_settings::v1_user_notification_settings_get_handler))
+        .routes(routes!(user_notification_settings::v1_user_notification_settings_update_handler))
+        .routes(routes!(user_operation::v1_user_operation_create_handler))
+        .routes(routes!(user_operation::v1_user_operation_create_batch_handler))
+        .routes(routes!(user_operation::v1_user_operation_get_handler))
+        .routes(routes!(user_operation::v1_user_operation_nonce_handler))
+        .routes(routes!(user_operation::v1_user_operation_list_handler))
+        .routes(routes!(user_operation::v1_user_operation_list_count_handler))
+        .routes(routes!(user_operation::v1_user_operation_signature_handler))
+        .routes(routes!(user_operation::v1_user_operation_update_handler))
+        .routes(routes!(user_operation_merkle::v1_user_operation_merkle_create_handler))
+        .routes(routes!(user_operation_merkle::v1_user_operation_merkle_get_handler))
+        .routes(routes!(user_operation_merkle::v1_user_operation_merkle_list_handler))
+        .routes(routes!(user_operation_merkle_proof::v1_user_operation_merkle_proof_get_handler))
+        .routes(routes!(user_operation_merkle_proof::v1_user_operation_merkle_proof_list_handler))
+        .routes(routes!(user_settings::v1_user_settings_get_handler))
+        .routes(routes!(user_settings::v1_user_settings_update_handler))
+        .routes(routes!(wallet::v1_wallet_create_handler))
+        .routes(routes!(wallet::v1_wallet_get_handler))
+        .routes(routes!(wallet::v1_wallet_list_handler))
+        .routes(routes!(wallet::v1_wallet_list_count_handler))
+        .routes(routes!(wallet::v1_wallet_update_handler))
+        .routes(routes!(wallet_billing::v1_wallet_billing_get_handler))
+        .routes(routes!(wallet_billing::v1_wallet_billing_update_handler))
+        .routes(routes!(wallet_features::v1_wallet_features_get_handler))
+        .routes(routes!(wallet_features::v1_wallet_features_update_handler))
+        .routes(routes!(wallet_notification_settings::v1_wallet_notification_settings_get_handler))
+        .routes(routes!(
+            wallet_notification_settings::v1_wallet_notification_settings_update_handler
+        ))
+        .routes(routes!(wallet_settings::v1_wallet_settings_get_handler))
+        .routes(routes!(wallet_settings::v1_wallet_settings_update_handler))
+        .with_state(state.clone());
+
     // Create the session store
-    let session_store = sessions::RedisStore::new(redis);
+    let session_store = sessions::RedisStore::new(state.clone().redis.clone().as_ref().clone());
     let mut session_manager_layer =
         SessionManagerLayer::new(session_store.clone()).with_name(*SESSION_COOKIE_ID);
 
@@ -562,13 +584,9 @@ pub async fn start_api_server() -> Result<()> {
         .with_service_version(env!("CARGO_PKG_VERSION").to_string())
         .build();
 
-    // Create the api doc
-    let mut open_api = ApiDoc::openapi();
-    let components = open_api.components.get_or_insert(Components::new());
-    components.add_security_scheme(
-        "sid",
-        SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new(&**SESSION_COOKIE_ID))),
-    );
+    let (_router, open_api) = OpenApiRouter::with_openapi(open_api_spec)
+        .nest("", open_api_router.clone())
+        .split_for_parts();
 
     // Create the app for the server
     let app = Router::new()

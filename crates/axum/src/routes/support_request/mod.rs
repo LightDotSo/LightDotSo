@@ -16,9 +16,9 @@ pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use create::{
     __path_v1_support_request_create_handler, v1_support_request_create_handler,
@@ -29,6 +29,6 @@ pub(crate) use create::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new().route("/support_request/create", post(v1_support_request_create_handler))
 }

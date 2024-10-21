@@ -48,7 +48,8 @@ pub async fn main() -> Result<()> {
     }
 
     // Parse the command line arguments
-    let args = IndexerArgs::parse();
+    let args =
+        IndexerArgs::try_parse().unwrap_or_else(|_| IndexerArgs::parse_from(["".to_string()]));
 
     // Create the db client
     let db = Arc::new(create_client().await?);

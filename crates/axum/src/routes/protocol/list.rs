@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::ProtocolError, types::Protocol};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::PROTOCOL_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocols returned successfully", body = [Protocol]),
             (status = 500, description = "Protocol bad request", body = ProtocolError),
-        )
+        ),
+        tag = PROTOCOL_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_protocol_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Protocol>> {
     // -------------------------------------------------------------------------
     // Parse

@@ -2,13 +2,21 @@
   build-all = ["build", "--workspace"]
   cli = ["run", "--"]
   prisma = ["run", "--package", "embedded-prisma", "--"]
-  generate = [
+  generate-mysql = [
     "run",
     "--package",
     "embedded-prisma",
     "--",
     "generate",
     "--schema=configurations/prisma/prisma/schema-rs.prisma",
+  ]
+  generate-postgres = [
+    "run",
+    "--package",
+    "embedded-prisma",
+    "--",
+    "generate",
+    "--schema=configurations/prisma/prisma/schema-postgres.prisma",
   ]
   scopelint = ["run", "--package", "embedded-scopelint", "--"]
   uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]

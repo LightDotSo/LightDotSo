@@ -18,12 +18,12 @@ pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
     routing::{get, post},
     Router,
 };
+use lightdotso_state::ClientState;
 
 pub(crate) use create::{__path_v1_token_group_create_handler, v1_token_group_create_handler};
 pub(crate) use get::{__path_v1_token_group_get_handler, v1_token_group_get_handler};
@@ -34,7 +34,7 @@ pub(crate) use list::{__path_v1_token_group_list_handler, v1_token_group_list_ha
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/token/group/create", post(v1_token_group_create_handler))
         .route("/token/group/get", get(v1_token_group_get_handler))

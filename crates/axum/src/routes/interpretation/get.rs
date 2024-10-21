@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Interpretation;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::interpretation::error::InterpretationError,
-    state::AppState,
-};
+use super::{error::InterpretationError, types::Interpretation};
+use crate::{error::RouteError, result::AppJsonResult, tags::INTERPRETATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::{asset_change, interpretation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -55,12 +53,13 @@ pub(crate) struct GetQuery {
         responses(
             (status = 200, description = "Interpretation returned successfully", body = Interpretation),
             (status = 404, description = "Interpretation not found", body = InterpretationError),
-        )
+        ),
+        tag = INTERPRETATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Interpretation> {
     // -------------------------------------------------------------------------
     // Parse

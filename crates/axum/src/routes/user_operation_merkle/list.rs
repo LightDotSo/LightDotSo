@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::UserOperationMerkleError, types::UserOperationMerkle};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::USER_OPERATION_MERKLE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::user_operation_merkle;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -54,12 +54,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocol groups returned successfully", body = [UserOperationMerkle]),
             (status = 500, description = "Protocol group bad request", body = UserOperationMerkleError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<UserOperationMerkle>> {
     // -------------------------------------------------------------------------
     // Parse

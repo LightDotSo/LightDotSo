@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::tags::CHECK_TAG;
 use autometrics::autometrics;
 use axum::response::IntoResponse;
 
@@ -27,7 +28,8 @@ use axum::response::IntoResponse;
         path = "/check",
         responses(
             (status = 200, description = "Check returned successfully"),
-        )
+        ),
+        tag = CHECK_TAG.as_str()
     )]
 #[autometrics]
 pub async fn handler() -> impl IntoResponse {

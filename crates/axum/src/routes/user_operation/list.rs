@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::UserOperationError, types::UserOperation};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::USER_OPERATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -25,6 +24,7 @@ use lightdotso_prisma::{
     user_operation::{self, WhereParam},
     UserOperationStatus,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
@@ -105,12 +105,13 @@ pub(crate) struct UserOperationListCount {
         responses(
             (status = 200, description = "User operations returned successfully", body = [UserOperation]),
             (status = 500, description = "User operation bad request", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -192,12 +193,13 @@ pub(crate) async fn v1_user_operation_list_handler(
         responses(
             (status = 200, description = "User operation count returned successfully", body = UserOperationListCount),
             (status = 500, description = "User operation count bad request", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationListCount> {
     // -------------------------------------------------------------------------
     // Parse

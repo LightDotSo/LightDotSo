@@ -62,7 +62,7 @@ pub async fn start_rpc_server() -> Result<()> {
     let producer = Arc::new(get_producer()?);
 
     // Get the config
-    let _ = RpcArgs::parse();
+    let _ = RpcArgs::try_parse().unwrap_or_else(|_| RpcArgs::parse_from(["".to_string()]));
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85

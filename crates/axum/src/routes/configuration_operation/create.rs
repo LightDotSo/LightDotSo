@@ -14,17 +14,12 @@
 
 #![allow(clippy::unwrap_used)]
 
-// use super::types::ConfigurationOperationSignature;
+use super::{error::ConfigurationOperationError, types::ConfigurationOperation};
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::{
-        configuration_operation::{
-            error::ConfigurationOperationError, types::ConfigurationOperation,
-        },
-        configuration_operation_signature::error::ConfigurationOperationSignatureError,
-    },
-    state::AppState,
+    routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
+    tags::CONFIGURATION_OPERATION_TAG,
 };
 use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
@@ -49,6 +44,7 @@ use lightdotso_sequence::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_image_bytes32, render_subdigest},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -124,12 +120,13 @@ pub struct ConfigurationOperationSignatureCreateParams {
             (status = 400, description = "Invalid configuration", body = ConfigurationOperationError),
             (status = 409, description = "Signature already exists", body = ConfigurationOperationError),
             (status = 500, description = "Signature internal error", body = ConfigurationOperationError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<ConfigurationOperationCreateRequestParams>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------

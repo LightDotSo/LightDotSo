@@ -26,9 +26,13 @@ use rustls::crypto::ring;
 pub type HyperClient = Client<HttpsConnector<HttpConnector>, Body>;
 
 pub fn get_hyper_client() -> Result<HyperClient> {
-    ring::default_provider().install_default().expect("Failed to install default crypto provider");
+    // Attempt to install the default crypto provider
+    let _ = ring::default_provider().install_default();
 
+    // Build the https connector
     let https =
         HttpsConnectorBuilder::new().with_webpki_roots().https_or_http().enable_http1().build();
+
+    // Build the hyper client
     Ok(Builder::new(TokioExecutor::new()).to_owned().build(https))
 }

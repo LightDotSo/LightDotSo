@@ -23,6 +23,7 @@ pub(crate) mod configuration;
 pub(crate) mod configuration_operation;
 pub(crate) mod configuration_operation_owner;
 pub(crate) mod configuration_operation_signature;
+pub(crate) mod consumer;
 pub(crate) mod feedback;
 pub(crate) mod health;
 pub(crate) mod interpretation;

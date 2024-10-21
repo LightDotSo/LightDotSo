@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::QueueError, types::QueueSuccess};
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    state::AppState,
+    tags::QUEUE_TAG,
 };
 use alloy::primitives::B256;
 use autometrics::autometrics;
@@ -28,10 +29,9 @@ use lightdotso_kafka::{
     types::interpretation::InterpretationMessage,
 };
 use lightdotso_prisma::{transaction, user_operation, UserOperationStatus};
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
-
-use super::{error::QueueError, types::QueueSuccess};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -63,12 +63,13 @@ pub struct PostQuery {
         responses(
             (status = 200, description = "Queue created successfully", body = QueueSuccess),
             (status = 500, description = "Queue internal error", body = QueueError),
-        )
+        ),
+        tag = QUEUE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_queue_interpretation_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<QueueSuccess> {
     // -------------------------------------------------------------------------
     // Parse

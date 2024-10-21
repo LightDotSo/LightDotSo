@@ -17,6 +17,7 @@ use crate::{
     result::{AppError, AppJsonResult},
     routes::auth::error::AuthError,
     sessions::{update_session_expiry, verify_session},
+    tags::AUTH_TAG,
 };
 use axum::Json;
 use lightdotso_tracing::tracing::info;
@@ -54,7 +55,8 @@ pub(crate) struct AuthSession {
         responses(
             (status = 200, description = "Auth session returned successfully", body = AuthSession),
             (status = 404, description = "Auth session not found", body = AuthError),
-        )
+        ),
+        tag = AUTH_TAG.as_str()
     )]
 pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession> {
     info!(?session);

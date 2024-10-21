@@ -1,5 +1,6 @@
-generator client {
-  provider        = "prisma-client-js"
+generator prisma {
+  provider        = "cargo prisma"
+  output          = "../../../crates/prisma-postgres/src/postgres.rs"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -13,15 +14,15 @@ model TokenPrice {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  price Float
+  price Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-one
@@ -40,6 +41,8 @@ model TokenPrice {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([tokenId, timestamp])
   // Relations
   @@index([tokenId])
 }
@@ -49,17 +52,17 @@ model TokenProtocol {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
-  debtUSD    Float
-  rewardUSD  Float
+  balanceUSD Decimal
+  debtUSD    Decimal
+  rewardUSD  Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -80,6 +83,8 @@ model TokenProtocol {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([protocolId, timestamp])
   // Relations
   @@index([protocolId])
 }
@@ -89,30 +94,29 @@ model WalletBalance {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
 
   // The below fields are from: https://github.com/llamafolio/llamafolio-api
   // Inspired by License: GPL-3.0
 
-  // rewardUSD  Float?
-  // debtUSD    Float?
-  // apy           Float?
-  // apyBase       Float?
-  // apyMean30d    Float?
+  // rewardUSD  Decimal?
+  // debtUSD    Decimal?
+  // apy           Decimal?
+  // apyBase       Decimal?
+  // apyMean30d    Decimal?
   // ilRisk        Boolean?
-  // collateralUSD Float?
+  // collateralUSD Decimal?
 
   chainId   Decimal  @db.Decimal(20, 0)
-  amount    String?
-  stable    Boolean?
+  amount    Decimal?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
   isTestnet Boolean  @default(false)
@@ -132,6 +136,9 @@ model WalletBalance {
   // token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
+  // tokenGroup   TokenGroup? @relation(fields: [tokenGroupId], references: [id])
+  tokenGroupId String?
+
   // tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
 
@@ -145,11 +152,15 @@ model WalletBalance {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([chainId, tokenId, timestamp])
+  @@unique([chainId, tokenProtocolId, timestamp])
   // Query
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
   @@index([chainId])
   @@index([walletAddress])
   @@index([tokenId])
+  @@index([tokenGroupId])
   @@index([tokenProtocolId])
 }

@@ -18,7 +18,7 @@ use super::{error::ConfigurationOperationSignatureError, types::ConfigurationOpe
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    state::AppState,
+    tags::CONFIGURATION_OPERATION_SIGNATURE_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -42,6 +42,7 @@ use lightdotso_sequence::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_image_bytes32, render_subdigest},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -99,12 +100,13 @@ pub struct ConfigurationOperationSignatureSignatureCreateParams {
             (status = 400, description = "Invalid configuration", body = ConfigurationOperationSignatureError),
             (status = 409, description = "Signature already exists", body = ConfigurationOperationSignatureError),
             (status = 500, description = "Signature internal error", body = ConfigurationOperationSignatureError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_signature_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     Json(params): Json<ConfigurationOperationSignatureCreateRequestParams>,
 ) -> AppJsonResult<ConfigurationOperationSignature> {
     // -------------------------------------------------------------------------

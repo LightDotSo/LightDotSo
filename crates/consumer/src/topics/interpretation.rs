@@ -14,45 +14,85 @@
 
 #![allow(clippy::unwrap_used)]
 
-use clap::Parser;
-use eyre::Result;
+use super::TopicConsumer;
+use crate::state::ConsumerState;
+use async_trait::async_trait;
+use eyre::{eyre, Result};
 use lightdotso_db::models::{
     interpretation::upsert_interpretation_with_actions, transaction::get_transaction_with_logs,
     user_operation::get_user_operation_with_logs,
 };
-use lightdotso_interpreter::{config::InterpreterArgs, types::InterpretationRequest};
+use lightdotso_interpreter::{
+    interpreter::Interpreter,
+    types::{InterpretationRequest, InterpretationResponse},
+};
 use lightdotso_kafka::types::interpretation::InterpretationMessage;
-use lightdotso_prisma::PrismaClient;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
+use tokio::sync::Mutex;
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn interpretation_consumer(
-    msg: &BorrowedMessage<'_>,
-    db: Arc<PrismaClient>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct InterpretationConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `InterpretationMessage`
-        let payload: InterpretationMessage = serde_json::from_slice(payload.as_bytes())?;
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
-        info!("payload: {:?}", payload);
+#[async_trait]
+impl TopicConsumer for InterpretationConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Since we use consumer_state, we need to unwrap it
+        let consumer_state = consumer_state.ok_or_else(|| eyre!("Consumer state is None"))?;
 
-        let args = InterpreterArgs::parse_from([""]);
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
 
-        // If the payload has a transaction hash
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `InterpretationMessage`
+            let payload: InterpretationMessage = serde_json::from_slice(payload.as_bytes())?;
+
+            // Log the payload
+            info!("payload: {:?}", payload);
+
+            // Consume the payload
+            self.consume_with_message(state, consumer_state, payload).await?;
+        }
+
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl InterpretationConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: InterpretationMessage,
+    ) -> Result<()> {
+        // Get the interpreter
+        let interpreter = consumer_state.interpreter.clone();
+
+        // Get the transaction hash
         if let Some(transaction_hash) = payload.transaction_hash {
             // Get the transaction from the database
             let transaction_with_logs =
-                get_transaction_with_logs(db.clone(), transaction_hash).await?;
+                get_transaction_with_logs(state.client.clone(), transaction_hash).await?;
 
             info!("transaction_with_logs: {:?}", transaction_with_logs);
 
@@ -82,15 +122,13 @@ pub async fn interpretation_consumer(
                 traces: vec![],
                 logs: transaction_with_logs.logs.into_iter().map(|lx| lx.inner).collect(),
             };
-
             // Run the interpretation
-            let res = args.clone().run_interpretation(request).await?;
-
+            let res = self.run_interpretation(&interpreter, request).await?;
             info!("res: {:?}", res);
 
             // Upsert the interpretation
             upsert_interpretation_with_actions(
-                db.clone(),
+                state.client.clone(),
                 res.clone(),
                 Some(transaction_with_logs.transaction.hash),
                 None,
@@ -102,7 +140,8 @@ pub async fn interpretation_consumer(
         if let Some(user_operation_with_logs) = payload.user_operation_hash {
             // Get the transaction from the database
             let user_operation_with_logs =
-                get_user_operation_with_logs(db.clone(), user_operation_with_logs).await?;
+                get_user_operation_with_logs(state.client.clone(), user_operation_with_logs)
+                    .await?;
 
             // If the `transaction` field is `None`, then return early
             if user_operation_with_logs.transaction.is_none() {
@@ -127,18 +166,28 @@ pub async fn interpretation_consumer(
             };
 
             // Run the interpretation
-            let res = args.run_interpretation(request).await?;
+            let res = self.run_interpretation(&interpreter, request).await?;
+            info!("res: {:?}", res);
 
             // Upsert the interpretation
             upsert_interpretation_with_actions(
-                db,
+                state.client.clone(),
                 res,
                 None,
                 Some(user_operation_with_logs.user_operation.hash),
             )
             .await?;
         }
+
+        Ok(())
     }
 
-    Ok(())
+    async fn run_interpretation(
+        &self,
+        interpreter: &Arc<Mutex<Interpreter<'static>>>,
+        request: InterpretationRequest,
+    ) -> Result<InterpretationResponse> {
+        let mut interpreter_guard = interpreter.lock().await;
+        interpreter_guard.run_with_interpret(request).await
+    }
 }

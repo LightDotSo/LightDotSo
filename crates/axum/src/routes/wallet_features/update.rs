@@ -14,10 +14,13 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletFeatures, WalletFeaturesOptional};
+use super::{
+    error::WalletFeaturesError,
+    types::{WalletFeatures, WalletFeaturesOptional},
+};
 use crate::{
-    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::wallet_features::error::WalletFeaturesError, sessions::get_user_id, state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::WALLET_FEATURES_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -26,6 +29,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{wallet, wallet_features};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -73,12 +77,13 @@ pub struct WalletFeaturesUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = WalletFeaturesError),
             (status = 401, description = "Unauthorized", body = WalletFeaturesError),
             (status = 500, description = "Wallet features internal error", body = WalletFeaturesError),
-        )
+        ),
+        tag = WALLET_FEATURES_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_features_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<WalletFeaturesUpdateRequestParams>,
 ) -> AppJsonResult<WalletFeatures> {

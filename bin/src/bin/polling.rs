@@ -25,7 +25,8 @@ use lightdotso_tracing::{
 pub async fn start_polling() -> Result<()> {
     std::thread::spawn(|| {
         futures::executor::block_on(async {
-            let args = PollingArgs::parse();
+            let args = PollingArgs::try_parse()
+                .unwrap_or_else(|_| PollingArgs::parse_from(["".to_string()]));
             let _ = args.run();
         })
     })

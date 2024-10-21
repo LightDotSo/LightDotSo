@@ -17,5 +17,10 @@
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rdkafka = { workspace = true }
+  rustls = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }
+  tokio = { workspace = true }

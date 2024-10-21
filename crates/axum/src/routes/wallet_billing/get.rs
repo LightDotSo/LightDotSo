@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::WalletBilling;
+use super::{error::WalletBillingError, types::WalletBilling};
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::wallet_billing::error::WalletBillingError,
-    state::AppState,
+    tags::WALLET_BILLING_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -26,6 +25,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{billing, wallet, wallet_billing, BillingStatus};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -58,12 +58,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet billing returned successfully", body = WalletBilling),
             (status = 404, description = "Wallet billing not found", body = WalletBillingError),
-        )
+        ),
+        tag = WALLET_BILLING_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_billing_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<WalletBilling> {
     // -------------------------------------------------------------------------
     // Parse

@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_user,
     result::{AppJsonResult, AppResult},
-    state::AppState,
+    tags::WALLET_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -32,6 +31,7 @@ use lightdotso_prisma::{
     user,
     wallet::{self, WhereParam},
 };
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -82,12 +82,13 @@ pub(crate) struct WalletListCount {
         responses(
             (status = 200, description = "Wallets returned successfully", body = [Wallet]),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Wallet>> {
@@ -153,12 +154,13 @@ pub(crate) async fn v1_wallet_list_handler(
         responses(
             (status = 200, description = "Wallets returned successfully", body = WalletListCount),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<WalletListCount> {
@@ -209,7 +211,7 @@ pub(crate) async fn v1_wallet_list_count_handler(
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
     query: &ListQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<Option<String>> {

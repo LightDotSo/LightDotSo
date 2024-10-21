@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationOperationSignature;
+use super::{error::ConfigurationOperationSignatureError, types::ConfigurationOperationSignature};
 use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
-    state::AppState,
+    error::RouteError, result::AppJsonResult, tags::CONFIGURATION_OPERATION_SIGNATURE_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -24,6 +22,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::configuration_operation_signature;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -58,12 +57,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Configuration operation signature returned successfully", body = ConfigurationOperationSignature),
             (status = 404, description = "Configuration operation signature not found", body = ConfigurationOperationSignatureError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_signature_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<ConfigurationOperationSignature> {
     // -------------------------------------------------------------------------
     // Parse

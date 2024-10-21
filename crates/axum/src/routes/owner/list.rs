@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::OwnerError, types::Owner};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Owners returned successfully", body = [Owner]),
             (status = 500, description = "Owner bad request", body = OwnerError),
-        )
+        ),
+        tag = OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_owner_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Owner>> {
     // -------------------------------------------------------------------------
     // Parse

@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::NotificationError, types::Notification};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
     sessions::get_user_id,
-    state::AppState,
+    tags::NOTIFICATION_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -34,6 +33,7 @@ use lightdotso_prisma::{
     activity,
     notification::{self, WhereParam},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -85,12 +85,13 @@ pub(crate) struct NotificationListCount {
         responses(
             (status = 200, description = "Notifications returned successfully", body = [Notification]),
             (status = 500, description = "Notification bad request", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Notification>> {
@@ -156,12 +157,13 @@ pub(crate) async fn v1_notification_list_handler(
         responses(
             (status = 200, description = "Notifications returned successfully", body = NotificationListCount),
             (status = 500, description = "Notification bad request", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<NotificationListCount> {
@@ -213,7 +215,7 @@ pub(crate) async fn v1_notification_list_count_handler(
 /// Gets the user id from the session, regardless of whether the user is authenticated.
 async fn unauthenticate_user_id(
     query: &ListQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<String> {
@@ -230,7 +232,7 @@ async fn unauthenticate_user_id(
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
     query: &ListQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<String> {

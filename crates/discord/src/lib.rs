@@ -12,42 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use eyre::Result;
-use serenity::{
-    all::{CreateEmbed, ExecuteWebhook},
-    http::Http,
-    model::webhook::Webhook,
-};
-
-pub async fn notify(webhook: &str, embed: CreateEmbed) -> Result<()> {
-    // You don't need a token when you are only dealing with webhooks.
-    let http = Http::new("");
-    let webhook = Webhook::from_url(&http, webhook).await?;
-    let builder = ExecuteWebhook::new()
-        .username("LightDotSo")
-        .avatar_url("https://assets.light.so/icon.png")
-        .embed(embed);
-
-    webhook.execute(&http, false, builder).await?;
-
-    Ok(())
-}
-
-pub async fn notify_create_wallet(
-    webhook: &str,
-    address: &str,
-    chain_id: &str,
-    transaction_hash: &str,
-) -> Result<()> {
-    let embed = CreateEmbed::new()
-        .title("Wallet Created")
-        .description(format!(
-            "Address: {}\nChainid: {}\nHash: {}\n",
-            address, chain_id, transaction_hash
-        ))
-        .color(0x00ff00);
-
-    notify(webhook, embed).await?;
-
-    Ok(())
-}
+pub mod channel;
+pub mod config;
+pub mod discord;

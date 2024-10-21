@@ -177,7 +177,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        # app: [ai, app, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
+        app: [ai, blog, changelog, docs, paper, explorer, frames, home, paper, proposals, storybook]
     permissions:
       contents: write
       id-token: write

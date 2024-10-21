@@ -14,41 +14,80 @@
 
 #![allow(clippy::unwrap_used)]
 
+use super::TopicConsumer;
+use crate::state::ConsumerState;
 use alloy::primitives::Address;
+use async_trait::async_trait;
 use eyre::{eyre, Result};
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::{
     topics::portfolio::produce_portfolio_message,
     types::{covalent::CovalentMessage, portfolio::PortfolioMessage},
 };
-use lightdotso_prisma::{token, wallet_balance, PrismaClient};
+use lightdotso_prisma::token;
+use lightdotso_prisma_postgres::wallet_balance;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
-use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
-use std::sync::Arc;
+use rdkafka::{message::BorrowedMessage, Message};
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn covalent_consumer(
-    producer: Arc<FutureProducer>,
-    msg: &BorrowedMessage<'_>,
-    db: Arc<PrismaClient>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct CovalentConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `CovalentMessage`
-        let payload: CovalentMessage = serde_json::from_slice(payload.as_bytes())?;
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
+#[async_trait]
+impl TopicConsumer for CovalentConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        _consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `CovalentMessage`
+            let payload: CovalentMessage = serde_json::from_slice(payload.as_bytes())?;
+
+            // Log the payload
+            info!("payload: {:?}", payload);
+
+            // Consume the payload
+            self.consume_with_message(state, payload).await?;
+        }
+
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl CovalentConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: CovalentMessage,
+    ) -> Result<()> {
         // If the chain is 0, produce a portfolio message
         if payload.chain_id == 0 {
-            produce_portfolio_message(producer, &PortfolioMessage { address: payload.address })
-                .await?;
+            produce_portfolio_message(
+                state.producer.clone(),
+                &PortfolioMessage { address: payload.address },
+            )
+            .await?;
+
+            // Return early
             return Ok(());
         }
 
@@ -76,8 +115,8 @@ pub async fn covalent_consumer(
             }
         }
 
-        // Filter the balances to only include tokens with non-none contract addresses and non-zero
-        // decimals
+        // Filter the balances to only include tokens with non-none contract addresses and
+        // non-zero decimals
         balances.data.items = balances
             .data
             .items
@@ -87,7 +126,8 @@ pub async fn covalent_consumer(
         info!("balances: {:?}", balances);
 
         // Create the tokens
-        let res = db
+        let res = state
+            .client
             .token()
             .create_many(
                 balances
@@ -120,9 +160,11 @@ pub async fn covalent_consumer(
         info!("res: {:?}", res);
 
         // Find the tokens
-        let tokens = db
+        let tokens = state
+            .client
             .token()
             .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
+            .with(token::group::fetch())
             .exec()
             .await?;
         info!("tokens: {:?}", tokens);
@@ -159,9 +201,10 @@ pub async fn covalent_consumer(
         let token_data = token_data?;
 
         // Create a token price for each token
-        db.token_price().create_many(token_data).exec().await?;
+        state.postgres_client.token_price().create_many(token_data).exec().await?;
 
-        let res: Result<i64> = db
+        let res: Result<i64> = state
+            .postgres_client
             ._transaction()
             .run(|client| async move {
                 client
@@ -171,7 +214,7 @@ pub async fn covalent_consumer(
                             wallet_balance::wallet_address::equals(
                                 payload.address.to_checksum(None),
                             ),
-                            wallet_balance::chain_id::equals(payload.chain_id as i64),
+                            wallet_balance::chain_id::equals(payload.chain_id as f64),
                         ],
                         vec![wallet_balance::is_latest::set(false)],
                     )
@@ -198,28 +241,29 @@ pub async fn covalent_consumer(
 
                                 (
                                     item.quote.unwrap_or(0.0),
-                                    payload.chain_id as i64,
+                                    payload.chain_id as f64,
                                     payload.address.to_checksum(None),
                                     vec![
                                         wallet_balance::amount::set(Some(
                                             item.balance
                                                 .as_ref()
                                                 .map(|balance| {
-                                                    balance.parse::<i64>().unwrap_or(0).to_string()
+                                                    balance.parse::<f64>().unwrap_or(0.0)
                                                 })
-                                                .unwrap_or(0.to_string()),
-                                        )),
-                                        wallet_balance::stable::set(Some(
-                                            item.balance_type
-                                                .as_ref()
-                                                .map(|balance_type| balance_type == "stablecoin")
-                                                .unwrap_or(false),
+                                                .unwrap_or(0.0),
                                         )),
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
-                                        wallet_balance::is_spam::set(item.is_spam),
+                                        wallet_balance::token_group_id::set(
+                                            token.group.as_ref().and_then(|optional_group| {
+                                                optional_group
+                                                    .as_ref()
+                                                    .map(|group| group.id.to_string())
+                                            }),
+                                        ),
                                         wallet_balance::is_latest::set(true),
+                                        wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_testnet::set(is_testnet(
-                                            payload.chain_id as u64,
+                                            payload.chain_id,
                                         )),
                                     ],
                                 )
@@ -232,8 +276,8 @@ pub async fn covalent_consumer(
                 Ok(latest_balances)
             })
             .await;
-        info!("res: {:?}", res?)
-    }
+        info!("res: {:?}", res?);
 
-    Ok(())
+        Ok(())
+    }
 }

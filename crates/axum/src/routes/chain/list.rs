@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::ChainError, types::Chain};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::CHAIN_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Protocol groups returned successfully", body = [Chain]),
             (status = 500, description = "Protocol group bad request", body = ChainError),
-        )
+        ),
+        tag = CHAIN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_chain_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Chain>> {
     // -------------------------------------------------------------------------
     // Parse

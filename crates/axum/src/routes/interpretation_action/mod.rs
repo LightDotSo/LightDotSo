@@ -17,9 +17,9 @@ pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{
     __path_v1_interpretation_action_get_handler, v1_interpretation_action_get_handler,
@@ -35,7 +35,7 @@ pub(crate) use list::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/interpretation_action/get", get(v1_interpretation_action_get_handler))
         .route("/interpretation_action/list", get(v1_interpretation_action_list_handler))

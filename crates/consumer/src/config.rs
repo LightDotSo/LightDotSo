@@ -42,7 +42,7 @@ impl ConsumerArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let consumer = Consumer::new(self).await;
+        let consumer = Consumer::new(self).await?;
 
         consumer.run().await?;
 
@@ -57,13 +57,12 @@ impl ConsumerArgs {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::env;
 
     #[test]
     fn test_config_values() {
         // Reset the env vars
-        env::remove_var("KAFKA_GROUP");
-        env::remove_var("KAFKA_TOPICS");
+        std::env::remove_var("KAFKA_GROUP");
+        std::env::remove_var("KAFKA_TOPICS");
 
         // Create a Config with default values
         let config_args = ConsumerArgs::parse_from([""]);
@@ -73,8 +72,8 @@ mod tests {
         assert_eq!(config_args.topics, vec![] as Vec<String>);
 
         // Set some env vars
-        env::set_var("KAFKA_GROUP", "one");
-        env::set_var("KAFKA_TOPICS", "hello,world");
+        std::env::set_var("KAFKA_GROUP", "one");
+        std::env::set_var("KAFKA_TOPICS", "hello,world");
 
         // Create a Config with env values
         let config_args = ConsumerArgs::parse_from([""]);
@@ -84,8 +83,8 @@ mod tests {
         assert_eq!(config_args.topics, vec!["hello", "world"]);
 
         // Reset the env vars
-        env::remove_var("KAFKA_GROUP");
-        env::remove_var("KAFKA_TOPICS");
+        std::env::remove_var("KAFKA_GROUP");
+        std::env::remove_var("KAFKA_TOPICS");
     }
 
     #[test]

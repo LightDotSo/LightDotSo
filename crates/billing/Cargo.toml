@@ -14,7 +14,7 @@
   axum = { workspace = true }
   backon = { workspace = true }
   chrono = { workspace = true }
-  clap = { workspace = true, features = ["derive"] }
+  clap = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-client = { workspace = true }

@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::UserOperationMerkle;
-use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::user_operation_merkle::error::UserOperationMerkleError, state::AppState,
-};
+use super::{error::UserOperationMerkleError, types::UserOperationMerkle};
+use crate::{error::RouteError, result::AppJsonResult, tags::USER_OPERATION_MERKLE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -26,6 +23,7 @@ use lightdotso_prisma::{
     asset_change, billing_operation, interpretation, paymaster_operation, signature, token_price,
     user_operation, user_operation_merkle,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -57,12 +55,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User operation merkle returned successfully", body = UserOperationMerkle),
             (status = 404, description = "User operation merkle not found", body = UserOperationMerkleError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationMerkle> {
     // -------------------------------------------------------------------------
     // Parse

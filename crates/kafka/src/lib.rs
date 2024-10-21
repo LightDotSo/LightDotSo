@@ -30,12 +30,25 @@ pub mod types;
 
 /// Configure a Kafka client with the required settings.
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
+    let mut binding = ClientConfig::new();
+
+    // If the `NEXTEST` environment variable is set, use the test kafka broker.
+    if std::env::var("NEXTEST").is_ok() {
+        // Set the broker address to match the Kafka service in docker-compose
+        let config = binding
+            .set("bootstrap.servers", "localhost:29092")
+            .set("group.id", group)
+            .set("auto.offset.reset", "earliest")
+            .set("enable.auto.commit", "false")
+            .set("security.protocol", "PLAINTEXT");
+
+        return Ok(config.clone());
+    }
+
     // Get the environment variables
     let broker = std::env::var("KAFKA_BROKER")?;
     let username = std::env::var("KAFKA_USERNAME")?;
     let password = std::env::var("KAFKA_PASSWORD")?;
-
-    let mut binding = ClientConfig::new();
 
     // If host is localhost, connect to kafka without security settings.
     if broker.starts_with("localhost") {

@@ -15,7 +15,7 @@
 use super::types::Wallet;
 use crate::{
     cookies::CookieUtility, error::RouteError, result::AppJsonResult,
-    routes::wallet::error::WalletError, state::AppState,
+    routes::wallet::error::WalletError, tags::WALLET_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -24,6 +24,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::wallet;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use tower_cookies::Cookies;
 use utoipa::IntoParams;
@@ -56,12 +57,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
             (status = 404, description = "Wallet not found", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     cookies: Cookies,
 ) -> AppJsonResult<Wallet> {
     // -------------------------------------------------------------------------

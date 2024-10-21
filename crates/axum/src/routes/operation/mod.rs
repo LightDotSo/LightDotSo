@@ -16,9 +16,9 @@ pub(crate) mod error;
 pub(crate) mod list;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use list::{
     __path_v1_operation_list_count_handler, __path_v1_operation_list_handler,
@@ -30,7 +30,7 @@ pub(crate) use list::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/operation/list", get(v1_operation_list_handler))
         .route("/operation/list/count", get(v1_operation_list_count_handler))

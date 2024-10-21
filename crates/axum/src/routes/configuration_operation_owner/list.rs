@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::ConfigurationOperationOwnerError, types::ConfigurationOperationOwner};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::CONFIGURATION_OPERATION_OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Configuration operation owners returned successfully", body = [ConfigurationOperationOwner]),
             (status = 500, description = "Configuration operation owners bad request", body = ConfigurationOperationOwnerError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_owner_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<ConfigurationOperationOwner>> {
     // -------------------------------------------------------------------------
     // Parse

@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Owner;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::owner::error::OwnerError, state::AppState,
-};
+use super::{error::OwnerError, types::Owner};
+use crate::{error::RouteError, result::AppJsonResult, tags::OWNER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::owner;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -53,12 +52,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Owner returned successfully", body = Owner),
             (status = 404, description = "Owner not found", body = OwnerError),
-        )
+        ),
+        tag = OWNER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_owner_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Owner> {
     // -------------------------------------------------------------------------
     // Parse

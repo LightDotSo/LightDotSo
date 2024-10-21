@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::InviteCode;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::invite_code::error::InviteCodeError,
-    state::AppState,
-};
+use super::{error::InviteCodeError, types::InviteCode};
+use crate::{error::RouteError, result::AppJsonResult, tags::INVITE_CODE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::invite_code;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -54,12 +52,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Invite code returned successfully", body = InviteCode),
             (status = 404, description = "Invite code not found", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<InviteCode> {
     // -------------------------------------------------------------------------
     // Parse

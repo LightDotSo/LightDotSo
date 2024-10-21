@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::TokenError, types::Token};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::token::{error::TokenError, types::Token},
-    sessions::get_user_id,
-    state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::TOKEN_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::token;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -78,11 +76,12 @@ pub struct TokenUpdateRequestParams {
         responses(
             (status = 200, description = "Token updated successfully", body = Token),
             (status = 500, description = "Token internal error", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_update_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<TokenUpdateRequestParams>,

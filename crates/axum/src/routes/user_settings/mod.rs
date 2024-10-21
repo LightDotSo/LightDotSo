@@ -17,12 +17,12 @@ pub(crate) mod get;
 pub(crate) mod types;
 pub(crate) mod update;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
     routing::{get, put},
     Router,
 };
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{__path_v1_user_settings_get_handler, v1_user_settings_get_handler};
 pub(crate) use update::{__path_v1_user_settings_update_handler, v1_user_settings_update_handler};
@@ -32,7 +32,7 @@ pub(crate) use update::{__path_v1_user_settings_update_handler, v1_user_settings
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/user/settings/get", get(v1_user_settings_get_handler))
         .route("/user/settings/update", put(v1_user_settings_update_handler))

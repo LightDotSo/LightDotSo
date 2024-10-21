@@ -12,7 +12,7 @@
   alloy = { workspace = true }
   backon = { workspace = true }
   chrono = { workspace = true }
-  clap = { workspace = true, features = ["derive", "env"] }
+  clap = { workspace = true }
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }

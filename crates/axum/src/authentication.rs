@@ -20,10 +20,10 @@ use crate::{
     result::{AppError, AppResult},
     routes::{auth::error::AuthError, user::error::UserError, wallet::error::WalletError},
     sessions::get_user_id,
-    state::AppState,
 };
 use alloy::primitives::Address;
 use lightdotso_prisma::{configuration, user, wallet};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
 
@@ -33,7 +33,7 @@ use tower_sessions_core::Session;
 /// Can bypass the authentication by passing in a token. (for admin routes)
 /// Expects for the admin endpoint to specify a user address.
 pub(crate) async fn authenticate_user(
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     token: Option<String>,
     user_id: Option<String>,
@@ -92,7 +92,7 @@ pub(crate) async fn authenticate_user(
 /// are invoked from a particular user).
 /// If a token is provided, authenticate the user w/ the user id.
 pub(crate) async fn authenticate_wallet_user(
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     wallet: &Address,
     token: Option<String>,

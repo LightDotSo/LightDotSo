@@ -18,9 +18,9 @@ pub(crate) mod list;
 pub(crate) mod read;
 pub(crate) mod types;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
+use lightdotso_state::ClientState;
 
 pub(crate) use get::{__path_v1_notification_get_handler, v1_notification_get_handler};
 pub(crate) use list::{
@@ -34,7 +34,7 @@ pub(crate) use read::{__path_v1_notification_read_handler, v1_notification_read_
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/notification/get", get(v1_notification_get_handler))
         .route("/notification/list", get(v1_notification_list_handler))

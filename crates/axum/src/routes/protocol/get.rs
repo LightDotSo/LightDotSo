@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Protocol;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::protocol::error::ProtocolError,
-    state::AppState,
-};
+use super::{error::ProtocolError, types::Protocol};
+use crate::{error::RouteError, result::AppJsonResult, tags::PROTOCOL_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::protocol;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -54,12 +52,14 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Protocol returned successfully", body = Protocol),
             (status = 404, description = "Protocol not found", body = ProtocolError),
-        )
-    )]
+        ),
+        tag = PROTOCOL_TAG.as_str()
+    )
+]
 #[autometrics]
 pub(crate) async fn v1_protocol_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Protocol> {
     // -------------------------------------------------------------------------
     // Parse

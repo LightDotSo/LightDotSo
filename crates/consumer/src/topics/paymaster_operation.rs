@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::TopicConsumer;
+use crate::state::ConsumerState;
+use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_common::traits::U256ToU64;
 use lightdotso_contracts::paymaster::{decode_paymaster_and_data, get_paymaster};
@@ -22,30 +25,55 @@ use lightdotso_kafka::{
         billing_operation::BillingOperationMessage, paymaster_operation::PaymasterOperationMessage,
     },
 };
-use lightdotso_prisma::PrismaClient;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
-use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
-use std::sync::Arc;
+use rdkafka::{message::BorrowedMessage, Message};
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn paymaster_operation_consumer(
-    producer: Arc<FutureProducer>,
-    msg: &BorrowedMessage<'_>,
-    db: Arc<PrismaClient>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct PaymasterOperationConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `PaymasterOperationMessage`
-        let payload: PaymasterOperationMessage = serde_json::from_slice(payload.as_bytes())?;
-        info!("payload: {:?}", payload);
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
+#[async_trait]
+impl TopicConsumer for PaymasterOperationConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        _consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `PaymasterOperationMessage`
+            let payload: PaymasterOperationMessage = serde_json::from_slice(payload.as_bytes())?;
+            info!("payload: {:?}", payload);
+
+            // Consume the message
+            self.consume_with_message(state, payload).await?;
+        }
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl PaymasterOperationConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: PaymasterOperationMessage,
+    ) -> Result<()> {
         // Get the paymasterAndData.
         if let Ok((verifying_paymaster_address, valid_until, valid_after, _signature)) =
             decode_paymaster_and_data(payload.paymaster_and_data.to_vec())
@@ -59,7 +87,7 @@ pub async fn paymaster_operation_consumer(
 
             // Finally, create the paymaster operation.
             let (_, paymaster_operation) = create_paymaster_operation(
-                db.clone(),
+                state.client.clone(),
                 payload.chain_id as i64,
                 verifying_paymaster_address,
                 payload.sender,
@@ -70,7 +98,7 @@ pub async fn paymaster_operation_consumer(
             .await?;
 
             produce_billing_operation_message(
-                producer,
+                state.producer.clone(),
                 &BillingOperationMessage {
                     sender: payload.sender,
                     chain_id: payload.chain_id,
@@ -82,7 +110,7 @@ pub async fn paymaster_operation_consumer(
             )
             .await?;
         }
-    }
 
-    Ok(())
+        Ok(())
+    }
 }

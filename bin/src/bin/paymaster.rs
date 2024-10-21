@@ -32,7 +32,8 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = PaymasterArgs::parse();
+    let args =
+        PaymasterArgs::try_parse().unwrap_or_else(|_| PaymasterArgs::parse_from(["".to_string()]));
 
     // Construct the futures
     let paymaster_future = args.run();
