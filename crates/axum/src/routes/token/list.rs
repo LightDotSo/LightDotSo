@@ -14,6 +14,7 @@
 
 use super::{error::TokenError, types::Token};
 use crate::{result::AppJsonResult, tags::TOKEN_TAG};
+use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -99,6 +100,8 @@ pub(crate) async fn v1_token_list_handler(
     // Get the list_query query.
     let Query(query) = list_query;
 
+    let parsed_query_address: Address = query.address.parse()?;
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
@@ -169,7 +172,7 @@ pub(crate) async fn v1_token_list_handler(
         let token_group_wallet_balance = get_latest_wallet_balances_for_token_group(
             &state.pool,
             token_group_id,
-            query.address.parse().unwrap(),
+            parsed_query_address,
         )
         .await?;
         token_group_wallet_balances.extend(token_group_wallet_balance);
