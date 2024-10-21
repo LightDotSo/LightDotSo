@@ -208,7 +208,10 @@ pub(crate) async fn v1_token_list_handler(
     // Merge the tokens inside nested token groups.
     let final_group_nested_tokens = final_tokens
         .into_iter()
-        .filter(|token| if query.group.is_some() { token.group.is_some() } else { true })
+        .filter(|token| match query.group {
+            Some(true) => token.group.is_some(),
+            _ => true,
+        })
         .map(|mut token| {
             if let Some(group) = token.group.as_mut() {
                 // Reset the amount and balance_usd of the token.

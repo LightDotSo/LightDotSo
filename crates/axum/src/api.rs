@@ -605,9 +605,10 @@ pub async fn start_api_server() -> Result<()> {
         )
         .route("/", get("api.light.so"))
         .merge(api.clone())
+        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
         .merge(metrics.routes())
-        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
         .nest("/v1", api.clone())
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/v1/api-docs/openapi.json", open_api.clone()))
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19

@@ -7570,6 +7570,7 @@ dependencies = [
  "eyre",
  "lazy_static",
  "lightdotso-tracing",
+ "serde_json",
  "serenity",
  "tokio",
 ]

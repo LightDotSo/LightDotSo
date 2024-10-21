@@ -20,7 +20,9 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_discord::{config::DiscordArgs, discord::Discord};
 use lightdotso_kafka::types::notification::NotificationMessage;
-use lightdotso_prisma::{activity, notification, wallet_notification_settings, PrismaClient};
+use lightdotso_prisma::{
+    activity, notification, wallet_notification_settings, ActivityEntity, PrismaClient,
+};
 use lightdotso_tracing::tracing::info;
 
 #[derive(Clone)]
@@ -57,13 +59,27 @@ impl Notifier {
             .await?;
 
         // If the activity exists
-        if let Some(entity) = activity {
-            // Match the notification with the activity
-            let res =
-                match_notification_with_activity(&entity.entity, &entity.operation, &entity.log);
+        if let Some(act) = activity {
+            // Run the activity log notification
+            self.discord.notify_activity(act.log.clone()).await?;
+
+            // Run the user operation notification
+            match &act.entity {
+                ActivityEntity::UserOperation => {
+                    self.discord.notify_user_operation(act.log.clone()).await?;
+                }
+                ActivityEntity::Transaction => {
+                    // Log the transaction
+                    info!("Transaction: {:?}", act.log);
+                }
+                _ => {}
+            }
+
+            // Get the operation with the activity
+            let operation = match_notification_with_activity(&act.entity, &act.operation, &act.log);
 
             // Check if the notification should be sent or not
-            if let Some(res) = res {
+            if let Some(res) = operation {
                 info!("res: {:?}", res);
 
                 match res {

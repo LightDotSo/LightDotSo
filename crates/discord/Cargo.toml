@@ -13,6 +13,7 @@
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  serde_json = { workspace = true }
   serenity = { version = "0.12.2", features = ["full"] }
   tokio = { workspace = true }
 
