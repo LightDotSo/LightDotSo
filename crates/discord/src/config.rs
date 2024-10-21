@@ -21,7 +21,7 @@ use lightdotso_tracing::tracing::info;
 pub struct DiscordArgs {
     /// The discord token to connect to.
     #[clap(long, env = "DISCORD_TOKEN")]
-    pub token: String,
+    pub token: Option<String>,
 }
 
 impl DiscordArgs {
@@ -32,7 +32,7 @@ impl DiscordArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let discord = Discord::new(self).await;
+        let discord = Discord::new(self).await?;
 
         Ok(discord)
     }

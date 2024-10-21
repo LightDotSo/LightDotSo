@@ -24,7 +24,7 @@ use rustls::crypto::{ring, CryptoProvider};
 use std::{sync::Arc, time::Duration};
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_consumer_test() -> Result<()> {
+async fn test_integration_consumer_run() -> Result<()> {
     // Load the environment variables.
     let _ = dotenv();
 

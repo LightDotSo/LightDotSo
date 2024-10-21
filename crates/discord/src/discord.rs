@@ -13,26 +13,28 @@
 // limitations under the License.
 
 use crate::{channel::NOTIFICATION_CHANNEL_ID, config::DiscordArgs};
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
 use serenity::all::{ChannelId, CreateEmbed, CreateMessage, Http};
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Discord {
-    pub token: String,
     pub http: Arc<Http>,
 }
 
 impl Discord {
-    pub async fn new(args: &DiscordArgs) -> Self {
+    pub async fn new(args: &DiscordArgs) -> Result<Self> {
         info!("Discord new, starting");
 
+        // Get the token
+        let token = args.token.clone().ok_or_else(|| eyre!("DISCORD_TOKEN is not set"))?;
+
         // Create the discord client
-        let http = Http::new(&args.token);
+        let http = Http::new(&token);
 
         // Create the discord
-        Self { token: args.token.clone(), http: Arc::new(http) }
+        Ok(Self { http: Arc::new(http) })
     }
 
     pub async fn notify(&self, channel_id: ChannelId, embed: CreateEmbed) -> Result<()> {
