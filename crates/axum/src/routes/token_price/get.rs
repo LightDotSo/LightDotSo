@@ -31,6 +31,7 @@ use lightdotso_prisma::token;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -143,21 +144,25 @@ pub(crate) async fn v1_token_price_get_handler(
 
     // Get the price from the result array. Use the last price if the token does not have a price.
     // Use the average price if the token does not have a price and the result is empty.
-    let price = prices.first().map(|x| x.price).unwrap_or(if !prices.is_empty() {
-        prices[0].price
-    } else {
-        0.0
-    });
+    let price = prices
+        .first()
+        .map(|x| x.price.to_f64().unwrap_or(0.0))
+        .unwrap_or(if !prices.is_empty() { prices[0].price.to_f64().unwrap_or(0.0) } else { 0.0 });
 
     // Get the 24h price change from the result array.
-    let price_change_24h = if prices.len() > 1 { prices[0].price - prices[1].price } else { 0.0 };
-
-    // Calculate 24h price change percentage
-    let price_change_24h_percentage = if prices.len() > 1 && prices[1].price != 0.0 {
-        (price_change_24h / prices[1].price) * 100.0
+    let price_change_24h = if prices.len() > 1 {
+        prices[0].price.to_f64().unwrap_or(0.0) - prices[1].price.to_f64().unwrap_or(0.0)
     } else {
         0.0
     };
+
+    // Calculate 24h price change percentage
+    let price_change_24h_percentage =
+        if prices.len() > 1 && prices[1].price.to_f64().unwrap_or(0.0) != 0.0 {
+            (price_change_24h / (prices[1].price.to_f64().unwrap_or(0.0))) * 100.0
+        } else {
+            0.0
+        };
 
     // Construct the token_price.
     let token_price = TokenPrice {

@@ -33,13 +33,13 @@ pub struct WalletBalance {
     pub timestamp: DateTime<Utc>,
     #[serde(rename = "balanceUSD")]
     #[sqlx(rename = "balanceUSD")]
-    pub balance_usd: f64,
+    pub balance_usd: BigDecimal,
     #[serde(rename = "chainId")]
     #[sqlx(rename = "chainId")]
     pub chain_id: BigDecimal,
     #[serde(rename = "amount")]
     #[sqlx(rename = "amount")]
-    pub amount: Option<String>,
+    pub amount: BigDecimal,
     #[serde(rename = "isSpam")]
     #[sqlx(rename = "isSpam")]
     pub is_spam: bool,

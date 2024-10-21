@@ -20,6 +20,7 @@ use lightdotso_sqlx::{
 };
 use prisma_client_rust::chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use sqlx::types::BigDecimal;
 
 // -----------------------------------------------------------------------------
 // Types
@@ -29,7 +30,7 @@ use serde::{Deserialize, Serialize};
 pub struct TokenPriceAggregate {
     #[serde(rename = "price")]
     #[sqlx(rename = "price")]
-    pub price: f64,
+    pub price: BigDecimal,
     #[serde(rename = "date")]
     #[sqlx(rename = "date")]
     pub date: DateTime<Utc>,

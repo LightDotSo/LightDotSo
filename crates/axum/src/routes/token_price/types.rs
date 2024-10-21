@@ -15,6 +15,7 @@
 use crate::routes::token::types::Token;
 use lightdotso_db::models::token_price::TokenPriceAggregate;
 use lightdotso_prisma::token_price;
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -69,7 +70,10 @@ impl From<token_price::Data> for TokenPrice {
 /// Implement From<TokenPriceAggregate> for TokenPriceDate.
 impl From<TokenPriceAggregate> for TokenPriceDate {
     fn from(token_price: TokenPriceAggregate) -> Self {
-        Self { price: token_price.price, date: token_price.date.to_string() }
+        Self {
+            price: token_price.price.to_f64().unwrap_or(0.0),
+            date: token_price.date.to_string(),
+        }
     }
 }
 

@@ -2292,7 +2292,7 @@ model WalletBalance {
   amount    Decimal?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
-  isStable  Boolean? @default(false)
+  isStable  Boolean  @default(false)
   isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------

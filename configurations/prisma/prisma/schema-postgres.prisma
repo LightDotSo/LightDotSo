@@ -14,9 +14,9 @@ model TokenPrice {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -41,6 +41,8 @@ model TokenPrice {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([tokenId, timestamp])
   // Relations
   @@index([tokenId])
 }
@@ -50,9 +52,9 @@ model TokenProtocol {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -81,6 +83,8 @@ model TokenProtocol {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([protocolId, timestamp])
   // Relations
   @@index([protocolId])
 }
@@ -90,9 +94,9 @@ model WalletBalance {
   // Core
   // ---------------------------------------------------------------------------
 
-  // id        String   @id @default(cuid())
+  id        String   @id @default(cuid())
   // timestamp DateTime @default(now())
-  timestamp DateTime @id @default(now()) @db.Timestamptz(3)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -149,6 +153,9 @@ model WalletBalance {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([chainId, tokenId, timestamp])
+  @@unique([chainId, tokenProtocolId, timestamp])
   // Query
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations

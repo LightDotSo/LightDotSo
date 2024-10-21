@@ -26,7 +26,6 @@ use lightdotso_routescan::{get_native_balance, get_token_balances, types::Wallet
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
-use prisma_client_rust::{and, not};
 use rdkafka::{message::BorrowedMessage, Message};
 
 // -----------------------------------------------------------------------------
@@ -148,19 +147,8 @@ impl RoutescanConsumer {
         let tokens = state
             .client
             .token()
-            .find_many(vec![and![
-                token::chain_id::equals(payload.chain_id as i64),
-                not![token::address::not_in_vec(
-                    new_items
-                        .iter()
-                        .filter_map(|item| item
-                            .token_address
-                            .clone()
-                            .and_then(|addr| addr.parse::<Address>().ok())
-                            .map(|addr| addr.to_checksum(None)))
-                        .collect()
-                )]
-            ]])
+            .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
+            .with(token::group::fetch())
             .exec()
             .await?;
         info!("tokens: {:?}", tokens);
@@ -255,6 +243,13 @@ impl RoutescanConsumer {
                                                 .unwrap_or(0.0),
                                         )),
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
+                                        wallet_balance::token_group_id::set(
+                                            token.group.as_ref().and_then(|optional_group| {
+                                                optional_group
+                                                    .as_ref()
+                                                    .map(|group| group.id.to_string())
+                                            }),
+                                        ),
                                         // wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_latest::set(true),
                                         wallet_balance::is_testnet::set(is_testnet(
