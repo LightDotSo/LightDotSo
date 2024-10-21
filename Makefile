@@ -281,13 +281,13 @@ docker-compose-restart: ## Restart the docker-compose.
 
 .PHONY: cargo-generate
 cargo-generate:
-	cargo generate
+	cargo generate-mysql
+	cargo generate-postgres
 	cargo fix --lib --allow-no-vcs -p lightdotso-prisma
 	cargo +nightly fmt || true
 
 .PHONY: prisma
 prisma: cargo-generate ## Add clippy ignore.
-	./scripts/add_recursive_flag.sh
 	./scripts/add_clippy_ignore.sh
 
 #@ Procfile

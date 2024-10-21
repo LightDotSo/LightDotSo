@@ -34,6 +34,8 @@
     "crates/paymaster",
     "crates/prometheus",
     "crates/prisma",
+    "crates/prisma-mysql",
+    "crates/prisma-postgres",
     "crates/redis",
     "crates/routescan",
     "crates/rpc",
@@ -144,6 +146,8 @@
     lightdotso-polling = { path = "./crates/polling" }
     lightdotso-prometheus = { path = "./crates/prometheus" }
     lightdotso-prisma = { path = "./crates/prisma" }
+    lightdotso-prisma-mysql = { path = "./crates/prisma-mysql" }
+    lightdotso-prisma-postgres = { path = "./crates/prisma-postgres" }
     lightdotso-redis = { path = "./crates/redis" }
     lightdotso-routescan = { path = "./crates/routescan" }
     lightdotso-rpc = { path = "./crates/rpc" }

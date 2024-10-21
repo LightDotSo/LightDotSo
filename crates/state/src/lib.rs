@@ -29,6 +29,7 @@ use std::sync::Arc;
 pub struct ClientState {
     pub hyper: Arc<HyperClient>,
     pub client: Arc<PrismaClient>,
+    pub postgres_client: Arc<PrismaPostgresClient>,
     pub producer: Arc<FutureProducer>,
     pub pool: Arc<PostgresPool>,
     pub redis: Arc<Client>,
@@ -41,9 +42,10 @@ pub struct ClientState {
 pub async fn create_client_state() -> Result<ClientState> {
     let hyper = Arc::new(get_hyper_client()?);
     let client = Arc::new(create_client().await?);
-    let pool = Arc::new(create_postgres_client().await?);
+    let postgres_client = Arc::new(create_postgres_client().await?);
+    let pool = Arc::new(create_postgres_pool().await?);
     let producer = Arc::new(get_producer()?);
     let redis = Arc::new(get_redis_client()?);
 
-    Ok(ClientState { hyper, client, producer, pool, redis })
+    Ok(ClientState { hyper, client, postgres_client, producer, pool, redis })
 }

@@ -51,6 +51,14 @@ async fn test_integration_create_postgres_client() -> Result<()> {
 }
 
 #[tokio::test(flavor = "multi_thread")]
+async fn test_integration_create_postgres_pool() -> Result<()> {
+    // Create a new postgres test client
+    let pool = create_postgres_pool().await?;
+
+    Ok(())
+}
+
+#[tokio::test(flavor = "multi_thread")]
 async fn test_integration_create_test_client() -> Result<()> {
     // Load dotenv
     let _ = dotenv();

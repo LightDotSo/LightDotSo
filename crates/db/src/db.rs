@@ -16,6 +16,7 @@
 
 use eyre::Result;
 use lightdotso_prisma::PrismaClient;
+use lightdotso_prisma_postgres::PrismaClient as PrismaPostgresClient;
 use lightdotso_sqlx::{
     sqlx::{postgres::PgPoolOptions, Error as SqlxError},
     PostgresPool,
@@ -41,8 +42,28 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     client
 }
 
+/// Create a new Prisma client for Postgres.
+pub async fn create_postgres_client() -> Result<PrismaPostgresClient, NewClientError> {
+    // If the `NEXTEST` environment variable is set, use the test database.
+    // Otherwise, use the `DATABASE_URL` environment variable.
+    if std::env::var("NEXTEST").is_ok() {
+        return PrismaPostgresClient::_builder()
+            .with_url("postgres://testuser:testpassword@localhost:5432/testdb".to_owned())
+            .build()
+            .await;
+    }
+
+    // Create a new Prisma client.
+    // Default to the `DATABASE_URL` environment variable.
+    let client: Result<PrismaPostgresClient, NewClientError> =
+        PrismaPostgresClient::_builder().build().await;
+
+    // Return the client.
+    client
+}
+
 /// Create a new sqlx client w/ `POSTGRES_URL` environment variable.
-pub async fn create_postgres_client() -> Result<PostgresPool, SqlxError> {
+pub async fn create_postgres_pool() -> Result<PostgresPool, SqlxError> {
     // If the `NEXTEST` environment variable is set, use the test database.
     // Otherwise, use the `POSTGRES_URL` environment variable.
     let database_url = if std::env::var("NEXTEST").is_ok() {

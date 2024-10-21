@@ -7534,6 +7534,8 @@ dependencies = [
  "lightdotso-graphql",
  "lightdotso-interpreter",
  "lightdotso-prisma",
+ "lightdotso-prisma-mysql",
+ "lightdotso-prisma-postgres",
  "lightdotso-sqlx",
  "lightdotso-tracing",
  "lightdotso-utils",
@@ -7848,6 +7850,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-prisma-mysql"
+version = "0.1.0"
+dependencies = [
+ "lightdotso-prisma",
+]
+
+[[package]]
+name = "lightdotso-prisma-postgres"
+version = "0.1.0"
+dependencies = [
+ "lightdotso-prisma",
+]
+
+[[package]]
 name = "lightdotso-prometheus"
 version = "0.1.0"
 dependencies = [
@@ -7992,6 +8008,8 @@ dependencies = [
  "lightdotso-hyper",
  "lightdotso-kafka",
  "lightdotso-prisma",
+ "lightdotso-prisma-mysql",
+ "lightdotso-prisma-postgres",
  "lightdotso-redis",
  "lightdotso-sqlx",
 ]

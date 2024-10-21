@@ -1,5 +1,6 @@
-generator client {
-  provider        = "prisma-client-js"
+generator prisma {
+  provider        = "cargo prisma"
+  output          = "../../../crates/prisma/src/postgres.rs"
   previewFeatures = ["fullTextSearch"]
 }
 

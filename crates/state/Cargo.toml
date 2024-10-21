@@ -14,5 +14,7 @@
   lightdotso-hyper = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-prisma-mysql = { workspace = true }
+  lightdotso-prisma-postgres = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-sqlx = { workspace = true }

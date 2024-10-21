@@ -12,3 +12,8 @@
   prisma-client-rust = { workspace = true }
   prisma-client-rust-cli = { workspace = true }
   serde = { workspace = true }
+
+[features]
+  default = ["mysql"]
+  mysql = []
+  postgres = []
