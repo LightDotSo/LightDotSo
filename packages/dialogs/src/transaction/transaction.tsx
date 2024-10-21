@@ -336,12 +336,16 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({ address }) => {
                         name="gas.asset.quantity"
                         render={({ field: _field }) => {
                           // Get the matching token
-                          const token = tokens?.find(
-                            (token) =>
-                              token.address ===
-                                (form.getValues("gas.asset.address") || "") &&
-                              token.chain_id === form.getValues("gas.chainId"),
-                          );
+                          const token =
+                            tokens &&
+                            tokens?.length > 0 &&
+                            tokens?.find(
+                              (token) =>
+                                token.address ===
+                                  (form.getValues("gas.asset.address") || "") &&
+                                token.chain_id ===
+                                  form.getValues("gas.chainId"),
+                            );
 
                           return (
                             <FormControl>
