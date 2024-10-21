@@ -10,8 +10,8 @@
 
 [dependencies]
   alloy = { workspace = true, features = ["signer-aws"] }
-  aws-config = { version = "1.5" }
-  aws-sdk-kms = { version = "1.36" }
+  aws-config = { version = "1.5.8" }
+  aws-sdk-kms = { version = "1.47.0" }
   eyre = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-redis = { workspace = true }

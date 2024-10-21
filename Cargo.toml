@@ -89,7 +89,7 @@
       "std",
     ] }
     clap = { version = "4.5.20", features = ["derive", "env"] }
-    dotenvy = "0.15"
+    dotenvy = "0.15.7"
     enumset = "1.1.2"
     eyre = "0.6.8"
     foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "57bcac09ef36e14655fc62691a021f588defd6fb", package = "foundry-config" }
@@ -97,12 +97,12 @@
     foundry-evm-traces = { git = "https://github.com/foundry-rs/foundry", rev = "57bcac09ef36e14655fc62691a021f588defd6fb", package = "foundry-evm-traces" }
     futures = "0.3.28"
     futures-util = "0.3.28"
-    http = "1"
+    http = "1.1.0"
     http-body = "1.0.1"
     http-body-util = "0.1.2"
     hyper = { version = "1.5.0", features = ["full"] }
     hyper-rustls = "0.27.3"
-    hyper-util = { version = "0.1", default-features = false, features = [
+    hyper-util = { version = "0.1.9", default-features = false, features = [
       "client-legacy",
       "tokio",
     ] }
@@ -186,7 +186,7 @@
     rdkafka = { version = "0.36.2", features = ["sasl", "ssl"] }
     redb = "2.1.2"
     regress = "0.10.1"
-    reqwest = { version = "0.12", features = [
+    reqwest = { version = "0.12.8", features = [
       "blocking",
       "json",
       "stream",
@@ -213,11 +213,11 @@
       "chrono",
       "bigdecimal",
     ] }
-    strum = "0.26"
-    strum_macros = "0.26"
+    strum = "0.26.3"
+    strum_macros = "0.26.3"
     syn = "2.0.82"
     tauri = "2.0.5"
-    tauri-build = { version = "2.0", features = [] }
+    tauri-build = { version = "2.0.1" }
     thiserror = "1.0.40"
     time = "0.3.36"
     tokio = { version = "1.39.3", features = ["full"] }
@@ -225,7 +225,7 @@
     tower = "0.5.1"
     tower-cookies = "0.10.0"
     tower_governor = "0.4.3"
-    tower-http = { version = "0.6", features = [
+    tower-http = { version = "0.6.1", features = [
       "trace",
       "auth",
       "request-id",
@@ -243,7 +243,7 @@
     uniffi_macros = "0.28.1"
     uniffi_build = { version = "0.28.1", features = ["builtin-bindgen"] }
     uuid = { version = "1.11.0", features = ["v4", "fast-rng", "serde"] }
-    url = { version = "2.4", default-features = false }
+    url = { version = "2.5.2", default-features = false }
 
 [patch.crates-io]
   utoipa = { git = "https://github.com/shunkakinoki/utoipa", rev = "3651130e5bf67dc141d81c15e995d191406a4ece" }
