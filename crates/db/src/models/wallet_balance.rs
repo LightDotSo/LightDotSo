@@ -104,7 +104,9 @@ pub async fn get_wallet_balances(
     }
 
     let where_clause = conditions.join(" AND ");
-    let amount_clause = "amount > 0".to_string();
+    let amount_clause = "\"amount\" > 0".to_string();
+    let balance_usd_clause = "\"balanceUSD\" > 0".to_string();
+
     let limit_clause = if limit > 0 { format!("LIMIT {}", limit) } else { String::new() };
     let offset_clause = if skip > 0 { format!("OFFSET {}", skip) } else { String::new() };
 
@@ -115,7 +117,6 @@ pub async fn get_wallet_balances(
             "chainId",
             "amount",
             "isSpam",
-            "isStable",
             "isTestnet",
             "walletAddress",
             "tokenId",
@@ -123,6 +124,7 @@ pub async fn get_wallet_balances(
            FROM "WalletBalance"
            WHERE {where_clause}
              AND {amount_clause}
+             AND {balance_usd_clause}
            ORDER BY "timestamp" DESC
            {limit_clause}
            {offset_clause}
@@ -179,7 +181,8 @@ pub async fn get_wallet_balances_count(
     }
 
     let where_clause = conditions.join(" AND ");
-    let amount_clause = "amount > 0".to_string();
+    let amount_clause = r#""amount" > 0"#.to_string();
+    let balance_usd_clause = r#""balanceUSD" > 0"#.to_string();
 
     let query_string = format!(
         r#"SELECT 
@@ -187,6 +190,7 @@ pub async fn get_wallet_balances_count(
            FROM "WalletBalance"
            WHERE {where_clause}
              AND {amount_clause}
+             AND {balance_usd_clause}
         "#
     );
 
@@ -206,7 +210,7 @@ pub async fn get_latest_wallet_balance_for_token(
     wallet_address: Address,
 ) -> Result<Option<WalletBalance>, SqlxError> {
     let query = r#"
-        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isStable", "isTestnet", "walletAddress", "tokenGroupId"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam","isTestnet", "walletAddress", "tokenGroupId"
         FROM "WalletBalance"
         WHERE "tokenId" = $1
           AND "walletAddress" = $2
@@ -229,7 +233,7 @@ pub async fn get_latest_wallet_balances_for_token_group(
     wallet_address: Address,
 ) -> Result<Vec<WalletBalance>, SqlxError> {
     let query = r#"
-        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isStable", "isTestnet", "walletAddress", "tokenGroupId"
+        SELECT "timestamp", "balanceUSD", "chainId", "amount", "isSpam", "isTestnet", "walletAddress", "tokenGroupId"
         FROM "WalletBalance"
         WHERE "tokenGroupId" = $1
           AND "walletAddress" = $2

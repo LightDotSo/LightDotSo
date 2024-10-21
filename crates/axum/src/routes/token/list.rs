@@ -204,7 +204,7 @@ pub(crate) async fn v1_token_list_handler(
             if let Some(group) = token.group.as_mut() {
                 // Reset the amount and balance_usd of the token.
                 token.chain_id = 0;
-                token.amount = "0".to_string();
+                token.amount = 0_u128;
                 token.balance_usd = 0.0;
 
                 // Merge the nested tokens with the existing wallet_balance_tokens
@@ -217,13 +217,13 @@ pub(crate) async fn v1_token_list_handler(
                             wallet_balance_tokens.iter().find(|t| t.id == nested_token.id)
                         {
                             // Update the nested token with wallet balance information
-                            nested_token.amount = wallet_balance_token.amount.clone();
+                            nested_token.amount = wallet_balance_token.amount;
                             nested_token.balance_usd = wallet_balance_token.balance_usd;
                             nested_token.is_spam = wallet_balance_token.is_spam;
                             nested_token.is_testnet = wallet_balance_token.is_testnet;
 
                             // Update the token with wallet balance information
-                            token.amount = wallet_balance_token.amount.clone();
+                            token.amount += wallet_balance_token.amount;
                             token.balance_usd += wallet_balance_token.balance_usd;
                         }
                         nested_token

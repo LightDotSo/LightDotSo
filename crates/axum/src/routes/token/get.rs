@@ -24,7 +24,7 @@ use lightdotso_db::models::wallet_balance::get_latest_wallet_balance_for_token;
 use lightdotso_prisma::token;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::bigdecimal::ToPrimitive;
+use prisma_client_rust::bigdecimal::{num_bigint::ToBigInt, ToPrimitive};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -117,7 +117,8 @@ pub(crate) async fn v1_token_get_handler(
             let mut token: Token = token.into();
 
             // Then, fill in the missing fields.
-            token.amount = balance.amount.to_string();
+            token.amount =
+                balance.amount.to_bigint().unwrap_or_default().to_u128().unwrap_or_default();
             token.balance_usd = balance.balance_usd.to_f64().unwrap_or(0.0);
             token.is_spam = balance.is_spam;
             token.is_testnet = balance.is_testnet;

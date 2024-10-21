@@ -490,6 +490,7 @@ biconomy
 bigdecimal
 bigints
 bignumber
+biguint
 bilkent
 binaryen
 bindgen
