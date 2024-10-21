@@ -71,4 +71,4 @@
   tower_governor = { workspace = true }
   utoipa = { version = "5.1.1", features = ["axum_extras", "debug"] }
   utoipa-axum = { version = "0.1.1", features = ["debug"] }
-  utoipa-swagger-ui = { version = "8.0.1", features = ["axum"] }
+  utoipa-swagger-ui = { version = "8.0.2", features = ["axum"] }
