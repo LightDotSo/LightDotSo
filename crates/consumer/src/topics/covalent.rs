@@ -262,12 +262,6 @@ impl CovalentConsumer {
                                         ),
                                         wallet_balance::is_latest::set(true),
                                         wallet_balance::is_spam::set(item.is_spam),
-                                        wallet_balance::is_stable::set(
-                                            item.balance_type
-                                                .as_ref()
-                                                .map(|balance_type| balance_type == "stablecoin")
-                                                .unwrap_or(false),
-                                        ),
                                         wallet_balance::is_testnet::set(is_testnet(
                                             payload.chain_id,
                                         )),

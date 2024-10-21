@@ -53,8 +53,6 @@ pub(crate) struct Token {
     pub group: Option<TokenGroup>,
     /// The flag to indicate if the token is a spam token.
     pub is_spam: bool,
-    /// The flag to indicate if the token is stable.
-    pub is_stable: bool,
     /// The flag to indicate if the token is on a testnet.
     pub is_testnet: bool,
 }
@@ -98,7 +96,6 @@ impl From<token::Data> for Token {
                 })
             }),
             is_spam: false,
-            is_stable: false,
             is_testnet: is_testnet(token.chain_id as u64),
         }
     }
@@ -124,7 +121,6 @@ impl From<wallet_balance::Data> for Token {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
             is_spam: balance.is_spam,
-            is_stable: balance.is_stable,
             is_testnet: balance.is_testnet,
         }
     }
@@ -146,7 +142,6 @@ impl From<WalletBalance> for Token {
             token_type: None,
             group: None,
             is_spam: balance.is_spam,
-            is_stable: balance.is_stable,
             is_testnet: balance.is_testnet,
         }
     }

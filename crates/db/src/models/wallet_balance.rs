@@ -43,9 +43,6 @@ pub struct WalletBalance {
     #[serde(rename = "isSpam")]
     #[sqlx(rename = "isSpam")]
     pub is_spam: bool,
-    #[serde(rename = "isStable")]
-    #[sqlx(rename = "isStable")]
-    pub is_stable: bool,
     #[serde(rename = "isTestnet")]
     #[sqlx(rename = "isTestnet")]
     pub is_testnet: bool,

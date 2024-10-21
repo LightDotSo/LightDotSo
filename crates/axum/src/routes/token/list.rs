@@ -220,7 +220,7 @@ pub(crate) async fn v1_token_list_handler(
                             nested_token.amount = wallet_balance_token.amount.clone();
                             nested_token.balance_usd = wallet_balance_token.balance_usd;
                             nested_token.is_spam = wallet_balance_token.is_spam;
-                            nested_token.is_stable = wallet_balance_token.is_stable;
+                            nested_token.is_testnet = wallet_balance_token.is_testnet;
 
                             // Update the token with wallet balance information
                             token.amount = wallet_balance_token.amount.clone();
