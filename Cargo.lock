@@ -7742,6 +7742,7 @@ dependencies = [
  "insta",
  "lazy_static",
  "lightdotso-discord",
+ "lightdotso-kafka",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "serde",
