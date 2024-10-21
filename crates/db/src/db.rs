@@ -45,18 +45,16 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
 /// Create a new Prisma client for Postgres.
 pub async fn create_postgres_client() -> Result<PrismaPostgresClient, NewClientError> {
     // If the `NEXTEST` environment variable is set, use the test database.
-    // Otherwise, use the `DATABASE_URL` environment variable.
-    if std::env::var("NEXTEST").is_ok() {
-        return PrismaPostgresClient::_builder()
-            .with_url("postgres://testuser:testpassword@localhost:5432/testdb".to_owned())
-            .build()
-            .await;
-    }
+    // Otherwise, use the `POSTGRES_URL` environment variable.
+    let database_url = if std::env::var("NEXTEST").is_ok() {
+        "postgres://testuser:testpassword@localhost:5432/testdb"
+    } else {
+        &std::env::var("POSTGRES_URL").unwrap()
+    };
 
     // Create a new Prisma client.
-    // Default to the `DATABASE_URL` environment variable.
     let client: Result<PrismaPostgresClient, NewClientError> =
-        PrismaPostgresClient::_builder().build().await;
+        PrismaPostgresClient::_builder().with_url(database_url.to_string()).build().await;
 
     // Return the client.
     client
@@ -84,10 +82,7 @@ pub async fn create_postgres_pool() -> Result<PostgresPool, SqlxError> {
 /// Fallbacks to `DATABASE_URL` if `DATABASE_TEST_URL` is not set.
 pub async fn create_test_client() -> Result<PrismaClient, NewClientError> {
     let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder()
-        .with_url(
-            std::env::var("DATABASE_TEST_URL")
-                .unwrap_or_else(|_| std::env::var("DATABASE_URL").unwrap()),
-        )
+        .with_url(std::env::var("DATABASE_TEST_URL").unwrap())
         .build()
         .await;
 
