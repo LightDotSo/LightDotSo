@@ -14,8 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
+use lightdotso_db::models::wallet_balance::WalletBalance;
 use lightdotso_prisma::{token, wallet_balance};
 use lightdotso_utils::is_testnet;
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -115,6 +117,28 @@ impl From<wallet_balance::Data> for Token {
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
+            is_spam: balance.is_spam,
+            is_stable: balance.is_stable,
+            is_testnet: balance.is_testnet,
+        }
+    }
+}
+
+/// Implement From<WalletBalance> for Token.
+impl From<WalletBalance> for Token {
+    fn from(balance: WalletBalance) -> Self {
+        Self {
+            id: balance.token_id,
+            address: balance.wallet_address,
+            chain_id: balance.chain_id.to_i64().unwrap_or_default(),
+            name: None,
+            symbol: "".to_string(),
+            decimals: 0,
+            amount: balance.amount.to_i64().unwrap_or_default(),
+            balance_usd: balance.balance_usd.to_f64().unwrap_or_default(),
+            logo_url: None,
+            token_type: None,
+            group: None,
             is_spam: balance.is_spam,
             is_stable: balance.is_stable,
             is_testnet: balance.is_testnet,

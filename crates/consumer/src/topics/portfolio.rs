@@ -16,22 +16,14 @@ use super::TopicConsumer;
 use crate::state::ConsumerState;
 use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_db::models::portfolio::get_portfolio;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
 use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{raw, PrismaValue};
+use prisma_client_rust::bigdecimal::{BigDecimal, ToPrimitive};
 use rdkafka::{message::BorrowedMessage, Message};
 use serde::Deserialize;
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-#[derive(Clone, Debug, Deserialize)]
-struct LatestPortfolioReturnType {
-    balance: f64,
-}
 
 // -----------------------------------------------------------------------------
 // Consumer
@@ -80,24 +72,12 @@ impl PortfolioConsumer {
         state: &ClientState,
         payload: PortfolioMessage,
     ) -> Result<()> {
-        let latest_portfolio: Vec<LatestPortfolioReturnType> = state
-            .postgres_client
-            ._query_raw(raw!(
-                "SELECT SUM(balanceUSD) as balance
-                    FROM WalletBalance
-                    WHERE walletAddress = {}
-                        AND isLatest = TRUE
-                        AND isTestnet = FALSE
-                        AND NOT (chainId = 0)
-                ",
-                PrismaValue::String(payload.address.to_checksum(None))
-            ))
-            .exec()
-            .await?;
+        let latest_portfolio = get_portfolio(&state.pool, payload.address).await?;
+        info!("latest_portfolio: {:?}", latest_portfolio);
 
         // If the length is more than 0, parse the balance.
-        if !latest_portfolio.is_empty() {
-            let latest_portfolio_balance = latest_portfolio[0].balance;
+        if let Some(portfolio) = latest_portfolio {
+            let latest_portfolio_balance = portfolio.balance_usd.to_f64().unwrap_or(0.0);
             info!("latest_portfolio: {:?}", latest_portfolio_balance);
 
             let _: Result<()> = state

@@ -26,7 +26,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_db::models::wallet_balance::get_wallet_balances;
+use lightdotso_db::models::portfolio::{get_portfolio, get_portfolio_list};
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::bigdecimal::ToPrimitive;
@@ -98,28 +98,23 @@ pub(crate) async fn v1_portfolio_get_handler(
     let Query(query) = get_query;
 
     let parsed_query_address: Address = query.address.parse()?;
-    let checksum_address = parsed_query_address.to_checksum(None);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Get the latest portfolio.
-    let latest_portfolio =
-        get_wallet_balances(&state.pool, &checksum_address, Some("1"), None, None, "day", 1)
-            .await?;
-
+    let latest_portfolio = get_portfolio(&state.pool, parsed_query_address).await?;
     info!("latest_portfolio: {:?}", latest_portfolio);
 
     // If the portfolio is not found, return a 404.
-    if latest_portfolio.is_empty() {
+    if latest_portfolio.is_none() {
         return Err(AppError::NotFound);
     }
 
     // Get the past portfolio.
     let past_portfolio =
-        get_wallet_balances(&state.pool, &checksum_address, Some("1"), None, None, "day", 2)
-            .await?;
+        get_portfolio_list(&state.pool, parsed_query_address, None, "day", 2).await?;
     info!("past_portfolio: {:?}", past_portfolio);
 
     // -------------------------------------------------------------------------
@@ -127,15 +122,15 @@ pub(crate) async fn v1_portfolio_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the balance from the result array.
-    let balance = if !latest_portfolio.is_empty() {
-        latest_portfolio[0].balance_usd.to_f64().unwrap_or(0.0)
+    let balance = if let Some(portfolio) = latest_portfolio {
+        portfolio.balance_usd.to_f64().unwrap_or(0.0)
     } else {
         0.0
     };
 
     // Get the 24h price change from the result array.
     let balance_change_24h = if past_portfolio.len() > 1 {
-        latest_portfolio[0].balance_usd.to_f64().unwrap_or(0.0) -
+        past_portfolio[0].balance_usd.to_f64().unwrap_or(0.0) -
             past_portfolio[1].balance_usd.to_f64().unwrap_or(0.0)
     } else {
         0.0
@@ -143,7 +138,7 @@ pub(crate) async fn v1_portfolio_get_handler(
 
     // Calculate 24h price change percentage
     let balance_change_24h_percentage = if past_portfolio.len() > 1 &&
-        past_portfolio[0].balance_usd.to_f64().unwrap_or(0.0) != 0.0
+        past_portfolio[1].balance_usd.to_f64().unwrap_or(0.0) != 0.0
     {
         // Compare against the previous day's balance.
         (balance_change_24h / past_portfolio[1].balance_usd.to_f64().unwrap_or(0.0)) * 100.0
@@ -153,8 +148,7 @@ pub(crate) async fn v1_portfolio_get_handler(
 
     // Combine the latest portfolio(1) and past portfolio(n) into one vector.
     let mut portfolio_dates: Vec<PortfolioBalanceDate> = Vec::new();
-    portfolio_dates.push(latest_portfolio[0].clone().into());
-    (1..past_portfolio.len()).for_each(|i| {
+    (0..past_portfolio.len()).for_each(|i| {
         portfolio_dates.push(past_portfolio[i].clone().into());
     });
 
