@@ -251,9 +251,6 @@
     url = { version = "2.5.2", default-features = false }
 
 [patch.crates-io]
-  utoipa = { git = "https://github.com/shunkakinoki/utoipa", rev = "3651130e5bf67dc141d81c15e995d191406a4ece" }
-  utoipa-axum = { git = "https://github.com/shunkakinoki/utoipa", rev = "3651130e5bf67dc141d81c15e995d191406a4ece" }
-  utoipa-swagger-ui = { git = "https://github.com/shunkakinoki/utoipa", rev = "3651130e5bf67dc141d81c15e995d191406a4ece" }
   #   alloy-consensus = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
   #   alloy-contract = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
   #   alloy-eips = { git = "https://github.com/alloy-rs/alloy", rev = "5354223a22f9eca76df6697aefa165d8c48006cc" }
