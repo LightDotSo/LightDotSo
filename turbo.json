@@ -23,8 +23,15 @@
     "//#prisma": {
       "dependsOn": [],
       "env": ["CI", "DOCKER", "RUNNER_OS"],
-      "inputs": ["Makefile", "configurations/prisma/prisma/schema-rs.prisma"],
-      "outputs": ["crates/prisma/src/mysql.rs", "crates/prisma/src/postgres.rs"]
+      "inputs": [
+        "Makefile",
+        "configurations/prisma/prisma/schema-rs.prisma",
+        "configurations/prisma/prisma/schema-postgres.prisma"
+      ],
+      "outputs": [
+        "crates/prisma-mysql/src/mysql.rs",
+        "crates/prisma-postgres/src/postgres.rs"
+      ]
     },
     "//#vitest": {
       "dependsOn": [],
