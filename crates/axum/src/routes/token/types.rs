@@ -42,7 +42,7 @@ pub(crate) struct Token {
     /// The decimals of the token.
     pub decimals: i32,
     /// The amount of the token.
-    pub amount: i64,
+    pub amount: String,
     /// The balance of the token in USD.
     pub balance_usd: f64,
     /// The logo url of the token.
@@ -84,7 +84,7 @@ impl From<token::Data> for Token {
             name: token.name,
             symbol: token.symbol.unwrap_or("".to_string()),
             decimals: token.decimals.unwrap_or(0),
-            amount: 0,
+            amount: "0".to_string(),
             balance_usd: 0.0,
             logo_url: token.logo_url,
             token_type: Some(token.r#type.to_string()),
@@ -110,7 +110,7 @@ impl From<wallet_balance::Data> for Token {
             name: balance.token.clone().unwrap().unwrap().name,
             symbol: balance.token.clone().unwrap().unwrap().symbol.unwrap_or("".to_string()),
             decimals: balance.token.clone().unwrap().unwrap().decimals.unwrap_or(0),
-            amount: balance.amount.map(|amount| amount as i64).unwrap_or_default(),
+            amount: balance.amount.map(|amount| amount.to_string()).unwrap_or_default(),
             balance_usd: balance.balance_usd,
             logo_url: balance.token.clone().unwrap().unwrap().logo_url,
             token_type: None,
@@ -134,7 +134,7 @@ impl From<WalletBalance> for Token {
             name: None,
             symbol: "".to_string(),
             decimals: 0,
-            amount: balance.amount.to_i64().unwrap_or_default(),
+            amount: balance.amount.to_string(),
             balance_usd: balance.balance_usd.to_f64().unwrap_or_default(),
             logo_url: None,
             token_type: None,

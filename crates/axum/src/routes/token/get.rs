@@ -117,7 +117,7 @@ pub(crate) async fn v1_token_get_handler(
             let mut token: Token = token.into();
 
             // Then, fill in the missing fields.
-            token.amount = balance.amount.to_i64().unwrap_or(0);
+            token.amount = balance.amount.to_string();
             token.balance_usd = balance.balance_usd.to_f64().unwrap_or(0.0);
             token.is_spam = balance.is_spam;
             token.is_testnet = balance.is_testnet;

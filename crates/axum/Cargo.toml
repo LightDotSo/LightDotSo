@@ -22,6 +22,7 @@
   http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  itertools = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }

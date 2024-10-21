@@ -21,9 +21,8 @@ use lightdotso_kafka::types::portfolio::PortfolioMessage;
 use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::bigdecimal::{BigDecimal, ToPrimitive};
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use rdkafka::{message::BorrowedMessage, Message};
-use serde::Deserialize;
 
 // -----------------------------------------------------------------------------
 // Consumer

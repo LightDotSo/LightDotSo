@@ -109,6 +109,7 @@
       "tokio",
     ] }
     insta = "1.17"
+    itertools = "0.13.0"
     js-sys = "0.3.72"
     jsonrpsee = { version = "0.24.7", features = [
       "server",

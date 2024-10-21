@@ -12,22 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    error::TokenError,
-    types::{Token, TokenGroup},
-};
+use super::{error::TokenError, types::Token};
 use crate::{result::AppJsonResult, tags::TOKEN_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use eyre::Result;
+use itertools::Itertools;
 use lightdotso_db::models::wallet_balance::{get_wallet_balances, get_wallet_balances_count};
-use lightdotso_prisma::{
-    token, token_group,
-    wallet_balance::{self, Data, WhereParam},
-};
+use lightdotso_prisma::{token, token_group};
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -106,6 +100,7 @@ pub(crate) async fn v1_token_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the wallet balances from the database.
     let wallet_balances = get_wallet_balances(
         &state.pool,
         &query.address,
@@ -119,11 +114,55 @@ pub(crate) async fn v1_token_list_handler(
     .await?;
     info!("wallet_balances: {:?}", wallet_balances);
 
+    // Convert the wallet balances to tokens.
+    let wallet_balance_tokens =
+        wallet_balances.clone().into_iter().map(|balance| balance.into()).collect::<Vec<Token>>();
+
+    // Get the tokens from the database that match w/ token ids.
+    let tokens_data = state
+        .client
+        .token()
+        .find_many(vec![token::id::in_vec(
+            wallet_balances
+                .clone()
+                .iter()
+                .map(|balance| balance.token_id.clone())
+                .collect::<Vec<String>>(),
+        )])
+        .with(token::group::fetch().with(token_group::tokens::fetch(vec![])))
+        .exec()
+        .await?;
+    let tokens = tokens_data.into_iter().map(|token| token.into()).collect::<Vec<Token>>();
+    info!("tokens: {:?}", tokens);
+
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    Ok(Json(wallet_balances.into_iter().map(|balance| balance.into()).collect::<Vec<Token>>()))
+    // Merge the tokens and the wallet balance tokens.
+    let final_tokens = tokens
+        .into_iter()
+        .map(|mut token| {
+            let wallet_balance_token = wallet_balance_tokens.iter().find(|t| t.id == token.id);
+            if let Some(wallet_balance_token) = wallet_balance_token {
+                token.amount = wallet_balance_token.clone().amount;
+                token.balance_usd = wallet_balance_token.clone().balance_usd;
+            }
+            token
+        })
+        .collect::<Vec<Token>>();
+
+    // Deduplicate the tokens that have the same group id.
+    let final_grouped_tokens = final_tokens
+        .into_iter()
+        .chunk_by(|token| {
+            token.group.as_ref().map(|group| group.id.clone()).unwrap_or_else(|| token.id.clone())
+        })
+        .into_iter()
+        .flat_map(|(_, group)| group)
+        .collect::<Vec<Token>>();
+
+    Ok(Json(final_grouped_tokens))
 }
 
 /// Returns a count of list of tokens
