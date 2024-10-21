@@ -102,6 +102,7 @@ pub async fn get_wallet_balances(
     }
 
     let where_clause = conditions.join(" AND ");
+    let amount_clause = "amount > 0".to_string();
     let limit_clause = if limit > 0 { format!("LIMIT {}", limit) } else { String::new() };
     let offset_clause = if skip > 0 { format!("OFFSET {}", skip) } else { String::new() };
 
@@ -119,6 +120,7 @@ pub async fn get_wallet_balances(
             "tokenGroupId"
            FROM "WalletBalance"
            WHERE {where_clause}
+             AND {amount_clause}
            ORDER BY "timestamp" DESC
            {limit_clause}
            {offset_clause}
@@ -170,12 +172,14 @@ pub async fn get_wallet_balances_count(
     }
 
     let where_clause = conditions.join(" AND ");
+    let amount_clause = "amount > 0".to_string();
 
     let query_string = format!(
         r#"SELECT 
             COUNT(*)
            FROM "WalletBalance"
            WHERE {where_clause}
+             AND {amount_clause}
         "#
     );
 
