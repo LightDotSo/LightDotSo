@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{channel::NOTIFICATION_CHANNEL_ID, config::DiscordArgs};
+use crate::{
+    channel::{ACTIVITY_CHANNEL_ID, NOTIFICATION_CHANNEL_ID, USER_OPERATION_CHANNEL_ID},
+    config::DiscordArgs,
+};
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
+use serde_json::Value;
 use serenity::all::{ChannelId, CreateEmbed, CreateMessage, Http};
 use std::sync::Arc;
 
@@ -59,6 +63,23 @@ impl Discord {
             .color(0x00ff00);
 
         self.notify(ChannelId::from(*NOTIFICATION_CHANNEL_ID), embed).await?;
+
+        Ok(())
+    }
+
+    pub async fn notify_activity(&self, data: Value) -> Result<()> {
+        let embed =
+            CreateEmbed::new().title("Activity").description(format!("{:?}", data)).color(0x00ff00);
+
+        self.notify(ChannelId::from(*ACTIVITY_CHANNEL_ID), embed).await?;
+
+        Ok(())
+    }
+
+    pub async fn notify_user_operation(&self, data: Value) -> Result<()> {
+        let embed = CreateEmbed::new().title("User Operation").description(format!("{:?}", data));
+
+        self.notify(ChannelId::from(*USER_OPERATION_CHANNEL_ID), embed).await?;
 
         Ok(())
     }
