@@ -32,7 +32,7 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = GasArgs::parse();
+    let args = GasArgs::try_parse().unwrap_or_else(|_| GasArgs::parse_from(["".to_string()]));
 
     // Construct the futures
     let gas_future = args.run();

@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::SupportRequestError, types::SupportRequest};
-use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, tags::SUPPORT_REQUEST_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +25,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -67,12 +67,13 @@ pub struct SupportRequestCreateRequestParams {
         responses(
             (status = 200, description = "SupportRequest created successfully", body = SupportRequest),
             (status = 500, description = "SupportRequest internal error", body = SupportRequestError),
-        )
+        ),
+        tag = SUPPORT_REQUEST_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_support_request_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<SupportRequestCreateRequestParams>,
 ) -> AppJsonResult<SupportRequest> {

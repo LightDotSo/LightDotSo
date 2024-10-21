@@ -31,8 +31,10 @@ pub(crate) struct UserOperationMerkle {
     /// The root of the merkle tree.
     root: String,
     /// The user operations in the merkle tree.
+    #[schema(no_recursion)]
     user_operations: Vec<UserOperation>,
     /// The proofs of the merkle tree.
+    #[schema(no_recursion)]
     proofs: Vec<UserOperationMerkleProof>,
 }
 

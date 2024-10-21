@@ -15,7 +15,7 @@
   backon = { workspace = true }
   byteorder = { workspace = true }
   chrono = { workspace = true }
-  clap = { workspace = true, features = ["derive"] }
+  clap = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
   lazy_static = { workspace = true }

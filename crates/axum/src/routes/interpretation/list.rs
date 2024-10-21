@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::InterpretationError, types::Interpretation};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::INTERPRETATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::{asset_change, interpretation};
+use lightdotso_state::ClientState;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -55,12 +55,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Interpretations returned successfully", body = [Interpretation]),
             (status = 500, description = "Interpretations bad request", body = InterpretationError),
-        )
+        ),
+        tag = INTERPRETATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Interpretation>> {
     // -------------------------------------------------------------------------
     // Parse

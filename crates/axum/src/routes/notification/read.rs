@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::error::NotificationError;
-use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, tags::NOTIFICATION_TAG};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use lightdotso_db::models::activity::CustomParams;
@@ -22,6 +21,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -60,11 +60,12 @@ pub(crate) struct NotificationReadParams {
         responses(
             (status = 200, description = "Notification created successfully", body = i64),
             (status = 500, description = "Notification internal error", body = NotificationError),
-        )
+        ),
+        tag = NOTIFICATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_read_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<NotificationReadRequestParams>,
 ) -> AppJsonResult<i64> {

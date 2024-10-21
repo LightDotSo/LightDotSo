@@ -17,49 +17,33 @@
 
 use crate::{
     config::ConsumerArgs,
-    topics::{
-        activity::activity_consumer, billing_operation::billing_operation_consumer,
-        covalent::covalent_consumer, error_transaction::error_transaction_consumer,
-        interpretation::interpretation_consumer, node::node_consumer,
-        notification::notification_consumer, paymaster_operation::paymaster_operation_consumer,
-        portfolio::portfolio_consumer, routescan::routescan_consumer,
-        transaction::transaction_consumer, unknown::unknown_consumer,
-        user_operation::user_operation_consumer,
-    },
+    state::{create_consumer_state, ConsumerState},
+    topics::{unknown::UnknownConsumer, TopicConsumer, TOPIC_CONSUMERS},
 };
-use clap::Parser;
 use eyre::Result;
-use lightdotso_billing::config::BillingArgs;
-use lightdotso_db::db::create_client;
-use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_kafka::{
-    get_consumer, get_producer,
-    namespace::{
-        ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NODE,
-        NOTIFICATION, PAYMASTER_OPERATION, PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
-        RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
-    },
-};
-use lightdotso_node::config::NodeArgs;
-use lightdotso_notifier::config::NotifierArgs;
-use lightdotso_polling::config::PollingArgs;
+use lightdotso_kafka::get_consumer;
+use lightdotso_state::{create_client_state, ClientState};
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
-    producer::FutureProducer,
     Message,
 };
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
 #[derive(Clone)]
 pub struct Consumer {
+    // Kafka consumer
     consumer: Arc<StreamConsumer>,
-    producer: Arc<FutureProducer>,
+    // State
+    state: ClientState,
+    consumer_state: Option<ConsumerState>,
+    // Topics
     topics: Vec<String>,
+    topic_consumers: HashMap<String, Arc<dyn TopicConsumer + Send + Sync>>,
 }
 
 impl Consumer {
-    pub async fn new(args: &ConsumerArgs) -> Self {
+    pub async fn new(args: &ConsumerArgs) -> Result<Self> {
         info!("Consumer new, starting");
 
         // If the group is empty, read it from the environment var `FLY_APP_NAME`
@@ -78,48 +62,24 @@ impl Consumer {
         // Construct the consumer
         let consumer = Arc::new(get_consumer(&group).unwrap());
 
-        // Construct the producer
-        let producer = Arc::new(get_producer().unwrap());
+        // Create a client state
+        let state = create_client_state().await?;
+
+        // Create a consumer state
+        let consumer_state = create_consumer_state().await.ok();
 
         // Create the consumer
-        Self { consumer, producer, topics: args.topics.clone() }
+        Ok(Self {
+            consumer,
+            state,
+            consumer_state,
+            topics: args.topics.clone(),
+            topic_consumers: TOPIC_CONSUMERS.clone(),
+        })
     }
 
     pub async fn run(&self) -> Result<()> {
         info!("Consumer run, starting");
-
-        // Parse the billing command line arguments
-        let billing_args = BillingArgs::parse();
-
-        // Parse the command line arguments
-        let args = IndexerArgs::parse();
-
-        // Parse the polling command line arguments
-        let polling_args = PollingArgs::parse();
-
-        // Parse the node command line arguments
-        let node_args = NodeArgs::parse();
-
-        // Parse the notifer command line arguments
-        let notifier_args = NotifierArgs::parse();
-
-        // Create the billing
-        let billing = billing_args.create().await?;
-
-        // Create the poller
-        let poller = polling_args.create().await?;
-
-        // Create the indexer
-        let indexer = args.create().await;
-
-        // Create the node
-        let node = node_args.create().await?;
-
-        // Create the notifier
-        let notifier = notifier_args.create().await?;
-
-        // Create the db client
-        let db = Arc::new(create_client().await.unwrap());
 
         // Convert the topics to a vector of strings
         let topics: Vec<&str> = self.topics.iter().map(AsRef::as_ref).collect();
@@ -131,128 +91,25 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    match m.topic() {
-                        // If the topic is the transaction topic
-                        topic
-                            if topic == TRANSACTION.to_string() ||
-                                topic == RETRY_TRANSACTION.to_string() ||
-                                topic == RETRY_TRANSACTION_0.to_string() ||
-                                topic == RETRY_TRANSACTION_1.to_string() ||
-                                topic == RETRY_TRANSACTION_2.to_string() =>
+                    let topic = m.topic().to_string();
+                    let state = self.state.clone();
+
+                    if let Some(consumer) = self.topic_consumers.get(&topic) {
+                        if let Err(e) =
+                            consumer.consume(&state, self.consumer_state.as_ref(), &m).await
                         {
-                            let _ = transaction_consumer(
-                                self.producer.clone(),
-                                topic,
-                                &m,
-                                db.clone(),
-                                indexer.clone(),
-                            )
-                            .await;
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                            warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
-                        topic if topic == ACTIVITY.to_string() => {
-                            let res =
-                                activity_consumer(self.producer.clone(), &m, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Activity consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == BILLING_OPERATION.to_string() => {
-                            let res = billing_operation_consumer(&billing, &m).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Billing operation consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == COVALENT.to_string() => {
-                            let res =
-                                covalent_consumer(self.producer.clone(), &m, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Covalent consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == INTERPRETATION.to_string() => {
-                            let res = interpretation_consumer(&m, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Interpretation consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == PAYMASTER_OPERATION.to_string() => {
-                            let res =
-                                paymaster_operation_consumer(self.producer.clone(), &m, db.clone())
-                                    .await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Paymaster operation consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == PORTFOLIO.to_string() => {
-                            let res = portfolio_consumer(&m, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Portfolio consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == ROUTESCAN.to_string() => {
-                            let res = routescan_consumer(&m, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Routescan consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == NODE.to_string() => {
-                            let res = node_consumer(&m, &node, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Node consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == NOTIFICATION.to_string() => {
-                            let res = notification_consumer(&m, &notifier, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("Notification consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == ERROR_TRANSACTION.to_string() => {
-                            let _ = error_transaction_consumer(&m);
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        topic if topic == USER_OPERATION.to_string() => {
-                            let res = user_operation_consumer(&m, &poller, db.clone()).await;
-                            // If the consumer failed
-                            if let Err(e) = res {
-                                // Log the error
-                                warn!("User operation consumer failed with error: {:?}", e);
-                            }
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                        }
-                        _ => {
-                            let _ = unknown_consumer(&m);
-                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                    } else {
+                        let consumer = UnknownConsumer;
+                        if let Err(e) =
+                            consumer.consume(&state, self.consumer_state.as_ref(), &m).await
+                        {
+                            warn!("Error processing message for topic {}: {:?}", topic, e);
                         }
                     }
+
+                    self.consumer.commit_message(&m, CommitMode::Async)?;
                 }
             };
         }

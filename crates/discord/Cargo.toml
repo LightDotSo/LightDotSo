@@ -9,6 +9,12 @@
   repository.workspace = true
 
 [dependencies]
+  clap = { workspace = true }
   eyre = { workspace = true }
-  serenity = "0.12"
+  lazy_static = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  serenity = { version = "0.12.2", features = ["full"] }
   tokio = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }

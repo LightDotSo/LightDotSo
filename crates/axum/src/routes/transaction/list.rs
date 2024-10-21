@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::TransactionError, types::Transaction};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::TRANSACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -25,6 +24,7 @@ use lightdotso_prisma::{
     transaction::{self, WhereParam},
     wallet,
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
@@ -76,12 +76,13 @@ pub(crate) struct TransactionListCount {
         responses(
             (status = 200, description = "Transactions returned successfully", body = [Transaction]),
             (status = 500, description = "Transaction bad request", body = TransactionError),
-        )
+        ),
+        tag = TRANSACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Transaction>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -153,12 +154,13 @@ pub(crate) async fn v1_transaction_list_handler(
         responses(
             (status = 200, description = "Transactions returned successfully", body = TransactionListCount),
             (status = 500, description = "Transaction bad request", body = TransactionError),
-        )
+        ),
+        tag = TRANSACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<TransactionListCount> {
     // -------------------------------------------------------------------------
     // Parse

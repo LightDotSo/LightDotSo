@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Simulation;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::simulation::error::SimulationError,
-    state::AppState,
-};
+use super::{error::SimulationError, types::Simulation};
+use crate::{error::RouteError, result::AppJsonResult, tags::SIMULATION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::{asset_change, interpretation, simulation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -55,12 +53,13 @@ pub(crate) struct GetQuery {
         responses(
             (status = 200, description = "Simulation returned successfully", body = Simulation),
             (status = 404, description = "Simulation not found", body = SimulationError),
-        )
+        ),
+        tag = SIMULATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_simulation_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Simulation> {
     // -------------------------------------------------------------------------
     // Parse

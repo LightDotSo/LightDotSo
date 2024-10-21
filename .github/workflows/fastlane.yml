@@ -50,6 +50,8 @@ jobs:
           bundler-cache: true
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Android Install
         uses: android-actions/setup-android@v3
         continue-on-error: true

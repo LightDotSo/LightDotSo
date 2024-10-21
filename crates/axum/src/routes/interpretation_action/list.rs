@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::InterpretationActionError, types::InterpretationAction};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::INTERPRETATION_ACTION_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::interpretation_action::{self, WhereParam};
+use lightdotso_state::ClientState;
 use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -71,12 +71,13 @@ pub(crate) struct InterpretationActionListCount {
         responses(
             (status = 200, description = "Interpretation actions returned successfully", body = [InterpretationAction]),
             (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
-        )
+        ),
+        tag = INTERPRETATION_ACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_action_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<InterpretationAction>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -129,12 +130,13 @@ pub(crate) async fn v1_interpretation_action_list_handler(
         responses(
             (status = 200, description = "Interpretation actions returned successfully", body = InterpretationActionListCount),
             (status = 500, description = "Interpretation action bad request", body = InterpretationActionError),
-        )
+        ),
+        tag = INTERPRETATION_ACTION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_interpretation_action_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<InterpretationActionListCount> {
     // -------------------------------------------------------------------------
     // Parse

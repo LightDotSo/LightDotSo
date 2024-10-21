@@ -12,59 +12,75 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::TopicConsumer;
+use crate::state::ConsumerState;
+use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_db::models::portfolio::get_portfolio;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
-use lightdotso_prisma::{chain, wallet, wallet_balance, PrismaClient};
+use lightdotso_prisma_postgres::wallet_balance;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{raw, PrismaValue};
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use rdkafka::{message::BorrowedMessage, Message};
-use serde::Deserialize;
-use std::sync::Arc;
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-#[derive(Clone, Debug, Deserialize)]
-struct LatestPortfolioReturnType {
-    balance: f64,
-}
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct PortfolioConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `PortfolioMessage`
-        let payload: PortfolioMessage = serde_json::from_slice(payload.as_bytes())?;
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
-        // Get the latest portfolio.
-        let latest_portfolio: Vec<LatestPortfolioReturnType> = db
-            ._query_raw(raw!(
-                "SELECT SUM(balanceUSD) as balance
-                    FROM WalletBalance
-                    WHERE walletAddress = {}
-                        AND isLatest = TRUE
-                        AND isTestnet = FALSE
-                        AND NOT (chainId = 0)
-                ",
-                PrismaValue::String(payload.address.to_checksum(None))
-            ))
-            .exec()
-            .await?;
+#[async_trait]
+impl TopicConsumer for PortfolioConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        _consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `PortfolioMessage`
+            let payload: PortfolioMessage = serde_json::from_slice(payload.as_bytes())?;
+
+            // Log the payload
+            info!("payload: {:?}", payload);
+
+            // Consume the message
+            self.consume_with_message(state, payload).await?;
+        }
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl PortfolioConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: PortfolioMessage,
+    ) -> Result<()> {
+        let latest_portfolio = get_portfolio(&state.pool, payload.address).await?;
+        info!("latest_portfolio: {:?}", latest_portfolio);
 
         // If the length is more than 0, parse the balance.
-        if !latest_portfolio.is_empty() {
-            let latest_portfolio_balance = latest_portfolio[0].balance;
+        if let Some(portfolio) = latest_portfolio {
+            let latest_portfolio_balance = portfolio.balance_usd.to_f64().unwrap_or(0.0);
             info!("latest_portfolio: {:?}", latest_portfolio_balance);
 
-            let _: Result<()> = db
+            let _: Result<()> = state
+                .postgres_client
                 ._transaction()
                 .run(|client| async move {
                     client
@@ -74,7 +90,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                 wallet_balance::wallet_address::equals(
                                     payload.address.to_checksum(None),
                                 ),
-                                wallet_balance::chain_id::equals(0),
+                                wallet_balance::chain_id::equals(0.0),
                             ],
                             vec![wallet_balance::is_latest::set(false)],
                         )
@@ -85,8 +101,8 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                         .wallet_balance()
                         .create(
                             latest_portfolio_balance,
-                            chain::id::equals(0),
-                            wallet::address::equals(payload.address.to_checksum(None)),
+                            0.0,
+                            payload.address.to_checksum(None),
                             vec![wallet_balance::is_latest::set(true)],
                         )
                         .exec()
@@ -96,7 +112,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                 })
                 .await;
         }
-    }
 
-    Ok(())
+        Ok(())
+    }
 }

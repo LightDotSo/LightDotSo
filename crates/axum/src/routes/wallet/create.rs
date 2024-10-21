@@ -13,14 +13,14 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-#[allow(unused_imports)]
+
 use super::{error::WalletError, types::Wallet};
 use crate::{
     admin::token_is_valid,
     error::RouteError,
     result::{AppError, AppJsonResult, AppResult},
     routes::auth::error::AuthError,
-    state::AppState,
+    tags::WALLET_TAG,
 };
 use alloy::primitives::{Address, B256};
 use autometrics::autometrics;
@@ -45,6 +45,7 @@ use lightdotso_sequence::{
     config::WalletConfig,
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::{error, info, trace};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -118,12 +119,13 @@ pub(crate) struct WalletCreateOwnerParams {
             (status = 400, description = "Invalid configuration", body = WalletError),
             (status = 409, description = "Wallet already exists", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_create_handler(
     post_query: Query<PostQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
     Json(params): Json<WalletCreateRequestParams>,
 ) -> AppJsonResult<Wallet> {

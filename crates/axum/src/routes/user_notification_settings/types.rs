@@ -30,6 +30,7 @@ pub(crate) struct UserNotificationSettings {
     /// The id of the user settings.
     pub id: String,
     /// The notification settings of user notification settings.
+    #[schema(no_recursion)]
     pub settings: Vec<NotificationSettings>,
 }
 

@@ -18,6 +18,7 @@ use crate::{
     result::{AppError, AppJsonResult},
     routes::auth::error::AuthError,
     sessions::update_session_expiry,
+    tags::AUTH_TAG,
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -65,7 +66,8 @@ impl From<String> for AuthNonce {
         responses(
             (status = 200, description = "Auth nonce returned successfully", body = AuthNonce),
             (status = 404, description = "Auth nonce not found", body = AuthError),
-        )
+        ),
+        tag = AUTH_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {

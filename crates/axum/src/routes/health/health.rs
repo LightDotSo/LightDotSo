@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::tags::HEALTH_TAG;
 use autometrics::autometrics;
 use axum::response::IntoResponse;
 
@@ -27,7 +28,8 @@ use axum::response::IntoResponse;
         path = "/health",
         responses(
             (status = 200, description = "Health returned successfully"),
-        )
+        ),
+        tag = HEALTH_TAG.as_str()
     )]
 #[autometrics]
 pub async fn handler() -> impl IntoResponse {

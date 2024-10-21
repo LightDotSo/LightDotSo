@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::AssetChange;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::asset_change::error::AssetChangeError,
-    state::AppState,
-};
+use super::{error::AssetChangeError, types::AssetChange};
+use crate::{error::RouteError, result::AppJsonResult, tags::ASSET_CHANGE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::asset_change;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -54,12 +52,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Asset change returned successfully", body = AssetChange),
             (status = 404, description = "Asset change not found", body = AssetChangeError),
-        )
+        ),
+        tag = ASSET_CHANGE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_asset_change_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<AssetChange> {
     // -------------------------------------------------------------------------
     // Parse

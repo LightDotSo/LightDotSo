@@ -13,12 +13,14 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-#[allow(unused_imports)]
+
 use super::{
     error::WalletSettingsError,
     types::{WalletSettings, WalletSettingsOptional},
 };
-use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::authenticate_wallet_user, result::AppJsonResult, tags::WALLET_SETTINGS_TAG,
+};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -30,6 +32,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{wallet, wallet_settings, ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -77,12 +80,13 @@ pub struct WalletSettingsUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = WalletSettingsError),
             (status = 409, description = "Wallet settings already exists", body = WalletSettingsError),
             (status = 500, description = "Wallet settings internal error", body = WalletSettingsError),
-        )
+        ),
+        tag = WALLET_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     Json(params): Json<WalletSettingsUpdateRequestParams>,
 ) -> AppJsonResult<WalletSettings> {

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::AssetChangeError, types::AssetChange};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::ASSET_CHANGE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::asset_change;
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -54,12 +54,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Asset changes returned successfully", body = [AssetChange]),
             (status = 500, description = "Asset change bad request", body = AssetChangeError),
-        )
+        ),
+        tag = ASSET_CHANGE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_asset_change_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<AssetChange>> {
     // -------------------------------------------------------------------------
     // Parse

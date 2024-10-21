@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::PaymasterError, types::Paymaster};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::PAYMASTER_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Paymasters returned successfully", body = [Paymaster]),
             (status = 500, description = "Paymaster bad request", body = PaymasterError),
-        )
+        ),
+        tag = PAYMASTER_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_paymaster_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<Paymaster>> {
     // -------------------------------------------------------------------------
     // Parse

@@ -18,12 +18,16 @@
   lightdotso-graphql = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-prisma-mysql = { workspace = true }
+  lightdotso-prisma-postgres = { workspace = true }
+  lightdotso-sqlx = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }
   revm = { workspace = true }
-  serde = { workspace = true }
+  serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
+  sqlx = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
 
 [dev-dependencies]

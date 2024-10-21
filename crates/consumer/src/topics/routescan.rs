@@ -14,30 +14,65 @@
 
 #![allow(clippy::unwrap_used)]
 
+use super::TopicConsumer;
+use crate::state::ConsumerState;
 use alloy::primitives::Address;
+use async_trait::async_trait;
 use eyre::{eyre, Result};
 use lightdotso_kafka::types::routescan::RoutescanMessage;
-use lightdotso_prisma::{token, wallet_balance, PrismaClient};
+use lightdotso_prisma::token;
+use lightdotso_prisma_postgres::wallet_balance;
 use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use lightdotso_utils::is_testnet;
 use rdkafka::{message::BorrowedMessage, Message};
-use std::sync::Arc;
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct RoutescanConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `RoutescanMessage`
-        let payload: RoutescanMessage = serde_json::from_slice(payload.as_bytes())?;
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
+#[async_trait]
+impl TopicConsumer for RoutescanConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        _consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `RoutescanMessage`
+            let payload: RoutescanMessage = serde_json::from_slice(payload.as_bytes())?;
+
+            // Consume the payload
+            self.consume_with_message(state, payload).await?;
+        }
+
+        Ok(())
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl RoutescanConsumer {
+    pub async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        payload: RoutescanMessage,
+    ) -> Result<()> {
         // Log the payload
         let balances =
             get_token_balances(&payload.chain_id, &payload.address.to_checksum(None), None, None)
@@ -68,8 +103,8 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
             });
         }
 
-        // Filter the balances to only include tokens with non-none contract addresses and non-zero
-        // decimals
+        // Filter the balances to only include tokens with non-none contract addresses and
+        // non-zero decimals
         let new_items = items
             .into_iter()
             .filter(|item| {
@@ -81,7 +116,8 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         info!(?new_items);
 
         // Create the tokens
-        let res = db
+        let res = state
+            .client
             .token()
             .create_many(
                 new_items
@@ -108,12 +144,26 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         info!("res: {:?}", res);
 
         // Find the tokens
-        let tokens = db
+        let tokens = state
+            .client
             .token()
             .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
+            .with(token::group::fetch())
             .exec()
             .await?;
         info!("tokens: {:?}", tokens);
+
+        // Check that all `tokens` are in `new_items`
+        for token in tokens.clone() {
+            // Find the item
+            let item = new_items
+                .iter()
+                .find(|item| item.token_address.as_ref().unwrap() == &token.address);
+            // If the item is not found, return an error
+            if item.is_none() {
+                return Err(eyre!("Item not found for token: {:?}", token));
+            }
+        }
 
         // Create token data for each token
         let token_data_results = new_items
@@ -143,9 +193,10 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         let token_data = token_data?;
 
         // Create a token price for each token
-        db.token_price().create_many(token_data).exec().await?;
+        state.postgres_client.token_price().create_many(token_data).exec().await?;
 
-        let _: Result<()> = db
+        let _: Result<()> = state
+            .postgres_client
             ._transaction()
             .run(|client| async move {
                 client
@@ -155,7 +206,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                             wallet_balance::wallet_address::equals(
                                 payload.address.to_checksum(None),
                             ),
-                            wallet_balance::chain_id::equals(payload.chain_id as i64),
+                            wallet_balance::chain_id::equals(payload.chain_id as f64),
                         ],
                         vec![wallet_balance::is_latest::set(false)],
                     )
@@ -172,8 +223,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                 let token = tokens
                                     .iter()
                                     .find(|token| {
-                                        token.address.clone().to_lowercase() ==
-                                            item.token_address.clone().unwrap()
+                                        token.address.clone() == item.token_address.clone().unwrap()
                                     })
                                     .unwrap();
 
@@ -181,22 +231,29 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                                     // Temporary fix for quote rate
                                     // item.quote.unwrap_or(0.0),
                                     0.0_f64,
-                                    payload.chain_id as i64,
+                                    payload.chain_id as f64,
                                     payload.address.to_checksum(None),
                                     vec![
                                         wallet_balance::amount::set(Some(
                                             item.token_quantity
                                                 .as_ref()
                                                 .map(|balance| {
-                                                    balance.parse::<i64>().unwrap_or(0).to_string()
+                                                    balance.parse::<f64>().unwrap_or(0.0)
                                                 })
-                                                .unwrap_or(0.to_string()),
+                                                .unwrap_or(0.0),
                                         )),
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
+                                        wallet_balance::token_group_id::set(
+                                            token.group.as_ref().and_then(|optional_group| {
+                                                optional_group
+                                                    .as_ref()
+                                                    .map(|group| group.id.to_string())
+                                            }),
+                                        ),
                                         // wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_latest::set(true),
                                         wallet_balance::is_testnet::set(is_testnet(
-                                            payload.chain_id as u64,
+                                            payload.chain_id,
                                         )),
                                     ],
                                 )
@@ -209,7 +266,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                 Ok(())
             })
             .await;
-    }
 
-    Ok(())
+        Ok(())
+    }
 }

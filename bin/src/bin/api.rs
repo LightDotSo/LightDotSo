@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![recursion_limit = "512"]
+
 use eyre::Result;
 use lightdotso_axum::{api::start_api_server, internal::start_internal_server};
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};

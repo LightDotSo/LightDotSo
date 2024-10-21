@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::Token;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::token::error::TokenError, state::AppState,
-};
+use super::{error::TokenError, types::Token};
+use crate::{error::RouteError, result::AppJsonResult, tags::TOKEN_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_db::models::wallet_balance::get_latest_wallet_balance_for_token;
+use lightdotso_prisma::token;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::bigdecimal::{num_bigint::ToBigInt, ToPrimitive};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -59,12 +60,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Token returned successfully", body = Token),
             (status = 404, description = "Token not found", body = TokenError),
-        )
+        ),
+        tag = TOKEN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_token_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Token> {
     // -------------------------------------------------------------------------
     // Parse
@@ -101,21 +103,27 @@ pub(crate) async fn v1_token_get_handler(
 
     // If the wallet is provided, get the balance of the token.
     if let Some(wallet_address) = parsed_wallet_address {
-        let balance = state
-            .client
-            .wallet_balance()
-            .find_first(vec![
-                wallet_balance::token_id::equals(Some(token.id.clone())),
-                wallet_balance::wallet_address::equals(wallet_address),
-                wallet_balance::is_latest::equals(true),
-            ])
-            .with(wallet_balance::token::fetch().with(token::group::fetch()))
-            .exec()
-            .await?;
+        let balance = get_latest_wallet_balance_for_token(
+            &state.pool,
+            token.id.clone(),
+            wallet_address.parse()?,
+        )
+        .await?;
+        info!("Balance: {:?}", balance);
 
         // If the balance is found, update the token with the balance.
         if let Some(balance) = balance {
-            let token: Token = balance.into();
+            // First, convert the token to a WalletBalance.
+            let mut token: Token = token.into();
+
+            // Then, fill in the missing fields.
+            token.amount =
+                balance.amount.to_bigint().unwrap_or_default().to_u128().unwrap_or_default();
+            token.balance_usd = balance.balance_usd.to_f64().unwrap_or(0.0);
+            token.is_spam = balance.is_spam;
+            token.is_testnet = balance.is_testnet;
+
+            // Return the token.
             return Ok(Json::from(token));
         }
     }

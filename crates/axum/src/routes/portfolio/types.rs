@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use lightdotso_db::models::portfolio::Portfolio as SqlxPortfolio;
+use prisma_client_rust::bigdecimal::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -30,6 +32,7 @@ pub(crate) struct Portfolio {
     /// The percentage change of the balance in the last 24 hours.
     pub balance_change_24h_percentage: f64,
     /// The historical balances of the portfolio.
+    #[schema(no_recursion)]
     pub balances: Vec<PortfolioBalanceDate>,
 }
 
@@ -41,4 +44,18 @@ pub(crate) struct PortfolioBalanceDate {
     pub balance: f64,
     /// The date of the balance.
     pub date: String,
+}
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<SqlxPortfolio> for PortfolioBalanceDate.
+impl From<SqlxPortfolio> for PortfolioBalanceDate {
+    fn from(portfolio: SqlxPortfolio) -> Self {
+        Self {
+            balance: portfolio.balance_usd.to_f64().unwrap_or(0.0),
+            date: portfolio.timestamp.to_string(),
+        }
+    }
 }

@@ -25,6 +25,10 @@ use lightdotso_tracing::tracing::info;
 pub struct InterpreterArgs {}
 
 impl InterpreterArgs {
+    pub async fn create(self) -> Interpreter<'static> {
+        Interpreter::new().await
+    }
+
     pub async fn run(self, requests: Vec<SimulationRequest>) -> Result<InterpretationResponse> {
         // Add info
         info!("InterpreterArgs run, starting...");

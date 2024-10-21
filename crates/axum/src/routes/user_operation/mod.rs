@@ -21,12 +21,12 @@ pub(crate) mod signature;
 pub(crate) mod types;
 pub(crate) mod update;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
     routing::{get, post, put},
     Router,
 };
+use lightdotso_state::ClientState;
 
 pub(crate) use create::{
     __path_v1_user_operation_create_batch_handler, __path_v1_user_operation_create_handler,
@@ -50,7 +50,7 @@ pub(crate) use update::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/update", put(v1_user_operation_update_handler))

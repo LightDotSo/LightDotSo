@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use eyre::Result;
-use lightdotso_billing::billing::Billing;
+use crate::{state::ConsumerState, topics::TopicConsumer};
+use async_trait::async_trait;
+use eyre::{eyre, Result};
 use lightdotso_kafka::types::billing_operation::BillingOperationMessage;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
@@ -22,23 +24,47 @@ use rdkafka::{message::BorrowedMessage, Message};
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn billing_operation_consumer(
-    billing: &Billing,
-    msg: &BorrowedMessage<'_>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct BillingOperationConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `BillingOperationMessage`
-        let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
-        info!("payload: {:?}", payload);
+#[async_trait]
+impl TopicConsumer for BillingOperationConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Since we use consumer_state, we need to unwrap it
+        let consumer_state = consumer_state.ok_or_else(|| eyre!("Consumer state is None"))?;
 
-        // Run the billing operation
-        billing.run_pending(&payload).await?;
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `BillingOperationMessage`
+            let payload: BillingOperationMessage = serde_json::from_slice(payload.as_bytes())?;
+            info!("payload: {:?}", payload);
+
+            // Consume the payload
+            self.consume_with_message(state, consumer_state, payload).await?;
+        }
+
+        Ok(())
     }
+}
 
-    Ok(())
+impl BillingOperationConsumer {
+    pub async fn consume_with_message(
+        &self,
+        _state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: BillingOperationMessage,
+    ) -> Result<()> {
+        // Run the billing operation
+        consumer_state.billing.run_pending(&payload).await?;
+
+        Ok(())
+    }
 }

@@ -12,49 +12,76 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use eyre::Result;
+use super::TopicConsumer;
+use crate::state::ConsumerState;
+use async_trait::async_trait;
+use eyre::{eyre, Result};
 use lightdotso_kafka::types::user_operation::UserOperationMessage;
-use lightdotso_polling::polling::Polling;
-use lightdotso_prisma::{user_operation, PrismaClient, UserOperationStatus};
+use lightdotso_prisma::{user_operation, UserOperationStatus};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
-use std::sync::Arc;
 
 // -----------------------------------------------------------------------------
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn user_operation_consumer(
-    msg: &BorrowedMessage<'_>,
-    poller: &Polling,
-    db: Arc<PrismaClient>,
-) -> Result<()> {
-    // Convert the payload to a string
-    let payload_opt = msg.payload_view::<str>();
-    info!("payload_opt: {:?}", payload_opt);
+pub struct UserOperationConsumer;
 
-    // If the payload is valid
-    if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `UserOperationMessage`
-        let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
-        info!("payload: {:?}", payload);
+#[async_trait]
+impl TopicConsumer for UserOperationConsumer {
+    async fn consume(
+        &self,
+        state: &ClientState,
+        consumer_state: Option<&ConsumerState>,
+        msg: &BorrowedMessage<'_>,
+    ) -> Result<()> {
+        // Since we use consumer_state, we need to unwrap it
+        let consumer_state = consumer_state.ok_or_else(|| eyre!("Consumer state is None"))?;
 
-        // If the `is_pending_update` field is true, then update the user operation state in the db
-        info!("is_pending_update: {:?}", payload.is_pending_update);
-        if payload.is_pending_update {
-            let _ = db
-                .user_operation()
-                .update(
-                    user_operation::hash::equals(format!("{:?}", payload.hash)),
-                    vec![user_operation::status::set(UserOperationStatus::Pending)],
-                )
-                .exec()
-                .await?;
+        // Convert the payload to a string
+        let payload_opt = msg.payload_view::<str>();
+        info!("payload_opt: {:?}", payload_opt);
+
+        // If the payload is valid
+        if let Some(Ok(payload)) = payload_opt {
+            // Parse the payload into a JSON object, `UserOperationMessage`
+            let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
+            info!("payload: {:?}", payload);
+
+            // Consume the message
+            self.consume_with_message(state, consumer_state, payload).await?;
         }
 
-        // Run the user operation poller
-        poller.run_uop(payload.chain_id, payload.hash).await?;
+        Ok(())
     }
+}
 
-    Ok(())
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
+impl UserOperationConsumer {
+    async fn consume_with_message(
+        &self,
+        state: &ClientState,
+        consumer_state: &ConsumerState,
+        payload: UserOperationMessage,
+    ) -> Result<()> {
+        // Update the user operation status to pending
+        let _ = state
+            .client
+            .user_operation()
+            .update(
+                user_operation::hash::equals(format!("{:?}", payload.hash)),
+                vec![user_operation::status::set(UserOperationStatus::Pending)],
+            )
+            .exec()
+            .await?;
+
+        // Run the user operation poller
+        consumer_state.polling.run_uop(payload.chain_id, payload.hash).await?;
+
+        Ok(())
+    }
 }

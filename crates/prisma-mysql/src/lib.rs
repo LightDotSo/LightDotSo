@@ -12,16 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use lightdotso_hyper::HyperClient;
-use lightdotso_kafka::rdkafka::producer::FutureProducer;
-use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::redis::Client;
-use std::sync::Arc;
+#![recursion_limit = "512"]
 
-#[derive(Clone)]
-pub struct AppState {
-    pub hyper: Arc<HyperClient>,
-    pub client: Arc<PrismaClient>,
-    pub producer: Arc<FutureProducer>,
-    pub redis: Arc<Client>,
-}
+#[allow(clippy::all)]
+#[allow(clippy::unwrap_used)]
+pub use mysql::*;
+
+mod mysql;

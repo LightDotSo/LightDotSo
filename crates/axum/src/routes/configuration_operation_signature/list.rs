@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::ConfigurationOperationSignatureError, types::ConfigurationOperationSignature};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::result::AppJsonResult;
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::configuration_operation_signature;
+use lightdotso_state::ClientState;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -62,7 +62,7 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_signature_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<ConfigurationOperationSignature>> {
     // -------------------------------------------------------------------------
     // Parse

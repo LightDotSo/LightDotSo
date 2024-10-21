@@ -9,3 +9,4 @@ ignores:
   - "@types/node"
   - typescript
   - "@lightdotso/tsconfig"
+  - "decimal.js"

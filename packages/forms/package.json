@@ -41,18 +41,18 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@types/lodash": "^4.17.10",
+    "@types/lodash": "^4.17.12",
     "abitype": "^1.0.6",
     "lodash": "^4.17.21",
     "lucide-react": "^0.453.0",
-    "react-hook-form": "^7.53.0",
-    "viem": "^2.21.29",
+    "react-hook-form": "^7.53.1",
+    "viem": "^2.21.31",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.3.5",
-    "@types/node": "^22.7.6",
+    "@storybook/react": "^8.3.6",
+    "@types/node": "^22.7.7",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"

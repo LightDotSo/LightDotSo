@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::InviteCodeError, types::InviteCode};
-use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_user, result::AppJsonResult, tags::INVITE_CODE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -25,6 +24,7 @@ use axum_extra::{
     TypedHeader,
 };
 use lightdotso_prisma::invite_code::{self, WhereParam};
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -73,12 +73,13 @@ pub(crate) struct InviteCodeListCount {
         responses(
             (status = 200, description = "Invite codes returned successfully", body = [InviteCode]),
             (status = 500, description = "Invite code bad request", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<InviteCode>> {
@@ -143,12 +144,13 @@ pub(crate) async fn v1_invite_code_list_handler(
         responses(
             (status = 200, description = "Invite codes returned successfully", body = InviteCodeListCount),
             (status = 500, description = "Invite code bad request", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<InviteCodeListCount> {

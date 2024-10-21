@@ -36,14 +36,14 @@ jobs:
       matrix:
         include:
           - name: Workspace
-            os: macos-13
+            os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
             check: false
             test: true
             workspace: true
           - name: Clippy
-            os: macos-latest
+            os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
             check: true
@@ -91,8 +91,6 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v4
         continue-on-error: true
-        with:
-          submodules: recursive
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
@@ -110,24 +108,32 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - if: matrix.workspace
+      - if: matrix.workspace && matrix.os == 'macos-latest'
         name: Set up Docker
         uses: douglascamata/setup-docker-macos-action@main
         continue-on-error: true
+      - if: matrix.workspace && matrix.os == 'ubuntu-latest'
+        name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          large-packages: false
       - if: matrix.workspace
         name: Docker Compose Up
-        continue-on-error: true
         run: |
-          docker-compose up -d --build
+          make docker-compose
+      - name: Turbo Build Crates
+        run: |
+          pnpm turbo run build --filter=@lightdotso/crates
       - name: Make Install
         run: |
           make install
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - name: Rust Build
-        run: |
-          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
+      # - name: Rust Build
+      #   run: |
+      #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Rust Format Check
         run: |
@@ -178,7 +184,8 @@ jobs:
       - if: always()
         name: Run sccache stats
         shell: bash
-        run: ${SCCACHE_PATH} --show-stats
+        run: |
+          ${SCCACHE_PATH} --show-stats
       - if: always()
         name: Rust Finish
         uses: wallet-rs/wallet-rs/.github/actions/rust-finish@main

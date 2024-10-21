@@ -11,7 +11,7 @@
 [dependencies]
   alloy = { workspace = true }
   async-trait = { workspace = true }
-  clap = { workspace = true, features = ["derive", "env"] }
+  clap = { workspace = true }
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
   lightdotso-contracts = { workspace = true }

@@ -191,6 +191,7 @@ Mjwi
 Msjt
 Multicaller
 Multichain
+NEXTEST
 NHRO
 NODEREAL
 NODRPC
@@ -486,8 +487,10 @@ benefeting
 benoit
 bhztbcdy
 biconomy
+bigdecimal
 bigints
 bignumber
+biguint
 bilkent
 binaryen
 bindgen
@@ -1003,6 +1006,7 @@ isplainobject
 istanbuljs
 isutf
 iszero
+itertools
 itzki
 jackspeak
 jemalloc
@@ -1413,6 +1417,7 @@ readdir
 readdirp
 readlink
 realpath
+rebalance
 receipient
 rechoir
 redb
@@ -1612,7 +1617,10 @@ teloxide
 templatesettings
 temprary
 tempy
+testdb
+testpassword
 testrpc
+testuser
 textlint
 theguild
 thenify
@@ -1659,6 +1667,7 @@ treeverse
 trimend
 trimstart
 trivago
+trunc
 trustlessly
 tsbuckets
 tsconfck
@@ -1710,6 +1719,7 @@ unpipe
 unplugin
 unsanitized
 unscopables
+unseparated
 unsized
 unstake
 unstorage

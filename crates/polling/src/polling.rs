@@ -415,7 +415,6 @@ impl Polling {
             from: receipt.tx_receipt.clone().from,
             to: receipt.tx_receipt.clone().to,
             contract_address: receipt.tx_receipt.clone().contract_address,
-            state_root: receipt.tx_receipt.clone().state_root,
             authorization_list: receipt.tx_receipt.clone().authorization_list.clone(),
         };
 

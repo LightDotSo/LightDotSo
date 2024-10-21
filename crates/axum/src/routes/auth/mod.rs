@@ -19,12 +19,12 @@ pub(crate) mod session;
 pub(crate) mod types;
 pub(crate) mod verify;
 
-use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
     routing::{get, post},
     Router,
 };
+use lightdotso_state::ClientState;
 
 pub(crate) use crate::routes::auth::{
     logout::{__path_v1_auth_logout_handler, v1_auth_logout_handler},
@@ -38,7 +38,7 @@ pub(crate) use crate::routes::auth::{
 // -----------------------------------------------------------------------------
 
 #[autometrics]
-pub(crate) fn router() -> Router<AppState> {
+pub(crate) fn router() -> Router<ClientState> {
     Router::new()
         .route("/auth/nonce", get(v1_auth_nonce_handler))
         .route("/auth/session", get(v1_auth_session_handler))

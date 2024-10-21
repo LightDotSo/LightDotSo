@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ProtocolGroup;
-use crate::{
-    error::RouteError, result::AppJsonResult, routes::protocol_group::error::ProtocolGroupError,
-    state::AppState,
-};
+use super::{error::ProtocolGroupError, types::ProtocolGroup};
+use crate::{error::RouteError, result::AppJsonResult, tags::PROTOCOL_GROUP_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::protocol_group;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -54,12 +52,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Protocol group returned successfully", body = ProtocolGroup),
             (status = 404, description = "Protocol group not found", body = ProtocolGroupError),
-        )
+        ),
+        tag = PROTOCOL_GROUP_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_protocol_group_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<ProtocolGroup> {
     // -------------------------------------------------------------------------
     // Parse

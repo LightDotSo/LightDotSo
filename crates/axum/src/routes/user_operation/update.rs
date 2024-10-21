@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::UserOperationError, types::UserOperationSuccess};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::USER_OPERATION_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -22,6 +21,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{user_operation, UserOperationStatus};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::Deserialize;
@@ -55,12 +55,13 @@ pub struct PutQuery {
         responses(
             (status = 200, description = "User operation updated successfully", body = UserOperationSuccess),
             (status = 404, description = "User operation not found", body = UserOperationError),
-        )
+        ),
+        tag = USER_OPERATION_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<UserOperationSuccess> {
     // -------------------------------------------------------------------------
     // Parse

@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::BillingError, types::Billing};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::billing::{error::BillingError, types::Billing},
-    sessions::get_user_id,
-    state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::BILLING_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{billing, BillingStatus};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use tower_sessions_core::Session;
@@ -81,11 +79,12 @@ pub enum BillingQueryStatus {
         responses(
             (status = 200, description = "Billing updated successfully", body = Billing),
             (status = 500, description = "Billing internal error", body = BillingError),
-        )
+        ),
+        tag = BILLING_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_billing_update_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<BillingUpdateRequestParams>,

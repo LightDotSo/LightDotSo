@@ -1333,7 +1333,7 @@ model Billing {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
   status     BillingStatus
 
   // ---------------------------------------------------------------------------
@@ -1422,7 +1422,7 @@ model BillingOperation {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
   status     BillingOperationStatus
 
   // ---------------------------------------------------------------------------
@@ -2067,7 +2067,8 @@ model TokenGroup {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  tokens Token[]
+  tokens         Token[]
+  walletBalances WalletBalance[]
 }
 
 model TokenPrice {
@@ -2082,7 +2083,7 @@ model TokenPrice {
   // Fields
   // ---------------------------------------------------------------------------
 
-  price Float
+  price Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-one
@@ -2205,9 +2206,9 @@ model TokenProtocol {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
-  debtUSD    Float
-  rewardUSD  Float
+  balanceUSD Decimal
+  debtUSD    Decimal
+  rewardUSD  Decimal
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -2293,22 +2294,21 @@ model WalletBalance {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSD Float
+  balanceUSD Decimal
 
   // The below fields are from: https://github.com/llamafolio/llamafolio-api
   // Inspired by License: GPL-3.0
 
-  // rewardUSD  Float?
-  // debtUSD    Float?
-  // apy           Float?
-  // apyBase       Float?
-  // apyMean30d    Float?
+  // rewardUSD  Decimal?
+  // debtUSD    Decimal?
+  // apy           Decimal?
+  // apyBase       Decimal?
+  // apyMean30d    Decimal?
   // ilRisk        Boolean?
-  // collateralUSD Float?
+  // collateralUSD Decimal?
 
   chainId   BigInt   @db.UnsignedBigInt
-  amount    String?
-  stable    Boolean?
+  amount    Decimal?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
   isTestnet Boolean  @default(false)
@@ -2327,6 +2327,9 @@ model WalletBalance {
 
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
+
+  tokenGroup   TokenGroup? @relation(fields: [tokenGroupId], references: [id])
+  tokenGroupId String?
 
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
@@ -2347,6 +2350,7 @@ model WalletBalance {
   @@index([chainId])
   @@index([walletAddress])
   @@index([tokenId])
+  @@index([tokenGroupId])
   @@index([tokenProtocolId])
 }
 
@@ -2784,7 +2788,7 @@ model Metrics {
   // Fields
   // ---------------------------------------------------------------------------
 
-  balanceUSDSum Float
+  balanceUSDSum Decimal
 
   transactionCount   BigInt @db.UnsignedBigInt
   userOperationCount BigInt @db.UnsignedBigInt

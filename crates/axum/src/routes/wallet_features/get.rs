@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::WalletFeaturesError, types::WalletFeatures};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::WALLET_FEATURES_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -22,6 +21,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{wallet, wallet_features};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -54,12 +54,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet features returned  successfully", body = WalletFeatures),
             (status = 404, description = "Wallet features not found ", body = WalletFeaturesError),
-        )
+        ),
+        tag = WALLET_FEATURES_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_features_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<WalletFeatures> {
     // -------------------------------------------------------------------------
     // Parse

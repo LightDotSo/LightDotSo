@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::WalletSettingsError, types::WalletSettings};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::WALLET_SETTINGS_TAG};
 use alloy::primitives::Address;
 use autometrics::autometrics;
 use axum::{
@@ -22,6 +21,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{wallet, wallet_settings};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -54,12 +54,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "Wallet settings returned successfully", body = WalletSettings),
             (status = 404, description = "Wallet settings not found", body = WalletSettingsError),
-        )
+        ),
+        tag = WALLET_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<WalletSettings> {
     // -------------------------------------------------------------------------
     // Parse

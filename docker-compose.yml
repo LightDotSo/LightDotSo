@@ -15,6 +15,23 @@ services:
       retries: 10
     volumes:
       - mysql-db:/var/lib/mysql/data
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
   redis:
     image: redis:latest
     container_name: redis
@@ -22,18 +39,12 @@ services:
       - "6379:6379"
     volumes:
       - redis:/data
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9092:9092"
-    volumes:
-      - prometheus-data:/prometheus-data
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+  redis-commander:
+    image: rediscommander/redis-commander:latest
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      - REDIS_HOSTS=local:redis:6379
     ports:
-      - 22181:2181
+      - "8081:8081"
   kafka:
     image: confluentinc/cp-kafka:latest
     depends_on:
@@ -45,23 +56,34 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  kafka_ui:
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  kafka-init:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka
+    volumes:
+      - ./scripts:/scripts
+    command: ["/bin/bash", "/scripts/init_kafka_topics.sh"]
+  kafka-ui:
     image: provectuslabs/kafka-ui:latest
     depends_on:
       - kafka
+      - zookeeper
     ports:
       - 8080:8080
     environment:
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-  redis-commander:
-    image: rediscommander/redis-commander:latest
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
     environment:
-      - REDIS_HOSTS=local:redis:6379
+      ZOOKEEPER_CLIENT_PORT: 2181
     ports:
-      - "8081:8081"
+      - 22181:2181
 volumes:
   mysql-db:
   redis:
+  postgres-data:
   prometheus-data:

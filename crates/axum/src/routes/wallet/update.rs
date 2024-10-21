@@ -13,11 +13,11 @@
 // limitations under the License.
 
 #![allow(clippy::unwrap_used)]
-#[allow(unused_imports)]
+
 use super::{error::WalletError, types::Wallet};
 use crate::{
     authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
-    state::AppState,
+    tags::WALLET_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -30,6 +30,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -76,11 +77,12 @@ pub struct WalletUpdateRequestParams {
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
             (status = 500, description = "Wallet bad request", body = WalletError),
-        )
+        ),
+        tag = WALLET_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_update_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<WalletUpdateRequestParams>,

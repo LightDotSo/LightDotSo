@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Node Build
+      - name: Node Build Extension
         run: |
           pnpm turbo run build --filter=@lightdotso/extension
       - if: github.event_name == 'pull_request'

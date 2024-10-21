@@ -14,10 +14,13 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletBilling, WalletBillingOptional};
+use super::{
+    error::WalletBillingError,
+    types::{WalletBilling, WalletBillingOptional},
+};
 use crate::{
-    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::wallet_billing::error::WalletBillingError, sessions::get_user_id, state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::WALLET_BILLING_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -26,6 +29,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::wallet_billing;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -73,12 +77,13 @@ pub struct WalletBillingUpdateRequestParams {
             (status = 400, description = "Invalid configuration", body = WalletBillingError),
             (status = 401, description = "Unauthorized", body = WalletBillingError),
             (status = 500, description = "Wallet billing internal error", body = WalletBillingError),
-        )
+        ),
+        tag = WALLET_BILLING_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_billing_update_handler(
     put_query: Query<PutQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     // Json(params): Json<WalletBillingUpdateRequestParams>,
 ) -> AppJsonResult<WalletBilling> {

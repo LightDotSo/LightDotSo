@@ -1,0 +1,7 @@
+REVOKE CREATE ON SCHEMA public FROM dev;
+REVOKE ALL PRIVILEGES ON TABLE "TokenPrice" FROM dev;
+ALTER TABLE "TokenPrice" OWNER TO postgres;
+REVOKE ALL PRIVILEGES ON TABLE "TokenProtocol" FROM dev;
+ALTER TABLE "TokenProtocol" OWNER TO postgres;
+REVOKE ALL PRIVILEGES ON TABLE "WalletBalance" FROM dev;
+ALTER TABLE "WalletBalance" OWNER TO postgres;

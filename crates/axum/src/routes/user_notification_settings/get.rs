@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::UserNotificationSettings;
+use super::{error::UserNotificationSettingsError, types::UserNotificationSettings};
 use crate::{
     authentication::authenticate_user,
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::user_notification_settings::error::UserNotificationSettingsError,
-    state::AppState,
+    tags::USER_NOTIFICATION_SETTINGS_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -31,6 +30,7 @@ use axum_extra::{
 };
 use lightdotso_notifier::types::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, user_notification_settings};
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use std::collections::HashSet;
 use tower_sessions_core::Session;
@@ -64,12 +64,13 @@ pub struct GetQuery {
         responses(
             (status = 200, description = "User settings returned successfully", body = UserNotificationSettings),
             (status = 404, description = "User settings not found", body = UserNotificationSettingsError),
-        )
+        ),
+        tag = USER_NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_notification_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<UserNotificationSettings> {

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::UserOperationMerkleProofError, types::UserOperationMerkleProof};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::USER_OPERATION_MERKLE_PROOF_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_state::ClientState;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -53,12 +53,13 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "User operation merkle proofs returned successfully", body = [UserOperationMerkleProof]),
             (status = 500, description = "User operation merkle proofs bad request", body = UserOperationMerkleProofError),
-        )
+        ),
+        tag = USER_OPERATION_MERKLE_PROOF_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_merkle_proof_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<UserOperationMerkleProof>> {
     // -------------------------------------------------------------------------
     // Parse

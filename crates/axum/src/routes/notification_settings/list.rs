@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::NotificationSettingsError, types::NotificationSettings};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, tags::NOTIFICATION_SETTINGS_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_prisma::notification_settings::{self, WhereParam};
+use lightdotso_state::ClientState;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -68,12 +68,13 @@ pub(crate) struct NotificationSettingsListCount {
         responses(
             (status = 200, description = "Notification settings returned successfully", body = [NotificationSettings]),
             (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
-        )
+        ),
+        tag = NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<Vec<NotificationSettings>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -124,12 +125,13 @@ pub(crate) async fn v1_notification_settings_list_handler(
         responses(
             (status = 200, description = "Notification settings returned successfully", body = NotificationSettingsListCount),
             (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
-        )
+        ),
+        tag = NOTIFICATION_SETTINGS_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_settings_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
 ) -> AppJsonResult<NotificationSettingsListCount> {
     // -------------------------------------------------------------------------
     // Parse

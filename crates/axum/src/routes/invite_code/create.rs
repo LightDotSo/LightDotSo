@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::InviteCode;
+use super::{
+    error::InviteCodeError,
+    types::{GenerateInviteCode, InviteCode},
+};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::invite_code::{error::InviteCodeError, types::GenerateInviteCode},
-    sessions::get_user_id,
-    state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::INVITE_CODE_TAG,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
@@ -28,6 +27,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
 
@@ -44,11 +44,12 @@ use tower_sessions_core::Session;
         responses(
             (status = 200, description = "Invite code created successfully", body = InviteCode),
             (status = 500, description = "Invite code internal error", body = InviteCodeError),
-        )
+        ),
+        tag = INVITE_CODE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_create_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCode> {
     // -------------------------------------------------------------------------

@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::{error::ChainError, types::Chain};
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::chain::{error::ChainError, types::Chain},
-    sessions::get_user_id,
-    state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult, sessions::get_user_id,
+    tags::CHAIN_TAG,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,6 +23,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::chain;
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use tower_sessions_core::Session;
@@ -63,11 +61,12 @@ pub struct PostQuery {
         responses(
             (status = 200, description = "Chain created successfully", body = Chain),
             (status = 500, description = "Chain internal error", body = ChainError),
-        )
+        ),
+        tag = CHAIN_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_chain_create_handler(
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     post_query: Query<PostQuery>,
 ) -> AppJsonResult<Chain> {

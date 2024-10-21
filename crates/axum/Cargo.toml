@@ -22,9 +22,11 @@
   http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  itertools = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }
+  lightdotso-consumer = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-hyper = { workspace = true }
@@ -40,6 +42,8 @@
   lightdotso-rpc = { workspace = true }
   lightdotso-sequence = { workspace = true }
   lightdotso-simulator = { workspace = true }
+  lightdotso-sqlx = { workspace = true }
+  lightdotso-state = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   prisma-client-rust = { workspace = true }
@@ -65,7 +69,6 @@
   tower-sessions = { workspace = true }
   tower-sessions-core = { workspace = true }
   tower_governor = { workspace = true }
-  utoipa = { version = "4.0.0", features = ["axum_extras"] }
-  utoipa-swagger-ui = { version = "7.1.0", features = [
-    "axum",
-  ], default-features = false }
+  utoipa = { version = "5.1.1", features = ["axum_extras", "debug"] }
+  utoipa-axum = { version = "0.1.1", features = ["debug"] }
+  utoipa-swagger-ui = { version = "8.0.1", features = ["axum"] }

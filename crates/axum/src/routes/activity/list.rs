@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[allow(unused_imports)]
 use super::{error::ActivityError, types::Activity};
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
     result::{AppJsonResult, AppResult},
-    state::AppState,
+    tags::ACTIVITY_TAG,
 };
 use alloy::primitives::Address;
 use autometrics::autometrics;
@@ -30,6 +29,7 @@ use axum_extra::{
     TypedHeader,
 };
 use lightdotso_prisma::activity::{self, WhereParam};
+use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -84,12 +84,13 @@ pub(crate) struct ActivityListCount {
         responses(
             (status = 200, description = "Activities returned successfully", body = [Activity]),
             (status = 500, description = "Activity bad request", body = ActivityError),
-        )
+        ),
+        tag = ACTIVITY_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_activity_list_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Activity>> {
@@ -157,7 +158,7 @@ pub(crate) async fn v1_activity_list_handler(
 #[autometrics]
 pub(crate) async fn v1_activity_list_count_handler(
     list_query: Query<ListQuery>,
-    State(state): State<AppState>,
+    State(state): State<ClientState>,
     mut session: Session,
     auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<ActivityListCount> {
@@ -204,7 +205,7 @@ pub(crate) async fn v1_activity_list_count_handler(
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
     query: &ListQuery,
-    state: &AppState,
+    state: &ClientState,
     session: &mut Session,
     auth_token: Option<String>,
 ) -> AppResult<()> {

@@ -14,8 +14,10 @@
 
 #![allow(clippy::unwrap_used)]
 
+use lightdotso_db::models::wallet_balance::WalletBalance;
 use lightdotso_prisma::{token, wallet_balance};
 use lightdotso_utils::is_testnet;
+use prisma_client_rust::bigdecimal::{num_bigint::ToBigInt, ToPrimitive};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -40,7 +42,7 @@ pub(crate) struct Token {
     /// The decimals of the token.
     pub decimals: i32,
     /// The amount of the token.
-    pub amount: i64,
+    pub amount: u128,
     /// The balance of the token in USD.
     pub balance_usd: f64,
     /// The logo url of the token.
@@ -62,6 +64,7 @@ pub(crate) struct TokenGroup {
     /// The id of the token group.
     pub id: String,
     /// The tokens of the token group.
+    #[schema(no_recursion)]
     pub tokens: Vec<Token>,
 }
 
@@ -79,12 +82,18 @@ impl From<token::Data> for Token {
             name: token.name,
             symbol: token.symbol.unwrap_or("".to_string()),
             decimals: token.decimals.unwrap_or(0),
-            amount: 0,
+            amount: 0_u128,
             balance_usd: 0.0,
             logo_url: token.logo_url,
             token_type: Some(token.r#type.to_string()),
             group: token.group.and_then(|group| {
-                group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
+                group.map(|group_data| TokenGroup {
+                    id: group_data.id,
+                    tokens: group_data
+                        .tokens
+                        .map(|tokens| tokens.into_iter().map(Token::from).collect())
+                        .unwrap_or_default(),
+                })
             }),
             is_spam: false,
             is_testnet: is_testnet(token.chain_id as u64),
@@ -104,16 +113,34 @@ impl From<wallet_balance::Data> for Token {
             name: balance.token.clone().unwrap().unwrap().name,
             symbol: balance.token.clone().unwrap().unwrap().symbol.unwrap_or("".to_string()),
             decimals: balance.token.clone().unwrap().unwrap().decimals.unwrap_or(0),
-            amount: balance
-                .amount
-                .and_then(|amount_str| amount_str.parse::<i64>().ok())
-                .unwrap_or_default(),
+            amount: balance.amount.map(|amount| amount as u128).unwrap_or_default(),
             balance_usd: balance.balance_usd,
             logo_url: balance.token.clone().unwrap().unwrap().logo_url,
             token_type: None,
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {
                 group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
+            is_spam: balance.is_spam,
+            is_testnet: balance.is_testnet,
+        }
+    }
+}
+
+/// Implement From<WalletBalance> for Token.
+impl From<WalletBalance> for Token {
+    fn from(balance: WalletBalance) -> Self {
+        Self {
+            id: balance.token_id,
+            address: balance.wallet_address,
+            chain_id: balance.chain_id.to_i64().unwrap_or_default(),
+            name: None,
+            symbol: "".to_string(),
+            decimals: 0,
+            amount: balance.amount.to_bigint().unwrap_or_default().to_u128().unwrap_or_default(),
+            balance_usd: balance.balance_usd.to_f64().unwrap_or_default(),
+            logo_url: None,
+            token_type: None,
+            group: None,
             is_spam: balance.is_spam,
             is_testnet: balance.is_testnet,
         }
