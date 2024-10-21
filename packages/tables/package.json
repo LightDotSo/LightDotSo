@@ -46,9 +46,9 @@
     "@tanstack/react-table": "^8.20.5",
     "@tremor/react": "^3.18.3",
     "lucide-react": "^0.453.0",
-    "next": "15.0.0-canary.202",
+    "next": "15.0.0",
     "recharts": "2.13.0",
-    "viem": "^2.21.31"
+    "viem": "^2.21.32"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
@@ -58,9 +58,9 @@
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "react": "19.0.0-rc-cd22717c-20241013",
-    "react-dom": "19.0.0-rc-cd22717c-20241013",
-    "react-is": "19.0.0-rc-cd22717c-20241013"
+    "react": "19.0.0-rc-65a56d0e-20241020",
+    "react-dom": "19.0.0-rc-65a56d0e-20241020",
+    "react-is": "19.0.0-rc-65a56d0e-20241020"
   },
   "publishConfig": {
     "access": "public"

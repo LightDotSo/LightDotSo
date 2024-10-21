@@ -24,10 +24,10 @@
   },
   "dependencies": {
     "@lightdotso/data": "workspace:*",
-    "react": "19.0.0-rc-cd22717c-20241013",
-    "react-dom": "19.0.0-rc-cd22717c-20241013",
-    "react-is": "19.0.0-rc-cd22717c-20241013",
-    "viem": "^2.21.31"
+    "react": "19.0.0-rc-65a56d0e-20241020",
+    "react-dom": "19.0.0-rc-65a56d0e-20241020",
+    "react-is": "19.0.0-rc-65a56d0e-20241020",
+    "viem": "^2.21.32"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
