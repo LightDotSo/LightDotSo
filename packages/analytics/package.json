@@ -23,7 +23,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@next/third-parties": "15.0.0-canary.202",
+    "@next/third-parties": "15.0.0",
     "posthog-js": "^1.174.2"
   },
   "devDependencies": {

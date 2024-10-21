@@ -97,8 +97,8 @@ importers:
         specifier: 3.4.1
         version: 3.4.1
       prom-client:
-        specifier: 15.0.0
-        version: 15.0.0
+        specifier: 
+        version: 
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -1025,7 +1025,7 @@ packages:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
-  prom-client@15.0.0:
+  prom-client@:
     resolution: {integrity: sha512-UocpgIrKyA2TKLVZDSfm8rGkL13C19YrQBAiG3xo3aDFWcHedxRxI3z+cIcucoxpSO0h5lff5iv/SXoxyeopeA==}
     engines: {node: ^16 || ^18 || >=20}
 
@@ -2316,7 +2316,7 @@ snapshots:
 
   process@0.11.10: {}
 
-  prom-client@15.0.0:
+  prom-client@:
     dependencies:
       '@opentelemetry/api': 1.9.0
       tdigest: 0.1.2
