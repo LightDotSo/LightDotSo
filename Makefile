@@ -283,7 +283,8 @@ docker-compose-restart: ## Restart the docker-compose.
 cargo-generate:
 	cargo generate-mysql
 	cargo generate-postgres
-	cargo fix --lib --allow-no-vcs -p lightdotso-prisma
+	cargo fix --lib --allow-no-vcs -p lightdotso-prisma-mysql
+	cargo fix --lib --allow-no-vcs -p lightdotso-prisma-postgres
 	cargo +nightly fmt || true
 
 .PHONY: prisma

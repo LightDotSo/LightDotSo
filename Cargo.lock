@@ -7844,6 +7844,7 @@ dependencies = [
 name = "lightdotso-prisma"
 version = "0.1.0"
 dependencies = [
+ "lightdotso-prisma-mysql",
  "prisma-client-rust",
  "prisma-client-rust-cli",
  "serde",
@@ -7853,14 +7854,18 @@ dependencies = [
 name = "lightdotso-prisma-mysql"
 version = "0.1.0"
 dependencies = [
- "lightdotso-prisma",
+ "prisma-client-rust",
+ "prisma-client-rust-cli",
+ "serde",
 ]
 
 [[package]]
 name = "lightdotso-prisma-postgres"
 version = "0.1.0"
 dependencies = [
- "lightdotso-prisma",
+ "prisma-client-rust",
+ "prisma-client-rust-cli",
+ "serde",
 ]
 
 [[package]]

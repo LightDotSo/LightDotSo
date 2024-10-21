@@ -1,6 +1,6 @@
 generator prisma {
   provider        = "cargo prisma"
-  output          = "../../../crates/prisma/src/mysql.rs"
+  output          = "../../../crates/prisma-mysql/src/mysql.rs"
   previewFeatures = ["fullTextSearch"]
 }
 

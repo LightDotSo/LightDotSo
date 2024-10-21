@@ -1,6 +1,6 @@
 generator prisma {
   provider        = "cargo prisma"
-  output          = "../../../crates/prisma/src/postgres.rs"
+  output          = "../../../crates/prisma-postgres/src/postgres.rs"
   previewFeatures = ["fullTextSearch"]
 }
 

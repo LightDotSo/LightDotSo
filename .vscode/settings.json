@@ -24,8 +24,8 @@
   // Exclude generated files
   "files.exclude": {
     "**/plonk_vk.sol": true,
-    "**/crates/prisma/src/mysql.rs": true,
-    "**/crates/prisma/src/postgres.rs": true
+    "**/crates/prisma-mysql/src/mysql.rs": true,
+    "**/crates/prisma-postgres/src/postgres.rs": true
   },
   // Formatter settings on save
   "editor.rulers": [
@@ -68,9 +68,6 @@
   // Npm settings
   "npm.exclude": "**/lib/**",
   // Rust settings
-  "rust-analyzer.cargo.features": [
-    "mysql"
-  ],
   "rust-analyzer.diagnostics.disabled": [
     "unresolved-proc-macro"
   ],

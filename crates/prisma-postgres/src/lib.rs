@@ -14,4 +14,6 @@
 
 #![recursion_limit = "512"]
 
-pub use lightdotso_prisma::*;
+pub use postgres::*;
+
+mod postgres;

@@ -9,4 +9,6 @@
   repository.workspace = true
 
 [dependencies]
-  lightdotso-prisma = { workspace = true, features = ["postgres"] }
+  prisma-client-rust = { workspace = true }
+  prisma-client-rust-cli = { workspace = true }
+  serde = { workspace = true }

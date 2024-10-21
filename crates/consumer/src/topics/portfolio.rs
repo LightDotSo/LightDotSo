@@ -81,7 +81,7 @@ impl PortfolioConsumer {
         payload: PortfolioMessage,
     ) -> Result<()> {
         let latest_portfolio: Vec<LatestPortfolioReturnType> = state
-            .client
+            .prisma_client
             ._query_raw(raw!(
                 "SELECT SUM(balanceUSD) as balance
                     FROM WalletBalance
@@ -101,7 +101,7 @@ impl PortfolioConsumer {
             info!("latest_portfolio: {:?}", latest_portfolio_balance);
 
             let _: Result<()> = state
-                .client
+                .prisma_client
                 ._transaction()
                 .run(|client| async move {
                     client

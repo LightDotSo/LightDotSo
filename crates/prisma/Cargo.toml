@@ -9,11 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  lightdotso-prisma-mysql = { workspace = true }
   prisma-client-rust = { workspace = true }
   prisma-client-rust-cli = { workspace = true }
   serde = { workspace = true }
-
-[features]
-  default = ["mysql"]
-  mysql = []
-  postgres = []

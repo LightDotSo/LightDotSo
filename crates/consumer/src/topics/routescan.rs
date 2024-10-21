@@ -117,7 +117,7 @@ impl RoutescanConsumer {
 
         // Create the tokens
         let res = state
-            .client
+            .prisma_client
             .token()
             .create_many(
                 new_items
@@ -145,7 +145,7 @@ impl RoutescanConsumer {
 
         // Find the tokens
         let tokens = state
-            .client
+            .prisma_client
             .token()
             .find_many(vec![and![
                 token::chain_id::equals(payload.chain_id as i64),
@@ -204,10 +204,10 @@ impl RoutescanConsumer {
         let token_data = token_data?;
 
         // Create a token price for each token
-        state.client.token_price().create_many(token_data).exec().await?;
+        state.prisma_client.token_price().create_many(token_data).exec().await?;
 
         let _: Result<()> = state
-            .client
+            .prisma_client
             ._transaction()
             .run(|client| async move {
                 client

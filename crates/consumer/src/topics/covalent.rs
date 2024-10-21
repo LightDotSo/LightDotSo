@@ -122,7 +122,7 @@ impl CovalentConsumer {
 
             // Create the tokens
             let res = state
-                .client
+                .prisma_client
                 .token()
                 .create_many(
                     balances
@@ -158,7 +158,7 @@ impl CovalentConsumer {
 
             // Find the tokens
             let tokens = state
-                .client
+                .prisma_client
                 .token()
                 .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
                 .exec()
@@ -197,10 +197,10 @@ impl CovalentConsumer {
             let token_data = token_data?;
 
             // Create a token price for each token
-            state.client.token_price().create_many(token_data).exec().await?;
+            state.prisma_client.token_price().create_many(token_data).exec().await?;
 
             let res: Result<i64> = state
-                .client
+                .prisma_client
                 ._transaction()
                 .run(|client| async move {
                     client
