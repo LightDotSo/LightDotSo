@@ -23,12 +23,12 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@next/third-parties": "15.0.0-canary.190",
-    "posthog-js": "^1.174.0"
+    "@next/third-parties": "15.0.0-canary.202",
+    "posthog-js": "^1.174.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.6",
+    "@types/node": "^22.7.7",
     "typescript": "^5.6.3"
   },
   "publishConfig": {
