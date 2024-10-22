@@ -1,5 +1,22 @@
 # @lightdotso/types
 
+## 0.0.14
+
+### Patch Changes
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2439](https://github.com/LightDotSo/LightDotSo/pull/2439) [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light pkgs
+
+- [#2545](https://github.com/LightDotSo/LightDotSo/pull/2545) [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu versions
+
+- [#2544](https://github.com/LightDotSo/LightDotSo/pull/2544) [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app lib
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- Updated dependencies [[`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d), [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/data@0.1.14
+
 ## 0.0.13
 
 ### Patch Changes

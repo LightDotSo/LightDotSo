@@ -1,5 +1,11 @@
 # @lightdotso/assets
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2410](https://github.com/LightDotSo/LightDotSo/pull/2410) [`a6294d9`](https://github.com/LightDotSo/LightDotSo/commit/a6294d92448de82d92ed22145a5ab1fc9d67766d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add files array
+
 ## 3.1.8
 
 ### Patch Changes

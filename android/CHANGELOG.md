@@ -1,5 +1,12 @@
 # @lightdotso/android
 
+## 3.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`0795fa3`](https://github.com/LightDotSo/LightDotSo/commit/0795fa38d4943775878f8d557f45a8da739a5ee8), [`a93b0ac`](https://github.com/LightDotSo/LightDotSo/commit/a93b0ac4a461ee826acfff1db90d2c8f24b1d981), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`7cbfa60`](https://github.com/LightDotSo/LightDotSo/commit/7cbfa60ca834c6b98004af373ac6f0aa22d4c063), [`6d98b01`](https://github.com/LightDotSo/LightDotSo/commit/6d98b01c015bf8237374fc5cba8ebcf16bf352b8), [`6530d0f`](https://github.com/LightDotSo/LightDotSo/commit/6530d0f61c6346a5107841212621b871a4ebbd1f), [`500e131`](https://github.com/LightDotSo/LightDotSo/commit/500e131e94beff1ce862c20fb9aec8bb4588621e), [`a45c282`](https://github.com/LightDotSo/LightDotSo/commit/a45c2823d8d18858d490531c8d1731b51e88f083), [`075bf86`](https://github.com/LightDotSo/LightDotSo/commit/075bf863e40ceaa29d42af2bf1addf0f98bd14be)]:
+  - @lightdotso/crates@3.1.13
+
 ## 3.0.13
 
 ### Patch Changes
