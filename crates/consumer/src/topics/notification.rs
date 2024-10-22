@@ -83,7 +83,8 @@ impl NotificationConsumer {
         payload: NotificationMessage,
     ) -> Result<()> {
         // Run the create notification
-        let res = consumer_state.notifier.run_with_db(&state.client.clone(), &payload).await;
+        let res =
+            consumer_state.notifier.run_with_notification(&state.client.clone(), &payload).await;
         info!("res: {:?}", res);
 
         Ok(())

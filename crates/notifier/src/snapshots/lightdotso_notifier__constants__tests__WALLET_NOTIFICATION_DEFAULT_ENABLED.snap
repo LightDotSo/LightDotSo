@@ -1,0 +1,5 @@
+---
+source: crates/notifier/src/constants.rs
+expression: "format!(\"{:?}\", *WALLET_NOTIFICATION_DEFAULT_ENABLED)"
+---
+{"WEB:::TRANSACTION_WITH_USER_OPERATION_EXECUTED": true, "WEB:::USER_OPERATION_CREATED": true, "WEB:::USER_OPERATION_EXECUTED": true}

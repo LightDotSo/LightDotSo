@@ -1,0 +1,5 @@
+---
+source: crates/notifier/src/constants.rs
+expression: "format!(\"{:?}\", *NOTIFICATION_KEYS)"
+---
+["WEB:::INVITE_CODE_ACCEPTED", "WEB:::USER_OPERATION_CREATED", "WEB:::USER_OPERATION_EXECUTED", "WEB:::TRANSACTION_WITH_USER_OPERATION_EXECUTED"]

@@ -37,7 +37,7 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_notifier::types::USER_NOTIFICATION_DEFAULT_ENABLED;
+use lightdotso_notifier::constants::USER_NOTIFICATION_DEFAULT_ENABLED;
 use lightdotso_prisma::{
     notification_settings, user, user_notification_settings, ActivityEntity, ActivityOperation,
 };

@@ -1,0 +1,5 @@
+---
+source: crates/notifier/src/constants.rs
+expression: "format!(\"{:?}\", *USER_NOTIFICATION_KEYS)"
+---
+["WEB:::INVITE_CODE_ACCEPTED"]
