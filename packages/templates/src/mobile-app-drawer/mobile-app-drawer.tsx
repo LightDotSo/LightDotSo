@@ -90,7 +90,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
         </DrawerTrigger>
       ) : (
         <div className="ml-auto">
-          <DrawerTrigger onClick={() => setIsOpen(true)}>
+          <DrawerTrigger asChild onClick={() => setIsOpen(true)}>
             <ButtonIcon variant="outline" size="sm">
               <AlignRight className="size-4" />
             </ButtonIcon>
