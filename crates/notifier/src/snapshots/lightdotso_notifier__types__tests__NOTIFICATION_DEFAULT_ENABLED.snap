@@ -1,5 +1,0 @@
----
-source: crates/notifier/src/types.rs
-expression: "format!(\"{:?}\", * NOTIFICATION_DEFAULT_ENABLED)"
----
-{"WEB-INVITE_CODE_ACCEPTED": true, "WEB-TRANSACTION_WITH_USER_OPERATION_EXECUTED": true, "WEB-USER_OPERATION_CREATED": true, "WEB-USER_OPERATION_EXECUTED": true}

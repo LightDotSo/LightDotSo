@@ -28,7 +28,7 @@ use axum_extra::{
     headers::{authorization::Bearer, Authorization},
     TypedHeader,
 };
-use lightdotso_notifier::types::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
+use lightdotso_notifier::constants::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, user_notification_settings};
 use lightdotso_state::ClientState;
 use serde::Deserialize;

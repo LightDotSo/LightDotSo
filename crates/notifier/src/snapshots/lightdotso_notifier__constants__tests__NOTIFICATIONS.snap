@@ -1,5 +1,5 @@
 ---
-source: crates/notifier/src/types.rs
-expression: "format!(\"{:?}\", * NOTIFICATION)"
+source: crates/notifier/src/constants.rs
+expression: "format!(\"{:?}\", *NOTIFICATIONS)"
 ---
 [UserOnly(Web, InviteCodeAccepted), WalletOnly(Web, UserOperationCreated), WalletOnly(Web, UserOperationExecuted), WalletOnly(Web, TransactionWithUserOperationExecuted)]

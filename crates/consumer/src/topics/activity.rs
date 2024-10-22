@@ -21,7 +21,9 @@ use lightdotso_kafka::{
     topics::notification::produce_notification_message,
     types::{activity::ActivityMessage, notification::NotificationMessage},
 };
-use lightdotso_notifier::types::{match_notification_with_activity, Operation};
+use lightdotso_notifier::{
+    types::NotificationOperation, utils::match_notification_operation_with_activity,
+};
 use lightdotso_prisma::{configuration, owner, ActivityEntity, ActivityOperation};
 use lightdotso_state::ClientState;
 use lightdotso_tracing::tracing::info;
@@ -97,9 +99,12 @@ impl TopicConsumer for ActivityConsumer {
     async fn consume(
         &self,
         state: &ClientState,
-        _consumer_state: Option<&ConsumerState>,
+        consumer_state: Option<&ConsumerState>,
         msg: &BorrowedMessage<'_>,
     ) -> Result<()> {
+        // Since we use consumer_state, we need to unwrap it
+        let consumer_state = consumer_state.ok_or_else(|| eyre!("Consumer state is None"))?;
+
         // Convert the payload to a string
         let payload_opt = msg.payload_view::<str>();
         info!("payload_opt: {:?}", payload_opt);
@@ -132,7 +137,7 @@ impl TopicConsumer for ActivityConsumer {
                 info!("payload: {:?}", payload);
 
                 // Consume the payload
-                self.consume_with_message(state, entity, payload).await?;
+                self.consume_with_message(state, consumer_state, entity, payload).await?;
             }
         }
 
@@ -148,11 +153,12 @@ impl ActivityConsumer {
     pub async fn consume_with_message(
         &self,
         state: &ClientState,
+        consumer_state: &ConsumerState,
         entity: ActivityEntity,
         payload: ActivityMessage,
     ) -> Result<()> {
         // Create activity with user and wallet
-        let act = create_activity_with_user_and_wallet(
+        let activity = create_activity_with_user_and_wallet(
             state.client.clone(),
             entity,
             payload.operation,
@@ -160,71 +166,75 @@ impl ActivityConsumer {
             payload.params,
         )
         .await?;
-        info!("act: {:?}", act.clone());
+        info!("activity: {:?}", activity.clone());
 
-        let res = match_notification_with_activity(&entity, &payload.operation, &payload.log);
+        // Get the notification
+        let notification_operation =
+            match_notification_operation_with_activity(&entity, &payload.operation, &payload.log);
+        info!("notification_operation: {:?}", notification_operation);
 
-        if let Some(res) = res {
-            info!("res: {:?}", res);
+        match notification_operation {
+            None => {}
+            Some(NotificationOperation::UserOnly(nfo)) => {
+                // Get the key id
+                let key_id = nfo.to_string();
+                info!("NotificationOperation::UserOnly key_id: {:?}", key_id);
 
-            match res {
-                Operation::UserOnly(_) => {
-                    // let notification = NotificationMessage {
-                    //     user_id: act.user_id,
-                    //     activity_id: act.id,
-                    //     entity: entity.to_string(),
-                    //     operation: payload.operation.to_string(),
-                    //     log: payload.log,
-                    // };
+                let notification = NotificationMessage {
+                    key: key_id.clone(),
+                    user_id: activity.user_id.clone(),
+                    activity_id: activity.id.clone(),
+                    wallet_address: None,
+                };
+                info!("notification: {:?}", notification.clone());
 
-                    // produce_notification_message(producer, &notification).await?;
-                }
-                Operation::WalletOnly(opt) => {
-                    let key_id = opt.to_string();
-                    info!("key_id: {:?}", key_id);
+                produce_notification_message(state.producer.clone(), &notification).await?;
+            }
+            Some(NotificationOperation::WalletOnly(nfo)) => {
+                let key_id = nfo.to_string();
+                info!("NotificationOperation::WalletOnly key_id: {:?}", key_id);
 
-                    if let Some(wallet_address) = &act.wallet_address {
-                        // Get the owners of the wallet
-                        let config = state
-                            .client
-                            .clone()
-                            .configuration()
-                            .find_first(vec![configuration::address::equals(
-                                wallet_address.to_string(),
-                            )])
-                            .order_by(configuration::checkpoint::order(Direction::Desc))
-                            .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
-                            .exec()
-                            .await?;
-                        info!("config: {:?}", config.clone());
+                if let Some(wallet_address) = &activity.wallet_address {
+                    // Get the owners of the wallet
+                    let config = state
+                        .client
+                        .clone()
+                        .configuration()
+                        .find_first(vec![configuration::address::equals(
+                            wallet_address.to_string(),
+                        )])
+                        .order_by(configuration::checkpoint::order(Direction::Desc))
+                        .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+                        .exec()
+                        .await?;
+                    info!("config: {:?}", config.clone());
 
-                        if let Some(configuration) = config {
-                            // Get the configuration of the wallet
-                            if let Some(owners) = configuration.owners {
-                                // For each owner of the wallet
-                                for owner in owners {
-                                    // Construct the notification
-                                    let notification = NotificationMessage {
-                                        key: key_id.clone(),
-                                        activity_id: act.id.clone(),
-                                        user_id: owner.user_id,
-                                        wallet_address: Some(wallet_address.to_string()),
-                                    };
-                                    info!("notification: {:?}", notification.clone());
+                    if let Some(configuration) = config {
+                        // Get the configuration of the wallet
+                        if let Some(owners) = configuration.owners {
+                            // For each owner of the wallet
+                            for owner in owners {
+                                // Construct the notification
+                                let notification = NotificationMessage {
+                                    key: key_id.clone(),
+                                    activity_id: activity.id.clone(),
+                                    user_id: owner.user_id,
+                                    wallet_address: Some(wallet_address.to_string()),
+                                };
+                                info!("notification: {:?}", notification.clone());
 
-                                    // Send the notification
-                                    produce_notification_message(
-                                        state.producer.clone(),
-                                        &notification,
-                                    )
+                                produce_notification_message(state.producer.clone(), &notification)
                                     .await?;
-                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        // Finally, notify activity
+        consumer_state.notifier.discord.notify_activity(activity.log.clone()).await?;
+
         Ok(())
     }
 }

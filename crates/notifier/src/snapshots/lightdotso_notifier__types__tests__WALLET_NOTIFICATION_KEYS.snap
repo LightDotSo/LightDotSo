@@ -1,5 +1,0 @@
----
-source: crates/notifier/src/types.rs
-expression: "format!(\"{:?}\", * WALLET_NOTIFICATION_KEYS)"
----
-["WEB-USER_OPERATION_CREATED", "WEB-USER_OPERATION_EXECUTED", "WEB-TRANSACTION_WITH_USER_OPERATION_EXECUTED"]
