@@ -223,7 +223,8 @@ pub(crate) async fn v1_operation_list_handler(
     responses(
         (status = 200, description = "Operation count returned successfully", body = OperationListCount),
         (status = 500, description = "Operation count bad request", body = OperationError),
-    )
+    ),
+    tag = OPERATION_TAG.as_str()
 )]
 #[autometrics]
 pub(crate) async fn v1_operation_list_count_handler(
