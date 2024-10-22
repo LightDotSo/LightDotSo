@@ -54,10 +54,15 @@ impl Consumer {
         };
         info!("Consumer group: {}", group);
 
-        // Panic if the topics are empty
-        if args.topics.is_empty() {
+        // If the topics contain `all`, then set the topics to all topics
+        let topics = if args.topics.contains(&"all".to_string()) {
+            TOPIC_CONSUMERS.keys().map(|s| s.to_string()).collect()
+            // If the topic are empty, panic
+        } else if args.topics.is_empty() {
             panic!("No topics specified");
-        }
+        } else {
+            args.topics.clone()
+        };
 
         // Construct the consumer
         let consumer = Arc::new(get_consumer(&group).unwrap());
@@ -85,7 +90,7 @@ impl Consumer {
             consumer,
             state,
             consumer_state,
-            topics: args.topics.clone(),
+            topics,
             topic_consumers: TOPIC_CONSUMERS.clone(),
         })
     }

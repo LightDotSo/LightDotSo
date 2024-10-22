@@ -33,7 +33,9 @@ pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error:
     let mut binding = ClientConfig::new();
 
     // If the `NEXTEST` environment variable is set, use the test kafka broker.
-    if std::env::var("NEXTEST").is_ok() {
+    if std::env::var("NEXTEST").is_ok() ||
+        std::env::var("ENVIRONMENT").unwrap_or_default() == "development"
+    {
         // Set the broker address to match the Kafka service in docker-compose
         let config = binding
             .set("bootstrap.servers", "localhost:29092")

@@ -25,6 +25,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct ErrorTransactionConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for ErrorTransactionConsumer {
     async fn consume(

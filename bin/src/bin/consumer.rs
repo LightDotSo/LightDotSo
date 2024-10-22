@@ -15,6 +15,7 @@
 #![recursion_limit = "512"]
 
 use clap::Parser;
+use dotenvy::{dotenv, from_filename_override};
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
@@ -32,11 +33,22 @@ pub async fn main() {
         error!("Failed to initialize metrics: {:?}", e)
     }
 
+    // Load the .env.development file
+    let _ = dotenv();
+
+    // Also load the .env.development file
+    let _ = from_filename_override("./.env.development");
+
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args =
+    let mut args =
         ConsumerArgs::try_parse().unwrap_or_else(|_| ConsumerArgs::parse_from(["".to_string()]));
+
+    // If running locally, try to parse from env vars
+    if std::env::var("ENVIRONMENT").unwrap_or_default() == "development" {
+        args = ConsumerArgs::parse();
+    }
 
     // Spawn tasks in the custom runtime and store join handles
     let mut handles = Vec::new();

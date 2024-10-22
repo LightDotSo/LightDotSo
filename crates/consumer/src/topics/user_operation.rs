@@ -28,6 +28,10 @@ use rdkafka::{message::BorrowedMessage, Message};
 
 pub struct UserOperationConsumer;
 
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
+
 #[async_trait]
 impl TopicConsumer for UserOperationConsumer {
     async fn consume(
