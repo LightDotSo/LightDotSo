@@ -29,6 +29,7 @@
   "dependencies": {
     "@lightdotso/forms": "workspace:*",
     "@lightdotso/modals": "workspace:*",
+    "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/states": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",

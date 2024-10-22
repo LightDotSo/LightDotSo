@@ -3257,6 +3257,9 @@ importers:
       '@lightdotso/modals':
         specifier: workspace:*
         version: link:../modals
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../nuqs
       '@lightdotso/states':
         specifier: workspace:*
         version: link:../states
@@ -45991,7 +45994,7 @@ snapshots:
     optionalDependencies:
       '@remix-run/react': 2.13.1(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)(typescript@5.6.3)
       next: 15.0.0(@opentelemetry/api@1.9.0)(@playwright/test@1.48.1)(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)
-      react-router-dom: 6.26.0(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)
+      react-router-dom: 6.27.0(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -47632,14 +47635,6 @@ snapshots:
       react-dom: 19.0.0-rc-65a56d0e-20241020(react@19.0.0-rc-65a56d0e-20241020)
       react-router: 6.26.0(react@19.0.0-rc-65a56d0e-20241020)
 
-  react-router-dom@6.26.0(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919):
-    dependencies:
-      '@remix-run/router': 1.19.0
-      react: 19.0.0-rc-e740d4b1-20240919
-      react-dom: 19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919)
-      react-router: 6.26.0(react@19.0.0-rc-e740d4b1-20240919)
-    optional: true
-
   react-router-dom@6.27.0(react-dom@19.0.0-rc-e740d4b1-20240919(react@19.0.0-rc-e740d4b1-20240919))(react@19.0.0-rc-e740d4b1-20240919):
     dependencies:
       '@remix-run/router': 1.20.0
@@ -47652,12 +47647,6 @@ snapshots:
     dependencies:
       '@remix-run/router': 1.19.0
       react: 19.0.0-rc-65a56d0e-20241020
-
-  react-router@6.26.0(react@19.0.0-rc-e740d4b1-20240919):
-    dependencies:
-      '@remix-run/router': 1.19.0
-      react: 19.0.0-rc-e740d4b1-20240919
-    optional: true
 
   react-router@6.27.0(react@19.0.0-rc-e740d4b1-20240919):
     dependencies:
