@@ -17,7 +17,7 @@
   "scripts": {
     "build": "pnpm run build:chrome && pnpm run build:firefox",
     "build:chrome": "crx pack chrome --zip-output chrome.zip",
-    "build:firefox": "web-ext build -s firefox",
+    "build:firefox": "web-ext build --overwrite-dest -s firefox",
     "clean": "pnpm run clean:chrome && pnpm run clean:firefox",
     "clean:chrome": "rimraf chrome.zip",
     "clean:firefox": "rimraf web-ext-artifacts"

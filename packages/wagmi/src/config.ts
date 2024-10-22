@@ -14,7 +14,13 @@
 
 import { CHAINS } from "@lightdotso/const";
 import { type Chain, createClient } from "viem";
-import { http, cookieStorage, createConfig, createStorage } from "wagmi";
+import {
+  http,
+  type Config,
+  cookieStorage,
+  createConfig,
+  createStorage,
+} from "wagmi";
 import {
   coinbaseWallet,
   injected,
@@ -34,7 +40,7 @@ export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 // -----------------------------------------------------------------------------
 
 // Set up wagmi config
-export const wagmiConfig = createConfig({
+export const wagmiConfig: Config = createConfig({
   chains: CHAINS as readonly [Chain, ...Chain[]],
   // client({ chain }) {
   //   return createClient({
