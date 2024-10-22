@@ -63,10 +63,22 @@ impl Consumer {
         let consumer = Arc::new(get_consumer(&group).unwrap());
 
         // Create a client state
-        let state = create_client_state().await?;
+        let state = match create_client_state().await {
+            Ok(state) => state,
+            Err(e) => {
+                warn!("Client state creation failed: {:?}", e);
+                return Err(e);
+            }
+        };
 
         // Create a consumer state
-        let consumer_state = create_consumer_state().await.ok();
+        let consumer_state = match create_consumer_state().await {
+            Ok(consumer_state) => Some(consumer_state),
+            Err(e) => {
+                warn!("Consumer state creation failed: {:?}", e);
+                None
+            }
+        };
 
         // Create the consumer
         Ok(Self {
@@ -105,7 +117,7 @@ impl Consumer {
                         if let Err(e) =
                             consumer.consume(&state, self.consumer_state.as_ref(), &m).await
                         {
-                            warn!("Error processing message for topic {}: {:?}", topic, e);
+                            warn!("Unknown topic consumer error processing message for topic {}: {:?}", topic, e);
                         }
                     }
 
