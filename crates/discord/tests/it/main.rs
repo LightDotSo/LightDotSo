@@ -33,3 +33,39 @@ async fn test_integration_notify() -> Result<()> {
 
     Ok(())
 }
+
+#[ignore]
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_notify_test() -> Result<()> {
+    // Load the environment variables
+    let _ = dotenv();
+
+    // Create the discord
+    let discord = DiscordArgs::parse_from([""]).create().await?;
+
+    // Create a json
+    let json_content = serde_json::json!({ "test": "test" });
+
+    // Notify
+    discord.notify_test(json_content).await?;
+
+    Ok(())
+}
+
+#[ignore]
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_notify_test_large_json() -> Result<()> {
+    // Load the environment variables
+    let _ = dotenv();
+
+    // Create the discord
+    let discord = DiscordArgs::parse_from([""]).create().await?;
+
+    // Create a large json over 4000 characters
+    let json_content = "test".repeat(4000);
+
+    // Notify
+    discord.notify_test(serde_json::json!({ "test": json_content })).await?;
+
+    Ok(())
+}

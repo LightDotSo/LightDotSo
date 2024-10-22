@@ -20,13 +20,23 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_discord::{config::DiscordArgs, discord::Discord};
 use lightdotso_kafka::types::notification::NotificationMessage;
-use lightdotso_prisma::{activity, notification, wallet_notification_settings, PrismaClient};
+use lightdotso_prisma::{
+    activity, notification, wallet_notification_settings, ActivityEntity, PrismaClient,
+};
 use lightdotso_tracing::tracing::info;
+
+// -----------------------------------------------------------------------------
+// Struct
+// -----------------------------------------------------------------------------
 
 #[derive(Clone)]
 pub struct Notifier {
     pub discord: Discord,
 }
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
 impl Notifier {
     pub async fn new(_args: &NotifierArgs) -> Result<Self> {
@@ -40,6 +50,27 @@ impl Notifier {
 
         // Create the notifier
         Ok(Self { discord })
+    }
+
+    pub async fn run_with_activity(&self, activity: &activity::Data) -> Result<()> {
+        // Get the activity entity
+        match &activity.entity {
+            ActivityEntity::Feedback => {
+                // Log the feedback
+                self.discord.notify_feedback(activity.log.clone()).await?;
+            }
+            ActivityEntity::UserOperation => {
+                // Log the user operation
+                self.discord.notify_user_operation(activity.log.clone()).await?;
+            }
+            ActivityEntity::Wallet => {
+                // Log the wallet
+                self.discord.notify_wallet(activity.log.clone()).await?;
+            }
+            _ => {}
+        }
+
+        Ok(())
     }
 
     pub async fn run_with_notification(
@@ -57,13 +88,16 @@ impl Notifier {
             .await?;
 
         // If the activity exists
-        if let Some(act) = activity {
+        if let Some(activity) = activity {
             // Run the activity log notification
-            self.discord.notify_activity(act.log.clone()).await?;
+            self.discord.notify_activity(activity.log.clone()).await?;
 
             // Get the operation with the activity
-            let notification_operation =
-                match_notification_operation_with_activity(&act.entity, &act.operation, &act.log);
+            let notification_operation = match_notification_operation_with_activity(
+                &activity.entity,
+                &activity.operation,
+                &activity.log,
+            );
             info!("notification_operation: {:?}", notification_operation);
 
             // Match the notification operation

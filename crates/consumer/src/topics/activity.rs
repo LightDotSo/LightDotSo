@@ -233,7 +233,7 @@ impl ActivityConsumer {
         }
 
         // Finally, notify activity
-        consumer_state.notifier.discord.notify_activity(activity.log.clone()).await?;
+        consumer_state.notifier.run_with_activity(&activity.0).await?;
 
         Ok(())
     }
