@@ -89,9 +89,7 @@ export default async function Page({ params }: PageProps) {
             mermaid: Mermaid,
           }}
         />
-        {page.data.index ? (
-          <DocsCategory page={page} pages={source.getPages()} />
-        ) : null}
+        {page.data.index ? <DocsCategory page={page} from={source} /> : null}
       </DocsBody>
     </DocsPage>
   );

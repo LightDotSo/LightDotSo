@@ -18,7 +18,7 @@ import { DOCS_TABS } from "@/const";
 import { Root } from "@lightdotso/roots/root";
 import { Footer } from "@lightdotso/templates/footer";
 import { Nav } from "@lightdotso/templates/nav";
-import { DocsLayout } from "fumadocs-ui/layout";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { RootProvider } from "fumadocs-ui/provider";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";

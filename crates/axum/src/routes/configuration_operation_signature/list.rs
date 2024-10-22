@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use super::{error::ConfigurationOperationSignatureError, types::ConfigurationOperationSignature};
-use crate::result::AppJsonResult;
+use crate::{result::AppJsonResult, tags::CONFIGURATION_OPERATION_SIGNATURE_TAG};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -57,7 +57,8 @@ pub struct ListQuery {
         responses(
             (status = 200, description = "Configuration Signatures returned successfully", body = [ConfigurationOperationSignature]),
             (status = 500, description = "Configuration Signature bad request", body = ConfigurationOperationSignatureError),
-        )
+        ),
+        tag = CONFIGURATION_OPERATION_SIGNATURE_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_signature_list_handler(

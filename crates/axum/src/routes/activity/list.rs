@@ -153,7 +153,8 @@ pub(crate) async fn v1_activity_list_handler(
         responses(
             (status = 200, description = "Activities returned successfully", body = ActivityListCount),
             (status = 500, description = "Activity bad request", body = ActivityError),
-        )
+        ),
+        tag = ACTIVITY_TAG.as_str()
     )]
 #[autometrics]
 pub(crate) async fn v1_activity_list_count_handler(

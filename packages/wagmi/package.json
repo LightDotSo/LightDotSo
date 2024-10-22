@@ -37,17 +37,17 @@
     "@lightdotso/contracts": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@tanstack/react-query": "^5.59.15",
-    "@wagmi/core": "^2.14.0",
+    "@wagmi/core": "^2.14.1",
     "connectkit": "^1.8.2",
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020",
     "react-is": "19.0.0-rc-65a56d0e-20241020",
     "viem": "^2.21.32",
-    "wagmi": "^2.12.21"
+    "wagmi": "^2.12.22"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.7",
+    "@types/node": "^22.7.8",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"

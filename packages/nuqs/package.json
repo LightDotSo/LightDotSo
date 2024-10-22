@@ -26,12 +26,12 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
-    "nuqs": "^1.20.0",
+    "nuqs": "^2.0.0",
     "viem": "^2.21.32"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^22.7.7",
+    "@types/node": "^22.7.8",
     "typescript": "^5.6.3"
   },
   "publishConfig": {
