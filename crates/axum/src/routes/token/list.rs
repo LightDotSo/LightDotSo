@@ -205,13 +205,14 @@ pub(crate) async fn v1_token_list_handler(
         .collect::<Vec<Token>>();
     info!("final_tokens: {:?}", final_tokens);
 
+    if query.group == Some(false) || query.group.is_none() {
+        return Ok(Json(final_tokens));
+    }
+
     // Merge the tokens inside nested token groups.
     let final_group_nested_tokens = final_tokens
         .into_iter()
-        .filter(|token| match query.group {
-            Some(true) => token.group.is_some(),
-            _ => true,
-        })
+        .filter(|token| token.group.is_some())
         .map(|mut token| {
             if let Some(group) = token.group.as_mut() {
                 // Reset the amount and balance_usd of the token.
