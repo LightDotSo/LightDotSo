@@ -721,7 +721,7 @@ export const SwapDialog: FC<SwapDialogProps> = ({ className }) => {
           <div className="mt-4 overflow-auto">
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
-                <AccordionTrigger>
+                <AccordionTrigger asChild>
                   <div className="inline-flex items-center">
                     <ChainStack
                       chainIds={genericExecutionQuotes.map(

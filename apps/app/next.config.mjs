@@ -34,6 +34,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@radix-ui/react-icons"],
+    ppr: "incremental",
   },
   images: {
     remotePatterns: [

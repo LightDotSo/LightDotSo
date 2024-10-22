@@ -39,6 +39,7 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
     optimizePackageImports: ["@radix-ui/react-icons"],
+    ppr: "incremental",
   },
   logging: {
     fetches: {

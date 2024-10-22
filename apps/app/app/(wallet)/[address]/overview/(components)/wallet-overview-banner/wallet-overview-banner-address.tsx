@@ -167,7 +167,7 @@ export const WalletOverviewBannerAddress: FC<
         <div className="hidden w-auto items-center space-x-1.5 rounded-md bg-background-stronger py-1 pr-1 pl-2 md:mt-3 md:inline-flex">
           <Tooltip>
             <TooltipTrigger asChild>
-              <>
+              <div className="flex items-center space-x-1">
                 <p className="text-text-weak text-xs md:text-sm">
                   {shortenAddress(address)}
                 </p>
@@ -183,7 +183,7 @@ export const WalletOverviewBannerAddress: FC<
                     <Copy className="size-4" />
                   )}
                 </ButtonIcon>
-              </>
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <p>Copy Address {shortenAddress(address)}</p>
