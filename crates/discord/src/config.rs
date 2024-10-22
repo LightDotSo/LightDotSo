@@ -17,12 +17,20 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
+// -----------------------------------------------------------------------------
+// Args
+// -----------------------------------------------------------------------------
+
 #[derive(Clone, Debug, Parser, Default)]
 pub struct DiscordArgs {
     /// The discord token to connect to.
     #[clap(long, env = "DISCORD_TOKEN")]
     pub token: Option<String>,
 }
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
 impl DiscordArgs {
     pub async fn create(&self) -> Result<Discord> {

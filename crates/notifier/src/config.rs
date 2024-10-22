@@ -17,8 +17,16 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
+// -----------------------------------------------------------------------------
+// Args
+// -----------------------------------------------------------------------------
+
 #[derive(Clone, Debug, Parser, Default)]
 pub struct NotifierArgs {}
+
+// -----------------------------------------------------------------------------
+// Implementation
+// -----------------------------------------------------------------------------
 
 impl NotifierArgs {
     pub async fn create(&self) -> Result<Notifier> {
