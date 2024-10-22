@@ -101,7 +101,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   if (!isDesktop) {
     return (
       <Drawer shouldScaleBackground open={isOpen} onOpenChange={onOpenChange}>
-        <DrawerTrigger>{buttonTrigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{buttonTrigger}</DrawerTrigger>
         <DrawerContent>
           {headerContent && <DrawerHeader>{headerContent}</DrawerHeader>}
           <DrawerBody>
@@ -116,7 +116,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
 
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{buttonTrigger}</PopoverTrigger>
       <PopoverContent className={className}>
         <div
           className={cn(comboDialogVariants({ size: size }), contentClassName)}

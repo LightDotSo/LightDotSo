@@ -45,7 +45,6 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-  ppr: "incremental",
   outputFileTracingExcludes: {
     "*": [
       "./node_modules/@swc/core-linux-x64-gnu",

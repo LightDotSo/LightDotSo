@@ -17,7 +17,8 @@
 // -----------------------------------------------------------------------------
 
 import type { Swap } from "@lightdotso/schemas";
-import { createParser, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
+import { createParser } from "nuqs/server";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
