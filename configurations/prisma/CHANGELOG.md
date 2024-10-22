@@ -1,5 +1,21 @@
 # @lightdotso/prisma
 
+## 3.1.11
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
+- [#2557](https://github.com/LightDotSo/LightDotSo/pull/2557) [`a93b0ac`](https://github.com/LightDotSo/LightDotSo/commit/a93b0ac4a461ee826acfff1db90d2c8f24b1d981) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add prisma crate config
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2556](https://github.com/LightDotSo/LightDotSo/pull/2556) [`075bf86`](https://github.com/LightDotSo/LightDotSo/commit/075bf863e40ceaa29d42af2bf1addf0f98bd14be) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update prisma crates
+
 ## 3.1.10
 
 ### Patch Changes
