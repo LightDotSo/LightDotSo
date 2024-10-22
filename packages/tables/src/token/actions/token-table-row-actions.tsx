@@ -64,12 +64,10 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
     <div className="flex items-center justify-end gap-x-2">
       <Tooltip>
         <TooltipTrigger asChild>
-          <span>
-            <ButtonIcon disabled size="sm" variant="shadow">
-              <Shuffle className="size-4" />
-              <span className="sr-only">Open swap modal</span>
-            </ButtonIcon>
-          </span>
+          <ButtonIcon disabled size="sm" variant="shadow">
+            <Shuffle className="size-4" />
+            <span className="sr-only">Open swap modal</span>
+          </ButtonIcon>
         </TooltipTrigger>
         <TooltipContent>
           <p>Swap {symbol}</p>
@@ -77,16 +75,14 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span>
-            <ButtonIcon asChild size="sm" variant="shadow">
-              <Link
-                href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
-              >
-                <Send className="size-4" />
-                <span className="sr-only">Open send modal</span>
-              </Link>
-            </ButtonIcon>
-          </span>
+          <ButtonIcon asChild size="sm" variant="shadow">
+            <Link
+              href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
+            >
+              <Send className="size-4" />
+              <span className="sr-only">Open send modal</span>
+            </Link>
+          </ButtonIcon>
         </TooltipTrigger>
         <TooltipContent>
           <p>Send {symbol}</p>
