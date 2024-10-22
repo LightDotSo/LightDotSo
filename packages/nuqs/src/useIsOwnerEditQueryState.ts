@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { parseAsBoolean, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
+import { parseAsBoolean } from "nuqs/server";
 
 // -----------------------------------------------------------------------------
 // Parser

@@ -14,7 +14,8 @@
 
 import { PAGINATION_SIZES } from "@lightdotso/const";
 import type { PaginationState } from "@tanstack/react-table";
-import { createParser, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
+import { createParser } from "nuqs/server";
 
 // -----------------------------------------------------------------------------
 // Parser

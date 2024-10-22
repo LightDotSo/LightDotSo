@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { parseAsInteger, useQueryState } from "nuqs";
-
+import { useQueryState } from "nuqs";
+import { parseAsInteger } from "nuqs/server";
 // -----------------------------------------------------------------------------
 // Parser
 // -----------------------------------------------------------------------------

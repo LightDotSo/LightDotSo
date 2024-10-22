@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { CHAINS, LIGHT_CHAIN } from "@lightdotso/const";
-import { createParser, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
+import { createParser } from "nuqs/server";
 import type { Chain } from "viem";
 
 // -----------------------------------------------------------------------------
