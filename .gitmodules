@@ -138,3 +138,6 @@
 [submodule "lib/create3"]
 	path = lib/create3
 	url = https://github.com/0xsequence/create3
+[submodule "lib/registry"]
+	path = lib/registry
+	url = https://github.com/rhinestonewtf/registry

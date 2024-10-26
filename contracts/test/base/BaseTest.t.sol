@@ -21,10 +21,12 @@ import {
     initCode as entryPointInitCode,
     salt as entryPointSalt
 } from "@/bytecode/Entrypoint/v0.7.0.b.sol";
+import {initCode as registryInitCode} from "@/bytecode/Registry/v0.1.0.b.sol";
 import {initCode as nexusInitCode, salt as nexusSalt} from "@/bytecode/Nexus/v0.1.0.b.sol";
 import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {Nexus} from "@/contracts/core/Nexus.sol";
+import {Registry} from "@/contracts/core/Registry.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -117,6 +119,8 @@ abstract contract BaseTest is Test {
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
 
+    // Registry core contract
+    Registry internal registry;
     // Nexus core contract
     Nexus internal nexus;
     // SimpleAccountFactory core contract
@@ -220,6 +224,17 @@ abstract contract BaseTest is Test {
         return Create2Utils.create2Deploy(_salt, _initCode);
     }
 
+    function deployWithRawSafeSingletonFactory(bytes memory callData)
+        public
+        payable
+        returns (address)
+    {
+        (bool success, bytes memory data) =
+            address(0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7).call(callData);
+        require(success, "Failed to deploy with raw safe singleton factory");
+        return address(bytes20(data));
+    }
+
     /// @dev Deploys the Create2Utils from safe-singleton-factory
     function deployCreate2Utils() internal {
         vm.etch(
@@ -236,6 +251,11 @@ abstract contract BaseTest is Test {
     /// @dev Deploys the Nexus
     function deployNexus() internal returns (Nexus) {
         return Nexus(payable(deployWithCreate2Utils(nexusInitCode, nexusSalt)));
+    }
+
+    /// @dev Deploys the Registry
+    function deployRegistry() internal returns (Registry) {
+        return Registry(payable(deployWithRawSafeSingletonFactory(registryInitCode)));
     }
 
     /// @dev Gets the pseudo-random number
