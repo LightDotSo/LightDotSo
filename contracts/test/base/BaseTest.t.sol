@@ -17,6 +17,7 @@
 pragma solidity ^0.8.27;
 
 import {ResolverUID} from "registry/DataTypes.sol";
+import {IExternalResolver} from "registry/external/IExternalResolver.sol";
 import {Create2Utils} from "@/contracts/core/Create2Utils.sol";
 import {ColdStorageHook} from "@/contracts/core/ColdStorageHook.sol";
 import {
@@ -34,6 +35,7 @@ import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constant
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {Nexus} from "@/contracts/core/Nexus.sol";
 import {Registry} from "@/contracts/core/Registry.sol";
+import {Resolver} from "@/contracts/core/Resolver.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -130,6 +132,8 @@ abstract contract BaseTest is Test {
     ColdStorageHook internal coldStorageHook;
     // Registry core contract
     Registry internal registry;
+    // Resolver core contract
+    Resolver internal resolver;
     // Nexus core contract
     Nexus internal nexus;
     // SimpleAccountFactory core contract
@@ -168,6 +172,9 @@ abstract contract BaseTest is Test {
 
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
+
+        // Deploy the Resolver
+        resolver = new Resolver();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
@@ -249,18 +256,15 @@ abstract contract BaseTest is Test {
 
     function deployWithRegistry(
         bytes32 salt,
-        ResolverUID resolverUID,
-        bytes memory initCode,
-        bytes memory metadata,
-        bytes memory resolverContext
+        bytes memory initCode
     )
         internal
         returns (address module)
     {
         module = registry.calcModuleAddress(salt, initCode);
+        ResolverUID resolverUID = registry.registerResolver(IExternalResolver(resolver));
         if (module.code.length == 0) {
-            address temp =
-                registry.deployModule(salt, resolverUID, initCode, metadata, resolverContext);
+            address temp = registry.deployModule(salt, resolverUID, initCode, "", "");
             require(temp == module, "DeployScript: Mismatching module address");
         }
     }
@@ -291,15 +295,7 @@ abstract contract BaseTest is Test {
     /// @dev Deploys the ColdStorageHook
     function deployColdStorageHook() internal returns (ColdStorageHook) {
         return ColdStorageHook(
-            payable(
-                deployWithRegistry(
-                    coldStorageHookSalt,
-                    ResolverUID.wrap(coldStorageHookResolverUID),
-                    coldStorageHookInitCode,
-                    "",
-                    ""
-                )
-            )
+            payable(deployWithRegistry(coldStorageHookSalt, coldStorageHookInitCode))
         );
     }
 
