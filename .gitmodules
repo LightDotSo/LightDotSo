@@ -132,3 +132,9 @@
 [submodule "modulekit"]
 	path = modulekit
 	url = https://github.com/rhinestonewtf/modulekit
+[submodule "lib/excessively-safe-call"]
+	path = lib/excessively-safe-call
+	url = https://github.com/nomad-xyz/ExcessivelySafeCall
+[submodule "lib/create3"]
+	path = lib/create3
+	url = https://github.com/0xsequence/create3

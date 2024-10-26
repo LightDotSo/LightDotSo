@@ -1,0 +1,40 @@
+---
+title: Permissions
+description: Permissions of the Light Protocol Contracts
+---
+
+## Specs 
+
+
+### If "Protocol Owned Custody" (2/2 multi-sig)
+
+- Vault shares are approved to the protocol controller
+- The protocol controller is the operator for the vault
+- Tokens are approved to the protocol controller
+
+- Approval/Operator is set to an arbitrary vault controller
+(it can move your assets anytime through a timelock)
+
+- Fronted funds will default set the approval to the controller
+
+ex: lwETH on base + optimism to lwETH on arbitrum
+-> First, users will deposit to the vault in exchange for lwETH through the timelock on both base/optimism that will get used for "credits"
+-> Then, the users will request to spend the lwETH on arbitrum through the paymaster
+-> The paymaster will send the ETH to the vault controller if there is enough balance in which the controller will then send the ETH to the user
+
+### If "Assisted Custody" (sub-account w/ cold storage + multi-plexer)
+
+
+
+#### Why does it have to be a timelock as the chain abstraction operator?
+
+- Exit mechanism 
+- Have sufficient approval controls for the protocol to exit
+
+## Premise
+
+For the funds to be utilized for chain abstraction, it needs to be 
+
+- The owner needs to be the timelock
+- The vault needs to be custodied + authorized to the protocol controller for "credits"
+- The protocol controller needs to be the operator for the vault
