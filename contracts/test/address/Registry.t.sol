@@ -27,8 +27,8 @@ contract RegistryAddressTest is BaseTest {
 
     /// Tests that the registry is deployed correctly
     function test_deploy_registry() public {
-        // Create the registry
-        registry = deployRegistry();
+        // Create the registry (but should revert since we create in the setup)
+        // registry = deployRegistry();
 
         // Test that the address is correct
         assertEq(address(registry), address(REGISTRY_V010_ADDRESS));
