@@ -54,19 +54,6 @@ interface ICREATE2Deployer {
         returns (address payable deploymentAddress);
 }
 
-contract Create3Deployer {
-    event ContractDeployed(address indexed contractAddress);
-
-    function deploy(bytes32 _salt, bytes calldata _creationCode) external {
-        address deployedContract = Create3.create3(_salt, _creationCode);
-        emit ContractDeployed(deployedContract);
-    }
-
-    function addressOf(bytes32 _salt) external view returns (address) {
-        return Create3.addressOf(_salt);
-    }
-}
-
 /// @notice BaseTest is a base contract for all tests
 abstract contract BaseTest is Test {
     // -------------------------------------------------------------------------
@@ -219,20 +206,6 @@ abstract contract BaseTest is Test {
         return contractAddress;
     }
 
-    /// @dev Deploys a contract using create3
-    /// @param _initCode The bytecode of the contract to deploy
-    /// @param _salt The salt for the create3 call
-    function deployWithCreate3(
-        bytes memory _initCode,
-        bytes32 _salt
-    )
-        public
-        payable
-        returns (address)
-    {
-        return Create3Deployer.deploy(_salt, _initCode);
-    }
-
     /// @dev Deploys the EntryPoint
     function deployEntryPoint() internal returns (EntryPoint) {
         return EntryPoint(payable(deployWithCreate2(entryPointInitCode, entryPointSalt)));
@@ -240,7 +213,7 @@ abstract contract BaseTest is Test {
 
     /// @dev Deploys the Nexus
     function deployNexus() internal returns (Nexus) {
-        return Nexus(payable(deployWithCreate3(nexusInitCode, nexusSalt)));
+        return Nexus(payable(deployWithCreate2(nexusInitCode, nexusSalt)));
     }
 
     /// @dev Gets the pseudo-random number

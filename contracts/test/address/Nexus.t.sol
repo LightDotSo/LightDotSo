@@ -18,6 +18,8 @@ pragma solidity ^0.8.27;
 
 import {NEXUS_V010_IMPLEMENTATION_ADDRESS} from "@/constant/address.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 /// @notice Unit tests for `Nexus`
 contract NexusAddressTest is BaseTest {
@@ -32,5 +34,12 @@ contract NexusAddressTest is BaseTest {
 
         // Test that the address is correct
         assertEq(address(nexus), address(NEXUS_V010_IMPLEMENTATION_ADDRESS));
+
+        // Get the version
+        string memory version = nexus.accountId();
+
+        // Log the version
+        // solhint-disable-next-line no-console
+        console.log("Nexus version: %s", version);
     }
 }
