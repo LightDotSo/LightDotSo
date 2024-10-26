@@ -25,9 +25,9 @@ contract EntryPointAddressTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account complies w/ ERC-165
+    /// Tests that the entry point is deployed correctly
     function test_deploy_entryPoint() public {
-        // Create the account using the factory w/ hash 1, nonce 0
+        // Create the entry point
         entryPoint = deployEntryPoint();
 
         // Test that the address is correct

@@ -27,9 +27,9 @@ contract NexusAddressTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account complies w/ ERC-165
+    /// Tests that the nexus is deployed correctly
     function test_deploy_nexus() public {
-        // Create the account using the factory w/ hash 1, nonce 0
+        // Create the nexus
         nexus = deployNexus();
 
         // Test that the address is correct

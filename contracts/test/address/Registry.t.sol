@@ -25,9 +25,9 @@ contract RegistryAddressTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account complies w/ ERC-165
+    /// Tests that the registry is deployed correctly
     function test_deploy_registry() public {
-        // Create the account using the factory w/ hash 1, nonce 0
+        // Create the registry
         registry = deployRegistry();
 
         // Test that the address is correct

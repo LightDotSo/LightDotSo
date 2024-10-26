@@ -22,3 +22,5 @@ bytes constant byteCode =
 bytes constant initCode = byteCode;
 
 bytes32 constant salt = 0x0000000000000000000000000000000000000000000000000000000000001337;
+
+bytes32 constant resolverUID = 0xdbca873b13c783c0c9c6ddfc4280e505580bf6cc3dac83f8a0f7b44acaafca4f;

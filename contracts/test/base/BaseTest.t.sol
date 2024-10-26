@@ -16,7 +16,14 @@
 
 pragma solidity ^0.8.27;
 
+import {ResolverUID} from "registry/DataTypes.sol";
 import {Create2Utils} from "@/contracts/core/Create2Utils.sol";
+import {ColdStorageHook} from "@/contracts/core/ColdStorageHook.sol";
+import {
+    initCode as coldStorageHookInitCode,
+    salt as coldStorageHookSalt,
+    resolverUID as coldStorageHookResolverUID
+} from "@/bytecode/ColdStorageHook/v0.1.0.b.sol";
 import {
     initCode as entryPointInitCode,
     salt as entryPointSalt
@@ -119,6 +126,8 @@ abstract contract BaseTest is Test {
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
 
+    // ColdStorageHook core contract
+    ColdStorageHook internal coldStorageHook;
     // Registry core contract
     Registry internal registry;
     // Nexus core contract
@@ -153,6 +162,9 @@ abstract contract BaseTest is Test {
     function setUp() public virtual {
         // Deploy the Create2Utils
         deployCreate2Utils();
+
+        // Deploy the Registry
+        registry = deployRegistry();
 
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
@@ -235,6 +247,24 @@ abstract contract BaseTest is Test {
         return address(bytes20(data));
     }
 
+    function deployWithRegistry(
+        bytes32 salt,
+        ResolverUID resolverUID,
+        bytes memory initCode,
+        bytes memory metadata,
+        bytes memory resolverContext
+    )
+        internal
+        returns (address module)
+    {
+        module = registry.calcModuleAddress(salt, initCode);
+        if (module.code.length == 0) {
+            address temp =
+                registry.deployModule(salt, resolverUID, initCode, metadata, resolverContext);
+            require(temp == module, "DeployScript: Mismatching module address");
+        }
+    }
+
     /// @dev Deploys the Create2Utils from safe-singleton-factory
     function deployCreate2Utils() internal {
         vm.etch(
@@ -256,6 +286,21 @@ abstract contract BaseTest is Test {
     /// @dev Deploys the Registry
     function deployRegistry() internal returns (Registry) {
         return Registry(payable(deployWithRawSafeSingletonFactory(registryInitCode)));
+    }
+
+    /// @dev Deploys the ColdStorageHook
+    function deployColdStorageHook() internal returns (ColdStorageHook) {
+        return ColdStorageHook(
+            payable(
+                deployWithRegistry(
+                    coldStorageHookSalt,
+                    ResolverUID.wrap(coldStorageHookResolverUID),
+                    coldStorageHookInitCode,
+                    "",
+                    ""
+                )
+            )
+        );
     }
 
     /// @dev Gets the pseudo-random number
