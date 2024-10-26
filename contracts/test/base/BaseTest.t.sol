@@ -16,7 +16,7 @@
 
 pragma solidity ^0.8.27;
 
-import {Create3} from "@0xsequence/create3/contracts/Create3.sol";
+import {Create2Utils} from "@/contracts/core/Create2Utils.sol";
 import {
     initCode as entryPointInitCode,
     salt as entryPointSalt
@@ -147,6 +147,9 @@ abstract contract BaseTest is Test {
 
     /// @dev BaseTest setup
     function setUp() public virtual {
+        // Deploy the Create2Utils
+        deployCreate2Utils();
+
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
 
@@ -206,6 +209,25 @@ abstract contract BaseTest is Test {
         return contractAddress;
     }
 
+    function deployWithCreate2Utils(
+        bytes memory _initCode,
+        bytes32 _salt
+    )
+        public
+        payable
+        returns (address)
+    {
+        return Create2Utils.create2Deploy(_salt, _initCode);
+    }
+
+    /// @dev Deploys the Create2Utils from safe-singleton-factory
+    function deployCreate2Utils() internal {
+        vm.etch(
+            0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7,
+            hex"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3"
+        );
+    }
+
     /// @dev Deploys the EntryPoint
     function deployEntryPoint() internal returns (EntryPoint) {
         return EntryPoint(payable(deployWithCreate2(entryPointInitCode, entryPointSalt)));
@@ -213,7 +235,7 @@ abstract contract BaseTest is Test {
 
     /// @dev Deploys the Nexus
     function deployNexus() internal returns (Nexus) {
-        return Nexus(payable(deployWithCreate2(nexusInitCode, nexusSalt)));
+        return Nexus(payable(deployWithCreate2Utils(nexusInitCode, nexusSalt)));
     }
 
     /// @dev Gets the pseudo-random number
