@@ -1,5 +1,25 @@
 # @lightdotso/client
 
+## 3.1.16
+
+### Patch Changes
+
+- [#2430](https://github.com/LightDotSo/LightDotSo/pull/2430) [`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add upgrade contracts
+
+- [#2478](https://github.com/LightDotSo/LightDotSo/pull/2478) [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo uop
+
+- [#2466](https://github.com/LightDotSo/LightDotSo/pull/2466) [`157e69b`](https://github.com/LightDotSo/LightDotSo/commit/157e69b0393e33dabf96a4231ddee289e60db9e5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add dialog pkgs
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2501](https://github.com/LightDotSo/LightDotSo/pull/2501) [`c260f04`](https://github.com/LightDotSo/LightDotSo/commit/c260f0469a87ab14fe7f7b14bc961a0c46c554a3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add client calldata
+
+- Updated dependencies [[`16758af`](https://github.com/LightDotSo/LightDotSo/commit/16758afbe3f9bf70bf53fc8442c776dd18730994), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d), [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/schemas@3.1.14
+  - @lightdotso/data@0.1.14
+
 ## 3.1.15
 
 ### Patch Changes

@@ -1,5 +1,37 @@
 # @lightdotso/docs
 
+## 3.1.25
+
+### Patch Changes
+
+- [#2416](https://github.com/LightDotSo/LightDotSo/pull/2416) [`24df510`](https://github.com/LightDotSo/LightDotSo/commit/24df510700f33f93bc2094679b563710038d543f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs desc
+
+- [#2525](https://github.com/LightDotSo/LightDotSo/pull/2525) [`4d81035`](https://github.com/LightDotSo/LightDotSo/commit/4d81035d1f2b7be5c63b428eb6f24e3e6856c584) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add dialog specs
+
+- [#2413](https://github.com/LightDotSo/LightDotSo/pull/2413) [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light root
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- [#2439](https://github.com/LightDotSo/LightDotSo/pull/2439) [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light pkgs
+
+- [#2545](https://github.com/LightDotSo/LightDotSo/pull/2545) [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu versions
+
+- [#2544](https://github.com/LightDotSo/LightDotSo/pull/2544) [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add app lib
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
+- [#2446](https://github.com/LightDotSo/LightDotSo/pull/2446) [`7cbfa60`](https://github.com/LightDotSo/LightDotSo/commit/7cbfa60ca834c6b98004af373ac6f0aa22d4c063) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update
+
+- [#2414](https://github.com/LightDotSo/LightDotSo/pull/2414) [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add biome lint
+
+- [#2420](https://github.com/LightDotSo/LightDotSo/pull/2420) [`5958a08`](https://github.com/LightDotSo/LightDotSo/commit/5958a081fa9b4126920ed28d3926ebb4b05cce14) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add npm lop
+
+- Updated dependencies [[`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`3c88576`](https://github.com/LightDotSo/LightDotSo/commit/3c88576ac953f861e8d23b12500f165c53d32c14), [`5f0f63f`](https://github.com/LightDotSo/LightDotSo/commit/5f0f63f2871dd6b65de918f990dc69600d257489), [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d), [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614), [`0a42454`](https://github.com/LightDotSo/LightDotSo/commit/0a424546463282f25b2372ab05516a0a454360c5)]:
+  - @lightdotso/templates@0.0.25
+  - @lightdotso/const@3.1.14
+  - @lightdotso/roots@0.0.11
+  - @lightdotso/types@0.0.14
+
 ## 3.1.24
 
 ### Patch Changes

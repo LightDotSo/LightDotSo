@@ -1,5 +1,20 @@
 # @lightdotso/extension
 
+## 3.1.13
+
+### Patch Changes
+
+- [#2415](https://github.com/LightDotSo/LightDotSo/pull/2415) [`259b82b`](https://github.com/LightDotSo/LightDotSo/commit/259b82bd75478c3a17a67216afec7e73244c0d0b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs query
+
+- [#2431](https://github.com/LightDotSo/LightDotSo/pull/2431) [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add turbo generate
+
+- Updated dependencies [[`259b82b`](https://github.com/LightDotSo/LightDotSo/commit/259b82bd75478c3a17a67216afec7e73244c0d0b), [`bb3fe8b`](https://github.com/LightDotSo/LightDotSo/commit/bb3fe8b33b4ae86f37798a897343ad3606c4b767), [`f76f0aa`](https://github.com/LightDotSo/LightDotSo/commit/f76f0aae210c3911ec179b6cb8a865950d5c11e6), [`28bc780`](https://github.com/LightDotSo/LightDotSo/commit/28bc780672b920bab242fb9dc38c1daacd26975d), [`a674e40`](https://github.com/LightDotSo/LightDotSo/commit/a674e40113081aae2b44983feaf1a0368bed2cf8), [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614)]:
+  - @lightdotso/resources@3.0.6
+  - @lightdotso/background@3.1.11
+  - @lightdotso/content@3.1.11
+  - @lightdotso/inpage@3.1.11
+  - @lightdotso/popup@3.1.13
+
 ## 3.1.12
 
 ### Patch Changes
