@@ -1,5 +1,11 @@
 # @lightdotso/tailwindcss
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2407](https://github.com/LightDotSo/LightDotSo/pull/2407) [`709f704`](https://github.com/LightDotSo/LightDotSo/commit/709f70480fafd0102f4491cd81878dedc7a32614) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update deps
+
 ## 3.1.9
 
 ### Patch Changes

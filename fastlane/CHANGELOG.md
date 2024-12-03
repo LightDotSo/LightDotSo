@@ -1,5 +1,13 @@
 # @lightdotso/fastlane
 
+## 3.0.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/ios@3.0.14
+  - @lightdotso/android@3.0.14
+
 ## 3.0.13
 
 ### Patch Changes
