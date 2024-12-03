@@ -136,7 +136,7 @@ jobs:
           matrix.app != 'storybook' &&
           github.event.number != null
         name: Download Bundle Stats
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v7
         with:
           name: bundle-${{ matrix.app }}
           workflow: vercel.yml
