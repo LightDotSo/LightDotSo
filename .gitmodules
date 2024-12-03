@@ -20,12 +20,22 @@
 [submodule "lib/core-modules"]
 	path = lib/core-modules
 	url = https://github.com/rhinestonewtf/core-modules
+[submodule "lib/core-modules-patch"]
+	path = lib/core-modules-patch
+	url = https://github.com/LightDotSo/core-modules
+	branch = patch
+[submodule "lib/create3"]
+	path = lib/create3
+	url = https://github.com/0xsequence/create3
 [submodule "lib/ds-test"]
 	path = lib/ds-test
 	url = https://github.com/dapphub/ds-test
 [submodule "lib/erc7579-implementation"]
 	path = lib/erc7579-implementation
 	url = https://github.com/erc7579/erc7579-implementation
+[submodule "lib/excessively-safe-call"]
+	path = lib/excessively-safe-call
+	url = https://github.com/nomad-xyz/ExcessivelySafeCall
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
@@ -79,6 +89,9 @@
 	path = lib/openzeppelin-contracts-upgradeable-v5.0
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
 	branch = release-v5.0
+[submodule "lib/registry"]
+	path = lib/registry
+	url = https://github.com/rhinestonewtf/registry
 [submodule "lib/safe-contracts"]
 	path = lib/safe-contracts
 	url = https://github.com/safe-global/safe-contracts
@@ -129,6 +142,3 @@
 [submodule "wiki"]
 	path = wiki
 	url = https://github.com/LightDotSo/LightDotSo.wiki.git
-[submodule "modulekit"]
-	path = modulekit
-	url = https://github.com/rhinestonewtf/modulekit

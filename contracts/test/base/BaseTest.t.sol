@@ -16,9 +16,26 @@
 
 pragma solidity ^0.8.27;
 
-import {byteCode, salt} from "@/bytecode/Entrypoint/v0.7.0.b.sol";
+import {ResolverUID} from "registry/DataTypes.sol";
+import {IExternalResolver} from "registry/external/IExternalResolver.sol";
+import {Create2Utils} from "@/contracts/core/Create2Utils.sol";
+import {ColdStorageHook} from "@/contracts/core/ColdStorageHook.sol";
+import {
+    initCode as coldStorageHookInitCode,
+    salt as coldStorageHookSalt,
+    resolverUID as coldStorageHookResolverUID
+} from "@/bytecode/ColdStorageHook/v0.1.0.b.sol";
+import {
+    initCode as entryPointInitCode,
+    salt as entryPointSalt
+} from "@/bytecode/Entrypoint/v0.7.0.b.sol";
+import {initCode as registryInitCode} from "@/bytecode/Registry/v0.1.0.b.sol";
+import {initCode as nexusInitCode, salt as nexusSalt} from "@/bytecode/Nexus/v0.1.0.b.sol";
 import {CREATE2_DEPLOYER_ADDRESS_RAW, CREATE2_DEPLOYER_ADDRESS} from "@/constant/address.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {Nexus} from "@/contracts/core/Nexus.sol";
+import {Registry} from "@/contracts/core/Registry.sol";
+import {Resolver} from "@/contracts/core/Resolver.sol";
 import {EntryPointSimulations} from "@/contracts/core/EntryPointSimulations.sol";
 import {LightDAG} from "@/contracts/LightDAG.sol";
 import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
@@ -111,6 +128,14 @@ abstract contract BaseTest is Test {
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
 
+    // ColdStorageHook core contract
+    ColdStorageHook internal coldStorageHook;
+    // Registry core contract
+    Registry internal registry;
+    // Resolver core contract
+    Resolver internal resolver;
+    // Nexus core contract
+    Nexus internal nexus;
     // SimpleAccountFactory core contract
     SimpleAccountFactory internal simpleAccountFactory;
 
@@ -139,8 +164,17 @@ abstract contract BaseTest is Test {
 
     /// @dev BaseTest setup
     function setUp() public virtual {
+        // Deploy the Create2Utils
+        deployCreate2Utils();
+
+        // Deploy the Registry
+        registry = deployRegistry();
+
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
+
+        // Deploy the Resolver
+        resolver = new Resolver();
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
@@ -198,9 +232,71 @@ abstract contract BaseTest is Test {
         return contractAddress;
     }
 
+    function deployWithCreate2Utils(
+        bytes memory _initCode,
+        bytes32 _salt
+    )
+        public
+        payable
+        returns (address)
+    {
+        return Create2Utils.create2Deploy(_salt, _initCode);
+    }
+
+    function deployWithRawSafeSingletonFactory(bytes memory callData)
+        public
+        payable
+        returns (address)
+    {
+        (bool success, bytes memory data) =
+            address(0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7).call(callData);
+        require(success, "Failed to deploy with raw safe singleton factory");
+        return address(bytes20(data));
+    }
+
+    function deployWithRegistry(
+        bytes32 salt,
+        bytes memory initCode
+    )
+        internal
+        returns (address module)
+    {
+        module = registry.calcModuleAddress(salt, initCode);
+        ResolverUID resolverUID = registry.registerResolver(IExternalResolver(resolver));
+        if (module.code.length == 0) {
+            address temp = registry.deployModule(salt, resolverUID, initCode, "", "");
+            require(temp == module, "DeployScript: Mismatching module address");
+        }
+    }
+
+    /// @dev Deploys the Create2Utils from safe-singleton-factory
+    function deployCreate2Utils() internal {
+        vm.etch(
+            0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7,
+            hex"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3"
+        );
+    }
+
     /// @dev Deploys the EntryPoint
     function deployEntryPoint() internal returns (EntryPoint) {
-        return EntryPoint(payable(deployWithCreate2(abi.encodePacked(byteCode), salt)));
+        return EntryPoint(payable(deployWithCreate2(entryPointInitCode, entryPointSalt)));
+    }
+
+    /// @dev Deploys the Nexus
+    function deployNexus() internal returns (Nexus) {
+        return Nexus(payable(deployWithCreate2Utils(nexusInitCode, nexusSalt)));
+    }
+
+    /// @dev Deploys the Registry
+    function deployRegistry() internal returns (Registry) {
+        return Registry(payable(deployWithRawSafeSingletonFactory(registryInitCode)));
+    }
+
+    /// @dev Deploys the ColdStorageHook
+    function deployColdStorageHook() internal returns (ColdStorageHook) {
+        return ColdStorageHook(
+            payable(deployWithRegistry(coldStorageHookSalt, coldStorageHookInitCode))
+        );
     }
 
     /// @dev Gets the pseudo-random number

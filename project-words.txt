@@ -697,6 +697,7 @@ dashdraw
 datacenter
 datasource
 datepicker
+debted
 deburr
 decamelize
 decded
@@ -967,6 +968,7 @@ ingesters
 inheritdoc
 inifinitism
 inii
+initcode
 initializable
 inmemory
 inngest
@@ -1335,6 +1337,7 @@ pkgjs
 pkgr
 pkgs
 planetscale
+plexer
 pluginutils
 plygonscan
 pmmmwh

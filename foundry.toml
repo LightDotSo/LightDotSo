@@ -1,6 +1,6 @@
 [profile.default]
   auto_detect_remappings = false
-  evm_version = "london"
+  evm_version = "cancun"
   gas_reports = ["LightWallet", "LightWalletFactory"]
   optimizer = true
   optimizer_runs = 10_000
