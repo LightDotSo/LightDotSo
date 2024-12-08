@@ -21,6 +21,7 @@
 
 ## Research
 
+- Abstraction de réseau, gestion cross-chain… Light repense l’utilisation des blockchains EVM - https://coinacademy.fr/actu/abstraction-reseau-gestion-cross-chain-light-blockchains-evm/
 - Web3 Social - Road to Mass Adoption - https://www.binance.com/en/research/analysis/web3-social
 
 ## Newsletters
