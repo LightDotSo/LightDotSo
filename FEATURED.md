@@ -3,6 +3,7 @@
 ## Interview
 
 - Enabling Chain Abstraction - https://www.calyptus.co/blog/enabling-chain-abstraction-an-interview-with-shun-k-founder-light
+- How web3 will change social - https://withb.co.jp/contents/43438/
 
 ## Publications
 
