@@ -1,5 +1,13 @@
 # Featured
 
+## AMA
+
+- Light AMA - https://medium.com/cryptokudasaijp/light-ama-21a58f9329cb
+
+## Conferences
+
+- Web3 Conference Tokyo - https://web3conference.tokyo/time_table.html
+
 ## Interview
 
 - Enabling Chain Abstraction - https://www.calyptus.co/blog/enabling-chain-abstraction-an-interview-with-shun-k-founder-light
